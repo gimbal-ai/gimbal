@@ -1,0 +1,78 @@
+*~
+**/.DS_Store
+\#*\#
+
+bazel-*
+
+### Intellij ###
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff:
+**/.idea/workspace.xml
+**/.idea/tasks.xml
+**/.idea/dictionaries
+**/.idea/vcs.xml
+**/.idea/jsLibraryMappings.xml
+**/.idea/misc.xml
+
+# Sensitive or high-churn files:
+**/.idea/dataSources
+**/.idea/dataSources.ids
+**/.idea/dataSources.xml
+**/.idea/dataSources.local.xml
+**/.idea/sqlDataSources.xml
+**/.idea/dynamic.xml
+**/.idea/uiDesigner.xml
+
+# CLion Bazel files.
+.clwb
+
+# VScode files
+**/.vscode/tags
+**/.vscode/launch.json
+**/.vscode/settings.json
+**/.vscode/tasks.json
+**/.vscode/.vs_code_bazel_build/**
+**/.vscode/ipch/
+**/.vscode/*.log
+
+# ctags file
+tags
+
+# Python cache files.
+.cache
+__pycache__
+venv/
+*.py[co]
+
+# Sublime setup.
+**/*.sublime-workspace
+
+vendor/*
+
+# Used for user specific workspace config.
+user.bazelrc
+
+# A cache directory to be use by Bazel.
+.bazel-cache
+
+# Coverage output file
+coverage.info
+
+# Ignore Skaffold Build Directory
+skaffold_build/
+
+# Hide generated .deb files
+*.deb
+
+compile_commands.json
+clang_tidy.log
+
+# Ignore files created by vagrant
+.vagrant/
+Vagrantfile
+
+# Ignore symlink to bazel_output_base/external
+external
+!bazel/external
