@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # Copyright 2018- The Pixie Authors.
-# Modifications Copyright 2023- Gimlet Labs Inc.
+# Modifications Copyright 2023- Gimlet Labs, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,8 +23,11 @@ import os.path
 import re
 import sys
 
+company_name = 'Gimlet Labs, Inc'
+copyright_year = '2023'
+
 apache2_license_header = '''
- Copyright 2023- Gimlet Labs Inc.
+ Copyright 2023- Gimlet Labs, Inc.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -42,18 +45,18 @@ apache2_license_header = '''
 '''
 
 private_license_header = '''
- Copyright © 2023- Gimlet Labs Inc.
+ Copyright © 2023- Gimlet Labs, Inc.
  All Rights Reserved.
 
  NOTICE:  All information contained herein is, and remains
- the property of Gimlet Labs Inc. and its suppliers,
+ the property of Gimlet Labs, Inc. and its suppliers,
  if any.  The intellectual and technical concepts contained
- herein are proprietary to Gimlet Labs Inc. and its suppliers and
+ herein are proprietary to Gimlet Labs, Inc. and its suppliers and
  may be covered by U.S. and Foreign Patents, patents in process,
  and are protected by trade secret or copyright law. Dissemination
  of this information or reproduction of this material is strictly
  forbidden unless prior written permission is obtained from
- Gimlet Labs Inc.
+ Gimlet Labs, Inc.
 
  SPDX-License-Identifier: Proprietary
 '''
@@ -63,10 +66,7 @@ license_by_spdx = {
     'Proprietary': private_license_header,
 }
 
-
-def get_spdx_from_license(path):
-    with open(path) as f:
-        contents = f.read()
+def get_spdx_from_license_contents(contents: str):
         if 'All Rights Reserved.' in contents:
             return 'Proprietary'
         if 'Apache License, Version 2.0' in contents:
@@ -77,6 +77,10 @@ def get_spdx_from_license(path):
             return 'GPL-2.0'
         raise Exception('Cannot determine license type')
 
+def get_spdx_from_license(path):
+    with open(path) as f:
+        contents = f.read()
+        return get_spdx_from_license_contents(contents)
 
 def c_style_license_wrapper(txt: str):
     txt = ' ' + txt.strip()
@@ -210,6 +214,38 @@ class AddLicenseDiff:
                     f.write(self._txt + '\n')
                 f.write(l)
 
+def generate_modifications_diff_if_needed(path, contents):
+    # If the license is Apache-2.0, we should accept the license if the copyright already
+    # belongs to the company. Alternatively, we should accept the license if we have a
+    # modified copyright.
+    content_lines = contents.split('\n')
+    offset = 0
+    original_copyright = ''
+
+    for line in content_lines:
+        offset += 1
+        result = re.match('# Copyright \d\d\d\d- ([\w\s]+).', line)
+        if result is not None:
+            copyright_owner = result.group(1)
+            original_copyright = copyright_owner
+            break
+
+    if original_copyright == '':
+        # TODO: License is malformed, there is no copyright line.
+        return None
+    elif original_copyright == company_name:
+        return None
+
+    # Check that the next line is the Modifications copyright, and add it if not.
+    result = re.match('# Modifications Copyright \d\d\d\d- ([\w\s]+).', content_lines[offset])
+    if result is None:
+        license_text = 'Modifications Copyright {0}- {1}.'.format(copyright_year, company_name)
+        return AddLicenseDiff(path, offset, license_text)
+    if result.group(1) != company_name:
+        # TODO: Modifications copyright is written to another author.
+        return None
+
+    return None
 
 def generate_diff_if_needed(path):
     if is_skipped(path):
@@ -225,9 +261,12 @@ def generate_diff_if_needed(path):
     with open(path, 'r') as f:
         contents = f.read()
 
-    # If  the file already has SPDX, we just skip it. This implies we already added
-    # the required license header.
+    # If the file already has SPDX, we usually just skip it, unless
+    # it is an Apache 2.0 license from another open source project.
     if has_spdx(contents):
+        license = get_spdx_from_license_contents(contents)
+        if license == 'Apache-2.0':
+            return generate_modifications_diff_if_needed(path, contents)
         return None
 
     # Keep popping up directories util we find a LICENSE file.
