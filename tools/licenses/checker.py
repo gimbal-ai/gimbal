@@ -221,12 +221,14 @@ def generate_modifications_diff_if_needed(path, contents):
     content_lines = contents.split('\n')
     offset = 0
     original_copyright = ''
+    copyright_comment = ''
 
     for line in content_lines:
         offset += 1
-        result = re.match('# Copyright \d\d\d\d- ([\w\s]+).', line)
+        result = re.match('(#|\s\*|\/\/)? Copyright \d\d\d\d- ([\w\s]+).', line)
         if result is not None:
-            copyright_owner = result.group(1)
+            copyright_comment = result.group(1)
+            copyright_owner = result.group(2)
             original_copyright = copyright_owner
             break
 
@@ -237,11 +239,11 @@ def generate_modifications_diff_if_needed(path, contents):
         return None
 
     # Check that the next line is the Modifications copyright, and add it if not.
-    result = re.match('# Modifications Copyright \d\d\d\d- ([\w\s]+).', content_lines[offset])
+    result = re.match('(#|\s\*|\/\/)? Modifications Copyright \d\d\d\d- ([\w\s]+).', content_lines[offset])
     if result is None:
-        license_text = 'Modifications Copyright {0}- {1}.'.format(copyright_year, company_name)
-        return AddLicenseDiff(path, offset, license_text)
-    if result.group(1) != company_name:
+        license_text = '{0} Modifications Copyright {1}- {2}.'.format(copyright_comment, copyright_year, company_name)
+        return AddLicenseDiff(path, offset + 1, license_text)
+    if result.group(2) != company_name:
         # TODO: Modifications copyright is written to another author.
         return None
 
