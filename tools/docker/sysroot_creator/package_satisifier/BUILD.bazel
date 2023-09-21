@@ -25,7 +25,7 @@ go_library(
         "satisfier.go",
         "spec.go",
     ],
-    importpath = "gimletlabs/gimlet/tools/docker/sysroot_creator/package_satisifier",
+    importpath = "gimletlabs.ai/gimlet/tools/docker/sysroot_creator/package_satisifier",
     visibility = ["//visibility:private"],
     deps = [
         "@com_github_sirupsen_logrus//:logrus",
