@@ -21,6 +21,17 @@ BUILD_DIR ?= .build
 TOT		       := $$(git rev-parse --show-toplevel)
 DOCKER_PROPERTIES_FILE := $(TOT)/docker.properties
 
+## Clang deb parameters
+CLANG_VERSION := 15.0
+CLANG_SUFFIX := $(shell date +%Y%m%d%H%M%S)
+
+CLANG_TAG="$(CLANG_VERSION)-$(CLANG_SUFFIX)"
+
+clang_deb_fname := "clang-$(CLANG_TAG).deb"
+clang_linters_deb_fname := "clang-linters-$(CLANG_TAG).deb"
+clang_gs_path :=  gs://gimlet-dev-infra/clang/$(CLANG_TAG)
+clang_deb_image_tag := "gcr.io/gimlet-dev-infra-0/gimlet-dev-infra/clang_deb_builder_image:$(CLANG_VERSION)"
+CLANG_BUILD_DIR := "$(BUILD_DIR)/clang-$(CLANG_TAG)"
 
 ## Sysroot parameters
 SYSROOT_REV := $(shell date +%Y%m%d%H%M%S)
@@ -28,6 +39,24 @@ SYSROOT_BUILD_DIR := $(BUILD_DIR)/sysroots
 SYSROOT_ARCHITECTURES := amd64 arm64
 SYSROOT_GS_PATH := gs://gimlet-dev-infra/sysroots/$(SYSROOT_REV)
 SYSROOT_CREATOR_IMAGE_TAG := sysroot-creator-$(SYSROOT_REV)
+
+##############################################
+# Clang Build
+##############################################
+.PHONY: build_clang_deb_image
+build_clang_deb_image:
+	$(DOCKER) build clang_deb_image -t $(clang_deb_image_tag)
+
+.PHONY: upload_clang_deb
+upload_clang_deb: build_clang_deb_image ## Target to build and upload clang deb image
+	@mkdir -p $(CLANG_BUILD_DIR)
+	$(DOCKER) run --rm -e CLANG_SUFFIX=$(CLANG_SUFFIX) -e CLANG_VERSION=$(CLANG_VERSION) -v $(PWD)/$(CLANG_BUILD_DIR):/image $(clang_deb_image_tag)
+
+	sha256sum $(CLANG_BUILD_DIR)/* > $(CLANG_BUILD_DIR)/sha256sums
+	gsutil cp $(CLANG_BUILD_DIR)/* $(clang_gs_path)/
+
+	cat $(CLANG_BUILD_DIR)/sha256sums
+
 
 ##############################################
 # Sysroots Build
