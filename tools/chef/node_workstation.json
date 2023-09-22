@@ -1,0 +1,4 @@
+{
+   "run_list": [ "role[gml_workstation]" ],
+   "env": "base"
+}
