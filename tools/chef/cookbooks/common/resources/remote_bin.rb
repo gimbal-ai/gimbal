@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Copyright 2018- The Pixie Authors.
 # Modifications Copyright 2023- Gimlet Labs, Inc.
 #
