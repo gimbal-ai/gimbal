@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright 2018- The Pixie Authors.
 # Modifications Copyright 2023- Gimlet Labs, Inc.
 #
@@ -19,7 +21,7 @@ unified_mode true
 provides :remote_bin
 
 property :name, String, name_property: true
-property :bin_name, String, default: ''
+property :bin_name, String, default: ""
 
 default_action :create
 
@@ -27,30 +29,30 @@ action :create do
   tool_dir = "/opt/gml_dev/tools/#{new_resource.name}"
 
   directory tool_dir do
-    owner node['owner']
-    group node['group']
-    mode '0755'
+    owner node["owner"]
+    group node["group"]
+    mode "0755"
     action :create
   end
 
   tool_path = "#{tool_dir}/#{new_resource.name}"
 
   remote_file tool_path do
-    source node[new_resource.name]['download_path']
-    mode '0755'
-    checksum node[new_resource.name]['sha256']
+    source node[new_resource.name]["download_path"]
+    mode "0755"
+    checksum node[new_resource.name]["sha256"]
   end
 
   link_path = "/opt/gml_dev/bin/#{new_resource.name}"
-  if ! new_resource.bin_name.empty?
+  if !new_resource.bin_name.empty?
     link_path = "/opt/gml_dev/bin/#{new_resource.bin_name}"
   end
 
   link link_path do
     to tool_path
     link_type :symbolic
-    owner node['owner']
-    group node['group']
+    owner node["owner"]
+    group node["group"]
     action :create
   end
 end

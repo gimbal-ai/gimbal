@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright 2018- The Pixie Authors.
 # Modifications Copyright 2023- Gimlet Labs, Inc.
 #
@@ -15,8 +17,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-name             'common'
-maintainer       'Zain Asgar'
-maintainer_email 'zasgar@gimletlabs.ai'
-description      'Helpers for other cookbooks and recipes'
-version          '0.1.0'
+name             "common"
+maintainer       "Zain Asgar"
+maintainer_email "zasgar@gimletlabs.ai"
+description      "Helpers for other cookbooks and recipes"
+version          "0.1.0"

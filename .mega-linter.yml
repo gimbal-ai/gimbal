@@ -4,6 +4,7 @@ ENABLE_LINTERS:
 - ACTION_ACTIONLINT
 - BASH_SHELLCHECK
 - BASH_SHFMT
+- RUBY_RUBOCOP
 - TERRAFORM_TFLINT
 # TODO(michelle/zasgar): Consider enabling after auditing the rules and current set of lint issues.
 # - TERRAFORM_TERRASCAN

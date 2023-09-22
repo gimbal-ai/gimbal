@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright 2018- The Pixie Authors.
 # Modifications Copyright 2023- Gimlet Labs, Inc.
 #
@@ -19,8 +21,8 @@ unified_mode true
 provides :remote_tar_bin
 
 property :name, String, name_property: true
-property :bin_name, String, default: ''
-property :tool_loc, String, default: ''
+property :bin_name, String, default: ""
+property :tool_loc, String, default: ""
 property :strip_components, Integer, default: 0
 
 default_action :create
@@ -29,23 +31,23 @@ action :create do
   archive_path = "/tmp/#{new_resource.name}.tar.gz"
 
   remote_file archive_path do
-    source node[new_resource.name]['download_path']
-    mode '0644'
-    checksum node[new_resource.name]['sha256']
+    source node[new_resource.name]["download_path"]
+    mode "0644"
+    checksum node[new_resource.name]["sha256"]
   end
 
   tool_dir = "/opt/gml_dev/tools/#{new_resource.name}"
 
   directory tool_dir do
-    owner node['owner']
-    group node['group']
-    mode '0755'
+    owner node["owner"]
+    group node["group"]
+    mode "0755"
     action :create
   end
 
-  cmd = ['tar', 'xf', archive_path, '-C', tool_dir]
+  cmd = ["tar", "xf", archive_path, "-C", tool_dir]
   if new_resource.strip_components > 0
-    cmd << '--strip-components'
+    cmd << "--strip-components"
     cmd << "#{new_resource.strip_components}"
   end
 
@@ -54,20 +56,20 @@ action :create do
   end
 
   tool_path = "#{tool_dir}/#{new_resource.name}"
-  if ! new_resource.tool_loc.empty?
+  if !new_resource.tool_loc.empty?
     tool_path = "#{tool_dir}/#{new_resource.tool_loc}"
   end
 
   link_path = "/opt/gml_dev/bin/#{new_resource.name}"
-  if ! new_resource.bin_name.empty?
+  if !new_resource.bin_name.empty?
     link_path = "/opt/gml_dev/bin/#{new_resource.bin_name}"
   end
 
   link link_path do
     to tool_path
     link_type :symbolic
-    owner node['owner']
-    group node['group']
+    owner node["owner"]
+    group node["group"]
     action :create
   end
 
