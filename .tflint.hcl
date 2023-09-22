@@ -16,3 +16,8 @@ rule "google_container_cluster_invalid_machine_type" {
 rule "google_container_node_pool_invalid_machine_type" {
   enabled = false
 }
+
+rule "terraform_naming_convention" {
+  enabled = true
+  format  = "snake_case"
+}
