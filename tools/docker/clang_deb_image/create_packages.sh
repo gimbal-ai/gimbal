@@ -33,9 +33,9 @@ tar_libcxx() {
   fi
   dir="/opt/libcxx-${CLANG_VERSION}${sysroot}"
   tar_file="/image/libcxx-${CLANG_TAG}${sysroot}.tar.gz"
-  pushd "${dir}" > /dev/null
+  pushd "${dir}" >/dev/null
   tar -czf "${tar_file}" lib include
-  popd > /dev/null
+  popd >/dev/null
 }
 
 tar_libcxx ""
@@ -43,11 +43,10 @@ tar_libcxx "x86_64"
 tar_libcxx "aarch64"
 
 tar_args=('--exclude=*.so'
-	  '--exclude=*.so.*')
-
+  '--exclude=*.so.*')
 
 patch_llvm_cmake() {
-  patch -p1 < /patches/llvm_cmake.patch
+  patch -p1 </patches/llvm_cmake.patch
 }
 
 tar_llvm_libs() {
@@ -63,10 +62,10 @@ tar_llvm_libs() {
   dir="/opt/llvm-${CLANG_VERSION}-${libcxx}${sysroot}${sanitizer}"
   tar_file="/image/llvm-${CLANG_TAG}-${libcxx}${sysroot}${sanitizer}.tar.gz"
 
-  pushd "${dir}" > /dev/null
+  pushd "${dir}" >/dev/null
   patch_llvm_cmake
   tar "${tar_args[@]}" -czf "${tar_file}" lib include
-  popd > /dev/null
+  popd >/dev/null
 }
 
 tar_llvm_libs "libcxx" ""
@@ -82,11 +81,11 @@ tar_llvm_libs "libstdc++" "aarch64"
 
 # Create the make deb file hosting clang.
 fpm -p "/image/${CLANG_DEB_IMAGE_NAME}" \
-    -s dir \
-    -t deb \
-    -n "clang-${CLANG_VERSION}" \
-    -v "${CLANG_TAG}" \
-    --prefix /opt/gml_dev/tools "clang-${CLANG_VERSION}"
+  -s dir \
+  -t deb \
+  -n "clang-${CLANG_VERSION}" \
+  -v "${CLANG_TAG}" \
+  --prefix /opt/gml_dev/tools "clang-${CLANG_VERSION}"
 
 tmpdir=$(mktemp -d)
 cp -a "${CLANG_NO_DEP_LOCATION}"/bin/clang-format "${tmpdir}"
@@ -97,11 +96,11 @@ cp -a "${CLANG_NO_DEP_LOCATION}"/share/clang/clang-format-diff.py "${tmpdir}"
 pushd "${tmpdir}"
 
 fpm -p "/image/${CLANG_LINTER_DEB_IMAGE_NAME}" \
-    -s dir \
-    -t deb \
-    -n "clang-linters-${CLANG_VERSION}" \
-    -v "${CLANG_TAG}" \
-    --prefix /opt/gml_dev/bin .
+  -s dir \
+  -t deb \
+  -n "clang-linters-${CLANG_VERSION}" \
+  -v "${CLANG_TAG}" \
+  --prefix /opt/gml_dev/bin .
 
 popd
 

@@ -32,7 +32,7 @@ usage() {
   echo "    [--build_with_asan (-d)]"
   echo "    [--build_with_msan (-m)]"
   echo "    [--build_with_tsan (-t)]"
-  exit 1;
+  exit 1
 }
 
 OPTS="$(getopt -o g:c:p:o:b:x:s:a:hdmt --long 'llvm_git_repo:,c_compiler_path:,cxx_compiler_path:,install_dir:,build_type:,target_libcxx_path:,,sysroot:,target_arch:,build_with_asan,build_with_msan,build_with_tsan' -- "$@")"
@@ -102,51 +102,51 @@ parse_args() {
   # Process the command line arguments.
   while getopts "g:c:p:o:b:x:s:a:hdmt" opt; do
     case ${opt} in
-      g)
-        llvm_git_path=$OPTARG
-        ;;
-      c)
-        c_compiler_path=$OPTARG
-        ;;
-      p)
-        cxx_compiler_path=$OPTARG
-        ;;
-      o)
-        install_dir=$OPTARG
-        ;;
-      b)
-        build_type=$OPTARG
-        ;;
-      x)
-        with_libcxx "$OPTARG"
-        ;;
-      s)
-        sysroot=$OPTARG
-        ;;
-      a)
-        target_arch=$OPTARG
-        ;;
-      d)
-        with_asan
-        ;;
-      m)
-        with_msan
-        ;;
-      t)
-        with_tsan
-        ;;
-      :)
-        echo "Invalid option: $OPTARG requires an argument" 1>&2
-        ;;
-      h)
-        usage
-        ;;
-      *)
-        usage
-        ;;
+    g)
+      llvm_git_path=$OPTARG
+      ;;
+    c)
+      c_compiler_path=$OPTARG
+      ;;
+    p)
+      cxx_compiler_path=$OPTARG
+      ;;
+    o)
+      install_dir=$OPTARG
+      ;;
+    b)
+      build_type=$OPTARG
+      ;;
+    x)
+      with_libcxx "$OPTARG"
+      ;;
+    s)
+      sysroot=$OPTARG
+      ;;
+    a)
+      target_arch=$OPTARG
+      ;;
+    d)
+      with_asan
+      ;;
+    m)
+      with_msan
+      ;;
+    t)
+      with_tsan
+      ;;
+    :)
+      echo "Invalid option: $OPTARG requires an argument" 1>&2
+      ;;
+    h)
+      usage
+      ;;
+    *)
+      usage
+      ;;
     esac
   done
-  shift $((OPTIND -1))
+  shift $((OPTIND - 1))
 }
 
 verify_args() {
@@ -177,18 +177,17 @@ parse_args "$@"
 verify_args
 
 apply_patches() {
-  pushd "${llvm_git_path}" > /dev/null
-  for file in "$@"
-  do
+  pushd "${llvm_git_path}" >/dev/null
+  for file in "$@"; do
     git apply "${file}"
   done
-  popd > /dev/null
+  popd >/dev/null
 }
 
 reset_git_repo() {
-  pushd "${llvm_git_path}" > /dev/null
+  pushd "${llvm_git_path}" >/dev/null
   git stash
-  popd > /dev/null
+  popd >/dev/null
 }
 
 run_llvm_build() {
@@ -212,7 +211,7 @@ run_llvm_build() {
   fi
 
   cmake_dir="$(mktemp -d)"
-  pushd "${cmake_dir}" > /dev/null
+  pushd "${cmake_dir}" >/dev/null
 
   host_compiler_bin_path="$(dirname "${c_compiler_path}")"
   export PATH="${host_compiler_bin_path}:${PATH}"
@@ -274,7 +273,7 @@ run_llvm_build() {
     ninja "${install_targets[@]/#/install-}"
   fi
 
-  popd > /dev/null
+  popd >/dev/null
   rm -rf "${cmake_dir}"
 }
 
@@ -320,24 +319,24 @@ build_minimal_clang() {
 }
 
 case "${build_type}" in
-  full_clang)
-    build_full_clang
-    ;;
-  libcxx)
-    if [ -n "${target_libcxx_path}" ]; then
-      echo "Invalid arguments: don't specify -x <target_libcxx_path> when building libcxx" 1>&2;
-      exit 1
-    fi
-    build_libcxx
-    ;;
-  llvm_libs)
-    build_llvm_libs
-    ;;
-  minimal_clang)
-    build_minimal_clang
-    ;;
-  *)
-    echo "-b <build_type> must be one of full_clang, minimal_clang, libcxx, llvm_libs " 1>&2;
+full_clang)
+  build_full_clang
+  ;;
+libcxx)
+  if [ -n "${target_libcxx_path}" ]; then
+    echo "Invalid arguments: don't specify -x <target_libcxx_path> when building libcxx" 1>&2
     exit 1
-    ;;
+  fi
+  build_libcxx
+  ;;
+llvm_libs)
+  build_llvm_libs
+  ;;
+minimal_clang)
+  build_minimal_clang
+  ;;
+*)
+  echo "-b <build_type> must be one of full_clang, minimal_clang, libcxx, llvm_libs " 1>&2
+  exit 1
+  ;;
 esac
