@@ -5,6 +5,8 @@ ENABLE_LINTERS:
 # TODO(michelle/zasgar): Consider enabling after auditing the rules and current set of lint issues.
 # - TERRAFORM_TERRASCAN
 - TERRAFORM_TERRAFORM_FMT
+- YAML_V8R
+- YAML_YAMLLINT
 SHOW_ELAPSED_TIME: true
 FILEIO_REPORTER: false
 REPORT_OUTPUT_FOLDER: none
