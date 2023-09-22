@@ -1,5 +1,9 @@
 ---
 APPLY_FIXES: all
 ENABLE_LINTERS:
+- TERRAFORM_TFLINT
+# TODO(michelle/zasgar): Consider enabling after auditing the rules and current set of lint issues.
+# - TERRAFORM_TERRASCAN
+- TERRAFORM_TERRAFORM_FMT
 SHOW_ELAPSED_TIME: true
 FILEIO_REPORTER: false
