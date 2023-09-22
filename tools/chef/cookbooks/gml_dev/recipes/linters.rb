@@ -48,8 +48,8 @@ template "/opt/gml_dev/bin/bazel" do
   action :create
 end
 
-common_remote_bin "bazel" do
-  bin_name "bazel_core"
+common_remote_bin "bazelisk" do
+  bin_name "bazelisk"
 end
 
 if platform_family?("debian")

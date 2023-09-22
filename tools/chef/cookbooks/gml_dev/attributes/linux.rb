@@ -23,10 +23,10 @@ end
 default["owner"] = "root"
 default["group"] = "root"
 
-default["bazel"]["download_path"] =
-  "https://github.com/bazelbuild/bazel/releases/download/6.2.0/bazel-6.2.0-linux-x86_64"
+default["bazelisk"]["download_path"] =
+  "https://github.com/bazelbuild/bazelisk/releases/download/v1.18.0/bazelisk-linux-amd64"
 default["bazel"]["sha256"] =
-  "3d11c26fb9ba12c833844450bb90165b176e8a19cb5cf5923f3cec855837f17c"
+  "ce52caa51ef9e509fb6b7e5ad892e5cf10feb0794b0aed4d2f36adb00a1a2779"
 
 default["codecov"]["download_path"] =
   "https://uploader.codecov.io/v0.2.3/linux/codecov"
