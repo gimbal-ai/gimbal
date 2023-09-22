@@ -23,12 +23,9 @@ DOCKER_PROPERTIES_FILE := $(TOT)/docker.properties
 
 
 ## Sysroot parameters
-SYSROOT_REV := gml1
+SYSROOT_REV := $(shell date +%Y%m%d%H%M%S)
 SYSROOT_BUILD_DIR := $(BUILD_DIR)/sysroots
 SYSROOT_ARCHITECTURES := amd64 arm64
-SYSROOT_VARIANTS := runtime build test
-SYSROOT_UPLOAD_TARGET_TEMPLATE := upload_sysroot_arch_variant
-SYSROOT_TARGETS = $(patsubst variant,$(patsubst arch,$(SYSROOT_UPLOAD_TARGET_TEMPLATE, $(SYSROOT_ARCHITECTURES)), $(SYSROOT_VARIANTS)))
 SYSROOT_GS_PATH := gs://gimlet-dev-infra/sysroots/$(SYSROOT_REV)
 SYSROOT_CREATOR_IMAGE_TAG := sysroot-creator-$(SYSROOT_REV)
 
@@ -44,5 +41,4 @@ build_all_sysroots: sysroot_creator/Dockerfile sysroot_creator/build_all_sysroot
 .PHONY: upload_all_sysroots
 upload_all_sysroots: build_all_sysroots
 	gsutil cp $(SYSROOT_BUILD_DIR)/* $(SYSROOT_GS_PATH)
-	$(GH_RELEASE_UPLOAD) sysroots $(SYSROOT_REV) $(SYSROOT_BUILD_DIR)/*
 	sha256sum $(SYSROOT_BUILD_DIR)/*
