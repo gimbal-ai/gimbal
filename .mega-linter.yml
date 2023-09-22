@@ -1,6 +1,8 @@
 ---
 APPLY_FIXES: all
 ENABLE_LINTERS:
+- BASH_SHELLCHECK
+- BASH_SHFMT
 - TERRAFORM_TFLINT
 # TODO(michelle/zasgar): Consider enabling after auditing the rules and current set of lint issues.
 # - TERRAFORM_TERRASCAN

@@ -38,8 +38,8 @@ pkgdb_dir="$(mktemp -d)"
 
 download_package_index() {
   arch="$1"
-  curl -fL "http://ftp.debian.org/debian/dists/bookworm/main/binary-${arch}/Packages.xz" | \
-    xz --decompress > "${pkgdb_dir}/${arch}"
+  curl -fL "http://ftp.debian.org/debian/dists/bookworm/main/binary-${arch}/Packages.xz" |
+    xz --decompress >"${pkgdb_dir}/${arch}"
 }
 
 build_sysroot() {
@@ -47,15 +47,13 @@ build_sysroot() {
   variant="$2"
   # shellcheck disable=SC1087
   file_varname="files_$variant[@]"
-  package_files=( "${!file_varname}" )
+  package_files=("${!file_varname}")
   docker run -it -v "${output_dir}":/build -v "${pkgdb_dir}":/pkgdb "${docker_image_tag}" "/pkgdb/${arch}" "/build/sysroot-${arch}-${variant}.tar.gz" "${package_files[@]}"
 }
 
-for arch in "${architectures[@]}"
-do
+for arch in "${architectures[@]}"; do
   download_package_index "${arch}"
-  for variant in "${variants[@]}"
-  do
+  for variant in "${variants[@]}"; do
     echo "Building ${output_dir}/sysroot-${arch}-${variant}.tar.gz"
     build_sysroot "${arch}" "${variant}"
   done

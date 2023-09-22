@@ -34,8 +34,7 @@ package_satisifier_path="$(realpath "$1")"
 package_database_file="$(realpath "$2")"
 output_tar_path="$(realpath "$3")"
 package_parser_args=("--pkgdb" "${package_database_file}")
-for yaml in "${@:4}"
-do
+for yaml in "${@:4}"; do
   package_parser_args+=("--specs" "${yaml}")
 done
 
@@ -45,8 +44,7 @@ while read -r deb; do
 done < <("${package_satisifier_path}" "${package_parser_args[@]}")
 
 echo "Dependencies to be added to archive:"
-for deb in "${debs[@]}"
-do
+for deb in "${debs[@]}"; do
   echo "- ${deb}"
 done
 
@@ -67,7 +65,7 @@ done < <(yq eval -N '.extra_dirs[]' "${@:4}")
 relativize_symlinks() {
   dir="$1"
   libdirs=("lib" "lib64" "usr/lib")
-  pushd "${dir}" > /dev/null
+  pushd "${dir}" >/dev/null
 
   while read -r link target; do
     # Skip links targeting non-absolute paths.
@@ -79,7 +77,7 @@ relativize_symlinks() {
     ln -snf "${prefix}${target}" "${link}"
   done < <(find "${libdirs[@]}" -type l -printf '%p %l\n')
 
-  popd > /dev/null
+  popd >/dev/null
 }
 
 create_root_cert() {
@@ -87,12 +85,12 @@ create_root_cert() {
   combined_certs="$(find "${root_dir}/usr/share/ca-certificates" -type f -name '*.crt' -exec cat {} +)"
   if [ -n "${combined_certs}" ]; then
     # Only create the root cert file if there were certificates in the ca-certificates directory.
-    echo "${combined_certs}" > "${root_dir}/etc/ssl/certs/ca-certificates.crt"
+    echo "${combined_certs}" >"${root_dir}/etc/ssl/certs/ca-certificates.crt"
   fi
 }
 
 inside_tmpdir() {
-  echo "${debs[@]}" | xargs curl -fLO --remote-name-all &> /dev/null
+  echo "${debs[@]}" | xargs curl -fLO --remote-name-all &>/dev/null
 
   root_dir="root"
   while read -r deb; do
@@ -101,13 +99,11 @@ inside_tmpdir() {
 
   create_root_cert "${root_dir}"
 
-  for dir in "${!extra_dirs[@]}"
-  do
+  for dir in "${!extra_dirs[@]}"; do
     mkdir -p "${root_dir}/${dir}"
   done
 
-  for path in "${!paths_to_exclude[@]}"
-  do
+  for path in "${!paths_to_exclude[@]}"; do
     echo "Removing ${path} from sysroot"
     rm -rf "${root_dir:?}/${path:?}"
   done
@@ -119,9 +115,9 @@ inside_tmpdir() {
 }
 
 tmpdir="$(mktemp -d)"
-pushd "${tmpdir}" > /dev/null
+pushd "${tmpdir}" >/dev/null
 
 inside_tmpdir
 
-popd > /dev/null
+popd >/dev/null
 rm -rf "${tmpdir}"
