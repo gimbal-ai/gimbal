@@ -83,14 +83,18 @@ def get_spdx_from_license(path):
         return get_spdx_from_license_contents(contents)
 
 def c_style_license_wrapper(txt: str):
-    txt = ' ' + txt.strip()
-    txt_with_stars = '\n'.join([' * ' + line for line in txt.split('\n')])
+    txt = txt.strip()
+    lines = [' * ' + line for line in txt.split('\n')]
+    lines = [line[:-1] if line.endswith(' ') else line for line in lines]
+    txt_with_stars = '\n'.join(lines)
     return '/*\n' + txt_with_stars + '\n */'
 
 
 def sh_style_license_wrapper(txt: str):
-    txt = ' ' + txt.strip()
-    return '\n'.join(['# ' + line for line in txt.split('\n')])
+    txt = txt.strip()
+    lines = ['# ' + line for line in txt.split('\n')]
+    lines = [line[:-1] if line.endswith(' ') else line for line in lines]
+    return '\n'.join(lines)
 
 
 def has_spdx(blob: str):

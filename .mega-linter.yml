@@ -6,6 +6,7 @@ ENABLE_LINTERS:
 - BASH_SHFMT
 - CSS_STYLELINT
 - EDITORCONFIG_EDITORCONFIG_CHECKER
+- LICENSE_CHECKER
 - RUBY_RUBOCOP
 - TERRAFORM_TFLINT
 # TODO(michelle/zasgar): Consider enabling after auditing the rules and current set of lint issues.
@@ -16,6 +17,10 @@ ENABLE_LINTERS:
 FILEIO_REPORTER: false
 REPORT_OUTPUT_FOLDER: none
 SHOW_ELAPSED_TIME: true
+PLUGINS:
+- file://tools/linters/mega-linter-plugin-licenses/licenses.megalinter-descriptor.yml
 
 # Linter specific configs
 CSS_STYLELINT_CONFIG_FILE: LINTER_DEFAULT
+# The mega-linter json schema is broken with plugins, so don't check the schema.
+YAML_V8R_FILTER_REGEX_EXCLUDE: (.mega-linter.yml)
