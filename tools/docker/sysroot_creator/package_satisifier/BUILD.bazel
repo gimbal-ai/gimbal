@@ -15,7 +15,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_binary")
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 
 go_library(
     name = "package_satisifier_lib",
@@ -28,10 +28,10 @@ go_library(
     importpath = "gimletlabs.ai/gimlet/tools/docker/sysroot_creator/package_satisifier",
     visibility = ["//visibility:private"],
     deps = [
-        "@com_github_sirupsen_logrus//:logrus",
-        "@com_github_spf13_pflag//:pflag",
-        "@com_github_spf13_viper//:viper",
-        "@in_gopkg_yaml_v3//:yaml_v3",
+        "@com_github_sirupsen_logrus//:go_default_library",
+        "@com_github_spf13_pflag//:go_default_library",
+        "@com_github_spf13_viper//:go_default_library",
+        "@in_gopkg_yaml_v3//:go_default_library",
     ],
 )
 
