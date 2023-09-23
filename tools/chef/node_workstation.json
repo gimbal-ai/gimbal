@@ -1,4 +1,4 @@
 {
-   "run_list": [ "role[gml_workstation]" ],
-   "env": "base"
+  "run_list": [ "role[gml_workstation]" ],
+  "env": "base"
 }

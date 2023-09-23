@@ -5,6 +5,7 @@ ENABLE_LINTERS:
 - BASH_SHELLCHECK
 - BASH_SHFMT
 - CSS_STYLELINT
+- EDITORCONFIG_EDITORCONFIG_CHECKER
 - RUBY_RUBOCOP
 - TERRAFORM_TFLINT
 # TODO(michelle/zasgar): Consider enabling after auditing the rules and current set of lint issues.

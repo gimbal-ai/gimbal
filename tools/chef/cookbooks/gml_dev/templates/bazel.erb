@@ -28,10 +28,10 @@ fi;
 config=
 # Check if comamnd is either build, test, run.
 if [[ "$1" == "build" || "$1" == "test" || "$1" == "run" ]]; then
-   # Check and see if a config parameter is specified, otherwise set the config to be the default "clang".
-   if [[ ! "$@" =~ "--config" ]]; then
-     config="--config=clang"
-   fi;
+  # Check and see if a config parameter is specified, otherwise set the config to be the default "clang".
+  if [[ ! "$@" =~ "--config" ]]; then
+    config="--config=clang"
+  fi;
 fi;
 
 cmd=$1

@@ -31,13 +31,13 @@ export CXX=clang++
 export ASAN_SYMBOLIZER_PATH=${CLANG_PATH}/bin/llvm-symbolizer
 
 if [ -n "`$SHELL -c 'echo $ZSH_VERSION'`" ]; then
-   # Assume Zsh.
-   source /opt/google-cloud-sdk/path.zsh.inc
-   source /opt/google-cloud-sdk/completion.zsh.inc
+  # Assume Zsh.
+  source /opt/google-cloud-sdk/path.zsh.inc
+  source /opt/google-cloud-sdk/completion.zsh.inc
 elif [ -n "`$SHELL -c 'echo $BASH_VERSION'`" ]; then
-   # Assume Bash.
-   source /opt/google-cloud-sdk/path.bash.inc
-   source /opt/google-cloud-sdk/completion.bash.inc
+  # Assume Bash.
+  source /opt/google-cloud-sdk/path.bash.inc
+  source /opt/google-cloud-sdk/completion.bash.inc
 fi
 
 # Always pick our binaries first.
