@@ -24,3 +24,4 @@ PLUGINS:
 CSS_STYLELINT_CONFIG_FILE: LINTER_DEFAULT
 # The mega-linter json schema is broken with plugins, so don't check the schema.
 YAML_V8R_FILTER_REGEX_EXCLUDE: (.mega-linter.yml)
+YAML_YAMLLINT_ARGUMENTS: '--strict'
