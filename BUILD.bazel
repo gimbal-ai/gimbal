@@ -22,5 +22,6 @@ gazelle(
 
 # gazelle:exclude **/node_modules
 # gazelle:exclude external
+# gazelle:go_naming_convention import
 
 exports_files(["LICENSE"])
