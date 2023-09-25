@@ -16,7 +16,6 @@ linters:
     - RUN go install github.com/bazelbuild/buildtools/buildifier@latest
   cli_lint_extra_args:
   - '--lint=warn'
+  - '--warnings=-module-docstring'
   cli_lint_mode: 'list_of_files'
   cli_lint_fix_arg_name: '--lint=fix'
-  cli_lint_fix_remove_args:
-  - '--lint=warn'
