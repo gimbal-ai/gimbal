@@ -8,12 +8,15 @@ ENABLE_LINTERS:
 - CSS_STYLELINT
 - EDITORCONFIG_EDITORCONFIG_CHECKER
 - LICENSE_CHECKER
-- TERRAFORM_TFLINT
-# TODO(michelle/zasgar): Consider enabling after auditing the rules and current set of lint issues.
-# - TERRAFORM_TERRASCAN
 # TODO(vihang): Enable this after rubucop is faster.
 # - RUBY_RUBOCOP
 - TERRAFORM_TERRAFORM_FMT
+# TODO(michelle/zasgar): Consider enabling after auditing the rules and current set of lint issues.
+# - TERRAFORM_TERRASCAN
+- TERRAFORM_TFLINT
+- TSX_ESLINT
+- TYPESCRIPT_ES
+- TYPESCRIPT_PRETTIER
 - YAML_V8R
 - YAML_YAMLLINT
 FAIL_IF_MISSING_LINTER_IN_FLAVOR: true
@@ -27,6 +30,16 @@ FILTER_REGEX_EXCLUDE: (pnpm-lock.yaml|go_deps.bzl)
 
 # Linter specific configs
 CSS_STYLELINT_CONFIG_FILE: LINTER_DEFAULT
+TYPESCRIPT_DEFAULT_STYLE: prettier
+TYPESCRIPT_ES_CONFIG_FILE: src/ui/.eslintrc.js
+TYPESCRIPT_FILE_EXTENSIONS: [".js", ".ts"]
+TYPESCRIPT_ES_RULES_PATH: src/ui
+TSX_ESLINT_CONFIG_FILE: src/ui/.eslintrc.js
+TSX_ESLINT_FILE_EXTENSIONS: [".jsx", ".tsx"]
+TSX_ESLINT_RULES_PATH: src/ui
+TYPESCRIPT_PRETTIER_CONFIG_FILE: src/ui/.prettierrc.json
+TYPESCRIPT_PRETTIER_FILE_EXTENSIONS: [".js", ".jsx", ".ts", ".tsx"]
+TYPESCRIPT_PRETTIER_RULES_PATH: src/ui
 # The mega-linter json schema is broken with plugins, so don't check the schema.
 YAML_V8R_FILTER_REGEX_EXCLUDE: (.mega-linter.yml)
 YAML_YAMLLINT_ARGUMENTS: '--strict'
