@@ -45,3 +45,20 @@ nodejs_register_toolchains(
     name = "nodejs",
     node_version = DEFAULT_NODE_VERSION,
 )
+
+load("@aspect_rules_js//npm:npm_import.bzl", "npm_translate_lock")
+npm_translate_lock(
+    name = "npm",
+    bins = {
+        # derived from "bin" attribute in node_modules/next/package.json
+        "next": {
+            "next": "./dist/bin/next",
+        },
+    },
+    pnpm_lock = "//src/ui:pnpm-lock.yaml",
+    npmrc = "//src/ui:.npmrc",
+    verify_node_modules_ignored = "//:.bazelignore",
+)
+
+load("@npm//:repositories.bzl", "npm_repositories")
+npm_repositories()
