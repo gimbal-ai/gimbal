@@ -176,7 +176,7 @@ def is_skipped(file_path: str):
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Check/Fix license info in file')
-    parser.add_argument('-f', required=True, type=str, help='the name of the file to check. ')
+    parser.add_argument('files', nargs='+', type=str, help='the name(s) of the file(s) to check. ')
     parser.add_argument('-a', required=False, action='store_true', default=False,
                         help='automatically fix the file')
     return parser.parse_args(sys.argv[1:])
@@ -318,18 +318,17 @@ def generate_diff_if_needed(path):
 def main():
     args = parse_args()
 
-    path = args.f
-    autofix = args.a
-    if os.path.isfile(path):
-        diff = generate_diff_if_needed(path)
-        if diff is not None:
-            if autofix:
-                diff.fix(path)
-            else:
-                print(diff.stringify())
-    else:
-        logging.fatal('-f argument is required and needs to be a file')
-
+    for path in args.files:
+        autofix = args.a
+        if os.path.isfile(path):
+            diff = generate_diff_if_needed(path)
+            if diff is not None:
+                if autofix:
+                    diff.fix(path)
+                else:
+                    print(diff.stringify())
+        else:
+            logging.fatal('each <file> argument needs to be a file')
 
 if __name__ == '__main__':
     main()

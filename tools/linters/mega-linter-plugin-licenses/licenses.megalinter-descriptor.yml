@@ -10,7 +10,5 @@ linters:
   cli_executable: 'python3'
   cli_lint_extra_args:
   - 'tools/licenses/checker.py'
-  cli_lint_extra_args_after:
-  - '-f'
-  cli_lint_mode: 'file'
+  cli_lint_mode: 'list_of_files'
   cli_lint_fix_arg_name: '-a'
