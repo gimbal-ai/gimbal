@@ -2,6 +2,7 @@
 APPLY_FIXES: all
 ENABLE_LINTERS:
 - ACTION_ACTIONLINT
+- BUILDIFIER
 - BASH_SHELLCHECK
 - BASH_SHFMT
 - CSS_STYLELINT
@@ -20,6 +21,7 @@ REPORT_OUTPUT_FOLDER: none
 SHOW_ELAPSED_TIME: true
 PLUGINS:
 - file://tools/linters/mega-linter-plugin-licenses/licenses.megalinter-descriptor.yml
+- file://tools/linters/mega-linter-plugin-bazel/bazel.megalinter-descriptor.yml
 
 # Linter specific configs
 CSS_STYLELINT_CONFIG_FILE: LINTER_DEFAULT

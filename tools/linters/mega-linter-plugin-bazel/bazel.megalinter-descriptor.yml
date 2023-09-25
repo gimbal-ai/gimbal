@@ -1,0 +1,22 @@
+---
+descriptor_id: BAZEL
+descriptor_type: other
+file_extensions:
+- ".bzl"
+file_names_regex:
+- "WORKSPACE"
+- "BUILD.bazel"
+linters:
+- name: BUILDIFIER
+  linter_name: buildifier
+  linter_url: https://github.com/gimletlabs/gimlet
+  install:
+    dockerfile:
+    # TODO(james): This runs every single time you run megalinter, so we should look for a better way.
+    - RUN go install github.com/bazelbuild/buildtools/buildifier@latest
+  cli_lint_extra_args:
+  - '--lint=warn'
+  cli_lint_mode: 'list_of_files'
+  cli_lint_fix_arg_name: '--lint=fix'
+  cli_lint_fix_remove_args:
+  - '--lint=warn'
