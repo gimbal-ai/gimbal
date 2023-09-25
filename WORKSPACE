@@ -35,7 +35,7 @@ load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")
 
 rules_js_dependencies()
 
-load("@aspect_rules_ts//ts:repositories.bzl", "rules_ts_dependencies", "LATEST_TYPESCRIPT_VERSION")
+load("@aspect_rules_ts//ts:repositories.bzl", "LATEST_TYPESCRIPT_VERSION", "rules_ts_dependencies")
 
 rules_ts_dependencies(ts_version = LATEST_TYPESCRIPT_VERSION)
 
@@ -51,6 +51,7 @@ nodejs_register_toolchains(
 )
 
 load("@aspect_rules_js//npm:npm_import.bzl", "npm_translate_lock")
+
 npm_translate_lock(
     name = "npm",
     bins = {
@@ -59,10 +60,11 @@ npm_translate_lock(
             "next": "./dist/bin/next",
         },
     },
-    pnpm_lock = "//src/ui:pnpm-lock.yaml",
     npmrc = "//src/ui:.npmrc",
+    pnpm_lock = "//src/ui:pnpm-lock.yaml",
     verify_node_modules_ignored = "//:.bazelignore",
 )
 
 load("@npm//:repositories.bzl", "npm_repositories")
+
 npm_repositories()
