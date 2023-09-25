@@ -13,15 +13,25 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("@bazel_gazelle//:def.bzl", "gazelle")
+load("@bazel_gazelle//:def.bzl", "DEFAULT_LANGUAGES", "gazelle", "gazelle_binary")
+
+gazelle_binary(
+    name = "gazelle_with_js",
+    languages = DEFAULT_LANGUAGES + [
+        "@com_github_benchsci_rules_nodejs_gazelle//gazelle",
+    ],
+)
 
 gazelle(
     name = "gazelle",
+    gazelle = ":gazelle_with_js",
     prefix = "gimletlabs.ai/gimlet",
 )
 
 # gazelle:exclude **/node_modules
 # gazelle:exclude external
 # gazelle:go_naming_convention import
+
+# gazelle:js_extension disabled
 
 exports_files(["LICENSE"])

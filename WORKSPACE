@@ -29,3 +29,19 @@ load("//:go_deps.bzl", "gml_go_dependencies")
 gml_go_dependencies()
 
 gazelle_dependencies(go_sdk = "go_sdk")
+
+# Setup rules_js and related tooling
+load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")
+rules_js_dependencies()
+
+load("@aspect_rules_ts//ts:repositories.bzl", "rules_ts_dependencies", "LATEST_TYPESCRIPT_VERSION")
+rules_ts_dependencies(ts_version = LATEST_TYPESCRIPT_VERSION)
+
+load("@aspect_rules_jest//jest:dependencies.bzl", "rules_jest_dependencies")
+rules_jest_dependencies()
+
+load("@rules_nodejs//nodejs:repositories.bzl", "DEFAULT_NODE_VERSION", "nodejs_register_toolchains")
+nodejs_register_toolchains(
+    name = "nodejs",
+    node_version = DEFAULT_NODE_VERSION,
+)
