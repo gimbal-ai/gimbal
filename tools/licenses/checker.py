@@ -212,6 +212,8 @@ class AddLicenseDiff:
             file_lines = f.readlines()
 
         with open(filepath, 'w') as f:
+            if len(file_lines) == 0:
+                f.write(self._txt + '\n')
             for idx, l in enumerate(file_lines):
                 # The line is 1 indexed.
                 if (idx + 1) == self._start_line:
