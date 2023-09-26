@@ -34,4 +34,8 @@ gazelle(
 
 # gazelle:js_extension disabled
 
+# TODO(zasgar): Reenable this once we figure out which generator to use.
+# gazelle:proto disable
+# gazelle:exclude **/*.pb.go
+
 exports_files(["LICENSE"])

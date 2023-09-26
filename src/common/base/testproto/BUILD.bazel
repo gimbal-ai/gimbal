@@ -15,8 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-load("@rules_proto//proto:defs.bzl", "proto_library")
 load("//bazel:proto_compile.bzl", "gml_cc_proto_library", "gml_go_proto_library", "gml_proto_library")
 
 gml_proto_library(
@@ -39,17 +37,4 @@ gml_go_proto_library(
     importpath = "gimletlabs/gimlet/src/common/base/testproto",
     proto = ":test_gml_proto",
     visibility = ["//src:__subpackages__"],
-)
-
-proto_library(
-    name = "testpb_proto",
-    srcs = ["test.proto"],
-    visibility = ["//visibility:public"],
-)
-
-go_library(
-    name = "testproto",
-    embed = [":testpb_go_proto"],
-    importpath = "gimletlabs.ai/gimlet/src/common/base/testproto",
-    visibility = ["//visibility:public"],
 )
