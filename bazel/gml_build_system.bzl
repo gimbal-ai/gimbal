@@ -304,7 +304,7 @@ def gml_cc_mock(name, **kargs):
 def _tcmalloc_external_dep(repository):
     return select({
         repository + "//bazel:disable_tcmalloc": None,
-        "//conditions:default": "//third_party:gperftools",
+        "//conditions:default": "//bazel/external:gperftools",
     })
 
 # As above, but wrapped in list form for adding to dep lists. This smell seems needed as
@@ -313,7 +313,7 @@ def _tcmalloc_external_dep(repository):
 def _tcmalloc_external_deps(repository):
     return select({
         repository + "//bazel:disable_tcmalloc": [],
-        "//conditions:default": ["//third_party:gperftools"],
+        "//conditions:default": ["//bazel/external:gperftools"],
     })
 
 def _add_no_pie(kwargs):
