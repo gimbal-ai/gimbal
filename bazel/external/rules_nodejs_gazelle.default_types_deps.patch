@@ -1,0 +1,76 @@
+diff --git a/gazelle/configure.go b/gazelle/configure.go
+index ba816c5..967a010 100644
+--- a/gazelle/configure.go
++++ b/gazelle/configure.go
+@@ -78,6 +78,7 @@ type JsConfig struct {
+ 	JestConfig         string
+ 	JestTestsPerShard  int
+ 	JestSize           string
++	DefaultTypesDeps   []string
+ }
+ 
+ func NewJsConfig() *JsConfig {
+@@ -112,6 +113,7 @@ func NewJsConfig() *JsConfig {
+ 		DefaultNpmLabel:   "//:node_modules/",
+ 		JestTestsPerShard: -1,
+ 		JestConfig:        "",
++		DefaultTypesDeps:  []string{},
+ 	}
+ }
+ 
+@@ -175,6 +177,7 @@ func (parent *JsConfig) NewChild() *JsConfig {
+ 	child.Quiet = parent.Quiet
+ 	child.Verbose = parent.Verbose
+ 	child.DefaultNpmLabel = parent.DefaultNpmLabel
++	child.DefaultTypesDeps = parent.DefaultTypesDeps
+ 
+ 	return child
+ }
+@@ -242,6 +245,7 @@ func (*JS) KnownDirectives() []string {
+ 		"js_quiet",
+ 		"js_verbose",
+ 		"js_default_npm_label",
++		"js_default_types_deps",
+ 	}
+ }
+ 
+@@ -429,6 +433,11 @@ func (*JS) Configure(c *config.Config, rel string, f *rule.File) {
+ 				if jsConfig.Verbose {
+ 					jsConfig.Quiet = false
+ 				}
++			case "js_default_types_deps":
++				deps := strings.Split(directive.Value, ",")
++				for _, d := range deps {
++					jsConfig.DefaultTypesDeps = append(jsConfig.DefaultTypesDeps, d)
++				}
+ 			}
+ 		}
+ 	}
+diff --git a/gazelle/resolve.go b/gazelle/resolve.go
+index 0f72bad..c6cb069 100644
+--- a/gazelle/resolve.go
++++ b/gazelle/resolve.go
+@@ -287,6 +287,23 @@ func (lang *JS) Resolve(c *config.Config, ix *resolve.RuleIndex, rc *repo.Remote
+ 		dataSet[fmt.Sprintf("//%s:package_json", packageLocation)] = true
+ 	}
+ 
++	if r.Kind() == "ts_project" {
++		for _, typesDep := range jsConfig.DefaultTypesDeps {
++			dep := "@types/" + typesDep
++			if _, ok := depSet[dep]; ok {
++				continue
++			}
++
++			typesFound, npmLabel, _ := lang.isNpmDependency(dep, jsConfig)
++			if typesFound {
++				depSet[fmt.Sprintf("%s%s", npmLabel, dep)] = true
++			} else {
++        fmt.Println(jsConfig.NpmDependencies.DevDependencies)
++				log.Print(Err("[%s]default types dep: %s not found in package.json", from.Abs(from.Repo, from.Pkg).String(), dep))
++			}
++		}
++	}
++
+ 	deps := []string{}
+ 	for dep := range depSet {
+ 		deps = append(deps, dep)

@@ -134,8 +134,14 @@ def _gml_deps():
     _bazel_repo("com_github_bazelbuild_buildtools")
     _bazel_repo("com_github_fmeum_rules_meta")
 
-    _bazel_repo("com_github_benchsci_rules_nodejs_gazelle", patches = ["//bazel/external:rules_nodejs_gazelle.patch"], patch_args = ["-p1"])
-    _bazel_repo("com_github_benchsci_rules_nodejs_gazelle")
+    _bazel_repo(
+        "com_github_benchsci_rules_nodejs_gazelle",
+        patches = [
+            "//bazel/external:rules_nodejs_gazelle.default_types_deps.patch",
+            "//bazel/external:rules_nodejs_gazelle.nil_dereference.patch",
+        ],
+        patch_args = ["-p1"],
+    )
     _bazel_repo("aspect_bazel_lib")
     _bazel_repo("aspect_rules_js", patches = ["//bazel/external:rules_js.patch"], patch_args = ["-p1"])
     _bazel_repo("aspect_rules_ts")
