@@ -41,9 +41,5 @@ end
 ENV["PATH"] = "/opt/gml_dev/tools/node/bin:#{ENV['PATH']}"
 
 execute "install node packages" do
-  command "npm install -g yarn@1.22.4 protobufjs@6.11.2 mega-linter-runner@7.4.0 && npm cache clean --force"
-end
-
-execute "install pbjs/pbts deps" do
-  command "pbjs || true"
+  command "npm install -g protobufjs@6.11.2 mega-linter-runner@7.4.0 pnpm@8.7.6 && npm cache clean --force"
 end
