@@ -46,15 +46,40 @@ load("//:go_deps.bzl", "gml_go_dependencies")
 # gazelle:repository_macro go_deps.bzl%gml_go_dependencies
 gml_go_dependencies()
 
+load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+
+protobuf_deps()
+
+load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
+
+grpc_deps()
+
+# These dependencies are needed by GRPC.
+load("@build_bazel_rules_apple//apple:repositories.bzl", "apple_rules_dependencies")
+
+apple_rules_dependencies()
+
+load("@build_bazel_apple_support//lib:repositories.bzl", "apple_support_dependencies")
+
+apple_support_dependencies()
+
 gazelle_dependencies(go_sdk = "go_sdk")
 
 load("@aspect_bazel_lib//lib:repositories.bzl", "aspect_bazel_lib_dependencies")
 
 aspect_bazel_lib_dependencies()
 
+load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
+
+grpc_extra_deps()
+
 load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_dependencies")
 
 rules_foreign_cc_dependencies()
+
+load("//bazel:gogo.bzl", "gogo_grpc_proto")
+
+gogo_grpc_proto(name = "gogo_grpc_proto")
 
 # Setup rules_js and related tooling
 load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")

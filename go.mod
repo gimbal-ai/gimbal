@@ -3,6 +3,7 @@ module gimletlabs.ai/gimlet
 go 1.21
 
 require (
+	github.com/gogo/protobuf v1.3.2
 	github.com/gorilla/handlers v1.5.1
 	github.com/graph-gophers/graphql-go v1.5.0
 	github.com/sirupsen/logrus v1.9.3

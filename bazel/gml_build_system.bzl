@@ -118,7 +118,7 @@ def _default_external_deps():
 
 def _default_internal_deps():
     return [
-        #        "//src/common/base:cc_library",
+        "//src/common/base:cc_library",
         #        "//src/common/memory:cc_library",
         #        "//src/common/perf:cc_library",
     ]
@@ -212,7 +212,6 @@ def _gml_cc_binary(
         features = gml_default_features(),
     )
 
-
 # PL C++ test targets should be specified with this function.
 def _gml_cc_test(
         name,
@@ -250,8 +249,8 @@ def _gml_cc_test(
         malloc = _tcmalloc_external_dep(repository),
         deps = [
             ":" + name + "_lib",
-            #            repository + "//src/common/testing:test_main",
-            #            repository + "//src/shared/version:test_version_linkstamp",
+            repository + "//src/common/testing:test_main",
+            repository + "//src/shared/version:test_version_linkstamp",
         ] + _default_external_deps(),
         args = args,
         data = data + ["//bazel/test_runners:test_runner_dep"],
@@ -287,7 +286,7 @@ def gml_cc_test_library(
         testonly = 1,
         deps = deps + [
             "@com_google_googletest//:gtest",
-            #            repository + "//src/common/testing:cc_library",
+            repository + "//src/common/testing:cc_library",
         ] + _default_external_deps(),
         tags = tags,
         defines = gml_defines() + defines,
