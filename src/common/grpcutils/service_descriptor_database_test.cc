@@ -29,11 +29,11 @@
 namespace gml {
 namespace grpc {
 
+using ::gml::testing::proto::EqualsProto;
 using ::google::protobuf::FileDescriptorSet;
 using ::google::protobuf::Message;
 using ::google::protobuf::TextFormat;
 using ::google::protobuf::util::MessageDifferencer;
-using ::gml::testing::proto::EqualsProto;
 using ::testing::_;
 using ::testing::ElementsAre;
 using ::testing::Pair;

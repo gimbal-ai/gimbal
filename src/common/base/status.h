@@ -149,18 +149,19 @@ inline Status StatusAdapter<gml::statuspb::Status>(const gml::statuspb::Status& 
 }  // namespace gml
 
 #define GML_RETURN_IF_ERROR_IMPL(__status_name__, __status) \
-  do {                                                     \
-    const auto& __status_name__ = (__status);              \
-    if (!__status_name__.ok()) {                           \
-      return StatusAdapter(__status_name__);               \
-    }                                                      \
+  do {                                                      \
+    const auto& __status_name__ = (__status);               \
+    if (!__status_name__.ok()) {                            \
+      return StatusAdapter(__status_name__);                \
+    }                                                       \
   } while (false)
 
 // Early-returns the status if it is in error; otherwise, proceeds.
 // The argument expression is guaranteed to be evaluated exactly once.
-#define GML_RETURN_IF_ERROR(__status) GML_RETURN_IF_ERROR_IMPL(GML_UNIQUE_NAME(__status__), __status)
+#define GML_RETURN_IF_ERROR(__status) \
+  GML_RETURN_IF_ERROR_IMPL(GML_UNIQUE_NAME(__status__), __status)
 
-#define GML_EXIT_IF_ERROR(__status)  \
+#define GML_EXIT_IF_ERROR(__status) \
   {                                 \
     if (!__status.ok()) {           \
       LOG(ERROR) << __status.msg(); \
@@ -168,7 +169,7 @@ inline Status StatusAdapter<gml::statuspb::Status>(const gml::statuspb::Status& 
     }                               \
   }
 
-#define GML_CHECK_OK_PREPEND(to_call, msg)             \
+#define GML_CHECK_OK_PREPEND(to_call, msg)            \
   do {                                                \
     auto _s = (to_call);                              \
     CHECK(_s.ok()) << (msg) << ": " << _s.ToString(); \

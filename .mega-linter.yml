@@ -6,6 +6,7 @@ ENABLE_LINTERS:
 - BASH_SHELLCHECK
 - BASH_SHFMT
 - CSS_STYLELINT
+- CLANG_FORMAT
 - EDITORCONFIG_EDITORCONFIG_CHECKER
 - LICENSE_CHECKER
 - PYTHON_BLACK
@@ -28,6 +29,7 @@ SHOW_ELAPSED_TIME: true
 PLUGINS:
 - file://tools/linters/mega-linter-plugin-licenses/licenses.megalinter-descriptor.yml
 - file://tools/linters/mega-linter-plugin-bazel/bazel.megalinter-descriptor.yml
+- file://tools/linters/mega-linter-plugin-cpp/cpp.megalinter-descriptor.yml
 FILTER_REGEX_EXCLUDE: (pnpm-lock.yaml|go_deps.bzl)
 
 # Linter specific configs

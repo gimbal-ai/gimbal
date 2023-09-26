@@ -33,11 +33,11 @@ namespace error {
 // Declare convenience functions:
 // error::InvalidArgument(...)
 // error::IsInvalidArgument(stat)
-#define DECLARE_ERROR(FUNC, CONST)                                           \
-  template <typename... Args>                                                \
-  Status FUNC(std::string_view format, Args... args) {                       \
+#define DECLARE_ERROR(FUNC, CONST)                                            \
+  template <typename... Args>                                                 \
+  Status FUNC(std::string_view format, Args... args) {                        \
     return Status(::gml::statuspb::CONST, absl::Substitute(format, args...)); \
-  }                                                                          \
+  }                                                                           \
   inline bool Is##FUNC(const Status& status) { return status.code() == ::gml::statuspb::CONST; }
 
 DECLARE_ERROR(Cancelled, CANCELLED)

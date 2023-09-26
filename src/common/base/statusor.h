@@ -180,12 +180,12 @@ StatusOr<T>::StatusOr(T&& value) {
 
 // GML_UNUSED(__s__) is useful if the caller does not use the status.
 #define GML_ASSIGN_OR_IMPL(statusor, lhs, rexpr, ...) \
-  auto statusor = (rexpr);                           \
-  if (!statusor.ok()) {                              \
-    auto& __s__ = statusor;                          \
+  auto statusor = (rexpr);                            \
+  if (!statusor.ok()) {                               \
+    auto& __s__ = statusor;                           \
     GML_UNUSED(__s__);                                \
-    __VA_ARGS__;                                     \
-  }                                                  \
+    __VA_ARGS__;                                      \
+  }                                                   \
   lhs = std::move(statusor.ValueOrDie())
 
 // When using GML_ASSIGN_OR(), use  '__s__' to access the statusor object in the 'or' case.
@@ -197,7 +197,8 @@ StatusOr<T>::StatusOr(T&& value) {
 
 // Be careful using this, since it will exit the whole binary.
 // Meant for use in top-level main() of binaries.
-#define GML_ASSIGN_OR_EXIT(lhs, rexpr) GML_ASSIGN_OR(lhs, rexpr, LOG(ERROR) << __s__.msg(); exit(1);)
+#define GML_ASSIGN_OR_EXIT(lhs, rexpr) \
+  GML_ASSIGN_OR(lhs, rexpr, LOG(ERROR) << __s__.msg(); exit(1);)
 
 // Adapter for status.
 template <typename T>

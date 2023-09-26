@@ -1,0 +1,25 @@
+---
+descriptor_id: CPP
+descriptor_type: other
+file_extensions:
+- ".cc"
+- ".hpp"
+- ".h"
+- ".c"
+- ".proto"
+linters:
+- name: CLANG_FORMAT
+  linter_name: clang_format
+  linter_url: https://github.com/gimletlabs/gimlet
+  install:
+    dockerfile:
+    # TODO(james): This runs every single time you run megalinter, so we should look for a better way.
+    - RUN apk add clang-extra-tools
+  cli_executable: 'clang-format'
+  cli_lint_extra_args:
+  - '-Werror'
+  - '--dry-run'
+  cli_lint_mode: 'list_of_files'
+  cli_lint_fix_arg_name: '-i'
+  cli_lint_fix_remove_args:
+  - '--dry-run'
