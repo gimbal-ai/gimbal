@@ -28,17 +28,17 @@ namespace gml {
 namespace error {
 
 TEST(CodeToString, strings) {
-  EXPECT_EQ("Ok", CodeToString(gml::statuspb::OK));
-  EXPECT_EQ("Cancelled", CodeToString(gml::statuspb::CANCELLED));
-  EXPECT_EQ("Unknown", CodeToString(gml::statuspb::UNKNOWN));
-  EXPECT_EQ("Invalid Argument", CodeToString(gml::statuspb::INVALID_ARGUMENT));
-  EXPECT_EQ("Deadline Exceeded", CodeToString(gml::statuspb::DEADLINE_EXCEEDED));
-  EXPECT_EQ("Not Found", CodeToString(gml::statuspb::NOT_FOUND));
-  EXPECT_EQ("Already Exists", CodeToString(gml::statuspb::ALREADY_EXISTS));
-  EXPECT_EQ("Permission Denied", CodeToString(gml::statuspb::PERMISSION_DENIED));
-  EXPECT_EQ("Unauthenticated", CodeToString(gml::statuspb::UNAUTHENTICATED));
-  EXPECT_EQ("Internal", CodeToString(gml::statuspb::INTERNAL));
-  EXPECT_EQ("Unimplemented", CodeToString(gml::statuspb::UNIMPLEMENTED));
+  EXPECT_EQ("Ok", CodeToString(gml::statuspb::CODE_OK));
+  EXPECT_EQ("Cancelled", CodeToString(gml::statuspb::CODE_CANCELLED));
+  EXPECT_EQ("Unknown", CodeToString(gml::statuspb::CODE_UNKNOWN));
+  EXPECT_EQ("Invalid Argument", CodeToString(gml::statuspb::CODE_INVALID_ARGUMENT));
+  EXPECT_EQ("Deadline Exceeded", CodeToString(gml::statuspb::CODE_DEADLINE_EXCEEDED));
+  EXPECT_EQ("Not Found", CodeToString(gml::statuspb::CODE_NOT_FOUND));
+  EXPECT_EQ("Already Exists", CodeToString(gml::statuspb::CODE_ALREADY_EXISTS));
+  EXPECT_EQ("Permission Denied", CodeToString(gml::statuspb::CODE_PERMISSION_DENIED));
+  EXPECT_EQ("Unauthenticated", CodeToString(gml::statuspb::CODE_UNAUTHENTICATED));
+  EXPECT_EQ("Internal", CodeToString(gml::statuspb::CODE_INTERNAL));
+  EXPECT_EQ("Unimplemented", CodeToString(gml::statuspb::CODE_UNIMPLEMENTED));
 }
 
 TEST(CodeToString, UNKNOWN_ERROR) {

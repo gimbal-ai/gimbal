@@ -39,7 +39,7 @@ Status::Status(statuspb::Code code, const std::string& msg,
 }
 
 Status::Status(const gml::statuspb::Status& status_pb) {
-  if (status_pb.err_code() == statuspb::Code::OK) {
+  if (status_pb.err_code() == statuspb::Code::CODE_OK) {
     return;
   }
   std::unique_ptr<google::protobuf::Any> context = nullptr;
@@ -74,7 +74,7 @@ gml::statuspb::Status Status::ToProto() const {
 void Status::ToProto(gml::statuspb::Status* status_pb) const {
   CHECK(status_pb != nullptr);
   if (state_ == nullptr) {
-    status_pb->set_err_code(statuspb::Code::OK);
+    status_pb->set_err_code(statuspb::Code::CODE_OK);
     return;
   }
   status_pb->set_msg(state_->msg);

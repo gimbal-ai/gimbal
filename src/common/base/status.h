@@ -50,7 +50,7 @@ class GML_MUST_USE_RESULT Status {
   // Return self, this makes it compatible with StatusOr<>.
   const Status& status() const { return *this; }
 
-  gml::statuspb::Code code() const { return ok() ? gml::statuspb::OK : state_->code; }
+  gml::statuspb::Code code() const { return ok() ? gml::statuspb::CODE_OK : state_->code; }
 
   const std::string& msg() const { return ok() ? empty_string() : state_->msg; }
 
@@ -132,7 +132,7 @@ inline bool Status::operator!=(const Status& x) const { return !(*this == x); }
 template <typename T>
 inline Status StatusAdapter(const T&) noexcept {
   static_assert(sizeof(T) == 0, "Implement custom status adapter, or include correct .h file.");
-  return Status(statuspb::UNIMPLEMENTED, "Should never get here");
+  return Status(statuspb::CODE_UNIMPLEMENTED, "Should never get here");
 }
 
 template <>

@@ -21,6 +21,7 @@
 
 #include <string>
 
+#include <absl/strings/strip.h>
 #include <absl/strings/substitute.h>
 #include <magic_enum.hpp>
 
@@ -40,19 +41,19 @@ namespace error {
   }                                                                           \
   inline bool Is##FUNC(const Status& status) { return status.code() == ::gml::statuspb::CONST; }
 
-DECLARE_ERROR(Cancelled, CANCELLED)
-DECLARE_ERROR(Unknown, UNKNOWN)
-DECLARE_ERROR(InvalidArgument, INVALID_ARGUMENT)
-DECLARE_ERROR(DeadlineExceeded, DEADLINE_EXCEEDED)
-DECLARE_ERROR(NotFound, NOT_FOUND)
-DECLARE_ERROR(AlreadyExists, ALREADY_EXISTS)
-DECLARE_ERROR(PermissionDenied, PERMISSION_DENIED)
-DECLARE_ERROR(Unauthenticated, UNAUTHENTICATED)
-DECLARE_ERROR(Internal, INTERNAL)
-DECLARE_ERROR(Unimplemented, UNIMPLEMENTED)
-DECLARE_ERROR(ResourceUnavailable, RESOURCE_UNAVAILABLE)
-DECLARE_ERROR(System, SYSTEM)
-DECLARE_ERROR(FailedPrecondition, FAILED_PRECONDITION)
+DECLARE_ERROR(Cancelled, CODE_CANCELLED)
+DECLARE_ERROR(Unknown, CODE_UNKNOWN)
+DECLARE_ERROR(InvalidArgument, CODE_INVALID_ARGUMENT)
+DECLARE_ERROR(DeadlineExceeded, CODE_DEADLINE_EXCEEDED)
+DECLARE_ERROR(NotFound, CODE_NOT_FOUND)
+DECLARE_ERROR(AlreadyExists, CODE_ALREADY_EXISTS)
+DECLARE_ERROR(PermissionDenied, CODE_PERMISSION_DENIED)
+DECLARE_ERROR(Unauthenticated, CODE_UNAUTHENTICATED)
+DECLARE_ERROR(Internal, CODE_INTERNAL)
+DECLARE_ERROR(Unimplemented, CODE_UNIMPLEMENTED)
+DECLARE_ERROR(ResourceUnavailable, CODE_RESOURCE_UNAVAILABLE)
+DECLARE_ERROR(System, CODE_SYSTEM)
+DECLARE_ERROR(FailedPrecondition, CODE_FAILED_PRECONDITION)
 
 #undef DECLARE_ERROR
 
@@ -62,7 +63,8 @@ inline std::string CodeToString(gml::statuspb::Code code) {
     return "Unknown error_code";
   }
 
-  std::string code_str(code_str_view);
+  std::string_view stripped_code_str = absl::StripPrefix(code_str_view, "CODE_");
+  std::string code_str(stripped_code_str);
   // Example transformation: INVALID_ARGUMENT -> Invalid Argument
   int last = ' ';
   std::for_each(code_str.begin(), code_str.end(), [&last](char& c) {

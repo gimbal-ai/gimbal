@@ -39,7 +39,7 @@ class StatusOr {
  public:
   // Construct a new StatusOr with Status::UNKNOWN status
   StatusOr()
-      : status_(gml::statuspb::UNKNOWN,
+      : status_(gml::statuspb::CODE_UNKNOWN,
                 "Default constructed StatusOr should not be used, "
                 "did you mistakenly return {}?") {}
 
@@ -164,7 +164,7 @@ template <typename T>
 StatusOr<T>::StatusOr(const Status& status) : status_(status) {
   DCHECK(!status_.ok()) << "Should not pass OK status to constructor";
   if (status.ok()) {
-    status_ = Status(gml::statuspb::INTERNAL,
+    status_ = Status(gml::statuspb::CODE_INTERNAL,
                      "Status::OK is not a valid constructor argument to StatusOr<T>");
   }
 }
