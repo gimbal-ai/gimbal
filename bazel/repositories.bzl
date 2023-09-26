@@ -43,9 +43,12 @@ def _bazel_repo(name, **kwargs):
     _http_archive_repo_impl(name, **kwargs)
 
 def _gml_deps():
+    _bazel_repo("rules_pkg")
     _bazel_repo("bazel_gazelle")
     _bazel_repo("com_github_benchsci_rules_nodejs_gazelle", patches = ["//bazel/external:rules_nodejs_gazelle.patch"], patch_args = ["-p1"])
-    _bazel_repo("aspect_rules_js")
+    _bazel_repo("com_github_benchsci_rules_nodejs_gazelle")
+    _bazel_repo("aspect_bazel_lib")
+    _bazel_repo("aspect_rules_js", patches = ["//bazel/external:rules_js.patch"], patch_args = ["-p1"])
     _bazel_repo("aspect_rules_ts")
     _bazel_repo("aspect_rules_jest")
 

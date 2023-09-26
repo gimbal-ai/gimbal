@@ -1,0 +1,34 @@
+diff --git a/js/private/js_binary.bzl b/js/private/js_binary.bzl
+index f09359c..e0e68fc 100644
+--- a/js/private/js_binary.bzl
++++ b/js/private/js_binary.bzl
+@@ -282,6 +282,7 @@ _ATTRS = {
+         for more information.
+         """,
+     ),
++    "postrun": attr.string(),
+     "_launcher_template": attr.label(
+         default = Label("//js/private:js_binary.sh.tpl"),
+         allow_single_file = True,
+@@ -477,6 +478,7 @@ def _bash_launcher(ctx, node_toolchain, entry_point_path, log_prefix_rule_set, l
+         "{{node}}": node_path,
+         "{{npm}}": npm_path,
+         "{{workspace_name}}": ctx.workspace_name,
++        "{{postrun}}": ctx.attr.postrun,
+     }
+ 
+     launcher = ctx.actions.declare_file("%s.sh" % ctx.label.name)
+diff --git a/js/private/js_binary.sh.tpl b/js/private/js_binary.sh.tpl
+index c2e81c4..00c6e95 100644
+--- a/js/private/js_binary.sh.tpl
++++ b/js/private/js_binary.sh.tpl
+@@ -420,6 +420,9 @@ trap - SIGTERM SIGINT
+ wait "$child"
+ 
+ RESULT="$?"
++
++{{postrun}}
++
+ set -e
+ 
+ # ==============================================================================

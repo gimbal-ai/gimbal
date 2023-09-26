@@ -28,6 +28,13 @@ REPOSITORY_LOCATIONS = dict(
             "https://github.com/aspect-build/rules_ts/releases/download/v2.0.0/rules_ts-v2.0.0.tar.gz",
         ],
     ),
+    aspect_bazel_lib = dict(
+        sha256 = "09b51a9957adc56c905a2c980d6eb06f04beb1d85c665b467f659871403cf423",
+        strip_prefix = "bazel-lib-1.34.5",
+        urls = [
+            "https://github.com/aspect-build/bazel-lib/releases/download/v1.34.5/bazel-lib-v1.34.5.tar.gz",
+        ],
+    ),
     aspect_rules_jest = dict(
         sha256 = "098186ffc450f2a604843d8ba14217088a0e259ea6a03294af5360a7f1bcd3e8",
         strip_prefix = "rules_jest-0.19.5",
@@ -39,6 +46,13 @@ REPOSITORY_LOCATIONS = dict(
         sha256 = "d3fa66a39028e97d76f9e2db8f1b0c11c099e8e01bf363a923074784e451f809",
         urls = [
             "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.33.0/bazel-gazelle-v0.33.0.tar.gz",
+        ],
+    ),
+    rules_pkg = dict(
+        sha256 = "8f9ee2dc10c1ae514ee599a8b42ed99fa262b757058f65ad3c384289ff70c4b8",
+        urls = [
+            "https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/0.9.1/rules_pkg-0.9.1.tar.gz",
+            "https://github.com/bazelbuild/rules_pkg/releases/download/0.9.1/rules_pkg-0.9.1.tar.gz",
         ],
     ),
     com_github_benchsci_rules_nodejs_gazelle = dict(

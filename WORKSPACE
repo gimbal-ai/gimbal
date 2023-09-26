@@ -21,6 +21,10 @@ go_rules_dependencies()
 
 go_register_toolchains(version = "1.21.1")
 
+load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
+
+rules_pkg_dependencies()
+
 # gazelle:repo bazel_gazelle
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 load("//:go_deps.bzl", "gml_go_dependencies")
@@ -29,6 +33,10 @@ load("//:go_deps.bzl", "gml_go_dependencies")
 gml_go_dependencies()
 
 gazelle_dependencies(go_sdk = "go_sdk")
+
+load("@aspect_bazel_lib//lib:repositories.bzl", "aspect_bazel_lib_dependencies")
+
+aspect_bazel_lib_dependencies()
 
 # Setup rules_js and related tooling
 load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")
