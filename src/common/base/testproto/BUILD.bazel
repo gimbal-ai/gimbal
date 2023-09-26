@@ -1,7 +1,3 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
-load("@rules_proto//proto:defs.bzl", "proto_library")
-
 # Copyright 2018- The Pixie Authors.
 # Modifications Copyright 2023- Gimlet Labs, Inc.
 #
@@ -19,6 +15,9 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 #
 # SPDX-License-Identifier: Apache-2.0
 
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
 load("//bazel:proto_compile.bzl", "gml_cc_proto_library", "gml_go_proto_library", "gml_proto_library")
 
 gml_proto_library(
