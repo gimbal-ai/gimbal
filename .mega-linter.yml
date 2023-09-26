@@ -5,6 +5,8 @@ ENABLE_LINTERS:
 - BUILDIFIER
 - BASH_SHELLCHECK
 - BASH_SHFMT
+- BUF_BREAKCHECK
+- BUF_LINT
 - CSS_STYLELINT
 - CLANG_FORMAT
 - EDITORCONFIG_EDITORCONFIG_CHECKER
@@ -27,9 +29,10 @@ FILEIO_REPORTER: false
 REPORT_OUTPUT_FOLDER: none
 SHOW_ELAPSED_TIME: true
 PLUGINS:
-- file://tools/linters/mega-linter-plugin-licenses/licenses.megalinter-descriptor.yml
 - file://tools/linters/mega-linter-plugin-bazel/bazel.megalinter-descriptor.yml
+- file://tools/linters/mega-linter-plugin-buf/buf.megalinter-descriptor.yml
 - file://tools/linters/mega-linter-plugin-cpp/cpp.megalinter-descriptor.yml
+- file://tools/linters/mega-linter-plugin-licenses/licenses.megalinter-descriptor.yml
 FILTER_REGEX_EXCLUDE: (pnpm-lock.yaml|go_deps.bzl)
 
 # Linter specific configs

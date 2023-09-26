@@ -1,0 +1,25 @@
+---
+descriptor_id: PROTO
+descriptor_type: other
+file_extensions:
+- ".proto"
+install:
+  dockerfile:
+  # TODO(james): This runs every single time you run megalinter, so we should look for a better way.
+  - RUN go install github.com/bufbuild/buf/cmd/buf@latest
+linters:
+- name: BUF_BREAKCHECK
+  linter_name: buf_breakcheck
+  cli_executable: buf
+  linter_url: https://github.com/gimletlabs/gimlet
+  cli_lint_extra_args:
+  - 'breaking'
+  - '--against=.git#branch=main'
+  cli_lint_mode: 'project'
+- name: BUF_LINT
+  linter_name: buf_lint
+  cli_executable: buf
+  linter_url: https://github.com/gimletlabs/gimlet
+  cli_lint_extra_args:
+  - 'lint'
+  cli_lint_mode: 'project'

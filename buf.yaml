@@ -1,0 +1,19 @@
+---
+version: v1
+build:
+  excludes:
+  - bazel-bin
+  - bazel-gimlet
+  - bazel-out
+  - bazel-testlogs
+breaking:
+  use:
+  - FILE
+lint:
+  allow_comment_ignores: true
+  enum_zero_value_suffix: _UNKNOWN
+  use:
+  - DEFAULT
+  except:
+  - PACKAGE_DIRECTORY_MATCH
+  - PACKAGE_VERSION_SUFFIX

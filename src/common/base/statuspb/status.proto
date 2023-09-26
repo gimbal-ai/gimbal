@@ -26,6 +26,7 @@ option go_package = "statuspb";
 import "google/protobuf/any.proto";
 
 enum Code {
+  // buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
   // Not an error, returned on success.
   CODE_OK = 0;
   // The operation was cancelled (typically by the caller).
