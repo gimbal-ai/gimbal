@@ -1,0 +1,86 @@
+# Copyright 2018- The Pixie Authors.
+# Modifications Copyright 2023- Gimlet Labs, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake", "configure_make")
+
+package(default_visibility = ["//visibility:public"])
+
+licenses(["notice"])
+
+configure_make(
+    name = "gperftools_build",
+    args = [
+        "-j`nproc`",
+        "-l`nproc`",
+    ],
+    configure_options = [
+        "--enable-shared=no",
+        "--disable-frame-pointers",
+        "--enable-libunwind",
+        "--host x86_64-unknown-linux-gnu",
+    ],
+    lib_source = "@com_github_gperftools_gperftools//:all",
+    linkopts = ["-lpthread"],
+    out_static_libs = select({
+        "//bazel:debug_tcmalloc": ["libtcmalloc_debug.a"],
+        "//conditions:default": ["libtcmalloc_and_profiler.a"],
+    }),
+    targets = [
+        "install-libLTLIBRARIES",
+        "install-perftoolsincludeHEADERS",
+    ],
+)
+
+# Workaround for https://github.com/bazelbuild/rules_foreign_cc/issues/227
+cc_library(
+    name = "gperftools",
+    deps = [
+        "gperftools_build",
+    ],
+)
+
+cmake(
+    name = "natsc",
+    build_args = [
+        "--",  # <- Pass remaining options to the native tool.
+        "-j`nproc`",
+        "-l`nproc`",
+    ],
+    cache_entries = {
+        "BUILD_TESTING": "OFF",
+        # This forces nats to link against boringssl instead of openssl.
+        # Since some of our services use both GRPC and nats, this lets
+        # us have a single SSL library.
+        "CMAKE_SYSTEM_PREFIX_PATH": "$EXT_BUILD_DEPS",
+        "NATS_BUILD_EXAMPLES": "OFF",
+        "NATS_BUILD_LIB_SHARED": "OFF",
+        "NATS_BUILD_STREAMING": "OFF",
+        # There's some issue here and the hostname verification from the
+        # Cert SAN seems to fail.
+        "NATS_BUILD_TLS_FORCE_HOST_VERIFY": "OFF",
+    },
+    lib_name = select({
+        "//bazel:debug_build": "libnats_staticd",
+        "//conditions:default": "libnats_static",
+    }),
+    lib_source = "@com_github_nats_io_natsc//:all",
+    targets = [
+        "nats_static",
+    ],
+    deps = ["@boringssl//:ssl"],
+)

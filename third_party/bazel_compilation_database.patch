@@ -1,0 +1,13 @@
+diff --git a/aspects.bzl b/aspects.bzl
+index bdd194a..b83a5c5 100644
+--- a/aspects.bzl
++++ b/aspects.bzl
+@@ -305,7 +305,7 @@ def _compilation_database_aspect_impl(target, ctx):
+         ctx = ctx,
+         cc_toolchain = cc_toolchain,
+         requested_features = ctx.features,
+-        unsupported_features = ctx.disabled_features,
++        unsupported_features = ctx.disabled_features + ["module_maps"],
+     )
+ 
+     if ctx.rule.kind in _cc_rules:

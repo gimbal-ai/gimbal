@@ -1,6 +1,20 @@
 workspace(name = "gml")
 
-load("//bazel:repositories.bzl", "gml_deps")
+load("//:workspace.bzl", "check_min_bazel_version")
+
+check_min_bazel_version("6.3.2")
+
+load("//bazel:repositories.bzl", "gml_cc_toolchain_deps", "gml_deps")
+
+gml_cc_toolchain_deps()
+
+load("//bazel/cc_toolchains/sysroots:sysroots.bzl", "gml_sysroot_deps")
+
+gml_sysroot_deps()
+
+load("//bazel/cc_toolchains:toolchains.bzl", "gml_register_cc_toolchains")
+
+gml_register_cc_toolchains()
 
 gml_deps()
 
@@ -37,6 +51,10 @@ gazelle_dependencies(go_sdk = "go_sdk")
 load("@aspect_bazel_lib//lib:repositories.bzl", "aspect_bazel_lib_dependencies")
 
 aspect_bazel_lib_dependencies()
+
+load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_dependencies")
+
+rules_foreign_cc_dependencies()
 
 # Setup rules_js and related tooling
 load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")

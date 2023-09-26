@@ -1,3 +1,174 @@
+# Global bazelrc file, see https://docs.bazel.build/versions/master/guide.html#bazelrc.
+
 build --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
 fetch --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
 query --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
+
+# Use strict action env to prevent leaks of env vars.
+build --incompatible_strict_action_env
+
+# Only pass through GH_API_KEY for stamped builds.
+# This is still not ideal as it still busts the cache of stamped builds.
+build:stamp --stamp
+build:stamp --action_env=GH_API_KEY
+
+build --remote_download_minimal
+test --remote_download_minimal
+run --remote_download_outputs=all
+coverage --build_runfile_links
+
+
+# Get version information into the build.
+build --workspace_status_command=bazel/get_workspace_status.sh
+
+# We only have support for python3 on the Ubuntu 22.04 image.
+build --host_force_python=PY3
+
+# Limit memory for JVM to reduce runaway usage.
+startup --host_jvm_args=-Xmx1900m
+
+# To run a test that was filtered out:
+# bazel test //path/to:test --test_tag_filter=
+# Which reset the filter to empty.
+build --test_tag_filters=-disabled
+
+# Sets the default Apple platform to macOS.
+build --apple_platform_type=macos
+
+# Give each sandbox its own tmp directory.
+# For more context, see: https://github.com/bazelbuild/bazel/issues/3236
+test:tmp-sandbox --sandbox_tmpfs_path=/tmp
+
+# This flag is equivalent to --config=linux on a linux machine, and --config=macos on a macos machine.
+common --enable_platform_specific_config
+
+# Linux specific config
+# `bazel query` will try to auto-detect the toolchain without this.
+common:linux --repo_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
+# --platforms is only set on linux, because we don't have a linux cross-compiling setup on macos.
+build:linux --platforms=//bazel/cc_toolchains:linux-x86_64
+# Likewise, we only have cc_toolchain definitions for our linux compilers, so we only enable toolchain resolution on linux.
+build:linux --incompatible_enable_cc_toolchain_resolution
+build:linux --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
+
+# Common options from clang.
+build:clang-base --//bazel/cc_toolchains:compiler=clang
+build:clang-base --//bazel/cc_toolchains:libc_version=glibc_host
+
+# We build our own chroot for the sysroot tests, which doesn't work well under bazel's sandbox.
+build:sysroot-base --//bazel/test_runners:test_runner=sysroot_chroot
+test:sysroot-base --strategy TestRunner=standalone
+test:sysroot-base --run_under="bazel/test_runners/sysroot_chroot/test_runner.sh"
+
+build:x86_64_sysroot --config=clang
+build:x86_64_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
+build:x86_64_sysroot --config=sysroot-base
+
+build:aarch64_sysroot --config=clang
+build:aarch64_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
+build:aarch64_sysroot --platforms=//bazel/cc_toolchains:linux-aarch64
+build:aarch64_sysroot --config=sysroot-base
+# Increase test timeouts for qemu (don't increase the slowest ones because those are already very long).
+test:aarch64_sysroot --test_timeout=180,600,1800,3600
+test:aarch64_sysroot --test_env=QEMU_STRACE
+test:aarch64_sysroot --test_tag_filters=-no_libcpp,-disabled
+
+# Build for Clang using Libc++.
+build:clang --config=clang-base
+build:clang --//bazel:enable_libcpp
+build:clang --features=libc++ --features=-libstdc++
+build:clang --build_tag_filters=-no_libcpp
+build:clang --test_tag_filters=-no_libcpp,-disabled
+test:clang --config=tmp-sandbox
+
+# Build for Clang with libstdc++:
+build:clang-libstdc++ --config=clang-base
+build:clang-libstdc++ --//bazel/cc_toolchains:compiler=clang
+build:clang-libstdc++ --//bazel/cc_toolchains:libc_version=gnu
+test:clang-libstdc++ --config=tmp-sandbox
+
+# Build for GCC.
+# These are copts because they apply to both c++ and c files.
+# In particular, upb is has issues with this that will hopefully be
+# fixed upstream soon.
+build:gcc --copt -Wno-error=sign-compare
+build:gcc --copt -Wno-error=stringop-truncation
+build:gcc --copt -Wno-error=maybe-uninitialized
+build:gcc --build_tag_filters=-no_gcc
+build:gcc --test_tag_filters=-no_gcc,-disabled
+build:gcc --//bazel/cc_toolchains:compiler=gcc
+# TODO(#1462): Investigate why tcmalloc breaks linking of go binaries.
+build:gcc --define tcmalloc=disabled
+test:gcc --config=tmp-sandbox
+
+# bazel build --config asan ...
+build:asan --config=clang
+build:asan --//bazel:sanitizer=asan
+build:asan --features=asan
+build:asan --test_timeout="120,600,1800,3600"
+build:asan --define GML_CONFIG_ASAN=1
+build:asan --define tcmalloc=disabled
+build:asan --build_tag_filters=-no_asan
+build:asan --test_tag_filters=-no_asan,-disabled
+build:asan --define signal_trace=disabled
+build:asan --test_env=ASAN_SYMBOLIZER_PATH
+build:asan --test_env=ASAN_OPTIONS=handle_abort=1:allow_addr2line=true
+build:asan --test_env=UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1
+build:asan --define tcmalloc=disabled
+#test:asan --test_env=ASAN_OPTIONS=detect_container_overflow=0
+
+# bazel build --config msan
+build:msan --config=clang
+build:msan --define GML_CONFIG_MSAN=1
+build:msan --//bazel:sanitizer=msan
+build:msan --define tcmalloc=disabled
+build:msan --build_tag_filters=-no_msan
+build:msan --test_tag_filters=-no_msan,-disabled
+build:msan --features=msan
+
+# bazel build --config tsan
+build:tsan --config=clang
+build:tsan --//bazel:sanitizer=tsan
+build:tsan --define GML_CONFIG_TSAN=1
+build:tsan --define tcmalloc=disabled
+build:tsan --build_tag_filters=-no_tsan
+build:tsan --test_tag_filters=-no_tsan,-disabled
+build:tsan --define tcmalloc=disabled
+# This is needed to address false positive problem with abseil.
+# https://github.com/google/sanitizers/issues/953
+build:tsan --test_env=TSAN_OPTIONS=report_atomic_races=0
+build:tsan --features=tsan
+test:tsan --test_timeout=180,600,1800,3600
+
+# bazel build --config go_race
+build:go_race --config=clang
+build:go_race --define tcmalloc=disabled
+build:go_race --@io_bazel_rules_go//go/config:race
+test:go_race --define tcmalloc=disabled
+test:go_race --@io_bazel_rules_go//go/config:race
+run:go_race --define tcmalloc=disabled
+run:go_race --@io_bazel_rules_go//go/config:race
+
+
+coverage --config=gcc
+coverage --cxxopt -fprofile-arcs
+coverage --cxxopt -ftest-coverage
+coverage --instrument_test_targets
+coverage --define GML_COVERAGE=true
+coverage --copt -DGML_COVERAGE
+coverage --test_tag_filters=-no_coverage,-disabled,-no_gcc
+coverage --action_env=COVERAGE_GCOV_OPTIONS=-b
+
+try-import %workspace%/bes.bazelrc
+
+# github.bazelrc is copied from ci/github/bazelrc by the github action workers during the build.
+try-import %workspace%/github.bazelrc
+
+# Import a machine specific bazelrc. This can be used to enable caching.
+try-import /etc/bazelrc
+
+# Put your own configurations into user.bazelrc, which is ignored by git.
+try-import %workspace%/user.bazelrc
+
+# Tensorflow requires this option
+common --experimental_repo_remote_exec
