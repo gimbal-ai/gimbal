@@ -33,7 +33,7 @@ PLUGINS:
 - file://tools/linters/mega-linter-plugin-buf/buf.megalinter-descriptor.yml
 - file://tools/linters/mega-linter-plugin-cpp/cpp.megalinter-descriptor.yml
 - file://tools/linters/mega-linter-plugin-licenses/licenses.megalinter-descriptor.yml
-FILTER_REGEX_EXCLUDE: (pnpm-lock.yaml|go_deps.bzl)
+FILTER_REGEX_EXCLUDE: (pnpm-lock.yaml|go_deps.bzl|infra\/credentials/*)
 
 # Linter specific configs
 CSS_STYLELINT_CONFIG_FILE: LINTER_DEFAULT
