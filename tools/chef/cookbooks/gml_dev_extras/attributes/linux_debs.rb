@@ -21,7 +21,7 @@ end
 
 default["clang"]["version"]    = "15.0-20230921235320"
 default["clang"]["deb"]        =
-  "https://storage.googleapis.com/gimlet-dev-infra/clang/#{default['clang']['version']}/clang-#{default['clang']['version']}.deb"
+  "https://storage.googleapis.com/gimlet-dev-infra-public/clang/#{default['clang']['version']}/clang-#{default['clang']['version']}.deb"
 default["clang"]["deb_sha256"] =
   "f5763d7be26a6b735d9c40ab598c401ac601e767cdfd5b170b7586cc7227d64d"
 

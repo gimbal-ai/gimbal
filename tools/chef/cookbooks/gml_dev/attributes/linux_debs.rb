@@ -22,6 +22,6 @@ end
 # TODO(zasgar): Replace with gml versions.
 default["clang-linters"]["version"]    = "15.0-20230921235320"
 default["clang-linters"]["deb"]        =
-  "https://storage.googleapis.com/gimlet-dev-infra/clang/#{default['clang-linters']['version']}/clang-linters-#{default['clang-linters']['version']}.deb"
+  "https://storage.googleapis.com/gimlet-dev-infra-public/clang/#{default['clang-linters']['version']}/clang-linters-#{default['clang-linters']['version']}.deb"
 default["clang-linters"]["deb_sha256"] =
   "d1b57b13c22942fc254b0eabcbdb5f2c8f4c1f5102cb4487c267282f10a78c7f"

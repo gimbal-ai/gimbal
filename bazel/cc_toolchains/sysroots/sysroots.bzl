@@ -23,56 +23,56 @@ SYSROOT_LOCATIONS = dict(
         sha256 = "82ee7f077f668e87c346c06abf8f72af025c0b8f977b87b8683f009839462897",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra/sysroots/20230921163852/sysroot-amd64-runtime.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-amd64-runtime.tar.gz",
         ],
     ),
     sysroot_x86_64_glibc2_36_build = dict(
         sha256 = "d59b143ba91a4a1b0ac1c065a83511829c55b15ec7c1f33097cc5baf11f21b54",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra/sysroots/20230921163852/sysroot-amd64-build.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-amd64-build.tar.gz",
         ],
     ),
     sysroot_x86_64_glibc2_36_test = dict(
         sha256 = "56d6f07598fd49734f1100d878b8575fdf90fb5300254c542be246101b5dcbb8",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra/sysroots/20230921163852/sysroot-amd64-test.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-amd64-test.tar.gz",
         ],
     ),
     sysroot_x86_64_glibc2_36_debug = dict(
         sha256 = "b100cb158ca90cc01b858eb5056dfb4631e4ebcbeff707204131b792648ffdfb",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra/sysroots/20230921163852/sysroot-amd64-debug.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-amd64-debug.tar.gz",
         ],
     ),
     sysroot_aarch64_glibc2_36_runtime = dict(
         sha256 = "93e278bedfeaac3c3273d5ce7929b66870718c304ceb3d428f7f64713c9bc245",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra/sysroots/20230921163852/sysroot-arm64-runtime.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-arm64-runtime.tar.gz",
         ],
     ),
     sysroot_aarch64_glibc2_36_build = dict(
         sha256 = "3cde5cc74c73e71a6f16cf24489300cbbbc87fd6e159110159ac9387ad533ae6",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra/sysroots/20230921163852/sysroot-arm64-build.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-arm64-build.tar.gz",
         ],
     ),
     sysroot_aarch64_glibc2_36_test = dict(
         sha256 = "bc74afbb687cd736c6862c3582e6e3fbfc625db9c39ae5c07a19f1ab2b7bd53e",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra/sysroots/20230921163852/sysroot-arm64-test.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-arm64-test.tar.gz",
         ],
     ),
     sysroot_aarch64_glibc2_36_debug = dict(
         sha256 = "ddf3eeaea0631b8491d40d64f1b33205a234ac158957d9df29bbb99de054640b",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra/sysroots/20230921163852/sysroot-arm64-debug.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-arm64-debug.tar.gz",
         ],
     ),
 )

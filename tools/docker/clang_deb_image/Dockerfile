@@ -78,11 +78,11 @@ RUN /scripts/build_llvm.sh \
 
 WORKDIR /sysroots/archives
 # Download build sysroots.
-RUN curl -L https://storage.googleapis.com/gimlet-dev-infra/sysroots/20230921163852/sysroot-amd64-build.tar.gz -o sysroot-amd64-build.tar.gz && \
+RUN curl -L https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-amd64-build.tar.gz -o sysroot-amd64-build.tar.gz && \
   mkdir -p /sysroots/x86_64 && \
   tar -C /sysroots/x86_64 -xzf sysroot-amd64-build.tar.gz
 
-RUN curl -L https://storage.googleapis.com/gimlet-dev-infra/sysroots/20230921163852/sysroot-arm64-build.tar.gz -o sysroot-arm64-build.tar.gz && \
+RUN curl -L https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-arm64-build.tar.gz -o sysroot-arm64-build.tar.gz && \
   mkdir -p /sysroots/aarch64 && \
   tar -C /sysroots/aarch64 -xzf sysroot-arm64-build.tar.gz
 
