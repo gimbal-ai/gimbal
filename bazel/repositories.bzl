@@ -122,16 +122,12 @@ def _list_gml_deps(name):
     )
 
 def _gml_cc_toolchain_deps():
-    _bazel_repo("bazel_skylib")
     cc_toolchain_config_repo("unix_cc_toolchain_config", patch = "//bazel/cc_toolchains:unix_cc_toolchain_config.patch")
 
 def _gml_deps():
-    _bazel_repo("rules_pkg")
     _bazel_repo("bazel_gazelle")
-
     _bazel_repo("io_bazel_rules_go")
-    _bazel_repo("rules_foreign_cc")
-    _bazel_repo("rules_python")
+
     _bazel_repo("com_github_bazelbuild_buildtools")
     _bazel_repo("com_github_fmeum_rules_meta")
 

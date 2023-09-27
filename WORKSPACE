@@ -20,13 +20,9 @@ gml_deps()
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 
-go_rules_dependencies()
-
 go_register_toolchains(version = "1.21.1")
 
-load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
-
-rules_pkg_dependencies()
+go_rules_dependencies()
 
 # gazelle:repo bazel_gazelle
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
@@ -61,10 +57,6 @@ aspect_bazel_lib_dependencies()
 load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
 
 grpc_extra_deps()
-
-load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_dependencies")
-
-rules_foreign_cc_dependencies()
 
 load("//bazel:gogo.bzl", "gogo_grpc_proto")
 
