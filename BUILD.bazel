@@ -13,7 +13,8 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("@bazel_gazelle//:def.bzl", "DEFAULT_LANGUAGES", "gazelle", "gazelle_binary")
+load("@bazel_gazelle//:def.bzl", "DEFAULT_LANGUAGES", "gazelle_binary")
+load("//bazel:gazelle.bzl", "gazelle_runners")
 
 gazelle_binary(
     name = "gazelle_with_js",
@@ -23,11 +24,7 @@ gazelle_binary(
     ],
 )
 
-gazelle(
-    name = "gazelle",
-    gazelle = ":gazelle_with_js",
-    prefix = "gimletlabs.ai/gimlet",
-)
+gazelle_runners(gazelle = "//:gazelle_with_js")
 
 # gazelle:exclude **/node_modules
 # gazelle:exclude external
@@ -39,25 +36,6 @@ gazelle(
 
 # gazelle:go_proto_compilers @io_bazel_rules_go//proto:gogoslick_proto
 # gazelle:go_grpc_compilers @io_bazel_rules_go//proto:gogoslick_grpc
-
-# gazelle:proto_rule proto_compile implementation stackb:rules_proto:proto_compile
-# gazelle:proto_rule go_proto_library implementation stackb:rules_proto:proto_go_library
-
-# gazelle:proto_plugin cpp implementation builtin:cpp
-# gazelle:proto_plugin protoc-gen-grpc-cpp implementation grpc:grpc:cpp
-
-# gazelle:proto_rule proto_cc_library implementation stackb:rules_proto:proto_cc_library
-# gazelle:proto_rule proto_cc_library deps @com_google_protobuf//:protobuf
-# gazelle:proto_rule proto_cc_library visibility //visibility:public
-# gazelle:proto_rule grpc_cc_library implementation stackb:rules_proto:grpc_cc_library
-# gazelle:proto_rule grpc_cc_library deps @com_github_grpc_grpc//:grpc++
-# gazelle:proto_rule grpc_cc_library deps @com_github_grpc_grpc//:grpc++_reflection
-# gazelle:proto_rule grpc_cc_library visibility //visibility:public
-
-# gazelle:proto_language cpp plugin cpp
-# gazelle:proto_language cpp plugin protoc-gen-grpc-cpp
-# gazelle:proto_language cpp rule proto_compile
-# gazelle:proto_language cpp rule proto_cc_library
-# gazelle:proto_language cpp rule grpc_cc_library
+# gazelle:go_generate_proto false
 
 exports_files(["LICENSE"])

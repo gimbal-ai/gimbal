@@ -23,7 +23,7 @@ syntax = "proto3";
 
 package gml.testpb;
 
-option go_package = "testpb";
+option go_package = "gimletlabs.ai/gimlet/src/common/base/testproto";
 
 message TestChildMessage {
   string string_val = 1;

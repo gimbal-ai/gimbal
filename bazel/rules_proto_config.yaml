@@ -1,0 +1,60 @@
+# gazelle:proto_rule go_proto_library implementation stackb:rules_proto:proto_go_library
+---
+plugins:
+- name: cpp
+  implementation: builtin:cpp
+- name: protoc-gen-grpc-cpp
+  implementation: grpc:grpc:cpp
+- name: protoc-gen-gogoslick
+  implementation: gogo:protobuf:protoc-gen-gogoslick
+  deps:
+  - "@com_github_gogo_protobuf//proto"
+  - "@com_github_gogo_protobuf//types"
+  - "@com_github_gogo_protobuf//protoc-gen-gogo/descriptor"
+  - "@org_golang_google_grpc//:go_default_library"
+  - "@org_golang_google_grpc//codes"
+  - "@org_golang_google_grpc//status"
+rules:
+- name: proto_compile
+  implementation: stackb:rules_proto:proto_compile
+  visibility:
+  - //visibility:public
+- name: proto_go_library
+  implementation: stackb:rules_proto:proto_go_library
+  visibility:
+  - //visibility:public
+  resolves:
+  - "google/protobuf/([a-z]+).proto @org_golang_google_protobuf//types/known/${1}pb"
+  - "google/protobuf/(descriptor|plugin).proto @org_golang_google_protobuf//types/${1}pb"
+- name: proto_compile
+  implementation: stackb:rules_proto:proto_compile
+  visibility:
+  - //visibility:public
+- name: proto_cc_library
+  implementation: stackb:rules_proto:proto_cc_library
+  visibility:
+  - //visibility:public
+  deps:
+  - "@com_google_protobuf//:protobuf"
+- name: grpc_cc_library
+  implementation: stackb:rules_proto:grpc_cc_library
+  visibility:
+  - //visibility:public
+  deps:
+  - "@com_github_grpc_grpc//:grpc++"
+  - "@com_github_grpc_grpc//:grpc++_reflection"
+languages:
+- name: go
+  plugins:
+  - protoc-gen-gogoslick
+  rules:
+  - proto_compile
+  - proto_go_library
+- name: "cpp"
+  plugins:
+  - cpp
+  - protoc-gen-grpc-cpp
+  rules:
+  - proto_compile
+  - proto_cc_library
+  - grpc_cc_library

@@ -129,4 +129,7 @@ platform(
 
 # Jenkins uses `bazel query` to find the reverse dependencies of a changed file.
 # Without this, that query on gml_build_system.bzl will fail, in the case of changing its content.
-exports_files(["gml_build_system.bzl"])
+exports_files([
+    "gml_build_system.bzl",
+    "rules_proto_config.yaml",
+])

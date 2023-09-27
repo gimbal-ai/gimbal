@@ -70,9 +70,17 @@ load("@build_stack_rules_proto//:go_deps.bzl", "gazelle_protobuf_extension_go_de
 
 gazelle_protobuf_extension_go_deps()
 
+load("@build_stack_rules_proto//deps:go_core_deps.bzl", rules_proto_go_core_deps = "go_core_deps")
+
+rules_proto_go_core_deps()
+
 load("@build_stack_rules_proto//deps:protobuf_core_deps.bzl", "protobuf_core_deps")
 
 protobuf_core_deps()
+
+load("//bazel:proto_repositories.bzl", "gml_proto_deps")
+
+gml_proto_deps()
 
 register_toolchains("@build_stack_rules_proto//toolchain:standard")
 

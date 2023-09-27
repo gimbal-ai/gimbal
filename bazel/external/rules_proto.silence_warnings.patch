@@ -1,0 +1,14 @@
+diff --git a/rules/proto/proto_repository.bzl b/rules/proto/proto_repository.bzl
+index d7897410..ba23fa22 100644
+--- a/rules/proto/proto_repository.bzl
++++ b/rules/proto/proto_repository.bzl
+@@ -267,9 +267,6 @@ def _proto_repository_impl(ctx):
+             fail("failed to generate BUILD files: %s" % (
+                 result.stderr,
+             ))
+-        if result.stderr:
+-            # buildifier: disable=print
+-            print("%s: %s" % (ctx.name, result.stderr))
+ 
+     # Apply patches if necessary.
+     patch(ctx)

@@ -21,7 +21,7 @@ syntax = "proto3";
 
 package gml.uuidpb;
 
-option go_package = "uuidpb";
+option go_package = "gimletlabs.ai/gimlet/src/api/proto/uuidpb";
 
 message UUID {
   // Big ending style encoding similar to what a UUID Variant 1 would do.

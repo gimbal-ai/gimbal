@@ -37,13 +37,14 @@ gazelle-repos: go.mod ## Run gazelle and generate build rules for new deps in go
 
 .PHONY: gazelle
 gazelle: gazelle-repos ## Run gazelle and autofix bazel dependencies for go targets.
-	$(BAZEL) run //:gazelle -- fix
+	$(BAZEL) run //:gazelle
 
 .PHONY: go-setup
 go-setup: go-mod-tidy gazelle ## Run go setup to regenrate modules/build files.
 
 .PHONY: lint
 lint:
-	REPORT_OUTPUT_FOLDER=none $(MEGALINTER) \
+	$(MEGALINTER) \
 		--fix \
+		--env REPORT_OUTPUT_FOLDER=none \
 		--image=us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/megalinter-gml-custom:20230927134618

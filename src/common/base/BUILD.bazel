@@ -52,7 +52,7 @@ gml_cc_test(
     srcs = ["status_test.cc"],
     deps = [
         ":cc_library",
-        "//src/common/base/testproto:testpb_cc_library",
+        "//src/common/base/testproto:testproto_cc_library",
     ],
 )
 
@@ -116,7 +116,7 @@ gml_cc_test(
     srcs = ["magic_enum_test.cc"],
     deps = [
         ":cc_library",
-        "//src/common/base/testproto:testpb_cc_library",
+        "//src/common/base/testproto:testproto_cc_library",
     ],
 )
 

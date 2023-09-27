@@ -310,3 +310,14 @@ REPOSITORY_LOCATIONS = dict(
         ],
     ),
 )
+
+PROTO_REPOSITORIES = dict(
+    com_github_gogo_protobuf = dict(
+        sha256 = "f89f8241af909ce3226562d135c25b28e656ae173337b3e58ede917aa26e1e3c",
+        strip_prefix = "protobuf-1.3.2",
+        urls = [
+            "https://mirror.bazel.build/github.com/gogo/protobuf/archive/refs/tags/v1.3.2.zip",
+            "https://github.com/gogo/protobuf/archive/refs/tags/v1.3.2.zip",
+        ],
+    ),
+)
