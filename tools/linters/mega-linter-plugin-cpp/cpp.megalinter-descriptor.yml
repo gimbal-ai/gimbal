@@ -11,10 +11,6 @@ linters:
 - name: CLANG_FORMAT
   linter_name: clang_format
   linter_url: https://github.com/gimletlabs/gimlet
-  install:
-    dockerfile:
-    # TODO(james): This runs every single time you run megalinter, so we should look for a better way.
-    - RUN apk add clang-extra-tools
   cli_executable: 'clang-format'
   cli_lint_extra_args:
   - '-Werror'

@@ -40,6 +40,12 @@ SYSROOT_ARCHITECTURES := amd64 arm64
 SYSROOT_GS_PATH := gs://gimlet-dev-infra/sysroots/$(SYSROOT_REV)
 SYSROOT_CREATOR_IMAGE_TAG := sysroot-creator-$(SYSROOT_REV)
 
+## Megalinter custom image
+REPOSITORY := us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts
+MEGALINTER_BUILD_DIR := $(BUILD_DIR)/megalinter
+MEGALINTER_REV := $(shell date +%Y%m%d%H%M%S)
+MEGALINTER_IMAGE_TAG := "$(REPOSITORY)/megalinter-gml-custom:$(MEGALINTER_REV)"
+
 ##############################################
 # Clang Build
 ##############################################
@@ -71,3 +77,10 @@ build_all_sysroots: sysroot_creator/Dockerfile sysroot_creator/build_all_sysroot
 upload_all_sysroots: build_all_sysroots
 	gsutil cp $(SYSROOT_BUILD_DIR)/* $(SYSROOT_GS_PATH)
 	sha256sum $(SYSROOT_BUILD_DIR)/*
+
+##############################################
+# Megalinter Build
+##############################################.PHONY: build_all_sysroots
+build_and_push_megalinter: megalinter/Dockerfile
+	@mkdir -p $(MEGALINTER_BUILD_DIR)
+	DOCKER_BUILDKIT=1 $(DOCKER) build megalinter -t $(MEGALINTER_IMAGE_TAG) --push

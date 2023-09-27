@@ -3,10 +3,6 @@ descriptor_id: PROTO
 descriptor_type: other
 file_extensions:
 - ".proto"
-install:
-  dockerfile:
-  # TODO(james): This runs every single time you run megalinter, so we should look for a better way.
-  - RUN go install github.com/bufbuild/buf/cmd/buf@latest
 linters:
 - name: BUF_BREAKCHECK
   linter_name: buf_breakcheck

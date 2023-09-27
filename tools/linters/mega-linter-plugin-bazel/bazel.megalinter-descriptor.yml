@@ -10,10 +10,6 @@ linters:
 - name: BUILDIFIER
   linter_name: buildifier
   linter_url: https://github.com/gimletlabs/gimlet
-  install:
-    dockerfile:
-    # TODO(james): This runs every single time you run megalinter, so we should look for a better way.
-    - RUN go install github.com/bazelbuild/buildtools/buildifier@latest
   cli_lint_extra_args:
   - '--lint=warn'
   - '--warnings=-module-docstring'

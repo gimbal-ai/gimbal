@@ -14,7 +14,9 @@
 # SPDX-License-Identifier: Proprietary
 
 ## Bazel command to use.
-BAZEL     := bazelisk
+BAZEL      := bazelisk
+## Lint runner
+MEGALINTER := mega-linter-runner
 
 # This default target is invoked by CodeQL. Ensure that this is the first
 # target in this makefile.
@@ -39,3 +41,9 @@ gazelle: gazelle-repos ## Run gazelle and autofix bazel dependencies for go targ
 
 .PHONY: go-setup
 go-setup: go-mod-tidy gazelle ## Run go setup to regenrate modules/build files.
+
+.PHONY: lint
+lint:
+	REPORT_OUTPUT_FOLDER=none $(MEGALINTER) \
+		--fix \
+		--image=us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/megalinter-gml-custom:20230927134618
