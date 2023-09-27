@@ -9,6 +9,8 @@ build:
 breaking:
   use:
   - FILE
+deps:
+- buf.build/gogo/protobuf
 lint:
   allow_comment_ignores: true
   enum_zero_value_suffix: _UNKNOWN
