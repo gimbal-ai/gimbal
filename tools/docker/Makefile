@@ -29,8 +29,8 @@ CLANG_TAG="$(CLANG_VERSION)-$(CLANG_SUFFIX)"
 
 clang_deb_fname := "clang-$(CLANG_TAG).deb"
 clang_linters_deb_fname := "clang-linters-$(CLANG_TAG).deb"
-clang_gs_path :=  gs://gimlet-dev-infra/clang/$(CLANG_TAG)
-clang_deb_image_tag := "gcr.io/gimlet-dev-infra-0/gimlet-dev-infra/clang_deb_builder_image:$(CLANG_VERSION)"
+clang_gs_path :=  gs://gimlet-dev-infra-public/clang/$(CLANG_TAG)
+clang_deb_image_tag := "clang_deb_builder_image:$(CLANG_VERSION)"
 CLANG_BUILD_DIR := "$(BUILD_DIR)/clang-$(CLANG_TAG)"
 
 ## Sysroot parameters
