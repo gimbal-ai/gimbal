@@ -326,4 +326,11 @@ REPOSITORY_LOCATIONS = dict(
             "https://github.com/protocolbuffers/upb/archive/e4635f223e7d36dfbea3b722a4ca4807a7e882e2.tar.gz",
         ],
     ),
+    build_stack_rules_proto = dict(
+        sha256 = "ac7e2966a78660e83e1ba84a06db6eda9a7659a841b6a7fd93028cd8757afbfb",
+        strip_prefix = "rules_proto-2.0.1",
+        urls = [
+            "https://github.com/stackb/rules_proto/archive/v2.0.1.tar.gz",
+        ],
+    ),
 )

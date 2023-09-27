@@ -1,3 +1,9 @@
+load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
+load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
 # Copyright 2018- The Pixie Authors.
 # Modifications Copyright 2023- Gimlet Labs, Inc.
 #
@@ -15,23 +21,42 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-load("//bazel:proto_compile.bzl", "gml_cc_proto_library", "gml_go_proto_library", "gml_proto_library")
-
-gml_proto_library(
-    name = "status_gml_proto",
+proto_library(
+    name = "statuspb_proto",
     srcs = ["status.proto"],
-    visibility = ["//src:__subpackages__"],
+    visibility = ["//visibility:public"],
+    deps = ["@com_google_protobuf//:any_proto"],
 )
 
-gml_cc_proto_library(
-    name = "status_gml_cc_proto",
-    proto = ":status_gml_proto",
-    visibility = ["//src:__subpackages__"],
+go_proto_library(
+    name = "statuspb_go_proto",
+    compilers = ["@io_bazel_rules_go//proto:gogoslick_proto"],
+    importpath = "gimletlabs.ai/gimlet/src/common/base/statuspb",
+    proto = ":statuspb_proto",
+    visibility = ["//visibility:public"],
 )
 
-gml_go_proto_library(
-    name = "status_gml_go_proto",
-    importpath = "gimletlabs/gimlet/src/common/base/statuspb",
-    proto = ":status_gml_proto",
-    visibility = ["//src:__subpackages__"],
+proto_cc_library(
+    name = "statuspb_cc_library",
+    srcs = ["status.pb.cc"],
+    hdrs = ["status.pb.h"],
+    visibility = ["//visibility:public"],
+    deps = ["@com_google_protobuf//:protobuf"],
+)
+
+proto_compile(
+    name = "statuspb_cpp_compile",
+    outputs = [
+        "status.pb.cc",
+        "status.pb.h",
+    ],
+    plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
+    proto = "statuspb_proto",
+)
+
+go_library(
+    name = "statuspb",
+    embed = [":statuspb_go_proto"],
+    importpath = "gimletlabs.ai/gimlet/src/common/base/statuspb",
+    visibility = ["//visibility:public"],
 )

@@ -81,6 +81,20 @@ load("//bazel:gogo.bzl", "gogo_grpc_proto")
 
 gogo_grpc_proto(name = "gogo_grpc_proto")
 
+load("@build_stack_rules_proto//deps:core_deps.bzl", "core_deps")
+
+core_deps()
+
+load("@build_stack_rules_proto//:go_deps.bzl", "gazelle_protobuf_extension_go_deps")
+
+gazelle_protobuf_extension_go_deps()
+
+load("@build_stack_rules_proto//deps:protobuf_core_deps.bzl", "protobuf_core_deps")
+
+protobuf_core_deps()
+
+register_toolchains("@build_stack_rules_proto//toolchain:standard")
+
 # Setup rules_js and related tooling
 load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")
 

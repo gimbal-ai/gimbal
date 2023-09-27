@@ -95,6 +95,7 @@ def _cc_deps():
     # Dependencies used in foreign cc rules (e.g. cmake-based builds)
     _include_all_repo("com_github_gperftools_gperftools")
     _include_all_repo("com_github_nats_io_natsc")
+    _bazel_repo("build_stack_rules_proto")
 
 def _list_gml_deps(name):
     modules = dict()

@@ -36,7 +36,7 @@ gml_cc_library_internal(
         exclude = ["test_utils.h"],
     ),
     deps = [
-        "//src/common/base/statuspb:status_gml_cc_proto",
+        "//src/common/base/statuspb:statuspb_cc_library",
         "@com_google_googletest//:gtest_prod",
     ],
 )
@@ -52,7 +52,7 @@ gml_cc_test(
     srcs = ["status_test.cc"],
     deps = [
         ":cc_library",
-        "//src/common/base/testproto:test_gml_cc_proto",
+        "//src/common/base/testproto:testpb_cc_library",
     ],
 )
 
@@ -116,7 +116,7 @@ gml_cc_test(
     srcs = ["magic_enum_test.cc"],
     deps = [
         ":cc_library",
-        "//src/common/base/testproto:test_gml_cc_proto",
+        "//src/common/base/testproto:testpb_cc_library",
     ],
 )
 

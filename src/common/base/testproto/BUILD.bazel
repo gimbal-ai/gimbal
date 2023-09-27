@@ -1,3 +1,9 @@
+load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
+load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
 # Copyright 2018- The Pixie Authors.
 # Modifications Copyright 2023- Gimlet Labs, Inc.
 #
@@ -15,26 +21,41 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-load("//bazel:proto_compile.bzl", "gml_cc_proto_library", "gml_go_proto_library", "gml_proto_library")
-
-gml_proto_library(
-    name = "test_gml_proto",
-    testonly = 1,
+proto_library(
+    name = "testpb_proto",
     srcs = ["test.proto"],
-    visibility = ["//src:__subpackages__"],
+    visibility = ["//visibility:public"],
 )
 
-gml_cc_proto_library(
-    name = "test_gml_cc_proto",
-    testonly = 1,
-    proto = ":test_gml_proto",
-    visibility = ["//src:__subpackages__"],
+go_proto_library(
+    name = "testpb_go_proto",
+    compilers = ["@io_bazel_rules_go//proto:gogoslick_proto"],
+    importpath = "gimletlabs.ai/gimlet/src/common/base/testproto",
+    proto = ":testpb_proto",
+    visibility = ["//visibility:public"],
 )
 
-gml_go_proto_library(
-    name = "test_gml_go_proto",
-    testonly = 1,
-    importpath = "gimletlabs/gimlet/src/common/base/testproto",
-    proto = ":test_gml_proto",
-    visibility = ["//src:__subpackages__"],
+proto_cc_library(
+    name = "testpb_cc_library",
+    srcs = ["test.pb.cc"],
+    hdrs = ["test.pb.h"],
+    visibility = ["//visibility:public"],
+    deps = ["@com_google_protobuf//:protobuf"],
+)
+
+proto_compile(
+    name = "testpb_cpp_compile",
+    outputs = [
+        "test.pb.cc",
+        "test.pb.h",
+    ],
+    plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
+    proto = "testpb_proto",
+)
+
+go_library(
+    name = "testproto",
+    embed = [":testpb_go_proto"],
+    importpath = "gimletlabs.ai/gimlet/src/common/base/testproto",
+    visibility = ["//visibility:public"],
 )
