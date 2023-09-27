@@ -1,9 +1,3 @@
-load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
-load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_library")
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
-load("@rules_proto//proto:defs.bzl", "proto_library")
-
 # Copyright 2018- The Pixie Authors.
 # Modifications Copyright 2023- Gimlet Labs, Inc.
 #
@@ -20,6 +14,12 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 # limitations under the License.
 #
 # SPDX-License-Identifier: Apache-2.0
+
+load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
+load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
 
 proto_library(
     name = "statuspb_proto",
