@@ -26,7 +26,7 @@ ENABLE_LINTERS:
 - YAML_YAMLLINT
 FAIL_IF_MISSING_LINTER_IN_FLAVOR: true
 FILEIO_REPORTER: false
-REPORT_OUTPUT_FOLDER: none
+FORMATTERS_DISABLE_ERRORS: false
 SHOW_ELAPSED_TIME: true
 PLUGINS:
 - file://tools/linters/mega-linter-plugin-bazel/bazel.megalinter-descriptor.yml
