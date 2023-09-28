@@ -30,7 +30,7 @@ import (
 var (
 	buildSCMRevision = "0000000"
 	buildSCMStatus   = "Modified"
-	// Tracks the semver string X.Y.Z-(pre)+build
+	// Tracks the semver string X.Y.Z-(pre)+build.
 	buildSemver    = "0.0.0-dev"
 	buildTimeStamp = "0"
 	buildNumber    = "0"

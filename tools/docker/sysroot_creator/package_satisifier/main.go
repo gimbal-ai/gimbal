@@ -35,7 +35,7 @@ func init() {
 
 func main() {
 	pflag.Parse()
-	viper.BindPFlags(pflag.CommandLine)
+	_ = viper.BindPFlags(pflag.CommandLine)
 	log.SetOutput(os.Stderr)
 
 	packageDatabaseFile := viper.GetString("pkgdb")

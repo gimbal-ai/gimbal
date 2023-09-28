@@ -30,11 +30,7 @@ import (
 var simpleDepRegex *regexp.Regexp
 
 func init() {
-	var err error
-	simpleDepRegex, err = regexp.Compile(`([^ :]*)([:][^ ]+)?(.*)?`)
-	if err != nil {
-		panic(err)
-	}
+	simpleDepRegex = regexp.MustCompile(`([^ :]*)([:][^ ]+)?(.*)?`)
 }
 
 type dependency struct {

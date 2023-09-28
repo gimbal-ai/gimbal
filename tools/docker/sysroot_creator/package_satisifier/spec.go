@@ -32,7 +32,7 @@ type spec struct {
 
 func (s *spec) removeIncludesFromExclude() *spec {
 	newSpec := &spec{
-		Includes: s.Includes[:],
+		Includes: s.Includes,
 		Excludes: make([]string, 0),
 	}
 	incMap := make(map[string]bool)

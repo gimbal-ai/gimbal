@@ -1,0 +1,39 @@
+---
+output:
+  sort-results: true
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+linters:
+  enable:
+  - asciicheck
+  - errcheck
+  - godot
+  - gofumpt
+  - goimports
+  - gosimple
+  - ineffassign
+  - loggercheck
+  - makezero
+  - misspell
+  - nakedret
+  - nolintlint
+  - nonamedreturns
+  - predeclared
+  - revive
+  - staticcheck
+  - sqlclosecheck
+  - typecheck
+  - unused
+  - wastedassign
+  - whitespace
+  diasble:
+  # Run separately since govet needs to be run at the project or package level
+  # but megalinter provides list of files
+  - govet
+  disable-all: false
+linters-settings:
+  goimports:
+    local-prefixes: gimletlabs.ai
+  nakedret:
+    max-func-lines: 0
