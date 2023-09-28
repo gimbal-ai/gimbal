@@ -352,6 +352,7 @@ def main():
                     diff.fix(path)
                 else:
                     print(diff.stringify())
+                    sys.exit(1)
         else:
             logging.fatal("each <file> argument needs to be a file")
 
