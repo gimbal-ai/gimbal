@@ -9,7 +9,7 @@ insert_final_newline = true
 # max_line_length = 120
 trim_trailing_whitespace = true
 
-[**/testdata/**]
+[{**/testdata/**,.idea/**}]
 generated = true
 indent_size = unset
 insert_final_newline = unset
