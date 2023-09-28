@@ -61,13 +61,6 @@ REPOSITORY_LOCATIONS = dict(
         strip_prefix = "gflags-524b83d0264cb9f1b2d134c564ef1aa23f207a41",
         urls = ["https://github.com/gflags/gflags/archive/524b83d0264cb9f1b2d134c564ef1aa23f207a41.tar.gz"],
     ),
-    com_github_google_glog = dict(
-        sha256 = "95dc9dd17aca4e12e2cb18087a5851001f997682f5f0d0c441a5be3b86f285bd",
-        strip_prefix = "glog-bc1fada1cf63ad12aee26847ab9ed4c62cffdcf9",
-        # We cannot use the last released version due to https://github.com/google/glog/pull/706
-        # Once there is a realease that includes that fix, we can switch to a released version.
-        urls = ["https://github.com/google/glog/archive/bc1fada1cf63ad12aee26847ab9ed4c62cffdcf9.tar.gz"],
-    ),
     com_github_gperftools_gperftools = dict(
         sha256 = "ea566e528605befb830671e359118c2da718f721c27225cbbc93858c7520fee3",
         strip_prefix = "gperftools-2.9.1",
@@ -102,25 +95,10 @@ REPOSITORY_LOCATIONS = dict(
         strip_prefix = "threadstacks-94adbe26c4aaf9ca945fd7936670d40ec6f228fb",
         urls = ["https://github.com/gimletlabs/threadstacks/archive/94adbe26c4aaf9ca945fd7936670d40ec6f228fb.tar.gz"],
     ),
-    com_google_absl = dict(
-        sha256 = "91ac87d30cc6d79f9ab974c51874a704de9c2647c40f6932597329a282217ba8",
-        strip_prefix = "abseil-cpp-20220623.1",
-        urls = ["https://github.com/abseil/abseil-cpp/archive/refs/tags/20220623.1.tar.gz"],
-    ),
-    com_google_benchmark = dict(
-        sha256 = "3aff99169fa8bdee356eaa1f691e835a6e57b1efeadb8a0f9f228531158246ac",
-        strip_prefix = "benchmark-1.7.0",
-        urls = ["https://github.com/google/benchmark/archive/refs/tags/v1.7.0.tar.gz"],
-    ),
     com_google_flatbuffers = dict(
         sha256 = "e2dc24985a85b278dd06313481a9ca051d048f9474e0f199e372fea3ea4248c9",
         strip_prefix = "flatbuffers-2.0.6",
         urls = ["https://github.com/google/flatbuffers/archive/refs/tags/v2.0.6.tar.gz"],
-    ),
-    com_google_googletest = dict(
-        sha256 = "81964fe578e9bd7c94dfdb09c8e4d6e6759e19967e397dbea48d1c10e45d0df2",
-        strip_prefix = "googletest-release-1.12.1",
-        urls = ["https://github.com/google/googletest/archive/refs/tags/release-1.12.1.tar.gz"],
     ),
     com_google_protobuf = dict(
         sha256 = "63c5539a8506dc6bccd352a857cea106e0a389ce047a3ff0a78fe3f8fede410d",
@@ -136,11 +114,6 @@ REPOSITORY_LOCATIONS = dict(
         urls = [
             "https://github.com/protocolbuffers/protobuf-javascript/archive/refs/tags/v3.21.2.tar.gz",
         ],
-    ),
-    com_googlesource_code_re2 = dict(
-        urls = ["https://github.com/google/re2/archive/refs/tags/2021-08-01.tar.gz"],
-        strip_prefix = "re2-2021-08-01",
-        sha256 = "cd8c950b528f413e02c12970dce62a7b6f37733d7f68807e73a2d9bc9db79bc8",
     ),
     com_intel_tbb = dict(
         sha256 = "91eab849ab1442db72317f8c968c5a1010f8546ca35f26086201262096c8a8a9",
