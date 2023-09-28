@@ -13,19 +13,20 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("@rules_oci//oci:defs.bzl", "oci_image", "oci_tarball")
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_image_index", "oci_tarball")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("//bazel:lib.bzl", "default_arg")
+load("//bazel:toolchain_transitions.bzl", "oci_image_arm64", "oci_image_x86_64")
 
-def _gml_oci_image(name, **kwargs):
+def _gml_oci_image(name, multiarch = False, **kwargs):
+    image_name = name
+    if native.package_name():
+        image_name = native.package_name() + "/" + image_name
+
     oci_image(
         name = name,
         **kwargs
     )
-
-    image_name = name
-    if native.package_name():
-        image_name = native.package_name() + "/" + image_name
 
     oci_tarball(
         name = name + ".load",
@@ -34,7 +35,48 @@ def _gml_oci_image(name, **kwargs):
         tags = ["manual"],
     )
 
-def _gml_cc_image(name, binary, **kwargs):
+    if not multiarch:
+        return
+
+    default_arg(kwargs, "tags", [])
+    kwargs["tags"] = kwargs["tags"] + ["manual"]
+
+    x86_kwargs = dict(**kwargs)
+    x86_kwargs["architecture"] = "amd64"
+    if "base" in x86_kwargs:
+        x86_kwargs["base"] = x86_kwargs["base"] + "_x86_64"
+
+    arm64_kwargs = dict(**kwargs)
+    arm64_kwargs["architecture"] = "arm64"
+    if "base" in arm64_kwargs:
+        arm64_kwargs["base"] = x86_kwargs["base"] + "_arm64"
+
+    oci_image_x86_64(
+        name = name + "_x86_64",
+        **x86_kwargs
+    )
+    oci_image_arm64(
+        name = name + "_arm64",
+        **arm64_kwargs
+    )
+
+    oci_image_index(
+        name = name + ".multiarch",
+        images = [
+            ":" + name + "_x86_64",
+            ":" + name + "_arm64",
+        ],
+        tags = ["manual"],
+    )
+
+    oci_tarball(
+        name = name + ".multiarch" + ".load",
+        image = ":" + name,
+        repo_tags = [image_name + ":latest"],
+        tags = ["manual"],
+    )
+
+def _gml_cc_image(name, binary, multiarch = False, **kwargs):
     default_arg(kwargs, "base", "//:cc_base_image")
     default_arg(kwargs, "tars", [])
     default_arg(kwargs, "entrypoint", ["/app/" + Label(binary).name])
@@ -45,7 +87,7 @@ def _gml_cc_image(name, binary, **kwargs):
         package_dir = "/app",
     )
     kwargs["tars"] = kwargs["tars"] + [name + "_binary_tar"]
-    _gml_oci_image(name, **kwargs)
+    _gml_oci_image(name, multiarch = multiarch, **kwargs)
 
 gml_oci_image = _gml_oci_image
 gml_cc_image = _gml_cc_image
