@@ -30,20 +30,6 @@ REPOSITORY_LOCATIONS = dict(
             "https://github.com/aspect-build/rules_ts/releases/download/v2.0.0/rules_ts-v2.0.0.tar.gz",
         ],
     ),
-    aspect_bazel_lib = dict(
-        sha256 = "09b51a9957adc56c905a2c980d6eb06f04beb1d85c665b467f659871403cf423",
-        strip_prefix = "bazel-lib-1.34.5",
-        urls = [
-            "https://github.com/aspect-build/bazel-lib/releases/download/v1.34.5/bazel-lib-v1.34.5.tar.gz",
-        ],
-    ),
-    aspect_rules_jest = dict(
-        sha256 = "098186ffc450f2a604843d8ba14217088a0e259ea6a03294af5360a7f1bcd3e8",
-        strip_prefix = "rules_jest-0.19.5",
-        urls = [
-            "https://github.com/aspect-build/rules_jest/releases/download/v0.19.5/rules_jest-v0.19.5.tar.gz",
-        ],
-    ),
     bazel_gazelle = dict(
         sha256 = "d3fa66a39028e97d76f9e2db8f1b0c11c099e8e01bf363a923074784e451f809",
         urls = [

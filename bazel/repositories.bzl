@@ -139,10 +139,8 @@ def _gml_deps():
         ],
         patch_args = ["-p1"],
     )
-    _bazel_repo("aspect_bazel_lib")
     _bazel_repo("aspect_rules_js", patches = ["//bazel/external:rules_js.patch"], patch_args = ["-p1"])
     _bazel_repo("aspect_rules_ts")
-    _bazel_repo("aspect_rules_jest")
 
     _com_llvm_lib()
     _cc_deps()
