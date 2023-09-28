@@ -23,7 +23,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/blang/semver"
+	"github.com/blang/semver/v4"
 )
 
 // Variables loaded from x_defs. Default values specified.

@@ -43,5 +43,5 @@ go_library(
         "//bazel:stamped": stamped_xdefs,
         "//conditions:default": unstamped_xdefs,
     }),
-    deps = ["@com_github_blang_semver//:semver"],
+    deps = ["@com_github_blang_semver_v4//:semver"],
 )
