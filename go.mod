@@ -4,6 +4,7 @@ go 1.21
 
 require (
 	github.com/bazelbuild/buildtools v0.0.0-20230926111657-7d855c59baeb
+	github.com/blang/semver v3.5.1+incompatible
 	github.com/gogo/protobuf v1.3.2
 	github.com/gorilla/handlers v1.5.1
 	github.com/graph-gophers/graphql-go v1.5.0

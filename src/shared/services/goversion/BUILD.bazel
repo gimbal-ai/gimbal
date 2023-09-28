@@ -1,0 +1,47 @@
+# Copyright © 2023- Gimlet Labs, Inc.
+# All Rights Reserved.
+#
+# NOTICE:  All information contained herein is, and remains
+# the property of Gimlet Labs, Inc. and its suppliers,
+# if any.  The intellectual and technical concepts contained
+# herein are proprietary to Gimlet Labs, Inc. and its suppliers and
+# may be covered by U.S. and Foreign Patents, patents in process,
+# and are protected by trade secret or copyright law. Dissemination
+# of this information or reproduction of this material is strictly
+# forbidden unless prior written permission is obtained from
+# Gimlet Labs, Inc.
+#
+# SPDX-License-Identifier: Proprietary
+
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+package(default_visibility = ["//src:__subpackages__"])
+
+stamped_xdefs = {
+    "buildNumber": "{STABLE_BUILD_NUMBER}",
+    "buildSCMRevision": "{STABLE_BUILD_SCM_REVISION}",
+    "buildSCMStatus": "{STABLE_BUILD_SCM_STATUS}",
+    "buildSemver": "{STABLE_BUILD_TAG}",
+    "buildTimeStamp": "{BUILD_TIMESTAMP}",
+    "builtBy": "{STABLE_BUILT_BY}",
+}
+
+unstamped_xdefs = {
+    "buildNumber": "0",
+    "buildSCMRevision": "0000000",
+    "buildSCMStatus": "Modified",
+    "buildSemver": "0.0.0-dev",
+    "buildTimeStamp": "0",
+    "builtBy": "Unknown",
+}
+
+go_library(
+    name = "goversion",
+    srcs = ["version.go"],
+    importpath = "gimletlabs.ai/gimlet/src/shared/services/goversion",
+    x_defs = select({
+        "//bazel:stamped": stamped_xdefs,
+        "//conditions:default": unstamped_xdefs,
+    }),
+    deps = ["@com_github_blang_semver//:semver"],
+)
