@@ -1,4 +1,4 @@
-# Copyright 2023- Gimlet Labs, Inc.
+# Copyright 2018- The Pixie Authors.
 # Modifications Copyright 2023- Gimlet Labs, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +20,8 @@ provides :remote_zip
 
 default_action :create
 
+property :name, String, name_property: true
+
 action :create do
   zip_path =  "/tmp/#{new_resource.name}.zip"
 
@@ -29,7 +31,7 @@ action :create do
     checksum node[new_resource.name]["sha256"]
   end
 
-  execute "install tool" do
+  execute "unpack #{new_resource.name}" do
     command "unzip -d /opt/gml_dev/tools/#{new_resource.name} -o #{zip_path}"
   end
 
@@ -41,7 +43,7 @@ action :create do
     action :create
   end
 
-  file "#{zip_path}" do
+  file zip_path do
     action :delete
   end
 end
