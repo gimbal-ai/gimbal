@@ -93,27 +93,9 @@ execute "configure docker-credential-gcr" do
   action :run
 end
 
-remote_file "/tmp/packer.zip" do
-  source node["packer"]["download_path"]
-  mode "0644"
-  checksum node["packer"]["sha256"]
-end
+common_remote_zip 'packer'
 
-execute "install packer" do
-  command "unzip -d /opt/gml_dev/tools/packer -o /tmp/packer.zip"
-end
-
-link "/opt/gml_dev/bin/packer" do
-  to "/opt/gml_dev/tools/packer/packer"
-  link_type :symbolic
-  owner node["owner"]
-  group node["group"]
-  action :create
-end
-
-file "/tmp/packer.zip" do
-  action :delete
-end
+common_remote_zip 'terraform'
 
 directory "/usr/local/lib/docker/cli-plugins" do
   action :create

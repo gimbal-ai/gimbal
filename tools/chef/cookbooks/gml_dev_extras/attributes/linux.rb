@@ -83,6 +83,11 @@ default["sops"]["download_path"] =
 default["sops"]["sha256"] =
   "6eacdd01b68fd140eb71bbca233bea897cccb75dbf9e00a02e648b2f9a8a6939"
 
+default["terraform"]["download_path"] =
+  "https://releases.hashicorp.com/terraform/1.5.7/terraform_1.5.7_linux_amd64.zip"
++default["terraform"]["sha256"] =
+  "c0ed7bc32ee52ae255af9982c8c88a7a4c610485cf1d55feeb037eab75fa082c"
+
 default["trivy"]["download_path"] =
   "https://github.com/aquasecurity/trivy/releases/download/v0.39.0/trivy_0.39.0_Linux-64bit.tar.gz"
 default["trivy"]["sha256"] =
