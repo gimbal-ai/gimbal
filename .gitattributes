@@ -1,0 +1,6 @@
+*.pb.* -diff linguist-generated=true
+*.gen.go -diff linguist-generated=true
+*_pb.js -diff linguist-generated=true
+*_pb.d.ts -diff linguist-generated=true
+go_deps.bzl -diff linguist-generated=true
+src/ui/pnpm-lock.yaml -diff linguist-generated=true
