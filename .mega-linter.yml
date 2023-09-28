@@ -2,17 +2,17 @@
 APPLY_FIXES: all
 ENABLE_LINTERS:
 - ACTION_ACTIONLINT
-- BUILDIFIER
 - BASH_SHELLCHECK
 - BASH_SHFMT
-- BUF_BREAKCHECK
-- BUF_LINT
+- BAZEL_BUILDIFIER
+- CPP_CLANG_FORMAT
 - CSS_STYLELINT
-- CLANG_FORMAT
 - EDITORCONFIG_EDITORCONFIG_CHECKER
-- LICENSE_CHECKER
+- PROTO_BUF_BREAKCHECK
+- PROTO_BUF_LINT
 - PYTHON_BLACK
 - PYTHON_ISORT
+- REPOSITORY_LICENSE_CHECKER
 # TODO(vihang): Enable this after rubucop is faster.
 # - RUBY_RUBOCOP
 - TERRAFORM_TERRAFORM_FMT
@@ -33,7 +33,7 @@ PLUGINS:
 - file://tools/linters/mega-linter-plugin-buf/buf.megalinter-descriptor.yml
 - file://tools/linters/mega-linter-plugin-cpp/cpp.megalinter-descriptor.yml
 - file://tools/linters/mega-linter-plugin-licenses/licenses.megalinter-descriptor.yml
-FILTER_REGEX_EXCLUDE: (app\/graphql-schema.ts|pnpm-lock.yaml|infra\/credentials/*|gazelle_python.yaml)
+FILTER_REGEX_EXCLUDE: (app\/graphql-schema\.ts|pnpm-lock\.yaml|infra\/credentials\/|gazelle_python\.yaml)
 
 # Linter specific configs
 CSS_STYLELINT_CONFIG_FILE: LINTER_DEFAULT

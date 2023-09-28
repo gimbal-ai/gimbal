@@ -1,11 +1,10 @@
 ---
-descriptor_id: LICENSES
+descriptor_id: REPOSITORY
 descriptor_type: other
 file_extensions:
 - "*"
 linters:
-- name: LICENSE_CHECKER
-  linter_name: licensechecker
+- linter_name: license_checker
   linter_url: https://github.com/gimletlabs/gimlet
   cli_executable: 'python3'
   cli_lint_extra_args:

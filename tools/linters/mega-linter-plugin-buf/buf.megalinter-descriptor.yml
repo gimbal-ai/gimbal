@@ -1,21 +1,19 @@
 ---
 descriptor_id: PROTO
-descriptor_type: other
+descriptor_type: language
 file_extensions:
 - ".proto"
 linters:
-- name: BUF_BREAKCHECK
-  linter_name: buf_breakcheck
+- linter_name: buf_breakcheck
   cli_executable: buf
-  linter_url: https://github.com/gimletlabs/gimlet
+  linter_url: https://buf.build/docs/breaking/overview
   cli_lint_extra_args:
   - 'breaking'
   - '--against=.git#branch=main'
   cli_lint_mode: 'project'
-- name: BUF_LINT
-  linter_name: buf_lint
+- linter_name: buf_lint
   cli_executable: buf
-  linter_url: https://github.com/gimletlabs/gimlet
+  linter_url: https://buf.build/docs/lint/overview
   cli_lint_extra_args:
   - 'lint'
   cli_lint_mode: 'project'

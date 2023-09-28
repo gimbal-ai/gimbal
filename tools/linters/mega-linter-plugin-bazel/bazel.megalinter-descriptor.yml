@@ -1,15 +1,14 @@
 ---
 descriptor_id: BAZEL
-descriptor_type: other
+descriptor_type: language
 file_extensions:
 - ".bzl"
 file_names_regex:
 - "WORKSPACE"
 - "BUILD.bazel"
 linters:
-- name: BUILDIFIER
-  linter_name: buildifier
-  linter_url: https://github.com/gimletlabs/gimlet
+- linter_name: buildifier
+  linter_url: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
   cli_lint_extra_args:
   - '--lint=warn'
   - '--warnings=-module-docstring'
