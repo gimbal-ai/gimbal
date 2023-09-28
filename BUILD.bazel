@@ -15,6 +15,8 @@
 
 load("@bazel_gazelle//:def.bzl", "DEFAULT_LANGUAGES", "gazelle_binary")
 load("//bazel:gazelle.bzl", "gazelle_runners")
+load("//bazel:images.bzl", "gml_oci_image")
+load("//bazel/cc_toolchains/sysroots:tars.bzl", "sysroot_runtime_tar", "sysroot_test_tar")
 
 gazelle_binary(
     name = "gazelle_with_js",
@@ -25,6 +27,38 @@ gazelle_binary(
 )
 
 gazelle_runners(gazelle = "//:gazelle_with_js")
+
+sysroot_runtime_tar(
+    name = "cc_base_tar",
+    visibility = ["//visibility:public"],
+)
+
+sysroot_test_tar(
+    name = "cc_base_debug_tar",
+    visibility = ["//visibility:public"],
+)
+
+gml_oci_image(
+    name = "cc_base_image",
+    architecture = select({
+        "@platforms//cpu:arm64": "arm64",
+        "@platforms//cpu:x86_64": "amd64",
+    }),
+    os = "linux",
+    tars = [":cc_base_tar"],
+    visibility = ["//visibility:public"],
+)
+
+gml_oci_image(
+    name = "cc_base_debug_image",
+    architecture = select({
+        "@platforms//cpu:arm64": "arm64",
+        "@platforms//cpu:x86_64": "amd64",
+    }),
+    os = "linux",
+    tars = [":cc_base_debug_tar"],
+    visibility = ["//visibility:public"],
+)
 
 # gazelle:exclude **/node_modules
 # gazelle:exclude external
