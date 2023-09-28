@@ -55,7 +55,7 @@ proto_compile(
 proto_go_library(
     name = "uuidpb_go_proto",
     srcs = ["uuid.pb.go"],
-    importpath = "github.com/gogo/protobuf/src/api/proto/uuidpb/uuidpb",
+    importpath = "gimletlabs.ai/gimlet/src/api/proto/uuidpb",
     visibility = ["//visibility:public"],
     deps = [
         "@com_github_gogo_protobuf//proto",
