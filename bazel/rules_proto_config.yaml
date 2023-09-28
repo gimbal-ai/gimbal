@@ -14,6 +14,10 @@ plugins:
   - "@org_golang_google_grpc//:go_default_library"
   - "@org_golang_google_grpc//codes"
   - "@org_golang_google_grpc//status"
+- name: python
+  implementation: builtin:python
+- name: protoc-gen-grpc-python
+  implementation: grpc:grpc:protoc-gen-grpc-python
 rules:
 - name: proto_compile
   implementation: stackb:rules_proto:proto_compile
@@ -43,6 +47,14 @@ rules:
   deps:
   - "@com_github_grpc_grpc//:grpc++"
   - "@com_github_grpc_grpc//:grpc++_reflection"
+- name: proto_py_library
+  implementation: stackb:rules_proto:proto_py_library
+  visibility:
+  - //visibility:public
+- name: grpc_py_library
+  implementation: stackb:rules_proto:grpc_py_library
+  visibility:
+  - //visibility:public
 languages:
 - name: go
   plugins:
@@ -50,7 +62,7 @@ languages:
   rules:
   - proto_compile
   - proto_go_library
-- name: "cpp"
+- name: cpp
   plugins:
   - cpp
   - protoc-gen-grpc-cpp
@@ -58,3 +70,12 @@ languages:
   - proto_compile
   - proto_cc_library
   - grpc_cc_library
+- name: py
+  enabled: false
+  plugins:
+  - python
+  - protoc-gen-grpc-python
+  rules:
+  - proto_compile
+  - proto_py_library
+  - grpc_py_library
