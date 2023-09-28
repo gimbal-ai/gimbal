@@ -29,11 +29,8 @@ go-mod-tidy: ## Ensure that go are cleaned up.
 	go mod tidy -compat=1.21
 
 .PHONY: gazelle
-gazelle: update-python-manifest ## Run gazelle.
+gazelle: go-mod-tidy update-python-manifest ## Run gazelle.
 	$(BAZEL) run //:gazelle
-
-.PHONY: go-setup
-go-setup: go-mod-tidy gazelle ## Run go setup to regenrate modules/build files.
 
 .PHONY: update-python-manifest
 update-python-manifest:
