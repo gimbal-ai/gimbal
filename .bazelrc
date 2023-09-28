@@ -2,6 +2,8 @@
 common --enable_bzlmod
 common --incompatible_remove_rule_name_parameter=false
 common --experimental_build_transitive_python_runfiles
+common --experimental_remote_cache_compression
+common --nolegacy_important_outputs
 
 build --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
 fetch --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
@@ -19,7 +21,6 @@ build --remote_download_minimal
 test --remote_download_minimal
 run --remote_download_outputs=all
 coverage --build_runfile_links
-
 
 # Get version information into the build.
 build --workspace_status_command=bazel/get_workspace_status.sh
