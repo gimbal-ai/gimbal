@@ -80,3 +80,6 @@ external
 !bazel/external
 
 megalinter-reports/
+
+bazel_buildables_*
+bazel_tests_*
