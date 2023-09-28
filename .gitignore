@@ -53,6 +53,8 @@ vendor/*
 
 # Used for user specific workspace config.
 user.bazelrc
+bes.bazelrc
+github.bazelrc
 
 # A cache directory to be use by Bazel.
 .bazel-cache
