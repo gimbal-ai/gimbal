@@ -72,7 +72,7 @@ def _cc_deps():
 
     _bazel_repo("upb")
     _bazel_repo("com_google_protobuf", patches = ["//bazel/external:protobuf_gogo_hack.patch", "//bazel/external:protobuf_warning.patch"], patch_args = ["-p1"])
-    _bazel_repo("com_github_grpc_grpc", patches = ["//bazel/external:grpc.patch", "//bazel/external:grpc_go_toolchain.patch", "//bazel/external:grpc_test_visibility.patch"], patch_args = ["-p1"])
+    _bazel_repo("com_github_grpc_grpc", patches = ["//bazel/external:grpc.patch", "//bazel/external:grpc_test_visibility.patch"], patch_args = ["-p1"])
     _bazel_repo("boringssl")
 
     _bazel_repo("com_google_benchmark")
@@ -125,10 +125,6 @@ def _gml_cc_toolchain_deps():
     cc_toolchain_config_repo("unix_cc_toolchain_config", patch = "//bazel/cc_toolchains:unix_cc_toolchain_config.patch")
 
 def _gml_deps():
-    _bazel_repo("bazel_gazelle")
-    _bazel_repo("io_bazel_rules_go")
-
-    _bazel_repo("com_github_bazelbuild_buildtools")
     _bazel_repo("com_github_fmeum_rules_meta")
 
     _bazel_repo(

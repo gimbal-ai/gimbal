@@ -30,12 +30,6 @@ REPOSITORY_LOCATIONS = dict(
             "https://github.com/aspect-build/rules_ts/releases/download/v2.0.0/rules_ts-v2.0.0.tar.gz",
         ],
     ),
-    bazel_gazelle = dict(
-        sha256 = "d3fa66a39028e97d76f9e2db8f1b0c11c099e8e01bf363a923074784e451f809",
-        urls = [
-            "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.33.0/bazel-gazelle-v0.33.0.tar.gz",
-        ],
-    ),
     # Must be called boringssl to make sure the deps pick it up correctly.
     boringssl = dict(
         sha256 = "d11f382c25a3bea34ad8761d57828971c8b06e230ad99e1cbfd4253c419f4f9a",
@@ -47,11 +41,6 @@ REPOSITORY_LOCATIONS = dict(
         sha256 = "6dbf93969ec48d97ecb6c157014985846df8c01995a0011c21f4e2c146594922",
         strip_prefix = "cpp-jwt-1.1.1",
         urls = ["https://github.com/arun11299/cpp-jwt/archive/refs/tags/v1.1.1.tar.gz"],
-    ),
-    com_github_bazelbuild_buildtools = dict(
-        sha256 = "42968f9134ba2c75c03bb271bd7bb062afb7da449f9b913c96e5be4ce890030a",
-        strip_prefix = "buildtools-6.3.3",
-        urls = ["https://github.com/bazelbuild/buildtools/archive/refs/tags/v6.3.3.tar.gz"],
     ),
     com_github_benchsci_rules_nodejs_gazelle = dict(
         sha256 = "738c139545e170daeeeb338879fac627648958f8ff07716d121de63b6599f3a6",
@@ -260,13 +249,6 @@ REPOSITORY_LOCATIONS = dict(
             "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20230921235320/libcxx-15.0-20230921235320-aarch64-sysroot.tar.gz",
         ],
         manual_license_name = "llvm/llvm-project",
-    ),
-    io_bazel_rules_go = dict(
-        sha256 = "278b7ff5a826f3dc10f04feaf0b70d48b68748ccd512d7f98bf442077f043fe3",
-        urls = [
-            "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.41.0/rules_go-v0.41.0.zip",
-            "https://github.com/bazelbuild/rules_go/releases/download/v0.41.0/rules_go-v0.41.0.zip",
-        ],
     ),
     org_tensorflow = dict(
         sha256 = "99c732b92b1b37fc243a559e02f9aef5671771e272758aa4aec7f34dc92dac48",

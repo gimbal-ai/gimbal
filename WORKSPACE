@@ -18,19 +18,6 @@ gml_register_cc_toolchains()
 
 gml_deps()
 
-load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
-
-go_register_toolchains(version = "1.21.1")
-
-go_rules_dependencies()
-
-# gazelle:repo bazel_gazelle
-load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
-load("//:go_deps.bzl", "gml_go_dependencies")
-
-# gazelle:repository_macro go_deps.bzl%gml_go_dependencies
-gml_go_dependencies()
-
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
 protobuf_deps()
@@ -47,8 +34,6 @@ apple_rules_dependencies()
 load("@build_bazel_apple_support//lib:repositories.bzl", "apple_support_dependencies")
 
 apple_support_dependencies()
-
-gazelle_dependencies(go_sdk = "go_sdk")
 
 load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
 

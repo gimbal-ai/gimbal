@@ -28,15 +28,8 @@ go: ## A simple go build that ensure that the go code compiles.
 go-mod-tidy: ## Ensure that go are cleaned up.
 	go mod tidy -compat=1.21
 
-.PHONY: gazelle-repos
-gazelle-repos: go.mod ## Run gazelle and generate build rules for new deps in go.mod, and go.sum.
-	$(BAZEL) run //:gazelle -- update-repos \
-		-from_file=go.mod \
-		-prune \
-		-to_macro=go_deps.bzl%gml_go_dependencies
-
 .PHONY: gazelle
-gazelle: gazelle-repos ## Run gazelle and autofix bazel dependencies for go targets.
+gazelle: ## Run gazelle.
 	$(BAZEL) run //:gazelle
 
 .PHONY: go-setup
