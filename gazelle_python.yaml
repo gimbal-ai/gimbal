@@ -1,0 +1,26 @@
+# GENERATED FILE - DO NOT EDIT!
+#
+# To update this file, run:
+#   bazel run //:gazelle_python_manifest.update
+
+manifest:
+  modules_mapping:
+    exceptiongroup: exceptiongroup
+    iniconfig: iniconfig
+    iniconfig.exceptions: iniconfig
+    packaging: packaging
+    packaging.markers: packaging
+    packaging.metadata: packaging
+    packaging.requirements: packaging
+    packaging.specifiers: packaging
+    packaging.tags: packaging
+    packaging.utils: packaging
+    packaging.version: packaging
+    pluggy: pluggy
+    py: pytest
+    pytest: pytest
+    tomli: tomli
+  pip_repository:
+    name: pip
+    use_pip_repository_aliases: true
+integrity: 5b8a78cd700cdf92858acf8c85a7c77de9382d147c382898ddf172b2f9b55c0c

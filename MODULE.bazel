@@ -29,6 +29,7 @@ bazel_dep(name = "bazel_skylib", version = "1.4.2")
 bazel_dep(name = "rules_foreign_cc", version = "0.9.0")
 bazel_dep(name = "rules_python", version = "0.25.0")
 bazel_dep(name = "rules_oci", version = "1.4.0")
+bazel_dep(name = "rules_python_gazelle_plugin", version = "0.25.0")
 
 bazel_dep(name = "glog", version = "0.6.0", repo_name = "com_github_google_glog")
 bazel_dep(name = "abseil-cpp", version = "20230802.0", repo_name = "com_google_absl")
@@ -36,14 +37,17 @@ bazel_dep(name = "googletest", version = "1.14.0", repo_name = "com_google_googl
 bazel_dep(name = "google_benchmark", version = "1.8.3", repo_name = "com_google_benchmark")
 bazel_dep(name = "re2", version = "2021-09-01")
 
-python = use_extension("@rules_python//python/extensions:python.bzl", "python")
-python.toolchain(
-    configure_coverage_tool = True,
-    ignore_root_user_error = True,
-    is_default = True,
-    python_version = "3.9",
+# Remove once rules_python_gazelle_plugin releases.
+archive_override(
+    module_name="rules_python_gazelle_plugin",
+    integrity="sha256-uk9Uc5PRU5Jyxu+MPnrdjsusXI841tA8ZosnEzqSWtU=",
+    urls = [
+        "https://github.com/bazelbuild/rules_python/archive/48daf52bdf85d46c529a873cc1f51e08672fd6d7.tar.gz",
+    ],
+    strip_prefix="rules_python-48daf52bdf85d46c529a873cc1f51e08672fd6d7/gazelle",
 )
 
+# rules_go/gazelle setup
 go_sdk = use_extension("@io_bazel_rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(version = "1.21.1")
 
@@ -62,4 +66,22 @@ use_repo(
     "com_github_spf13_viper",
     "org_golang_google_grpc",
     "in_gopkg_yaml_v3",
+    "com_github_bmatcuk_doublestar",
 )
+
+# rules_python setup
+python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+python.toolchain(
+    configure_coverage_tool = True,
+    ignore_root_user_error = True,
+    is_default = True,
+    python_version = "3.9",
+)
+
+pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
+pip.parse(
+    hub_name = "pip",
+    python_version = "3.9",
+    requirements_lock = "//bazel/python:requirements_lock.txt",
+)
+use_repo(pip, "pip")

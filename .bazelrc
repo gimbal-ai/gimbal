@@ -1,6 +1,7 @@
 # Global bazelrc file, see https://docs.bazel.build/versions/master/guide.html#bazelrc.
 common --enable_bzlmod
 common --incompatible_remove_rule_name_parameter=false
+common --experimental_build_transitive_python_runfiles
 
 build --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
 fetch --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig

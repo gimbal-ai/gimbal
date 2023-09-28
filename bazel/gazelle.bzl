@@ -14,13 +14,14 @@
 # SPDX-License-Identifier: Proprietary
 
 load("@bazel_gazelle//:def.bzl", "gazelle")
+load("@rules_python_gazelle_plugin//:def.bzl", "GAZELLE_PYTHON_RUNTIME_DEPS")
 
 _GAZELLE_COMMON_ATTRS = dict(
     args = [
         "-proto_configs=$(location //bazel:rules_proto_config.yaml)",
         "-proto_imports_in=$(location @com_github_gogo_protobuf_proto//:imports.csv)",
     ],
-    data = [
+    data = GAZELLE_PYTHON_RUNTIME_DEPS + [
         "//bazel:rules_proto_config.yaml",
         "@com_github_gogo_protobuf_proto//:imports.csv",
     ],

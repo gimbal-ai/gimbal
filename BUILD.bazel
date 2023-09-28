@@ -14,19 +14,38 @@
 # SPDX-License-Identifier: Proprietary
 
 load("@bazel_gazelle//:def.bzl", "DEFAULT_LANGUAGES", "gazelle_binary")
+load("@pip//:requirements.bzl", "all_whl_requirements")
+load("@rules_python_gazelle_plugin//manifest:defs.bzl", "gazelle_python_manifest")
+load("@rules_python_gazelle_plugin//modules_mapping:def.bzl", "modules_mapping")
 load("//bazel:gazelle.bzl", "gazelle_runners")
 load("//bazel:images.bzl", "gml_oci_image")
 load("//bazel/cc_toolchains/sysroots:tars.bzl", "sysroot_runtime_tar", "sysroot_test_tar")
 
+modules_mapping(
+    name = "modules_map",
+    wheels = all_whl_requirements,
+)
+
+gazelle_python_manifest(
+    name = "gazelle_python_manifest",
+    modules_mapping = ":modules_map",
+    pip_repository_name = "pip",
+    requirements = [
+        "//bazel/python:requirements_lock.txt",
+    ],
+    use_pip_repository_aliases = True,
+)
+
 gazelle_binary(
-    name = "gazelle_with_js",
+    name = "gazelle_with_plugins",
     languages = DEFAULT_LANGUAGES + [
         "@com_github_benchsci_rules_nodejs_gazelle//gazelle",
         "@build_stack_rules_proto//language/protobuf",
+        "@rules_python_gazelle_plugin//python:python",
     ],
 )
 
-gazelle_runners(gazelle = "//:gazelle_with_js")
+gazelle_runners(gazelle = "//:gazelle_with_plugins")
 
 sysroot_runtime_tar(
     name = "cc_base_tar",
@@ -69,6 +88,7 @@ gml_oci_image(
 # gazelle:js_extension disabled
 
 # gazelle:exclude **/*.pb.go
+# gazelle:exclude **/.terraform/**
 
 # gazelle:go_proto_compilers @io_bazel_rules_go//proto:gogoslick_proto
 # gazelle:go_grpc_compilers @io_bazel_rules_go//proto:gogoslick_grpc

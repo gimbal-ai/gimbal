@@ -22,4 +22,6 @@ import (
 	_ "google.golang.org/protobuf/types/known/anypb"
 	// Indirectly used by github.com/stackb/rules_proto/pkg/protoc
 	_ "github.com/bazelbuild/buildtools/build"
+	// Used for gazelle plugin.
+	_ "github.com/bmatcuk/doublestar"
 )

@@ -33,7 +33,7 @@ PLUGINS:
 - file://tools/linters/mega-linter-plugin-buf/buf.megalinter-descriptor.yml
 - file://tools/linters/mega-linter-plugin-cpp/cpp.megalinter-descriptor.yml
 - file://tools/linters/mega-linter-plugin-licenses/licenses.megalinter-descriptor.yml
-FILTER_REGEX_EXCLUDE: (app\/graphql-schema.ts|pnpm-lock.yaml|infra\/credentials/*)
+FILTER_REGEX_EXCLUDE: (app\/graphql-schema.ts|pnpm-lock.yaml|infra\/credentials/*|gazelle_python.yaml)
 
 # Linter specific configs
 CSS_STYLELINT_CONFIG_FILE: LINTER_DEFAULT
