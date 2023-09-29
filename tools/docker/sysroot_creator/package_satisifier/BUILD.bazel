@@ -15,7 +15,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+load("@gml//bazel:gml_build_system.bzl", "gml_go_binary")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "package_satisifier_lib",
@@ -35,7 +36,7 @@ go_library(
     ],
 )
 
-go_binary(
+gml_go_binary(
     name = "package_satisifier",
     embed = [":package_satisifier_lib"],
     visibility = ["//visibility:public"],

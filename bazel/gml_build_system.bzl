@@ -21,6 +21,7 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_test")
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
 load("@rules_python//python:defs.bzl", "py_test")
+load("//bazel:lib.bzl", "default_arg")
 
 def gml_copts():
     """Common options for gimlet build
@@ -316,12 +317,6 @@ def _tcmalloc_external_deps(repository):
         "//conditions:default": ["//bazel/external:gperftools"],
     })
 
-def _add_no_pie(kwargs):
-    if "gc_linkopts" not in kwargs:
-        kwargs["gc_linkopts"] = []
-    kwargs["gc_linkopts"].append("-extldflags")
-    kwargs["gc_linkopts"].append("-no-pie")
-
 def _add_test_runner(kwargs):
     if "data" not in kwargs:
         kwargs["data"] = []
@@ -336,12 +331,12 @@ def _add_no_sysroot(kwargs):
     })
 
 def gml_go_test(**kwargs):
-    _add_no_pie(kwargs)
+    default_arg(kwargs, "linkmode", "pie")
     _add_test_runner(kwargs)
     go_test(**kwargs)
 
 def gml_go_binary(**kwargs):
-    _add_no_pie(kwargs)
+    default_arg(kwargs, "linkmode", "pie")
     go_binary(**kwargs)
 
 def gml_py_test(**kwargs):

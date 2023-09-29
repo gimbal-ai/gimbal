@@ -94,4 +94,7 @@ gml_oci_image(
 # gazelle:go_grpc_compilers @io_bazel_rules_go//proto:gogoslick_grpc
 # gazelle:go_generate_proto false
 
+# gazelle:map_kind go_binary gml_go_binary @gml//bazel:gml_build_system.bzl
+# gazelle:map_kind go_test gml_go_test @gml//bazel:gml_build_system.bzl
+
 exports_files(["LICENSE"])

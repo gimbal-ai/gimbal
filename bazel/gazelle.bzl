@@ -30,12 +30,14 @@ def _gazelle_runners(**kwargs):
     attrs = dict(_GAZELLE_COMMON_ATTRS, **kwargs)
     gazelle(
         name = "gazelle",
+        command = "fix",
         mode = "fix",
         **attrs
     )
 
     gazelle(
         name = "gazelle_diff",
+        command = "fix",
         mode = "diff",
         **attrs
     )
