@@ -19,55 +19,52 @@ load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_librar
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
 proto_library(
-    name = "jwtpb_proto",
-    srcs = ["jwt.proto"],
+    name = "gogoproto_proto",
+    srcs = ["gogo.proto"],
     visibility = ["//visibility:public"],
-    deps = ["//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_proto"],
-)
-
-proto_cc_library(
-    name = "jwtpb_cc_library",
-    srcs = ["jwt.pb.cc"],
-    hdrs = ["jwt.pb.h"],
-    visibility = ["//visibility:public"],
-    deps = [
-        "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_cc_library",
-        "@com_google_protobuf//:protobuf",
-    ],
+    deps = ["@com_google_protobuf//:descriptor_proto"],
 )
 
 proto_compile(
-    name = "jwtpb_cpp_compile",
-    outputs = [
-        "jwt.pb.cc",
-        "jwt.pb.h",
-    ],
-    plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
-    proto = "jwtpb_proto",
-    visibility = ["//visibility:public"],
-)
-
-proto_compile(
-    name = "jwtpb_go_compile",
-    output_mappings = ["jwt.pb.go=gimletlabs.ai/gimlet/src/shared/services/jwtpb/jwt.pb.go"],
-    outputs = ["jwt.pb.go"],
+    name = "gogoproto_go_compile",
+    output_mappings = ["gogo.pb.go=github.com/gogo/protobuf/gogoproto/gogo.pb.go"],
+    outputs = ["gogo.pb.go"],
     plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
-    proto = "jwtpb_proto",
+    proto = "gogoproto_proto",
     visibility = ["//visibility:public"],
 )
 
 proto_go_library(
-    name = "jwtpb_go_proto",
-    srcs = ["jwt.pb.go"],
-    importpath = "gimletlabs.ai/gimlet/src/shared/services/jwtpb",
+    name = "gogoproto_go_proto",
+    srcs = ["gogo.pb.go"],
+    importpath = "github.com/gogo/protobuf/gogoproto",
     visibility = ["//visibility:public"],
     deps = [
-        "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_go_proto",
         "@com_github_gogo_protobuf//proto",
         "@com_github_gogo_protobuf//protoc-gen-gogo/descriptor",
         "@com_github_gogo_protobuf//types",
         "@org_golang_google_grpc//:go_default_library",
         "@org_golang_google_grpc//codes",
         "@org_golang_google_grpc//status",
+        "@org_golang_google_protobuf//types/descriptorpb",
     ],
+)
+
+proto_cc_library(
+    name = "gogoproto_cc_library",
+    srcs = ["gogo.pb.cc"],
+    hdrs = ["gogo.pb.h"],
+    visibility = ["//visibility:public"],
+    deps = ["@com_google_protobuf//:protobuf"],
+)
+
+proto_compile(
+    name = "gogoproto_cpp_compile",
+    outputs = [
+        "gogo.pb.cc",
+        "gogo.pb.h",
+    ],
+    plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
+    proto = "gogoproto_proto",
+    visibility = ["//visibility:public"],
 )

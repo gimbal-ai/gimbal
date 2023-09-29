@@ -59,10 +59,6 @@ load("@build_stack_rules_proto//deps:protobuf_core_deps.bzl", "protobuf_core_dep
 
 protobuf_core_deps()
 
-load("//bazel:proto_repositories.bzl", "gml_proto_deps")
-
-gml_proto_deps()
-
 register_toolchains("@build_stack_rules_proto//toolchain:standard")
 
 # Setup rules_js and related tooling

@@ -21,7 +21,7 @@ package gml.shared;
 
 option go_package = "gimletlabs.ai/gimlet/src/shared/services/jwtpb";
 
-import "gogoproto/gogo.proto";
+import "third_party/github.com/gogo/protobuf/gogoproto/gogo.proto";
 
 // Store the basic JWT claim information.
 message JWTClaims {

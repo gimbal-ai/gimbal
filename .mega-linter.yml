@@ -35,10 +35,16 @@ PLUGINS:
 - file://tools/linters/mega-linter-plugin-buf/buf.megalinter-descriptor.yml
 - file://tools/linters/mega-linter-plugin-cpp/cpp.megalinter-descriptor.yml
 - file://tools/linters/mega-linter-plugin-licenses/licenses.megalinter-descriptor.yml
-FILTER_REGEX_EXCLUDE: (app\/graphql-schema\.ts|pnpm-lock\.yaml|infra\/credentials\/|gazelle_python\.yaml|.*\.pb\.go)
+FILTER_REGEX_EXCLUDE: "(app\\/graphql-schema\\.ts|\
+                       pnpm-lock\\.yaml|\
+                       infra\\/credentials\\/|\
+                       gazelle_python\\.yaml|\
+                       .*\\.pb\\.go|\
+                       ^third_party\\/.*proto$)"
 
 # Linter specific configs
 CSS_STYLELINT_CONFIG_FILE: LINTER_DEFAULT
+EDITORCONFIG_EDITORCONFIG_CHECKER_FILTER_REGEX_EXCLUDE: ".mega-linter.yml"
 GO_GOLANGCI_LINT_CLI_LINT_MODE: project
 # See https://github.com/oxsecurity/megalinter/issues/2699
 TERRAFORM_TFLINT_UNSECURED_ENV_VARIABLES: GITHUB_TOKEN
