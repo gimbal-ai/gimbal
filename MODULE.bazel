@@ -86,3 +86,14 @@ pip.parse(
     requirements_lock = "//bazel/python:requirements_lock.txt",
 )
 use_repo(pip, "pip")
+
+
+oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
+
+oci.pull(
+    name = "distroless_nodejs",
+    image = "gcr.io/distroless/nodejs18-debian12",
+    digest = "sha256:9bd25e5c7d3a5e7d88d5f3ddcc6ce1fe03b96e515dfd5d3bc3ab6cdab70d3c2f",
+    platforms = ["linux/amd64"],
+)
+use_repo(oci, "distroless_nodejs")

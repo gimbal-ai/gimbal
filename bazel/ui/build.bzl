@@ -76,9 +76,10 @@ if [[ -d .next/standalone ]]; then
 
     # pkg_tar doesn't support preserving symlinks so we create the tar here.
     mkdir out
-    mv .next/standalone/* out
-    mv .next/standalone/.next out
-    mv .next/static out/.next/static
+    mkdir out/app
+    mv .next/standalone/* out/app
+    mv .next/standalone/.next out/app
+    mv .next/static out/app/.next/static
     tar -C out -cf out.tar .
 fi
 """
