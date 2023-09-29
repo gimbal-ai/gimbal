@@ -64,7 +64,6 @@ gml_oci_image(
         "@platforms//cpu:x86_64": "amd64",
     }),
     multiarch = True,
-    os = "linux",
     tars = [":cc_base_tar"],
     visibility = ["//visibility:public"],
 )
@@ -76,7 +75,6 @@ gml_oci_image(
         "@platforms//cpu:x86_64": "amd64",
     }),
     multiarch = True,
-    os = "linux",
     tars = [":cc_base_debug_tar"],
     visibility = ["//visibility:public"],
 )

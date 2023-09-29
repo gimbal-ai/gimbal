@@ -23,6 +23,10 @@ def _gml_oci_image(name, multiarch = False, **kwargs):
     if native.package_name():
         image_name = native.package_name() + "/" + image_name
 
+    if "base" not in kwargs:
+        default_arg(kwargs, "os", "linux")
+        default_arg(kwargs, "architecture", "amd64")
+
     oci_image(
         name = name,
         **kwargs
@@ -42,14 +46,16 @@ def _gml_oci_image(name, multiarch = False, **kwargs):
     kwargs["tags"] = kwargs["tags"] + ["manual"]
 
     x86_kwargs = dict(**kwargs)
-    x86_kwargs["architecture"] = "amd64"
     if "base" in x86_kwargs:
         x86_kwargs["base"] = x86_kwargs["base"] + "_x86_64"
+    else:
+        x86_kwargs["architecture"] = "amd64"
 
     arm64_kwargs = dict(**kwargs)
-    arm64_kwargs["architecture"] = "arm64"
     if "base" in arm64_kwargs:
-        arm64_kwargs["base"] = x86_kwargs["base"] + "_arm64"
+        arm64_kwargs["base"] = arm64_kwargs["base"] + "_arm64"
+    else:
+        arm64_kwargs["architecture"] = "arm64"
 
     oci_image_x86_64(
         name = name + "_x86_64",
@@ -69,14 +75,7 @@ def _gml_oci_image(name, multiarch = False, **kwargs):
         tags = ["manual"],
     )
 
-    oci_tarball(
-        name = name + ".multiarch" + ".load",
-        image = ":" + name,
-        repo_tags = [image_name + ":latest"],
-        tags = ["manual"],
-    )
-
-def _gml_cc_image(name, binary, multiarch = False, **kwargs):
+def _gml_binary_image(name, binary, multiarch = False, **kwargs):
     default_arg(kwargs, "base", "//:cc_base_image")
     default_arg(kwargs, "tars", [])
     default_arg(kwargs, "entrypoint", ["/app/" + Label(binary).name])
@@ -90,4 +89,4 @@ def _gml_cc_image(name, binary, multiarch = False, **kwargs):
     _gml_oci_image(name, multiarch = multiarch, **kwargs)
 
 gml_oci_image = _gml_oci_image
-gml_cc_image = _gml_cc_image
+gml_binary_image = _gml_binary_image
