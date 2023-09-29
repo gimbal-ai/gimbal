@@ -38,7 +38,7 @@ unstamped_xdefs = {
 go_library(
     name = "goversion",
     srcs = ["version.go"],
-    importpath = "gimletlabs.ai/gimlet/src/shared/services/goversion",
+    importpath = "gimletlabs.ai/gimlet/src/shared/goversion",
     x_defs = select({
         "//bazel:stamped": stamped_xdefs,
         "//conditions:default": unstamped_xdefs,
