@@ -11,6 +11,10 @@ linters:
   linter_url: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
   cli_lint_extra_args:
   - '--lint=warn'
-  - '--warnings=-module-docstring'
+  - '--mode=check'
+  - '--warnings=+load-on-top,+out-of-order-load,+unsorted-dict-items,+native-cc,+native-java,+native-proto,+native-py,-module-docstring,-function-docstring,-function-docstring-args,-function-docstring-header'
   cli_lint_mode: 'list_of_files'
   cli_lint_fix_arg_name: '--lint=fix'
+  cli_lint_fix_remove_args:
+  - '--lint=warn'
+  - '--mode=check'
