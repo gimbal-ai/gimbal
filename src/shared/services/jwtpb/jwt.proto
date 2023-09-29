@@ -1,0 +1,66 @@
+/*
+ * Copyright © 2023- Gimlet Labs, Inc.
+ * All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Gimlet Labs, Inc. and its suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Gimlet Labs, Inc. and its suppliers and
+ * may be covered by U.S. and Foreign Patents, patents in process,
+ * and are protected by trade secret or copyright law. Dissemination
+ * of this information or reproduction of this material is strictly
+ * forbidden unless prior written permission is obtained from
+ * Gimlet Labs, Inc.
+ *
+ * SPDX-License-Identifier: Proprietary
+ */
+
+syntax = "proto3";
+
+package gml.shared;
+
+option go_package = "gimletlabs.ai/gimlet/src/shared/services/jwtpb";
+
+import "gogoproto/gogo.proto";
+
+// Store the basic JWT claim information.
+message JWTClaims {
+  // Generic claims, as referenced at
+  // https://tools.ietf.org/html/rfc7519#section-4.1
+  string audience = 1 [ (gogoproto.jsontag) = "aud" ];
+  int64 expires_at = 2 [ (gogoproto.jsontag) = "exp" ];
+  string jti = 3 [ (gogoproto.customname) = "JTI", (gogoproto.jsontag) = "jti" ];
+  int64 issued_at = 4 [ (gogoproto.jsontag) = "iat" ];
+  string issuer = 5 [ (gogoproto.jsontag) = "iss" ];
+  int64 not_before = 6 [ (gogoproto.jsontag) = "nbf" ];
+  string subject = 7 [ (gogoproto.jsontag) = "sub" ];
+  // The permitted scopes for the jwt. For now, these scopes will just be
+  // "user", or "service".
+  repeated string scopes = 8;
+  oneof custom_claims {
+    UserJWTClaims user_claims = 9;
+    ServiceJWTClaims service_claims = 10;
+  }
+}
+
+// Claims for User JWTs.
+message UserJWTClaims {
+  // Store authorization details in the JWT token for now until we have proper policy enforcement.
+  message AuthorizationDetails {
+    // The scope of this authorization. Only org:admin and org:user are permitted right now.
+    repeated string scopes = 1;
+    repeated string org_ids = 2
+        [ (gogoproto.customname) = "OrgIDs", (gogoproto.jsontag) = "orgIDs" ];
+  }
+  // The GML user ID.
+  string user_id = 1 [ (gogoproto.customname) = "UserID", (gogoproto.jsontag) = "userID" ];
+  // The email of the user.
+  string email = 2;
+  // The list of authorizations for this user.
+  repeated AuthorizationDetails authorizations = 3;
+}
+
+// Claims for Service JWTs.
+message ServiceJWTClaims {
+  string service_id = 1 [ (gogoproto.customname) = "ServiceID", (gogoproto.jsontag) = "serviceID" ];
+}
