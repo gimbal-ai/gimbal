@@ -15,24 +15,28 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-package env_test
+package utils_test
 
 import (
 	"testing"
 
-	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 
-	"gimletlabs.ai/gimlet/src/shared/services/env"
+	"gimletlabs.ai/gimlet/src/shared/services/jwtpb"
+	"gimletlabs.ai/gimlet/src/shared/services/utils"
 )
 
-func TestEnv_New(t *testing.T) {
-	viper.Set("jwt_signing_key", "the-jwt-key")
-	viper.Set("pod_name", "thepod")
+func TestGetClaimsType(t *testing.T) {
+	p := getStandardClaimsPb()
+	p.Scopes = []string{"user"}
+	// User claims.
+	userClaims := &jwtpb.UserJWTClaims{
+		UserID: "user_id",
+		Email:  "user@email.com",
+	}
+	p.CustomClaims = &jwtpb.JWTClaims_UserClaims{
+		UserClaims: userClaims,
+	}
 
-	env := env.New("aud", "svc")
-	assert.Equal(t, "the-jwt-key", env.JWTSigningKey())
-	assert.Equal(t, "aud", env.Audience())
-	assert.Equal(t, "svc", env.ServiceName())
-	assert.Equal(t, "thepod", env.PodName())
+	assert.Equal(t, utils.UserClaimType, utils.GetClaimsType(p))
 }

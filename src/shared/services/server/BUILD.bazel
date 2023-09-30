@@ -1,0 +1,79 @@
+load("@gml//bazel:gml_build_system.bzl", "gml_go_test")
+
+# Copyright © 2023- Gimlet Labs, Inc.
+# All Rights Reserved.
+#
+# NOTICE:  All information contained herein is, and remains
+# the property of Gimlet Labs, Inc. and its suppliers,
+# if any.  The intellectual and technical concepts contained
+# herein are proprietary to Gimlet Labs, Inc. and its suppliers and
+# may be covered by U.S. and Foreign Patents, patents in process,
+# and are protected by trade secret or copyright law. Dissemination
+# of this information or reproduction of this material is strictly
+# forbidden unless prior written permission is obtained from
+# Gimlet Labs, Inc.
+#
+# SPDX-License-Identifier: Proprietary
+
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "server",
+    srcs = [
+        "errors.go",
+        "grpc_server.go",
+        "logging.go",
+        "sentry.go",
+        "server.go",
+        "service_flags.go",
+        "tls.go",
+    ],
+    importpath = "gimletlabs.ai/gimlet/src/shared/services/server",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//src/shared/goversion",
+        "//src/shared/services/authcontext",
+        "//src/shared/services/env",
+        "//src/shared/services/handler",
+        "//src/shared/services/sentryhook",
+        "@com_github_getsentry_sentry_go//:sentry-go",
+        "@com_github_grpc_ecosystem_go_grpc_middleware_v2//:go-grpc-middleware",
+        "@com_github_grpc_ecosystem_go_grpc_middleware_v2//interceptors/auth",
+        "@com_github_grpc_ecosystem_go_grpc_middleware_v2//interceptors/logging",
+        "@com_github_sercand_kuberesolver_v5//:kuberesolver",
+        "@com_github_sirupsen_logrus//:logrus",
+        "@com_github_spf13_pflag//:pflag",
+        "@com_github_spf13_viper//:viper",
+        "@com_github_zenazn_goji//web/mutil",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//credentials",
+        "@org_golang_google_grpc//credentials/insecure",
+        "@org_golang_google_grpc//encoding/gzip",
+        "@org_golang_google_grpc//reflection",
+        "@org_golang_google_grpc//status",
+        "@org_golang_x_net//http2",
+        "@org_golang_x_net//http2/h2c",
+    ],
+)
+
+gml_go_test(
+    name = "server_test",
+    srcs = ["grpc_server_test.go"],
+    deps = [
+        ":server",
+        "//src/shared/services/env",
+        "//src/shared/testing/testpb:testpb_go_proto",
+        "//src/shared/testing/testutils",
+        "@com_github_spf13_viper//:viper",
+        "@com_github_stretchr_testify//assert",
+        "@com_github_stretchr_testify//require",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//credentials/insecure",
+        "@org_golang_google_grpc//metadata",
+        "@org_golang_google_grpc//status",
+        "@org_golang_google_grpc//test/bufconn",
+        "@org_golang_x_sync//errgroup",
+    ],
+)
