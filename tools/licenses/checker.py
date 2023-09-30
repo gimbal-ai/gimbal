@@ -150,6 +150,8 @@ matchers = [
             re.compile(r"^.*\.(sky)$"),
             # Ruby.
             re.compile(r"^.*\.(rb)$"),
+            # Terraform.
+            re.compile(r"^.*\.(tf)$"),
         ],
         "wrapper": sh_style_license_wrapper,
     },
