@@ -17,7 +17,7 @@
 bazel_binary=/opt/gml_dev/bin/bazelisk
 
 # This script is use to add customizations to our Bazel command. It currently does the following:
-#    * Adds a --config=clang by default if it's missing from the command line.
+#    * Adds a --config=x86_64_sysroot by default if it's missing from the command line.
 # Check if this is this gimlet repo, otherwise just passthrough to bazel_binary.
 if ! grep 'workspace(name\s=\s"gml")' "$(git rev-parse --show-toplevel 2> /dev/null)/WORKSPACE" &> /dev/null; then
   ${bazel_binary} "$@"
@@ -28,9 +28,9 @@ fi;
 config=
 # Check if comamnd is either build, test, run.
 if [[ "$1" == "build" || "$1" == "test" || "$1" == "run" ]]; then
-  # Check and see if a config parameter is specified, otherwise set the config to be the default "clang".
+  # Check and see if a config parameter is specified, otherwise set the config to be the default "x86_64_sysroot".
   if [[ ! "$@" =~ "--config" ]]; then
-    config="--config=clang"
+    config="--config=x86_64_sysroot"
   fi;
 fi;
 
