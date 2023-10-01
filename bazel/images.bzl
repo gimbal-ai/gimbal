@@ -33,9 +33,10 @@ def _gml_oci_image(name, multiarch = False, **kwargs):
     )
 
     oci_tarball(
-        name = name + ".load",
+        name = name + ".tar",
         image = ":" + name,
-        repo_tags = [image_name + ":latest"],
+        # Workaround to match how Skaffold tags the image after building it.
+        repo_tags = ["bazel/" + native.package_name() + ":" + image_name, image_name + ":latest"],
         tags = ["manual"],
     )
 
