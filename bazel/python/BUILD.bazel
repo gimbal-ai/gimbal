@@ -14,12 +14,14 @@
 # SPDX-License-Identifier: Proprietary
 
 load("@rules_python//python:pip.bzl", "compile_pip_requirements")
+load("//bazel:gml_build_system.bzl", "no_sysroot")
 
 compile_pip_requirements(
     name = "requirements",
     extra_args = ["--allow-unsafe"],
     requirements_in = "requirements.in",
     requirements_txt = "requirements_lock.txt",
+    target_compatible_with = no_sysroot(),
 )
 
 exports_files([

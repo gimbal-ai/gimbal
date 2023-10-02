@@ -18,6 +18,7 @@ load("@pip//:requirements.bzl", "all_whl_requirements")
 load("@rules_python_gazelle_plugin//manifest:defs.bzl", "gazelle_python_manifest")
 load("@rules_python_gazelle_plugin//modules_mapping:def.bzl", "modules_mapping")
 load("//bazel:gazelle.bzl", "gazelle_runners")
+load("//bazel:gml_build_system.bzl", "no_sysroot")
 load("//bazel:images.bzl", "gml_oci_image")
 load("//bazel/cc_toolchains/sysroots:tars.bzl", "sysroot_runtime_tar", "sysroot_test_tar")
 
@@ -33,6 +34,7 @@ gazelle_python_manifest(
     requirements = [
         "//bazel/python:requirements_lock.txt",
     ],
+    target_compatible_with = no_sysroot(),
     use_pip_repository_aliases = True,
 )
 
@@ -94,5 +96,6 @@ gml_oci_image(
 
 # gazelle:map_kind go_binary gml_go_binary @gml//bazel:gml_build_system.bzl
 # gazelle:map_kind go_test gml_go_test @gml//bazel:gml_build_system.bzl
+# gazelle:map_kind py_test gml_py_test @gml//bazel:gml_build_system.bzl
 
 exports_files(["LICENSE"])
