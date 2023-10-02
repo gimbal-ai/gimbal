@@ -39,6 +39,7 @@ FILTER_REGEX_EXCLUDE: "(app\\/graphql-schema\\.ts|\
                        pnpm-lock\\.yaml|\
                        infra\\/credentials\\/|\
                        gazelle_python\\.yaml|\
+                       k8s\\/charts\\/.*\\/templates\\/.*.yaml|\
                        .*\\.pb\\.go|\
                        ^third_party\\/.*proto$)"
 
