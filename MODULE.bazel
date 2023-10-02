@@ -99,7 +99,6 @@ oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
 oci.pull(
     name = "distroless_nodejs",
     image = "gcr.io/distroless/nodejs18-debian12",
-    digest = "sha256:9bd25e5c7d3a5e7d88d5f3ddcc6ce1fe03b96e515dfd5d3bc3ab6cdab70d3c2f",
-    platforms = ["linux/amd64"],
+    digest = "sha256:64073c3dc7893a4f95f9199ed61155426be4c2623c1ac74e31968961d4a6f7b6",
 )
 use_repo(oci, "distroless_nodejs")
