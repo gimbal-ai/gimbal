@@ -79,7 +79,7 @@ func PostFlagSetupAndParse() {
 
 	// Must call after all flags are setup.
 	viper.AutomaticEnv()
-	viper.SetEnvPrefix("PL")
+	viper.SetEnvPrefix("GML")
 	viper.BindPFlags(pflag.CommandLine)
 }
 
