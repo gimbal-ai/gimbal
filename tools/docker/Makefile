@@ -80,7 +80,10 @@ upload_all_sysroots: build_all_sysroots
 
 ##############################################
 # Megalinter Build
-##############################################.PHONY: build_all_sysroots
-build_and_push_megalinter: megalinter/Dockerfile
+##############################################
+megalinter/.tflint.hcl:
+	@cp ../../.tflint.hcl $@
+.PHONY: build_and_push_megalinter
+build_and_push_megalinter: megalinter/Dockerfile megalinter/.tflint.hcl
 	@mkdir -p $(MEGALINTER_BUILD_DIR)
 	DOCKER_BUILDKIT=1 $(DOCKER) build megalinter -t $(MEGALINTER_IMAGE_TAG) --push

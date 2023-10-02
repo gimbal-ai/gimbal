@@ -20,3 +20,6 @@ RUN go install github.com/bazelbuild/buildtools/buildifier@v0.0.0-20230926111657
 RUN go install github.com/bufbuild/buf/cmd/buf@v1.26.1
 RUN go clean -modcache
 RUN go clean -cache
+
+COPY .tflint.hcl $HOME/.tflint.hcl
+RUN tflint --init
