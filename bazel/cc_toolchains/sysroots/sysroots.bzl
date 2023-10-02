@@ -20,59 +20,59 @@ load("//bazel/cc_toolchains:utils.bzl", "abi")
 
 SYSROOT_LOCATIONS = dict(
     sysroot_x86_64_glibc2_36_runtime = dict(
-        sha256 = "82ee7f077f668e87c346c06abf8f72af025c0b8f977b87b8683f009839462897",
+        sha256 = "d4e45226f3c80f7ce220038b73bb28f135e68ad3bfac481ef0f7473929dcd318",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-amd64-runtime.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231002122909/sysroot-amd64-runtime.tar.gz",
         ],
     ),
     sysroot_x86_64_glibc2_36_build = dict(
-        sha256 = "d59b143ba91a4a1b0ac1c065a83511829c55b15ec7c1f33097cc5baf11f21b54",
+        sha256 = "fc317e6fbdab470b9363e7c8f6ac8da367430aac0b614b92b74895b7e5982d7e",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-amd64-build.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231002122909/sysroot-amd64-build.tar.gz",
         ],
     ),
     sysroot_x86_64_glibc2_36_test = dict(
-        sha256 = "56d6f07598fd49734f1100d878b8575fdf90fb5300254c542be246101b5dcbb8",
+        sha256 = "d864ef1dde6ce6db69301b4d92c43b106c953aa3fd40ac35e1aa2cfd0c412a56",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-amd64-test.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231002122909/sysroot-amd64-test.tar.gz",
         ],
     ),
     sysroot_x86_64_glibc2_36_debug = dict(
-        sha256 = "b100cb158ca90cc01b858eb5056dfb4631e4ebcbeff707204131b792648ffdfb",
+        sha256 = "d13a5ba04c9185e9d4bfee43af918ef6d31286b49b5ef35a00303fb1861fc338",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-amd64-debug.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231002122909/sysroot-amd64-debug.tar.gz",
         ],
     ),
     sysroot_aarch64_glibc2_36_runtime = dict(
-        sha256 = "93e278bedfeaac3c3273d5ce7929b66870718c304ceb3d428f7f64713c9bc245",
+        sha256 = "db068f88db690f8dfa93804e8229eefbc1c4dcad1701d888c59751b3c3a14fa8",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-arm64-runtime.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231002122909/sysroot-arm64-runtime.tar.gz",
         ],
     ),
     sysroot_aarch64_glibc2_36_build = dict(
-        sha256 = "3cde5cc74c73e71a6f16cf24489300cbbbc87fd6e159110159ac9387ad533ae6",
+        sha256 = "28cd5d029c1dc0857fe1b2c2daa55aa4c50074b0473a342378e041219a197165",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-arm64-build.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231002122909/sysroot-arm64-build.tar.gz",
         ],
     ),
     sysroot_aarch64_glibc2_36_test = dict(
-        sha256 = "bc74afbb687cd736c6862c3582e6e3fbfc625db9c39ae5c07a19f1ab2b7bd53e",
+        sha256 = "b9621067e4c701337ae50da8b040205c351e5eb16600eaf7ff5269d3437ca339",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-arm64-test.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231002122909/sysroot-arm64-test.tar.gz",
         ],
     ),
     sysroot_aarch64_glibc2_36_debug = dict(
-        sha256 = "ddf3eeaea0631b8491d40d64f1b33205a234ac158957d9df29bbb99de054640b",
+        sha256 = "b785fbdc59220fa3260813c7d23b642689696a95f75a4aac509c5ca112ce2292",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-arm64-debug.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231002122909/sysroot-arm64-debug.tar.gz",
         ],
     ),
 )

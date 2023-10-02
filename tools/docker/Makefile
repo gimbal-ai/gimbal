@@ -37,7 +37,7 @@ CLANG_BUILD_DIR := "$(BUILD_DIR)/clang-$(CLANG_TAG)"
 SYSROOT_REV := $(shell date +%Y%m%d%H%M%S)
 SYSROOT_BUILD_DIR := $(BUILD_DIR)/sysroots
 SYSROOT_ARCHITECTURES := amd64 arm64
-SYSROOT_GS_PATH := gs://gimlet-dev-infra/sysroots/$(SYSROOT_REV)
+SYSROOT_GS_PATH := gs://gimlet-dev-infra-public/sysroots/$(SYSROOT_REV)
 SYSROOT_CREATOR_IMAGE_TAG := sysroot-creator-$(SYSROOT_REV)
 
 ## Megalinter custom image
