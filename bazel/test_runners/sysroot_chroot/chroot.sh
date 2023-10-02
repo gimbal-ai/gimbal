@@ -30,7 +30,7 @@ execroot="${pwd_resolved%/"${pwd_resolved##*/execroot/}"}"
 output_base="$(realpath "${execroot}/..")"
 
 top_of_repo=""
-for dir in "${output_base}"/execroot/px/*/; do
+for dir in "${output_base}"/execroot/_main/*/; do
   if [ -L "${dir%/}" ]; then
     resolved_dir=$(readlink -f "${dir%/}")
     top_of_repo="$(dirname "${resolved_dir}")"
