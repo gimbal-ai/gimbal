@@ -38,12 +38,12 @@ bazel_dep(name = "re2", version = "2021-09-01")
 
 # Remove once rules_python_gazelle_plugin releases.
 archive_override(
-    module_name="rules_python_gazelle_plugin",
-    integrity="sha256-uk9Uc5PRU5Jyxu+MPnrdjsusXI841tA8ZosnEzqSWtU=",
+    module_name = "rules_python_gazelle_plugin",
+    integrity = "sha256-uk9Uc5PRU5Jyxu+MPnrdjsusXI841tA8ZosnEzqSWtU=",
+    strip_prefix = "rules_python-48daf52bdf85d46c529a873cc1f51e08672fd6d7/gazelle",
     urls = [
         "https://github.com/bazelbuild/rules_python/archive/48daf52bdf85d46c529a873cc1f51e08672fd6d7.tar.gz",
     ],
-    strip_prefix="rules_python-48daf52bdf85d46c529a873cc1f51e08672fd6d7/gazelle",
 )
 
 # rules_go/gazelle setup
@@ -59,10 +59,15 @@ use_repo(
     "com_github_bmatcuk_doublestar",
     "com_github_getsentry_sentry_go",
     "com_github_gogo_protobuf",
+    "com_github_golang_migrate_migrate_v4",
     "com_github_gorilla_handlers",
     "com_github_graph_gophers_graphql_go",
     "com_github_grpc_ecosystem_go_grpc_middleware_v2",
+    "com_github_jackc_pgx",
+    "com_github_jmoiron_sqlx",
     "com_github_lestrrat_go_jwx",
+    "com_github_ory_dockertest_v3",
+    "com_github_prometheus_client_golang",
     "com_github_sercand_kuberesolver_v5",
     "com_github_sirupsen_logrus",
     "com_github_spf13_pflag",
@@ -93,12 +98,10 @@ pip.parse(
 )
 use_repo(pip, "pip")
 
-
 oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
-
 oci.pull(
     name = "distroless_nodejs",
-    image = "gcr.io/distroless/nodejs18-debian12",
     digest = "sha256:64073c3dc7893a4f95f9199ed61155426be4c2623c1ac74e31968961d4a6f7b6",
+    image = "gcr.io/distroless/nodejs18-debian12",
 )
 use_repo(oci, "distroless_nodejs")
