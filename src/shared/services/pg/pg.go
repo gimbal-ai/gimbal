@@ -26,7 +26,7 @@ import (
 	"time"
 
 	// This is required to get the "pgx" driver.
-	_ "github.com/jackc/pgx/stdlib"
+	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/collectors"

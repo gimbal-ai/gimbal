@@ -22,7 +22,7 @@ go_library(
     importpath = "gimletlabs.ai/gimlet/src/shared/services/pg",
     visibility = ["//visibility:public"],
     deps = [
-        "@com_github_jackc_pgx//stdlib",
+        "@com_github_jackc_pgx_v5//stdlib",
         "@com_github_jmoiron_sqlx//:sqlx",
         "@com_github_prometheus_client_golang//prometheus",
         "@com_github_prometheus_client_golang//prometheus/collectors",
