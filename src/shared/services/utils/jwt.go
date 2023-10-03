@@ -22,9 +22,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/lestrrat-go/jwx/jwa"
-	"github.com/lestrrat-go/jwx/jwk"
-	"github.com/lestrrat-go/jwx/jwt"
+	"github.com/lestrrat-go/jwx/v2/jwa"
+	"github.com/lestrrat-go/jwx/v2/jwk"
+	"github.com/lestrrat-go/jwx/v2/jwt"
 	log "github.com/sirupsen/logrus"
 
 	"gimletlabs.ai/gimlet/src/shared/services/jwtpb"
@@ -68,7 +68,7 @@ func ProtoToToken(pb *jwtpb.JWTClaims) (jwt.Token, error) {
 	return builder.Build()
 }
 
-// TokenToProto tkes a Token and converts it to a protobuf.
+// TokenToProto takes a Token and converts it to a protobuf.
 func TokenToProto(token jwt.Token) (*jwtpb.JWTClaims, error) {
 	p := &jwtpb.JWTClaims{}
 
@@ -107,11 +107,11 @@ func TokenToProto(token jwt.Token) (*jwtpb.JWTClaims, error) {
 
 // SignToken signs the token using the given signing key.
 func SignToken(token jwt.Token, signingKey string) (string, error) {
-	key, err := jwk.New([]byte(signingKey))
+	key, err := jwk.FromRaw([]byte(signingKey))
 	if err != nil {
 		return "", err
 	}
-	signed, err := jwt.Sign(token, jwa.HS256, key)
+	signed, err := jwt.Sign(token, jwt.WithKey(jwa.HS256, key))
 	if err != nil {
 		return "", err
 	}
@@ -121,12 +121,12 @@ func SignToken(token jwt.Token, signingKey string) (string, error) {
 // ParseToken parses the claim and validates that it was signed given signing key,
 // and has the expected audience.
 func ParseToken(tokenString string, signingKey string, audience string) (jwt.Token, error) {
-	key, err := jwk.New([]byte(signingKey))
+	key, err := jwk.FromRaw([]byte(signingKey))
 	if err != nil {
 		return nil, err
 	}
 	return jwt.Parse([]byte(tokenString),
-		jwt.WithVerify(jwa.HS256, key),
+		jwt.WithKey(jwa.HS256, key),
 		jwt.WithAudience(audience),
 		jwt.WithValidate(true),
 	)
@@ -202,12 +202,5 @@ func HasUserClaims(t jwt.Token) bool {
 func HasServiceClaims(t jwt.Token) bool {
 	claims := t.PrivateClaims()
 	_, ok := claims["ServiceID"]
-	return ok
-}
-
-// HasClusterClaims checks if the custom claims include ClusterClaims.
-func HasClusterClaims(t jwt.Token) bool {
-	claims := t.PrivateClaims()
-	_, ok := claims["ClusterID"]
 	return ok
 }

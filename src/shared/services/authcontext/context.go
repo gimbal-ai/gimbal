@@ -22,9 +22,9 @@ import (
 	"errors"
 	"time"
 
-	"github.com/lestrrat-go/jwx/jwa"
-	"github.com/lestrrat-go/jwx/jwk"
-	"github.com/lestrrat-go/jwx/jwt"
+	"github.com/lestrrat-go/jwx/v2/jwa"
+	"github.com/lestrrat-go/jwx/v2/jwk"
+	"github.com/lestrrat-go/jwx/v2/jwt"
 
 	"gimletlabs.ai/gimlet/src/shared/services/jwtpb"
 	"gimletlabs.ai/gimlet/src/shared/services/utils"
@@ -46,11 +46,11 @@ func New() *AuthContext {
 
 // UseJWTAuth takes a token and sets claims, etc.
 func (s *AuthContext) UseJWTAuth(signingKey string, tokenString string, audience string) error {
-	key, err := jwk.New([]byte(signingKey))
+	key, err := jwk.FromRaw([]byte(signingKey))
 	if err != nil {
 		return err
 	}
-	token, err := jwt.Parse([]byte(tokenString), jwt.WithVerify(jwa.HS256, key), jwt.WithAudience(audience), jwt.WithValidate(true))
+	token, err := jwt.Parse([]byte(tokenString), jwt.WithKey(jwa.HS256, key), jwt.WithAudience(audience), jwt.WithValidate(true))
 	if err != nil {
 		return err
 	}

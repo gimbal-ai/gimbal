@@ -65,7 +65,7 @@ use_repo(
     "com_github_grpc_ecosystem_go_grpc_middleware_v2",
     "com_github_jackc_pgx_v5",
     "com_github_jmoiron_sqlx",
-    "com_github_lestrrat_go_jwx",
+    "com_github_lestrrat_go_jwx_v2",
     "com_github_ory_dockertest_v3",
     "com_github_prometheus_client_golang",
     "com_github_sercand_kuberesolver_v5",
