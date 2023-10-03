@@ -33,8 +33,8 @@ RUN go mod init "package_satisifier" && \
 
 WORKDIR /
 COPY build_tar_for_packages.sh /scripts/build_tar_for_packages.sh
-COPY package_groups /package_groups
+COPY features /feature_yamls
 
-ENTRYPOINT ["/scripts/build_tar_for_packages.sh", "/package_satisifier/package_satisifier"]
+ENTRYPOINT ["/scripts/build_tar_for_packages.sh", "/package_satisifier/package_satisifier", "/feature_yamls"]
 
 VOLUME /build

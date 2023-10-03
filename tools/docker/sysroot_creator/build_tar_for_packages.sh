@@ -22,22 +22,68 @@ set -e
 trap exit INT
 
 if [ "$#" -lt 4 ]; then
-  echo "Usage: build_tar_for_packages.sh <package_satisifier_path> <package_database_file> <output_tar_path> <package_group_yaml>..."
-  echo -e "\t This script downloads all of the debs (along with depedencies) it finds in each package_group_yaml, and extracts them into a single 'sysroot'"
+  echo "Usage: build_tar_for_packages.sh <package_satisifier_path> <yaml_base_dir> <package_database_file> <output_tar_path> <variant> [<features>...]"
+  echo -e "\t This script downloads all of the debs (along with depedencies) it finds in the yamls for the variant and features"
+  echo -e "\t and extracts them into a single 'sysroot'"
   echo -e "\t The 'sysroot' is then tar'd and output at <output_tar_path>"
   exit 1
 fi
 
-debian_mirror="${DEBIAN_MIRROR:-http://ftp.us.debian.org/debian/}"
-
 package_satisifier_path="$(realpath "$1")"
-package_database_file="$(realpath "$2")"
-output_tar_path="$(realpath "$3")"
+yaml_base_dir="$(realpath "$2")"
+package_database_file="$(realpath "$3")"
+output_tar_path="$(realpath "$4")"
+variant="$5"
+features=("default" "${@:6}")
+
+base_paths=()
+
+case "$variant" in
+runtime | build | test)
+  base_paths+=("runtime.yaml")
+  ;;&
+build | test)
+  base_paths+=("build.yaml")
+  ;;&
+test)
+  base_paths+=("test.yaml")
+  ;;&
+esac
+
+if [[ "${#base_paths[@]}" == 0 ]]; then
+  echo "sysroot variant must be one of runtime,build,test"
+  exit 2
+fi
+
+yamls=()
+for feat in "${features[@]}"; do
+  feat_dir="${yaml_base_dir}/${feat}"
+  if [[ ! -d "${feat_dir}" ]]; then
+    echo "unknown feature '${feat}': expected directory ${feat_dir} to exist"
+    exit 2
+  fi
+  feat_yamls=()
+  for base in "${base_paths[@]}"; do
+    f="${feat_dir}/${base}"
+    if [[ -f "$f" ]]; then
+      feat_yamls+=("$f")
+    fi
+  done
+
+  if [[ "${#feat_yamls[@]}" == 0 ]]; then
+    echo "feature '${feat}' didn't match any yaml paths for variant '${variant}'"
+    exit 2
+  fi
+
+  yamls+=("${feat_yamls[@]}")
+done
+
 package_parser_args=("--pkgdb" "${package_database_file}")
-for yaml in "${@:4}"; do
+for yaml in "${yamls[@]}"; do
   package_parser_args+=("--specs" "${yaml}")
 done
 
+debian_mirror="${DEBIAN_MIRROR:-http://ftp.us.debian.org/debian/}"
 debs=()
 while read -r deb; do
   debs+=("${debian_mirror}/${deb}")
@@ -53,14 +99,14 @@ while read -r path; do
   if [ -n "${path}" ]; then
     paths_to_exclude["${path}"]=true
   fi
-done < <(yq eval -N '.path_excludes[]' "${@:4}")
+done < <(yq eval -N '.path_excludes[]' "${yamls[@]}")
 
 declare -A extra_dirs
 while read -r dir; do
   if [ -n "${dir}" ]; then
     extra_dirs["${dir}"]=true
   fi
-done < <(yq eval -N '.extra_dirs[]' "${@:4}")
+done < <(yq eval -N '.extra_dirs[]' "${yamls[@]}")
 
 relativize_symlinks() {
   dir="$1"

@@ -22,17 +22,16 @@ set -e
 output_dir="$(realpath "$1")"
 docker_image_tag="$2"
 
+# For each arch and variant a sysroot with only default features is produced.
+# To enable sysroots with extra features see extra_sysroots below.
 architectures=("amd64" "arm64")
-variants=("runtime" "build" "test" "debug")
+variants=("runtime" "build" "test")
 
-# shellcheck disable=SC2034
-files_runtime=("/package_groups/runtime.yaml")
-# shellcheck disable=SC2034
-files_build=("/package_groups/runtime.yaml" "/package_groups/build.yaml")
-# shellcheck disable=SC2034
-files_test=("/package_groups/runtime.yaml" "/package_groups/build.yaml" "/package_groups/test.yaml")
-# shellcheck disable=SC2034
-files_debug=("/package_groups/runtime.yaml" "/package_groups/build.yaml" "/package_groups/test.yaml" "/package_groups/debug.yaml")
+extra_sysroots=(
+  # Extra sysroots to produce in 'arch variant feat1 feat2' format.
+  "amd64 test debug"
+  "arm64 test debug"
+)
 
 pkgdb_dir="$(mktemp -d)"
 
@@ -45,18 +44,34 @@ download_package_index() {
 build_sysroot() {
   arch="$1"
   variant="$2"
-  # shellcheck disable=SC1087
-  file_varname="files_$variant[@]"
-  package_files=("${!file_varname}")
-  docker run -it -v "${output_dir}":/build -v "${pkgdb_dir}":/pkgdb "${docker_image_tag}" "/pkgdb/${arch}" "/build/sysroot-${arch}-${variant}.tar.gz" "${package_files[@]}"
+  features=("${@:3}")
+  sysroot_name="sysroot-${arch}-${variant}"
+  for feat in "${features[@]}"; do
+    sysroot_name="${sysroot_name}-${feat}"
+  done
+  echo "Building ${output_dir}/${sysroot_name}.tar.gz"
+  docker run -it -v "${output_dir}":/build \
+    -v "${pkgdb_dir}":/pkgdb \
+    "${docker_image_tag}" \
+    "/pkgdb/${arch}" \
+    "/build/${sysroot_name}.tar.gz" \
+    "${variant}" \
+    "${features[@]}"
 }
 
 for arch in "${architectures[@]}"; do
   download_package_index "${arch}"
   for variant in "${variants[@]}"; do
-    echo "Building ${output_dir}/sysroot-${arch}-${variant}.tar.gz"
     build_sysroot "${arch}" "${variant}"
   done
+done
+
+for config in "${extra_sysroots[@]}"; do
+  read -ra config_arr <<<"$config"
+  arch="${config_arr[0]}"
+  variant="${config_arr[1]}"
+  features=("${config_arr[@]:2}")
+  build_sysroot "${arch}" "${variant}" "${features[@]}"
 done
 
 rm -rf "${pkgdb_dir:?}"
