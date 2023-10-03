@@ -49,7 +49,7 @@ func init() {
 func setupCommonFlags() {
 	pflag.Bool("disable_ssl", false, "Disable SSL on the server")
 	pflag.Bool("disable_grpc_auth", false, "Disable auth on the GRPC server")
-	pflag.String("tls_ca_cert", "../certs/ca.crt", "The CA cert.")
+	pflag.String("tls_ca_cert", "/certs/ca.crt", "The CA cert.")
 	pflag.String("jwt_signing_key", "", "The signing key used for JWTs")
 	pflag.String("pod_name", "<unknown>", "The pod name")
 	pflag.Bool("version", false, "Print the version and quit.")
@@ -65,8 +65,8 @@ func SetupService(serviceName string, servicePortBase uint) {
 	commonSetup.Do(setupCommonFlags)
 	pflag.Uint("http2_port", servicePortBase, fmt.Sprintf("The port to run the %s HTTP/2 server", serviceName))
 	pflag.Uint("metrics_http_port", servicePortBase+1, fmt.Sprintf("The port to run the %s HTTP metrics server", serviceName))
-	pflag.String("server_tls_key", "../certs/server.key", "The TLS key to use.")
-	pflag.String("server_tls_cert", "../certs/server.crt", "The TLS certificate to use.")
+	pflag.String("server_tls_key", "/certs/tls.key", "The TLS key to use.")
+	pflag.String("server_tls_cert", "/certs/tls.crt", "The TLS certificate to use.")
 
 	log.WithField("service", serviceName).
 		WithField("version", version.GetVersion().ToString()).
@@ -117,8 +117,8 @@ func CheckServiceFlags() {
 // SetupSSLClientFlags sets up SSL client specific flags.
 func SetupSSLClientFlags() {
 	commonSetup.Do(setupCommonFlags)
-	pflag.String("client_tls_key", "../certs/client.key", "The TLS key to use.")
-	pflag.String("client_tls_cert", "../certs/client.crt", "The TLS certificate to use.")
+	pflag.String("client_tls_key", "/certs/tls.key", "The TLS key to use.")
+	pflag.String("client_tls_cert", "/certs/tls.crt", "The TLS certificate to use.")
 }
 
 // CheckSSLClientFlags checks SSL client specific flags.
