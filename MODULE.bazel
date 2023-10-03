@@ -61,6 +61,7 @@ use_repo(
     "com_github_gogo_protobuf",
     "com_github_golang_migrate_migrate_v4",
     "com_github_gorilla_handlers",
+    "com_github_gorilla_sessions",
     "com_github_graph_gophers_graphql_go",
     "com_github_grpc_ecosystem_go_grpc_middleware_v2",
     "com_github_jackc_pgx_v5",
