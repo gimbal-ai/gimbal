@@ -25,25 +25,25 @@ import (
 	"gimletlabs.ai/gimlet/src/shared/services/utils"
 )
 
-// TestOrgID is a test org valid UUID
+// TestOrgID is a test org valid UUID.
 const TestOrgID string = "6ba7b810-9dad-11d1-80b4-00c04fd430c8"
 
-// TestUserID is a test user valid UUID
+// TestUserID is a test user valid UUID.
 const TestUserID string = "7ba7b810-9dad-11d1-80b4-00c04fd430c8"
 
 // GenerateTestClaimsWithDuration generates valid test user claims for a specified duration.
-func GenerateTestClaimsWithDuration(t *testing.T, duration time.Duration, email string) *jwtpb.JWTClaims {
+func GenerateTestClaimsWithDuration(_ *testing.T, duration time.Duration, email string) *jwtpb.JWTClaims {
 	claims := utils.GenerateJWTForUser(TestUserID, TestOrgID, email, time.Now().Add(duration), "gml.ai", false)
 	return claims
 }
 
 // GenerateTestServiceClaims generates valid test service claims for a specified duration.
-func GenerateTestServiceClaims(t *testing.T, service string) *jwtpb.JWTClaims {
+func GenerateTestServiceClaims(_ *testing.T, service string) *jwtpb.JWTClaims {
 	claims := utils.GenerateJWTForService(service, "gml.ai")
 	return claims
 }
 
-// GenerateTestClaims generates valid test user claims valid for 60 minutes
+// GenerateTestClaims generates valid test user claims valid for 60 minutes.
 func GenerateTestClaims(t *testing.T) *jwtpb.JWTClaims {
 	return GenerateTestClaimsWithDuration(t, time.Minute*60, "test@test.com")
 }

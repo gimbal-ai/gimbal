@@ -26,7 +26,6 @@ import (
 	"os"
 	"sync"
 
-	version "gimletlabs.ai/gimlet/src/shared/goversion"
 	"github.com/sercand/kuberesolver/v5"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/pflag"
@@ -35,11 +34,11 @@ import (
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/encoding/gzip"
+
+	version "gimletlabs.ai/gimlet/src/shared/goversion"
 )
 
-var (
-	commonSetup sync.Once
-)
+var commonSetup sync.Once
 
 func init() {
 	// Enable the k8s DNS resolver to lookup services.
@@ -80,7 +79,7 @@ func PostFlagSetupAndParse() {
 	// Must call after all flags are setup.
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("GML")
-	viper.BindPFlags(pflag.CommandLine)
+	_ = viper.BindPFlags(pflag.CommandLine)
 }
 
 // CheckServiceFlags checks to make sure flag values are valid.

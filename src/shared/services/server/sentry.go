@@ -24,13 +24,13 @@ import (
 	"runtime"
 	"time"
 
-	version "gimletlabs.ai/gimlet/src/shared/goversion"
-	"gimletlabs.ai/gimlet/src/shared/services/sentryhook"
+	"github.com/getsentry/sentry-go"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 
-	"github.com/getsentry/sentry-go"
+	version "gimletlabs.ai/gimlet/src/shared/goversion"
+	"gimletlabs.ai/gimlet/src/shared/services/sentryhook"
 )
 
 func init() {

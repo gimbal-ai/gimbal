@@ -22,14 +22,13 @@ package server_test
 import (
 	"context"
 	"fmt"
-	"gimletlabs.ai/gimlet/src/shared/testing/testutils"
-	"golang.org/x/sync/errgroup"
 	"net"
 	"testing"
 
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
@@ -40,6 +39,7 @@ import (
 	"gimletlabs.ai/gimlet/src/shared/services/env"
 	"gimletlabs.ai/gimlet/src/shared/services/server"
 	ping "gimletlabs.ai/gimlet/src/shared/testing/testpb"
+	"gimletlabs.ai/gimlet/src/shared/testing/testutils"
 )
 
 const bufSize = 1024 * 1024
@@ -51,11 +51,11 @@ func init() {
 
 type testserver struct{}
 
-func (s *testserver) Ping(ctx context.Context, in *ping.PingRequest) (*ping.PingResponse, error) {
+func (s *testserver) Ping(_ context.Context, _ *ping.PingRequest) (*ping.PingResponse, error) {
 	return &ping.PingResponse{Reply: "test reply"}, nil
 }
 
-func (s *testserver) PingServerStream(in *ping.PingServerStreamRequest, srv ping.PingService_PingServerStreamServer) error {
+func (s *testserver) PingServerStream(_ *ping.PingServerStreamRequest, srv ping.PingService_PingServerStreamServer) error {
 	err := srv.Send(&ping.PingServerStreamResponse{Reply: "test reply"})
 	if err != nil {
 		return err
