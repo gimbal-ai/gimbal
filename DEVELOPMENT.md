@@ -1,4 +1,9 @@
 # Development Environment
+> **Notice:**
+> gcloud auth is configured to log you out every 24h. You must re-login every 24h
+> ```
+> gcloud auth login
+> ```
 
 ## Running the Control Plane
 
@@ -13,8 +18,11 @@ gcloud container clusters get-credentials dev-cluster --zone us-west1-a --projec
 ```
 skaffold config set default-repo us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts
 ```
-
-3. Run skaffold to build and deploy the services in your namespace:
+3. Configure docker to use gcloud for auth:
+```
+gcloud auth configure-docker us-docker.pkg.dev
+```
+4. Run skaffold to build and deploy the services in your namespace:
 ```
 skaffold run -f skaffold/skaffold_controlplane.yaml -n <YOUR_USERNAME> -p dev
 ```
