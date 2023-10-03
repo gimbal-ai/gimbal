@@ -15,31 +15,31 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-load("//bazel/cc_toolchains:clang.bzl", "clang_register_toolchain")
+load("//bazel/cc_toolchains:clang.bzl", "clang_toolchain")
 
-def _gml_register_cc_toolchains():
-    clang_register_toolchain(
+def _gml_create_cc_toolchains():
+    clang_toolchain(
         name = "clang-15.0-x86_64",
         toolchain_repo = "com_llvm_clang_15",
         target_arch = "x86_64",
         clang_version = "15.0.6",
         libc_version = "glibc_host",
     )
-    clang_register_toolchain(
+    clang_toolchain(
         name = "clang-15.0-x86_64-glibc2.36-sysroot",
         toolchain_repo = "com_llvm_clang_15",
         target_arch = "x86_64",
         clang_version = "15.0.6",
         libc_version = "glibc2_36",
     )
-    clang_register_toolchain(
+    clang_toolchain(
         name = "clang-15.0-aarch64-glibc2.36-sysroot",
         toolchain_repo = "com_llvm_clang_15",
         target_arch = "aarch64",
         clang_version = "15.0.6",
         libc_version = "glibc2_36",
     )
-    clang_register_toolchain(
+    clang_toolchain(
         name = "clang-15.0-exec",
         toolchain_repo = "com_llvm_clang_15",
         target_arch = "x86_64",
@@ -48,8 +48,4 @@ def _gml_register_cc_toolchains():
         use_for_host_tools = True,
     )
 
-    native.register_toolchains(
-        "//bazel/cc_toolchains:cc-toolchain-gcc-x86_64-gnu",
-    )
-
-gml_register_cc_toolchains = _gml_register_cc_toolchains
+gml_create_cc_toolchains = _gml_create_cc_toolchains

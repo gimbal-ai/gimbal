@@ -50,7 +50,7 @@ toolchain(
     ],
     target_settings = [
         "@gml//bazel/cc_toolchains:libc_version_{libc_version}",
-    ],
+    ] + {extra_target_settings},
     toolchain = ":sysroot_toolchain",
     toolchain_type = "@gml//bazel/cc_toolchains/sysroots/runtime:toolchain_type",
     visibility = ["//visibility:public"],

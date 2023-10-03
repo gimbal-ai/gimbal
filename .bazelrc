@@ -163,6 +163,9 @@ coverage --copt -DGML_COVERAGE
 coverage --test_tag_filters=-no_coverage,-disabled,-no_gcc
 coverage --action_env=COVERAGE_GCOV_OPTIONS=-b
 
+# sysroot configs
+import %workspace%/bazel/cc_toolchains/sysroots/.bazelrc
+
 try-import %workspace%/bes.bazelrc
 
 # github.bazelrc is copied from ci/github/bazelrc by the github action workers during the build.

@@ -8,11 +8,19 @@ load("//bazel:repositories.bzl", "gml_cc_toolchain_deps", "gml_deps")
 
 gml_cc_toolchain_deps()
 
-load("//bazel/cc_toolchains/sysroots:sysroots.bzl", "gml_sysroot_deps")
+load("//bazel/cc_toolchains/sysroots:create_sysroots.bzl", "create_sysroots")
 
-gml_sysroot_deps()
+create_sysroots()
 
-load("//bazel/cc_toolchains:toolchains.bzl", "gml_register_cc_toolchains")
+load("//bazel/cc_toolchains/sysroots:register_sysroots.bzl", "register_sysroots")
+
+register_sysroots()
+
+load("//bazel/cc_toolchains:create_toolchains.bzl", "gml_create_cc_toolchains")
+
+gml_create_cc_toolchains()
+
+load("//bazel/cc_toolchains:register_toolchains.bzl", "gml_register_cc_toolchains")
 
 gml_register_cc_toolchains()
 

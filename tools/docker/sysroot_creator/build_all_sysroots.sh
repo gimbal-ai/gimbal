@@ -25,7 +25,7 @@ sysroot_download_url="$3"
 
 tot="$(git rev-parse --show-toplevel)"
 
-libc_version="glibc2.36"
+libc_version="glibc2_36"
 
 # For each arch and variant a sysroot with only default features is produced.
 # To enable sysroots with extra features see extra_sysroots below.
@@ -34,9 +34,31 @@ variants=("runtime" "build" "test")
 
 extra_sysroots=(
   # Extra sysroots to produce in 'arch variant feat1 feat2' format.
-  "amd64 test debug"
-  "arm64 test debug"
+  "x86_64 test debug"
+  "aarch64 test debug"
 )
+
+# collect features that are enabled for each variant in any extra_sysroot.
+# This is used to ensure the featureless versions of the variants are not used
+# when a feature is enabled.
+declare -A variant_features
+for config in "${extra_sysroots[@]}"; do
+  read -ra config_arr <<<"$config"
+  arch="${config_arr[0]}"
+  variant="${config_arr[1]}"
+  features=("${config_arr[@]:2}")
+
+  var_feats="${variant_features["${variant}"]}"
+  for feat in "${features[@]}"; do
+    if ! grep "${feat}" < <(echo "${var_feats}") &>/dev/null; then
+      if [[ -n "${var_feats}" ]]; then
+        var_feats="${var_feats} "
+      fi
+      var_feats="${var_feats}${feat}"
+    fi
+  done
+  variant_features["${variant}"]="${var_feats}"
+done
 
 pkgdb_dir="$(mktemp -d)"
 
@@ -52,9 +74,9 @@ debian_arch() {
 }
 
 download_package_index() {
-  arch="$(debian_arch "$1")"
-  curl -fL "http://ftp.debian.org/debian/dists/bookworm/main/binary-${arch}/Packages.xz" |
-    xz --decompress >"${pkgdb_dir}/${arch}"
+  deb_arch="$(debian_arch "$1")"
+  curl -fL "http://ftp.debian.org/debian/dists/bookworm/main/binary-${deb_arch}/Packages.xz" |
+    xz --decompress >"${pkgdb_dir}/${deb_arch}"
 }
 
 sysroot_filename() {
@@ -73,7 +95,7 @@ sysroot_name() {
   arch="$1"
   variant="$2"
   features=("${@:3}")
-  name="sysroot_${arch}_glibc2_36_${variant}"
+  name="sysroot_${arch}_${libc_version}_${variant}"
   for feat in "${features[@]}"; do
     name="${name}_${feat}"
   done
@@ -89,7 +111,7 @@ build_sysroot() {
   docker run -it -v "${output_dir}":/build \
     -v "${pkgdb_dir}":/pkgdb \
     "${docker_image_tag}" \
-    "/pkgdb/${arch}" \
+    "/pkgdb/$(debian_arch "${arch}")" \
     "/build/${fname}" \
     "${variant}" \
     "${features[@]}"
@@ -145,15 +167,32 @@ gen_bzl() {
     fi
     feat_list="${feat_list}\"${feat}\""
   done
+  disabled_for_features=""
+  for feat in ${variant_features["${variant}"]}; do
+    found="false"
+    for f in "${features[@]}"; do
+      if [[ "$f" == "${feat}" ]]; then
+        found="true"
+      fi
+    done
+    if [[ "${found}" != "true" ]]; then
+      if [[ -n "${disabled_for_features}" ]]; then
+        disabled_for_features="${disabled_for_features}, "
+      fi
+      disabled_for_features="${disabled_for_features}\"${feat}\""
+    fi
+  done
 
   cat <<EOF >>"${create_sysroots_bzl}"
     sysroot_repo(
         name = "${name}",
         target_arch = "${arch}",
+        variant = "${variant}",
         libc_version = "${libc_version}",
         sha256 = "${sha}",
         urls = ["${sysroot_download_url}/${fname}"],
-        features = [${feat_list}],
+        sysroot_features = [${feat_list}],
+        disabled_for_features = [${disabled_for_features}],
     )
 EOF
 
@@ -215,6 +254,12 @@ for feat in "${!uniq_features[@]}"; do
         name = "sysroot_${feat}_enabled",
         flag_values = {
             ":sysroot_enable_${feat}": "True",
+        },
+    )
+    native.config_setting(
+        name = "sysroot_${feat}_disabled",
+        flag_values = {
+            ":sysroot_enable_${feat}": "False",
         },
     )
 EOF

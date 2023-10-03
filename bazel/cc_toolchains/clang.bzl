@@ -18,7 +18,7 @@
 load("//bazel:repository_locations.bzl", "REPOSITORY_LOCATIONS")
 load("//bazel/cc_toolchains:settings.bzl", "HOST_GLIBC_VERSION")
 load("//bazel/cc_toolchains:utils.bzl", "abi")
-load("//bazel/cc_toolchains/sysroots:sysroots.bzl", "sysroot_repo_name")
+load("//bazel/cc_toolchains/sysroots:sysroots.bzl", "only_register_if_not_enabled", "sysroot_repo_name")
 
 def _download_repo(rctx, repo_name, output):
     loc = REPOSITORY_LOCATIONS[repo_name]
@@ -30,6 +30,12 @@ def _download_repo(rctx, repo_name, output):
     )
 
 def _clang_toolchain_impl(rctx):
+    if not only_register_if_not_enabled(rctx, rctx.attr.sysroot_features):
+        rctx.file("BUILD.bazel")
+
+        # Only download the toolchain if the sysroot's feature flags are enabled.
+        return
+
     # Unfortunately, we have to download any files that the toolchain uses within this rule.
     toolchain_path = "toolchain"
     _download_repo(rctx, rctx.attr.toolchain_repo, toolchain_path)
@@ -44,7 +50,7 @@ def _clang_toolchain_impl(rctx):
     libcxx_build = rctx.read(Label("@gml//bazel/cc_toolchains/clang:libcxx.BUILD"))
     toolchain_files_build = rctx.read(Label("@gml//bazel/cc_toolchains/clang:toolchain_files.BUILD"))
 
-    sysroot_repo = sysroot_repo_name(rctx.attr.target_arch, rctx.attr.libc_version, "build")
+    sysroot_repo = sysroot_repo_name(rctx.attr.target_arch, rctx.attr.libc_version, "build", rctx.attr.sysroot_features)
     sysroot_path = ""
     sysroot_include_prefix = ""
     if sysroot_repo:
@@ -96,33 +102,11 @@ clang_toolchain = repository_rule(
     attrs = dict(
         toolchain_repo = attr.string(mandatory = True),
         target_arch = attr.string(mandatory = True),
-        libc_version = attr.string(mandatory = True),
-        host_arch = attr.string(mandatory = True),
-        host_libc_version = attr.string(mandatory = True),
+        libc_version = attr.string(default = HOST_GLIBC_VERSION),
+        host_arch = attr.string(default = "x86_64"),
+        host_libc_version = attr.string(default = HOST_GLIBC_VERSION),
         clang_version = attr.string(mandatory = True),
-        use_for_host_tools = attr.bool(mandatory = True),
+        use_for_host_tools = attr.bool(default = False),
+        sysroot_features = attr.string_list(default = []),
     ),
 )
-
-def _clang_register_toolchain(
-        name,
-        toolchain_repo,
-        target_arch,
-        clang_version,
-        libc_version = HOST_GLIBC_VERSION,
-        host_arch = "x86_64",
-        host_libc_version = HOST_GLIBC_VERSION,
-        use_for_host_tools = False):
-    clang_toolchain(
-        name = name,
-        toolchain_repo = toolchain_repo,
-        target_arch = target_arch,
-        libc_version = libc_version,
-        host_arch = host_arch,
-        host_libc_version = host_libc_version,
-        clang_version = clang_version,
-        use_for_host_tools = use_for_host_tools,
-    )
-    native.register_toolchains("@{name}//:toolchain".format(name = name))
-
-clang_register_toolchain = _clang_register_toolchain
