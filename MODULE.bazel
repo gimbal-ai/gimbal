@@ -61,6 +61,7 @@ use_repo(
     "com_github_gofrs_uuid_v5",
     "com_github_gogo_protobuf",
     "com_github_golang_migrate_migrate_v4",
+    "com_github_golang_mock",
     "com_github_gorilla_handlers",
     "com_github_gorilla_sessions",
     "com_github_graph_gophers_graphql_go",
