@@ -24,6 +24,8 @@ option go_package = "gimletlabs.ai/gimlet/src/controlplane/directory/directorypb
 import "third_party/github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "google/protobuf/wrappers.proto";
 
+import "src/api/proto/uuidpb/uuid.proto";
+
 // Service for managing the user directory, including the user's profile information.
 service UserDirectoryService {
   // Creates a new user in the system.
@@ -36,7 +38,7 @@ service UserDirectoryService {
   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
 }
 
-// Service for managing the org directory, including adding user management within an org.
+// Service for managing the org directory.  including adding user management within an org.
 service OrgDirectoryService {
   // Creates a new org in the system.
   rpc CreateOrg(CreateOrgRequest) returns (CreateOrgResponse);
@@ -44,7 +46,10 @@ service OrgDirectoryService {
   rpc GetOrg(GetOrgRequest) returns (GetOrgResponse);
   // Deletes the org with the given ID from the system.
   rpc DeleteOrg(DeleteOrgRequest) returns (DeleteOrgResponse);
+}
 
+// Service for managing users in an org.
+service OrgUserManagementService {
   // Adds a user to an org.
   rpc AddUserToOrg(AddUserToOrgRequest) returns (AddUserToOrgResponse);
   // Removes a user from an org.
@@ -77,19 +82,19 @@ message CreateUserRequest {
 // Response for creating a user in the system.
 message CreateUserResponse {
   // The ID of the user created.
-  string id = 1 [ (gogoproto.customname) = "ID" ];
+  gml.uuidpb.UUID id = 1 [ (gogoproto.customname) = "ID" ];
 }
 
 // Request to get a user's info, given their ID.
 message GetUserRequest {
   // The ID of the user to fetch.
-  string id = 1 [ (gogoproto.customname) = "ID" ];
+  gml.uuidpb.UUID id = 1 [ (gogoproto.customname) = "ID" ];
 }
 
 // Response to get a user's info.
 message GetUserResponse {
   // The ID of the user.
-  string id = 1 [ (gogoproto.customname) = "ID" ];
+  gml.uuidpb.UUID id = 1 [ (gogoproto.customname) = "ID" ];
   // The information about the user.
   UserInfo user_info = 2;
 }
@@ -97,7 +102,7 @@ message GetUserResponse {
 // Request to update a user's info.
 message UpdateUserRequest {
   // The ID of the user to update.
-  string id = 1 [ (gogoproto.customname) = "ID" ];
+  gml.uuidpb.UUID id = 1 [ (gogoproto.customname) = "ID" ];
   // The display picture of the user.
   google.protobuf.StringValue display_picture = 2;
 }
@@ -108,7 +113,7 @@ message UpdateUserResponse {}
 // Request to delete a user from the system.
 message DeleteUserRequest {
   // The ID of the user to delete.
-  string id = 1 [ (gogoproto.customname) = "ID" ];
+  gml.uuidpb.UUID id = 1 [ (gogoproto.customname) = "ID" ];
 }
 
 // Response to deleting a user from the system.
@@ -123,24 +128,24 @@ message CreateOrgRequest {
 // Response to creating an org in the system.
 message CreateOrgResponse {
   // The ID of the org that has been created.
-  string id = 1 [ (gogoproto.customname) = "ID" ];
+  gml.uuidpb.UUID id = 1 [ (gogoproto.customname) = "ID" ];
 }
 
 // Request to fetch information about an org in the system.
 message GetOrgRequest {
-  string id = 1 [ (gogoproto.customname) = "ID" ];
+  gml.uuidpb.UUID id = 1 [ (gogoproto.customname) = "ID" ];
 }
 
 // OrgInfo contains standard information about an org in the system.
 message OrgInfo {
-  // The name of the org.
-  string org_name = 1;
+  // The name of the org. This is globally unique across the whole system.
+  gml.uuidpb.UUID org_name = 1;
 }
 
 // Response to getting information about an org in the system.
 message GetOrgResponse {
   // The ID of the organization.
-  string id = 1 [ (gogoproto.customname) = "ID" ];
+  gml.uuidpb.UUID id = 1 [ (gogoproto.customname) = "ID" ];
   // Information about the org.
   OrgInfo org_info = 2;
 }
@@ -148,7 +153,7 @@ message GetOrgResponse {
 // Request to delete an org.
 message DeleteOrgRequest {
   // ID of the org to delete.
-  string id = 1 [ (gogoproto.customname) = "ID" ];
+  gml.uuidpb.UUID id = 1 [ (gogoproto.customname) = "ID" ];
 }
 
 // Response to deleting an org.
@@ -157,9 +162,9 @@ message DeleteOrgResponse {}
 // Request to add a user to the org.
 message AddUserToOrgRequest {
   // The ID of the user to add to the org.
-  string user_id = 1 [ (gogoproto.customname) = "UserID" ];
+  gml.uuidpb.UUID user_id = 1 [ (gogoproto.customname) = "UserID" ];
   // The ID of the org which the user should be added to.
-  string org_id = 2 [ (gogoproto.customname) = "OrgID" ];
+  gml.uuidpb.UUID org_id = 2 [ (gogoproto.customname) = "OrgID" ];
 }
 
 // Response to adding a user to the org.
@@ -168,9 +173,9 @@ message AddUserToOrgResponse {}
 // Request to remove a user from an org.
 message RemoveUserFromOrgRequest {
   // The ID of the user to remove from the org.
-  string user_id = 1 [ (gogoproto.customname) = "UserID" ];
+  gml.uuidpb.UUID user_id = 1 [ (gogoproto.customname) = "UserID" ];
   // The ID of the org which the user should be removed from.
-  string org_id = 2 [ (gogoproto.customname) = "OrgID" ];
+  gml.uuidpb.UUID org_id = 2 [ (gogoproto.customname) = "OrgID" ];
 }
 
 // Response to removing a user from an org.

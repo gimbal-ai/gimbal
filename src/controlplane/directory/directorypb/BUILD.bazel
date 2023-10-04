@@ -23,6 +23,7 @@ proto_library(
     srcs = ["directory.proto"],
     visibility = ["//visibility:public"],
     deps = [
+        "//src/api/proto/uuidpb:uuidpb_proto",
         "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_proto",
         "@com_google_protobuf//:wrappers_proto",
     ],
@@ -46,6 +47,7 @@ proto_cc_library(
     hdrs = ["directory.pb.h"],
     visibility = ["//visibility:public"],
     deps = [
+        "//src/api/proto/uuidpb:uuidpb_cc_library",
         "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_cc_library",
         "@com_google_protobuf//:protobuf",
     ],
@@ -83,6 +85,7 @@ proto_go_library(
     importpath = "gimletlabs.ai/gimlet/src/controlplane/directory/directorypb",
     visibility = ["//visibility:public"],
     deps = [
+        "//src/api/proto/uuidpb:uuidpb_go_proto",
         "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_go_proto",
         "@com_github_gogo_protobuf//proto",
         "@com_github_gogo_protobuf//protoc-gen-gogo/descriptor",
