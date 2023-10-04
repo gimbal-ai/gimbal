@@ -42,7 +42,7 @@ ENV["PATH"] = "/opt/gml_dev/tools/golang/bin:#{ENV['PATH']}"
 
 execute "install go binaries" do
   ENV["GOPATH"] = "/opt/gml_dev/gopath"
-  command %(go install github.com/golang/mock/mockgen@v1.5.0 && \
+  command %(go install go.uber.org/mock/mockgen@v0.3.0 && \
             go install github.com/go-bindata/go-bindata/go-bindata@v3.1.2+incompatible && \
             go clean -modcache && \
             go clean -cache)
