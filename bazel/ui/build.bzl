@@ -53,13 +53,24 @@ def _next_standalone(name, **kwargs):
     default_arg(kwargs, "outs", ["out.tar"])
     default_arg(kwargs, "tool", "//bazel/ui:next_js_binary")
     default_arg(kwargs, "args", ["build"])
+    default_arg(kwargs, "srcs", [])
     default_arg(kwargs, "copy_srcs_to_bin", True)
     default_arg(kwargs, "chdir", native.package_name())
+
+    native.genrule(
+        name = "empty_pnpm_lock",
+        srcs = [],
+        outs = ["pnpm-lock.yaml"],
+        cmd = "touch $@",
+    )
+
+    kwargs["srcs"] = kwargs["srcs"] + [":empty_pnpm_lock"]
 
     js_run_binary(name = name, **kwargs)
 
 NEXT_STANDALONE_CLEANUP = """
 if [[ -d .next/standalone ]]; then
+    set -e
     find .next/standalone/node_modules/.aspect_rules_js -type l | while read line; do
         resolved="$(readlink -f "$line")"
         path_from_store="${resolved#*/.aspect_rules_js/}"
