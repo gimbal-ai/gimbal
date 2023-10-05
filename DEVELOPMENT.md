@@ -40,3 +40,20 @@ We currently only support running control plane in GKE (support for Minikube com
 We have ingress and LetsEncrypt signed certs automatically setup for the dev cluster. As long as you are on
 tailscale, you should be able to just navigate to `<YOUR_USERNAME>.dev.app.gimletlabs.dev` via your browser
 to access the UI.
+
+## Building the UI locally
+
+1. Set the env vars:
+
+    ```sh
+    export DEV_API_SERVICE="https://<YOUR_NAMESPACE>.dev.app.gimletlabs.dev"
+    export AUTH0_CLIENT_ID='f66GcpkIKEliCvvPoejx3Y6mlmYiM8p6'
+    export AUTH0_ISSUER_BASE_URL='gimlet-dev.us.auth0.com'
+    export GML_DISABLE_SSL=true
+    ```
+
+1. From the `src/ui` directory, run:
+
+    ```sh
+    PORT=<YOUR_PORT> pnpm dev
+    ```
