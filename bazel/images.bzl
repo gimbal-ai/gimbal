@@ -19,10 +19,6 @@ load("//bazel:lib.bzl", "default_arg")
 load("//bazel:toolchain_transitions.bzl", "oci_image_arm64", "oci_image_x86_64")
 
 def _gml_oci_image(name, multiarch = False, **kwargs):
-    image_name = name
-    if native.package_name():
-        image_name = native.package_name() + "/" + image_name
-
     if "base" not in kwargs:
         default_arg(kwargs, "os", "linux")
         default_arg(kwargs, "architecture", "amd64")
@@ -36,7 +32,7 @@ def _gml_oci_image(name, multiarch = False, **kwargs):
         name = name + ".tar",
         image = ":" + name,
         # Workaround to match how Skaffold tags the image after building it.
-        repo_tags = ["bazel/" + native.package_name() + ":" + image_name, image_name + ":latest"],
+        repo_tags = ["bazel/" + native.package_name() + ":" + name],
         tags = ["manual"],
     )
 
