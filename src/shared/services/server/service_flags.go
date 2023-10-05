@@ -157,9 +157,13 @@ func GetGRPCClientDialOpts() ([]grpc.DialOption, error) {
 		"tlsCA":       tlsCACert,
 	}).Info("Loading HTTP TLS certs")
 
-	pair, err := tls.LoadX509KeyPair(tlsCert, tlsKey)
-	if err != nil {
-		return nil, err
+	var pair tls.Certificate
+	var err error
+	if len(tlsKey) > 0 && len(tlsCert) > 0 {
+		pair, err = tls.LoadX509KeyPair(tlsCert, tlsKey)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	certPool := x509.NewCertPool()
