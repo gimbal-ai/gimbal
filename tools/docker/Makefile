@@ -19,7 +19,6 @@ BUILD_DIR ?= .build
 
 # We use our dev image to build some other tools. This fetches the latest tag.
 TOT		       := $$(git rev-parse --show-toplevel)
-DOCKER_PROPERTIES_FILE := $(TOT)/docker.properties
 
 ## Clang deb parameters
 CLANG_VERSION := 15.0

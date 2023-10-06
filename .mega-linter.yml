@@ -18,6 +18,7 @@ ENABLE_LINTERS:
 - REPOSITORY_LICENSE_CHECKER
 # TODO(vihang): Enable this after rubucop is faster.
 # - RUBY_RUBOCOP
+- SQL_SQUAWK
 - TERRAFORM_TERRAFORM_FMT
 # TODO(michelle/zasgar): Consider enabling after auditing the rules and current set of lint issues.
 # - TERRAFORM_TERRASCAN
@@ -36,6 +37,7 @@ PLUGINS:
 - file://tools/linters/mega-linter-plugin-buf/buf.megalinter-descriptor.yml
 - file://tools/linters/mega-linter-plugin-cpp/cpp.megalinter-descriptor.yml
 - file://tools/linters/mega-linter-plugin-licenses/licenses.megalinter-descriptor.yml
+- file://tools/linters/mega-linter-plugin-sql/sql.megalinter-descriptor.yml
 FILTER_REGEX_EXCLUDE: "(app\\/graphql-schema\\.ts|\
                        pnpm-lock\\.yaml|\
                        infra\\/credentials\\/|\

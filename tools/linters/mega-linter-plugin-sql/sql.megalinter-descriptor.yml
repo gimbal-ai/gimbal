@@ -1,0 +1,9 @@
+---
+descriptor_id: SQL
+descriptor_type: language
+file_extensions:
+- ".sql"
+linters:
+- linter_name: squawk
+  linter_url: https://squawkhq.com/
+  cli_lint_mode: 'list_of_files'

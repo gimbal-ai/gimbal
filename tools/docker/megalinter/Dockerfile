@@ -15,11 +15,13 @@
 
 FROM docker.io/oxsecurity/megalinter-cupcake:v7@sha256:171f2f5049a598aee1c752ebe830dc17c81ae5a003aabc08b87f09edada5f78f
 
-RUN apk add clang-extra-tools
-RUN go install github.com/bazelbuild/buildtools/buildifier@v0.0.0-20230926111657-7d855c59baeb
-RUN go install github.com/bufbuild/buf/cmd/buf@v1.26.1
-RUN go clean -modcache
-RUN go clean -cache
-
 COPY .tflint.hcl $HOME/.tflint.hcl
-RUN tflint --init
+
+RUN apk add clang-extra-tools && \
+    go install github.com/bazelbuild/buildtools/buildifier@v0.0.0-20230926111657-7d855c59baeb  && \
+    go install github.com/bufbuild/buf/cmd/buf@v1.26.1 && \
+    go clean -modcache && \
+    go clean -cache && \
+    npm install -g squawk-cli@0.24.0 && \
+    npm cache clean --force && \
+    tflint --init

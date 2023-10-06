@@ -42,4 +42,4 @@ lint:
 		--fix \
 		--env REPORT_OUTPUT_FOLDER=none \
 		--env GITHUB_TOKEN="${GITHUB_TOKEN}" \
-		--image=us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/megalinter-gml-custom:20231002134125
+		--image=us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/megalinter-gml-custom:20231006155643
