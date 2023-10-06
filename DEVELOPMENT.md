@@ -57,3 +57,22 @@ to access the UI.
     ```sh
     PORT=<YOUR_PORT> pnpm dev
     ```
+### Submitting a change for your UI
+
+As of Oct. 6, 2023, you'll need to do the following whenever you add a new file to the UI, otherwise the bazel build will not find it.
+If you don't do this, pnpm dev will still pull the page, but bazel/skaffold will not be able to build the image.
+
+```sh
+# Create your new file in the UI
+cd src/ui/path/to
+touch newfile.tsx # placeholder for making a new file
+
+# At the top of the git tree
+make gazelle # this will generate a new BUILD.bazel file for your new file
+make lint # this will run the linter and fail if you have any errors
+
+# Now update the `next_srcs` array to include the generated target for your new file
+vim src/ui/BUILD.bazel # add //src/ui/path/to:newfile to the next_srcs array
+```
+
+And from there you can git commit and push your changes.
