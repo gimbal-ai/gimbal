@@ -88,3 +88,4 @@ megalinter/.tflint.hcl:
 build_and_push_megalinter: megalinter/Dockerfile megalinter/.tflint.hcl
 	@mkdir -p $(MEGALINTER_BUILD_DIR)
 	DOCKER_BUILDKIT=1 $(DOCKER) build megalinter -t $(MEGALINTER_IMAGE_TAG) --push
+	$(MAKE) -C ../chef sync_images

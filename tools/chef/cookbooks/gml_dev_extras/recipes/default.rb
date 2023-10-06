@@ -110,3 +110,11 @@ remote_file "/usr/local/lib/docker/cli-plugins/docker-buildx" do
   mode "0755"
   checksum node["docker-buildx"]["sha256"]
 end
+
+execute "install go binaries" do
+  ENV["GOPATH"] = "/opt/gml_dev/gopath"
+  command %(go install github.com/bazelbuild/buildtools/buildifier@latest && \
+            go install github.com/derailed/k9s@v0.27.4 && \
+            go clean -modcache && \
+            go clean -cache)
+end
