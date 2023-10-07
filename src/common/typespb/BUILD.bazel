@@ -21,25 +21,34 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 proto_library(
     name = "typespb_proto",
     srcs = [
+        "jwt.proto",
         "status.proto",
         "uuid.proto",
     ],
     visibility = ["//visibility:public"],
-    deps = ["@com_google_protobuf//:any_proto"],
+    deps = [
+        "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_proto",
+        "@com_google_protobuf//:any_proto",
+    ],
 )
 
 proto_cc_library(
     name = "typespb_cc_library",
     srcs = [
+        "jwt.pb.cc",
         "status.pb.cc",
         "uuid.pb.cc",
     ],
     hdrs = [
+        "jwt.pb.h",
         "status.pb.h",
         "uuid.pb.h",
     ],
     visibility = ["//visibility:public"],
-    deps = ["@com_google_protobuf//:protobuf"],
+    deps = [
+        "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_cc_library",
+        "@com_google_protobuf//:protobuf",
+    ],
 )
 
 proto_compile(
@@ -49,6 +58,8 @@ proto_compile(
         "status.pb.h",
         "uuid.pb.cc",
         "uuid.pb.h",
+        "jwt.pb.cc",
+        "jwt.pb.h",
     ],
     plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
     proto = "typespb_proto",
@@ -60,10 +71,12 @@ proto_compile(
     output_mappings = [
         "status.pb.go=gimletlabs.ai/gimlet/src/common/typespb/status.pb.go",
         "uuid.pb.go=gimletlabs.ai/gimlet/src/common/typespb/uuid.pb.go",
+        "jwt.pb.go=gimletlabs.ai/gimlet/src/common/typespb/jwt.pb.go",
     ],
     outputs = [
         "status.pb.go",
         "uuid.pb.go",
+        "jwt.pb.go",
     ],
     plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
     proto = "typespb_proto",
@@ -73,12 +86,14 @@ proto_compile(
 proto_go_library(
     name = "typespb_go_proto",
     srcs = [
+        "jwt.pb.go",
         "status.pb.go",
         "uuid.pb.go",
     ],
     importpath = "gimletlabs.ai/gimlet/src/common/typespb",
     visibility = ["//visibility:public"],
     deps = [
+        "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_go_proto",
         "@com_github_gogo_protobuf//proto",
         "@com_github_gogo_protobuf//protoc-gen-gogo/descriptor",
         "@com_github_gogo_protobuf//types",

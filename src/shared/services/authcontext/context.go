@@ -26,7 +26,7 @@ import (
 	"github.com/lestrrat-go/jwx/v2/jwk"
 	"github.com/lestrrat-go/jwx/v2/jwt"
 
-	"gimletlabs.ai/gimlet/src/shared/services/jwtpb"
+	"gimletlabs.ai/gimlet/src/common/typespb"
 	"gimletlabs.ai/gimlet/src/shared/services/utils"
 )
 
@@ -35,7 +35,7 @@ type authContextKey struct{}
 // AuthContext stores sessions specific information.
 type AuthContext struct {
 	AuthToken string
-	Claims    *jwtpb.JWTClaims
+	Claims    *typespb.JWTClaims
 	Path      string
 }
 

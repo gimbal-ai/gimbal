@@ -23,7 +23,7 @@ go_library(
     importpath = "gimletlabs.ai/gimlet/src/shared/services/authcontext",
     visibility = ["//visibility:public"],
     deps = [
-        "//src/shared/services/jwtpb:jwtpb_go_proto",
+        "//src/common/typespb:typespb_go_proto",
         "//src/shared/services/utils",
         "@com_github_lestrrat_go_jwx_v2//jwa",
         "@com_github_lestrrat_go_jwx_v2//jwk",
@@ -36,7 +36,7 @@ gml_go_test(
     srcs = ["context_test.go"],
     deps = [
         ":authcontext",
-        "//src/shared/services/jwtpb:jwtpb_go_proto",
+        "//src/common/typespb:typespb_go_proto",
         "//src/shared/testing/testutils",
         "@com_github_stretchr_testify//assert",
         "@com_github_stretchr_testify//require",

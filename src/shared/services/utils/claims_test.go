@@ -22,7 +22,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"gimletlabs.ai/gimlet/src/shared/services/jwtpb"
+	"gimletlabs.ai/gimlet/src/common/typespb"
 	"gimletlabs.ai/gimlet/src/shared/services/utils"
 )
 
@@ -30,11 +30,11 @@ func TestGetClaimsType(t *testing.T) {
 	p := getStandardClaimsPb()
 	p.Scopes = []string{"user"}
 	// User claims.
-	userClaims := &jwtpb.UserJWTClaims{
+	userClaims := &typespb.UserJWTClaims{
 		UserID: "user_id",
 		Email:  "user@email.com",
 	}
-	p.CustomClaims = &jwtpb.JWTClaims_UserClaims{
+	p.CustomClaims = &typespb.JWTClaims_UserClaims{
 		UserClaims: userClaims,
 	}
 

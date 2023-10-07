@@ -26,7 +26,7 @@ go_library(
     importpath = "gimletlabs.ai/gimlet/src/shared/services/utils",
     visibility = ["//visibility:public"],
     deps = [
-        "//src/shared/services/jwtpb:jwtpb_go_proto",
+        "//src/common/typespb:typespb_go_proto",
         "@com_github_lestrrat_go_jwx_v2//jwa",
         "@com_github_lestrrat_go_jwx_v2//jwk",
         "@com_github_lestrrat_go_jwx_v2//jwt",
@@ -42,7 +42,7 @@ gml_go_test(
     ],
     deps = [
         ":utils",
-        "//src/shared/services/jwtpb:jwtpb_go_proto",
+        "//src/common/typespb:typespb_go_proto",
         "@com_github_lestrrat_go_jwx_v2//jwt",
         "@com_github_stretchr_testify//assert",
         "@com_github_stretchr_testify//require",

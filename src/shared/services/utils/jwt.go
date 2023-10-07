@@ -27,7 +27,7 @@ import (
 	"github.com/lestrrat-go/jwx/v2/jwt"
 	log "github.com/sirupsen/logrus"
 
-	"gimletlabs.ai/gimlet/src/shared/services/jwtpb"
+	"gimletlabs.ai/gimlet/src/common/typespb"
 )
 
 func init() {
@@ -37,7 +37,7 @@ func init() {
 }
 
 // ProtoToToken maps protobuf claims to map claims.
-func ProtoToToken(pb *jwtpb.JWTClaims) (jwt.Token, error) {
+func ProtoToToken(pb *typespb.JWTClaims) (jwt.Token, error) {
 	builder := jwt.NewBuilder()
 
 	// Standard claims.
@@ -55,11 +55,11 @@ func ProtoToToken(pb *jwtpb.JWTClaims) (jwt.Token, error) {
 		Claim("Scopes", strings.Join(pb.Scopes, ","))
 
 	switch m := pb.CustomClaims.(type) {
-	case *jwtpb.JWTClaims_UserClaims:
+	case *typespb.JWTClaims_UserClaims:
 		builder.
 			Claim("UserID", m.UserClaims.UserID).
 			Claim("Email", m.UserClaims.Email)
-	case *jwtpb.JWTClaims_ServiceClaims:
+	case *typespb.JWTClaims_ServiceClaims:
 		builder.Claim("ServiceID", m.ServiceClaims.ServiceID)
 	default:
 		log.WithField("type", m).Error("Could not find claims type")
@@ -69,8 +69,8 @@ func ProtoToToken(pb *jwtpb.JWTClaims) (jwt.Token, error) {
 }
 
 // TokenToProto takes a Token and converts it to a protobuf.
-func TokenToProto(token jwt.Token) (*jwtpb.JWTClaims, error) {
-	p := &jwtpb.JWTClaims{}
+func TokenToProto(token jwt.Token) (*typespb.JWTClaims, error) {
+	p := &typespb.JWTClaims{}
 
 	// Standard claims.
 	if len(token.Audience()) == 0 {
@@ -88,15 +88,15 @@ func TokenToProto(token jwt.Token) (*jwtpb.JWTClaims, error) {
 	p.Scopes = GetScopes(token)
 	switch {
 	case HasUserClaims(token):
-		p.CustomClaims = &jwtpb.JWTClaims_UserClaims{
-			UserClaims: &jwtpb.UserJWTClaims{
+		p.CustomClaims = &typespb.JWTClaims_UserClaims{
+			UserClaims: &typespb.UserJWTClaims{
 				UserID: GetUserID(token),
 				Email:  GetEmail(token),
 			},
 		}
 	case HasServiceClaims(token):
-		p.CustomClaims = &jwtpb.JWTClaims_ServiceClaims{
-			ServiceClaims: &jwtpb.ServiceJWTClaims{
+		p.CustomClaims = &typespb.JWTClaims_ServiceClaims{
+			ServiceClaims: &typespb.ServiceJWTClaims{
 				ServiceID: GetServiceID(token),
 			},
 		}
@@ -133,7 +133,7 @@ func ParseToken(tokenString string, signingKey string, audience string) (jwt.Tok
 }
 
 // SignJWTClaims signs the claim using the given signing key.
-func SignJWTClaims(claims *jwtpb.JWTClaims, signingKey string) (string, error) {
+func SignJWTClaims(claims *typespb.JWTClaims, signingKey string) (string, error) {
 	token, err := ProtoToToken(claims)
 	if err != nil {
 		return "", err

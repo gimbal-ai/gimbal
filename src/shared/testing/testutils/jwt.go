@@ -21,7 +21,7 @@ import (
 	"testing"
 	"time"
 
-	"gimletlabs.ai/gimlet/src/shared/services/jwtpb"
+	"gimletlabs.ai/gimlet/src/common/typespb"
 	"gimletlabs.ai/gimlet/src/shared/services/utils"
 )
 
@@ -32,24 +32,24 @@ const TestOrgID string = "6ba7b810-9dad-11d1-80b4-00c04fd430c8"
 const TestUserID string = "7ba7b810-9dad-11d1-80b4-00c04fd430c8"
 
 // GenerateTestClaimsWithDuration generates valid test user claims for a specified duration.
-func GenerateTestClaimsWithDuration(_ *testing.T, duration time.Duration, email string) *jwtpb.JWTClaims {
+func GenerateTestClaimsWithDuration(_ *testing.T, duration time.Duration, email string) *typespb.JWTClaims {
 	claims := utils.GenerateJWTForUser(TestUserID, TestOrgID, email, time.Now().Add(duration), "gml.ai", false)
 	return claims
 }
 
 // GenerateTestServiceClaims generates valid test service claims for a specified duration.
-func GenerateTestServiceClaims(_ *testing.T, service string) *jwtpb.JWTClaims {
+func GenerateTestServiceClaims(_ *testing.T, service string) *typespb.JWTClaims {
 	claims := utils.GenerateJWTForService(service, "gml.ai")
 	return claims
 }
 
 // GenerateTestClaims generates valid test user claims valid for 60 minutes.
-func GenerateTestClaims(t *testing.T) *jwtpb.JWTClaims {
+func GenerateTestClaims(t *testing.T) *typespb.JWTClaims {
 	return GenerateTestClaimsWithDuration(t, time.Minute*60, "test@test.com")
 }
 
 // GenerateTestClaimsWithEmail generates valid test user claims for the given email.
-func GenerateTestClaimsWithEmail(t *testing.T, email string) *jwtpb.JWTClaims {
+func GenerateTestClaimsWithEmail(t *testing.T, email string) *typespb.JWTClaims {
 	return GenerateTestClaimsWithDuration(t, time.Minute*60, email)
 }
 
@@ -66,7 +66,7 @@ func GenerateTestJWTTokenWithDuration(t *testing.T, signingKey string, timeout t
 }
 
 // SignPBClaims signs our protobuf claims after converting to json.
-func SignPBClaims(t *testing.T, claims *jwtpb.JWTClaims, signingKey string) string {
+func SignPBClaims(t *testing.T, claims *typespb.JWTClaims, signingKey string) string {
 	signed, err := utils.SignJWTClaims(claims, signingKey)
 	if err != nil {
 		t.Fatal("failed to generate token")

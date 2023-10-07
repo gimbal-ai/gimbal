@@ -24,8 +24,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
+	"gimletlabs.ai/gimlet/src/common/typespb"
 	"gimletlabs.ai/gimlet/src/shared/services/authcontext"
-	"gimletlabs.ai/gimlet/src/shared/services/jwtpb"
 	"gimletlabs.ai/gimlet/src/shared/testing/testutils"
 )
 
@@ -44,7 +44,7 @@ func TestSessionCtx_ValidClaims(t *testing.T) {
 	tests := []struct {
 		name          string
 		expiryFromNow time.Duration
-		claims        *jwtpb.JWTClaims
+		claims        *typespb.JWTClaims
 		isValid       bool
 	}{
 		{
@@ -78,7 +78,7 @@ func TestSessionCtx_ValidClaims(t *testing.T) {
 		{
 			name:    "claims with no type",
 			isValid: false,
-			claims: &jwtpb.JWTClaims{
+			claims: &typespb.JWTClaims{
 				Subject:   "test subject",
 				Audience:  "gml.ai",
 				IssuedAt:  time.Now().Unix(),

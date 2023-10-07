@@ -25,12 +25,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"gimletlabs.ai/gimlet/src/shared/services/jwtpb"
+	"gimletlabs.ai/gimlet/src/common/typespb"
 	"gimletlabs.ai/gimlet/src/shared/services/utils"
 )
 
-func getStandardClaimsPb() *jwtpb.JWTClaims {
-	return &jwtpb.JWTClaims{
+func getStandardClaimsPb() *typespb.JWTClaims {
+	return &typespb.JWTClaims{
 		Audience:  "audience",
 		ExpiresAt: 100,
 		JTI:       "jti",
@@ -70,11 +70,11 @@ func TestProtoToToken_User(t *testing.T) {
 	p := getStandardClaimsPb()
 	p.Scopes = []string{"user"}
 	// User claims.
-	userClaims := &jwtpb.UserJWTClaims{
+	userClaims := &typespb.UserJWTClaims{
 		UserID: "user_id",
 		Email:  "user@email.com",
 	}
-	p.CustomClaims = &jwtpb.JWTClaims_UserClaims{
+	p.CustomClaims = &typespb.JWTClaims_UserClaims{
 		UserClaims: userClaims,
 	}
 
@@ -90,10 +90,10 @@ func TestProtoToToken_Service(t *testing.T) {
 	p := getStandardClaimsPb()
 	p.Scopes = []string{"service"}
 	// Service claims.
-	svcClaims := &jwtpb.ServiceJWTClaims{
+	svcClaims := &typespb.ServiceJWTClaims{
 		ServiceID: "service_id",
 	}
-	p.CustomClaims = &jwtpb.JWTClaims_ServiceClaims{
+	p.CustomClaims = &typespb.JWTClaims_ServiceClaims{
 		ServiceClaims: svcClaims,
 	}
 
