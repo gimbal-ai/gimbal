@@ -27,7 +27,7 @@
 
 #include "src/common/base/logging.h"
 #include "src/common/base/macros.h"
-#include "src/common/base/statuspb/status.pb.h"
+#include "src/common/typespb/status.pb.h"
 
 namespace gml {
 
@@ -36,11 +36,11 @@ class GML_MUST_USE_RESULT Status {
   // Success status.
   Status() = default;
   Status(const Status& s) noexcept;
-  Status(gml::statuspb::Code code, const std::string& msg);
-  Status(gml::statuspb::Code code, const std::string& msg,
+  Status(gml::types::Code code, const std::string& msg);
+  Status(gml::types::Code code, const std::string& msg,
          std::unique_ptr<google::protobuf::Message> ctx);
   // NOLINTNEXTLINE to make it easier to return status.
-  Status(const gml::statuspb::Status& status_pb);
+  Status(const gml::types::Status& status_pb);
 
   void operator=(const Status& s) noexcept;
 
@@ -50,7 +50,7 @@ class GML_MUST_USE_RESULT Status {
   // Return self, this makes it compatible with StatusOr<>.
   const Status& status() const { return *this; }
 
-  gml::statuspb::Code code() const { return ok() ? gml::statuspb::CODE_OK : state_->code; }
+  gml::types::Code code() const { return ok() ? gml::types::CODE_OK : state_->code; }
 
   const std::string& msg() const { return ok() ? empty_string() : state_->msg; }
 
@@ -64,17 +64,17 @@ class GML_MUST_USE_RESULT Status {
 
   static Status OK() { return Status(); }
 
-  gml::statuspb::Status ToProto() const;
-  void ToProto(gml::statuspb::Status* status_pb) const;
+  gml::types::Status ToProto() const;
+  void ToProto(gml::types::Status* status_pb) const;
 
  private:
   struct State {
     // Needed for a call in status.cc.
     State() {}
     State(const State& state) noexcept;
-    State(gml::statuspb::Code code, std::string msg, std::unique_ptr<google::protobuf::Any> context)
+    State(gml::types::Code code, std::string msg, std::unique_ptr<google::protobuf::Any> context)
         : code(code), msg(msg), context(std::move(context)) {}
-    State(gml::statuspb::Code code, std::string msg,
+    State(gml::types::Code code, std::string msg,
           std::unique_ptr<google::protobuf::Message> generic_pb_context)
         : code(code), msg(msg) {
       if (generic_pb_context == nullptr) {
@@ -83,7 +83,7 @@ class GML_MUST_USE_RESULT Status {
       context = std::make_unique<google::protobuf::Any>();
       context->PackFrom(*generic_pb_context);
     }
-    gml::statuspb::Code code;
+    gml::types::Code code;
     std::string msg;
     std::unique_ptr<google::protobuf::Any> context;
   };
@@ -132,7 +132,7 @@ inline bool Status::operator!=(const Status& x) const { return !(*this == x); }
 template <typename T>
 inline Status StatusAdapter(const T&) noexcept {
   static_assert(sizeof(T) == 0, "Implement custom status adapter, or include correct .h file.");
-  return Status(statuspb::CODE_UNIMPLEMENTED, "Should never get here");
+  return Status(types::CODE_UNIMPLEMENTED, "Should never get here");
 }
 
 template <>
@@ -142,7 +142,7 @@ inline Status StatusAdapter<Status>(const Status& s) noexcept {
 
 // Conversion of proto status message.
 template <>
-inline Status StatusAdapter<gml::statuspb::Status>(const gml::statuspb::Status& s) noexcept {
+inline Status StatusAdapter<gml::types::Status>(const gml::types::Status& s) noexcept {
   return Status(s);
 };
 

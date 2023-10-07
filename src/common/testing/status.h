@@ -124,7 +124,7 @@ inline ::testing::PolymorphicMatcher<IsOKAndHoldsMatcher<ValueType>> IsOKAndHold
 }
 
 template <typename TMessageMatcherType>
-auto StatusIs(gml::statuspb::Code code, const TMessageMatcherType& msg_matcher) {
+auto StatusIs(gml::types::Code code, const TMessageMatcherType& msg_matcher) {
   return ::testing::AllOf(::testing::Property(&Status::code, ::testing::Eq(code)),
                           ::testing::Property(&Status::msg, msg_matcher));
 }

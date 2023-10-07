@@ -24,12 +24,12 @@
 #include <absl/strings/str_cat.h>
 #include <absl/strings/substitute.h>
 
-#include "src/common/base/statuspb/status.pb.h"
+#include "src/common/typespb/status.pb.h"
 
 namespace gml {
 namespace error {
 
-std::string CodeToString(gml::statuspb::Code code);
+std::string CodeToString(gml::types::Code code);
 
 }  // namespace error
 }  // namespace gml

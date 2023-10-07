@@ -19,14 +19,14 @@ load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_librar
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
 proto_library(
-    name = "statuspb_proto",
+    name = "typespb_proto",
     srcs = ["status.proto"],
     visibility = ["//visibility:public"],
     deps = ["@com_google_protobuf//:any_proto"],
 )
 
 proto_cc_library(
-    name = "statuspb_cc_library",
+    name = "typespb_cc_library",
     srcs = ["status.pb.cc"],
     hdrs = ["status.pb.h"],
     visibility = ["//visibility:public"],
@@ -34,29 +34,29 @@ proto_cc_library(
 )
 
 proto_compile(
-    name = "statuspb_cpp_compile",
+    name = "typespb_cpp_compile",
     outputs = [
         "status.pb.cc",
         "status.pb.h",
     ],
     plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
-    proto = "statuspb_proto",
+    proto = "typespb_proto",
     visibility = ["//visibility:public"],
 )
 
 proto_compile(
-    name = "statuspb_go_compile",
-    output_mappings = ["status.pb.go=gimletlabs.ai/gimlet/src/common/base/statuspb/status.pb.go"],
+    name = "typespb_go_compile",
+    output_mappings = ["status.pb.go=gimletlabs.ai/gimlet/src/common/typespb/status.pb.go"],
     outputs = ["status.pb.go"],
     plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
-    proto = "statuspb_proto",
+    proto = "typespb_proto",
     visibility = ["//visibility:public"],
 )
 
 proto_go_library(
-    name = "statuspb_go_proto",
+    name = "typespb_go_proto",
     srcs = ["status.pb.go"],
-    importpath = "gimletlabs.ai/gimlet/src/common/base/statuspb",
+    importpath = "gimletlabs.ai/gimlet/src/common/typespb",
     visibility = ["//visibility:public"],
     deps = [
         "@com_github_gogo_protobuf//proto",

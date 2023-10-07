@@ -27,19 +27,19 @@
 
 namespace gml {
 
-Status::Status(statuspb::Code code, const std::string& msg) {
+Status::Status(types::Code code, const std::string& msg) {
   state_ = std::make_unique<State>();
   state_->code = code;
   state_->msg = msg;
 }
 
-Status::Status(statuspb::Code code, const std::string& msg,
+Status::Status(types::Code code, const std::string& msg,
                std::unique_ptr<google::protobuf::Message> context) {
   state_ = std::make_unique<State>(code, msg, std::move(context));
 }
 
-Status::Status(const gml::statuspb::Status& status_pb) {
-  if (status_pb.err_code() == statuspb::Code::CODE_OK) {
+Status::Status(const gml::types::Status& status_pb) {
+  if (status_pb.err_code() == types::Code::CODE_OK) {
     return;
   }
   std::unique_ptr<google::protobuf::Any> context = nullptr;
@@ -65,16 +65,16 @@ std::string Status::ToString() const {
   return absl::StrCat(gml::error::CodeToString(code()), " : ", state_->msg + context_str);
 }
 
-gml::statuspb::Status Status::ToProto() const {
-  gml::statuspb::Status spb;
+gml::types::Status Status::ToProto() const {
+  gml::types::Status spb;
   ToProto(&spb);
   return spb;
 }
 
-void Status::ToProto(gml::statuspb::Status* status_pb) const {
+void Status::ToProto(gml::types::Status* status_pb) const {
   CHECK(status_pb != nullptr);
   if (state_ == nullptr) {
-    status_pb->set_err_code(statuspb::Code::CODE_OK);
+    status_pb->set_err_code(types::Code::CODE_OK);
     return;
   }
   status_pb->set_msg(state_->msg);

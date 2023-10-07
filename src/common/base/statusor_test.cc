@@ -43,18 +43,18 @@ TEST(StatusOr, ValueMove) {
 }
 
 TEST(StatusOr, ValueOr) {
-  StatusOr<string> s(Status(gml::statuspb::CODE_UNKNOWN, "This is not OK"));
+  StatusOr<string> s(Status(gml::types::CODE_UNKNOWN, "This is not OK"));
   EXPECT_EQ(s.ValueOr("gml"), "gml");
 }
 
 TEST(StatusOr, ConsumeValueOr) {
   {
-    StatusOr<string> s(Status(gml::statuspb::CODE_UNKNOWN, "This is not OK"));
+    StatusOr<string> s(Status(gml::types::CODE_UNKNOWN, "This is not OK"));
     EXPECT_EQ(s.ConsumeValueOr("gml"), "gml");
   }
 
   {
-    StatusOr<std::unique_ptr<int>> s(Status(gml::statuspb::CODE_UNKNOWN, "This is not OK"));
+    StatusOr<std::unique_ptr<int>> s(Status(gml::types::CODE_UNKNOWN, "This is not OK"));
     std::unique_ptr<int> val = s.ConsumeValueOr(std::make_unique<int>(2));
     EXPECT_EQ(*val, 2);
   }
@@ -69,7 +69,7 @@ TEST(StatusOr, ValuesAndErrors) {
   ASSERT_OK(s);
   EXPECT_EQ(s.ValueOrDie(), "another value");
 
-  s = StatusOr<string>(Status(gml::statuspb::CODE_UNKNOWN, "some error"));
+  s = StatusOr<string>(Status(gml::types::CODE_UNKNOWN, "some error"));
   ASSERT_FALSE(s.ok());
   EXPECT_EQ(s.msg(), "some error");
 }
@@ -93,7 +93,7 @@ TEST(StatusOr, NullPointer) {
 TEST(StatusOr, DefaultCtor) {
   StatusOr<string> s;
   EXPECT_FALSE(s.ok());
-  EXPECT_EQ(s.code(), gml::statuspb::CODE_UNKNOWN);
+  EXPECT_EQ(s.code(), gml::types::CODE_UNKNOWN);
 }
 
 TEST(StatusOr, DefaultCtorValue) {
@@ -104,7 +104,7 @@ TEST(StatusOr, DefaultCtorValue) {
 
 StatusOr<int> StatusOrTestFunc(int x) {
   if (x == 0) {
-    return Status(gml::statuspb::CODE_INTERNAL, "badness");
+    return Status(gml::types::CODE_INTERNAL, "badness");
   }
   return x + 1;
 }
@@ -119,7 +119,7 @@ TEST(StatusOr, Macros) {
   EXPECT_TRUE(TestCheckCall(3).ok());
   Status s = TestCheckCall(0);
   EXPECT_FALSE(s.ok());
-  EXPECT_EQ(gml::statuspb::CODE_INTERNAL, s.code());
+  EXPECT_EQ(gml::types::CODE_INTERNAL, s.code());
 }
 
 }  // namespace gml

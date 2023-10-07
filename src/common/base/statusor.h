@@ -25,7 +25,7 @@
 
 #include "src/common/base/macros.h"
 #include "src/common/base/status.h"
-#include "src/common/base/statuspb/status.pb.h"
+#include "src/common/typespb/status.pb.h"
 
 namespace gml {
 
@@ -39,7 +39,7 @@ class StatusOr {
  public:
   // Construct a new StatusOr with Status::UNKNOWN status
   StatusOr()
-      : status_(gml::statuspb::CODE_UNKNOWN,
+      : status_(gml::types::CODE_UNKNOWN,
                 "Default constructed StatusOr should not be used, "
                 "did you mistakenly return {}?") {}
 
@@ -91,7 +91,7 @@ class StatusOr {
   bool ok() const { return status_.ok(); }
 
   // Returns this->status().code()
-  gml::statuspb::Code code() const { return status_.code(); }
+  gml::types::Code code() const { return status_.code(); }
 
   // Returns this->status().msg()
   std::string msg() const { return status_.msg(); }
@@ -164,7 +164,7 @@ template <typename T>
 StatusOr<T>::StatusOr(const Status& status) : status_(status) {
   DCHECK(!status_.ok()) << "Should not pass OK status to constructor";
   if (status.ok()) {
-    status_ = Status(gml::statuspb::CODE_INTERNAL,
+    status_ = Status(gml::types::CODE_INTERNAL,
                      "Status::OK is not a valid constructor argument to StatusOr<T>");
   }
 }

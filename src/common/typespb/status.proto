@@ -19,9 +19,9 @@
 
 syntax = "proto3";
 
-package gml.statuspb;
+package gml.types;
 
-option go_package = "gimletlabs.ai/gimlet/src/common/base/statuspb";
+option go_package = "gimletlabs.ai/gimlet/src/common/typespb;typespb";
 
 import "google/protobuf/any.proto";
 

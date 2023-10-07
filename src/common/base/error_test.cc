@@ -22,28 +22,28 @@
 #include <iostream>
 
 #include "src/common/base/error.h"
-#include "src/common/base/statuspb/status.pb.h"
+#include "src/common/typespb/status.pb.h"
 
 namespace gml {
 namespace error {
 
 TEST(CodeToString, strings) {
-  EXPECT_EQ("Ok", CodeToString(gml::statuspb::CODE_OK));
-  EXPECT_EQ("Cancelled", CodeToString(gml::statuspb::CODE_CANCELLED));
-  EXPECT_EQ("Unknown", CodeToString(gml::statuspb::CODE_UNKNOWN));
-  EXPECT_EQ("Invalid Argument", CodeToString(gml::statuspb::CODE_INVALID_ARGUMENT));
-  EXPECT_EQ("Deadline Exceeded", CodeToString(gml::statuspb::CODE_DEADLINE_EXCEEDED));
-  EXPECT_EQ("Not Found", CodeToString(gml::statuspb::CODE_NOT_FOUND));
-  EXPECT_EQ("Already Exists", CodeToString(gml::statuspb::CODE_ALREADY_EXISTS));
-  EXPECT_EQ("Permission Denied", CodeToString(gml::statuspb::CODE_PERMISSION_DENIED));
-  EXPECT_EQ("Unauthenticated", CodeToString(gml::statuspb::CODE_UNAUTHENTICATED));
-  EXPECT_EQ("Internal", CodeToString(gml::statuspb::CODE_INTERNAL));
-  EXPECT_EQ("Unimplemented", CodeToString(gml::statuspb::CODE_UNIMPLEMENTED));
+  EXPECT_EQ("Ok", CodeToString(gml::types::CODE_OK));
+  EXPECT_EQ("Cancelled", CodeToString(gml::types::CODE_CANCELLED));
+  EXPECT_EQ("Unknown", CodeToString(gml::types::CODE_UNKNOWN));
+  EXPECT_EQ("Invalid Argument", CodeToString(gml::types::CODE_INVALID_ARGUMENT));
+  EXPECT_EQ("Deadline Exceeded", CodeToString(gml::types::CODE_DEADLINE_EXCEEDED));
+  EXPECT_EQ("Not Found", CodeToString(gml::types::CODE_NOT_FOUND));
+  EXPECT_EQ("Already Exists", CodeToString(gml::types::CODE_ALREADY_EXISTS));
+  EXPECT_EQ("Permission Denied", CodeToString(gml::types::CODE_PERMISSION_DENIED));
+  EXPECT_EQ("Unauthenticated", CodeToString(gml::types::CODE_UNAUTHENTICATED));
+  EXPECT_EQ("Internal", CodeToString(gml::types::CODE_INTERNAL));
+  EXPECT_EQ("Unimplemented", CodeToString(gml::types::CODE_UNIMPLEMENTED));
 }
 
 TEST(CodeToString, UNKNOWN_ERROR) {
   EXPECT_TRUE(
-      absl::StartsWith(CodeToString(static_cast<gml::statuspb::Code>(1024)), "Unknown error_code"));
+      absl::StartsWith(CodeToString(static_cast<gml::types::Code>(1024)), "Unknown error_code"));
 }
 
 TEST(ErrorDeclerations, Cancelled) {

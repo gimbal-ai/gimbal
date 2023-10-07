@@ -26,7 +26,7 @@
 #include <magic_enum.hpp>
 
 #include "src/common/base/status.h"
-#include "src/common/base/statuspb/status.pb.h"
+#include "src/common/typespb/status.pb.h"
 
 namespace gml {
 namespace error {
@@ -34,12 +34,12 @@ namespace error {
 // Declare convenience functions:
 // error::InvalidArgument(...)
 // error::IsInvalidArgument(stat)
-#define DECLARE_ERROR(FUNC, CONST)                                            \
-  template <typename... Args>                                                 \
-  Status FUNC(std::string_view format, Args... args) {                        \
-    return Status(::gml::statuspb::CONST, absl::Substitute(format, args...)); \
-  }                                                                           \
-  inline bool Is##FUNC(const Status& status) { return status.code() == ::gml::statuspb::CONST; }
+#define DECLARE_ERROR(FUNC, CONST)                                         \
+  template <typename... Args>                                              \
+  Status FUNC(std::string_view format, Args... args) {                     \
+    return Status(::gml::types::CONST, absl::Substitute(format, args...)); \
+  }                                                                        \
+  inline bool Is##FUNC(const Status& status) { return status.code() == ::gml::types::CONST; }
 
 DECLARE_ERROR(Cancelled, CODE_CANCELLED)
 DECLARE_ERROR(Unknown, CODE_UNKNOWN)
@@ -57,7 +57,7 @@ DECLARE_ERROR(FailedPrecondition, CODE_FAILED_PRECONDITION)
 
 #undef DECLARE_ERROR
 
-inline std::string CodeToString(gml::statuspb::Code code) {
+inline std::string CodeToString(gml::types::Code code) {
   std::string_view code_str_view = magic_enum::enum_name(code);
   if (code_str_view.empty()) {
     return "Unknown error_code";
