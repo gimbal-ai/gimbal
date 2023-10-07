@@ -72,7 +72,7 @@ proto_compile(
 proto_compile(
     name = "directorypb_go_compile",
     options = {"@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick": ["plugins=grpc"]},
-    output_mappings = ["directory.pb.go=gimletlabs.ai/gimlet/src/controlplane/directory/directorypb/directory.pb.go"],
+    output_mappings = ["directory.pb.go=gimletlabs.ai/gimlet/src/controlplane/directory/directorypb/v1/directory.pb.go"],
     outputs = ["directory.pb.go"],
     plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
     proto = "directorypb_proto",
