@@ -27,7 +27,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"gimletlabs.ai/gimlet/src/api/proto/uuidpb"
+	"gimletlabs.ai/gimlet/src/common/typespb"
 	utils "gimletlabs.ai/gimlet/src/shared/uuidutils"
 )
 
@@ -63,7 +63,7 @@ func TestProtoFromUUIDStrOrNil_InValidUUID(t *testing.T) {
 }
 
 func TestUUIDFromProto_BitsValidUUID(t *testing.T) {
-	proto := &uuidpb.UUID{
+	proto := &typespb.UUID{
 		HighBits: hi,
 		LowBits:  lo,
 	}
@@ -78,21 +78,21 @@ func TestUUIDFromProto_BitsValidUUID(t *testing.T) {
 }
 
 func TestUUIDFromProto_EmptyUUID(t *testing.T) {
-	proto := &uuidpb.UUID{}
+	proto := &typespb.UUID{}
 	_, err := utils.UUIDFromProto(proto)
 	assert.NotNil(t, err)
 	assert.Contains(t, err.Error(), "uuid data in proto is nil")
 }
 
 func TestUUIDSame_NilNil(t *testing.T) {
-	p1 := &uuidpb.UUID{}
-	p2 := &uuidpb.UUID{}
+	p1 := &typespb.UUID{}
+	p2 := &typespb.UUID{}
 	assert.True(t, utils.AreSameUUID(p1, p2))
 }
 
 func TestUUIDSame_NilNotNil(t *testing.T) {
-	p1 := &uuidpb.UUID{}
-	p2 := &uuidpb.UUID{
+	p1 := &typespb.UUID{}
+	p2 := &typespb.UUID{
 		HighBits: hi,
 		LowBits:  lo,
 	}
@@ -100,11 +100,11 @@ func TestUUIDSame_NilNotNil(t *testing.T) {
 }
 
 func TestUUIDSame_Same(t *testing.T) {
-	p1 := &uuidpb.UUID{
+	p1 := &typespb.UUID{
 		HighBits: hi,
 		LowBits:  lo,
 	}
-	p2 := &uuidpb.UUID{
+	p2 := &typespb.UUID{
 		HighBits: hi,
 		LowBits:  lo,
 	}
@@ -112,11 +112,11 @@ func TestUUIDSame_Same(t *testing.T) {
 }
 
 func TestUUIDSame_Different(t *testing.T) {
-	p1 := &uuidpb.UUID{
+	p1 := &typespb.UUID{
 		HighBits: hi,
 		LowBits:  lo,
 	}
-	p2 := &uuidpb.UUID{
+	p2 := &typespb.UUID{
 		HighBits: lo,
 		LowBits:  hi,
 	}

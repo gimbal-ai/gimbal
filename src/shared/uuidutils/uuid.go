@@ -29,13 +29,13 @@ import (
 
 	"github.com/gofrs/uuid/v5"
 
-	"gimletlabs.ai/gimlet/src/api/proto/uuidpb"
+	"gimletlabs.ai/gimlet/src/common/typespb"
 )
 
 var enc = binary.BigEndian
 
 // UUIDFromProto converts a proto message to uuid.
-func UUIDFromProto(pb *uuidpb.UUID) (uuid.UUID, error) {
+func UUIDFromProto(pb *typespb.UUID) (uuid.UUID, error) {
 	if pb == nil {
 		return uuid.Nil, errors.New("nil proto given")
 	}
@@ -49,15 +49,15 @@ func UUIDFromProto(pb *uuidpb.UUID) (uuid.UUID, error) {
 }
 
 // UUIDFromProtoOrNil converts a proto message to uuid if error sets to nil uuid.
-func UUIDFromProtoOrNil(pb *uuidpb.UUID) uuid.UUID {
+func UUIDFromProtoOrNil(pb *typespb.UUID) uuid.UUID {
 	u, _ := UUIDFromProto(pb)
 	return u
 }
 
 // ProtoFromUUID converts a UUID to proto.
-func ProtoFromUUID(u uuid.UUID) *uuidpb.UUID {
+func ProtoFromUUID(u uuid.UUID) *typespb.UUID {
 	data := u.Bytes()
-	p := &uuidpb.UUID{
+	p := &typespb.UUID{
 		HighBits: enc.Uint64(data[0:8]),
 		LowBits:  enc.Uint64(data[8:16]),
 	}
@@ -65,12 +65,12 @@ func ProtoFromUUID(u uuid.UUID) *uuidpb.UUID {
 }
 
 // ProtoFromUUIDStrOrNil generates proto from string representation of a UUID (nil value is used if parsing fails).
-func ProtoFromUUIDStrOrNil(u string) *uuidpb.UUID {
+func ProtoFromUUIDStrOrNil(u string) *typespb.UUID {
 	return ProtoFromUUID(uuid.FromStringOrNil(u))
 }
 
 // ProtoToUUIDStr generates an expensive string representation of a UUID proto.
-func ProtoToUUIDStr(pb *uuidpb.UUID) string {
+func ProtoToUUIDStr(pb *typespb.UUID) string {
 	return UUIDFromProtoOrNil(pb).String()
 }
 
@@ -80,7 +80,7 @@ func IsNilUUID(u uuid.UUID) bool {
 }
 
 // IsNilUUIDProto tells you if the given UUID is nil.
-func IsNilUUIDProto(pb *uuidpb.UUID) bool {
+func IsNilUUIDProto(pb *typespb.UUID) bool {
 	if pb == nil {
 		return true
 	}
@@ -91,7 +91,7 @@ func IsNilUUIDProto(pb *uuidpb.UUID) bool {
 }
 
 // AreSameUUID tells you if the two protos refer to the same underlying UUID.
-func AreSameUUID(pb1, pb2 *uuidpb.UUID) bool {
+func AreSameUUID(pb1, pb2 *typespb.UUID) bool {
 	return pb1.HighBits == pb2.HighBits && pb1.LowBits == pb2.LowBits
 }
 

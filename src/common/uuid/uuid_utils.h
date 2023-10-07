@@ -20,8 +20,8 @@
 #pragma once
 
 #include <sole.hpp>
-#include "src/api/proto/uuidpb/uuid.pb.h"
 #include "src/common/base/base.h"
+#include "src/common/typespb/uuid.pb.h"
 
 namespace gml {
 
@@ -30,7 +30,7 @@ namespace gml {
  * @param uuid_proto
  * @return proto message
  */
-inline StatusOr<sole::uuid> ParseUUID(const gml::uuidpb::UUID& uuid_proto) {
+inline StatusOr<sole::uuid> ParseUUID(const gml::types::UUID& uuid_proto) {
   return sole::rebuild(uuid_proto.high_bits(), uuid_proto.low_bits());
 }
 
@@ -39,7 +39,7 @@ inline StatusOr<sole::uuid> ParseUUID(const gml::uuidpb::UUID& uuid_proto) {
  * @param uuid
  * @param uuid_proto
  */
-inline void ToProto(const sole::uuid& uuid, gml::uuidpb::UUID* uuid_proto) {
+inline void ToProto(const sole::uuid& uuid, gml::types::UUID* uuid_proto) {
   uuid_proto->set_high_bits(uuid.ab);
   uuid_proto->set_low_bits(uuid.cd);
 }

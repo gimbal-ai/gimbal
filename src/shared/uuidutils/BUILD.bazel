@@ -22,7 +22,7 @@ go_library(
     importpath = "gimletlabs.ai/gimlet/src/shared/uuidutils",
     visibility = ["//visibility:public"],
     deps = [
-        "//src/api/proto/uuidpb:uuidpb_go_proto",
+        "//src/common/typespb:typespb_go_proto",
         "@com_github_gofrs_uuid_v5//:uuid",
     ],
 )
@@ -32,7 +32,7 @@ gml_go_test(
     srcs = ["uuid_test.go"],
     deps = [
         ":uuidutils",
-        "//src/api/proto/uuidpb:uuidpb_go_proto",
+        "//src/common/typespb:typespb_go_proto",
         "@com_github_gofrs_uuid_v5//:uuid",
         "@com_github_stretchr_testify//assert",
         "@com_github_stretchr_testify//require",
