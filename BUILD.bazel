@@ -15,6 +15,7 @@
 
 load("@bazel_gazelle//:def.bzl", "DEFAULT_LANGUAGES", "gazelle_binary")
 load("@pip//:requirements.bzl", "all_whl_requirements")
+load("@rules_python//python:defs.bzl", "py_library")
 load("@rules_python_gazelle_plugin//manifest:defs.bzl", "gazelle_python_manifest")
 load("@rules_python_gazelle_plugin//modules_mapping:def.bzl", "modules_mapping")
 load("//bazel:gazelle.bzl", "gazelle_runners")
@@ -100,3 +101,9 @@ gml_oci_image(
 # gazelle:map_kind py_test gml_py_test @gml//bazel:gml_build_system.bzl
 
 exports_files(["LICENSE"])
+
+py_library(
+    name = "gimlet",
+    srcs = ["scripts/gen_compilation_database.py"],
+    visibility = ["//:__subpackages__"],
+)
