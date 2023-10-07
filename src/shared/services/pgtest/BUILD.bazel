@@ -37,6 +37,10 @@ go_library(
 gml_go_test(
     name = "pgtest_test",
     srcs = ["pgtest_test.go"],
+    embedsrcs = [
+        "schema/000001_create_test.down.sql",
+        "schema/000001_create_test.up.sql",
+    ],
     deps = [
         ":pgtest",
         "@com_github_stretchr_testify//assert",

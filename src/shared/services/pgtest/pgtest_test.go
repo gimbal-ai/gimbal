@@ -20,6 +20,7 @@
 package pgtest_test
 
 import (
+	"embed"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -27,6 +28,9 @@ import (
 
 	"gimletlabs.ai/gimlet/src/shared/services/pgtest"
 )
+
+//go:embed schema/*.sql
+var fs embed.FS
 
 func TestSetupTestDB(t *testing.T) {
 	db, teardown, err := pgtest.SetupTestDB(nil)
@@ -41,4 +45,15 @@ func TestSetupTestDB(t *testing.T) {
 	// This should fail b/c database should be closed after teardown.
 	err = db.Ping()
 	require.NotNil(t, err)
+}
+
+func TestSetupTestDB_CustomSchema(t *testing.T) {
+	db, teardown, err := pgtest.SetupTestDB(&fs, pgtest.WithSchemaDirectory("schema"))
+
+	require.NoError(t, err)
+	require.NotNil(t, db)
+	require.NotNil(t, teardown)
+	defer teardown()
+
+	assert.Nil(t, db.Ping())
 }

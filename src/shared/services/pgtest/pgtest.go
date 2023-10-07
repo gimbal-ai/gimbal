@@ -35,9 +35,29 @@ import (
 	"gimletlabs.ai/gimlet/src/shared/services/pg"
 )
 
+type testDB struct {
+	db                    *sqlx.DB
+	schemaSourceDirectory string
+}
+
+// TestDBOpt is an option to the testing DB.
+type TestDBOpt func(*testDB)
+
+// WithSchemaDirectory allows configuration of the schema directory.
+func WithSchemaDirectory(dir string) TestDBOpt {
+	return func(d *testDB) {
+		d.schemaSourceDirectory = dir
+	}
+}
+
 // SetupTestDB sets up a test database instance and applies migrations.
-func SetupTestDB(schemaSource *embed.FS) (*sqlx.DB, func(), error) {
-	var db *sqlx.DB
+func SetupTestDB(schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx.DB, func(), error) {
+	d := &testDB{
+		schemaSourceDirectory: ".",
+	}
+	for _, opt := range opts {
+		opt(d)
+	}
 
 	pool, err := dockertest.NewPool("")
 	if err != nil {
@@ -85,19 +105,19 @@ func SetupTestDB(schemaSource *embed.FS) (*sqlx.DB, func(), error) {
 
 	if err = pool.Retry(func() error {
 		log.Info("trying to connect")
-		db = pg.MustCreateDefaultPostgresDB()
-		return db.Ping()
+		d.db = pg.MustCreateDefaultPostgresDB()
+		return d.db.Ping()
 	}); err != nil {
 		return nil, nil, fmt.Errorf("failed to create postgres on docker: %w", err)
 	}
 
-	driver, err := postgres.WithInstance(db.DB, &postgres.Config{})
+	driver, err := postgres.WithInstance(d.db.DB, &postgres.Config{})
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to get postgres driver: %w", err)
 	}
 
 	if schemaSource != nil {
-		d, err := iofs.New(schemaSource, "schema")
+		d, err := iofs.New(schemaSource, d.schemaSourceDirectory)
 		if err != nil {
 			return nil, nil, fmt.Errorf("failed to load schema: %w", err)
 		}
@@ -112,9 +132,9 @@ func SetupTestDB(schemaSource *embed.FS) (*sqlx.DB, func(), error) {
 		}
 	}
 
-	return db, func() {
-		if db != nil {
-			db.Close()
+	return d.db, func() {
+		if d.db != nil {
+			d.db.Close()
 		}
 
 		if err := pool.Purge(resource); err != nil {
