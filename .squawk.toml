@@ -1,0 +1,5 @@
+# .squawk.toml
+pg_version = "15.0"
+excluded_rules = [
+  "ban-drop-table",
+]
