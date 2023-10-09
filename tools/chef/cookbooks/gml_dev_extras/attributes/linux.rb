@@ -53,6 +53,11 @@ default["kustomize"]["download_path"] =
 default["kustomize"]["sha256"] =
   "c627b1575c3fecbc7ad1c181c23a7adcacf19732dab627eb57e89a7bc4c1e929"
 
+default["ksops"]["download_path"] =
+  "https://github.com/viaduct-ai/kustomize-sops/releases/download/v4.2.3/ksops_4.2.3_Linux_x86_64.tar.gz"
+default["ksops"]["sha256"] =
+  "1311508fe4d9461e11df6ebddad47949be9216583c024baf15c24ed5b9359cf8"
+
 default["lego"]["download_path"] =
   "https://github.com/go-acme/lego/releases/download/v4.5.3/lego_v4.5.3_linux_amd64.tar.gz"
 default["lego"]["sha256"] =
