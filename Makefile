@@ -38,6 +38,7 @@ update-python-manifest:
 
 .PHONY: lint
 lint:
+	cd src/ui && pnpm install
 	$(MEGALINTER) \
 		--fix \
 		--env REPORT_OUTPUT_FOLDER=none \
