@@ -76,7 +76,6 @@ use_repo(
     "com_github_spf13_pflag",
     "com_github_spf13_viper",
     "com_github_stretchr_testify",
-    "com_github_zenazn_goji",
     "in_gopkg_yaml_v3",
     "org_golang_google_grpc",
     "org_golang_google_protobuf",

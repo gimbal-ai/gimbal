@@ -47,7 +47,7 @@ func isGRPCRequest(r *http.Request) bool {
 }
 
 // GMLServer is the services server component used across all Gimlet Labs services.
-// It starts both an HTTP and a GRPC server and handles middelware and env injection.
+// It starts both an HTTP and a GRPC server and handles middleware and env injection.
 type GMLServer struct {
 	ch            chan bool
 	wg            *sync.WaitGroup
