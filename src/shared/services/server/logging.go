@@ -46,7 +46,7 @@ func HTTPLoggingMiddleware(h http.Handler) http.Handler {
 
 		h.ServeHTTP(wr, r)
 
-		log.WithFields(log.Fields{
+		logFields := log.Fields{
 			"http_req_client_ip":  wr.reqClientIP,
 			"http_req_duration":   time.Since(t).Milliseconds(),
 			"http_req_host":       wr.reqHost,
@@ -58,7 +58,14 @@ func HTTPLoggingMiddleware(h http.Handler) http.Handler {
 			"http_req_user_agent": wr.reqUserAgent,
 			"http_res_size":       wr.resSize,
 			"http_res_status":     wr.resStatus,
-		}).Info()
+		}
+
+		switch {
+		case r.URL.String() == "/healthz":
+			log.WithTime(t).WithFields(logFields).Trace()
+		default:
+			log.WithTime(t).WithFields(logFields).Info()
+		}
 	})
 }
 
@@ -134,4 +141,8 @@ func (w *logInterceptWriter) Hijack() (net.Conn, *bufio.ReadWriter, error) {
 	}
 
 	return hj.Hijack()
+}
+
+func (w *logInterceptWriter) Status() int {
+	return w.resStatus
 }
