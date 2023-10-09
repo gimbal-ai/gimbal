@@ -12,6 +12,7 @@
 # Gimlet Labs, Inc.
 #
 # SPDX-License-Identifier: Proprietary
+
 load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
 load("@build_stack_rules_proto//rules/cc:grpc_cc_library.bzl", "grpc_cc_library")
 load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_library")
@@ -82,7 +83,7 @@ proto_compile(
 proto_go_library(
     name = "directorypb_go_proto",
     srcs = ["directory.pb.go"],
-    importpath = "gimletlabs.ai/gimlet/src/controlplane/directory/directorypb",
+    importpath = "gimletlabs.ai/gimlet/src/controlplane/directory/directorypb/v1",
     visibility = ["//visibility:public"],
     deps = [
         "//src/common/typespb:typespb_go_proto",
