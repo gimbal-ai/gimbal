@@ -43,6 +43,7 @@ FILTER_REGEX_EXCLUDE: "(app\\/graphql-schema\\.ts|\
                        infra\\/credentials\\/|\
                        gazelle_python\\.yaml|\
                        k8s\\/charts\\/.*\\/templates\\/.*.yaml|\
+                       k8s\\/charts\\/.*\\/dev\\/.*.yaml|\
                        .*\\.pb\\.go|\
                        ^third_party\\/.*proto$)"
 
