@@ -27,6 +27,8 @@ pkg_list = [
   "graphviz",
   "jq",
   "vim",
+  "gpg",
+  "pinentry-tty",
 ]
 
 if platform_family?("debian")
