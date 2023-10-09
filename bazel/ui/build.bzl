@@ -13,9 +13,11 @@
 #
 # SPDX-License-Identifier: Proprietary
 
+load("@aspect_rules_jest//jest:defs.bzl", aspect_jest_test = "jest_test")
 load("@aspect_rules_js//js:defs.bzl", "js_run_binary", aspect_js_library = "js_library")
 load("@aspect_rules_ts//ts:defs.bzl", aspect_ts_project = "ts_project")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
+load("//bazel:gml_build_system.bzl", "no_sysroot")
 load("//bazel:lib.bzl", "default_arg")
 
 def _ts_project(name, **kwargs):
@@ -28,6 +30,28 @@ def _ts_project(name, **kwargs):
     default_arg(kwargs, "tsconfig", "//src/ui:tsconfig")
 
     aspect_ts_project(name = name, **kwargs)
+
+def _jest_test(name = "", srcs = [], deps = [], data = [], **kwargs):
+    node_modules = kwargs.pop("node_modules", "//src/ui:node_modules")
+    tags = kwargs.pop("tags", ["jest"])
+
+    _ts_project(
+        name = "%s_js" % name,
+        srcs = srcs,
+        deps = deps,
+    )
+
+    data.append(":%s_js" % name)
+    data.append("//src/ui:jsconfig_json")
+
+    aspect_jest_test(
+        name = name,
+        data = data,
+        node_modules = node_modules,
+        tags = tags,
+        target_compatible_with = no_sysroot(),
+        **kwargs
+    )
 
 def _web_assets(name, **kwargs):
     aspect_js_library(name = name, **kwargs)
@@ -99,3 +123,4 @@ ts_project = _ts_project
 web_assets = _web_assets
 next_export = _next_export
 next_standalone = _next_standalone
+jest_test = _jest_test

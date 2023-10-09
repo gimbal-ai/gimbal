@@ -1,0 +1,47 @@
+diff --git a/gazelle/generate.go b/gazelle/generate.go
+index a319c7c..31cd724 100644
+--- a/gazelle/generate.go
++++ b/gazelle/generate.go
+@@ -151,6 +151,13 @@ func (lang *JS) GenerateRules(args language.GenerateArgs) language.GenerateResul
+ 		generatedImports = append(generatedImports, &noImports)
+ 	}
+ 
++	// add "js_library" rule for jsconfig.json
++	generatedJsConfigRule := lang.genJsConfigRule(args, jsConfig)
++	if generatedJsConfigRule != nil {
++		generatedRules = append(generatedRules, generatedJsConfigRule)
++		generatedImports = append(generatedImports, &noImports)
++	}
++
+ 	// add "jest_test" rule(s)
+ 	generatedTestRules, generatedTestImports := lang.genJestTest(args, jsConfig, jestSources)
+ 	generatedRules = append(generatedRules, generatedTestRules...)
+@@ -215,6 +222,7 @@ func (lang *JS) collectSources(args language.GenerateArgs, jsConfig *JsConfig) (
+ 		alwaysIgnoredFiles := map[string]bool{
+ 			"package.json":        true,
+ 			"package-lock.json":   true,
++			"jsconfig.json":       true,
+ 			"pnpm-lock.yaml":      true,
+ 			"pnpm-workspace.yaml": true,
+ 		}
+@@ -327,6 +335,20 @@ func (lang *JS) genPkgRule(args language.GenerateArgs, jsConfig *JsConfig) *rule
+ 	return nil
+ }
+ 
++func (lang *JS) genJsConfigRule(args language.GenerateArgs, jsConfig *JsConfig) *rule.Rule {
++	for _, baseName := range args.RegularFiles {
++		if baseName == "jsconfig.json" {
++			r := rule.NewRule(getKind(args.Config, "js_library"), "jsconfig_json")
++			r.SetAttr("srcs", []string{baseName})
++			if len(jsConfig.Visibility.Labels) > 0 {
++				r.SetAttr("visibility", jsConfig.Visibility.Labels)
++			}
++			return r
++		}
++	}
++	return nil
++}
++
+ func (lang *JS) genJestTest(args language.GenerateArgs, jsConfig *JsConfig, jestSources []string) ([]*rule.Rule, []interface{}) {
+ 	generatedRules := make([]*rule.Rule, 0)
+ 	generatedImports := make([]interface{}, 0)

@@ -127,6 +127,7 @@ def _gml_deps():
         patches = [
             "//bazel/external:rules_nodejs_gazelle.default_types_deps.patch",
             "//bazel/external:rules_nodejs_gazelle.nil_dereference.patch",
+            "//bazel/external:rules_nodejs_gazelle.jsconfig_json.patch",
         ],
         patch_args = ["-p1"],
     )
