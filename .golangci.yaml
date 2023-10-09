@@ -35,6 +35,8 @@ linters:
   - govet
   disable-all: false
 linters-settings:
+  errcheck:
+    ignore: database/sql:Rollback
   gci:
     sections:
     - standard

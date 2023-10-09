@@ -15,15 +15,17 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-package db_test
+package pg_test
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/grpc/metadata"
 
-	idDb "gimletlabs.ai/gimlet/src/shared/services/db"
+	"gimletlabs.ai/gimlet/src/shared/services/pg"
 	"gimletlabs.ai/gimlet/src/shared/services/pgtest"
 )
 
@@ -44,11 +46,19 @@ func TestCreateIdempotentTx(t *testing.T) {
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS test (test_col text)")
 	require.NoError(t, err)
 
-	tx1, err := idDb.CreateIdempotentTx(db, "test-key", "test")
-	require.ErrorContains(t, err, "not idempotent")
+	md1 := map[string][]string{
+		"idempotency-key": {"test-key"},
+	}
+	ctx1 := metadata.NewIncomingContext(context.Background(), md1)
+	tx1, err := pg.CreateIdempotentTx(ctx1, db, "test")
+	require.ErrorIs(t, err, pg.ErrIdempotencyTxFailed)
 	require.NoError(t, tx1.Rollback())
 
-	tx2, err := idDb.CreateIdempotentTx(db, "new-key", "test")
+	md2 := map[string][]string{
+		"idempotency-key": {"new-key"},
+	}
+	ctx2 := metadata.NewIncomingContext(context.Background(), md2)
+	tx2, err := pg.CreateIdempotentTx(ctx2, db, "test")
 	require.NoError(t, err)
 
 	_, err = tx2.Exec("INSERT INTO test (test_col) VALUES ('hello')")
@@ -73,4 +83,8 @@ func TestCreateIdempotentTx(t *testing.T) {
 	err = rows2.Scan(&count)
 	require.NoError(t, err)
 	assert.Equal(t, 2, count)
+
+	tx3, err := pg.CreateIdempotentTx(context.Background(), db, "test")
+	require.ErrorIs(t, err, pg.ErrIdempotencyKeyMissing)
+	require.NoError(t, tx3.Rollback())
 }

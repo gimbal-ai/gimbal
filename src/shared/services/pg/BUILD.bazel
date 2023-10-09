@@ -18,7 +18,10 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "pg",
-    srcs = ["pg.go"],
+    srcs = [
+        "idempotency.go",
+        "pg.go",
+    ],
     importpath = "gimletlabs.ai/gimlet/src/shared/services/pg",
     visibility = ["//visibility:public"],
     deps = [
@@ -29,15 +32,24 @@ go_library(
         "@com_github_sirupsen_logrus//:logrus",
         "@com_github_spf13_pflag//:pflag",
         "@com_github_spf13_viper//:viper",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//metadata",
+        "@org_golang_google_grpc//status",
     ],
 )
 
 gml_go_test(
     name = "pg_test",
-    srcs = ["pg_test.go"],
+    srcs = [
+        "idempotency_test.go",
+        "pg_test.go",
+    ],
     embed = [":pg"],
     deps = [
+        "//src/shared/services/pgtest",
         "@com_github_spf13_viper//:viper",
         "@com_github_stretchr_testify//assert",
+        "@com_github_stretchr_testify//require",
+        "@org_golang_google_grpc//metadata",
     ],
 )
