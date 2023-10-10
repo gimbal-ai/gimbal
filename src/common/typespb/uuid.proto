@@ -28,7 +28,6 @@ message UUID {
   // For example, 00112233-4455-6677-8899-aabbccddeeff should get encoded as:
   // high_bits: 0x0011223344556677
   // low_bits:  0x8899aabbccddeeff
-  uint64 high_bits = 2;
-  uint64 low_bits = 3;
-  reserved 1;
+  uint64 high_bits = 1;
+  uint64 low_bits = 2;
 }
