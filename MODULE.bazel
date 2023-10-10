@@ -29,22 +29,12 @@ bazel_dep(name = "bazel_skylib", version = "1.4.2")
 bazel_dep(name = "rules_foreign_cc", version = "0.9.0")
 bazel_dep(name = "rules_python", version = "0.26.0")
 bazel_dep(name = "rules_oci", version = "1.4.0")
-bazel_dep(name = "rules_python_gazelle_plugin", version = "0.25.0")
+bazel_dep(name = "rules_python_gazelle_plugin", version = "0.26.0")
 bazel_dep(name = "glog", version = "0.6.0", repo_name = "com_github_google_glog")
 bazel_dep(name = "abseil-cpp", version = "20230802.0", repo_name = "com_google_absl")
 bazel_dep(name = "googletest", version = "1.14.0", repo_name = "com_google_googletest")
 bazel_dep(name = "google_benchmark", version = "1.8.3", repo_name = "com_google_benchmark")
 bazel_dep(name = "re2", version = "2021-09-01")
-
-# Remove once rules_python_gazelle_plugin releases.
-archive_override(
-    module_name = "rules_python_gazelle_plugin",
-    integrity = "sha256-uk9Uc5PRU5Jyxu+MPnrdjsusXI841tA8ZosnEzqSWtU=",
-    strip_prefix = "rules_python-48daf52bdf85d46c529a873cc1f51e08672fd6d7/gazelle",
-    urls = [
-        "https://github.com/bazelbuild/rules_python/archive/48daf52bdf85d46c529a873cc1f51e08672fd6d7.tar.gz",
-    ],
-)
 
 # rules_go/gazelle setup
 go_sdk = use_extension("@io_bazel_rules_go//go:extensions.bzl", "go_sdk")
