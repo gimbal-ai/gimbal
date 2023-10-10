@@ -85,5 +85,31 @@ def _gml_binary_image(name, binary, multiarch = False, **kwargs):
     kwargs["tars"] = kwargs["tars"] + [name + "_binary_tar"]
     _gml_oci_image(name, multiarch = multiarch, **kwargs)
 
+def _host_cuda_ld_library_path(arch):
+    paths = [
+        "/lib/{arch}-linux-gnu",
+        "/usr/lib/{arch}-linux-gnu",
+        "/host_lib/{arch}-linux-gnu",
+        "/host_cuda/lib64",
+    ]
+    if arch == "aarch64":
+        paths = paths + ["/host_lib/{arch}-linux-gnu/tegra"]
+
+    return ":".join(paths).format(arch = arch)
+
+def _gml_host_cuda_binary_image(name, binary, **kwargs):
+    native.genrule(
+        name = name + ".env",
+        outs = [name + ".env"],
+        cmd = "> $@ echo " + select({
+            "@platforms//cpu:aarch64": "LD_LIBRARY_PATH=" + _host_cuda_ld_library_path("aarch64"),
+            "@platforms//cpu:x86_64": "LD_LIBRARY_PATH=" + _host_cuda_ld_library_path("x86_64"),
+        }),
+    )
+
+    default_arg(kwargs, "env", ":" + name + ".env")
+    _gml_binary_image(name, binary = binary, **kwargs)
+
 gml_oci_image = _gml_oci_image
 gml_binary_image = _gml_binary_image
+gml_host_cuda_binary_image = _gml_host_cuda_binary_image
