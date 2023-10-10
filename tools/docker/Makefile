@@ -46,6 +46,13 @@ MEGALINTER_BUILD_DIR := $(BUILD_DIR)/megalinter
 MEGALINTER_REV := $(shell date +%Y%m%d%H%M%S)
 MEGALINTER_IMAGE_TAG := "$(REPOSITORY)/megalinter-gml-custom:$(MEGALINTER_REV)"
 
+## NVIDIA stub creator
+NVIDIA_STUB_REV := $(shell date +%Y%m%d%H%M%S)
+NVIDIA_STUB_BUILD_DIR := $(BUILD_DIR)/nvidia_stubs
+NVIDIA_STUB_CREATOR_IMAGE_TAG := nvidia-stub-creator
+NVIDIA_STUB_GS_PATH := gs://gimlet-dev-infra-public/nvidia-stubs/$(NVIDIA_STUB_REV)
+NVIDIA_STUB_TARGETS := $(NVIDIA_STUB_BUILD_DIR)/nvidia_stubs_amd64.tar.gz $(NVIDIA_STUB_BUILD_DIR)/nvidia_stubs_arm64.tar.gz
+
 ##############################################
 # Clang Build
 ##############################################
@@ -88,3 +95,21 @@ build_and_push_megalinter: megalinter/Dockerfile megalinter/.tflint.hcl
 	@mkdir -p $(MEGALINTER_BUILD_DIR)
 	DOCKER_BUILDKIT=1 $(DOCKER) build megalinter -t $(MEGALINTER_IMAGE_TAG) --push
 	$(MAKE) -C ../chef sync_images
+
+##############################################
+# NVIDIA Stub libraries
+##############################################
+$(NVIDIA_STUB_BUILD_DIR)/nvidia_stubs_%.tar: nvidia_stubs/Dockerfile nvidia_stubs/stubify.sh nvidia_stubs/stubify_all.sh
+	@mkdir -p $(NVIDIA_STUB_BUILD_DIR)
+	DOCKER_BUILDKIT=1 $(DOCKER) build --platform=$* nvidia_stubs -t $(NVIDIA_STUB_CREATOR_IMAGE_TAG):$*
+	$(DOCKER) run -it -v $(PWD)/$(NVIDIA_STUB_BUILD_DIR):/build $(NVIDIA_STUB_CREATOR_IMAGE_TAG):$* /build/nvidia_stubs_$*.tar $*
+
+$(NVIDIA_STUB_BUILD_DIR)/nvidia_stubs.tar.gz: $(NVIDIA_STUB_BUILD_DIR)/nvidia_stubs_amd64.tar $(NVIDIA_STUB_BUILD_DIR)/nvidia_stubs_arm64.tar
+	@cp $(NVIDIA_STUB_BUILD_DIR)/nvidia_stubs_amd64.tar $(NVIDIA_STUB_BUILD_DIR)/nvidia_stubs.tar
+	@tar --concatenate -f $(NVIDIA_STUB_BUILD_DIR)/nvidia_stubs.tar $(NVIDIA_STUB_BUILD_DIR)/nvidia_stubs_arm64.tar
+	@gzip -f $(NVIDIA_STUB_BUILD_DIR)/nvidia_stubs.tar
+
+.PHONY: upload_nvidia_stubs
+upload_nvidia_stubs: $(NVIDIA_STUB_BUILD_DIR)/nvidia_stubs.tar.gz
+	gsutil cp $< $(NVIDIA_STUB_GS_PATH)/nvidia_stubs.tar.gz
+	sha256sum $<

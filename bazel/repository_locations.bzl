@@ -250,4 +250,10 @@ REPOSITORY_LOCATIONS = dict(
             "https://github.com/stackb/rules_proto/archive/v2.0.1.tar.gz",
         ],
     ),
+    nvidia_stubs = dict(
+        sha256 = "eed79efc454c2493f3e1a6277be6d351ec33b4ba4c27306168898dd1d0480f46",
+        urls = [
+            "https://storage.googleapis.com/gimlet-dev-infra-public/nvidia-stubs/20231009012327/nvidia_stubs.tar.gz",
+        ],
+    ),
 )

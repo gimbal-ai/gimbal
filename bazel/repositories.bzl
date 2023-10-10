@@ -92,6 +92,9 @@ def _cc_deps():
     _include_all_repo("com_github_nats_io_natsc")
     _bazel_repo("build_stack_rules_proto", patches = ["//bazel/external:rules_proto.silence_warnings.patch"], patch_args = ["-p1"])
 
+    # NVIDIA deps.
+    _bazel_repo("nvidia_stubs", build_file = "//bazel/external:nvidia_stubs.BUILD")
+
 def _list_gml_deps(name):
     modules = dict()
     for _, repo_config in REPOSITORY_LOCATIONS.items():
