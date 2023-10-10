@@ -13,7 +13,7 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-FROM nvidia/cuda:11.4.3-runtime-ubuntu20.04
+FROM nvidia/cuda:11.4.3-runtime-ubuntu20.04@sha256:ba35a0eddece1c989743847fd62e39185dced53ac6c69a9917f731a17473862b
 
 RUN apt-get update && \
   apt-get install -y \
