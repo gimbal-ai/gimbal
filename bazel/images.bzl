@@ -99,7 +99,7 @@ def _host_cuda_ld_library_path(arch):
 
 def _gml_host_cuda_binary_image(name, binary, **kwargs):
     native.genrule(
-        name = name + ".env",
+        name = name + "_env_gen",
         outs = [name + ".env"],
         cmd = "> $@ echo " + select({
             "@platforms//cpu:aarch64": "LD_LIBRARY_PATH=" + _host_cuda_ld_library_path("aarch64"),
@@ -107,7 +107,7 @@ def _gml_host_cuda_binary_image(name, binary, **kwargs):
         }),
     )
 
-    default_arg(kwargs, "env", ":" + name + ".env")
+    default_arg(kwargs, "env", ":" + name + "_env_gen")
     _gml_binary_image(name, binary = binary, **kwargs)
 
 gml_oci_image = _gml_oci_image
