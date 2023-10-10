@@ -1,5 +1,3 @@
-load("@gml//bazel:gml_build_system.bzl", "gml_go_test")
-
 # Copyright © 2023- Gimlet Labs, Inc.
 # All Rights Reserved.
 #
@@ -15,6 +13,7 @@ load("@gml//bazel:gml_build_system.bzl", "gml_go_test")
 #
 # SPDX-License-Identifier: Proprietary
 
+load("@gml//bazel:gml_build_system.bzl", "gml_go_test")
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
