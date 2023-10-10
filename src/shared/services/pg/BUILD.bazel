@@ -43,10 +43,13 @@ gml_go_test(
     srcs = [
         "idempotency_test.go",
         "pg_test.go",
+        "uuid_test.go",
     ],
     embed = [":pg"],
     deps = [
         "//src/shared/services/pgtest",
+        "@com_github_gofrs_uuid_v5//:uuid",
+        "@com_github_sirupsen_logrus//:logrus",
         "@com_github_spf13_viper//:viper",
         "@com_github_stretchr_testify//assert",
         "@com_github_stretchr_testify//require",
