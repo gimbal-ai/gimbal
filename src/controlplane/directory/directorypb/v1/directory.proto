@@ -48,29 +48,31 @@ service OrgDirectoryService {
   rpc DeleteOrg(DeleteOrgRequest) returns (DeleteOrgResponse);
 }
 
-// Service for managing users in an org.
+// Service for managing user<->org relationships.
 service OrgUserManagementService {
-  // Adds a user to an org.
-  rpc AddUserToOrg(AddUserToOrgRequest) returns (AddUserToOrgResponse);
-  // Removes a user from an org.
-  rpc RemoveUserFromOrg(RemoveUserFromOrgRequest) returns (RemoveUserFromOrgResponse);
-  // Gets the orgs that a user has access to.
-  rpc GetOrgsForUser(GetOrgsForUserRequest) returns (GetOrgsForUserResponse);
+  // Grants a user the given scopes on the given orgs.
+  rpc GrantUserScopes(GrantUserScopesRequest) returns (GrantUserScopesResponse);
+  // Revokes the given scopes for the given user and org.
+  rpc RevokeUserScopes(RevokeUserScopesRequest) returns (RevokeUserScopesResponse);
+  // List the orgs that a user has access to.
+  rpc ListOrgs(ListOrgsRequest) returns (ListOrgsResponse);
 }
 
 // UserInfo contains standard information about a user in the system.
 message UserInfo {
+  // The ID of the user.
+  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
   // The user's name.
-  string name = 1 [ (gogoproto.moretags) = 'db:"name"' ];
+  string name = 2 [ (gogoproto.moretags) = 'db:"name"' ];
   // The user's email.
-  string email = 2 [ (gogoproto.moretags) = 'db:"email"' ];
+  string email = 3 [ (gogoproto.moretags) = 'db:"email"' ];
   // The user's display picture.
-  string display_picture = 3 [ (gogoproto.moretags) = 'db:"display_picture"' ];
+  string display_picture = 4 [ (gogoproto.moretags) = 'db:"display_picture"' ];
   // The identity provider which the user has used to sign up.
-  string identity_provider = 4;
+  string identity_provider = 5;
   // The auth_provider_id is the user ID that an auth_provider uses for an ID of the corresponding
   // user.
-  string auth_provider_id = 5
+  string auth_provider_id = 6
       [ (gogoproto.customname) = "AuthProviderID", (gogoproto.moretags) = 'db:"auth_provider_id"' ];
 }
 
@@ -94,10 +96,8 @@ message GetUserRequest {
 
 // Response to get a user's info.
 message GetUserResponse {
-  // The ID of the user.
-  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
   // The information about the user.
-  UserInfo user_info = 2;
+  UserInfo user_info = 1;
 }
 
 // Request to update a user's info.
@@ -120,6 +120,16 @@ message DeleteUserRequest {
 // Response to deleting a user from the system.
 message DeleteUserResponse {}
 
+// OrgInfo contains standard information about an org in the system.
+message OrgInfo {
+  // The ID of the org.
+  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
+  // The name of the org. This is globally unique across the whole system.
+  string org_name = 2 [ (gogoproto.moretags) = 'db:"org_name"' ];
+  // Domain name for the org, if the org is using a common service provider.
+  string domain_name = 3 [ (gogoproto.moretags) = 'db:"domain_name"' ];
+}
+
 // Request to create an org in the system.
 message CreateOrgRequest {
   // Information about the org to create.
@@ -139,20 +149,10 @@ message GetOrgRequest {
   gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
 }
 
-// OrgInfo contains standard information about an org in the system.
-message OrgInfo {
-  // The name of the org. This is globally unique across the whole system.
-  string org_name = 1 [ (gogoproto.moretags) = 'db:"org_name"' ];
-  // Domain name for the org, if the org is using a common service provider.
-  string domain_name = 2 [ (gogoproto.moretags) = 'db:"domain_name"' ];
-}
-
 // Response to getting information about an org in the system.
 message GetOrgResponse {
-  // The ID of the organization.
-  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
   // Information about the org.
-  OrgInfo org_info = 2;
+  OrgInfo org_info = 1;
 }
 
 // Request to delete an org.
@@ -164,36 +164,26 @@ message DeleteOrgRequest {
 // Response to deleting an org.
 message DeleteOrgResponse {}
 
-// Request to add a user to the org.
-message AddUserToOrgRequest {
-  // The ID of the user to add to the org.
-  gml.types.UUID user_id = 1 [ (gogoproto.customname) = "UserID" ];
-  // The ID of the org which the user should be added to.
-  gml.types.UUID org_id = 2 [ (gogoproto.customname) = "OrgID" ];
-}
+// Request to grant a user the given scopes on the given orgs.
+message GrantUserScopesRequest {}
 
-// Response to adding a user to the org.
-message AddUserToOrgResponse {}
+// Response to granting a user the given scopes on the given orgs.
+message GrantUserScopesResponse {}
 
-// Request to remove a user from an org.
-message RemoveUserFromOrgRequest {
-  // The ID of the user to remove from the org.
-  gml.types.UUID user_id = 1 [ (gogoproto.customname) = "UserID" ];
-  // The ID of the org which the user should be removed from.
-  gml.types.UUID org_id = 2 [ (gogoproto.customname) = "OrgID" ];
-}
+// Request to revoke a user's scopes on the given orgs.
+message RevokeUserScopesRequest {}
 
-// Response to removing a user from an org.
-message RemoveUserFromOrgResponse {}
+// Response to revoking a user's scopes on the given orgs.
+message RevokeUserScopesResponse {}
 
-// Request to get a user's orgs.
-message GetOrgsForUserRequest {
-  // The ID of the user to get the orgs of.
+// Request to list a user's orgs.
+message ListOrgsRequest {
+  // The ID of the user to list the orgs of.
   gml.types.UUID user_id = 1 [ (gogoproto.customname) = "UserID" ];
 }
 
-// Response to get a user's org.
-message GetOrgsForUserResponse {
+// Response to list a user's org.
+message ListOrgsResponse {
   // The IDs of the org which the user is in.
   repeated gml.types.UUID org_ids = 1 [ (gogoproto.customname) = "OrgIDs" ];
 }

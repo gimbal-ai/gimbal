@@ -377,64 +377,64 @@ func (m *MockOrgUserManagementServiceClient) EXPECT() *MockOrgUserManagementServ
 	return m.recorder
 }
 
-// AddUserToOrg mocks base method.
-func (m *MockOrgUserManagementServiceClient) AddUserToOrg(ctx context.Context, in *directorypb.AddUserToOrgRequest, opts ...grpc.CallOption) (*directorypb.AddUserToOrgResponse, error) {
+// GrantUserScopes mocks base method.
+func (m *MockOrgUserManagementServiceClient) GrantUserScopes(ctx context.Context, in *directorypb.GrantUserScopesRequest, opts ...grpc.CallOption) (*directorypb.GrantUserScopesResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "AddUserToOrg", varargs...)
-	ret0, _ := ret[0].(*directorypb.AddUserToOrgResponse)
+	ret := m.ctrl.Call(m, "GrantUserScopes", varargs...)
+	ret0, _ := ret[0].(*directorypb.GrantUserScopesResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// AddUserToOrg indicates an expected call of AddUserToOrg.
-func (mr *MockOrgUserManagementServiceClientMockRecorder) AddUserToOrg(ctx, in any, opts ...any) *gomock.Call {
+// GrantUserScopes indicates an expected call of GrantUserScopes.
+func (mr *MockOrgUserManagementServiceClientMockRecorder) GrantUserScopes(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]any{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddUserToOrg", reflect.TypeOf((*MockOrgUserManagementServiceClient)(nil).AddUserToOrg), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GrantUserScopes", reflect.TypeOf((*MockOrgUserManagementServiceClient)(nil).GrantUserScopes), varargs...)
 }
 
-// GetOrgsForUser mocks base method.
-func (m *MockOrgUserManagementServiceClient) GetOrgsForUser(ctx context.Context, in *directorypb.GetOrgsForUserRequest, opts ...grpc.CallOption) (*directorypb.GetOrgsForUserResponse, error) {
+// ListOrgs mocks base method.
+func (m *MockOrgUserManagementServiceClient) ListOrgs(ctx context.Context, in *directorypb.ListOrgsRequest, opts ...grpc.CallOption) (*directorypb.ListOrgsResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "GetOrgsForUser", varargs...)
-	ret0, _ := ret[0].(*directorypb.GetOrgsForUserResponse)
+	ret := m.ctrl.Call(m, "ListOrgs", varargs...)
+	ret0, _ := ret[0].(*directorypb.ListOrgsResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetOrgsForUser indicates an expected call of GetOrgsForUser.
-func (mr *MockOrgUserManagementServiceClientMockRecorder) GetOrgsForUser(ctx, in any, opts ...any) *gomock.Call {
+// ListOrgs indicates an expected call of ListOrgs.
+func (mr *MockOrgUserManagementServiceClientMockRecorder) ListOrgs(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]any{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOrgsForUser", reflect.TypeOf((*MockOrgUserManagementServiceClient)(nil).GetOrgsForUser), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOrgs", reflect.TypeOf((*MockOrgUserManagementServiceClient)(nil).ListOrgs), varargs...)
 }
 
-// RemoveUserFromOrg mocks base method.
-func (m *MockOrgUserManagementServiceClient) RemoveUserFromOrg(ctx context.Context, in *directorypb.RemoveUserFromOrgRequest, opts ...grpc.CallOption) (*directorypb.RemoveUserFromOrgResponse, error) {
+// RevokeUserScopes mocks base method.
+func (m *MockOrgUserManagementServiceClient) RevokeUserScopes(ctx context.Context, in *directorypb.RevokeUserScopesRequest, opts ...grpc.CallOption) (*directorypb.RevokeUserScopesResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "RemoveUserFromOrg", varargs...)
-	ret0, _ := ret[0].(*directorypb.RemoveUserFromOrgResponse)
+	ret := m.ctrl.Call(m, "RevokeUserScopes", varargs...)
+	ret0, _ := ret[0].(*directorypb.RevokeUserScopesResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// RemoveUserFromOrg indicates an expected call of RemoveUserFromOrg.
-func (mr *MockOrgUserManagementServiceClientMockRecorder) RemoveUserFromOrg(ctx, in any, opts ...any) *gomock.Call {
+// RevokeUserScopes indicates an expected call of RevokeUserScopes.
+func (mr *MockOrgUserManagementServiceClientMockRecorder) RevokeUserScopes(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]any{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveUserFromOrg", reflect.TypeOf((*MockOrgUserManagementServiceClient)(nil).RemoveUserFromOrg), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RevokeUserScopes", reflect.TypeOf((*MockOrgUserManagementServiceClient)(nil).RevokeUserScopes), varargs...)
 }
 
 // MockOrgUserManagementServiceServer is a mock of OrgUserManagementServiceServer interface.
@@ -460,47 +460,47 @@ func (m *MockOrgUserManagementServiceServer) EXPECT() *MockOrgUserManagementServ
 	return m.recorder
 }
 
-// AddUserToOrg mocks base method.
-func (m *MockOrgUserManagementServiceServer) AddUserToOrg(arg0 context.Context, arg1 *directorypb.AddUserToOrgRequest) (*directorypb.AddUserToOrgResponse, error) {
+// GrantUserScopes mocks base method.
+func (m *MockOrgUserManagementServiceServer) GrantUserScopes(arg0 context.Context, arg1 *directorypb.GrantUserScopesRequest) (*directorypb.GrantUserScopesResponse, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AddUserToOrg", arg0, arg1)
-	ret0, _ := ret[0].(*directorypb.AddUserToOrgResponse)
+	ret := m.ctrl.Call(m, "GrantUserScopes", arg0, arg1)
+	ret0, _ := ret[0].(*directorypb.GrantUserScopesResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// AddUserToOrg indicates an expected call of AddUserToOrg.
-func (mr *MockOrgUserManagementServiceServerMockRecorder) AddUserToOrg(arg0, arg1 any) *gomock.Call {
+// GrantUserScopes indicates an expected call of GrantUserScopes.
+func (mr *MockOrgUserManagementServiceServerMockRecorder) GrantUserScopes(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddUserToOrg", reflect.TypeOf((*MockOrgUserManagementServiceServer)(nil).AddUserToOrg), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GrantUserScopes", reflect.TypeOf((*MockOrgUserManagementServiceServer)(nil).GrantUserScopes), arg0, arg1)
 }
 
-// GetOrgsForUser mocks base method.
-func (m *MockOrgUserManagementServiceServer) GetOrgsForUser(arg0 context.Context, arg1 *directorypb.GetOrgsForUserRequest) (*directorypb.GetOrgsForUserResponse, error) {
+// ListOrgs mocks base method.
+func (m *MockOrgUserManagementServiceServer) ListOrgs(arg0 context.Context, arg1 *directorypb.ListOrgsRequest) (*directorypb.ListOrgsResponse, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetOrgsForUser", arg0, arg1)
-	ret0, _ := ret[0].(*directorypb.GetOrgsForUserResponse)
+	ret := m.ctrl.Call(m, "ListOrgs", arg0, arg1)
+	ret0, _ := ret[0].(*directorypb.ListOrgsResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetOrgsForUser indicates an expected call of GetOrgsForUser.
-func (mr *MockOrgUserManagementServiceServerMockRecorder) GetOrgsForUser(arg0, arg1 any) *gomock.Call {
+// ListOrgs indicates an expected call of ListOrgs.
+func (mr *MockOrgUserManagementServiceServerMockRecorder) ListOrgs(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOrgsForUser", reflect.TypeOf((*MockOrgUserManagementServiceServer)(nil).GetOrgsForUser), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOrgs", reflect.TypeOf((*MockOrgUserManagementServiceServer)(nil).ListOrgs), arg0, arg1)
 }
 
-// RemoveUserFromOrg mocks base method.
-func (m *MockOrgUserManagementServiceServer) RemoveUserFromOrg(arg0 context.Context, arg1 *directorypb.RemoveUserFromOrgRequest) (*directorypb.RemoveUserFromOrgResponse, error) {
+// RevokeUserScopes mocks base method.
+func (m *MockOrgUserManagementServiceServer) RevokeUserScopes(arg0 context.Context, arg1 *directorypb.RevokeUserScopesRequest) (*directorypb.RevokeUserScopesResponse, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RemoveUserFromOrg", arg0, arg1)
-	ret0, _ := ret[0].(*directorypb.RemoveUserFromOrgResponse)
+	ret := m.ctrl.Call(m, "RevokeUserScopes", arg0, arg1)
+	ret0, _ := ret[0].(*directorypb.RevokeUserScopesResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// RemoveUserFromOrg indicates an expected call of RemoveUserFromOrg.
-func (mr *MockOrgUserManagementServiceServerMockRecorder) RemoveUserFromOrg(arg0, arg1 any) *gomock.Call {
+// RevokeUserScopes indicates an expected call of RevokeUserScopes.
+func (mr *MockOrgUserManagementServiceServerMockRecorder) RevokeUserScopes(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveUserFromOrg", reflect.TypeOf((*MockOrgUserManagementServiceServer)(nil).RemoveUserFromOrg), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RevokeUserScopes", reflect.TypeOf((*MockOrgUserManagementServiceServer)(nil).RevokeUserScopes), arg0, arg1)
 }
