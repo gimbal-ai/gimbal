@@ -256,4 +256,24 @@ REPOSITORY_LOCATIONS = dict(
             "https://storage.googleapis.com/gimlet-dev-infra-public/nvidia-stubs/20231009012327/nvidia_stubs.tar.gz",
         ],
     ),
+    com_gitlab_nvidia_headers_cudart = dict(
+        sha256 = "0d1e2249f4e75c96a51d327a4cfcf95413e90b59855c09c738f5ed4a50df469c",
+        strip_prefix = "cudart-cuda-11.4.4",
+        urls = ["https://gitlab.com/nvidia/headers/cuda-individual/cudart/-/archive/cuda-11.4.4/cudart-cuda-11.4.4.tar.gz"],
+    ),
+    com_gitlab_nvidia_headers_nvcc = dict(
+        sha256 = "677ec9463140e74c66c8936f18a8c658f6a3a440d3ccf54f9e4f3622a1853326",
+        strip_prefix = "nvcc-cuda-11.4.4",
+        urls = ["https://gitlab.com/nvidia/headers/cuda-individual/nvcc/-/archive/cuda-11.4.4/nvcc-cuda-11.4.4.tar.gz"],
+    ),
+    com_github_nvidia_tensorrt = dict(
+        sha256 = "72a297e39d143dbe94592244903aab82ef4cd7c773ce7cf6b562d9355da9cf67",
+        strip_prefix = "TensorRT-8.5.2",
+        urls = ["https://github.com/NVIDIA/TensorRT/archive/refs/tags/8.5.2.tar.gz"],
+    ),
+    com_github_onnx_onnx_tensorrt = dict(
+        sha256 = "5c90c8b65828af0079a8bc2189d0c6c161f1fc0b2522f2ac8b65aa30da42ccb2",
+        strip_prefix = "onnx-tensorrt-release-8.5-GA",
+        urls = ["https://github.com/onnx/onnx-tensorrt/archive/refs/tags/release/8.5-GA.tar.gz"],
+    ),
 )

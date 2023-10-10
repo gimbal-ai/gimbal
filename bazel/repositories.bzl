@@ -94,6 +94,10 @@ def _cc_deps():
 
     # NVIDIA deps.
     _bazel_repo("nvidia_stubs", build_file = "//bazel/external:nvidia_stubs.BUILD")
+    _bazel_repo("com_gitlab_nvidia_headers_cudart", build_file = "//bazel/external:cudart.BUILD")
+    _bazel_repo("com_gitlab_nvidia_headers_nvcc", build_file = "//bazel/external:nvcc.BUILD")
+    _bazel_repo("com_github_nvidia_tensorrt", build_file = "//bazel/external:tensorrt.BUILD")
+    _bazel_repo("com_github_onnx_onnx_tensorrt", build_file = "//bazel/external:onnx_tensorrt.BUILD")
 
 def _list_gml_deps(name):
     modules = dict()
