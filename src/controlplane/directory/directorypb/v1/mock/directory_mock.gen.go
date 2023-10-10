@@ -120,6 +120,26 @@ func (mr *MockUserDirectoryServiceClientMockRecorder) UpdateUser(ctx, in any, op
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUser", reflect.TypeOf((*MockUserDirectoryServiceClient)(nil).UpdateUser), varargs...)
 }
 
+// UpsertUser mocks base method.
+func (m *MockUserDirectoryServiceClient) UpsertUser(ctx context.Context, in *directorypb.UpsertUserRequest, opts ...grpc.CallOption) (*directorypb.UpsertUserResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertUser", varargs...)
+	ret0, _ := ret[0].(*directorypb.UpsertUserResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpsertUser indicates an expected call of UpsertUser.
+func (mr *MockUserDirectoryServiceClientMockRecorder) UpsertUser(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertUser", reflect.TypeOf((*MockUserDirectoryServiceClient)(nil).UpsertUser), varargs...)
+}
+
 // MockUserDirectoryServiceServer is a mock of UserDirectoryServiceServer interface.
 type MockUserDirectoryServiceServer struct {
 	ctrl     *gomock.Controller
@@ -201,6 +221,21 @@ func (m *MockUserDirectoryServiceServer) UpdateUser(arg0 context.Context, arg1 *
 func (mr *MockUserDirectoryServiceServerMockRecorder) UpdateUser(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUser", reflect.TypeOf((*MockUserDirectoryServiceServer)(nil).UpdateUser), arg0, arg1)
+}
+
+// UpsertUser mocks base method.
+func (m *MockUserDirectoryServiceServer) UpsertUser(arg0 context.Context, arg1 *directorypb.UpsertUserRequest) (*directorypb.UpsertUserResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpsertUser", arg0, arg1)
+	ret0, _ := ret[0].(*directorypb.UpsertUserResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpsertUser indicates an expected call of UpsertUser.
+func (mr *MockUserDirectoryServiceServerMockRecorder) UpsertUser(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertUser", reflect.TypeOf((*MockUserDirectoryServiceServer)(nil).UpsertUser), arg0, arg1)
 }
 
 // MockOrgDirectoryServiceClient is a mock of OrgDirectoryServiceClient interface.

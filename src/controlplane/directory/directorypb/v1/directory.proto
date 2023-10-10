@@ -36,6 +36,8 @@ service UserDirectoryService {
   rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
   // Deletes the user with the given ID from the system.
   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
+  // UpsertUser creates or updates a user in the system.
+  rpc UpsertUser(UpsertUserRequest) returns (UpsertUserResponse);
 }
 
 // Service for managing the org directory.  including adding user management within an org.
@@ -82,6 +84,18 @@ message CreateUserRequest {
 
 // Response for creating a user in the system.
 message CreateUserResponse {
+  // The ID of the user created.
+  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
+}
+
+// Request to upsert a user in the system.
+message UpsertUserRequest {
+  // The information of the user to create.
+  UserInfo user_info = 1;
+}
+
+// Response to upserting a user in the system.
+message UpsertUserResponse {
   // The ID of the user created.
   gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
 }
