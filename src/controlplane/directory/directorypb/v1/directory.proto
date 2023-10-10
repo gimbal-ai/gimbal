@@ -28,8 +28,6 @@ import "src/common/typespb/uuid.proto";
 
 // Service for managing the user directory, including the user's profile information.
 service UserDirectoryService {
-  // Creates a new user in the system.
-  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
   // Gets information about the user with the given ID.
   rpc GetUser(GetUserRequest) returns (GetUserResponse);
   // Updates a user's profile information, such as profile picture.
@@ -67,25 +65,13 @@ message UserInfo {
   // The user's email.
   string email = 2 [ (gogoproto.moretags) = 'db:"email"' ];
   // The user's display picture.
-  string display_picture = 3;
+  string display_picture = 3 [ (gogoproto.moretags) = 'db:"display_picture"' ];
   // The identity provider which the user has used to sign up.
   string identity_provider = 4;
   // The auth_provider_id is the user ID that an auth_provider uses for an ID of the corresponding
   // user.
   string auth_provider_id = 5
       [ (gogoproto.customname) = "AuthProviderID", (gogoproto.moretags) = 'db:"auth_provider_id"' ];
-}
-
-// Request to create a user in the system.
-message CreateUserRequest {
-  // The information of the user to create.
-  UserInfo user_info = 1;
-}
-
-// Response for creating a user in the system.
-message CreateUserResponse {
-  // The ID of the user created.
-  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
 }
 
 // Request to upsert a user in the system.

@@ -40,26 +40,6 @@ func (m *MockUserDirectoryServiceClient) EXPECT() *MockUserDirectoryServiceClien
 	return m.recorder
 }
 
-// CreateUser mocks base method.
-func (m *MockUserDirectoryServiceClient) CreateUser(ctx context.Context, in *directorypb.CreateUserRequest, opts ...grpc.CallOption) (*directorypb.CreateUserResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "CreateUser", varargs...)
-	ret0, _ := ret[0].(*directorypb.CreateUserResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// CreateUser indicates an expected call of CreateUser.
-func (mr *MockUserDirectoryServiceClientMockRecorder) CreateUser(ctx, in any, opts ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockUserDirectoryServiceClient)(nil).CreateUser), varargs...)
-}
-
 // DeleteUser mocks base method.
 func (m *MockUserDirectoryServiceClient) DeleteUser(ctx context.Context, in *directorypb.DeleteUserRequest, opts ...grpc.CallOption) (*directorypb.DeleteUserResponse, error) {
 	m.ctrl.T.Helper()
@@ -161,21 +141,6 @@ func NewMockUserDirectoryServiceServer(ctrl *gomock.Controller) *MockUserDirecto
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockUserDirectoryServiceServer) EXPECT() *MockUserDirectoryServiceServerMockRecorder {
 	return m.recorder
-}
-
-// CreateUser mocks base method.
-func (m *MockUserDirectoryServiceServer) CreateUser(arg0 context.Context, arg1 *directorypb.CreateUserRequest) (*directorypb.CreateUserResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateUser", arg0, arg1)
-	ret0, _ := ret[0].(*directorypb.CreateUserResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// CreateUser indicates an expected call of CreateUser.
-func (mr *MockUserDirectoryServiceServerMockRecorder) CreateUser(arg0, arg1 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockUserDirectoryServiceServer)(nil).CreateUser), arg0, arg1)
 }
 
 // DeleteUser mocks base method.
