@@ -40,8 +40,8 @@ bazel_dep(name = "re2", version = "2021-09-01")
 
 single_version_override(
     module_name = "aspect_rules_js",
-    patches = ["//bazel/external:rules_js.patch"],
     patch_strip = 1,
+    patches = ["//bazel/external:rules_js.patch"],
 )
 
 # rules_go/gazelle setup
@@ -64,6 +64,7 @@ use_repo(
     "com_github_graph_gophers_graphql_go",
     "com_github_grpc_ecosystem_go_grpc_middleware_v2",
     "com_github_jackc_pgx_v5",
+    "com_github_jarcoal_httpmock",
     "com_github_jmoiron_sqlx",
     "com_github_lestrrat_go_jwx_v2",
     "com_github_ory_dockertest_v3",
@@ -88,24 +89,20 @@ rules_ts_ext = use_extension(
     "ext",
     dev_dependency = True,
 )
-
 rules_ts_ext.deps()
-
 use_repo(rules_ts_ext, "npm_typescript")
 
 # rules_js setup
 npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm", dev_dependency = True)
-
 npm.npm_translate_lock(
     name = "npm",
     bins = {
-        "next": ["next=./dist/bin/next"]
+        "next": ["next=./dist/bin/next"],
     },
     npmrc = "//src/ui:.npmrc",
     pnpm_lock = "//src/ui:pnpm-lock.yaml",
     verify_node_modules_ignored = "//:.bazelignore",
 )
-
 use_repo(npm, "npm")
 
 # rules_python setup
