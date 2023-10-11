@@ -84,8 +84,8 @@ message UpsertUserRequest {
 
 // Response to upserting a user in the system.
 message UpsertUserResponse {
-  // The ID of the user created.
-  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
+  UserInfo user_info = 1;
+  bool created = 2;
 }
 
 // Request to get a user's info, given their ID.
