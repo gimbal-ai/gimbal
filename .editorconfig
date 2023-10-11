@@ -20,5 +20,5 @@ indent_size = unset
 [{Makefile,go.mod,go.sum,*.go}]
 indent_style = tab
 
-[{*.bzl,*.py,BUILD.bazel,WORKSPACE}]
+[{*.bzl,*.py,BUILD.bazel,MODULE.bazel,WORKSPACE}]
 indent_size = 4

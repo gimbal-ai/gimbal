@@ -24,6 +24,8 @@ bazel_dep(name = "rules_go", version = "0.42.0", repo_name = "io_bazel_rules_go"
 bazel_dep(name = "gazelle", version = "0.33.0", repo_name = "bazel_gazelle")
 bazel_dep(name = "aspect_bazel_lib", version = "1.36.0")
 bazel_dep(name = "aspect_rules_jest", version = "0.19.5")
+bazel_dep(name = "aspect_rules_js", version = "1.32.2")
+bazel_dep(name = "aspect_rules_ts", version = "2.0.0")
 bazel_dep(name = "rules_pkg", version = "0.9.1")
 bazel_dep(name = "bazel_skylib", version = "1.4.2")
 bazel_dep(name = "rules_foreign_cc", version = "0.9.0")
@@ -35,6 +37,12 @@ bazel_dep(name = "abseil-cpp", version = "20230802.0", repo_name = "com_google_a
 bazel_dep(name = "googletest", version = "1.14.0", repo_name = "com_google_googletest")
 bazel_dep(name = "google_benchmark", version = "1.8.3", repo_name = "com_google_benchmark")
 bazel_dep(name = "re2", version = "2021-09-01")
+
+single_version_override(
+    module_name = "aspect_rules_js",
+    patches = ["//bazel/external:rules_js.patch"],
+    patch_strip = 1,
+)
 
 # rules_go/gazelle setup
 go_sdk = use_extension("@io_bazel_rules_go//go:extensions.bzl", "go_sdk")
@@ -74,6 +82,32 @@ use_repo(
     "org_uber_go_mock",
 )
 
+# rules_ts setup
+rules_ts_ext = use_extension(
+    "@aspect_rules_ts//ts:extensions.bzl",
+    "ext",
+    dev_dependency = True,
+)
+
+rules_ts_ext.deps()
+
+use_repo(rules_ts_ext, "npm_typescript")
+
+# rules_js setup
+npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm", dev_dependency = True)
+
+npm.npm_translate_lock(
+    name = "npm",
+    bins = {
+        "next": ["next=./dist/bin/next"]
+    },
+    npmrc = "//src/ui:.npmrc",
+    pnpm_lock = "//src/ui:pnpm-lock.yaml",
+    verify_node_modules_ignored = "//:.bazelignore",
+)
+
+use_repo(npm, "npm")
+
 # rules_python setup
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
 python.toolchain(
@@ -91,6 +125,7 @@ pip.parse(
 )
 use_repo(pip, "pip")
 
+# rules_oci setup
 oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
 oci.pull(
     name = "distroless_nodejs",

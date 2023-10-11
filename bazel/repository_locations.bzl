@@ -16,20 +16,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 REPOSITORY_LOCATIONS = dict(
-    aspect_rules_js = dict(
-        sha256 = "77c4ea46c27f96e4aadcc580cd608369208422cf774988594ae8a01df6642c82",
-        strip_prefix = "rules_js-1.32.2",
-        urls = [
-            "https://github.com/aspect-build/rules_js/releases/download/v1.32.2/rules_js-v1.32.2.tar.gz",
-        ],
-    ),
-    aspect_rules_ts = dict(
-        sha256 = "8aabb2055629a7becae2e77ae828950d3581d7fc3602fe0276e6e039b65092cb",
-        strip_prefix = "rules_ts-2.0.0",
-        urls = [
-            "https://github.com/aspect-build/rules_ts/releases/download/v2.0.0/rules_ts-v2.0.0.tar.gz",
-        ],
-    ),
     # Must be called boringssl to make sure the deps pick it up correctly.
     boringssl = dict(
         sha256 = "d11f382c25a3bea34ad8761d57828971c8b06e230ad99e1cbfd4253c419f4f9a",
