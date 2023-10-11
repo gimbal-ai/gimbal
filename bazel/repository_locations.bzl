@@ -274,4 +274,9 @@ REPOSITORY_LOCATIONS = dict(
         strip_prefix = "opencv-4.8.1",
         urls = ["https://github.com/opencv/opencv/archive/refs/tags/4.8.1.tar.gz"],
     ),
+    cpuinfo = dict(
+        sha256 = "109e9d2f95a0d72fe50174b44de5b8c9be3e9551407b882e4ad497e9e068d202",
+        strip_prefix = "cpuinfo-87d8234510367db49a65535021af5e1838a65ac2",
+        urls = ["https://github.com/pytorch/cpuinfo/archive/87d8234510367db49a65535021af5e1838a65ac2.tar.gz"],
+    ),
 )
