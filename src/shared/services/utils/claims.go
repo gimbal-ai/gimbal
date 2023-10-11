@@ -48,7 +48,7 @@ func GetClaimsType(c *typespb.JWTClaims) ClaimType {
 }
 
 // GenerateJWTForUser creates a protobuf claims for the given user.
-func GenerateJWTForUser(userID string, orgID string, email string, expiresAt time.Time, audience string, isAdmin bool) *typespb.JWTClaims {
+func GenerateJWTForUser(userID string, orgIDs []string, email string, expiresAt time.Time, audience string, isAdmin bool) *typespb.JWTClaims {
 	claims := typespb.JWTClaims{
 		Subject: userID,
 		// Standard claims.
@@ -67,7 +67,7 @@ func GenerateJWTForUser(userID string, orgID string, email string, expiresAt tim
 	authorizations := make([]*typespb.UserJWTClaims_AuthorizationDetails, 0)
 	authorizations = append(authorizations, &typespb.UserJWTClaims_AuthorizationDetails{
 		Scopes: []string{orgScope},
-		OrgIDs: []string{orgID},
+		OrgIDs: orgIDs,
 	})
 
 	claims.CustomClaims = &typespb.JWTClaims_UserClaims{

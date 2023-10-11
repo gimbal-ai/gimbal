@@ -39,7 +39,7 @@ type AuthContext struct {
 	Path      string
 }
 
-// New creates a new sesion context.
+// New creates a new session context.
 func New() *AuthContext {
 	return &AuthContext{}
 }

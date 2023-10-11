@@ -33,7 +33,7 @@ const TestUserID string = "7ba7b810-9dad-11d1-80b4-00c04fd430c8"
 
 // GenerateTestClaimsWithDuration generates valid test user claims for a specified duration.
 func GenerateTestClaimsWithDuration(_ *testing.T, duration time.Duration, email string) *typespb.JWTClaims {
-	claims := utils.GenerateJWTForUser(TestUserID, TestOrgID, email, time.Now().Add(duration), "gml.ai", false)
+	claims := utils.GenerateJWTForUser(TestUserID, []string{TestOrgID}, email, time.Now().Add(duration), "gml.ai", false)
 	return claims
 }
 
