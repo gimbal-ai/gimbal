@@ -99,6 +99,16 @@ def _cc_deps():
     _bazel_repo("com_github_nvidia_tensorrt", build_file = "//bazel/external:tensorrt.BUILD")
     _bazel_repo("com_github_onnx_onnx_tensorrt", build_file = "//bazel/external:onnx_tensorrt.BUILD")
 
+    # mediapipe deps.
+    _bazel_repo(
+        "com_github_ffmpeg_ffmpeg",
+        patches = [
+            "//bazel/external:ffmpeg.fix_configure.patch",
+        ],
+        patch_args = ["-p1"],
+        build_file = "//bazel/external:ffmpeg.BUILD",
+    )
+
 def _list_gml_deps(name):
     modules = dict()
     for _, repo_config in REPOSITORY_LOCATIONS.items():

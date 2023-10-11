@@ -262,4 +262,11 @@ REPOSITORY_LOCATIONS = dict(
         strip_prefix = "onnx-tensorrt-release-8.5-GA",
         urls = ["https://github.com/onnx/onnx-tensorrt/archive/refs/tags/release/8.5-GA.tar.gz"],
     ),
+    com_github_ffmpeg_ffmpeg = dict(
+        sha256 = "5f417a4c00ec7874d255b24dbca33246be7ea72253bd9449bf9ebac51133e2a8",
+        strip_prefix = "FFmpeg-n4.3.6",
+        urls = [
+            "https://github.com/FFmpeg/FFmpeg/archive/refs/tags/n4.3.6.tar.gz",
+        ],
+    ),
 )
