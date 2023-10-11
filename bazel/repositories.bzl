@@ -108,6 +108,7 @@ def _cc_deps():
         patch_args = ["-p1"],
         build_file = "//bazel/external:ffmpeg.BUILD",
     )
+    _bazel_repo("com_github_opencv_opencv", build_file = "//bazel/external:opencv.BUILD")
 
 def _list_gml_deps(name):
     modules = dict()

@@ -269,4 +269,9 @@ REPOSITORY_LOCATIONS = dict(
             "https://github.com/FFmpeg/FFmpeg/archive/refs/tags/n4.3.6.tar.gz",
         ],
     ),
+    com_github_opencv_opencv = dict(
+        sha256 = "62f650467a60a38794d681ae7e66e3e8cfba38f445e0bf87867e2f2cdc8be9d5",
+        strip_prefix = "opencv-4.8.1",
+        urls = ["https://github.com/opencv/opencv/archive/refs/tags/4.8.1.tar.gz"],
+    ),
 )
