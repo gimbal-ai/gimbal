@@ -4,11 +4,14 @@ include:
 - libunwind-dev
 - libncurses-dev
 - libc6-dev
+- libegl1-mesa-dev
 - libelf-dev
 - libgcc-12-dev
+- libgles2-mesa-dev
 - libicu-dev
 - libstdc++-12-dev
 - linux-libc-dev
+- mesa-common-dev
 - zlib1g-dev
 exclude:
 - dpkg
