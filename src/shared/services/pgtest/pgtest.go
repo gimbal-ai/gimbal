@@ -23,9 +23,6 @@ import (
 	"embed"
 	"fmt"
 
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/golang-migrate/migrate/v4/database/postgres"
-	"github.com/golang-migrate/migrate/v4/source/iofs"
 	"github.com/jmoiron/sqlx"
 	"github.com/ory/dockertest/v3"
 	"github.com/ory/dockertest/v3/docker"
@@ -111,23 +108,9 @@ func SetupTestDB(schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx.DB, func(), e
 		return nil, nil, fmt.Errorf("failed to create postgres on docker: %w", err)
 	}
 
-	driver, err := postgres.WithInstance(d.db.DB, &postgres.Config{})
-	if err != nil {
-		return nil, nil, fmt.Errorf("failed to get postgres driver: %w", err)
-	}
-
 	if schemaSource != nil {
-		d, err := iofs.New(schemaSource, d.schemaSourceDirectory)
+		err := pg.PerformMigrationsWithEmbed(d.db, "test_migrations", schemaSource, d.schemaSourceDirectory)
 		if err != nil {
-			return nil, nil, fmt.Errorf("failed to load schema: %w", err)
-		}
-		mg, err := migrate.NewWithInstance(
-			"iofs", d, "postgres", driver)
-		if err != nil {
-			return nil, nil, fmt.Errorf("failed to load migrations: %w", err)
-		}
-
-		if err = mg.Up(); err != nil {
 			return nil, nil, fmt.Errorf("migrations failed: %w", err)
 		}
 	}

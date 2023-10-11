@@ -20,11 +20,15 @@ go_library(
     name = "pg",
     srcs = [
         "idempotency.go",
+        "migrate.go",
         "pg.go",
     ],
     importpath = "gimletlabs.ai/gimlet/src/shared/services/pg",
     visibility = ["//visibility:public"],
     deps = [
+        "@com_github_golang_migrate_migrate_v4//:migrate",
+        "@com_github_golang_migrate_migrate_v4//database/postgres",
+        "@com_github_golang_migrate_migrate_v4//source/iofs",
         "@com_github_jackc_pgx_v5//stdlib",
         "@com_github_jmoiron_sqlx//:sqlx",
         "@com_github_prometheus_client_golang//prometheus",

@@ -23,9 +23,6 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//src/shared/services/pg",
-        "@com_github_golang_migrate_migrate_v4//:migrate",
-        "@com_github_golang_migrate_migrate_v4//database/postgres",
-        "@com_github_golang_migrate_migrate_v4//source/iofs",
         "@com_github_jmoiron_sqlx//:sqlx",
         "@com_github_ory_dockertest_v3//:dockertest",
         "@com_github_ory_dockertest_v3//docker",
