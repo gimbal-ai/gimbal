@@ -1,22 +1,103 @@
-# Copyright © 2023- Gimlet Labs, Inc.
-# All Rights Reserved.
+# Copyright 2018- The Pixie Authors.
+# Modifications Copyright 2023- Gimlet Labs, Inc.
 #
-# NOTICE:  All information contained herein is, and remains
-# the property of Gimlet Labs, Inc. and its suppliers,
-# if any.  The intellectual and technical concepts contained
-# herein are proprietary to Gimlet Labs, Inc. and its suppliers and
-# may be covered by U.S. and Foreign Patents, patents in process,
-# and are protected by trade secret or copyright law. Dissemination
-# of this information or reproduction of this material is strictly
-# forbidden unless prior written permission is obtained from
-# Gimlet Labs, Inc.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in comgmliance with the License.
+# You may obtain a copy of the License at
 #
-# SPDX-License-Identifier: Proprietary
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by apgmlicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or imgmlied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
 
+# Packaging licenses for the entire pixie repository.
+# This includes the C API, Java API, and protocol buffer files.
+
+load("@gml//bazel:gml_build_system.bzl", "gml_go_binary")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 load("@rules_python//python:defs.bzl", "py_library")
+load("//bazel:licenses.bzl", "fetch_licenses")
+
+package(default_visibility = ["//visibility:private"])
+
+go_library(
+    name = "licenses_lib",
+    srcs = ["fetch_licenses.go"],
+    importpath = "gimletlabs.ai/gimlet/tools/licenses",
+    deps = [
+        "@com_github_blang_semver_v4//:semver",
+        "@com_github_google_go_github_v32//github",
+        "@com_github_puerkitobio_goquery//:goquery",
+        "@org_golang_x_oauth2//:oauth2",
+    ],
+)
+
+gml_go_binary(
+    name = "fetch_licenses",
+    embed = [":licenses_lib"],
+    visibility = ["//visibility:public"],
+)
+
+fetch_licenses(
+    name = "go_licenses",
+    src = "//:go.sum",
+    disallow_missing = select({
+        "//bazel:stamped": True,
+        "//conditions:default": False,
+    }),
+    fetch_tool = ":fetch_licenses",
+    manual_licenses = "manual_licenses.json",
+    out_found = "go_licenses.json",
+    out_missing = "go_licenses_missing.json",
+    use_pkg_dev_go = True,
+)
+
+fetch_licenses(
+    name = "deps_licenses",
+    src = "//:gml_3p_deps",
+    disallow_missing = select({
+        "//bazel:stamped": True,
+        "//conditions:default": False,
+    }),
+    fetch_tool = ":fetch_licenses",
+    manual_licenses = "manual_licenses.json",
+    out_found = "deps_licenses.json",
+    out_missing = "deps_licenses_missing.json",
+)
+
+genrule(
+    name = "all_licenses",
+    srcs = [
+        "go_licenses.json",
+        "deps_licenses.json",
+        "//src/ui/tools:licenses",
+    ],
+    outs = [
+        "all_licenses.json",
+    ],
+    cmd = """
+        python3 $(location combine_licenses.py) \
+            $(location go_licenses.json) \
+            $(location deps_licenses.json) \
+            $(location //src/ui/tools:licenses) \
+            --output $(location all_licenses.json)
+    """,
+    tools = [
+        "combine_licenses.py",
+    ],
+    visibility = ["//visibility:public"],
+)
 
 py_library(
     name = "licenses",
-    srcs = ["checker.py"],
+    srcs = [
+        "checker.py",
+        "combine_licenses.py",
+    ],
     visibility = ["//:__subpackages__"],
 )

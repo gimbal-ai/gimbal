@@ -59,6 +59,7 @@ use_repo(
     "com_github_gofrs_uuid_v5",
     "com_github_gogo_protobuf",
     "com_github_golang_migrate_migrate_v4",
+    "com_github_google_go_github_v32",
     "com_github_gorilla_handlers",
     "com_github_gorilla_sessions",
     "com_github_graph_gophers_graphql_go",
@@ -69,6 +70,7 @@ use_repo(
     "com_github_lestrrat_go_jwx_v2",
     "com_github_ory_dockertest_v3",
     "com_github_prometheus_client_golang",
+    "com_github_puerkitobio_goquery",
     "com_github_segmentio_analytics_go_v3",
     "com_github_sercand_kuberesolver_v5",
     "com_github_sirupsen_logrus",
@@ -79,6 +81,7 @@ use_repo(
     "org_golang_google_grpc",
     "org_golang_google_protobuf",
     "org_golang_x_net",
+    "org_golang_x_oauth2",
     "org_golang_x_sync",
     "org_uber_go_mock",
 )

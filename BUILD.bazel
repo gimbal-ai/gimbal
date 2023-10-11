@@ -21,6 +21,7 @@ load("@rules_python_gazelle_plugin//modules_mapping:def.bzl", "modules_mapping")
 load("//bazel:gazelle.bzl", "gazelle_runners")
 load("//bazel:gml_build_system.bzl", "no_sysroot")
 load("//bazel:images.bzl", "gml_oci_image")
+load("//bazel:repositories.bzl", "list_gml_deps")
 load("//bazel/cc_toolchains/sysroots:tars.bzl", "sysroot_runtime_tar", "sysroot_test_tar")
 
 modules_mapping(
@@ -100,10 +101,17 @@ gml_oci_image(
 # gazelle:map_kind go_test gml_go_test @gml//bazel:gml_build_system.bzl
 # gazelle:map_kind py_test gml_py_test @gml//bazel:gml_build_system.bzl
 
-exports_files(["LICENSE"])
+exports_files([
+    "LICENSE",
+    "go.sum",
+])
 
 py_library(
     name = "gimlet",
     srcs = ["scripts/gen_compilation_database.py"],
     visibility = ["//:__subpackages__"],
+)
+
+list_gml_deps(
+    name = "gml_3p_deps",
 )
