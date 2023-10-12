@@ -14,6 +14,7 @@ linters:
   - godot
   - gofumpt
   - gosimple
+  - importas
   - ineffassign
   - loggercheck
   - makezero
@@ -43,6 +44,11 @@ linters-settings:
     - default
     - prefix(gimletlabs.ai/gimlet)
     custom-order: true
+  importas:
+    no-unaliased: true
+    alias:
+    - pkg: github.com/sirupsen/logrus
+      alias: log
   nakedret:
     max-func-lines: 0
   revive:
