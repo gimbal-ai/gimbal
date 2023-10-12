@@ -26,6 +26,10 @@ gml_register_cc_toolchains()
 
 gml_deps()
 
+load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+
+bazel_skylib_workspace()
+
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
 protobuf_deps()
@@ -68,3 +72,20 @@ load("@build_stack_rules_proto//deps:protobuf_core_deps.bzl", "protobuf_core_dep
 protobuf_core_deps()
 
 register_toolchains("@build_stack_rules_proto//toolchain:standard")
+
+# mediapipe dependencies
+load("@org_tensorflow//tensorflow:workspace3.bzl", "tf_workspace3")
+
+tf_workspace3()
+
+load("@org_tensorflow//tensorflow:workspace2.bzl", "tf_workspace2")
+
+tf_workspace2()
+
+load("@org_tensorflow//tensorflow:workspace1.bzl", "tf_workspace1")
+
+tf_workspace1(with_rules_cc = False)
+
+load("@org_tensorflow//tensorflow:workspace0.bzl", "tf_workspace0")
+
+tf_workspace0()

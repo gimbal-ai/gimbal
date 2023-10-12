@@ -210,9 +210,9 @@ REPOSITORY_LOCATIONS = dict(
         manual_license_name = "llvm/llvm-project",
     ),
     org_tensorflow = dict(
-        sha256 = "99c732b92b1b37fc243a559e02f9aef5671771e272758aa4aec7f34dc92dac48",
-        strip_prefix = "tensorflow-2.11.0",
-        urls = ["https://github.com/tensorflow/tensorflow/archive/refs/tags/v2.11.0.tar.gz"],
+        sha256 = "ce357fd0728f0d1b0831d1653f475591662ec5bca736a94ff789e6b1944df19f",
+        strip_prefix = "tensorflow-2.14.0",
+        urls = ["https://github.com/tensorflow/tensorflow/archive/refs/tags/v2.14.0.tar.gz"],
     ),
     unix_cc_toolchain_config = dict(
         sha256 = "2c1d60ef4d586909f138c28409780e102e2ebd619e7d462ded26dce43a8f9ffb",
@@ -283,5 +283,20 @@ REPOSITORY_LOCATIONS = dict(
         sha256 = "104d3ef9efa30e97bf036194b43b5d4404d8522b960634424aa98ac4116b5a7d",
         strip_prefix = "XNNPACK-b9d4073a6913891ce9cbd8965c8d506075d2a45a",
         urls = ["https://github.com/google/XNNPACK/archive/b9d4073a6913891ce9cbd8965c8d506075d2a45a.tar.gz"],
+    ),
+    # Pull in a newer version of bazel toolchains for tensorflow.
+    bazel_toolchains = dict(
+        sha256 = "02e4f3744f1ce3f6e711e261fd322916ddd18cccd38026352f7a4c0351dbda19",
+        strip_prefix = "bazel-toolchains-5.1.2",
+        urls = ["https://github.com/bazelbuild/bazel-toolchains/archive/refs/tags/v5.1.2.tar.gz"],
+    ),
+    # if bazel_skylib is only pulled in as a bzlmod dep somewhere in the tensorflow dependency tree
+    # a third party project will pull a very old version of bazel skylib that doesn't work.
+    bazel_skylib = dict(
+        sha256 = "66ffd9315665bfaafc96b52278f57c7e2dd09f5ede279ea6d39b2be471e7e3aa",
+        urls = [
+            "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.4.2/bazel-skylib-1.4.2.tar.gz",
+            "https://github.com/bazelbuild/bazel-skylib/releases/download/1.4.2/bazel-skylib-1.4.2.tar.gz",
+        ],
     ),
 )

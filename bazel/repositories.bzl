@@ -69,6 +69,7 @@ def _com_llvm_lib():
 
 def _cc_deps():
     # Pinned transitive dependencies.
+    _bazel_repo("bazel_toolchains")
     _bazel_repo("upb")
     _bazel_repo(
         "cpuinfo",
@@ -91,11 +92,21 @@ def _cc_deps():
     _bazel_repo(
         "org_tensorflow",
         patches = [
-            "//bazel/external:tensorflow_disable_llvm.patch",
-            "//bazel/external:tensorflow_disable_mirrors.patch",
-            "//bazel/external:tensorflow_disable_py.patch",
+            # Disable tensorflow's custom mirrors because they're sometimes flaky.
+            "//bazel/external:tensorflow.disable_mirrors.patch",
+            # Disable python in tensorflow, since we don't use it.
+            "//bazel/external:tensorflow.disable_py.patch",
+            # Don't call grpc_extra_deps in tensorflow's deps b/c we already run it in our WORKSPACE.
+            "//bazel/external:tensorflow.skip_grpc_extra_deps.patch",
+            # Fixes lifted from the mediapipe repo to get tensorflow to work with mediapipe.
+            "//bazel/external:tensorflow.mediapipe_compatibility_fixes.patch",
+            # Lifted from the mediapipe repo.
+            "//bazel/external:tensorflow.mediapipe_custom_ops.patch",
         ],
         patch_args = ["-p1"],
+        repo_mapping = {
+            "@python": "@python_3_9",
+        },
     )
     _bazel_repo("com_github_neargye_magic_enum")
     _bazel_repo("com_github_thoughtspot_threadstacks")
@@ -157,6 +168,7 @@ def _gml_cc_toolchain_deps():
     cc_toolchain_config_repo("unix_cc_toolchain_config", patch = "//bazel/cc_toolchains:unix_cc_toolchain_config.patch")
 
 def _gml_deps():
+    _bazel_repo("bazel_skylib")
     _bazel_repo("com_github_fmeum_rules_meta")
 
     _bazel_repo(
