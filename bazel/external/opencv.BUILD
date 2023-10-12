@@ -70,6 +70,7 @@ cmake(
         "BUILD_EXAMPLES": "OFF",
         "BUILD_SHARED_LIBS": "ON" if OPENCV_SHARED_LIBS else "OFF",
         "WITH_ITT": "OFF",
+        "WITH_IPP": "OFF",
         "WITH_JASPER": "OFF",
         "WITH_JPEG": "ON",
         # TODO(james): enable png support if we need it.

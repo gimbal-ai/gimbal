@@ -16,6 +16,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("//bazel:deb_archive.bzl", "deb_archive")
 load("//bazel/cc_toolchains:deps.bzl", "cc_toolchain_config_repo")
 load(":repository_locations.bzl", "REPOSITORY_LOCATIONS")
 
@@ -53,6 +54,23 @@ def _bazel_repo(name, **kwargs):
 def _include_all_repo(name, **kwargs):
     kwargs["build_file_content"] = BUILD_ALL_CONTENT
     _http_archive_repo_impl(name, **kwargs)
+
+def _deb_repo(name, **kwargs):
+    existing_rule_keys = native.existing_rules().keys()
+    if name in existing_rule_keys:
+        # This repository has already been defined, probably because the user
+        # wants to override the version. Do nothing.
+        return
+
+    location = REPOSITORY_LOCATIONS[name]
+
+    deb_archive(
+        name = name,
+        urls = location["urls"],
+        sha256 = location["sha256"],
+        strip_prefix = location.get("strip_prefix", ""),
+        **kwargs
+    )
 
 def _com_llvm_lib():
     _bazel_repo("com_llvm_lib_x86_64_glibc_host", build_file = "//bazel/external:llvm.BUILD")
@@ -130,6 +148,8 @@ def _cc_deps():
     _bazel_repo("com_gitlab_nvidia_headers_nvcc", build_file = "//bazel/external:nvcc.BUILD")
     _bazel_repo("com_github_nvidia_tensorrt", build_file = "//bazel/external:tensorrt.BUILD")
     _bazel_repo("com_github_onnx_onnx_tensorrt", build_file = "//bazel/external:onnx_tensorrt.BUILD")
+    _deb_repo("com_nvidia_jetson_multimedia_api", build_file = "//bazel/external:jetson_multimedia.BUILD")
+    _deb_repo("com_nvidia_l4t_camera", build_file = "//bazel/external:l4t_camera.BUILD")
 
     # mediapipe deps.
     _bazel_repo(

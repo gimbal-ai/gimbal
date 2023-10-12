@@ -304,4 +304,12 @@ REPOSITORY_LOCATIONS = dict(
         strip_prefix = "mediapipe-0.10.5",
         urls = ["https://github.com/google/mediapipe/archive/refs/tags/v0.10.5.tar.gz"],
     ),
+    com_nvidia_jetson_multimedia_api = dict(
+        sha256 = "a28d46509bbe2c2f0dd40c9e43854b5cf95c33ac04502176c68f3c2f1cd7883e",
+        urls = ["https://repo.download.nvidia.com/jetson/common/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_35.4.1-20230801124926_arm64.deb"],
+    ),
+    com_nvidia_l4t_camera = dict(
+        sha256 = "d03d2f5baa111681aa3115e40e24572fba562e88b499a27f525ccf751fb36701",
+        urls = ["https://repo.download.nvidia.com/jetson/t234/pool/main/n/nvidia-l4t-camera/nvidia-l4t-camera_35.4.1-20230801124926_arm64.deb"],
+    ),
 )
