@@ -75,6 +75,11 @@ def _cc_deps():
         patches = ["//bazel/external:cpuinfo.fix_platforms.patch"],
         patch_args = ["-p1"],
     )
+    _bazel_repo(
+        "XNNPACK",
+        patches = ["//bazel/external:xnnpack.fix_platforms.patch"],
+        patch_args = ["-p1"],
+    )
 
     # Dependencies with native bazel build files.
     _bazel_repo("com_google_protobuf", patches = ["//bazel/external:protobuf_gogo_hack.patch", "//bazel/external:protobuf_warning.patch"], patch_args = ["-p1"])

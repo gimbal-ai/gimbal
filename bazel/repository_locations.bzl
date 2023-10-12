@@ -279,4 +279,9 @@ REPOSITORY_LOCATIONS = dict(
         strip_prefix = "cpuinfo-87d8234510367db49a65535021af5e1838a65ac2",
         urls = ["https://github.com/pytorch/cpuinfo/archive/87d8234510367db49a65535021af5e1838a65ac2.tar.gz"],
     ),
+    XNNPACK = dict(
+        sha256 = "104d3ef9efa30e97bf036194b43b5d4404d8522b960634424aa98ac4116b5a7d",
+        strip_prefix = "XNNPACK-b9d4073a6913891ce9cbd8965c8d506075d2a45a",
+        urls = ["https://github.com/google/XNNPACK/archive/b9d4073a6913891ce9cbd8965c8d506075d2a45a.tar.gz"],
+    ),
 )
