@@ -89,3 +89,11 @@ tf_workspace1(with_rules_cc = False)
 load("@org_tensorflow//tensorflow:workspace0.bzl", "tf_workspace0")
 
 tf_workspace0()
+
+load("//bazel/external:mediapipe_repos.bzl", "mediapipe_repos")
+
+mediapipe_repos()
+
+load("//bazel/external:mediapipe_deps.bzl", "mediapipe_deps")
+
+mediapipe_deps()

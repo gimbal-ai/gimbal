@@ -1,0 +1,25 @@
+diff --git a/third_party/BUILD b/third_party/BUILD
+index 22925208..ae451c1b 100644
+--- a/third_party/BUILD
++++ b/third_party/BUILD
+@@ -258,19 +258,7 @@ alias(
+ cc_library(
+     name = "libffmpeg",
+     visibility = ["//visibility:public"],
+-    deps = select({
+-        "//mediapipe:android_x86": [],
+-        "//mediapipe:android_x86_64": [],
+-        "//mediapipe:android_arm": [],
+-        "//mediapipe:android_arm64": [],
+-        "//mediapipe:ios": [],
+-        "//mediapipe:macos": [
+-            "@macos_ffmpeg//:libffmpeg",
+-        ],
+-        "//conditions:default": [
+-            "@linux_ffmpeg//:libffmpeg",
+-        ],
+-    }),
++    deps = ["@com_github_ffmpeg_ffmpeg//:ffmpeg"],
+ )
+ 
+ android_library(

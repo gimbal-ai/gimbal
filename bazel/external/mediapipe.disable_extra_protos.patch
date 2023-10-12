@@ -1,0 +1,28 @@
+diff --git a/mediapipe/framework/tool/mediapipe_proto.bzl b/mediapipe/framework/tool/mediapipe_proto.bzl
+index 142560ce..5c956e31 100644
+--- a/mediapipe/framework/tool/mediapipe_proto.bzl
++++ b/mediapipe/framework/tool/mediapipe_proto.bzl
+@@ -255,15 +255,15 @@ def mediapipe_proto_library(
+         alwayslink = None,
+         def_proto = True,
+         def_cc_proto = True,
+-        def_py_proto = True,
+-        def_java_lite_proto = True,
+-        def_kt_lite_proto = True,
+-        def_portable_proto = True,  # @unused
+-        def_objc_proto = True,
+-        def_java_proto = True,
+-        def_jspb_proto = True,
++        def_py_proto = False,
++        def_java_lite_proto = False,
++        def_kt_lite_proto = False,
++        def_portable_proto = False,  # @unused
++        def_objc_proto = False,
++        def_java_proto = False,
++        def_jspb_proto = False,
+         def_go_proto = True,
+-        def_dart_proto = True,
++        def_dart_proto = False,
+         def_options_lib = True,
+         def_rewrite = True,
+         portable_deps = None):  # @unused

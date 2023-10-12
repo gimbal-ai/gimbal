@@ -299,4 +299,9 @@ REPOSITORY_LOCATIONS = dict(
             "https://github.com/bazelbuild/bazel-skylib/releases/download/1.4.2/bazel-skylib-1.4.2.tar.gz",
         ],
     ),
+    com_github_google_mediapipe = dict(
+        sha256 = "d9ca0c8b8962096f4528101c46001b4dd32d6094f258da7e854f337bf1a31d6b",
+        strip_prefix = "mediapipe-0.10.5",
+        urls = ["https://github.com/google/mediapipe/archive/refs/tags/v0.10.5.tar.gz"],
+    ),
 )

@@ -102,6 +102,8 @@ def _cc_deps():
             "//bazel/external:tensorflow.mediapipe_compatibility_fixes.patch",
             # Lifted from the mediapipe repo.
             "//bazel/external:tensorflow.mediapipe_custom_ops.patch",
+            # Some tensorflow deps only work if pulled from their mirrors
+            "//bazel/external:tensorflow.use_mirror_for_gif.patch",
         ],
         patch_args = ["-p1"],
         repo_mapping = {
@@ -139,6 +141,27 @@ def _cc_deps():
         build_file = "//bazel/external:ffmpeg.BUILD",
     )
     _bazel_repo("com_github_opencv_opencv", build_file = "//bazel/external:opencv.BUILD")
+    _bazel_repo(
+        "com_github_google_mediapipe",
+        patches = [
+            # Use the opencv we build.
+            "//bazel/external:mediapipe.our_opencv.patch",
+            # Only generate cc and/or go protos.
+            "//bazel/external:mediapipe.disable_extra_protos.patch",
+            # Use the ffmpeg we build.
+            "//bazel/external:mediapipe.our_ffmpeg.patch",
+            # Make mediapipe compatible with our version of opencv.
+            "//bazel/external:mediapipe.opencv4_fix.patch",
+            # Make the mediapipe hand tracking example visible for testing purposes.
+            # TODO(james): remove this once we have our own usage of mediapipe.
+            "//bazel/external:mediapipe.example_visibility.patch",
+        ],
+        patch_args = ["-p1"],
+        repo_mapping = {
+            "@mediapipe": "@com_github_google_mediapipe",
+            "@npm": "@mediapipe_npm",
+        },
+    )
 
 def _list_gml_deps(name):
     modules = dict()

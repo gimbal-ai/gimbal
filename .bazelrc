@@ -179,3 +179,8 @@ try-import %workspace%/user.bazelrc
 
 # Tensorflow requires this option
 common --experimental_repo_remote_exec
+
+# Mediapipe requires these options.
+common --define OPENCV=source
+build --copt -DMESA_EGL_NO_X11_HEADERS
+build --copt -DEGL_NO_X11
