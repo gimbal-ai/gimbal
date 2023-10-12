@@ -1,13 +1,19 @@
-diff --git a/aspects.bzl b/aspects.bzl
-index bdd194a..b83a5c5 100644
---- a/aspects.bzl
-+++ b/aspects.bzl
-@@ -305,7 +305,7 @@ def _compilation_database_aspect_impl(target, ctx):
-         ctx = ctx,
-         cc_toolchain = cc_toolchain,
-         requested_features = ctx.features,
--        unsupported_features = ctx.disabled_features,
-+        unsupported_features = ctx.disabled_features + ["module_maps"],
-     )
+diff --git a/generate.py b/generate.py
+index b7764b1..32f08a5 100755
+--- a/generate.py
++++ b/generate.py
+@@ -82,8 +82,12 @@ if __name__ == "__main__":
+     query = ('kind("^cc_(library|binary|test|inc_library|proto_library)", {query_expr}) ' +
+              'union kind("^objc_(library|binary|test)", {query_expr})').format(
+                  query_expr=args.query_expr)
+-    query_cmd = [_BAZEL, 'query']
+-    query_cmd.extend(['--noshow_progress', '--noshow_loading_progress', '--output=label'])
++    query_cmd = [_BAZEL, 'cquery']
++    query_cmd.extend(['--noshow_progress', '--noshow_loading_progress'])
++    query_cmd.extend([
++        "--output=starlark",
++        "--starlark:expr='' if providers(target) and 'IncompatiblePlatformProvider' in providers(target) else target.label",
++    ])
+     query_cmd.append(query)
  
-     if ctx.rule.kind in _cc_rules:
+     targets_file = tempfile.NamedTemporaryFile()
