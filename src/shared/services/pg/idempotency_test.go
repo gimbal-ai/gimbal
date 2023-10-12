@@ -47,7 +47,7 @@ func TestCreateIdempotentTx(t *testing.T) {
 	require.NoError(t, err)
 
 	md1 := map[string][]string{
-		"idempotency-key": {"test-key"},
+		"x-idempotency-key": {"test-key"},
 	}
 	ctx1 := metadata.NewIncomingContext(context.Background(), md1)
 	tx1, err := pg.CreateIdempotentTx(ctx1, db, "test")
@@ -55,7 +55,7 @@ func TestCreateIdempotentTx(t *testing.T) {
 	require.NoError(t, tx1.Rollback())
 
 	md2 := map[string][]string{
-		"idempotency-key": {"new-key"},
+		"x-idempotency-key": {"new-key"},
 	}
 	ctx2 := metadata.NewIncomingContext(context.Background(), md2)
 	tx2, err := pg.CreateIdempotentTx(ctx2, db, "test")

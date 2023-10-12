@@ -44,7 +44,7 @@ func CreateIdempotentTx(ctx context.Context, db *sqlx.DB, svc string) (*sqlx.Tx,
 	}
 
 	md, _ := metadata.FromIncomingContext(ctx)
-	idempotencyKeys := md.Get("idempotency-key")
+	idempotencyKeys := md.Get("x-idempotency-key")
 	if len(idempotencyKeys) == 0 {
 		return tx, ErrIdempotencyKeyMissing
 	}
