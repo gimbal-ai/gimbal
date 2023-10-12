@@ -63,7 +63,7 @@ var remapRepos = map[string]string{
 	"pixie-io/threadstacks": "thoughtspot/threadstacks",
 }
 
-// Keep this in sync with src/ui/tools/licenses/yarn_license_extractor.js.
+// Keep this in sync with src/ui/tools/license_extractor.mjs.
 type dependency struct {
 	Name        string `json:"name"`
 	URL         string `json:"url"`

@@ -23,7 +23,6 @@ ENABLE_LINTERS:
 # TODO(michelle/zasgar): Consider enabling after auditing the rules and current set of lint issues.
 # - TERRAFORM_TERRASCAN
 - TERRAFORM_TFLINT
-- TSX_ESLINT
 - TYPESCRIPT_ES
 - TYPESCRIPT_PRETTIER
 - YAML_V8R
@@ -48,7 +47,7 @@ FILTER_REGEX_EXCLUDE: "(app\\/graphql-schema\\.ts|\
                        ^third_party\\/.*proto$)"
 
 # Linter specific configs
-CSS_STYLELINT_CONFIG_FILE: LINTER_DEFAULT
+CSS_STYLELINT_CONFIG_FILE: .stylelintrc.yaml
 EDITORCONFIG_EDITORCONFIG_CHECKER_FILTER_REGEX_EXCLUDE: ".mega-linter.yml"
 GO_GOLANGCI_LINT_ARGUMENTS: '--timeout 5m'
 GO_GOLANGCI_LINT_CLI_LINT_MODE: project
@@ -56,15 +55,12 @@ GO_GOLANGCI_LINT_CONFIG_FILE: .golangci.yaml
 MARKDOWN_MARKDOWNLINT_FILTER_REGEX_EXCLUDE: (\.github\/PULL_REQUEST_TEMPLATE)
 # See https://github.com/oxsecurity/megalinter/issues/2699
 TERRAFORM_TFLINT_UNSECURED_ENV_VARIABLES: GITHUB_TOKEN
-TSX_ESLINT_CONFIG_FILE: src/ui/.eslintrc.js
-TSX_ESLINT_FILE_EXTENSIONS: [".jsx", ".tsx"]
-TSX_ESLINT_RULES_PATH: src/ui
 TYPESCRIPT_DEFAULT_STYLE: prettier
-TYPESCRIPT_ES_CONFIG_FILE: src/ui/.eslintrc.js
+TYPESCRIPT_ES_CONFIG_FILE: src/ui/.eslintrc.cjs
 TYPESCRIPT_ES_RULES_PATH: src/ui
-TYPESCRIPT_FILE_EXTENSIONS: [".js", ".ts"]
+TYPESCRIPT_ES_FILE_EXTENSIONS: [".js", ".cjs", ".mjs", ".ts", ".jsx", ".tsx"]
 TYPESCRIPT_PRETTIER_CONFIG_FILE: src/ui/.prettierrc.json
-TYPESCRIPT_PRETTIER_FILE_EXTENSIONS: [".js", ".jsx", ".ts", ".tsx"]
+TYPESCRIPT_PRETTIER_FILE_EXTENSIONS: [".js", ".cjs", ".mjs", ".jsx", ".ts", ".tsx"]
 TYPESCRIPT_PRETTIER_RULES_PATH: src/ui
 # The mega-linter json schema is broken with plugins, so don't check the schema.
 YAML_V8R_FILTER_REGEX_EXCLUDE: (.mega-linter.yml)
