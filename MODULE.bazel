@@ -68,6 +68,7 @@ use_repo(
     "com_github_graph_gophers_graphql_go",
     "com_github_grpc_ecosystem_go_grpc_middleware_v2",
     "com_github_jackc_pgx_v5",
+    "com_github_jackc_pgerrcode",
     "com_github_jarcoal_httpmock",
     "com_github_jmoiron_sqlx",
     "com_github_lestrrat_go_jwx_v2",
