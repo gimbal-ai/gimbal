@@ -23,6 +23,9 @@ We currently only support running control plane in GKE (support for Minikube com
     skaffold config set default-repo us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts
     ```
 
+1. Add `export SKAFFOLD_LABEL=skaffold.dev/run-id=PREVENT_REDEPLOY` to your .bashrc or .zshrc.
+
+
 1. Configure docker to use gcloud for auth:
 
     ```sh
