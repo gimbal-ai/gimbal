@@ -32,6 +32,12 @@ We currently only support running control plane in GKE (support for Minikube com
     gcloud auth configure-docker us-docker.pkg.dev
     ```
 
+1. Run skaffold to deploy any dependencies to your namespace. You should only need to run this once unless you are configuring the dependencies.
+
+    ```sh
+    skaffold run -f skaffold/skaffold_controlplane_deps.yaml -n <YOUR_USERNAME> -p dev
+    ```
+
 1. Run skaffold to build and deploy the services in your namespace:
 
     ```sh
