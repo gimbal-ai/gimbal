@@ -178,6 +178,7 @@ def _cc_deps():
         ],
         patch_args = ["-p1"],
         repo_mapping = {
+            "@com_github_glog_glog": "@com_github_google_glog",
             "@mediapipe": "@com_github_google_mediapipe",
             "@npm": "@mediapipe_npm",
         },
