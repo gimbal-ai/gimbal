@@ -193,7 +193,10 @@ StatusOr<T>::StatusOr(T&& value) {
 #define GML_ASSIGN_OR(lhs, rexpr, ...) \
   GML_ASSIGN_OR_IMPL(GML_CONCAT_NAME(__status_or_value__, __COUNTER__), lhs, rexpr, __VA_ARGS__)
 
-#define GML_ASSIGN_OR_RETURN(lhs, rexpr) GML_ASSIGN_OR(lhs, rexpr, return __s__.status())
+#define GML_ASSIGN_OR_RETURN(lhs, rexpr) \
+  GML_ASSIGN_OR(lhs, rexpr, return StatusAdapter(__s__.status()))
+#define GML_ABSL_ASSIGN_OR_RETURN(lhs, rexpr) \
+  GML_ASSIGN_OR(lhs, rexpr, return AbslStatusAdapter(__s__.status()))
 
 // Be careful using this, since it will exit the whole binary.
 // Meant for use in top-level main() of binaries.

@@ -102,24 +102,37 @@ TEST(StatusOr, DefaultCtorValue) {
   EXPECT_DEATH(s.ConsumeValueOrDie(), "");
 }
 
-StatusOr<int> StatusOrTestFunc(int x) {
-  if (x == 0) {
-    return Status(gml::types::CODE_INTERNAL, "badness");
+StatusOr<int> Divide(int x, int y) {
+  if (y == 0) {
+    return Status(gml::types::CODE_INTERNAL, "divide by zero");
   }
-  return x + 1;
+  return x / y;
 }
 
-Status TestCheckCall(int x) {
-  GML_ASSIGN_OR_RETURN(auto y, StatusOrTestFunc(x));
-  EXPECT_EQ(y, x + 1);
+Status TestCheckCall(int x, int y) {
+  GML_ASSIGN_OR_RETURN(auto res, Divide(x, y));
+  EXPECT_EQ(res, x / y);
   return Status::OK();
 }
 
 TEST(StatusOr, Macros) {
-  EXPECT_TRUE(TestCheckCall(3).ok());
-  Status s = TestCheckCall(0);
+  EXPECT_TRUE(TestCheckCall(3, 1).ok());
+  Status s = TestCheckCall(10, 0);
   EXPECT_FALSE(s.ok());
   EXPECT_EQ(gml::types::CODE_INTERNAL, s.code());
+}
+
+absl::Status TestCheckCallAbsl(int x, int y) {
+  GML_ABSL_ASSIGN_OR_RETURN(auto res, Divide(x, y));
+  EXPECT_EQ(res, x / y);
+  return absl::OkStatus();
+}
+
+TEST(StatusOr, AbslMacros) {
+  EXPECT_TRUE(TestCheckCallAbsl(3, 1).ok());
+  absl::Status s = TestCheckCallAbsl(10, 0);
+  EXPECT_FALSE(s.ok());
+  EXPECT_EQ(absl::StatusCode::kInternal, s.code());
 }
 
 }  // namespace gml
