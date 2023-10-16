@@ -47,6 +47,7 @@ FILTER_REGEX_EXCLUDE: "(app\\/graphql-schema\\.ts|\
                        ^third_party\\/.*proto$)"
 
 # Linter specific configs
+CSS_STYLELINT_ARGUMENTS: '--config-basedir src/ui'
 CSS_STYLELINT_CONFIG_FILE: .stylelintrc.yaml
 EDITORCONFIG_EDITORCONFIG_CHECKER_FILTER_REGEX_EXCLUDE: ".mega-linter.yml"
 GO_GOLANGCI_LINT_ARGUMENTS: '--timeout 5m'
