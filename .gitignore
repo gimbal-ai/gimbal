@@ -86,3 +86,4 @@ bazel_tests_*
 
 # HelmChart dependencies
 **/charts/*.tgz
+**/charts/**/Chart.lock
