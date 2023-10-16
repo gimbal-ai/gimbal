@@ -87,6 +87,10 @@ sysroot_repo = repository_rule(
         "urls": attr.string_list(mandatory = True, doc = "list of mirrors to download the sysroot tarball from"),
         "variant": attr.string(mandatory = True, doc = "Use case variant of the sysroot. One of 'runtime', 'build', or 'test'"),
     },
+    environ = [
+        # Make sure to copy all GML_ENABLE_SYSROOT_* flags from .bazelrc here.
+        "GML_ENABLE_SYSROOT_DEBUG",
+    ],
 )
 
 SysrootInfo = provider(
