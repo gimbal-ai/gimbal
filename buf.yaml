@@ -6,6 +6,8 @@ build:
   - bazel-gimlet
   - bazel-out
   - bazel-testlogs
+  # Ignore any protos that use mediapipe protos.
+  - src/gem/core/spec
 breaking:
   use:
   - FILE
