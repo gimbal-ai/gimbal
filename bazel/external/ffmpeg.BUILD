@@ -42,11 +42,11 @@ configure_make(
         "@platforms//cpu:x86_64": ["--arch=x86_64"],
     }),
     out_shared_libs = [
-        "libavcodec.so",
-        "libavformat.so",
-        "libavutil.so",
-        "libswscale.so",
-        "libswresample.so",
+        "libavcodec.so.58",
+        "libavformat.so.58",
+        "libavutil.so.56",
+        "libswscale.so.5",
+        "libswresample.so.3",
     ],
     visibility = ["//visibility:public"],
 )

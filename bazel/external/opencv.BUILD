@@ -105,7 +105,7 @@ cmake(
         "HAVE_FFMPEG": "TRUE",
         "FFMPEG_LIBRARIES": ";".join([
             "$EXT_BUILD_DEPS/ffmpeg/lib/{lib}".format(lib=lib)
-            for lib in ["libavcodec.so", "libavformat.so", "libavutil.so", "libswresample.so", "libswscale.so"]
+            for lib in ["libavcodec.so.58", "libavformat.so.58", "libavutil.so.56", "libswresample.so.3", "libswscale.so.5"]
         ]),
         "FFMPEG_LIBRARY_DIRS": "$EXT_BUILD_DEPS/ffmpeg/lib",
         "FFMPEG_INCLUDE_DIRS": "$EXT_BUILD_DEPS/ffmpeg/include",
