@@ -37,6 +37,7 @@ gml_cc_library_internal(
     ),
     deps = [
         "//src/common/typespb:typespb_cc_library",
+        "@com_google_absl//absl/status",
         "@com_google_googletest//:gtest_prod",
     ],
 )

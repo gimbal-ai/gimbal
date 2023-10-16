@@ -18,6 +18,7 @@
  */
 
 #pragma once
+#include <absl/status/status.h>
 #include <google/protobuf/any.h>
 #include <google/protobuf/message.h>
 
@@ -145,6 +146,57 @@ template <>
 inline Status StatusAdapter<gml::types::Status>(const gml::types::Status& s) noexcept {
   return Status(s);
 };
+
+inline gml::types::Code AbslCodeToStatusCode(absl::StatusCode code) noexcept {
+  switch (code) {
+    case absl::StatusCode::kOk:
+      return gml::types::CODE_OK;
+    case absl::StatusCode::kCancelled:
+      return gml::types::CODE_CANCELLED;
+    case absl::StatusCode::kUnknown:
+      return gml::types::CODE_UNKNOWN;
+    case absl::StatusCode::kInvalidArgument:
+      return gml::types::CODE_INVALID_ARGUMENT;
+    case absl::StatusCode::kDeadlineExceeded:
+      return gml::types::CODE_DEADLINE_EXCEEDED;
+    case absl::StatusCode::kNotFound:
+      return gml::types::CODE_NOT_FOUND;
+    case absl::StatusCode::kAlreadyExists:
+      return gml::types::CODE_ALREADY_EXISTS;
+    case absl::StatusCode::kPermissionDenied:
+      return gml::types::CODE_PERMISSION_DENIED;
+    case absl::StatusCode::kResourceExhausted:
+      return gml::types::CODE_RESOURCE_UNAVAILABLE;
+    case absl::StatusCode::kFailedPrecondition:
+      return gml::types::CODE_FAILED_PRECONDITION;
+    case absl::StatusCode::kAborted:
+      return gml::types::CODE_CANCELLED;
+    case absl::StatusCode::kOutOfRange:
+      return gml::types::CODE_FAILED_PRECONDITION;
+    case absl::StatusCode::kUnimplemented:
+      return gml::types::CODE_UNIMPLEMENTED;
+    case absl::StatusCode::kInternal:
+      return gml::types::CODE_INTERNAL;
+    case absl::StatusCode::kUnavailable:
+      return gml::types::CODE_RESOURCE_UNAVAILABLE;
+    case absl::StatusCode::kDataLoss:
+      // We might want a more specific code here.
+      return gml::types::CODE_INTERNAL;
+    case absl::StatusCode::kUnauthenticated:
+      return gml::types::CODE_UNAUTHENTICATED;
+    default:
+      return gml::types::CODE_UNKNOWN;
+  }
+}
+
+// Conversion of absl::Status.
+template <>
+inline Status StatusAdapter<absl::Status>(const absl::Status& s) noexcept {
+  if (s.code() == absl::StatusCode::kOk) {
+    return Status();
+  }
+  return Status(AbslCodeToStatusCode(s.code()), std::string(s.message()));
+}
 
 }  // namespace gml
 
