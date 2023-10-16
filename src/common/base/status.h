@@ -189,6 +189,41 @@ inline gml::types::Code AbslCodeToStatusCode(absl::StatusCode code) noexcept {
   }
 }
 
+inline absl::StatusCode StatusCodeToAbslCode(gml::types::Code code) noexcept {
+  switch (code) {
+    case gml::types::CODE_OK:
+      return absl::StatusCode::kOk;
+    case gml::types::CODE_CANCELLED:
+      return absl::StatusCode::kCancelled;
+    case gml::types::CODE_UNKNOWN:
+      return absl::StatusCode::kUnknown;
+    case gml::types::CODE_INVALID_ARGUMENT:
+      return absl::StatusCode::kInvalidArgument;
+    case gml::types::CODE_DEADLINE_EXCEEDED:
+      return absl::StatusCode::kDeadlineExceeded;
+    case gml::types::CODE_NOT_FOUND:
+      return absl::StatusCode::kNotFound;
+    case gml::types::CODE_ALREADY_EXISTS:
+      return absl::StatusCode::kAlreadyExists;
+    case gml::types::CODE_PERMISSION_DENIED:
+      return absl::StatusCode::kPermissionDenied;
+    case gml::types::CODE_UNAUTHENTICATED:
+      return absl::StatusCode::kUnauthenticated;
+    case gml::types::CODE_INTERNAL:
+      return absl::StatusCode::kInternal;
+    case gml::types::CODE_UNIMPLEMENTED:
+      return absl::StatusCode::kUnimplemented;
+    case gml::types::CODE_RESOURCE_UNAVAILABLE:
+      return absl::StatusCode::kResourceExhausted;
+    case gml::types::CODE_SYSTEM:
+      return absl::StatusCode::kInternal;
+    case gml::types::CODE_FAILED_PRECONDITION:
+      return absl::StatusCode::kFailedPrecondition;
+    default:
+      return absl::StatusCode::kUnknown;
+  }
+}
+
 // Conversion of absl::Status.
 template <>
 inline Status StatusAdapter<absl::Status>(const absl::Status& s) noexcept {
@@ -196,6 +231,22 @@ inline Status StatusAdapter<absl::Status>(const absl::Status& s) noexcept {
     return Status();
   }
   return Status(AbslCodeToStatusCode(s.code()), std::string(s.message()));
+}
+
+template <typename T>
+inline absl::Status AbslStatusAdapter(const T&) noexcept {
+  static_assert(sizeof(T) == 0, "Implement custom status adapter, or include correct .h file.");
+  return absl::Status(absl::StatusCode::kUnimplemented, "Should never get here");
+}
+
+template <>
+inline absl::Status AbslStatusAdapter(const absl::Status& s) noexcept {
+  return s;
+}
+
+template <>
+inline absl::Status AbslStatusAdapter(const Status& s) noexcept {
+  return absl::Status(StatusCodeToAbslCode(s.code()), s.msg());
 }
 
 }  // namespace gml
@@ -212,6 +263,19 @@ inline Status StatusAdapter<absl::Status>(const absl::Status& s) noexcept {
 // The argument expression is guaranteed to be evaluated exactly once.
 #define GML_RETURN_IF_ERROR(__status) \
   GML_RETURN_IF_ERROR_IMPL(GML_UNIQUE_NAME(__status__), __status)
+
+#define GML_ABSL_RETURN_IF_ERROR_IMPL(__status_name__, __status) \
+  do {                                                           \
+    const auto& __status_name__ = (__status);                    \
+    if (!__status_name__.ok()) {                                 \
+      return AbslStatusAdapter(__status_name__);                 \
+    }                                                            \
+  } while (false)
+
+// Early-returns the status if it is in error; otherwise, proceeds.
+// The argument expression is guaranteed to be evaluated exactly once.
+#define GML_ABSL_RETURN_IF_ERROR(__status) \
+  GML_ABSL_RETURN_IF_ERROR_IMPL(GML_UNIQUE_NAME(__status__), __status)
 
 #define GML_EXIT_IF_ERROR(__status) \
   {                                 \

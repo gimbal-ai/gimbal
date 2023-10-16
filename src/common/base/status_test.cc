@@ -167,6 +167,12 @@ TEST(StatusAdapter, from_absl_without_error) {
   EXPECT_EQ(Status::OK(), StatusAdapter(absl_status));
 }
 
+TEST(AbslStatusAdapter, from_status) {
+  Status gml_status(gml::types::CODE_INVALID_ARGUMENT, "error 1");
+  absl::Status absl_status(absl::StatusCode::kInvalidArgument, "error 1");
+  EXPECT_EQ(absl_status, AbslStatusAdapter(gml_status));
+}
+
 TEST(PrependMessage, ResultsIsAsExpected) {
   Status s1(gml::types::CODE_INTERNAL, "Internal");
   EXPECT_THAT(s1, StatusIs(gml::types::CODE_INTERNAL, "Internal"));
