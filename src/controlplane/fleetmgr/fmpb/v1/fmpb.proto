@@ -79,10 +79,15 @@ message RegisterResponse {
 service FleetMgrService {
   // Creates a new fleet for the org.
   rpc CreateFleet(CreateFleetRequest) returns (CreateFleetResponse);
+}
+
+service FleetMgrDeployKeyService {
   // Creates a deploy key that can be used to deploy new devices as part of the fleet.
   rpc CreateDeployKey(CreateDeployKeyRequest) returns (CreateDeployKeyResponse);
+}
+
+service FleetMgrEdgeService {
   // Register adds a device as part of the fleet. If the device has already been registered it
   // simply returns with the existing config.
-
   rpc Register(RegisterRequest) returns (RegisterResponse);
 }
