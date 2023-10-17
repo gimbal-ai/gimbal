@@ -21,6 +21,7 @@ package gml.gem.core.spec;
 option go_package = "gimletlabs.ai/gimlet/src/gem/core/spec;spec";
 
 import "mediapipe/framework/calculator.proto";
+import "src/gem/plugins/tensorrt/spec/execution_spec.proto";
 
 // ExecutionSpec defines what models/processing GEM should run, how to prepare the
 // models/processors, where to send the output, etc. The current spec definitions are temporary and
@@ -30,6 +31,11 @@ message ExecutionSpec {
   mediapipe.CalculatorGraphConfig graph = 1;
 
   repeated PluginExecutionContext required_execution_context = 2;
+
+  // Plugin specs.
+
+  // TensorRT specific specifications.
+  gml.gem.tensorrt.spec.ExecutionSpec tensorrt_spec = 100;
 }
 
 message PluginExecutionContext {
