@@ -21,36 +21,11 @@ package gml.internal.controlplane.egw.v1;
 
 option go_package = "gimletlabs.ai/gimlet/src/controlplane/egw/egwpb/v1;egwpb";
 
-import "third_party/github.com/gogo/protobuf/gogoproto/gogo.proto";
-import "src/common/typespb/uuid.proto";
-
-message RegisterRequest {
-  // This is an opaque device serial for the device. It's nominally the MAC-address, GUID, or some
-  // other serial number that is deemed to be globally unique. It must be at-least 32 characters. On
-  // collision the request to register device will be rejected.
-  string device_serial = 1;
-  // The hostname of the device.
-  string hostname = 2;
-  // TODO(zasgar): Pass the device's public key here so that we can encrypt the request.
-}
-
-message RegisterResponse {
-  // This is the token that can be used on calls to the gateway "Bridge" API.
-  string token = 1;
-  // This is the Gimlet assigned device ID for this device.
-  gml.types.UUID device_id = 2 [ (gogoproto.customname) = "DeviceID" ];
-  // TODO(zasgar): Pass encryption information here.
-}
-
 message BridgeRequest {}
 
 message BridgeResponse {}
 
 service EGWService {
-  // Registers a given edge gateway device. The deployment key is passed on x-deployment-key header,
-  // and the information should be be present in the request. The request returns a short-lived key
-  // that can be used to connect to the bridge service.
-  rpc Register(RegisterRequest) returns (RegisterResponse);
   // Bridge allows nats messages to be exchanged between edge devices and controlplane.
   rpc Bridge(stream BridgeRequest) returns (stream BridgeResponse);
 }
