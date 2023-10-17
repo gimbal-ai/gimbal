@@ -31,7 +31,7 @@ go_library(
     importpath = "gimletlabs.ai/gimlet/tools/licenses",
     deps = [
         "@com_github_blang_semver_v4//:semver",
-        "@com_github_google_go_github_v32//github",
+        "@com_github_google_go_github_v56//github",
         "@com_github_puerkitobio_goquery//:goquery",
         "@org_golang_x_oauth2//:oauth2",
     ],

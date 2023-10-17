@@ -11,7 +11,7 @@ require (
 	github.com/gofrs/uuid/v5 v5.0.0
 	github.com/gogo/protobuf v1.3.2
 	github.com/golang-migrate/migrate/v4 v4.16.2
-	github.com/google/go-github/v32 v32.1.0
+	github.com/google/go-github/v56 v56.0.0
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/sessions v1.2.1
 	github.com/graph-gophers/graphql-go v1.5.0
