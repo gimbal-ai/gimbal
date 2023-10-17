@@ -97,65 +97,6 @@ func (m *FleetInfo) GetTags() []string {
 	return nil
 }
 
-type DeployKey struct {
-	ID          *typespb.UUID `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	FleetID     *typespb.UUID `protobuf:"bytes,2,opt,name=fleet_id,json=fleetId,proto3" json:"fleet_id,omitempty"`
-	Description string        `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-}
-
-func (m *DeployKey) Reset()      { *m = DeployKey{} }
-func (*DeployKey) ProtoMessage() {}
-func (*DeployKey) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{1}
-}
-func (m *DeployKey) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *DeployKey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_DeployKey.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *DeployKey) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DeployKey.Merge(m, src)
-}
-func (m *DeployKey) XXX_Size() int {
-	return m.Size()
-}
-func (m *DeployKey) XXX_DiscardUnknown() {
-	xxx_messageInfo_DeployKey.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_DeployKey proto.InternalMessageInfo
-
-func (m *DeployKey) GetID() *typespb.UUID {
-	if m != nil {
-		return m.ID
-	}
-	return nil
-}
-
-func (m *DeployKey) GetFleetID() *typespb.UUID {
-	if m != nil {
-		return m.FleetID
-	}
-	return nil
-}
-
-func (m *DeployKey) GetDescription() string {
-	if m != nil {
-		return m.Description
-	}
-	return ""
-}
-
 type CreateFleetRequest struct {
 	Fleet *FleetInfo `protobuf:"bytes,1,opt,name=fleet,proto3" json:"fleet,omitempty"`
 }
@@ -163,7 +104,7 @@ type CreateFleetRequest struct {
 func (m *CreateFleetRequest) Reset()      { *m = CreateFleetRequest{} }
 func (*CreateFleetRequest) ProtoMessage() {}
 func (*CreateFleetRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{2}
+	return fileDescriptor_e8daa588779d869f, []int{1}
 }
 func (m *CreateFleetRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -206,7 +147,7 @@ type CreateFleetResponse struct {
 func (m *CreateFleetResponse) Reset()      { *m = CreateFleetResponse{} }
 func (*CreateFleetResponse) ProtoMessage() {}
 func (*CreateFleetResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{3}
+	return fileDescriptor_e8daa588779d869f, []int{2}
 }
 func (m *CreateFleetResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -242,92 +183,6 @@ func (m *CreateFleetResponse) GetFleet() *FleetInfo {
 	return nil
 }
 
-type CreateDeployKeyRequest struct {
-	Key *DeployKey `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
-}
-
-func (m *CreateDeployKeyRequest) Reset()      { *m = CreateDeployKeyRequest{} }
-func (*CreateDeployKeyRequest) ProtoMessage() {}
-func (*CreateDeployKeyRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{4}
-}
-func (m *CreateDeployKeyRequest) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *CreateDeployKeyRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_CreateDeployKeyRequest.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *CreateDeployKeyRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CreateDeployKeyRequest.Merge(m, src)
-}
-func (m *CreateDeployKeyRequest) XXX_Size() int {
-	return m.Size()
-}
-func (m *CreateDeployKeyRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_CreateDeployKeyRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_CreateDeployKeyRequest proto.InternalMessageInfo
-
-func (m *CreateDeployKeyRequest) GetKey() *DeployKey {
-	if m != nil {
-		return m.Key
-	}
-	return nil
-}
-
-type CreateDeployKeyResponse struct {
-	Key *DeployKey `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
-}
-
-func (m *CreateDeployKeyResponse) Reset()      { *m = CreateDeployKeyResponse{} }
-func (*CreateDeployKeyResponse) ProtoMessage() {}
-func (*CreateDeployKeyResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{5}
-}
-func (m *CreateDeployKeyResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *CreateDeployKeyResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_CreateDeployKeyResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *CreateDeployKeyResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CreateDeployKeyResponse.Merge(m, src)
-}
-func (m *CreateDeployKeyResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *CreateDeployKeyResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_CreateDeployKeyResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_CreateDeployKeyResponse proto.InternalMessageInfo
-
-func (m *CreateDeployKeyResponse) GetKey() *DeployKey {
-	if m != nil {
-		return m.Key
-	}
-	return nil
-}
-
 type RegisterRequest struct {
 	DeviceSerial string `protobuf:"bytes,1,opt,name=device_serial,json=deviceSerial,proto3" json:"device_serial,omitempty"`
 	Hostname     string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
@@ -336,7 +191,7 @@ type RegisterRequest struct {
 func (m *RegisterRequest) Reset()      { *m = RegisterRequest{} }
 func (*RegisterRequest) ProtoMessage() {}
 func (*RegisterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{6}
+	return fileDescriptor_e8daa588779d869f, []int{3}
 }
 func (m *RegisterRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -386,7 +241,7 @@ type RegisterResponse struct {
 func (m *RegisterResponse) Reset()      { *m = RegisterResponse{} }
 func (*RegisterResponse) ProtoMessage() {}
 func (*RegisterResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{7}
+	return fileDescriptor_e8daa588779d869f, []int{4}
 }
 func (m *RegisterResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -424,11 +279,8 @@ func (m *RegisterResponse) GetDeviceID() *typespb.UUID {
 
 func init() {
 	proto.RegisterType((*FleetInfo)(nil), "gml.internal.controlplane.fleetmgr.v1.FleetInfo")
-	proto.RegisterType((*DeployKey)(nil), "gml.internal.controlplane.fleetmgr.v1.DeployKey")
 	proto.RegisterType((*CreateFleetRequest)(nil), "gml.internal.controlplane.fleetmgr.v1.CreateFleetRequest")
 	proto.RegisterType((*CreateFleetResponse)(nil), "gml.internal.controlplane.fleetmgr.v1.CreateFleetResponse")
-	proto.RegisterType((*CreateDeployKeyRequest)(nil), "gml.internal.controlplane.fleetmgr.v1.CreateDeployKeyRequest")
-	proto.RegisterType((*CreateDeployKeyResponse)(nil), "gml.internal.controlplane.fleetmgr.v1.CreateDeployKeyResponse")
 	proto.RegisterType((*RegisterRequest)(nil), "gml.internal.controlplane.fleetmgr.v1.RegisterRequest")
 	proto.RegisterType((*RegisterResponse)(nil), "gml.internal.controlplane.fleetmgr.v1.RegisterResponse")
 }
@@ -438,50 +290,43 @@ func init() {
 }
 
 var fileDescriptor_e8daa588779d869f = []byte{
-	// 686 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x55, 0x4d, 0x6b, 0x13, 0x4f,
-	0x18, 0xcf, 0xa4, 0x6f, 0xc9, 0xa4, 0x25, 0xff, 0xff, 0x16, 0x34, 0x04, 0xdc, 0xc4, 0x15, 0xb1,
-	0x07, 0xd9, 0xb5, 0x11, 0x2c, 0x6d, 0x51, 0x24, 0xc6, 0xc2, 0x22, 0x2a, 0x6c, 0xe9, 0x45, 0x5a,
-	0xca, 0x6e, 0x66, 0x32, 0x1d, 0xdc, 0xdd, 0xd9, 0xce, 0x4e, 0x0a, 0xc1, 0x8b, 0x07, 0xef, 0x16,
-	0x4f, 0x7e, 0x04, 0x2f, 0x7e, 0x0e, 0x3d, 0xf6, 0xd8, 0x53, 0xb0, 0xdb, 0x8b, 0xc7, 0xd2, 0x4f,
-	0x20, 0x3b, 0x93, 0x4d, 0x63, 0xab, 0xb5, 0x2d, 0x3d, 0x4d, 0x9e, 0x97, 0xdf, 0xef, 0xf9, 0x3d,
-	0x2f, 0x64, 0xe1, 0xfd, 0x98, 0xb7, 0xad, 0x36, 0x0b, 0x05, 0x67, 0x7e, 0xe4, 0xbb, 0x21, 0xb6,
-	0x3a, 0x3e, 0xc6, 0x22, 0x20, 0xdc, 0xea, 0x04, 0x91, 0x67, 0xed, 0xcc, 0xcb, 0xd7, 0x8c, 0x38,
-	0x13, 0x4c, 0xbb, 0x4b, 0x02, 0xdf, 0xa4, 0xa1, 0xc0, 0x3c, 0x74, 0x7d, 0x73, 0x14, 0x66, 0x66,
-	0x30, 0x73, 0x67, 0xbe, 0xba, 0x28, 0xb6, 0x28, 0x47, 0x9b, 0x91, 0xcb, 0x45, 0xcf, 0x22, 0x54,
-	0x6c, 0x75, 0x3d, 0xb3, 0xcd, 0x02, 0x8b, 0x30, 0xc2, 0x2c, 0xc9, 0xe4, 0x75, 0x3b, 0xd2, 0x92,
-	0x86, 0xfc, 0xa5, 0x2a, 0x54, 0x6f, 0x29, 0x3d, 0x41, 0xc0, 0x42, 0x4b, 0xf4, 0x22, 0x1c, 0x47,
-	0x9e, 0xd5, 0xed, 0x52, 0xa4, 0xc2, 0xc6, 0x37, 0x00, 0x8b, 0x2b, 0x69, 0x25, 0x3b, 0xec, 0x30,
-	0xad, 0x01, 0xf3, 0x14, 0x55, 0x40, 0x1d, 0xcc, 0x95, 0x1a, 0x65, 0x33, 0xd5, 0x26, 0x21, 0xe6,
-	0xda, 0x9a, 0xdd, 0x6a, 0xfe, 0x9f, 0xf4, 0x6b, 0x79, 0xbb, 0x75, 0xdc, 0xaf, 0x4d, 0x21, 0x6f,
-	0xc9, 0xa0, 0xc8, 0x70, 0xf2, 0x14, 0x69, 0x4f, 0xe1, 0x24, 0xe3, 0x64, 0x93, 0xa2, 0x4a, 0xfe,
-	0xcf, 0xb8, 0x4a, 0xd2, 0xaf, 0x4d, 0xbc, 0xe6, 0x44, 0x42, 0x4b, 0x29, 0x54, 0xe5, 0x1b, 0xce,
-	0x04, 0xe3, 0xc4, 0x46, 0xda, 0x6d, 0x38, 0x1e, 0xba, 0x01, 0xae, 0x8c, 0xd5, 0xc1, 0x5c, 0xb1,
-	0x39, 0x73, 0xdc, 0xaf, 0x15, 0xd3, 0xac, 0xd4, 0x67, 0x38, 0x32, 0x94, 0xa6, 0x08, 0x97, 0xc4,
-	0x95, 0xf1, 0xfa, 0xd8, 0x68, 0x4a, 0xea, 0x33, 0x1c, 0x19, 0x32, 0x3e, 0x02, 0x58, 0x6c, 0xe1,
-	0xc8, 0x67, 0xbd, 0x17, 0xb8, 0xa7, 0xdd, 0x3b, 0xaf, 0x93, 0x49, 0xd5, 0x89, 0x94, 0xbf, 0x00,
-	0x0b, 0x72, 0xd2, 0xe7, 0x34, 0x50, 0x4a, 0xfa, 0xb5, 0x29, 0x35, 0xa4, 0x96, 0x33, 0x25, 0xb3,
-	0x6d, 0xa4, 0xd5, 0x61, 0x09, 0xe1, 0xb8, 0xcd, 0x69, 0x24, 0x28, 0x0b, 0x95, 0x78, 0x67, 0xd4,
-	0x65, 0xac, 0x43, 0xed, 0x19, 0xc7, 0xae, 0xc0, 0x12, 0xeb, 0xe0, 0xed, 0x2e, 0x8e, 0x85, 0xb6,
-	0x02, 0x27, 0x24, 0xc5, 0x40, 0xdc, 0x03, 0xf3, 0x42, 0x27, 0x60, 0x0e, 0x97, 0xe4, 0x28, 0xb8,
-	0xb1, 0x01, 0x67, 0x7f, 0x63, 0x8f, 0x23, 0x16, 0xc6, 0xf8, 0xda, 0xe8, 0xd7, 0xe1, 0x0d, 0x45,
-	0x3f, 0x9c, 0x69, 0xd6, 0x40, 0x13, 0x8e, 0xbd, 0xc5, 0xbd, 0x4b, 0xf2, 0x9f, 0xb0, 0xa4, 0x60,
-	0x63, 0x03, 0xde, 0x3c, 0xc3, 0x3e, 0x68, 0xe0, 0x3a, 0xe8, 0x1d, 0x58, 0x76, 0x30, 0xa1, 0xb1,
-	0xc0, 0x3c, 0x53, 0x7d, 0x07, 0xce, 0x20, 0xbc, 0x43, 0xdb, 0x78, 0x33, 0xc6, 0x9c, 0xba, 0xbe,
-	0x2c, 0x50, 0x74, 0xa6, 0x95, 0x73, 0x55, 0xfa, 0xb4, 0x2a, 0x2c, 0x6c, 0xb1, 0x58, 0xc8, 0x6b,
-	0xcc, 0xcb, 0xf8, 0xd0, 0x36, 0x5e, 0xc1, 0xff, 0x4e, 0x38, 0x07, 0x5a, 0x97, 0x60, 0x71, 0x40,
-	0xfa, 0xf7, 0x63, 0x9b, 0x4e, 0xfa, 0xb5, 0x42, 0x4b, 0x66, 0xd9, 0x2d, 0xa7, 0xa0, 0xf2, 0x6d,
-	0xd4, 0xf8, 0x0c, 0x60, 0x59, 0x4e, 0xfd, 0x25, 0xe1, 0xab, 0x98, 0xa7, 0x5e, 0xed, 0x03, 0x80,
-	0xa5, 0x91, 0xa5, 0x6a, 0x8b, 0x17, 0x6c, 0xff, 0xec, 0x99, 0x55, 0x97, 0xae, 0x02, 0x55, 0x6d,
-	0x35, 0xbe, 0x02, 0x58, 0xc9, 0xa4, 0x0d, 0x27, 0x9b, 0x69, 0xdc, 0x05, 0xb0, 0x7c, 0x6a, 0x77,
-	0xda, 0xe3, 0x4b, 0x15, 0x3b, 0x7d, 0x51, 0xd5, 0x27, 0x57, 0x85, 0x0f, 0xf4, 0x7e, 0x02, 0x70,
-	0x36, 0xd3, 0xfb, 0x1c, 0x11, 0x9c, 0x49, 0x7d, 0x07, 0x0b, 0xd9, 0xca, 0xb4, 0x47, 0x17, 0xac,
-	0x71, 0xea, 0x6e, 0xaa, 0x0b, 0x97, 0xc6, 0x29, 0x51, 0xcd, 0xed, 0xbd, 0x03, 0x3d, 0xb7, 0x7f,
-	0xa0, 0xe7, 0x8e, 0x0e, 0x74, 0xf0, 0x3e, 0xd1, 0xc1, 0x97, 0x44, 0x07, 0xdf, 0x13, 0x1d, 0xec,
-	0x25, 0x3a, 0xf8, 0x91, 0xe8, 0xe0, 0x67, 0xa2, 0xe7, 0x8e, 0x12, 0x1d, 0xec, 0x1e, 0xea, 0xb9,
-	0xbd, 0x43, 0x3d, 0xb7, 0x7f, 0xa8, 0xe7, 0xde, 0x2c, 0x13, 0x1a, 0xf8, 0x58, 0xf8, 0xae, 0x17,
-	0x9b, 0x2e, 0xb5, 0x94, 0x65, 0xfd, 0xf3, 0x9b, 0xb2, 0x9c, 0xbe, 0xde, 0xa4, 0xfc, 0x4f, 0x7f,
-	0xf8, 0x2b, 0x00, 0x00, 0xff, 0xff, 0x69, 0xd1, 0xfb, 0xe7, 0x84, 0x06, 0x00, 0x00,
+	// 569 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x54, 0xcd, 0x6e, 0xd3, 0x4c,
+	0x14, 0xf5, 0xa4, 0x4d, 0xbf, 0x64, 0xd2, 0x2a, 0x1f, 0xee, 0x26, 0x8a, 0xc4, 0x24, 0x18, 0x21,
+	0x75, 0x81, 0x3c, 0x34, 0x48, 0xa0, 0xa6, 0x1b, 0x14, 0x42, 0x25, 0x2f, 0x00, 0xc9, 0x55, 0x37,
+	0x08, 0x14, 0xd9, 0x99, 0xc9, 0x64, 0x24, 0xdb, 0xe3, 0x8e, 0x27, 0x91, 0x2a, 0x36, 0x2c, 0x78,
+	0x00, 0xc4, 0x8a, 0x47, 0xe0, 0x4d, 0x60, 0x99, 0x65, 0x57, 0x11, 0x71, 0x36, 0x2c, 0xab, 0x3e,
+	0x01, 0xf2, 0x38, 0x29, 0xe1, 0x4f, 0x04, 0xc4, 0x6a, 0x72, 0xef, 0x3d, 0xe7, 0xcc, 0x99, 0x73,
+	0x15, 0xc3, 0xdb, 0x89, 0xec, 0xe3, 0xbe, 0x88, 0x94, 0x14, 0x41, 0x1c, 0x78, 0x11, 0xc5, 0x83,
+	0x80, 0x52, 0x15, 0x32, 0x89, 0x07, 0x61, 0xec, 0xe3, 0xf1, 0xbe, 0x3e, 0xed, 0x58, 0x0a, 0x25,
+	0xcc, 0x5b, 0x2c, 0x0c, 0x6c, 0x1e, 0x29, 0x2a, 0x23, 0x2f, 0xb0, 0x57, 0x69, 0xf6, 0x92, 0x66,
+	0x8f, 0xf7, 0xeb, 0x07, 0x6a, 0xc8, 0x25, 0xe9, 0xc5, 0x9e, 0x54, 0x67, 0x98, 0x71, 0x35, 0x1c,
+	0xf9, 0x76, 0x5f, 0x84, 0x98, 0x09, 0x26, 0xb0, 0x56, 0xf2, 0x47, 0x03, 0x5d, 0xe9, 0x42, 0xff,
+	0xca, 0x6f, 0xa8, 0x5f, 0xcf, 0xfd, 0x84, 0xa1, 0x88, 0xb0, 0x3a, 0x8b, 0x69, 0x12, 0xfb, 0x78,
+	0x34, 0xe2, 0x24, 0x1f, 0x5b, 0x1f, 0x00, 0x2c, 0x1f, 0x65, 0x37, 0x39, 0xd1, 0x40, 0x98, 0x2d,
+	0x58, 0xe0, 0xa4, 0x06, 0x9a, 0x60, 0xaf, 0xd2, 0xaa, 0xda, 0x99, 0x37, 0x4d, 0xb1, 0x4f, 0x4e,
+	0x9c, 0x6e, 0xe7, 0x5a, 0x3a, 0x6d, 0x14, 0x9c, 0xee, 0xe5, 0xb4, 0xf1, 0x1f, 0xf1, 0xdb, 0x16,
+	0x27, 0x96, 0x5b, 0xe0, 0xc4, 0x7c, 0x00, 0xb7, 0x84, 0x64, 0x3d, 0x4e, 0x6a, 0x85, 0x9f, 0xf3,
+	0x6a, 0xe9, 0xb4, 0x51, 0x7c, 0x2a, 0x99, 0xa6, 0x56, 0x32, 0x6a, 0x8e, 0xb7, 0xdc, 0xa2, 0x90,
+	0xcc, 0x21, 0xe6, 0x0d, 0xb8, 0x19, 0x79, 0x21, 0xad, 0x6d, 0x34, 0xc1, 0x5e, 0xb9, 0xb3, 0x73,
+	0x39, 0x6d, 0x94, 0x33, 0x54, 0xd6, 0xb3, 0x5c, 0x3d, 0xca, 0x20, 0xca, 0x63, 0x49, 0x6d, 0xb3,
+	0xb9, 0xb1, 0x0a, 0xc9, 0x7a, 0x96, 0xab, 0x47, 0xd6, 0x73, 0x68, 0x3e, 0x94, 0xd4, 0x53, 0x54,
+	0x3f, 0xc7, 0xa5, 0xa7, 0x23, 0x9a, 0x28, 0xf3, 0x08, 0x16, 0x75, 0x90, 0x8b, 0x47, 0xdd, 0xb1,
+	0xd7, 0x0a, 0xdc, 0xbe, 0x8a, 0xc4, 0xcd, 0xe9, 0xd6, 0x0b, 0xb8, 0xfb, 0x8d, 0x7a, 0x12, 0x8b,
+	0x28, 0xa1, 0xff, 0x4c, 0xde, 0x85, 0x55, 0x97, 0x32, 0x9e, 0x28, 0x2a, 0x97, 0xce, 0x6f, 0xc2,
+	0x1d, 0x42, 0xc7, 0xbc, 0x4f, 0x7b, 0x09, 0x95, 0xdc, 0x0b, 0xf4, 0x15, 0x65, 0x77, 0x3b, 0x6f,
+	0x1e, 0xeb, 0x9e, 0x59, 0x87, 0xa5, 0xa1, 0x48, 0x94, 0x8e, 0xaf, 0xa0, 0xe7, 0x57, 0xb5, 0xf5,
+	0x04, 0xfe, 0xff, 0x55, 0x73, 0xe1, 0xb7, 0x0d, 0xcb, 0x0b, 0xd1, 0x5f, 0xef, 0x79, 0x3b, 0x9d,
+	0x36, 0x4a, 0x5d, 0x8d, 0x72, 0xba, 0x6e, 0x29, 0xc7, 0x3b, 0xa4, 0xf5, 0x0e, 0xc0, 0xaa, 0x36,
+	0xfe, 0x98, 0xc9, 0x63, 0x2a, 0xb3, 0xae, 0xf9, 0x1a, 0xc0, 0xca, 0x4a, 0x2e, 0xe6, 0xc1, 0x9a,
+	0x01, 0xfc, 0xb8, 0xa9, 0x7a, 0xfb, 0x6f, 0xa8, 0xf9, 0xb3, 0x5a, 0x6f, 0x01, 0xdc, 0x5d, 0x5a,
+	0x7b, 0x44, 0x18, 0x5d, 0xda, 0x7b, 0x09, 0x4b, 0xcb, 0x08, 0xcc, 0x7b, 0x6b, 0xea, 0x7f, 0xb7,
+	0x87, 0xfa, 0xfd, 0x3f, 0xe6, 0xe5, 0xa6, 0x3a, 0xa7, 0x93, 0x19, 0x32, 0xce, 0x67, 0xc8, 0xb8,
+	0x98, 0x21, 0xf0, 0x2a, 0x45, 0xe0, 0x7d, 0x8a, 0xc0, 0xc7, 0x14, 0x81, 0x49, 0x8a, 0xc0, 0xa7,
+	0x14, 0x81, 0xcf, 0x29, 0x32, 0x2e, 0x52, 0x04, 0xde, 0xcc, 0x91, 0x31, 0x99, 0x23, 0xe3, 0x7c,
+	0x8e, 0x8c, 0x67, 0x87, 0x8c, 0x87, 0x01, 0x55, 0x81, 0xe7, 0x27, 0xb6, 0xc7, 0x71, 0x5e, 0xe1,
+	0xdf, 0x7e, 0x54, 0x0e, 0xb3, 0xd3, 0xdf, 0xd2, 0x7f, 0xea, 0xbb, 0x5f, 0x02, 0x00, 0x00, 0xff,
+	0xff, 0xe5, 0xba, 0xb1, 0x86, 0x85, 0x04, 0x00, 0x00,
 }
 
 func (this *FleetInfo) Equal(that interface{}) bool {
@@ -519,36 +364,6 @@ func (this *FleetInfo) Equal(that interface{}) bool {
 		if this.Tags[i] != that1.Tags[i] {
 			return false
 		}
-	}
-	return true
-}
-func (this *DeployKey) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*DeployKey)
-	if !ok {
-		that2, ok := that.(DeployKey)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if !this.ID.Equal(that1.ID) {
-		return false
-	}
-	if !this.FleetID.Equal(that1.FleetID) {
-		return false
-	}
-	if this.Description != that1.Description {
-		return false
 	}
 	return true
 }
@@ -596,54 +411,6 @@ func (this *CreateFleetResponse) Equal(that interface{}) bool {
 		return false
 	}
 	if !this.Fleet.Equal(that1.Fleet) {
-		return false
-	}
-	return true
-}
-func (this *CreateDeployKeyRequest) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*CreateDeployKeyRequest)
-	if !ok {
-		that2, ok := that.(CreateDeployKeyRequest)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if !this.Key.Equal(that1.Key) {
-		return false
-	}
-	return true
-}
-func (this *CreateDeployKeyResponse) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*CreateDeployKeyResponse)
-	if !ok {
-		that2, ok := that.(CreateDeployKeyResponse)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if !this.Key.Equal(that1.Key) {
 		return false
 	}
 	return true
@@ -716,22 +483,6 @@ func (this *FleetInfo) GoString() string {
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *DeployKey) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := make([]string, 0, 7)
-	s = append(s, "&fmpb.DeployKey{")
-	if this.ID != nil {
-		s = append(s, "ID: "+fmt.Sprintf("%#v", this.ID)+",\n")
-	}
-	if this.FleetID != nil {
-		s = append(s, "FleetID: "+fmt.Sprintf("%#v", this.FleetID)+",\n")
-	}
-	s = append(s, "Description: "+fmt.Sprintf("%#v", this.Description)+",\n")
-	s = append(s, "}")
-	return strings.Join(s, "")
-}
 func (this *CreateFleetRequest) GoString() string {
 	if this == nil {
 		return "nil"
@@ -752,30 +503,6 @@ func (this *CreateFleetResponse) GoString() string {
 	s = append(s, "&fmpb.CreateFleetResponse{")
 	if this.Fleet != nil {
 		s = append(s, "Fleet: "+fmt.Sprintf("%#v", this.Fleet)+",\n")
-	}
-	s = append(s, "}")
-	return strings.Join(s, "")
-}
-func (this *CreateDeployKeyRequest) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := make([]string, 0, 5)
-	s = append(s, "&fmpb.CreateDeployKeyRequest{")
-	if this.Key != nil {
-		s = append(s, "Key: "+fmt.Sprintf("%#v", this.Key)+",\n")
-	}
-	s = append(s, "}")
-	return strings.Join(s, "")
-}
-func (this *CreateDeployKeyResponse) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := make([]string, 0, 5)
-	s = append(s, "&fmpb.CreateDeployKeyResponse{")
-	if this.Key != nil {
-		s = append(s, "Key: "+fmt.Sprintf("%#v", this.Key)+",\n")
 	}
 	s = append(s, "}")
 	return strings.Join(s, "")
@@ -886,78 +613,6 @@ var _FleetMgrService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateFleet",
 			Handler:    _FleetMgrService_CreateFleet_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "src/controlplane/fleetmgr/fmpb/v1/fmpb.proto",
-}
-
-// FleetMgrDeployKeyServiceClient is the client API for FleetMgrDeployKeyService service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type FleetMgrDeployKeyServiceClient interface {
-	CreateDeployKey(ctx context.Context, in *CreateDeployKeyRequest, opts ...grpc.CallOption) (*CreateDeployKeyResponse, error)
-}
-
-type fleetMgrDeployKeyServiceClient struct {
-	cc *grpc.ClientConn
-}
-
-func NewFleetMgrDeployKeyServiceClient(cc *grpc.ClientConn) FleetMgrDeployKeyServiceClient {
-	return &fleetMgrDeployKeyServiceClient{cc}
-}
-
-func (c *fleetMgrDeployKeyServiceClient) CreateDeployKey(ctx context.Context, in *CreateDeployKeyRequest, opts ...grpc.CallOption) (*CreateDeployKeyResponse, error) {
-	out := new(CreateDeployKeyResponse)
-	err := c.cc.Invoke(ctx, "/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeployKeyService/CreateDeployKey", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// FleetMgrDeployKeyServiceServer is the server API for FleetMgrDeployKeyService service.
-type FleetMgrDeployKeyServiceServer interface {
-	CreateDeployKey(context.Context, *CreateDeployKeyRequest) (*CreateDeployKeyResponse, error)
-}
-
-// UnimplementedFleetMgrDeployKeyServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedFleetMgrDeployKeyServiceServer struct {
-}
-
-func (*UnimplementedFleetMgrDeployKeyServiceServer) CreateDeployKey(ctx context.Context, req *CreateDeployKeyRequest) (*CreateDeployKeyResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateDeployKey not implemented")
-}
-
-func RegisterFleetMgrDeployKeyServiceServer(s *grpc.Server, srv FleetMgrDeployKeyServiceServer) {
-	s.RegisterService(&_FleetMgrDeployKeyService_serviceDesc, srv)
-}
-
-func _FleetMgrDeployKeyService_CreateDeployKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateDeployKeyRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FleetMgrDeployKeyServiceServer).CreateDeployKey(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeployKeyService/CreateDeployKey",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FleetMgrDeployKeyServiceServer).CreateDeployKey(ctx, req.(*CreateDeployKeyRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-var _FleetMgrDeployKeyService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "gml.internal.controlplane.fleetmgr.v1.FleetMgrDeployKeyService",
-	HandlerType: (*FleetMgrDeployKeyServiceServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "CreateDeployKey",
-			Handler:    _FleetMgrDeployKeyService_CreateDeployKey_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1099,60 +754,6 @@ func (m *FleetInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *DeployKey) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *DeployKey) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *DeployKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Description) > 0 {
-		i -= len(m.Description)
-		copy(dAtA[i:], m.Description)
-		i = encodeVarintFmpb(dAtA, i, uint64(len(m.Description)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if m.FleetID != nil {
-		{
-			size, err := m.FleetID.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintFmpb(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
-	if m.ID != nil {
-		{
-			size, err := m.ID.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintFmpb(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
 func (m *CreateFleetRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -1211,76 +812,6 @@ func (m *CreateFleetResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if m.Fleet != nil {
 		{
 			size, err := m.Fleet.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintFmpb(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *CreateDeployKeyRequest) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *CreateDeployKeyRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CreateDeployKeyRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Key != nil {
-		{
-			size, err := m.Key.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintFmpb(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *CreateDeployKeyResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *CreateDeployKeyResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CreateDeployKeyResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Key != nil {
-		{
-			size, err := m.Key.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1403,27 +934,6 @@ func (m *FleetInfo) Size() (n int) {
 	return n
 }
 
-func (m *DeployKey) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.ID != nil {
-		l = m.ID.Size()
-		n += 1 + l + sovFmpb(uint64(l))
-	}
-	if m.FleetID != nil {
-		l = m.FleetID.Size()
-		n += 1 + l + sovFmpb(uint64(l))
-	}
-	l = len(m.Description)
-	if l > 0 {
-		n += 1 + l + sovFmpb(uint64(l))
-	}
-	return n
-}
-
 func (m *CreateFleetRequest) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1445,32 +955,6 @@ func (m *CreateFleetResponse) Size() (n int) {
 	_ = l
 	if m.Fleet != nil {
 		l = m.Fleet.Size()
-		n += 1 + l + sovFmpb(uint64(l))
-	}
-	return n
-}
-
-func (m *CreateDeployKeyRequest) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.Key != nil {
-		l = m.Key.Size()
-		n += 1 + l + sovFmpb(uint64(l))
-	}
-	return n
-}
-
-func (m *CreateDeployKeyResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.Key != nil {
-		l = m.Key.Size()
 		n += 1 + l + sovFmpb(uint64(l))
 	}
 	return n
@@ -1525,18 +1009,6 @@ func (this *FleetInfo) String() string {
 	}, "")
 	return s
 }
-func (this *DeployKey) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&DeployKey{`,
-		`ID:` + strings.Replace(fmt.Sprintf("%v", this.ID), "UUID", "typespb.UUID", 1) + `,`,
-		`FleetID:` + strings.Replace(fmt.Sprintf("%v", this.FleetID), "UUID", "typespb.UUID", 1) + `,`,
-		`Description:` + fmt.Sprintf("%v", this.Description) + `,`,
-		`}`,
-	}, "")
-	return s
-}
 func (this *CreateFleetRequest) String() string {
 	if this == nil {
 		return "nil"
@@ -1553,26 +1025,6 @@ func (this *CreateFleetResponse) String() string {
 	}
 	s := strings.Join([]string{`&CreateFleetResponse{`,
 		`Fleet:` + strings.Replace(this.Fleet.String(), "FleetInfo", "FleetInfo", 1) + `,`,
-		`}`,
-	}, "")
-	return s
-}
-func (this *CreateDeployKeyRequest) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&CreateDeployKeyRequest{`,
-		`Key:` + strings.Replace(this.Key.String(), "DeployKey", "DeployKey", 1) + `,`,
-		`}`,
-	}, "")
-	return s
-}
-func (this *CreateDeployKeyResponse) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&CreateDeployKeyResponse{`,
-		`Key:` + strings.Replace(this.Key.String(), "DeployKey", "DeployKey", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -1792,160 +1244,6 @@ func (m *FleetInfo) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *DeployKey) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowFmpb
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: DeployKey: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: DeployKey: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ID", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowFmpb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthFmpb
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthFmpb
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.ID == nil {
-				m.ID = &typespb.UUID{}
-			}
-			if err := m.ID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field FleetID", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowFmpb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthFmpb
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthFmpb
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.FleetID == nil {
-				m.FleetID = &typespb.UUID{}
-			}
-			if err := m.FleetID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowFmpb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthFmpb
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthFmpb
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Description = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipFmpb(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthFmpb
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
 func (m *CreateFleetRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -2094,178 +1392,6 @@ func (m *CreateFleetResponse) Unmarshal(dAtA []byte) error {
 				m.Fleet = &FleetInfo{}
 			}
 			if err := m.Fleet.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipFmpb(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthFmpb
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *CreateDeployKeyRequest) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowFmpb
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: CreateDeployKeyRequest: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: CreateDeployKeyRequest: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Key", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowFmpb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthFmpb
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthFmpb
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Key == nil {
-				m.Key = &DeployKey{}
-			}
-			if err := m.Key.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipFmpb(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthFmpb
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *CreateDeployKeyResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowFmpb
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: CreateDeployKeyResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: CreateDeployKeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Key", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowFmpb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthFmpb
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthFmpb
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Key == nil {
-				m.Key = &DeployKey{}
-			}
-			if err := m.Key.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

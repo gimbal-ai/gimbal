@@ -36,29 +36,12 @@ message FleetInfo {
   repeated string tags = 4 [ (gogoproto.moretags) = 'db:"tags"' ];
 }
 
-message DeployKey {
-  // The ID of the deploy key. Not filled in for create requests.
-  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
-  // The fleet for this particular deploy key.
-  gml.types.UUID fleet_id = 2 [ (gogoproto.customname) = "FleetID" ];
-  // The description of this deploy key.
-  string description = 3;
-}
-
 message CreateFleetRequest {
   FleetInfo fleet = 1;
 }
 
 message CreateFleetResponse {
   FleetInfo fleet = 1;
-}
-
-message CreateDeployKeyRequest {
-  DeployKey key = 1;
-}
-
-message CreateDeployKeyResponse {
-  DeployKey key = 1;
 }
 
 message RegisterRequest {
@@ -80,11 +63,6 @@ message RegisterResponse {
 service FleetMgrService {
   // Creates a new fleet for the org.
   rpc CreateFleet(CreateFleetRequest) returns (CreateFleetResponse);
-}
-
-service FleetMgrDeployKeyService {
-  // Creates a deploy key that can be used to deploy new devices as part of the fleet.
-  rpc CreateDeployKey(CreateDeployKeyRequest) returns (CreateDeployKeyResponse);
 }
 
 service FleetMgrEdgeService {
