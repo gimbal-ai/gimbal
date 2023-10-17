@@ -28,4 +28,11 @@ import "mediapipe/framework/calculator.proto";
 message ExecutionSpec {
   // Mediapipe graph to run.
   mediapipe.CalculatorGraphConfig graph = 1;
+
+  repeated PluginExecutionContext required_execution_context = 2;
+}
+
+message PluginExecutionContext {
+  string name = 1;
+  string input_side_packet_name = 2;
 }
