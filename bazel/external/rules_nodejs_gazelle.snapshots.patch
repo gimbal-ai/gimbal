@@ -1,0 +1,74 @@
+diff --git a/gazelle/generate.go b/gazelle/generate.go
+index a319c7c..8d506db 100644
+--- a/gazelle/generate.go
++++ b/gazelle/generate.go
+@@ -22,6 +22,7 @@ import (
+ 	"math"
+ 	"os"
+ 	"path"
++	"path/filepath"
+ 	"sort"
+ 	"strings"
+ 
+@@ -347,7 +348,14 @@ func (lang *JS) genJestTest(args language.GenerateArgs, jsConfig *JsConfig, jest
+ 
+ 			imports, jestTestCount := readFileAndParse(filePath, "")
+ 
+-			lang.addJestAttributes(args, jsConfig, ruleName, r, jestTestCount)
++			var hasSnapshots bool
++			snapPattern := strings.TrimSuffix(baseName, extension) + ".*"
++			snapshotMatches, err := filepath.Glob(path.Join(args.Dir, "__snapshots__", snapPattern))
++			if (err == nil && len(snapshotMatches) > 0) {
++				hasSnapshots = true
++			}
++
++			lang.addJestAttributes(args, jsConfig, ruleName, r, jestTestCount, hasSnapshots)
+ 
+ 			generatedRules = append(generatedRules, r)
+ 			generatedImports = append(generatedImports, imports)
+@@ -373,8 +381,14 @@ func (lang *JS) genJestTest(args language.GenerateArgs, jsConfig *JsConfig, jest
+ 			ruleName,
+ 		)
+ 
++		var hasSnapshots bool
++		snapshotDir, err := os.Stat(path.Join(args.Dir, "__snapshots__"))
++		if (err == nil && snapshotDir.Mode().IsDir()) {
++			hasSnapshots = true
++		}
++
+ 		r.SetAttr("srcs", jestSources)
+-		lang.addJestAttributes(args, jsConfig, ruleName, r, jestTestCount)
++		lang.addJestAttributes(args, jsConfig, ruleName, r, jestTestCount, hasSnapshots)
+ 		generatedRules = append(generatedRules, r)
+ 		generatedImports = append(generatedImports, imports)
+ 	}
+@@ -389,16 +403,7 @@ type testRuleArgs struct {
+ 	baseName  string
+ }
+ 
+-func (lang *JS) makeFolderTestRule(args language.GenerateArgs, jsConfig *JsConfig, testRuleArgs testRuleArgs) (*imports, *rule.Rule) {
+-	imps, jestTestCount := readFileAndParse(testRuleArgs.filePath, "")
+-	ruleName := strings.TrimSuffix(testRuleArgs.baseName, testRuleArgs.extension) + ".test"
+-	r := rule.NewRule(testRuleArgs.ruleType, ruleName)
+-	r.SetAttr("srcs", []string{testRuleArgs.baseName})
+-	lang.addJestAttributes(args, jsConfig, ruleName, r, jestTestCount)
+-	return imps, r
+-}
+-
+-func (lang *JS) addJestAttributes(args language.GenerateArgs, jsConfig *JsConfig, baseName string, r *rule.Rule, jestTestCount int) {
++func (lang *JS) addJestAttributes(args language.GenerateArgs, jsConfig *JsConfig, baseName string, r *rule.Rule, jestTestCount int, hasSnapshots bool) {
+ 	if jsConfig.JestConfig == "" && !jsConfig.Quiet {
+ 		log.Print(Warn("[%s/%s] no config for jest_test, use gazelle:js_jest_config directive", args.Rel, baseName))
+ 	}
+@@ -415,6 +420,11 @@ func (lang *JS) addJestAttributes(args language.GenerateArgs, jsConfig *JsConfig
+ 	if len(jsConfig.Visibility.Labels) > 0 {
+ 		r.SetAttr("visibility", jsConfig.Visibility.Labels)
+ 	}
++	if hasSnapshots {
++		r.SetAttr("snapshots", []string{"__snapshots__"})
++	} else {
++		r.DelAttr("snapshots")
++	}
+ }
+ 
+ func (lang *JS) genRules(args language.GenerateArgs, jsConfig *JsConfig, isBarrel bool, isJSRoot bool, pkgName string, sources []string, appendTSExt bool, kind string) ([]*rule.Rule, []interface{}) {
