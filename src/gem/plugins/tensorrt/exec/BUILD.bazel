@@ -23,11 +23,15 @@ package(default_visibility = [
 gml_cc_library(
     name = "cc_library",
     srcs = [
+        "context.cc",
+        "context.h",
         "cuda_tensor.h",
         "cuda_tensor_pool.h",
     ],
     deps = [
         "//src/gem/core/exec:cc_library",
+        "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
         "@com_github_nvidia_tensorrt//:tensorrt",
+        "@com_github_onnx_onnx_tensorrt//:nvonnxparser",
     ],
 )
