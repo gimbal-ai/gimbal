@@ -13,7 +13,7 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("//bazel:gml_build_system.bzl", "gml_cc_library")
+load("//bazel:gml_build_system.bzl", "gml_cc_library", "gml_cc_test")
 
 package(default_visibility = [
     "//src/experimental:__subpackages__",
@@ -24,5 +24,12 @@ gml_cc_library(
     name = "cc_library",
     srcs = [
         "context.h",
+        "tensor_pool.h",
     ],
+)
+
+gml_cc_test(
+    name = "tensor_pool_test",
+    srcs = ["tensor_pool_test.cc"],
+    deps = [":cc_library"],
 )
