@@ -3,4 +3,5 @@ pg_version = "15.0"
 excluded_rules = [
   "ban-drop-table",
   "ban-drop-column",
+  "require-concurrent-index-creation"
 ]

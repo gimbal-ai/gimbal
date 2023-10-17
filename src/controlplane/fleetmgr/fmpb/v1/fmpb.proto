@@ -26,13 +26,14 @@ import "src/common/typespb/uuid.proto";
 
 message FleetInfo {
   // The ID of the fleet. Not filled in for create requests.
-  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
+  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID", (gogoproto.moretags) = 'db:"id"' ];
   // The Org owning the fleet.
-  gml.types.UUID org_id = 2 [ (gogoproto.customname) = "OrgID" ];
+  gml.types.UUID org_id = 2
+      [ (gogoproto.customname) = "OrgID", (gogoproto.moretags) = 'db:"org_id"' ];
   // The name of the fleet.
-  string name = 3;
+  string name = 3 [ (gogoproto.moretags) = 'db:"name"' ];
   // Tags associated with the fleet.
-  repeated string tags = 4;
+  repeated string tags = 4 [ (gogoproto.moretags) = 'db:"tags"' ];
 }
 
 message DeployKey {
