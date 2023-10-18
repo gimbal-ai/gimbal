@@ -119,8 +119,31 @@ if [[ -d .next/standalone ]]; then
 fi
 """
 
+def _storybook_export(name, **kwargs):
+    default_arg(kwargs, "outs", ["storybook.tar"])
+    default_arg(kwargs, "tool", "//bazel/ui:storybook_binary")
+    default_arg(kwargs, "args", ["build", "--disable-telemetry"])
+    default_arg(kwargs, "copy_srcs_to_bin", True)
+    default_arg(kwargs, "chdir", native.package_name())
+    default_arg(kwargs, "env", dict())
+
+    kwargs["env"]["PATH"] = "/bin:/usr/bin:/usr/local/bin:/opt/gml_dev/tools/node/bin"
+    kwargs["srcs"] = kwargs["srcs"]
+
+    js_run_binary(name = name, **kwargs)
+
+# This should be possible with just using package_tar but something about the storybook
+# output makes bazel not like the output dir. Using our trusted postrun works around this
+# issue
+STORYBOOK_CLEANUP = """
+if [[ -d storybook-static ]]; then
+    tar -C storybook-static -cf storybook.tar .
+fi
+"""
+
 ts_project = _ts_project
 web_assets = _web_assets
 next_export = _next_export
 next_standalone = _next_standalone
 jest_test = _jest_test
+storybook_export = _storybook_export

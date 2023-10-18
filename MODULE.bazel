@@ -106,6 +106,7 @@ npm.npm_translate_lock(
     name = "npm",
     bins = {
         "next": ["next=./dist/bin/next"],
+        "storybook": ["storybook=./index.js"],
     },
     npmrc = "//src/ui:.npmrc",
     pnpm_lock = "//src/ui:pnpm-lock.yaml",

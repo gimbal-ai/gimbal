@@ -14,10 +14,17 @@
 # SPDX-License-Identifier: Proprietary
 
 load("@npm//src/ui:next/package_json.bzl", next_bin = "bin")
-load("//bazel/ui:build.bzl", "NEXT_STANDALONE_CLEANUP")
+load("@npm//src/ui:storybook/package_json.bzl", storybook_bin = "bin")
+load("//bazel/ui:build.bzl", "NEXT_STANDALONE_CLEANUP", "STORYBOOK_CLEANUP")
 
 next_bin.next_binary(
     name = "next_js_binary",
     postrun = NEXT_STANDALONE_CLEANUP,
+    visibility = ["//visibility:public"],
+)
+
+storybook_bin.storybook_binary(
+    name = "storybook_binary",
+    postrun = STORYBOOK_CLEANUP,
     visibility = ["//visibility:public"],
 )
