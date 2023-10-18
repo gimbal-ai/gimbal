@@ -60,9 +60,20 @@ message RegisterResponse {
   // TODO(zasgar): Pass encryption information here.
 }
 
+message GetFleetRequest {
+  // The ID of the fleet to fetch.
+  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
+}
+
+message GetFleetResponse {
+  FleetInfo fleet = 1;
+}
+
 service FleetMgrService {
   // Creates a new fleet for the org.
   rpc CreateFleet(CreateFleetRequest) returns (CreateFleetResponse);
+  // Gets info about the fleet with the given ID.
+  rpc GetFleet(GetFleetRequest) returns (GetFleetResponse);
 }
 
 service FleetMgrEdgeService {
