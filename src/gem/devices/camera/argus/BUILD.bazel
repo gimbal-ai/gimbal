@@ -13,12 +13,22 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:gml_build_system.bzl", "gml_cc_library")
 
-cc_library(
-    name = "libargus_headers",
-    hdrs = glob(["usr/src/jetson_multimedia_api/include/**/*.h"]),
-    includes = ["usr/src/jetson_multimedia_api/include"],
-    target_compatible_with = ["@platforms//cpu:aarch64"],
-    visibility = ["//visibility:public"],
+package(default_visibility = [
+    "//src/experimental:__subpackages__",
+    "//src/gem:__subpackages__",
+])
+
+gml_cc_library(
+    name = "cc_library",
+    srcs = glob([
+        "*.h",
+        "*.cc",
+    ]),
+    hdrs = ["argus_cam.h"],
+    deps = [
+        "@com_nvidia_jetson_multimedia_api//:libargus_headers",
+        "@com_nvidia_l4t_camera//:libnvargus.so",
+    ],
 )
