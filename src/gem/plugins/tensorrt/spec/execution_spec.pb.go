@@ -25,6 +25,8 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type ExecutionSpec struct {
+	OptimizationProfile []*OptimizationProfile `protobuf:"bytes,1,rep,name=optimization_profile,json=optimizationProfile,proto3" json:"optimization_profile,omitempty"`
+	OnnxFilePath        string                 `protobuf:"bytes,2000,opt,name=onnx_file_path,json=onnxFilePath,proto3" json:"onnx_file_path,omitempty"`
 }
 
 func (m *ExecutionSpec) Reset()      { *m = ExecutionSpec{} }
@@ -59,8 +61,118 @@ func (m *ExecutionSpec) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ExecutionSpec proto.InternalMessageInfo
 
+func (m *ExecutionSpec) GetOptimizationProfile() []*OptimizationProfile {
+	if m != nil {
+		return m.OptimizationProfile
+	}
+	return nil
+}
+
+func (m *ExecutionSpec) GetOnnxFilePath() string {
+	if m != nil {
+		return m.OnnxFilePath
+	}
+	return ""
+}
+
+type OptimizationProfile struct {
+	TensorShapeRange []*TensorShapeRange `protobuf:"bytes,1,rep,name=tensor_shape_range,json=tensorShapeRange,proto3" json:"tensor_shape_range,omitempty"`
+}
+
+func (m *OptimizationProfile) Reset()      { *m = OptimizationProfile{} }
+func (*OptimizationProfile) ProtoMessage() {}
+func (*OptimizationProfile) Descriptor() ([]byte, []int) {
+	return fileDescriptor_c813d14f31297605, []int{1}
+}
+func (m *OptimizationProfile) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *OptimizationProfile) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_OptimizationProfile.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *OptimizationProfile) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_OptimizationProfile.Merge(m, src)
+}
+func (m *OptimizationProfile) XXX_Size() int {
+	return m.Size()
+}
+func (m *OptimizationProfile) XXX_DiscardUnknown() {
+	xxx_messageInfo_OptimizationProfile.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_OptimizationProfile proto.InternalMessageInfo
+
+func (m *OptimizationProfile) GetTensorShapeRange() []*TensorShapeRange {
+	if m != nil {
+		return m.TensorShapeRange
+	}
+	return nil
+}
+
+type TensorShapeRange struct {
+	TensorName string  `protobuf:"bytes,1,opt,name=tensor_name,json=tensorName,proto3" json:"tensor_name,omitempty"`
+	Dim        []int32 `protobuf:"varint,2,rep,packed,name=dim,proto3" json:"dim,omitempty"`
+}
+
+func (m *TensorShapeRange) Reset()      { *m = TensorShapeRange{} }
+func (*TensorShapeRange) ProtoMessage() {}
+func (*TensorShapeRange) Descriptor() ([]byte, []int) {
+	return fileDescriptor_c813d14f31297605, []int{2}
+}
+func (m *TensorShapeRange) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *TensorShapeRange) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_TensorShapeRange.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *TensorShapeRange) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TensorShapeRange.Merge(m, src)
+}
+func (m *TensorShapeRange) XXX_Size() int {
+	return m.Size()
+}
+func (m *TensorShapeRange) XXX_DiscardUnknown() {
+	xxx_messageInfo_TensorShapeRange.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TensorShapeRange proto.InternalMessageInfo
+
+func (m *TensorShapeRange) GetTensorName() string {
+	if m != nil {
+		return m.TensorName
+	}
+	return ""
+}
+
+func (m *TensorShapeRange) GetDim() []int32 {
+	if m != nil {
+		return m.Dim
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*ExecutionSpec)(nil), "gml.gem.tensorrt.spec.ExecutionSpec")
+	proto.RegisterType((*OptimizationProfile)(nil), "gml.gem.tensorrt.spec.OptimizationProfile")
+	proto.RegisterType((*TensorShapeRange)(nil), "gml.gem.tensorrt.spec.TensorShapeRange")
 }
 
 func init() {
@@ -68,19 +180,29 @@ func init() {
 }
 
 var fileDescriptor_c813d14f31297605 = []byte{
-	// 186 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x32, 0x2a, 0x2e, 0x4a, 0xd6,
-	0x4f, 0x4f, 0xcd, 0xd5, 0x2f, 0xc8, 0x29, 0x4d, 0xcf, 0xcc, 0x2b, 0xd6, 0x2f, 0x49, 0xcd, 0x2b,
-	0xce, 0x2f, 0x2a, 0x2a, 0xd1, 0x2f, 0x2e, 0x48, 0x4d, 0xd6, 0x4f, 0xad, 0x48, 0x4d, 0x2e, 0x2d,
-	0xc9, 0xcc, 0xcf, 0x8b, 0x07, 0x71, 0xf5, 0x0a, 0x8a, 0xf2, 0x4b, 0xf2, 0x85, 0x44, 0xd3, 0x73,
-	0x73, 0xf4, 0xd2, 0x53, 0x73, 0xf5, 0x60, 0x6a, 0xf5, 0x40, 0x92, 0x4a, 0xfc, 0x5c, 0xbc, 0xae,
-	0x30, 0xe5, 0xc1, 0x05, 0xa9, 0xc9, 0x4e, 0xb9, 0x17, 0x1e, 0xca, 0x31, 0xdc, 0x78, 0x28, 0xc7,
-	0xf0, 0xe1, 0xa1, 0x1c, 0x63, 0xc3, 0x23, 0x39, 0xc6, 0x15, 0x8f, 0xe4, 0x18, 0x4f, 0x3c, 0x92,
-	0x63, 0xbc, 0xf0, 0x48, 0x8e, 0xf1, 0xc1, 0x23, 0x39, 0xc6, 0x17, 0x8f, 0xe4, 0x18, 0x3e, 0x3c,
-	0x92, 0x63, 0x9c, 0xf0, 0x58, 0x8e, 0xe1, 0xc2, 0x63, 0x39, 0x86, 0x1b, 0x8f, 0xe5, 0x18, 0xa2,
-	0xcc, 0xd3, 0x33, 0x73, 0x73, 0x52, 0x4b, 0x72, 0x12, 0x93, 0x8a, 0xf5, 0x12, 0x33, 0xf5, 0x21,
-	0x3c, 0x7d, 0xbc, 0xce, 0xb4, 0x06, 0x11, 0x49, 0x6c, 0x60, 0xd7, 0x19, 0x03, 0x02, 0x00, 0x00,
-	0xff, 0xff, 0xea, 0x2f, 0xaf, 0x66, 0xd3, 0x00, 0x00, 0x00,
+	// 344 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x51, 0xbd, 0x4a, 0x33, 0x41,
+	0x14, 0xdd, 0xf9, 0xc2, 0x27, 0x38, 0xf1, 0x27, 0x6c, 0x14, 0x52, 0x8d, 0x21, 0x20, 0x06, 0x8b,
+	0x19, 0x88, 0x85, 0x85, 0x9d, 0x10, 0x4b, 0x0d, 0x1b, 0x6d, 0x04, 0x59, 0x26, 0xeb, 0xb8, 0x19,
+	0x98, 0x3f, 0x76, 0x27, 0x10, 0xac, 0x7c, 0x04, 0x1b, 0xdf, 0xc1, 0x47, 0xb1, 0xdc, 0x32, 0xa5,
+	0x99, 0x34, 0x96, 0x79, 0x04, 0x99, 0xac, 0x01, 0x89, 0xd1, 0x66, 0x98, 0x73, 0xee, 0xb9, 0xe7,
+	0x1c, 0xb8, 0xb0, 0x93, 0x67, 0x09, 0x49, 0x99, 0x24, 0x46, 0x8c, 0x52, 0xae, 0x72, 0x62, 0x99,
+	0xca, 0x75, 0x96, 0x59, 0x92, 0x1b, 0x96, 0x10, 0x36, 0x66, 0xc9, 0xc8, 0x72, 0xad, 0x62, 0x0f,
+	0xb1, 0xc9, 0xb4, 0xd5, 0xe1, 0x7e, 0x2a, 0x05, 0x4e, 0x99, 0xc4, 0x4b, 0x2d, 0xf6, 0xc3, 0xd6,
+	0x0b, 0x80, 0xdb, 0xdd, 0xa5, 0xbe, 0x6f, 0x58, 0x12, 0xde, 0xc1, 0x3d, 0x6d, 0x2c, 0x97, 0xfc,
+	0x91, 0x2e, 0x3c, 0x4c, 0xa6, 0x1f, 0xb8, 0x60, 0x0d, 0xd0, 0xac, 0xb4, 0xab, 0x9d, 0x63, 0xbc,
+	0xd6, 0x07, 0x5f, 0x7d, 0x5b, 0xe9, 0x95, 0x1b, 0x51, 0x5d, 0xff, 0x24, 0xc3, 0x43, 0xb8, 0xa3,
+	0x95, 0x1a, 0xc7, 0x1e, 0xc4, 0x86, 0xda, 0x61, 0xa3, 0xd8, 0x6d, 0x82, 0xf6, 0x66, 0xb4, 0xe5,
+	0xe9, 0x0b, 0x2e, 0x58, 0x8f, 0xda, 0x61, 0x4b, 0xc0, 0xfa, 0x1a, 0xcb, 0xf0, 0x06, 0x86, 0x65,
+	0x6e, 0x9c, 0x0f, 0xa9, 0x61, 0x71, 0x46, 0x55, 0xba, 0xac, 0x76, 0xf4, 0x4b, 0xb5, 0xeb, 0x05,
+	0xea, 0x7b, 0x7d, 0xe4, 0xe5, 0x51, 0xcd, 0xae, 0x30, 0xad, 0x2e, 0xac, 0xad, 0xaa, 0xc2, 0x03,
+	0x58, 0xfd, 0x8a, 0x52, 0x54, 0xfa, 0x0c, 0x5f, 0x12, 0x96, 0xd4, 0x25, 0x95, 0x2c, 0xac, 0xc1,
+	0xca, 0x3d, 0x97, 0x8d, 0x7f, 0xcd, 0x4a, 0xfb, 0x7f, 0xe4, 0xbf, 0xe7, 0xb2, 0x98, 0xa2, 0x60,
+	0x32, 0x45, 0xc1, 0x7c, 0x8a, 0xc0, 0x93, 0x43, 0xe0, 0xd5, 0x21, 0xf0, 0xe6, 0x10, 0x28, 0x1c,
+	0x02, 0xef, 0x0e, 0x81, 0x0f, 0x87, 0x82, 0xb9, 0x43, 0xe0, 0x79, 0x86, 0x82, 0x62, 0x86, 0x82,
+	0xc9, 0x0c, 0x05, 0xb7, 0xa7, 0x29, 0x97, 0x82, 0x59, 0x41, 0x07, 0x39, 0xa6, 0x9c, 0x94, 0x88,
+	0xfc, 0x79, 0xe2, 0x33, 0xff, 0x0c, 0x36, 0x16, 0x97, 0x3d, 0xf9, 0x0c, 0x00, 0x00, 0xff, 0xff,
+	0x50, 0xeb, 0xc4, 0xb6, 0x0f, 0x02, 0x00, 0x00,
 }
 
 func (this *ExecutionSpec) Equal(that interface{}) bool {
@@ -102,14 +224,113 @@ func (this *ExecutionSpec) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
+	if len(this.OptimizationProfile) != len(that1.OptimizationProfile) {
+		return false
+	}
+	for i := range this.OptimizationProfile {
+		if !this.OptimizationProfile[i].Equal(that1.OptimizationProfile[i]) {
+			return false
+		}
+	}
+	if this.OnnxFilePath != that1.OnnxFilePath {
+		return false
+	}
+	return true
+}
+func (this *OptimizationProfile) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*OptimizationProfile)
+	if !ok {
+		that2, ok := that.(OptimizationProfile)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if len(this.TensorShapeRange) != len(that1.TensorShapeRange) {
+		return false
+	}
+	for i := range this.TensorShapeRange {
+		if !this.TensorShapeRange[i].Equal(that1.TensorShapeRange[i]) {
+			return false
+		}
+	}
+	return true
+}
+func (this *TensorShapeRange) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*TensorShapeRange)
+	if !ok {
+		that2, ok := that.(TensorShapeRange)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.TensorName != that1.TensorName {
+		return false
+	}
+	if len(this.Dim) != len(that1.Dim) {
+		return false
+	}
+	for i := range this.Dim {
+		if this.Dim[i] != that1.Dim[i] {
+			return false
+		}
+	}
 	return true
 }
 func (this *ExecutionSpec) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 4)
+	s := make([]string, 0, 6)
 	s = append(s, "&spec.ExecutionSpec{")
+	if this.OptimizationProfile != nil {
+		s = append(s, "OptimizationProfile: "+fmt.Sprintf("%#v", this.OptimizationProfile)+",\n")
+	}
+	s = append(s, "OnnxFilePath: "+fmt.Sprintf("%#v", this.OnnxFilePath)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *OptimizationProfile) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&spec.OptimizationProfile{")
+	if this.TensorShapeRange != nil {
+		s = append(s, "TensorShapeRange: "+fmt.Sprintf("%#v", this.TensorShapeRange)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *TensorShapeRange) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&spec.TensorShapeRange{")
+	s = append(s, "TensorName: "+fmt.Sprintf("%#v", this.TensorName)+",\n")
+	s = append(s, "Dim: "+fmt.Sprintf("%#v", this.Dim)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -141,6 +362,115 @@ func (m *ExecutionSpec) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.OnnxFilePath) > 0 {
+		i -= len(m.OnnxFilePath)
+		copy(dAtA[i:], m.OnnxFilePath)
+		i = encodeVarintExecutionSpec(dAtA, i, uint64(len(m.OnnxFilePath)))
+		i--
+		dAtA[i] = 0x7d
+		i--
+		dAtA[i] = 0x82
+	}
+	if len(m.OptimizationProfile) > 0 {
+		for iNdEx := len(m.OptimizationProfile) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.OptimizationProfile[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintExecutionSpec(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *OptimizationProfile) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *OptimizationProfile) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *OptimizationProfile) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.TensorShapeRange) > 0 {
+		for iNdEx := len(m.TensorShapeRange) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.TensorShapeRange[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintExecutionSpec(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TensorShapeRange) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TensorShapeRange) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TensorShapeRange) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Dim) > 0 {
+		dAtA2 := make([]byte, len(m.Dim)*10)
+		var j1 int
+		for _, num1 := range m.Dim {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA2[j1] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j1++
+			}
+			dAtA2[j1] = uint8(num)
+			j1++
+		}
+		i -= j1
+		copy(dAtA[i:], dAtA2[:j1])
+		i = encodeVarintExecutionSpec(dAtA, i, uint64(j1))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.TensorName) > 0 {
+		i -= len(m.TensorName)
+		copy(dAtA[i:], m.TensorName)
+		i = encodeVarintExecutionSpec(dAtA, i, uint64(len(m.TensorName)))
+		i--
+		dAtA[i] = 0xa
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -161,6 +491,51 @@ func (m *ExecutionSpec) Size() (n int) {
 	}
 	var l int
 	_ = l
+	if len(m.OptimizationProfile) > 0 {
+		for _, e := range m.OptimizationProfile {
+			l = e.Size()
+			n += 1 + l + sovExecutionSpec(uint64(l))
+		}
+	}
+	l = len(m.OnnxFilePath)
+	if l > 0 {
+		n += 2 + l + sovExecutionSpec(uint64(l))
+	}
+	return n
+}
+
+func (m *OptimizationProfile) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.TensorShapeRange) > 0 {
+		for _, e := range m.TensorShapeRange {
+			l = e.Size()
+			n += 1 + l + sovExecutionSpec(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *TensorShapeRange) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.TensorName)
+	if l > 0 {
+		n += 1 + l + sovExecutionSpec(uint64(l))
+	}
+	if len(m.Dim) > 0 {
+		l = 0
+		for _, e := range m.Dim {
+			l += sovExecutionSpec(uint64(e))
+		}
+		n += 1 + sovExecutionSpec(uint64(l)) + l
+	}
 	return n
 }
 
@@ -174,7 +549,40 @@ func (this *ExecutionSpec) String() string {
 	if this == nil {
 		return "nil"
 	}
+	repeatedStringForOptimizationProfile := "[]*OptimizationProfile{"
+	for _, f := range this.OptimizationProfile {
+		repeatedStringForOptimizationProfile += strings.Replace(f.String(), "OptimizationProfile", "OptimizationProfile", 1) + ","
+	}
+	repeatedStringForOptimizationProfile += "}"
 	s := strings.Join([]string{`&ExecutionSpec{`,
+		`OptimizationProfile:` + repeatedStringForOptimizationProfile + `,`,
+		`OnnxFilePath:` + fmt.Sprintf("%v", this.OnnxFilePath) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *OptimizationProfile) String() string {
+	if this == nil {
+		return "nil"
+	}
+	repeatedStringForTensorShapeRange := "[]*TensorShapeRange{"
+	for _, f := range this.TensorShapeRange {
+		repeatedStringForTensorShapeRange += strings.Replace(f.String(), "TensorShapeRange", "TensorShapeRange", 1) + ","
+	}
+	repeatedStringForTensorShapeRange += "}"
+	s := strings.Join([]string{`&OptimizationProfile{`,
+		`TensorShapeRange:` + repeatedStringForTensorShapeRange + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *TensorShapeRange) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&TensorShapeRange{`,
+		`TensorName:` + fmt.Sprintf("%v", this.TensorName) + `,`,
+		`Dim:` + fmt.Sprintf("%v", this.Dim) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -216,6 +624,314 @@ func (m *ExecutionSpec) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: ExecutionSpec: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OptimizationProfile", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowExecutionSpec
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthExecutionSpec
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthExecutionSpec
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.OptimizationProfile = append(m.OptimizationProfile, &OptimizationProfile{})
+			if err := m.OptimizationProfile[len(m.OptimizationProfile)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2000:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OnnxFilePath", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowExecutionSpec
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthExecutionSpec
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthExecutionSpec
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.OnnxFilePath = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipExecutionSpec(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthExecutionSpec
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *OptimizationProfile) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowExecutionSpec
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: OptimizationProfile: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: OptimizationProfile: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TensorShapeRange", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowExecutionSpec
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthExecutionSpec
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthExecutionSpec
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.TensorShapeRange = append(m.TensorShapeRange, &TensorShapeRange{})
+			if err := m.TensorShapeRange[len(m.TensorShapeRange)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipExecutionSpec(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthExecutionSpec
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *TensorShapeRange) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowExecutionSpec
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: TensorShapeRange: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: TensorShapeRange: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TensorName", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowExecutionSpec
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthExecutionSpec
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthExecutionSpec
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.TensorName = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType == 0 {
+				var v int32
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowExecutionSpec
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					v |= int32(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				m.Dim = append(m.Dim, v)
+			} else if wireType == 2 {
+				var packedLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowExecutionSpec
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					packedLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if packedLen < 0 {
+					return ErrInvalidLengthExecutionSpec
+				}
+				postIndex := iNdEx + packedLen
+				if postIndex < 0 {
+					return ErrInvalidLengthExecutionSpec
+				}
+				if postIndex > l {
+					return io.ErrUnexpectedEOF
+				}
+				var elementCount int
+				var count int
+				for _, integer := range dAtA[iNdEx:postIndex] {
+					if integer < 128 {
+						count++
+					}
+				}
+				elementCount = count
+				if elementCount != 0 && len(m.Dim) == 0 {
+					m.Dim = make([]int32, 0, elementCount)
+				}
+				for iNdEx < postIndex {
+					var v int32
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowExecutionSpec
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						v |= int32(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					m.Dim = append(m.Dim, v)
+				}
+			} else {
+				return fmt.Errorf("proto: wrong wireType = %d for field Dim", wireType)
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipExecutionSpec(dAtA[iNdEx:])

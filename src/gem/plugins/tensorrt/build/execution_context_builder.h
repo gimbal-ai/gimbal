@@ -15,19 +15,26 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#include "src/gem/plugins/tensorrt/plugin.h"
+#pragma once
+
+#include <NvInfer.h>
+#include <cuda_runtime_api.h>
 
 #include "src/common/base/base.h"
-#include "src/gem/plugins/registry.h"
-#include "src/gem/plugins/tensorrt/build/execution_context_builder.h"
+#include "src/gem/core/build/execution_context_builder.h"
+#include "src/gem/core/exec/context.h"
+#include "src/gem/core/spec/execution_spec.pb.h"
+#include "src/gem/plugins/tensorrt/exec/cuda_tensor_pool.h"
 
 namespace gml {
 namespace gem {
 namespace tensorrt {
 
-void RegisterPluginOrDie(plugins::Registry* plugin_registry) {
-  plugin_registry->RegisterExecContextBuilderOrDie<ExecutionContextBuilder>("TensorRT");
-}
+class ExecutionContextBuilder : public core::ExecutionContextBuilder {
+ public:
+  StatusOr<std::unique_ptr<core::ExecutionContext>> Build(
+      const core::spec::ExecutionSpec& spec) override;
+};
 
 }  // namespace tensorrt
 }  // namespace gem
