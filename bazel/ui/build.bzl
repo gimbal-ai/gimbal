@@ -74,7 +74,7 @@ def _next_export(name, **kwargs):
     )
 
 def _next_standalone(name, **kwargs):
-    default_arg(kwargs, "outs", ["out.tar"])
+    default_arg(kwargs, "outs", ["standalone.tar"])
     default_arg(kwargs, "tool", "//bazel/ui:next_js_binary")
     default_arg(kwargs, "args", ["build"])
     default_arg(kwargs, "srcs", [])
@@ -115,7 +115,7 @@ if [[ -d .next/standalone ]]; then
     mv .next/standalone/* out/app
     mv .next/standalone/.next out/app
     mv .next/static out/app/.next/static
-    tar -C out -cf out.tar .
+    tar -C out -cf standalone.tar .
 fi
 """
 
