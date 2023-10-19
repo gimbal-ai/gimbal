@@ -69,6 +69,10 @@ message GetFleetResponse {
   FleetInfo fleet = 1;
 }
 
+message UpdateStatusRequest {}
+
+message UpdateStatusResponse {}
+
 service FleetMgrService {
   // Creates a new fleet for the org.
   rpc CreateFleet(CreateFleetRequest) returns (CreateFleetResponse);
@@ -80,4 +84,6 @@ service FleetMgrEdgeService {
   // Register adds a device as part of the fleet. If the device has already been registered it
   // simply returns with the existing config.
   rpc Register(RegisterRequest) returns (RegisterResponse);
+  // UpdateStatus is used to update a devices's status, such as its last hearbeat.
+  rpc UpdateStatus(UpdateStatusRequest) returns (UpdateStatusResponse);
 }

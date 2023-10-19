@@ -176,6 +176,26 @@ func (mr *MockFleetMgrEdgeServiceClientMockRecorder) Register(ctx, in any, opts 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Register", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).Register), varargs...)
 }
 
+// UpdateStatus mocks base method.
+func (m *MockFleetMgrEdgeServiceClient) UpdateStatus(ctx context.Context, in *fmpb.UpdateStatusRequest, opts ...grpc.CallOption) (*fmpb.UpdateStatusResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateStatus", varargs...)
+	ret0, _ := ret[0].(*fmpb.UpdateStatusResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateStatus indicates an expected call of UpdateStatus.
+func (mr *MockFleetMgrEdgeServiceClientMockRecorder) UpdateStatus(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatus", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).UpdateStatus), varargs...)
+}
+
 // MockFleetMgrEdgeServiceServer is a mock of FleetMgrEdgeServiceServer interface.
 type MockFleetMgrEdgeServiceServer struct {
 	ctrl     *gomock.Controller
@@ -212,4 +232,19 @@ func (m *MockFleetMgrEdgeServiceServer) Register(arg0 context.Context, arg1 *fmp
 func (mr *MockFleetMgrEdgeServiceServerMockRecorder) Register(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Register", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).Register), arg0, arg1)
+}
+
+// UpdateStatus mocks base method.
+func (m *MockFleetMgrEdgeServiceServer) UpdateStatus(arg0 context.Context, arg1 *fmpb.UpdateStatusRequest) (*fmpb.UpdateStatusResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateStatus", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.UpdateStatusResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateStatus indicates an expected call of UpdateStatus.
+func (mr *MockFleetMgrEdgeServiceServerMockRecorder) UpdateStatus(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatus", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).UpdateStatus), arg0, arg1)
 }
