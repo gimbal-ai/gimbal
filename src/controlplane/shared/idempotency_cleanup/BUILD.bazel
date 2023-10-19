@@ -15,6 +15,7 @@
 
 load("@gml//bazel:gml_build_system.bzl", "gml_go_binary")
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("//bazel:images.bzl", "gml_binary_image")
 
 go_library(
     name = "idempotency_cleanup_lib",
@@ -26,6 +27,8 @@ go_library(
         "//src/shared/services/pg",
         "//src/shared/services/server",
         "@com_github_sirupsen_logrus//:logrus",
+        "@com_github_spf13_pflag//:pflag",
+        "@com_github_spf13_viper//:viper",
     ],
 )
 
@@ -33,4 +36,10 @@ gml_go_binary(
     name = "idempotency_cleanup",
     embed = [":idempotency_cleanup_lib"],
     visibility = ["//visibility:public"],
+)
+
+gml_binary_image(
+    name = "idempotency_cleanup_image",
+    binary = ":idempotency_cleanup",
+    multiarch = True,
 )

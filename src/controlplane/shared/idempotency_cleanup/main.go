@@ -18,9 +18,12 @@
 package main
 
 import (
+	"net/http"
 	"time"
 
 	log "github.com/sirupsen/logrus"
+	"github.com/spf13/pflag"
+	"github.com/spf13/viper"
 
 	"gimletlabs.ai/gimlet/src/controlplane/shared/idempotency_cleanup/utils"
 	"gimletlabs.ai/gimlet/src/shared/services/pg"
@@ -32,13 +35,25 @@ const (
 	expiryDuration = 24 * time.Hour
 )
 
+func init() {
+	pflag.String("db_proxy_stop_path", "", "The path to send a POST request to trigger the proxy to terminate")
+}
+
 func main() {
 	server.PostFlagSetupAndParse()
-	server.CheckServiceFlags()
 
 	db := pg.MustConnectDefaultPostgresDB()
 	err := utils.ExpireKeys(db, expiryDuration)
 	if err != nil {
 		log.WithError(err).Fatal("Failed to expire keys")
+	}
+
+	dbStopPath := viper.GetString("db_proxy_stop_path")
+	// Trigger stop of DB.
+	if dbStopPath != "" {
+		_, err = http.Post(dbStopPath, "application/json", nil)
+		if err != nil {
+			log.WithError(err).Error("Failed to call quit")
+		}
 	}
 }
