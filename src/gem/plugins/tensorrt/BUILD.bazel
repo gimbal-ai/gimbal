@@ -30,6 +30,7 @@ gml_cc_library(
         "//src/gem/plugins:cc_library",
         "//src/gem/plugins/tensorrt/build:cc_library",
         "//src/gem/plugins/tensorrt/exec:cc_library",
+        "//src/gem/plugins/tensorrt/exec/calculators:cc_library",
         "//src/gem/plugins/tensorrt/spec:spec_cc_library",
     ],
 )
