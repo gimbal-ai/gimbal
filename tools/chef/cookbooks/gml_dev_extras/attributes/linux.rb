@@ -28,6 +28,11 @@ default["docker-buildx"]["download_path"] =
 default["docker-buildx"]["sha256"] =
   "dbe68cdc537d0150fc83e3f30974cd0ca11c179dafbf27f32d6f063be26e869b"
 
+default["envoy"]["download_path"] =
+  "https://github.com/envoyproxy/envoy/releases/download/v1.27.1/envoy-1.27.1-linux-x86_64"
+default["envoy"]["sha256"] =
+  "b44823a3b1da95317fd40784cdc678463bcaf9959d629379b45466b4809a789e"
+
 default["faq"]["download_path"] =
   "https://github.com/jzelinskie/faq/releases/download/0.0.7/faq-linux-amd64"
 default["faq"]["sha256"] =

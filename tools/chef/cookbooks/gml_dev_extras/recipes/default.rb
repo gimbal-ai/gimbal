@@ -54,6 +54,7 @@ common_remote_bin "minikube"
 common_remote_bin "skaffold"
 common_remote_bin "sops"
 common_remote_bin "yq"
+common_remote_bin "envoy"
 
 common_remote_tar_bin "gh" do
   tool_loc "bin/gh"
