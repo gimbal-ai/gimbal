@@ -24,6 +24,10 @@ gml_cc_library(
     name = "cc_library",
     srcs = [
         "base.h",
+        "cpu_tensor_to_cuda_tensor_calculator.cc",
+        "cpu_tensor_to_cuda_tensor_calculator.h",
+        "cuda_tensor_to_cpu_tensor_calculator.cc",
+        "cuda_tensor_to_cpu_tensor_calculator.h",
         "image_frame_to_cuda_tensor_calculator.cc",
         "image_frame_to_cuda_tensor_calculator.h",
         "tensorrt_execute_calculator.cc",
@@ -32,6 +36,7 @@ gml_cc_library(
     deps = [
         "//src/gem/core/exec:cc_library",
         "//src/gem/core/exec/calculators:cc_library",
+        "//src/gem/plugins/cpu_tensor:cc_library",
         "//src/gem/plugins/tensorrt/exec:cc_library",
         "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
         "@com_github_google_mediapipe//mediapipe/framework/formats:image_frame_opencv",
