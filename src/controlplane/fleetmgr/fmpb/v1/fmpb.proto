@@ -69,7 +69,10 @@ message GetFleetResponse {
   FleetInfo fleet = 1;
 }
 
-message UpdateStatusRequest {}
+message UpdateStatusRequest {
+  // This is the Gimlet assigned device ID for this device.
+  gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
+}
 
 message UpdateStatusResponse {}
 
