@@ -29,10 +29,10 @@ REPOSITORY_LOCATIONS = dict(
         urls = ["https://github.com/arun11299/cpp-jwt/archive/refs/tags/v1.1.1.tar.gz"],
     ),
     com_github_benchsci_rules_nodejs_gazelle = dict(
-        sha256 = "738c139545e170daeeeb338879fac627648958f8ff07716d121de63b6599f3a6",
-        strip_prefix = "rules_nodejs_gazelle-0.4.0",
+        sha256 = "a96a4be31fbf53669a866c66be90ce686a73ee323926443c7c9a54bb100e4ff1",
+        strip_prefix = "rules_nodejs_gazelle-0.4.1",
         urls = [
-            "https://github.com/benchsci/rules_nodejs_gazelle/archive/refs/tags/v0.4.0.tar.gz",
+            "https://github.com/benchsci/rules_nodejs_gazelle/archive/refs/tags/v0.4.1.tar.gz",
         ],
     ),
     com_github_fmeum_rules_meta = dict(
