@@ -21,7 +21,7 @@ require (
 	github.com/jackc/pgx/v5 v5.4.3
 	github.com/jarcoal/httpmock v1.3.1
 	github.com/jmoiron/sqlx v1.3.5
-	github.com/lestrrat-go/jwx/v2 v2.0.14
+	github.com/lestrrat-go/jwx/v2 v2.0.15
 	github.com/ory/dockertest/v3 v3.10.0
 	github.com/prometheus/client_golang v1.17.0
 	github.com/segmentio/analytics-go/v3 v3.2.1
