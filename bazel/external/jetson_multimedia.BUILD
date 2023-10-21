@@ -22,3 +22,21 @@ cc_library(
     target_compatible_with = ["@platforms//cpu:aarch64"],
     visibility = ["//visibility:public"],
 )
+
+cc_library(
+    name = "app_framework_api",
+    srcs = glob([
+      "usr/src/jetson_multimedia_api/samples/common/classes/*.cpp"
+    ],
+    exclude = [
+      "usr/src/jetson_multimedia_api/samples/common/classes/NvJpegDecoder.cpp",
+      "usr/src/jetson_multimedia_api/samples/common/classes/NvJpegEncoder.cpp",
+      "usr/src/jetson_multimedia_api/samples/common/classes/NvVulkanRenderer.cpp",
+      "usr/src/jetson_multimedia_api/samples/common/classes/NvDrmRenderer.cpp",
+    ]),
+    local_defines=["TEGRA_ACCELERATE"],
+    target_compatible_with = ["@platforms//cpu:aarch64"],
+    visibility = ["//visibility:public"],
+    deps=[":libargus_headers"]
+)
+

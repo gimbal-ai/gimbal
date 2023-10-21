@@ -13,7 +13,7 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("//bazel:gml_build_system.bzl", "gml_cc_library")
+load("//bazel:gml_build_system.bzl", "gml_cc_binary", "gml_cc_library")
 
 package(default_visibility = [
     "//src/experimental:__subpackages__",
@@ -22,13 +22,29 @@ package(default_visibility = [
 
 gml_cc_library(
     name = "cc_library",
-    srcs = glob([
-        "*.h",
-        "*.cc",
-    ]),
+    srcs = glob(
+        [
+            "*.h",
+            "*.cc",
+        ],
+        exclude = ["argus_cam_binary.cc"],
+    ),
     hdrs = ["argus_cam.h"],
     deps = [
         "@com_nvidia_jetson_multimedia_api//:libargus_headers",
         "@com_nvidia_l4t_camera//:libnvargus.so",
+    ],
+)
+
+# This binary currently can't be built because our arm64 sysroot is incompatible with the Jetson sysroot.
+# Hence, it is marked as a manual build.
+gml_cc_binary(
+    name = "argus_cam_binary",
+    srcs = ["argus_cam_binary.cc"],
+    linkopts = ["-lX11"],
+    tags = ["manual"],
+    deps = [
+        ":cc_library",
+        "@com_nvidia_jetson_multimedia_api//:app_framework_api",
     ],
 )
