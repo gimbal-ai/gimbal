@@ -219,7 +219,6 @@ def _gml_deps():
         "com_github_benchsci_rules_nodejs_gazelle",
         patches = [
             "//bazel/external:rules_nodejs_gazelle.default_types_deps.patch",
-            "//bazel/external:rules_nodejs_gazelle.jsconfig_json.patch",
             "//bazel/external:rules_nodejs_gazelle.snapshots.patch",
         ],
         patch_args = ["-p1"],
