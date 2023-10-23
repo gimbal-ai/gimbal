@@ -194,12 +194,18 @@ StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> ArgusCam::ConsumeFrame() {
   }
 
   // Get the resulting frame from the consumer.
-  Argus::UniqueObj<EGLStream::Frame> frame_obj(
-      frame_consumer->acquireFrame(/* timeout */ 1000000000, &s));
+  constexpr int kTimeout = 1000000000;
+  Argus::UniqueObj<EGLStream::Frame> frame_obj(frame_consumer->acquireFrame(kTimeout, &s));
   EGLStream::IFrame* frame = Argus::interface_cast<EGLStream::IFrame>(frame_obj);
   if (frame == nullptr) {
     return error::Internal("Failed to get Frame");
   }
+
+  EGLStream::Image* image = frame->getImage();
+
+  // Metadata is also available, if desired.
+  VLOG(2) << absl::Substitute("Frame num = $0", frame->getNumber());
+  VLOG(2) << absl::Substitute("Frame time = $0", frame->getTime());
 
   Argus::IEGLOutputStream* output_stream =
       Argus::interface_cast<Argus::IEGLOutputStream>(output_stream_obj_);
@@ -209,14 +215,23 @@ StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> ArgusCam::ConsumeFrame() {
 
   // Copy to NV native buffer.
   EGLStream::NV::IImageNativeBuffer* nv_buffer =
-      Argus::interface_cast<EGLStream::NV::IImageNativeBuffer>(frame->getImage());
+      Argus::interface_cast<EGLStream::NV::IImageNativeBuffer>(image);
   if (nv_buffer == nullptr) {
-    return error::Internal("Failed to get .");
+    return error::Internal("Failed to get nv_buffer.");
   }
 
   int image_buf_fd;
   image_buf_fd = nv_buffer->createNvBuffer(output_stream->getResolution(),
                                            NVBUF_COLOR_FORMAT_YUV420, NVBUF_LAYOUT_PITCH);
+
+  GML_ASSIGN_OR_RETURN(std::unique_ptr<NvBufSurfaceWrapper> nvbuf_surf,
+                       NvBufSurfaceWrapper::Create(image_buf_fd));
+
+  // Dump information on the first frame only, to avoid being noisy.
+  // TODO(oazizi): Change this to a VLOG once we have more confidence.
+  if (frame->getNumber() == 0) {
+    nvbuf_surf->DumpInfo();
+  }
 
   // TODO(oazizi): May want to find a way to recycle buffers. Needs perf study.
   //               See code below, for alternate call if buffer recycling is available.
@@ -225,11 +240,7 @@ StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> ArgusCam::ConsumeFrame() {
   //    return absl::Internal("Failed to copy to NV buffer.");
   //  }
 
-  // Metadata is also available, if desired.
-  // int frame_num = iFrame->getNumber();
-  // int frame_time = iFrame->getTime();
-
-  return std::make_unique<NvBufSurfaceWrapper>(image_buf_fd);
+  return nvbuf_surf;
 }
 
 void ArgusCam::Stop() {
