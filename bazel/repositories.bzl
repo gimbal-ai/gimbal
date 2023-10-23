@@ -148,7 +148,8 @@ def _cc_deps():
     _bazel_repo("com_gitlab_nvidia_headers_nvcc", build_file = "//bazel/external:nvcc.BUILD")
     _bazel_repo("com_github_nvidia_tensorrt", build_file = "//bazel/external:tensorrt.BUILD")
     _bazel_repo("com_github_onnx_onnx_tensorrt", build_file = "//bazel/external:onnx_tensorrt.BUILD")
-    _deb_repo("com_nvidia_jetson_multimedia_api", build_file = "//bazel/external:jetson_multimedia.BUILD")
+    _deb_repo("com_nvidia_jetson_multimedia_api", build_file = "//bazel/external:jetson_multimedia_api.BUILD")
+    _deb_repo("com_nvidia_jetson_multimedia_utils", build_file = "//bazel/external:jetson_multimedia_utils.BUILD")
     _deb_repo("com_nvidia_l4t_camera", build_file = "//bazel/external:l4t_camera.BUILD")
 
     # mediapipe deps.

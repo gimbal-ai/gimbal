@@ -32,6 +32,7 @@ gml_cc_library(
     hdrs = ["argus_cam.h"],
     deps = [
         "@com_nvidia_jetson_multimedia_api//:libargus_headers",
+        "@com_nvidia_jetson_multimedia_utils//:libnvbufsurface.so",
         "@com_nvidia_l4t_camera//:libnvargus.so",
     ],
 )
