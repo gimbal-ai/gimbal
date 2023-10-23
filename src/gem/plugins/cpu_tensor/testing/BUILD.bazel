@@ -17,18 +17,15 @@ load("//bazel:gml_build_system.bzl", "gml_cc_library")
 
 package(default_visibility = [
     "//src/experimental:__subpackages__",
-    "//src/gem/plugins:__subpackages__",
+    "//src/gem/plugins/cpu_tensor:__subpackages__",
 ])
 
 gml_cc_library(
     name = "cc_library",
     srcs = [
-        "plugin.cc",
-        "plugin.h",
+        "operators.h",
     ],
     deps = [
-        "//src/gem/plugins:cc_library",
         "//src/gem/plugins/cpu_tensor/exec:cc_library",
-        "//src/gem/plugins/cpu_tensor/exec/calculators:cc_library",
     ],
 )
