@@ -76,11 +76,22 @@ message UpdateStatusRequest {
 
 message UpdateStatusResponse {}
 
+message ListFleetsRequest {
+  // The orgID of the org to get fleets from.
+  gml.types.UUID org_id = 1 [ (gogoproto.customname) = "OrgID" ];
+}
+
+message ListFleetsResponse {
+  repeated FleetInfo fleets = 1;
+}
+
 service FleetMgrService {
   // Creates a new fleet for the org.
   rpc CreateFleet(CreateFleetRequest) returns (CreateFleetResponse);
   // Gets info about the fleet with the given ID.
   rpc GetFleet(GetFleetRequest) returns (GetFleetResponse);
+  // List all fleets in the org.
+  rpc ListFleets(ListFleetsRequest) returns (ListFleetsResponse);
 }
 
 service FleetMgrEdgeService {
