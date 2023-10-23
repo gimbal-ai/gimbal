@@ -70,6 +70,12 @@ func TestSessionCtx_ValidClaims(t *testing.T) {
 			expiryFromNow: time.Minute * 60,
 		},
 		{
+			name:          "service claim with wrong aud",
+			isValid:       false,
+			claims:        testutils.GenerateTestServiceClaims(t, "directory"),
+			expiryFromNow: time.Minute * 60,
+		},
+		{
 			name:          "expired service claims",
 			isValid:       false,
 			claims:        testutils.GenerateTestServiceClaims(t, "api"),
@@ -91,6 +97,7 @@ func TestSessionCtx_ValidClaims(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			ctx := authcontext.New()
+			ctx.ServiceID = "api"
 			if tc.claims != nil {
 				token := testutils.SignPBClaims(t, tc.claims, "signing_key")
 				err := ctx.UseJWTAuth("signing_key", token, "gml.ai")

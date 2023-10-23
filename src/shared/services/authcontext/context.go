@@ -37,6 +37,7 @@ type AuthContext struct {
 	AuthToken string
 	Claims    *typespb.JWTClaims
 	Path      string
+	ServiceID string
 }
 
 // New creates a new session context.
@@ -80,7 +81,14 @@ func (s *AuthContext) ValidClaims() bool {
 	case utils.UserClaimType:
 		return s.Claims.GetUserClaims() != nil && len(s.Claims.GetUserClaims().UserID) > 0
 	case utils.ServiceClaimType:
-		return s.Claims.GetServiceClaims() != nil && len(s.Claims.GetServiceClaims().ServiceID) > 0
+		svcClaims := s.Claims.GetServiceClaims()
+		if svcClaims == nil {
+			return false
+		}
+		if len(svcClaims.ServiceID) == 0 || (s.ServiceID != "" && s.Claims.GetServiceClaims().ServiceID != s.ServiceID) {
+			return false
+		}
+		return true
 	default:
 	}
 	return false

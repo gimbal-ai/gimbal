@@ -78,18 +78,20 @@ type GRPCServerOptions struct {
 	DisableMiddleware bool
 }
 
-func grpcUnaryInjectSession() grpc.UnaryServerInterceptor {
+func grpcUnaryInjectSession(env env.Env) grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 		sCtx := authcontext.New()
 		sCtx.Path = info.FullMethod
+		sCtx.ServiceID = env.ServiceName()
 		return handler(authcontext.NewContext(ctx, sCtx), req)
 	}
 }
 
-func grpcStreamInjectSession() grpc.StreamServerInterceptor {
+func grpcStreamInjectSession(env env.Env) grpc.StreamServerInterceptor {
 	return func(srv interface{}, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
 		sCtx := authcontext.New()
 		sCtx.Path = info.FullMethod
+		sCtx.ServiceID = env.ServiceName()
 		wrapped := grpc_middleware.WrapServerStream(stream)
 		wrapped.WrappedContext = authcontext.NewContext(stream.Context(), sCtx)
 		return handler(srv, wrapped)
@@ -140,12 +142,12 @@ func CreateGRPCServer(env env.Env, serverOpts *GRPCServerOptions) *grpc.Server {
 	if !serverOpts.DisableMiddleware {
 		opts = append(opts,
 			grpc.ChainUnaryInterceptor(
-				grpcUnaryInjectSession(),
+				grpcUnaryInjectSession(env),
 				logging.UnaryServerInterceptor(InterceptorLogger(logrusEntry), logrusOpts...),
 				grpc_auth.UnaryServerInterceptor(createGRPCAuthFunc(env, serverOpts)),
 			),
 			grpc.ChainStreamInterceptor(
-				grpcStreamInjectSession(),
+				grpcStreamInjectSession(env),
 				logging.StreamServerInterceptor(InterceptorLogger(logrusEntry), logrusOpts...),
 				grpc_auth.StreamServerInterceptor(createGRPCAuthFunc(env, serverOpts)),
 			),
