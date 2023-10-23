@@ -73,16 +73,16 @@ StatusOr<Argus::SensorMode*> ArgusCam::SelectSensorMode() {
     return error::Internal("Failed to get sensor modes.");
   }
 
-  printf("Available Sensor modes :\n");
+  LOG(INFO) << "Available Sensor modes :";
   for (uint32_t i = 0; i < sensor_modes.size(); i++) {
     Argus::ISensorMode* sensor_mode = Argus::interface_cast<Argus::ISensorMode>(sensor_modes[i]);
     Argus::Size2D<uint32_t> resolution = sensor_mode->getResolution();
-    printf("[%u] W=%u H=%u\n", i, resolution.width(), resolution.height());
+    LOG(INFO) << absl::Substitute("[$0] WxH = $1x$2", i, resolution.width(), resolution.height());
   }
 
   // TODO(oazizi): Make a better selection than a hard-coded value.
   const int kSensorMode = sensor_modes.size() - 1;
-  printf("Using sensor mode: %d\n", kSensorMode);
+  LOG(INFO) << absl::Substitute("Using sensor mode: $0", kSensorMode);
   return sensor_modes[kSensorMode];
 }
 

@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
       std::unique_ptr<NvEglRenderer>(NvEglRenderer::createEglRenderer("renderer0", 640, 480, 0, 0));
 
   for (int i = 0; i < kNumFrames; ++i) {
-    printf("--- %d\n", i);
+    LOG(INFO) << absl::Substitute("--- $0", i);
     GML_ASSIGN_OR_EXIT(std::unique_ptr<gml::NvBufSurfaceWrapper> image_buf_fd,
                        argus_cam.ConsumeFrame());
 
