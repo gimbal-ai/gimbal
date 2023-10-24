@@ -15,25 +15,23 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#include "src/gem/plugins/cpu_tensor/plugin.h"
+#pragma once
 
 #include "src/common/base/base.h"
-#include "src/gem/core/build/execution_context_builder.h"
-#include "src/gem/plugins/cpu_tensor/exec/context.h"
-#include "src/gem/plugins/registry.h"
 
 namespace gml {
 namespace gem {
-namespace cputensor {
+namespace core {
 
-static constexpr std::string_view kPluginName = "cpu_tensor";
+/**
+ * Model represents a plugin-specific built model. From gem::core's perspective, it's just an opaque
+ * pointer that is the output of a ModelBuilder.
+ */
+class Model {
+ public:
+  virtual ~Model() {}
+};
 
-void RegisterPluginOrDie(plugins::Registry* plugin_registry) {
-  plugin_registry
-      ->RegisterExecContextBuilderOrDie<core::DefaultExecutionContextBuilder<ExecutionContext>>(
-          kPluginName);
-}
-
-}  // namespace cputensor
+}  // namespace core
 }  // namespace gem
 }  // namespace gml

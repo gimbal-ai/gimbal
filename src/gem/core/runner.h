@@ -20,6 +20,7 @@
 #include <mediapipe/framework/calculator_graph.h>
 
 #include "src/common/base/base.h"
+#include "src/gem/core/exec/model.h"
 #include "src/gem/plugins/registry.h"
 
 namespace gml {
@@ -31,8 +32,7 @@ namespace core {
  */
 class Runner {
  public:
-  Runner(plugins::Registry* plugin_registry, const spec::ExecutionSpec& spec)
-      : plugin_registry_(plugin_registry), spec_(spec) {}
+  explicit Runner(const spec::ExecutionSpec& spec) : spec_(spec) {}
 
   Status Init(const std::map<std::string, mediapipe::Packet>& extra_side_packets);
   Status Start();
@@ -65,7 +65,6 @@ class Runner {
   }
 
  private:
-  plugins::Registry* plugin_registry_;
   spec::ExecutionSpec spec_;
   mediapipe::CalculatorGraph graph_;
   std::vector<std::unique_ptr<ExecutionContext>> exec_ctxs_;

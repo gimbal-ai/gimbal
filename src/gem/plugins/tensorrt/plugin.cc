@@ -18,15 +18,22 @@
 #include "src/gem/plugins/tensorrt/plugin.h"
 
 #include "src/common/base/base.h"
+#include "src/gem/core/build/execution_context_builder.h"
 #include "src/gem/plugins/registry.h"
-#include "src/gem/plugins/tensorrt/build/execution_context_builder.h"
+#include "src/gem/plugins/tensorrt/build/model_builder.h"
+#include "src/gem/plugins/tensorrt/exec/context.h"
 
 namespace gml {
 namespace gem {
 namespace tensorrt {
 
+static constexpr std::string_view kPluginName = "TensorRT";
+
 void RegisterPluginOrDie(plugins::Registry* plugin_registry) {
-  plugin_registry->RegisterExecContextBuilderOrDie<ExecutionContextBuilder>("TensorRT");
+  plugin_registry
+      ->RegisterExecContextBuilderOrDie<core::DefaultExecutionContextBuilder<ExecutionContext>>(
+          kPluginName);
+  plugin_registry->RegisterModelBuilderOrDie<ModelBuilder>(kPluginName);
 }
 
 }  // namespace tensorrt

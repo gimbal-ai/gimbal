@@ -17,25 +17,23 @@
 
 #pragma once
 
-#include <NvInfer.h>
-#include <cuda_runtime_api.h>
-
 #include "src/common/base/base.h"
-#include "src/gem/core/build/execution_context_builder.h"
-#include "src/gem/core/exec/context.h"
-#include "src/gem/core/spec/execution_spec.pb.h"
-#include "src/gem/plugins/tensorrt/exec/cuda_tensor_pool.h"
+#include "src/gem/core/exec/model.h"
+#include "src/gem/core/spec/model.pb.h"
 
 namespace gml {
 namespace gem {
-namespace tensorrt {
+namespace core {
 
-class ExecutionContextBuilder : public core::ExecutionContextBuilder {
+/**
+ * ModelBuilder is the base class for plugin ModelBuilders.
+ */
+class ModelBuilder {
  public:
-  StatusOr<std::unique_ptr<core::ExecutionContext>> Build(
-      const core::spec::ExecutionSpec& spec) override;
+  virtual ~ModelBuilder() {}
+  virtual StatusOr<std::unique_ptr<Model>> Build(const spec::ModelSpec& spec) = 0;
 };
 
-}  // namespace tensorrt
+}  // namespace core
 }  // namespace gem
 }  // namespace gml

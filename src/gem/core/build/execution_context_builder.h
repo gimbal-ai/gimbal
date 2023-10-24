@@ -19,7 +19,8 @@
 
 #include "src/common/base/base.h"
 #include "src/gem/core/exec/context.h"
-#include "src/gem/core/spec/execution_spec.pb.h"
+#include "src/gem/core/exec/model.h"
+#include "src/gem/core/spec/execution.pb.h"
 
 namespace gml {
 namespace gem {
@@ -31,7 +32,7 @@ namespace core {
 class ExecutionContextBuilder {
  public:
   virtual ~ExecutionContextBuilder() {}
-  virtual StatusOr<std::unique_ptr<ExecutionContext>> Build(const spec::ExecutionSpec& spec) = 0;
+  virtual StatusOr<std::unique_ptr<ExecutionContext>> Build(Model* model) = 0;
 };
 
 /**
@@ -42,8 +43,31 @@ template <typename TExecutionContext>
 class DefaultExecutionContextBuilder : public ExecutionContextBuilder {
  public:
   ~DefaultExecutionContextBuilder() override {}
-  StatusOr<std::unique_ptr<ExecutionContext>> Build(const spec::ExecutionSpec&) override {
-    return std::unique_ptr<ExecutionContext>(new TExecutionContext);
+
+  StatusOr<std::unique_ptr<ExecutionContext>> Build(Model* model) override {
+    return BuildInternal(model);
+  }
+
+ private:
+  template <typename Q = TExecutionContext, std::enable_if_t<std::is_constructible_v<Q>>* = nullptr>
+  StatusOr<std::unique_ptr<ExecutionContext>> BuildInternal(Model*) {
+    return std::unique_ptr<ExecutionContext>(new Q);
+  }
+
+  template <typename Q = TExecutionContext,
+            std::enable_if_t<std::is_constructible_v<Q, Model*>>* = nullptr>
+  StatusOr<std::unique_ptr<ExecutionContext>> BuildInternal(Model* model) {
+    return std::unique_ptr<ExecutionContext>(new Q(model));
+  }
+
+  template <typename Q = TExecutionContext,
+            std::enable_if_t<!std::is_constructible_v<Q, Model*> && !std::is_constructible_v<Q>>* =
+                nullptr>
+  StatusOr<std::unique_ptr<ExecutionContext>> BuildInternal(Model*) {
+    static_assert(sizeof(Q) == 0,
+                  "ExecutionContext must have default constructor or constructor with args "
+                  "(core::Model*) in order to use core::DefaultExecutionContextBuilder");
+    return Status();
   }
 };
 

@@ -17,10 +17,14 @@
 
 #pragma once
 
+#include <absl/container/flat_hash_map.h>
+
 #include "src/common/base/base.h"
 #include "src/gem/core/build/execution_context_builder.h"
+#include "src/gem/core/build/model_builder.h"
 #include "src/gem/core/exec/context.h"
-#include "src/gem/core/spec/execution_spec.pb.h"
+#include "src/gem/core/exec/model.h"
+#include "src/gem/core/spec/model.pb.h"
 
 namespace gml {
 namespace gem {
@@ -36,12 +40,12 @@ template <typename TBuilderBase, typename TBuilt, typename... Args>
 class BuilderRegistry {
  public:
   template <typename TBuilder>
-  void RegisterOrDie(std::string name) {
+  void RegisterOrDie(std::string_view name) {
     auto builder = std::make_unique<TBuilder>();
     builders_.emplace(name, std::move(builder));
   }
 
-  StatusOr<std::unique_ptr<TBuilt>> Build(std::string name, Args... args) {
+  StatusOr<std::unique_ptr<TBuilt>> Build(std::string_view name, Args... args) {
     if (builders_.count(name) == 0) {
       return Status(gml::types::CODE_INVALID_ARGUMENT,
                     absl::Substitute("'$0' Builder not registered", name));
@@ -51,7 +55,7 @@ class BuilderRegistry {
   }
 
  private:
-  std::unordered_map<std::string, std::unique_ptr<TBuilderBase>> builders_;
+  absl::flat_hash_map<std::string, std::unique_ptr<TBuilderBase>> builders_;
 };
 
 /**
@@ -61,19 +65,29 @@ class BuilderRegistry {
 class Registry {
  public:
   template <typename T>
-  void RegisterExecContextBuilderOrDie(std::string name) {
+  void RegisterExecContextBuilderOrDie(std::string_view name) {
     exec_ctx_builders_.RegisterOrDie<T>(name);
   }
 
-  StatusOr<std::unique_ptr<core::ExecutionContext>> BuildExecutionContext(
-      std::string name, const core::spec::ExecutionSpec& spec) {
-    return exec_ctx_builders_.Build(name, spec);
+  template <typename T>
+  void RegisterModelBuilderOrDie(std::string_view name) {
+    model_builders_.RegisterOrDie<T>(name);
+  }
+
+  StatusOr<std::unique_ptr<core::ExecutionContext>> BuildExecutionContext(std::string_view name,
+                                                                          core::Model* model) {
+    return exec_ctx_builders_.Build(name, model);
+  }
+
+  StatusOr<std::unique_ptr<core::Model>> BuildModel(std::string_view name,
+                                                    const core::spec::ModelSpec& spec) {
+    return model_builders_.Build(name, spec);
   }
 
  private:
-  BuilderRegistry<core::ExecutionContextBuilder, core::ExecutionContext,
-                  const core::spec::ExecutionSpec&>
+  BuilderRegistry<core::ExecutionContextBuilder, core::ExecutionContext, core::Model*>
       exec_ctx_builders_;
+  BuilderRegistry<core::ModelBuilder, core::Model, const core::spec::ModelSpec&> model_builders_;
 };
 
 }  // namespace plugins

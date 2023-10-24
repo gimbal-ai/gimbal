@@ -15,25 +15,22 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#include "src/gem/plugins/cpu_tensor/plugin.h"
+#pragma once
 
 #include "src/common/base/base.h"
-#include "src/gem/core/build/execution_context_builder.h"
-#include "src/gem/plugins/cpu_tensor/exec/context.h"
-#include "src/gem/plugins/registry.h"
+#include "src/gem/core/build/model_builder.h"
+#include "src/gem/core/exec/model.h"
+#include "src/gem/core/spec/model.pb.h"
 
 namespace gml {
 namespace gem {
-namespace cputensor {
+namespace tensorrt {
 
-static constexpr std::string_view kPluginName = "cpu_tensor";
+class ModelBuilder : public core::ModelBuilder {
+ public:
+  StatusOr<std::unique_ptr<core::Model>> Build(const core::spec::ModelSpec& spec) override;
+};
 
-void RegisterPluginOrDie(plugins::Registry* plugin_registry) {
-  plugin_registry
-      ->RegisterExecContextBuilderOrDie<core::DefaultExecutionContextBuilder<ExecutionContext>>(
-          kPluginName);
-}
-
-}  // namespace cputensor
+}  // namespace tensorrt
 }  // namespace gem
 }  // namespace gml

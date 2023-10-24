@@ -28,7 +28,10 @@ package(default_visibility = [
 
 proto_library(
     name = "spec_proto",
-    srcs = ["execution_spec.proto"],
+    srcs = [
+        "execution.proto",
+        "model.proto",
+    ],
     deps = [
         "//src/gem/plugins/tensorrt/spec:spec_proto",
         "@com_github_google_mediapipe//mediapipe/framework:calculator_proto",
@@ -37,8 +40,14 @@ proto_library(
 
 proto_cc_library(
     name = "spec_cc_library",
-    srcs = ["execution_spec.pb.cc"],
-    hdrs = ["execution_spec.pb.h"],
+    srcs = [
+        "execution.pb.cc",
+        "model.pb.cc",
+    ],
+    hdrs = [
+        "execution.pb.h",
+        "model.pb.h",
+    ],
     visibility = ["//visibility:public"],
     deps = [
         "//src/gem/plugins/tensorrt/spec:spec_cc_library",
@@ -50,8 +59,10 @@ proto_cc_library(
 proto_compile(
     name = "spec_cpp_compile",
     outputs = [
-        "execution_spec.pb.cc",
-        "execution_spec.pb.h",
+        "execution.pb.cc",
+        "execution.pb.h",
+        "model.pb.cc",
+        "model.pb.h",
     ],
     plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
     proto = "spec_proto",

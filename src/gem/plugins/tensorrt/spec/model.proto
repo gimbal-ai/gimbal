@@ -20,13 +20,8 @@ syntax = "proto3";
 package gml.gem.tensorrt.spec;
 option go_package = "gimletlabs.ai/gimlet/src/gem/plugins/tensorrt/spec;spec";
 
-message ExecutionSpec {
+message ModelSpec {
   repeated OptimizationProfile optimization_profile = 1;
-
-  // This doesn't make sense in the spec, but it's useful temporarily to test things out.
-  // We need to better define how we pass models from controlplane to gem before we decide on how to
-  // represent a model in the spec.
-  string onnx_file_path = 2000;
 }
 
 message OptimizationProfile {

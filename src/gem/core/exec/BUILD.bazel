@@ -24,6 +24,7 @@ gml_cc_library(
     name = "cc_library",
     srcs = [
         "context.h",
+        "model.h",
         "tensor_pool.h",
     ],
 )

@@ -15,25 +15,16 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#include "src/gem/plugins/cpu_tensor/plugin.h"
+syntax = "proto3";
 
-#include "src/common/base/base.h"
-#include "src/gem/core/build/execution_context_builder.h"
-#include "src/gem/plugins/cpu_tensor/exec/context.h"
-#include "src/gem/plugins/registry.h"
+package gml.gem.core.spec;
+option go_package = "gimletlabs.ai/gimlet/src/gem/core/spec;spec";
 
-namespace gml {
-namespace gem {
-namespace cputensor {
+import "mediapipe/framework/calculator.proto";
 
-static constexpr std::string_view kPluginName = "cpu_tensor";
-
-void RegisterPluginOrDie(plugins::Registry* plugin_registry) {
-  plugin_registry
-      ->RegisterExecContextBuilderOrDie<core::DefaultExecutionContextBuilder<ExecutionContext>>(
-          kPluginName);
+// ExecutionSpec defines what models/processing GEM should run, where to send the output, etc. The
+// current spec definitions are temporary and subject to change significantly.
+message ExecutionSpec {
+  // Mediapipe graph to run.
+  mediapipe.CalculatorGraphConfig graph = 1;
 }
-
-}  // namespace cputensor
-}  // namespace gem
-}  // namespace gml

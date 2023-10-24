@@ -23,8 +23,8 @@ package(default_visibility = [
 gml_cc_library(
     name = "cc_library",
     srcs = [
-        "execution_context_builder.cc",
-        "execution_context_builder.h",
+        "model_builder.cc",
+        "model_builder.h",
     ],
     deps = [
         "//src/common/perf:cc_library",

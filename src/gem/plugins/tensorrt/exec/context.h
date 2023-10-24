@@ -22,49 +22,33 @@
 
 #include "src/common/base/base.h"
 #include "src/gem/core/exec/context.h"
+#include "src/gem/core/exec/model.h"
 #include "src/gem/plugins/tensorrt/exec/cuda_tensor_pool.h"
+#include "src/gem/plugins/tensorrt/exec/model.h"
 
 namespace gml {
 namespace gem {
 namespace tensorrt {
 
-class TensorRTLogger : public nvinfer1::ILogger {
-  void log(Severity, const char* msg) noexcept override {
-    // For now just log everything as info. We should use the severity and look into using
-    // tensorrt's error recorder infra.
-    LOG(INFO) << "NvInfer log: " << msg;
-  }
-};
-
 /**
- * ExecutionContext allows calculators to interact with a built TensorRT engine. It also has a
+ * ExecutionContext allows calculators to interact with a built TensorRT model. It also has a
  * CUDATensorPool so calculators can allocate/recycle cuda tensors.
  */
 class ExecutionContext : public core::ExecutionContext {
  public:
-  ExecutionContext(TensorRTLogger&& logger, std::unique_ptr<nvinfer1::IRuntime> runtime,
-                   std::unique_ptr<nvinfer1::ICudaEngine> cuda_engine,
-                   std::unique_ptr<nvinfer1::IExecutionContext> context)
-      : logger_(std::move(logger)),
-        tensor_pool_(),
-        runtime_(std::move(runtime)),
-        cuda_engine_(std::move(cuda_engine)),
-        context_(std::move(context)) {}
+  ExecutionContext(core::Model* model) : model_(static_cast<tensorrt::Model*>(model)) {}
 
   ~ExecutionContext() override {}
 
-  nvinfer1::IExecutionContext* NVExecutionContext() { return context_.get(); }
-  nvinfer1::ICudaEngine* CUDAEngine() { return cuda_engine_.get(); }
+  nvinfer1::IExecutionContext* NVExecutionContext() { return model_->NVExecutionContext(); }
+  nvinfer1::ICudaEngine* CUDAEngine() { return model_->CUDAEngine(); }
   CUDATensorPool* TensorPool() { return &tensor_pool_; }
 
   cudaStream_t CUDAStream();
 
  private:
-  TensorRTLogger logger_;
   CUDATensorPool tensor_pool_;
-  std::unique_ptr<nvinfer1::IRuntime> runtime_;
-  std::unique_ptr<nvinfer1::ICudaEngine> cuda_engine_;
-  std::unique_ptr<nvinfer1::IExecutionContext> context_;
+  Model* model_;
 };
 
 }  // namespace tensorrt

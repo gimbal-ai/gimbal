@@ -20,25 +20,15 @@ syntax = "proto3";
 package gml.gem.core.spec;
 option go_package = "gimletlabs.ai/gimlet/src/gem/core/spec;spec";
 
-import "mediapipe/framework/calculator.proto";
-import "src/gem/plugins/tensorrt/spec/execution_spec.proto";
+import "src/gem/plugins/tensorrt/spec/model.proto";
 
-// ExecutionSpec defines what models/processing GEM should run, how to prepare the
-// models/processors, where to send the output, etc. The current spec definitions are temporary and
+// ModelSpec defines how to prepare the model. The current spec definitions are temporary and
 // subject to change significantly.
-message ExecutionSpec {
-  // Mediapipe graph to run.
-  mediapipe.CalculatorGraphConfig graph = 1;
-
-  repeated PluginExecutionContext required_execution_context = 2;
+message ModelSpec {
+  // TODO(james): abstract out storage mechanism instead of using file path directly.
+  string onnx_file_path = 1;
 
   // Plugin specs.
-
   // TensorRT specific specifications.
-  gml.gem.tensorrt.spec.ExecutionSpec tensorrt_spec = 100;
-}
-
-message PluginExecutionContext {
-  string name = 1;
-  string input_side_packet_name = 2;
+  gml.gem.tensorrt.spec.ModelSpec tensorrt_spec = 100;
 }

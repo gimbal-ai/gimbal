@@ -24,6 +24,7 @@ gml_cc_library(
     name = "cc_library",
     srcs = [
         "execution_context_builder.h",
+        "model_builder.h",
     ],
     deps = [
         "//src/gem/core/exec:cc_library",

@@ -22,7 +22,7 @@
 
 #include "src/common/testing/testing.h"
 #include "src/gem/core/runner.h"
-#include "src/gem/core/spec/execution_spec.pb.h"
+#include "src/gem/core/spec/execution.pb.h"
 #include "src/gem/plugins/registry.h"
 
 namespace gml {
@@ -76,13 +76,11 @@ graph {
 )pbtxt";
 
 TEST(Runner, run_simple_graph_with_side_packet) {
-  plugins::Registry plugin_registry;
-
   spec::ExecutionSpec spec;
 
   ASSERT_TRUE(google::protobuf::TextFormat::ParseFromString(kExecutionSpecPbtxt, &spec));
 
-  Runner runner(&plugin_registry, spec);
+  Runner runner(spec);
 
   std::string test_str("test1234");
   int num_ticks = 10;

@@ -21,16 +21,15 @@
 #include "src/common/base/base.h"
 #include "src/common/perf/elapsed_timer.h"
 
-#include "src/gem/core/exec/context.h"
-#include "src/gem/plugins/tensorrt/build/execution_context_builder.h"
-#include "src/gem/plugins/tensorrt/exec/context.h"
+#include "src/gem/core/exec/model.h"
+#include "src/gem/plugins/tensorrt/build/model_builder.h"
+#include "src/gem/plugins/tensorrt/exec/model.h"
 
 namespace gml {
 namespace gem {
 namespace tensorrt {
 
-StatusOr<std::unique_ptr<core::ExecutionContext>> ExecutionContextBuilder::Build(
-    const core::spec::ExecutionSpec& spec) {
+StatusOr<std::unique_ptr<core::Model>> ModelBuilder::Build(const core::spec::ModelSpec& spec) {
   ElapsedTimer timer;
   timer.Start();
   TensorRTLogger logger;
@@ -42,7 +41,7 @@ StatusOr<std::unique_ptr<core::ExecutionContext>> ExecutionContextBuilder::Build
 
   auto parser =
       std::unique_ptr<nvonnxparser::IParser>(nvonnxparser::createParser(*network, logger));
-  parser->parseFromFile(spec.tensorrt_spec().onnx_file_path().c_str(),
+  parser->parseFromFile(spec.onnx_file_path().c_str(),
                         static_cast<int32_t>(nvinfer1::ILogger::Severity::kWARNING));
   std::vector<std::string> errors;
   for (int32_t i = 0; i < parser->getNbErrors(); ++i) {
@@ -90,8 +89,8 @@ StatusOr<std::unique_ptr<core::ExecutionContext>> ExecutionContextBuilder::Build
 
   LOG(INFO) << absl::Substitute("Successfully built TensorRT engine in $0s", elapsed_seconds);
 
-  return std::unique_ptr<core::ExecutionContext>(new ExecutionContext(
-      std::move(logger), std::move(runtime), std::move(cuda_engine), std::move(context)));
+  return std::unique_ptr<core::Model>(
+      new Model(std::move(logger), std::move(runtime), std::move(cuda_engine), std::move(context)));
 }
 
 }  // namespace tensorrt

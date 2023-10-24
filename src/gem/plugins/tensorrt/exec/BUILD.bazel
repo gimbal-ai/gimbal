@@ -27,6 +27,7 @@ gml_cc_library(
         "context.h",
         "cuda_tensor.h",
         "cuda_tensor_pool.h",
+        "model.h",
     ],
     deps = [
         "//src/gem/core/exec:cc_library",

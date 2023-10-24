@@ -27,14 +27,6 @@ Status Runner::Init(const std::map<std::string, mediapipe::Packet>& extra_side_p
 
   side_packets_.insert(extra_side_packets.begin(), extra_side_packets.end());
 
-  for (const auto& required_ctx : spec_.required_execution_context()) {
-    GML_ASSIGN_OR_RETURN(auto ctx,
-                         plugin_registry_->BuildExecutionContext(required_ctx.name(), spec_));
-    auto packet = mediapipe::MakePacket<ExecutionContext*>(ctx.get());
-    side_packets_.emplace(required_ctx.input_side_packet_name(), std::move(packet));
-    exec_ctxs_.emplace_back(std::move(ctx));
-  }
-
   initialized_ = true;
   return Status::OK();
 }

@@ -18,16 +18,10 @@ load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_librar
 load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
-proto_library(
-    name = "spec_proto",
-    srcs = ["execution_spec.proto"],
-    visibility = ["//visibility:public"],
-)
-
 proto_cc_library(
     name = "spec_cc_library",
-    srcs = ["execution_spec.pb.cc"],
-    hdrs = ["execution_spec.pb.h"],
+    srcs = ["model.pb.cc"],
+    hdrs = ["model.pb.h"],
     visibility = ["//visibility:public"],
     deps = ["@com_google_protobuf//:protobuf"],
 )
@@ -35,8 +29,8 @@ proto_cc_library(
 proto_compile(
     name = "spec_cpp_compile",
     outputs = [
-        "execution_spec.pb.cc",
-        "execution_spec.pb.h",
+        "model.pb.cc",
+        "model.pb.h",
     ],
     plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
     proto = "spec_proto",
@@ -45,8 +39,8 @@ proto_compile(
 
 proto_compile(
     name = "spec_go_compile",
-    output_mappings = ["execution_spec.pb.go=gimletlabs.ai/gimlet/src/gem/plugins/tensorrt/spec/execution_spec.pb.go"],
-    outputs = ["execution_spec.pb.go"],
+    output_mappings = ["model.pb.go=gimletlabs.ai/gimlet/src/gem/plugins/tensorrt/spec/model.pb.go"],
+    outputs = ["model.pb.go"],
     plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
     proto = "spec_proto",
     visibility = ["//visibility:public"],
@@ -54,7 +48,7 @@ proto_compile(
 
 proto_go_library(
     name = "spec_go_proto",
-    srcs = ["execution_spec.pb.go"],
+    srcs = ["model.pb.go"],
     importpath = "gimletlabs.ai/gimlet/src/gem/plugins/tensorrt/spec",
     visibility = ["//visibility:public"],
     deps = [
@@ -65,4 +59,10 @@ proto_go_library(
         "@org_golang_google_grpc//codes",
         "@org_golang_google_grpc//status",
     ],
+)
+
+proto_library(
+    name = "spec_proto",
+    srcs = ["model.proto"],
+    visibility = ["//visibility:public"],
 )
