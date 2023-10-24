@@ -69,8 +69,9 @@ void NvBufSurfaceWrapper::DumpInfo() {
 
   LOG(INFO) << absl::Substitute(
       "surf_params[0]: WxH=$0x$1 pitch=$2 color_format=$3 layout=$4 dataSize=$5 num_planes=$6",
-      surf_params.width, surf_params.height, surf_params.pitch, surf_params.colorFormat,
-      surf_params.layout, surf_params.dataSize, surf_params.planeParams.num_planes);
+      surf_params.width, surf_params.height, surf_params.pitch,
+      magic_enum::enum_name(surf_params.colorFormat), magic_enum::enum_name(surf_params.layout),
+      surf_params.dataSize, surf_params.planeParams.num_planes);
   for (uint32_t i = 0; i < surf_params.planeParams.num_planes; ++i) {
     const auto& plane_params = surf_params.planeParams;
     LOG(INFO) << absl::Substitute(
