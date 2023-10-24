@@ -30,11 +30,15 @@ import (
 	"github.com/gofrs/uuid/v5"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
+
+	"gimletlabs.ai/gimlet/src/api/corepb/v1"
 )
 
 const (
 	// KeySpaceSize is the number of hex characters to use for the keyspace size.
-	KeySpaceSize = 3
+	KeySpaceSize   = 3
+	edgeToCPPrefix = "e2cp"
+	cpToEdgePrefix = "e2cp"
 )
 
 func init() {
@@ -74,4 +78,23 @@ func GenerateRange() []string {
 
 func EdgeIDToPartition(id uuid.UUID) string {
 	return id.String()[0:KeySpaceSize]
+}
+
+func EdgeToCPNATSTopic(edgeID uuid.UUID, topic corepb.EdgeCPTopic, isDurable bool) (string, error) {
+	gen := func(str string) string {
+		if isDurable {
+			str = "Durable" + str
+		}
+		return fmt.Sprintf("%s.%s.%s.%s", edgeToCPPrefix, EdgeIDToPartition(edgeID), edgeID.String(), str)
+	}
+	switch topic {
+	case corepb.EDGE_CP_TOPIC_STATUS:
+		return gen("status"), nil
+	default:
+		return "", fmt.Errorf("bad topic %s", topic.String())
+	}
+}
+
+func CPToEdgeNATSTopicBase(edgeID uuid.UUID) (string, error) {
+	return fmt.Sprintf("%s.%s.%s", cpToEdgePrefix, EdgeIDToPartition(edgeID), edgeID.String()), nil
 }

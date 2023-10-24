@@ -22,6 +22,7 @@ go_library(
     importpath = "gimletlabs.ai/gimlet/src/controlplane/shared/edgepartition",
     visibility = ["//visibility:public"],
     deps = [
+        "//src/api/corepb/v1:corepb_go_proto",
         "@com_github_gofrs_uuid_v5//:uuid",
         "@com_github_spf13_pflag//:pflag",
         "@com_github_spf13_viper//:viper",
@@ -33,8 +34,10 @@ gml_go_test(
     srcs = ["partition_test.go"],
     deps = [
         ":edgepartition",
+        "//src/api/corepb/v1:corepb_go_proto",
         "@com_github_gofrs_uuid_v5//:uuid",
         "@com_github_spf13_viper//:viper",
         "@com_github_stretchr_testify//assert",
+        "@com_github_stretchr_testify//require",
     ],
 )

@@ -21,10 +21,13 @@ import (
 	"fmt"
 	"testing"
 
+
 	"github.com/gofrs/uuid/v5"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
+	"gimletlabs.ai/gimlet/src/api/corepb/v1"
 	"gimletlabs.ai/gimlet/src/controlplane/shared/edgepartition"
 )
 
@@ -86,5 +89,45 @@ func TestEdgeIDToPartition(t *testing.T) {
 	expected := "6ba"
 
 	actual := edgepartition.EdgeIDToPartition(id)
+	assert.Equal(t, expected, actual)
+}
+
+func TestEdgeToCPNATSTopic(t *testing.T) {
+	id, _ := uuid.FromString("6ba7b810-9dad-11d1-80b4-00c04fd430c8") // Example UUID
+
+	tests := []struct {
+		name     string
+		expected string
+		topic    corepb.EdgeCPTopic
+		durable  bool
+	}{
+		{
+			name:     "status",
+			expected: "e2cp.6ba.6ba7b810-9dad-11d1-80b4-00c04fd430c8.status",
+			topic:    corepb.EDGE_CP_TOPIC_STATUS,
+			durable:  false,
+		},
+		{
+			name:     "Durablestatus",
+			expected: "e2cp.6ba.6ba7b810-9dad-11d1-80b4-00c04fd430c8.Durablestatus",
+			topic:    corepb.EDGE_CP_TOPIC_STATUS,
+			durable:  true,
+		},
+	}
+
+	for _, test := range tests {
+		actual, err := edgepartition.EdgeToCPNATSTopic(id, test.topic, test.durable)
+
+		require.Nil(t, err)
+		assert.Equal(t, test.expected, actual)
+	}
+}
+
+func TestCPToEdgeNATSTopicBase(t *testing.T) {
+	id, _ := uuid.FromString("6ba7b810-9dad-11d1-80b4-00c04fd430c8") // Example UUID
+	actual, err := edgepartition.CPToEdgeNATSTopicBase(id)
+	expected := "e2cp.6ba.6ba7b810-9dad-11d1-80b4-00c04fd430c8"
+
+	require.Nil(t, err)
 	assert.Equal(t, expected, actual)
 }
