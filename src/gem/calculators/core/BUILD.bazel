@@ -13,29 +13,20 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("//bazel:gml_build_system.bzl", "gml_cc_library", "gml_cc_test")
+load("//bazel:gml_build_system.bzl", "gml_cc_library")
 
 package(default_visibility = [
-    "//src:__subpackages__",
     "//src/experimental:__subpackages__",
+    "//src/gem:__subpackages__",
 ])
 
 gml_cc_library(
     name = "cc_library",
     srcs = [
-        "registry.h",
+        "execution_context_calculator.h",
     ],
     deps = [
-        "//src/gem/build/core:cc_library",
         "//src/gem/exec/core:cc_library",
-        "//src/gem/specpb:specpb_cc_library",
-    ],
-)
-
-gml_cc_test(
-    name = "registry_test",
-    srcs = ["registry_test.cc"],
-    deps = [
-        ":cc_library",
+        "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
     ],
 )

@@ -16,11 +16,11 @@
  */
 
 #include "src/gem/plugins/registry.h"
-#include "src/gem/core/build/execution_context_builder.h"
-#include "src/gem/core/build/model_builder.h"
-#include "src/gem/core/exec/context.h"
-#include "src/gem/core/exec/model.h"
-#include "src/gem/core/spec/model.pb.h"
+#include "src/gem/build/core/execution_context_builder.h"
+#include "src/gem/build/core/model_builder.h"
+#include "src/gem/exec/core/context.h"
+#include "src/gem/exec/core/model.h"
+#include "src/gem/specpb/model.pb.h"
 
 #include "src/common/testing/testing.h"
 
@@ -28,7 +28,12 @@ namespace gml {
 namespace gem {
 namespace plugins {
 
-class SimpleExecutionContext : public core::ExecutionContext {
+using ::gml::gem::build::core::ExecutionContextBuilder;
+using ::gml::gem::build::core::ModelBuilder;
+using ::gml::gem::exec::core::ExecutionContext;
+using ::gml::gem::exec::core::Model;
+
+class SimpleExecutionContext : public ExecutionContext {
  public:
   explicit SimpleExecutionContext(size_t i) : i_(i) {}
 
@@ -38,14 +43,14 @@ class SimpleExecutionContext : public core::ExecutionContext {
   size_t i_;
 };
 
-class SimpleExecutionContextBuilder : public core::ExecutionContextBuilder {
+class SimpleExecutionContextBuilder : public ExecutionContextBuilder {
  public:
-  StatusOr<std::unique_ptr<core::ExecutionContext>> Build(core::Model*) {
-    return std::unique_ptr<core::ExecutionContext>(new SimpleExecutionContext(10));
+  StatusOr<std::unique_ptr<ExecutionContext>> Build(Model*) {
+    return std::unique_ptr<ExecutionContext>(new SimpleExecutionContext(10));
   }
 };
 
-class SimpleModel : public core::Model {
+class SimpleModel : public Model {
  public:
   explicit SimpleModel(size_t i) : i_(i) {}
   size_t i() { return i_; }
@@ -66,10 +71,10 @@ TEST(Registry, simple_register_exec_ctx) {
   EXPECT_EQ(10, exec_ctx->i());
 }
 
-class SimpleModelBuilder : public core::ModelBuilder {
+class SimpleModelBuilder : public ModelBuilder {
  public:
-  StatusOr<std::unique_ptr<core::Model>> Build(const core::spec::ModelSpec&) {
-    return std::unique_ptr<core::Model>(new SimpleModel(15));
+  StatusOr<std::unique_ptr<Model>> Build(const specpb::ModelSpec&) {
+    return std::unique_ptr<Model>(new SimpleModel(15));
   }
 };
 
@@ -78,7 +83,7 @@ TEST(Registry, simple_register_model) {
 
   plugin_registry.RegisterModelBuilderOrDie<SimpleModelBuilder>("simple");
 
-  core::spec::ModelSpec spec;
+  specpb::ModelSpec spec;
   auto model_or_s = plugin_registry.BuildModel("simple", spec);
   ASSERT_OK(model_or_s);
   auto model = static_cast<SimpleModel*>(model_or_s.ValueOrDie().get());

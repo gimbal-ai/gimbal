@@ -7,7 +7,7 @@ build:
   - bazel-out
   - bazel-testlogs
   # Ignore any protos that use mediapipe protos.
-  - src/gem/core/spec
+  - src/gem/specpb
 breaking:
   use:
   - FILE

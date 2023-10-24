@@ -20,11 +20,11 @@
 #include <absl/container/flat_hash_map.h>
 
 #include "src/common/base/base.h"
-#include "src/gem/core/build/execution_context_builder.h"
-#include "src/gem/core/build/model_builder.h"
-#include "src/gem/core/exec/context.h"
-#include "src/gem/core/exec/model.h"
-#include "src/gem/core/spec/model.pb.h"
+#include "src/gem/build/core/execution_context_builder.h"
+#include "src/gem/build/core/model_builder.h"
+#include "src/gem/exec/core/context.h"
+#include "src/gem/exec/core/model.h"
+#include "src/gem/specpb/model.pb.h"
 
 namespace gml {
 namespace gem {
@@ -74,20 +74,22 @@ class Registry {
     model_builders_.RegisterOrDie<T>(name);
   }
 
-  StatusOr<std::unique_ptr<core::ExecutionContext>> BuildExecutionContext(std::string_view name,
-                                                                          core::Model* model) {
+  StatusOr<std::unique_ptr<exec::core::ExecutionContext>> BuildExecutionContext(
+      std::string_view name, exec::core::Model* model) {
     return exec_ctx_builders_.Build(name, model);
   }
 
-  StatusOr<std::unique_ptr<core::Model>> BuildModel(std::string_view name,
-                                                    const core::spec::ModelSpec& spec) {
+  StatusOr<std::unique_ptr<exec::core::Model>> BuildModel(std::string_view name,
+                                                          const specpb::ModelSpec& spec) {
     return model_builders_.Build(name, spec);
   }
 
  private:
-  BuilderRegistry<core::ExecutionContextBuilder, core::ExecutionContext, core::Model*>
+  BuilderRegistry<build::core::ExecutionContextBuilder, exec::core::ExecutionContext,
+                  exec::core::Model*>
       exec_ctx_builders_;
-  BuilderRegistry<core::ModelBuilder, core::Model, const core::spec::ModelSpec&> model_builders_;
+  BuilderRegistry<build::core::ModelBuilder, exec::core::Model, const specpb::ModelSpec&>
+      model_builders_;
 };
 
 }  // namespace plugins

@@ -23,19 +23,26 @@ package(default_visibility = [
 gml_cc_library(
     name = "cc_library",
     srcs = [
-        "registry.h",
+        "runner.cc",
+        "runner.h",
     ],
     deps = [
-        "//src/gem/build/core:cc_library",
-        "//src/gem/exec/core:cc_library",
+        "//src/gem/plugins:cc_library",
         "//src/gem/specpb:specpb_cc_library",
+        "@com_github_google_mediapipe//mediapipe/calculators/image:image_transformation_calculator",
+        "@com_github_google_mediapipe//mediapipe/calculators/video:opencv_video_decoder_calculator",
+        "@com_github_google_mediapipe//mediapipe/calculators/video:opencv_video_encoder_calculator",
+        "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
     ],
 )
 
 gml_cc_test(
-    name = "registry_test",
-    srcs = ["registry_test.cc"],
+    name = "runner_test",
+    srcs = [
+        "runner_test.cc",
+    ],
     deps = [
         ":cc_library",
+        "@com_github_google_mediapipe//mediapipe/calculators/core:counting_source_calculator",
     ],
 )
