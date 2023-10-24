@@ -17,24 +17,39 @@
 
 #pragma once
 
-#include <mediapipe/framework/calculator_framework.h>
+#include <nvbufsurface.h>
 
-#include "src/gem/devices/camera/argus/argus_cam.h"
+#include "src/common/base/base.h"
 
 namespace gml {
 namespace gem {
 namespace devices {
 namespace argus {
 
-class ArgusCamSourceCalculator : public mediapipe::CalculatorBase {
+// A wrapper around the image buf fd, with managed resources.
+class NvBufSurfaceWrapper : public NotCopyable {
  public:
-  static absl::Status GetContract(mediapipe::CalculatorContract* cc);
-  absl::Status Open(mediapipe::CalculatorContext* cc) override;
-  absl::Status Process(mediapipe::CalculatorContext* cc) override;
-  absl::Status Close(mediapipe::CalculatorContext* cc) override;
+  static StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> Create(int fd);
+
+  ~NvBufSurfaceWrapper();
+
+  void DumpInfo();
+
+  /**
+   * Maps the buffer for CPU access.
+   * Information about where the different planes are located are populated in the internal
+   * NvBufSurface data structure, which can be accessed via surface().mappedAddr.
+   */
+  Status MapForCpu();
+
+  int fd() { return fd_; }
+  const NvBufSurfaceParams& surface() { return nvbuf_surf_->surfaceList[0]; }
 
  private:
-  ArgusCam argus_cam_;
+  NvBufSurfaceWrapper(int fd, NvBufSurface* nvbuf_surf);
+
+  const int fd_ = -1;
+  NvBufSurface* nvbuf_surf_ = nullptr;
 };
 
 }  // namespace argus

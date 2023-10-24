@@ -28,6 +28,9 @@
 #include "src/common/base/base.h"
 
 namespace gml {
+namespace gem {
+namespace devices {
+namespace argus {
 
 // Top-level options.
 constexpr int kTargetFPS = 120;
@@ -254,4 +257,7 @@ void ArgusCam::Stop() {
   capture_session->waitForIdle();
 }
 
+}  // namespace argus
+}  // namespace devices
+}  // namespace gem
 }  // namespace gml

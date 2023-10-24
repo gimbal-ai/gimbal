@@ -24,6 +24,7 @@
 
 namespace gml {
 namespace gem {
+namespace devices {
 
 absl::Status ArgusCamSourceCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   cc->Outputs().Index(0).Set<NvBufSurfaceWrapper>();
@@ -51,5 +52,6 @@ absl::Status ArgusCamSourceCalculator::Close(mediapipe::CalculatorContext* /* cc
 
 REGISTER_CALCULATOR(ArgusCamSourceCalculator);
 
+}  // namespace devices
 }  // namespace gem
 }  // namespace gml
