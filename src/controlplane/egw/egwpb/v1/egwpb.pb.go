@@ -6,7 +6,9 @@ package egwpb
 import (
 	context "context"
 	fmt "fmt"
+	v1 "gimletlabs.ai/gimlet/src/api/corepb/v1"
 	proto "github.com/gogo/protobuf/proto"
+	types "github.com/gogo/protobuf/types"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -29,6 +31,8 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type BridgeRequest struct {
+	Topic v1.EdgeCPTopic `protobuf:"varint,1,opt,name=topic,proto3,enum=gml.internal.api.core.v1.EdgeCPTopic" json:"topic,omitempty"`
+	Msg   *types.Any     `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
 }
 
 func (m *BridgeRequest) Reset()      { *m = BridgeRequest{} }
@@ -63,7 +67,23 @@ func (m *BridgeRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_BridgeRequest proto.InternalMessageInfo
 
+func (m *BridgeRequest) GetTopic() v1.EdgeCPTopic {
+	if m != nil {
+		return m.Topic
+	}
+	return v1.EDGE_CP_TOPIC_UNKNOWN
+}
+
+func (m *BridgeRequest) GetMsg() *types.Any {
+	if m != nil {
+		return m.Msg
+	}
+	return nil
+}
+
 type BridgeResponse struct {
+	Topic v1.CPEdgeTopic `protobuf:"varint,1,opt,name=topic,proto3,enum=gml.internal.api.core.v1.CPEdgeTopic" json:"topic,omitempty"`
+	Msg   *types.Any     `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
 }
 
 func (m *BridgeResponse) Reset()      { *m = BridgeResponse{} }
@@ -98,6 +118,20 @@ func (m *BridgeResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_BridgeResponse proto.InternalMessageInfo
 
+func (m *BridgeResponse) GetTopic() v1.CPEdgeTopic {
+	if m != nil {
+		return m.Topic
+	}
+	return v1.CP_EDGE_TOPIC_UNKNOWN
+}
+
+func (m *BridgeResponse) GetMsg() *types.Any {
+	if m != nil {
+		return m.Msg
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*BridgeRequest)(nil), "gml.internal.controlplane.egw.v1.BridgeRequest")
 	proto.RegisterType((*BridgeResponse)(nil), "gml.internal.controlplane.egw.v1.BridgeResponse")
@@ -108,22 +142,30 @@ func init() {
 }
 
 var fileDescriptor_9c5010ad21c5e933 = []byte{
-	// 239 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xd2, 0x2c, 0x2e, 0x4a, 0xd6,
-	0x4f, 0xce, 0xcf, 0x2b, 0x29, 0xca, 0xcf, 0x29, 0xc8, 0x49, 0xcc, 0x4b, 0xd5, 0x4f, 0x4d, 0x2f,
-	0x07, 0xe1, 0x82, 0x24, 0xfd, 0x32, 0x43, 0x08, 0x43, 0xaf, 0xa0, 0x28, 0xbf, 0x24, 0x5f, 0x48,
-	0x21, 0x3d, 0x37, 0x47, 0x2f, 0x33, 0xaf, 0x24, 0xb5, 0x28, 0x2f, 0x31, 0x47, 0x0f, 0x59, 0x8f,
-	0x5e, 0x6a, 0x7a, 0xb9, 0x5e, 0x99, 0xa1, 0x12, 0x3f, 0x17, 0xaf, 0x53, 0x51, 0x66, 0x4a, 0x7a,
-	0x6a, 0x50, 0x6a, 0x61, 0x69, 0x6a, 0x71, 0x89, 0x92, 0x00, 0x17, 0x1f, 0x4c, 0xa0, 0xb8, 0x20,
-	0x3f, 0xaf, 0x38, 0xd5, 0xa8, 0x96, 0x8b, 0xcb, 0xd5, 0x3d, 0x3c, 0x38, 0xb5, 0xa8, 0x2c, 0x33,
-	0x39, 0x55, 0x28, 0x9f, 0x8b, 0x0d, 0x22, 0x2f, 0xa4, 0xaf, 0x47, 0xc8, 0x74, 0x3d, 0x14, 0xa3,
-	0xa5, 0x0c, 0x88, 0xd7, 0x00, 0xb1, 0x5a, 0x83, 0xd1, 0x80, 0xd1, 0x29, 0xef, 0xc2, 0x43, 0x39,
-	0x86, 0x1b, 0x0f, 0xe5, 0x18, 0x3e, 0x3c, 0x94, 0x63, 0x6c, 0x78, 0x24, 0xc7, 0xb8, 0xe2, 0x91,
-	0x1c, 0xe3, 0x89, 0x47, 0x72, 0x8c, 0x17, 0x1e, 0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7, 0xf8, 0xe2,
-	0x91, 0x1c, 0xc3, 0x87, 0x47, 0x72, 0x8c, 0x13, 0x1e, 0xcb, 0x31, 0x5c, 0x78, 0x2c, 0xc7, 0x70,
-	0xe3, 0xb1, 0x1c, 0x43, 0x94, 0x45, 0x7a, 0x66, 0x6e, 0x4e, 0x6a, 0x49, 0x4e, 0x62, 0x52, 0xb1,
-	0x5e, 0x62, 0xa6, 0x3e, 0x84, 0xa7, 0x8f, 0x37, 0xe4, 0xac, 0xc1, 0x8c, 0x24, 0x36, 0x70, 0xd0,
-	0x19, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0xc7, 0x2c, 0xad, 0x9c, 0x67, 0x01, 0x00, 0x00,
+	// 355 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x92, 0xbf, 0x6a, 0x2a, 0x41,
+	0x14, 0xc6, 0x77, 0xee, 0xe5, 0x5a, 0xcc, 0x25, 0x16, 0x4b, 0x0a, 0x63, 0x31, 0x11, 0x21, 0xc1,
+	0x34, 0x67, 0xd4, 0x34, 0x01, 0xab, 0x28, 0x92, 0x56, 0x4c, 0x20, 0x90, 0x26, 0xec, 0xae, 0x27,
+	0xc3, 0xc0, 0x3a, 0x33, 0xd9, 0x5d, 0x57, 0x2c, 0x02, 0x79, 0x84, 0x3c, 0x46, 0x1e, 0x25, 0xa5,
+	0xa5, 0x65, 0x1c, 0x9b, 0x94, 0x3e, 0x42, 0x58, 0x07, 0x21, 0x36, 0xf9, 0x57, 0x0c, 0x9c, 0x81,
+	0xef, 0x3b, 0xbf, 0x6f, 0x3e, 0x86, 0x9e, 0xa4, 0x49, 0xc4, 0x23, 0xad, 0xb2, 0x44, 0xc7, 0x26,
+	0x0e, 0x14, 0x72, 0x14, 0xd3, 0xe2, 0x98, 0x90, 0xe7, 0x2d, 0x37, 0x80, 0x49, 0x74, 0xa6, 0xfd,
+	0x9a, 0x18, 0xc7, 0x20, 0x55, 0x86, 0x89, 0x0a, 0x62, 0xf8, 0xe8, 0x01, 0x14, 0x53, 0xc8, 0x5b,
+	0xd5, 0x03, 0xa1, 0xb5, 0x88, 0x91, 0x6f, 0xf4, 0xe1, 0xe4, 0x8e, 0x07, 0x6a, 0xe6, 0xcc, 0xd5,
+	0xc3, 0x82, 0x13, 0x18, 0xc9, 0x23, 0x9d, 0xa0, 0xdb, 0x1d, 0x99, 0x5b, 0x1c, 0x09, 0x74, 0x82,
+	0x7a, 0x46, 0xf7, 0xba, 0x89, 0x1c, 0x09, 0x1c, 0xe2, 0xfd, 0x04, 0xd3, 0xcc, 0xef, 0xd0, 0x7f,
+	0x99, 0x36, 0x32, 0xaa, 0x90, 0x1a, 0x69, 0x94, 0xdb, 0x47, 0xb0, 0x83, 0x0f, 0x8c, 0x84, 0x62,
+	0x15, 0xe4, 0x2d, 0xe8, 0x8f, 0x04, 0xf6, 0x06, 0x57, 0x85, 0x78, 0xe8, 0x3c, 0xfe, 0x31, 0xfd,
+	0x3b, 0x4e, 0x45, 0xe5, 0x4f, 0x8d, 0x34, 0xfe, 0xb7, 0xf7, 0xc1, 0xe5, 0x82, 0x6d, 0x2e, 0x38,
+	0x57, 0xb3, 0x61, 0x21, 0xa8, 0x4f, 0x68, 0x79, 0x4b, 0x4d, 0x8d, 0x56, 0x29, 0xfe, 0x00, 0xdb,
+	0x1b, 0x14, 0xe0, 0xdf, 0x60, 0xdb, 0x0f, 0x94, 0xf6, 0x2f, 0xae, 0x2f, 0x31, 0xc9, 0x65, 0x84,
+	0xbe, 0xa6, 0x25, 0x17, 0xc2, 0xe7, 0xf0, 0x55, 0xc7, 0xb0, 0x53, 0x52, 0xb5, 0xf9, 0x7d, 0x83,
+	0x7b, 0x5f, 0x83, 0x34, 0x49, 0x57, 0xcd, 0x97, 0xcc, 0x5b, 0x2c, 0x99, 0xb7, 0x5e, 0x32, 0xf2,
+	0x68, 0x19, 0x79, 0xb6, 0x8c, 0xbc, 0x58, 0x46, 0xe6, 0x96, 0x91, 0x57, 0xcb, 0xc8, 0x9b, 0x65,
+	0xde, 0xda, 0x32, 0xf2, 0xb4, 0x62, 0xde, 0x7c, 0xc5, 0xbc, 0xc5, 0x8a, 0x79, 0x37, 0x67, 0x42,
+	0x8e, 0x63, 0xcc, 0xe2, 0x20, 0x4c, 0x21, 0x90, 0xdc, 0xdd, 0xf8, 0xa7, 0xff, 0xa7, 0xb3, 0x19,
+	0xc2, 0xd2, 0xa6, 0x81, 0xd3, 0xf7, 0x00, 0x00, 0x00, 0xff, 0xff, 0x9c, 0xba, 0x89, 0xa3, 0x6d,
+	0x02, 0x00, 0x00,
 }
 
 func (this *BridgeRequest) Equal(that interface{}) bool {
@@ -143,6 +185,12 @@ func (this *BridgeRequest) Equal(that interface{}) bool {
 	if that1 == nil {
 		return this == nil
 	} else if this == nil {
+		return false
+	}
+	if this.Topic != that1.Topic {
+		return false
+	}
+	if !this.Msg.Equal(that1.Msg) {
 		return false
 	}
 	return true
@@ -166,14 +214,24 @@ func (this *BridgeResponse) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
+	if this.Topic != that1.Topic {
+		return false
+	}
+	if !this.Msg.Equal(that1.Msg) {
+		return false
+	}
 	return true
 }
 func (this *BridgeRequest) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 4)
+	s := make([]string, 0, 6)
 	s = append(s, "&egwpb.BridgeRequest{")
+	s = append(s, "Topic: "+fmt.Sprintf("%#v", this.Topic)+",\n")
+	if this.Msg != nil {
+		s = append(s, "Msg: "+fmt.Sprintf("%#v", this.Msg)+",\n")
+	}
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -181,8 +239,12 @@ func (this *BridgeResponse) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 4)
+	s := make([]string, 0, 6)
 	s = append(s, "&egwpb.BridgeResponse{")
+	s = append(s, "Topic: "+fmt.Sprintf("%#v", this.Topic)+",\n")
+	if this.Msg != nil {
+		s = append(s, "Msg: "+fmt.Sprintf("%#v", this.Msg)+",\n")
+	}
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -327,6 +389,23 @@ func (m *BridgeRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.Msg != nil {
+		{
+			size, err := m.Msg.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEgwpb(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Topic != 0 {
+		i = encodeVarintEgwpb(dAtA, i, uint64(m.Topic))
+		i--
+		dAtA[i] = 0x8
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -350,6 +429,23 @@ func (m *BridgeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.Msg != nil {
+		{
+			size, err := m.Msg.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEgwpb(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Topic != 0 {
+		i = encodeVarintEgwpb(dAtA, i, uint64(m.Topic))
+		i--
+		dAtA[i] = 0x8
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -370,6 +466,13 @@ func (m *BridgeRequest) Size() (n int) {
 	}
 	var l int
 	_ = l
+	if m.Topic != 0 {
+		n += 1 + sovEgwpb(uint64(m.Topic))
+	}
+	if m.Msg != nil {
+		l = m.Msg.Size()
+		n += 1 + l + sovEgwpb(uint64(l))
+	}
 	return n
 }
 
@@ -379,6 +482,13 @@ func (m *BridgeResponse) Size() (n int) {
 	}
 	var l int
 	_ = l
+	if m.Topic != 0 {
+		n += 1 + sovEgwpb(uint64(m.Topic))
+	}
+	if m.Msg != nil {
+		l = m.Msg.Size()
+		n += 1 + l + sovEgwpb(uint64(l))
+	}
 	return n
 }
 
@@ -393,6 +503,8 @@ func (this *BridgeRequest) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&BridgeRequest{`,
+		`Topic:` + fmt.Sprintf("%v", this.Topic) + `,`,
+		`Msg:` + strings.Replace(fmt.Sprintf("%v", this.Msg), "Any", "types.Any", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -402,6 +514,8 @@ func (this *BridgeResponse) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&BridgeResponse{`,
+		`Topic:` + fmt.Sprintf("%v", this.Topic) + `,`,
+		`Msg:` + strings.Replace(fmt.Sprintf("%v", this.Msg), "Any", "types.Any", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -443,6 +557,61 @@ func (m *BridgeRequest) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: BridgeRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Topic", wireType)
+			}
+			m.Topic = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowEgwpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Topic |= v1.EdgeCPTopic(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Msg", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowEgwpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthEgwpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthEgwpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Msg == nil {
+				m.Msg = &types.Any{}
+			}
+			if err := m.Msg.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipEgwpb(dAtA[iNdEx:])
@@ -493,6 +662,61 @@ func (m *BridgeResponse) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: BridgeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Topic", wireType)
+			}
+			m.Topic = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowEgwpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Topic |= v1.CPEdgeTopic(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Msg", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowEgwpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthEgwpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthEgwpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Msg == nil {
+				m.Msg = &types.Any{}
+			}
+			if err := m.Msg.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipEgwpb(dAtA[iNdEx:])

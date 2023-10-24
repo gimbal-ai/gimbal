@@ -13,6 +13,7 @@ import (
 	math "math"
 	math_bits "math/bits"
 	reflect "reflect"
+	strconv "strconv"
 	strings "strings"
 )
 
@@ -26,6 +27,45 @@ var _ = math.Inf
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
+
+type EdgeCPTopic int32
+
+const (
+	EDGE_CP_TOPIC_UNKNOWN EdgeCPTopic = 0
+	EDGE_CP_TOPIC_STATUS  EdgeCPTopic = 1
+)
+
+var EdgeCPTopic_name = map[int32]string{
+	0: "EDGE_CP_TOPIC_UNKNOWN",
+	1: "EDGE_CP_TOPIC_STATUS",
+}
+
+var EdgeCPTopic_value = map[string]int32{
+	"EDGE_CP_TOPIC_UNKNOWN": 0,
+	"EDGE_CP_TOPIC_STATUS":  1,
+}
+
+func (EdgeCPTopic) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_fdaf1f89158d2cba, []int{0}
+}
+
+type CPEdgeTopic int32
+
+const (
+	CP_EDGE_TOPIC_UNKNOWN CPEdgeTopic = 0
+)
+
+var CPEdgeTopic_name = map[int32]string{
+	0: "CP_EDGE_TOPIC_UNKNOWN",
+}
+
+var CPEdgeTopic_value = map[string]int32{
+	"CP_EDGE_TOPIC_UNKNOWN": 0,
+}
+
+func (CPEdgeTopic) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_fdaf1f89158d2cba, []int{1}
+}
 
 type EdgeHeartbeat struct {
 	SeqID int64 `protobuf:"varint,1,opt,name=seq_id,json=seqId,proto3" json:"seq_id,omitempty"`
@@ -71,8 +111,9 @@ func (m *EdgeHeartbeat) GetSeqID() int64 {
 }
 
 type EdgeCPMetadata struct {
-	DeviceID      *typespb.UUID    `protobuf:"bytes,1,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
-	RecvTimestamp *types.Timestamp `protobuf:"bytes,2,opt,name=recv_timestamp,json=recvTimestamp,proto3" json:"recv_timestamp,omitempty"`
+	Topic         EdgeCPTopic      `protobuf:"varint,1,opt,name=topic,proto3,enum=gml.internal.api.core.v1.EdgeCPTopic" json:"topic,omitempty"`
+	DeviceID      *typespb.UUID    `protobuf:"bytes,2,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
+	RecvTimestamp *types.Timestamp `protobuf:"bytes,3,opt,name=recv_timestamp,json=recvTimestamp,proto3" json:"recv_timestamp,omitempty"`
 }
 
 func (m *EdgeCPMetadata) Reset()      { *m = EdgeCPMetadata{} }
@@ -107,6 +148,13 @@ func (m *EdgeCPMetadata) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_EdgeCPMetadata proto.InternalMessageInfo
 
+func (m *EdgeCPMetadata) GetTopic() EdgeCPTopic {
+	if m != nil {
+		return m.Topic
+	}
+	return EDGE_CP_TOPIC_UNKNOWN
+}
+
 func (m *EdgeCPMetadata) GetDeviceID() *typespb.UUID {
 	if m != nil {
 		return m.DeviceID
@@ -121,25 +169,22 @@ func (m *EdgeCPMetadata) GetRecvTimestamp() *types.Timestamp {
 	return nil
 }
 
-type EdgeCPStatus struct {
+type EdgeCPMessage struct {
 	Metadata *EdgeCPMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	// Types that are valid to be assigned to MsgOneof:
-	//
-	//	*EdgeCPStatus_Heartbeat
-	MsgOneof isEdgeCPStatus_MsgOneof `protobuf_oneof:"msg_oneof"`
+	Msg      *types.Any      `protobuf:"bytes,1000,opt,name=msg,proto3" json:"msg,omitempty"`
 }
 
-func (m *EdgeCPStatus) Reset()      { *m = EdgeCPStatus{} }
-func (*EdgeCPStatus) ProtoMessage() {}
-func (*EdgeCPStatus) Descriptor() ([]byte, []int) {
+func (m *EdgeCPMessage) Reset()      { *m = EdgeCPMessage{} }
+func (*EdgeCPMessage) ProtoMessage() {}
+func (*EdgeCPMessage) Descriptor() ([]byte, []int) {
 	return fileDescriptor_fdaf1f89158d2cba, []int{2}
 }
-func (m *EdgeCPStatus) XXX_Unmarshal(b []byte) error {
+func (m *EdgeCPMessage) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *EdgeCPStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *EdgeCPMessage) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_EdgeCPStatus.Marshal(b, m, deterministic)
+		return xxx_messageInfo_EdgeCPMessage.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -149,99 +194,207 @@ func (m *EdgeCPStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return b[:n], nil
 	}
 }
-func (m *EdgeCPStatus) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_EdgeCPStatus.Merge(m, src)
+func (m *EdgeCPMessage) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EdgeCPMessage.Merge(m, src)
 }
-func (m *EdgeCPStatus) XXX_Size() int {
+func (m *EdgeCPMessage) XXX_Size() int {
 	return m.Size()
 }
-func (m *EdgeCPStatus) XXX_DiscardUnknown() {
-	xxx_messageInfo_EdgeCPStatus.DiscardUnknown(m)
+func (m *EdgeCPMessage) XXX_DiscardUnknown() {
+	xxx_messageInfo_EdgeCPMessage.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_EdgeCPStatus proto.InternalMessageInfo
+var xxx_messageInfo_EdgeCPMessage proto.InternalMessageInfo
 
-type isEdgeCPStatus_MsgOneof interface {
-	isEdgeCPStatus_MsgOneof()
-	Equal(interface{}) bool
-	MarshalTo([]byte) (int, error)
-	Size() int
-}
-
-type EdgeCPStatus_Heartbeat struct {
-	Heartbeat *EdgeHeartbeat `protobuf:"bytes,1000,opt,name=heartbeat,proto3,oneof" json:"heartbeat,omitempty"`
-}
-
-func (*EdgeCPStatus_Heartbeat) isEdgeCPStatus_MsgOneof() {}
-
-func (m *EdgeCPStatus) GetMsgOneof() isEdgeCPStatus_MsgOneof {
-	if m != nil {
-		return m.MsgOneof
-	}
-	return nil
-}
-
-func (m *EdgeCPStatus) GetMetadata() *EdgeCPMetadata {
+func (m *EdgeCPMessage) GetMetadata() *EdgeCPMetadata {
 	if m != nil {
 		return m.Metadata
 	}
 	return nil
 }
 
-func (m *EdgeCPStatus) GetHeartbeat() *EdgeHeartbeat {
-	if x, ok := m.GetMsgOneof().(*EdgeCPStatus_Heartbeat); ok {
-		return x.Heartbeat
+func (m *EdgeCPMessage) GetMsg() *types.Any {
+	if m != nil {
+		return m.Msg
 	}
 	return nil
 }
 
-// XXX_OneofWrappers is for the internal use of the proto package.
-func (*EdgeCPStatus) XXX_OneofWrappers() []interface{} {
-	return []interface{}{
-		(*EdgeCPStatus_Heartbeat)(nil),
+type CPEdgeMetadata struct {
+	Topic         CPEdgeTopic      `protobuf:"varint,1,opt,name=topic,proto3,enum=gml.internal.api.core.v1.CPEdgeTopic" json:"topic,omitempty"`
+	DeviceID      *typespb.UUID    `protobuf:"bytes,2,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
+	RecvTimestamp *types.Timestamp `protobuf:"bytes,3,opt,name=recv_timestamp,json=recvTimestamp,proto3" json:"recv_timestamp,omitempty"`
+}
+
+func (m *CPEdgeMetadata) Reset()      { *m = CPEdgeMetadata{} }
+func (*CPEdgeMetadata) ProtoMessage() {}
+func (*CPEdgeMetadata) Descriptor() ([]byte, []int) {
+	return fileDescriptor_fdaf1f89158d2cba, []int{3}
+}
+func (m *CPEdgeMetadata) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CPEdgeMetadata) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CPEdgeMetadata.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
 	}
+}
+func (m *CPEdgeMetadata) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CPEdgeMetadata.Merge(m, src)
+}
+func (m *CPEdgeMetadata) XXX_Size() int {
+	return m.Size()
+}
+func (m *CPEdgeMetadata) XXX_DiscardUnknown() {
+	xxx_messageInfo_CPEdgeMetadata.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CPEdgeMetadata proto.InternalMessageInfo
+
+func (m *CPEdgeMetadata) GetTopic() CPEdgeTopic {
+	if m != nil {
+		return m.Topic
+	}
+	return CP_EDGE_TOPIC_UNKNOWN
+}
+
+func (m *CPEdgeMetadata) GetDeviceID() *typespb.UUID {
+	if m != nil {
+		return m.DeviceID
+	}
+	return nil
+}
+
+func (m *CPEdgeMetadata) GetRecvTimestamp() *types.Timestamp {
+	if m != nil {
+		return m.RecvTimestamp
+	}
+	return nil
+}
+
+type CPEdgeMessage struct {
+	Metadata *CPEdgeMetadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Msg      *types.Any      `protobuf:"bytes,1000,opt,name=msg,proto3" json:"msg,omitempty"`
+}
+
+func (m *CPEdgeMessage) Reset()      { *m = CPEdgeMessage{} }
+func (*CPEdgeMessage) ProtoMessage() {}
+func (*CPEdgeMessage) Descriptor() ([]byte, []int) {
+	return fileDescriptor_fdaf1f89158d2cba, []int{4}
+}
+func (m *CPEdgeMessage) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CPEdgeMessage) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CPEdgeMessage.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *CPEdgeMessage) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CPEdgeMessage.Merge(m, src)
+}
+func (m *CPEdgeMessage) XXX_Size() int {
+	return m.Size()
+}
+func (m *CPEdgeMessage) XXX_DiscardUnknown() {
+	xxx_messageInfo_CPEdgeMessage.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CPEdgeMessage proto.InternalMessageInfo
+
+func (m *CPEdgeMessage) GetMetadata() *CPEdgeMetadata {
+	if m != nil {
+		return m.Metadata
+	}
+	return nil
+}
+
+func (m *CPEdgeMessage) GetMsg() *types.Any {
+	if m != nil {
+		return m.Msg
+	}
+	return nil
 }
 
 func init() {
+	proto.RegisterEnum("gml.internal.api.core.v1.EdgeCPTopic", EdgeCPTopic_name, EdgeCPTopic_value)
+	proto.RegisterEnum("gml.internal.api.core.v1.CPEdgeTopic", CPEdgeTopic_name, CPEdgeTopic_value)
 	proto.RegisterType((*EdgeHeartbeat)(nil), "gml.internal.api.core.v1.EdgeHeartbeat")
 	proto.RegisterType((*EdgeCPMetadata)(nil), "gml.internal.api.core.v1.EdgeCPMetadata")
-	proto.RegisterType((*EdgeCPStatus)(nil), "gml.internal.api.core.v1.EdgeCPStatus")
+	proto.RegisterType((*EdgeCPMessage)(nil), "gml.internal.api.core.v1.EdgeCPMessage")
+	proto.RegisterType((*CPEdgeMetadata)(nil), "gml.internal.api.core.v1.CPEdgeMetadata")
+	proto.RegisterType((*CPEdgeMessage)(nil), "gml.internal.api.core.v1.CPEdgeMessage")
 }
 
 func init() { proto.RegisterFile("src/api/corepb/v1/cp_edge.proto", fileDescriptor_fdaf1f89158d2cba) }
 
 var fileDescriptor_fdaf1f89158d2cba = []byte{
-	// 443 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x92, 0x3d, 0x8f, 0xd3, 0x30,
-	0x1c, 0xc6, 0x63, 0xd0, 0x1d, 0xad, 0xef, 0x05, 0x29, 0x53, 0x55, 0x09, 0xf7, 0xd4, 0x85, 0x5b,
-	0xb0, 0x55, 0x98, 0x80, 0x89, 0x12, 0xa4, 0x66, 0x40, 0x42, 0x39, 0x6e, 0x61, 0x89, 0x9c, 0xe4,
-	0x7f, 0xae, 0xa5, 0xa4, 0x76, 0x13, 0xa7, 0xd2, 0x6d, 0x7c, 0x03, 0xf8, 0x18, 0x48, 0x7c, 0x11,
-	0xc6, 0x8e, 0x37, 0x9d, 0xa8, 0xbb, 0xdc, 0x78, 0x1f, 0x01, 0xc5, 0xe9, 0x8b, 0x10, 0xe2, 0x36,
-	0x3f, 0xca, 0xf3, 0x3c, 0xf9, 0xf9, 0x91, 0xf1, 0xa0, 0x2a, 0x53, 0xc6, 0xb5, 0x64, 0xa9, 0x2a,
-	0x41, 0x27, 0x6c, 0x31, 0x62, 0xa9, 0x8e, 0x21, 0x13, 0x40, 0x75, 0xa9, 0x8c, 0xf2, 0x7b, 0xa2,
-	0xc8, 0xa9, 0x9c, 0x19, 0x28, 0x67, 0x3c, 0xa7, 0x5c, 0x4b, 0xda, 0x38, 0xe9, 0x62, 0xd4, 0x7f,
-	0x6d, 0xa6, 0xb2, 0xcc, 0x62, 0xcd, 0x4b, 0x73, 0xcd, 0x84, 0x34, 0xd3, 0x3a, 0xa1, 0xa9, 0x2a,
-	0x98, 0x50, 0x42, 0x31, 0x17, 0x4e, 0xea, 0x2b, 0xa7, 0x9c, 0x70, 0xa7, 0xb6, 0xb4, 0xff, 0xac,
-	0xf9, 0x6b, 0xaa, 0x8a, 0x42, 0xcd, 0x98, 0xb9, 0xd6, 0x50, 0xe9, 0x84, 0xd5, 0xb5, 0xcc, 0x36,
-	0x9f, 0x07, 0x42, 0x29, 0x91, 0xc3, 0xbe, 0xc4, 0xc8, 0x02, 0x2a, 0xc3, 0x0b, 0xdd, 0x1a, 0x86,
-	0x23, 0x7c, 0xf2, 0x21, 0x13, 0x30, 0x01, 0x5e, 0x9a, 0x04, 0xb8, 0xf1, 0xcf, 0xf0, 0x61, 0x05,
-	0xf3, 0x58, 0x66, 0x3d, 0x74, 0x86, 0xce, 0x1f, 0x8f, 0xbb, 0xf6, 0x76, 0x70, 0x70, 0x01, 0xf3,
-	0x30, 0x88, 0x0e, 0x2a, 0x98, 0x87, 0xd9, 0xf0, 0x1b, 0xc2, 0xa7, 0x4d, 0xe6, 0xfd, 0xa7, 0x8f,
-	0x60, 0x78, 0xc6, 0x0d, 0xf7, 0xdf, 0xe0, 0x6e, 0x06, 0x0b, 0x99, 0xc2, 0x36, 0x77, 0xf4, 0xf2,
-	0x29, 0x6d, 0xae, 0xeb, 0x90, 0xe8, 0xe5, 0x65, 0x18, 0x8c, 0x8f, 0xed, 0xed, 0xa0, 0x13, 0x38,
-	0x57, 0x18, 0x44, 0x9d, 0xd6, 0x1f, 0x66, 0xfe, 0x3b, 0x7c, 0x5a, 0x42, 0xba, 0x88, 0x77, 0x64,
-	0xbd, 0x47, 0xae, 0xa0, 0x4f, 0x5b, 0x76, 0xba, 0x65, 0xa7, 0x9f, 0xb7, 0x8e, 0xe8, 0xa4, 0x49,
-	0xec, 0xe4, 0xf0, 0x27, 0xc2, 0xc7, 0x2d, 0xd1, 0x85, 0xe1, 0xa6, 0xae, 0xfc, 0x00, 0x77, 0x8a,
-	0x0d, 0xdb, 0x06, 0xe7, 0x9c, 0xfe, 0x6f, 0x7d, 0xfa, 0xf7, 0x5d, 0xa2, 0x5d, 0xd2, 0x9f, 0xe0,
-	0xee, 0x74, 0xbb, 0x4b, 0xef, 0xee, 0x89, 0xeb, 0x79, 0xfe, 0x70, 0xcf, 0x6e, 0xc7, 0x89, 0x17,
-	0xed, 0xc3, 0xe3, 0x23, 0xdc, 0x2d, 0x2a, 0x11, 0xab, 0x19, 0xa8, 0xab, 0x71, 0xba, 0x5c, 0x11,
-	0xef, 0x66, 0x45, 0xbc, 0xfb, 0x15, 0x41, 0x5f, 0x2d, 0x41, 0x3f, 0x2c, 0x41, 0xbf, 0x2c, 0x41,
-	0x4b, 0x4b, 0xd0, 0x6f, 0x4b, 0xd0, 0x9d, 0x25, 0xde, 0xbd, 0x25, 0xe8, 0xfb, 0x9a, 0x78, 0xcb,
-	0x35, 0xf1, 0x6e, 0xd6, 0xc4, 0xfb, 0xf2, 0x42, 0xc8, 0x22, 0x07, 0x93, 0xf3, 0xa4, 0xa2, 0x5c,
-	0xb2, 0x56, 0xb1, 0x7f, 0xde, 0xdc, 0xdb, 0xf6, 0x94, 0x1c, 0xba, 0xd5, 0x5e, 0xfd, 0x09, 0x00,
-	0x00, 0xff, 0xff, 0x48, 0xe8, 0x31, 0xdc, 0x96, 0x02, 0x00, 0x00,
+	// 550 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x94, 0x4f, 0x8b, 0xda, 0x40,
+	0x18, 0xc6, 0x33, 0x15, 0xb7, 0xee, 0xd8, 0xb5, 0x4b, 0xd8, 0x82, 0x2b, 0x74, 0x14, 0xa1, 0x54,
+	0x16, 0x3a, 0x41, 0x7b, 0x6a, 0xf7, 0xa4, 0x46, 0xda, 0x50, 0xea, 0x4a, 0x54, 0x0a, 0xbd, 0x84,
+	0x49, 0x32, 0xcd, 0x0e, 0x18, 0x27, 0x26, 0xa3, 0xe0, 0xa5, 0xf4, 0x23, 0xf4, 0x63, 0xf4, 0xa3,
+	0xf4, 0xd0, 0x83, 0xc7, 0x3d, 0x2d, 0x35, 0x5e, 0xf6, 0xb8, 0x1f, 0xa1, 0x64, 0xa2, 0x76, 0xff,
+	0x50, 0x0a, 0x9e, 0xf6, 0x36, 0x2f, 0xef, 0xf3, 0x3c, 0x93, 0xe7, 0x47, 0x18, 0x58, 0x8e, 0x42,
+	0x47, 0x23, 0x01, 0xd3, 0x1c, 0x1e, 0xd2, 0xc0, 0xd6, 0x66, 0x75, 0xcd, 0x09, 0x2c, 0xea, 0x7a,
+	0x14, 0x07, 0x21, 0x17, 0x5c, 0x2d, 0x7a, 0xfe, 0x08, 0xb3, 0xb1, 0xa0, 0xe1, 0x98, 0x8c, 0x30,
+	0x09, 0x18, 0x4e, 0x94, 0x78, 0x56, 0x2f, 0xbd, 0x11, 0xe7, 0x2c, 0x74, 0xad, 0x80, 0x84, 0x62,
+	0xae, 0x79, 0x4c, 0x9c, 0x4f, 0x6d, 0xec, 0x70, 0x5f, 0xf3, 0xb8, 0xc7, 0x35, 0x69, 0xb6, 0xa7,
+	0x5f, 0xe4, 0x24, 0x07, 0x79, 0x4a, 0x43, 0x4b, 0xcf, 0x93, 0x5b, 0x1d, 0xee, 0xfb, 0x7c, 0xac,
+	0x89, 0x79, 0x40, 0xa3, 0xc0, 0xd6, 0xa6, 0x53, 0xe6, 0xae, 0xd7, 0xc7, 0x1e, 0xe7, 0xde, 0x88,
+	0xfe, 0x0d, 0x21, 0xe3, 0xf9, 0x7a, 0x55, 0xbe, 0xbb, 0x12, 0xcc, 0xa7, 0x91, 0x20, 0x7e, 0x90,
+	0x0a, 0xaa, 0x75, 0x78, 0xd0, 0x71, 0x3d, 0xfa, 0x9e, 0x92, 0x50, 0xd8, 0x94, 0x08, 0xb5, 0x02,
+	0xf7, 0x22, 0x3a, 0xb1, 0x98, 0x5b, 0x04, 0x15, 0x50, 0xcb, 0xb4, 0xf6, 0xe3, 0xcb, 0x72, 0xb6,
+	0x4f, 0x27, 0x86, 0x6e, 0x66, 0x23, 0x3a, 0x31, 0xdc, 0xea, 0x2f, 0x00, 0x0b, 0x89, 0xa7, 0xdd,
+	0xfb, 0x48, 0x05, 0x71, 0x89, 0x20, 0xea, 0x29, 0xcc, 0x0a, 0x1e, 0x30, 0x47, 0x7a, 0x0a, 0x8d,
+	0x17, 0xf8, 0x5f, 0x14, 0x70, 0x6a, 0x1c, 0x24, 0x62, 0x33, 0xf5, 0xa8, 0x6f, 0xe1, 0xbe, 0x4b,
+	0x67, 0xcc, 0xa1, 0xc9, 0xa5, 0x8f, 0x2a, 0xa0, 0x96, 0x6f, 0x3c, 0x95, 0x01, 0xb2, 0x2a, 0x1e,
+	0x0e, 0x0d, 0xbd, 0xf5, 0x24, 0xbe, 0x2c, 0xe7, 0x74, 0xa9, 0x32, 0x74, 0x33, 0x97, 0xea, 0x0d,
+	0x57, 0x6d, 0xc2, 0x42, 0x48, 0x9d, 0x99, 0xb5, 0xad, 0x55, 0xcc, 0xc8, 0x80, 0x12, 0x4e, 0x8b,
+	0xe3, 0x4d, 0x71, 0x3c, 0xd8, 0x28, 0xcc, 0x83, 0xc4, 0xb1, 0x1d, 0xab, 0x5f, 0x53, 0x02, 0x49,
+	0x9b, 0x28, 0x22, 0x1e, 0x55, 0x75, 0x98, 0xf3, 0xd7, 0xc5, 0x64, 0x9f, 0x7c, 0xa3, 0xf6, 0xbf,
+	0x3e, 0x1b, 0x10, 0xe6, 0xd6, 0xa9, 0xbe, 0x84, 0x19, 0x3f, 0xf2, 0x8a, 0x57, 0x8f, 0x65, 0xc2,
+	0xd1, 0xbd, 0xef, 0x69, 0x8e, 0xe7, 0x66, 0xa2, 0x90, 0x38, 0xdb, 0xbd, 0x24, 0x67, 0x07, 0x9c,
+	0xa9, 0xf1, 0x81, 0xe1, 0xdc, 0xb4, 0xd9, 0x01, 0xe7, 0x6d, 0x10, 0x3b, 0xe0, 0x3c, 0x69, 0xc1,
+	0xfc, 0x8d, 0x7f, 0x4c, 0x3d, 0x86, 0xcf, 0x3a, 0xfa, 0xbb, 0x8e, 0xd5, 0xee, 0x59, 0x83, 0xb3,
+	0x9e, 0xd1, 0xb6, 0x86, 0xdd, 0x0f, 0xdd, 0xb3, 0x4f, 0xdd, 0x43, 0x45, 0x2d, 0xc2, 0xa3, 0xdb,
+	0xab, 0xfe, 0xa0, 0x39, 0x18, 0xf6, 0x0f, 0xc1, 0x49, 0x0d, 0xe6, 0x6f, 0x80, 0x4d, 0x32, 0xda,
+	0x3d, 0x4b, 0x6a, 0xef, 0x64, 0xb4, 0x9c, 0xc5, 0x12, 0x29, 0x17, 0x4b, 0xa4, 0x5c, 0x2f, 0x11,
+	0xf8, 0x16, 0x23, 0xf0, 0x23, 0x46, 0xe0, 0x67, 0x8c, 0xc0, 0x22, 0x46, 0xe0, 0x77, 0x8c, 0xc0,
+	0x55, 0x8c, 0x94, 0xeb, 0x18, 0x81, 0xef, 0x2b, 0xa4, 0x2c, 0x56, 0x48, 0xb9, 0x58, 0x21, 0xe5,
+	0xf3, 0x2b, 0x8f, 0xf9, 0x23, 0x2a, 0x46, 0xc4, 0x8e, 0x30, 0x61, 0x5a, 0x3a, 0x69, 0xf7, 0x9e,
+	0x96, 0xd3, 0xf4, 0x64, 0xef, 0xc9, 0x96, 0xaf, 0xff, 0x04, 0x00, 0x00, 0xff, 0xff, 0x82, 0xe3,
+	0x97, 0x35, 0x7d, 0x04, 0x00, 0x00,
 }
 
+func (x EdgeCPTopic) String() string {
+	s, ok := EdgeCPTopic_name[int32(x)]
+	if ok {
+		return s
+	}
+	return strconv.Itoa(int(x))
+}
+func (x CPEdgeTopic) String() string {
+	s, ok := CPEdgeTopic_name[int32(x)]
+	if ok {
+		return s
+	}
+	return strconv.Itoa(int(x))
+}
 func (this *EdgeHeartbeat) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
@@ -285,6 +438,9 @@ func (this *EdgeCPMetadata) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
+	if this.Topic != that1.Topic {
+		return false
+	}
 	if !this.DeviceID.Equal(that1.DeviceID) {
 		return false
 	}
@@ -293,14 +449,14 @@ func (this *EdgeCPMetadata) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *EdgeCPStatus) Equal(that interface{}) bool {
+func (this *EdgeCPMessage) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*EdgeCPStatus)
+	that1, ok := that.(*EdgeCPMessage)
 	if !ok {
-		that2, ok := that.(EdgeCPStatus)
+		that2, ok := that.(EdgeCPMessage)
 		if ok {
 			that1 = &that2
 		} else {
@@ -315,25 +471,19 @@ func (this *EdgeCPStatus) Equal(that interface{}) bool {
 	if !this.Metadata.Equal(that1.Metadata) {
 		return false
 	}
-	if that1.MsgOneof == nil {
-		if this.MsgOneof != nil {
-			return false
-		}
-	} else if this.MsgOneof == nil {
-		return false
-	} else if !this.MsgOneof.Equal(that1.MsgOneof) {
+	if !this.Msg.Equal(that1.Msg) {
 		return false
 	}
 	return true
 }
-func (this *EdgeCPStatus_Heartbeat) Equal(that interface{}) bool {
+func (this *CPEdgeMetadata) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*EdgeCPStatus_Heartbeat)
+	that1, ok := that.(*CPEdgeMetadata)
 	if !ok {
-		that2, ok := that.(EdgeCPStatus_Heartbeat)
+		that2, ok := that.(CPEdgeMetadata)
 		if ok {
 			that1 = &that2
 		} else {
@@ -345,7 +495,40 @@ func (this *EdgeCPStatus_Heartbeat) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if !this.Heartbeat.Equal(that1.Heartbeat) {
+	if this.Topic != that1.Topic {
+		return false
+	}
+	if !this.DeviceID.Equal(that1.DeviceID) {
+		return false
+	}
+	if !this.RecvTimestamp.Equal(that1.RecvTimestamp) {
+		return false
+	}
+	return true
+}
+func (this *CPEdgeMessage) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*CPEdgeMessage)
+	if !ok {
+		that2, ok := that.(CPEdgeMessage)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Metadata.Equal(that1.Metadata) {
+		return false
+	}
+	if !this.Msg.Equal(that1.Msg) {
 		return false
 	}
 	return true
@@ -364,8 +547,9 @@ func (this *EdgeCPMetadata) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 6)
+	s := make([]string, 0, 7)
 	s = append(s, "&corepb.EdgeCPMetadata{")
+	s = append(s, "Topic: "+fmt.Sprintf("%#v", this.Topic)+",\n")
 	if this.DeviceID != nil {
 		s = append(s, "DeviceID: "+fmt.Sprintf("%#v", this.DeviceID)+",\n")
 	}
@@ -375,28 +559,51 @@ func (this *EdgeCPMetadata) GoString() string {
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *EdgeCPStatus) GoString() string {
+func (this *EdgeCPMessage) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 6)
-	s = append(s, "&corepb.EdgeCPStatus{")
+	s = append(s, "&corepb.EdgeCPMessage{")
 	if this.Metadata != nil {
 		s = append(s, "Metadata: "+fmt.Sprintf("%#v", this.Metadata)+",\n")
 	}
-	if this.MsgOneof != nil {
-		s = append(s, "MsgOneof: "+fmt.Sprintf("%#v", this.MsgOneof)+",\n")
+	if this.Msg != nil {
+		s = append(s, "Msg: "+fmt.Sprintf("%#v", this.Msg)+",\n")
 	}
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *EdgeCPStatus_Heartbeat) GoString() string {
+func (this *CPEdgeMetadata) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&corepb.EdgeCPStatus_Heartbeat{` +
-		`Heartbeat:` + fmt.Sprintf("%#v", this.Heartbeat) + `}`}, ", ")
-	return s
+	s := make([]string, 0, 7)
+	s = append(s, "&corepb.CPEdgeMetadata{")
+	s = append(s, "Topic: "+fmt.Sprintf("%#v", this.Topic)+",\n")
+	if this.DeviceID != nil {
+		s = append(s, "DeviceID: "+fmt.Sprintf("%#v", this.DeviceID)+",\n")
+	}
+	if this.RecvTimestamp != nil {
+		s = append(s, "RecvTimestamp: "+fmt.Sprintf("%#v", this.RecvTimestamp)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *CPEdgeMessage) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&corepb.CPEdgeMessage{")
+	if this.Metadata != nil {
+		s = append(s, "Metadata: "+fmt.Sprintf("%#v", this.Metadata)+",\n")
+	}
+	if this.Msg != nil {
+		s = append(s, "Msg: "+fmt.Sprintf("%#v", this.Msg)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
 }
 func valueToGoStringCpEdge(v interface{}, typ string) string {
 	rv := reflect.ValueOf(v)
@@ -464,7 +671,7 @@ func (m *EdgeCPMetadata) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			i = encodeVarintCpEdge(dAtA, i, uint64(size))
 		}
 		i--
-		dAtA[i] = 0x12
+		dAtA[i] = 0x1a
 	}
 	if m.DeviceID != nil {
 		{
@@ -476,12 +683,17 @@ func (m *EdgeCPMetadata) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			i = encodeVarintCpEdge(dAtA, i, uint64(size))
 		}
 		i--
-		dAtA[i] = 0xa
+		dAtA[i] = 0x12
+	}
+	if m.Topic != 0 {
+		i = encodeVarintCpEdge(dAtA, i, uint64(m.Topic))
+		i--
+		dAtA[i] = 0x8
 	}
 	return len(dAtA) - i, nil
 }
 
-func (m *EdgeCPStatus) Marshal() (dAtA []byte, err error) {
+func (m *EdgeCPMessage) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -491,24 +703,29 @@ func (m *EdgeCPStatus) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *EdgeCPStatus) MarshalTo(dAtA []byte) (int, error) {
+func (m *EdgeCPMessage) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *EdgeCPStatus) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *EdgeCPMessage) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.MsgOneof != nil {
+	if m.Msg != nil {
 		{
-			size := m.MsgOneof.Size()
-			i -= size
-			if _, err := m.MsgOneof.MarshalTo(dAtA[i:]); err != nil {
+			size, err := m.Msg.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
 				return 0, err
 			}
+			i -= size
+			i = encodeVarintCpEdge(dAtA, i, uint64(size))
 		}
+		i--
+		dAtA[i] = 0x3e
+		i--
+		dAtA[i] = 0xc2
 	}
 	if m.Metadata != nil {
 		{
@@ -525,16 +742,81 @@ func (m *EdgeCPStatus) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *EdgeCPStatus_Heartbeat) MarshalTo(dAtA []byte) (int, error) {
+func (m *CPEdgeMetadata) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CPEdgeMetadata) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *EdgeCPStatus_Heartbeat) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *CPEdgeMetadata) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
-	if m.Heartbeat != nil {
+	_ = i
+	var l int
+	_ = l
+	if m.RecvTimestamp != nil {
 		{
-			size, err := m.Heartbeat.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.RecvTimestamp.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCpEdge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x1a
+	}
+	if m.DeviceID != nil {
+		{
+			size, err := m.DeviceID.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCpEdge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Topic != 0 {
+		i = encodeVarintCpEdge(dAtA, i, uint64(m.Topic))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *CPEdgeMessage) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CPEdgeMessage) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CPEdgeMessage) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Msg != nil {
+		{
+			size, err := m.Msg.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -546,8 +828,21 @@ func (m *EdgeCPStatus_Heartbeat) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 		i--
 		dAtA[i] = 0xc2
 	}
+	if m.Metadata != nil {
+		{
+			size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCpEdge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
 	return len(dAtA) - i, nil
 }
+
 func encodeVarintCpEdge(dAtA []byte, offset int, v uint64) int {
 	offset -= sovCpEdge(v)
 	base := offset
@@ -577,6 +872,9 @@ func (m *EdgeCPMetadata) Size() (n int) {
 	}
 	var l int
 	_ = l
+	if m.Topic != 0 {
+		n += 1 + sovCpEdge(uint64(m.Topic))
+	}
 	if m.DeviceID != nil {
 		l = m.DeviceID.Size()
 		n += 1 + l + sovCpEdge(uint64(l))
@@ -588,7 +886,7 @@ func (m *EdgeCPMetadata) Size() (n int) {
 	return n
 }
 
-func (m *EdgeCPStatus) Size() (n int) {
+func (m *EdgeCPMessage) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -598,20 +896,45 @@ func (m *EdgeCPStatus) Size() (n int) {
 		l = m.Metadata.Size()
 		n += 1 + l + sovCpEdge(uint64(l))
 	}
-	if m.MsgOneof != nil {
-		n += m.MsgOneof.Size()
+	if m.Msg != nil {
+		l = m.Msg.Size()
+		n += 2 + l + sovCpEdge(uint64(l))
 	}
 	return n
 }
 
-func (m *EdgeCPStatus_Heartbeat) Size() (n int) {
+func (m *CPEdgeMetadata) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Heartbeat != nil {
-		l = m.Heartbeat.Size()
+	if m.Topic != 0 {
+		n += 1 + sovCpEdge(uint64(m.Topic))
+	}
+	if m.DeviceID != nil {
+		l = m.DeviceID.Size()
+		n += 1 + l + sovCpEdge(uint64(l))
+	}
+	if m.RecvTimestamp != nil {
+		l = m.RecvTimestamp.Size()
+		n += 1 + l + sovCpEdge(uint64(l))
+	}
+	return n
+}
+
+func (m *CPEdgeMessage) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Metadata != nil {
+		l = m.Metadata.Size()
+		n += 1 + l + sovCpEdge(uint64(l))
+	}
+	if m.Msg != nil {
+		l = m.Msg.Size()
 		n += 2 + l + sovCpEdge(uint64(l))
 	}
 	return n
@@ -638,29 +961,43 @@ func (this *EdgeCPMetadata) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&EdgeCPMetadata{`,
+		`Topic:` + fmt.Sprintf("%v", this.Topic) + `,`,
 		`DeviceID:` + strings.Replace(fmt.Sprintf("%v", this.DeviceID), "UUID", "typespb.UUID", 1) + `,`,
 		`RecvTimestamp:` + strings.Replace(fmt.Sprintf("%v", this.RecvTimestamp), "Timestamp", "types.Timestamp", 1) + `,`,
 		`}`,
 	}, "")
 	return s
 }
-func (this *EdgeCPStatus) String() string {
+func (this *EdgeCPMessage) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&EdgeCPStatus{`,
+	s := strings.Join([]string{`&EdgeCPMessage{`,
 		`Metadata:` + strings.Replace(this.Metadata.String(), "EdgeCPMetadata", "EdgeCPMetadata", 1) + `,`,
-		`MsgOneof:` + fmt.Sprintf("%v", this.MsgOneof) + `,`,
+		`Msg:` + strings.Replace(fmt.Sprintf("%v", this.Msg), "Any", "types.Any", 1) + `,`,
 		`}`,
 	}, "")
 	return s
 }
-func (this *EdgeCPStatus_Heartbeat) String() string {
+func (this *CPEdgeMetadata) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&EdgeCPStatus_Heartbeat{`,
-		`Heartbeat:` + strings.Replace(fmt.Sprintf("%v", this.Heartbeat), "EdgeHeartbeat", "EdgeHeartbeat", 1) + `,`,
+	s := strings.Join([]string{`&CPEdgeMetadata{`,
+		`Topic:` + fmt.Sprintf("%v", this.Topic) + `,`,
+		`DeviceID:` + strings.Replace(fmt.Sprintf("%v", this.DeviceID), "UUID", "typespb.UUID", 1) + `,`,
+		`RecvTimestamp:` + strings.Replace(fmt.Sprintf("%v", this.RecvTimestamp), "Timestamp", "types.Timestamp", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *CPEdgeMessage) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&CPEdgeMessage{`,
+		`Metadata:` + strings.Replace(this.Metadata.String(), "CPEdgeMetadata", "CPEdgeMetadata", 1) + `,`,
+		`Msg:` + strings.Replace(fmt.Sprintf("%v", this.Msg), "Any", "types.Any", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -772,6 +1109,25 @@ func (m *EdgeCPMetadata) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Topic", wireType)
+			}
+			m.Topic = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Topic |= EdgeCPTopic(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field DeviceID", wireType)
 			}
@@ -807,7 +1163,7 @@ func (m *EdgeCPMetadata) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 2:
+		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field RecvTimestamp", wireType)
 			}
@@ -864,7 +1220,7 @@ func (m *EdgeCPMetadata) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *EdgeCPStatus) Unmarshal(dAtA []byte) error {
+func (m *EdgeCPMessage) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -887,10 +1243,10 @@ func (m *EdgeCPStatus) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: EdgeCPStatus: wiretype end group for non-group")
+			return fmt.Errorf("proto: EdgeCPMessage: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: EdgeCPStatus: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: EdgeCPMessage: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -931,7 +1287,7 @@ func (m *EdgeCPStatus) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 1000:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Heartbeat", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Msg", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -958,11 +1314,275 @@ func (m *EdgeCPStatus) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &EdgeHeartbeat{}
-			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if m.Msg == nil {
+				m.Msg = &types.Any{}
+			}
+			if err := m.Msg.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
-			m.MsgOneof = &EdgeCPStatus_Heartbeat{v}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCpEdge(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CPEdgeMetadata) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCpEdge
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CPEdgeMetadata: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CPEdgeMetadata: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Topic", wireType)
+			}
+			m.Topic = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Topic |= CPEdgeTopic(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DeviceID", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.DeviceID == nil {
+				m.DeviceID = &typespb.UUID{}
+			}
+			if err := m.DeviceID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RecvTimestamp", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.RecvTimestamp == nil {
+				m.RecvTimestamp = &types.Timestamp{}
+			}
+			if err := m.RecvTimestamp.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCpEdge(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CPEdgeMessage) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCpEdge
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CPEdgeMessage: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CPEdgeMessage: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Metadata", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Metadata == nil {
+				m.Metadata = &CPEdgeMetadata{}
+			}
+			if err := m.Metadata.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 1000:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Msg", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Msg == nil {
+				m.Msg = &types.Any{}
+			}
+			if err := m.Msg.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

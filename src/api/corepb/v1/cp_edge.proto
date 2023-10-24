@@ -23,6 +23,7 @@ option go_package = "gimletlabs.ai/gimlet/src/api/corepb/v1;corepb";
 
 import "third_party/github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "src/common/typespb/uuid.proto";
+import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 
 /**
@@ -31,6 +32,7 @@ import "google/protobuf/timestamp.proto";
 
 /****************************************************************************
  * Messages that are used to monitor health status, routing, etc.
+ * These should be sent on the .STATUS topic.
  *****************************************************************************/
 
 // EdgeHeartbeat is the message sent from the edge device to let the control plane know it's
@@ -45,20 +47,51 @@ message EdgeHeartbeat {
  * They are named EdgeCP[*] for messages originating from the edge.
  *****************************************************************************/
 
-// EdgeCPMetadata has basic routing information for shared bus.
-message EdgeCPMetadata {
-  // The device ID where the message is originating from.
-  gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
-  // The timestamp when the message was received.
-  google.protobuf.Timestamp recv_timestamp = 2;
+// EdgeCPTopic has the list of topics used between edge and CP.
+enum EdgeCPTopic {
+  EDGE_CP_TOPIC_UNKNOWN = 0;
+  EDGE_CP_TOPIC_STATUS = 1;
 }
 
-// EdgeCPStatus has status message and is on the .Status bus.
-message EdgeCPStatus {
+// CPEdgeTopic has the list of topics used between CP and edge.
+enum CPEdgeTopic {
+  CP_EDGE_TOPIC_UNKNOWN = 0;
+}
+
+// EdgeCPMetadata has basic routing information for shared bus.
+message EdgeCPMetadata {
+  // The topic of this message.
+  EdgeCPTopic topic = 1;
+  // The device ID where the message is originating from.
+  gml.types.UUID device_id = 2 [ (gogoproto.customname) = "DeviceID" ];
+  // The timestamp when the message was received.
+  google.protobuf.Timestamp recv_timestamp = 3;
+}
+
+// EdgeCPStatus has status message and is on the .Status topic.
+message EdgeCPMessage {
   // Associated metadata.
   EdgeCPMetadata metadata = 1;
 
-  oneof msg_oneof {
-    EdgeHeartbeat heartbeat = 1000;
-  }
+  // The actual message.
+  google.protobuf.Any msg = 1000;
+}
+
+// EdgeCPMetadata has basic routing information for shared bus.
+message CPEdgeMetadata {
+  // The topic of this message.
+  CPEdgeTopic topic = 1;
+  // The device ID where the message is going.
+  gml.types.UUID device_id = 2 [ (gogoproto.customname) = "DeviceID" ];
+  // The timestamp when the message was generated.
+  google.protobuf.Timestamp recv_timestamp = 3;
+}
+
+// EdgeCPStatus has status message and is on the .Status topic.
+message CPEdgeMessage {
+  // Associated metadata.
+  CPEdgeMetadata metadata = 1;
+
+  // The actual message.
+  google.protobuf.Any msg = 1000;
 }

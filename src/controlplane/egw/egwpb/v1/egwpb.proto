@@ -21,9 +21,20 @@ package gml.internal.controlplane.egw.v1;
 
 option go_package = "gimletlabs.ai/gimlet/src/controlplane/egw/egwpb/v1;egwpb";
 
-message BridgeRequest {}
+import "google/protobuf/any.proto";
+import "src/api/corepb/v1/cp_edge.proto";
 
-message BridgeResponse {}
+message BridgeRequest {
+  gml.internal.api.core.v1.EdgeCPTopic topic = 1;
+  // This is an incoming message to the controlplane.
+  google.protobuf.Any msg = 2;
+}
+
+message BridgeResponse {
+  gml.internal.api.core.v1.CPEdgeTopic topic = 1;
+  // This is the outgoing message to the controlplane.
+  google.protobuf.Any msg = 2;
+}
 
 service EGWService {
   // Bridge allows nats messages to be exchanged between edge devices and controlplane.
