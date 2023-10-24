@@ -20,9 +20,6 @@
 #include <iostream>
 #include <string>
 
-// TODO(oazizi): Remove this dependency and rely on nvbufsurface.h only.
-#include <NvBufSurface.h>
-
 #include <nvbufsurface.h>
 
 #include "src/common/base/base.h"
@@ -55,8 +52,8 @@ NvBufSurfaceWrapper::NvBufSurfaceWrapper(int fd, NvBufSurface* nvbuf_surf)
     : fd_(fd), nvbuf_surf_(nvbuf_surf) {}
 
 NvBufSurfaceWrapper::~NvBufSurfaceWrapper() {
-  if (fd_ != -1) {
-    NvBufSurf::NvDestroy(fd_);
+  if (nvbuf_surf_ != nullptr) {
+    NvBufSurfaceDestroy(nvbuf_surf_);
   }
 }
 
