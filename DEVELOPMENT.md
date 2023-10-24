@@ -87,7 +87,7 @@ to access the UI.
     export AUTH0_ISSUER_BASE_URL='gimlet-dev.us.auth0.com'
     ```
 
-1. From the `src/ui` directory, run:
+1. From the `src/ui` directory, run `pnpm dev`. Note that you might need to override the port using the `DEV_PORT` env var if using a shared machine. Auth0 is configured to allow ports in the range [8989-8999] (inclusive).
 
     ```sh
     pnpm dev
