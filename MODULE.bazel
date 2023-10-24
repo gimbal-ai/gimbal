@@ -38,6 +38,7 @@ bazel_dep(name = "googletest", version = "1.14.0", repo_name = "com_google_googl
 bazel_dep(name = "google_benchmark", version = "1.8.3", repo_name = "com_google_benchmark")
 bazel_dep(name = "re2", version = "2021-09-01")
 bazel_dep(name = "rules_apple", version = "3.0.0", repo_name = "build_bazel_rules_apple")
+
 # mediapipe uses rules_nodejs so we pull it in at the top level despite it being pulled in by aspect_rules_js already.
 bazel_dep(name = "rules_nodejs", version = "5.8.2")
 
@@ -58,6 +59,7 @@ use_repo(
     "com_github_bazelbuild_buildtools",
     "com_github_blang_semver_v4",
     "com_github_bmatcuk_doublestar",
+    "com_github_cenkalti_backoff_v4",
     "com_github_getsentry_sentry_go",
     "com_github_gofrs_uuid_v5",
     "com_github_gogo_protobuf",
@@ -67,13 +69,16 @@ use_repo(
     "com_github_gorilla_sessions",
     "com_github_graph_gophers_graphql_go",
     "com_github_grpc_ecosystem_go_grpc_middleware_v2",
-    "com_github_jackc_pgx_v5",
     "com_github_jackc_pgerrcode",
     "com_github_jackc_pgtype",
+    "com_github_jackc_pgx_v5",
     "com_github_jarcoal_httpmock",
     "com_github_jmoiron_sqlx",
     "com_github_lestrrat_go_jwx_v2",
+    "com_github_nats_io_nats_go",
+    "com_github_nats_io_nats_server_v2",
     "com_github_ory_dockertest_v3",
+    "com_github_phayes_freeport",
     "com_github_prometheus_client_golang",
     "com_github_puerkitobio_goquery",
     "com_github_segmentio_analytics_go_v3",
