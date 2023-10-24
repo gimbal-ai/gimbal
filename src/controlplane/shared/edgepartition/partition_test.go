@@ -21,7 +21,6 @@ import (
 	"fmt"
 	"testing"
 
-
 	"github.com/gofrs/uuid/v5"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
