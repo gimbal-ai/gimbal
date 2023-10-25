@@ -47,3 +47,11 @@ gml_cc_test(
         ":cc_library",
     ],
 )
+
+gml_cc_test(
+    name = "linux_file_wrapper_test",
+    srcs = ["linux_file_wrapper_test.cc"],
+    deps = [
+        ":cc_library",
+    ],
+)
