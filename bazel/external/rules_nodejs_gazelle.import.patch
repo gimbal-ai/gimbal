@@ -1,0 +1,34 @@
+diff --git a/gazelle/parse.go b/gazelle/parse.go
+index 6f0134f..1f59c83 100644
+--- a/gazelle/parse.go
++++ b/gazelle/parse.go
+@@ -64,7 +64,7 @@ const (
+ var jsImportPattern = compileJsImportPattern()
+ 
+ func compileJsImportPattern() *regexp.Regexp {
+-	stringLiteralPattern := `'(?:[^)\n]+|")*'|"(?:[^)\n]+|')*"`
++	stringLiteralPattern := `'(?:[^\n]+|")*'|"(?:[^\n]+|')*"`
+ 	importPattern := `^import\s(?:(?:.|\n)+?from )??(?P<import>` + stringLiteralPattern + `)`
+ 	requirePattern := `^\s*?(?:const .+ = )?require\((?P<require>` + stringLiteralPattern + `)\)`
+ 	exportPattern := `^export\s(?:(?:.|\n)+?from )??(?P<export>` + stringLiteralPattern + `)`
+diff --git a/gazelle/parse_test.go b/gazelle/parse_test.go
+index 5ce265c..2e40ecd 100644
+--- a/gazelle/parse_test.go
++++ b/gazelle/parse_test.go
+@@ -55,6 +55,16 @@ func TestParseJS(t *testing.T) {
+ 			js: `import {format} from 'date-fns'
+ import Puppy from '@/components/Puppy';`,
+ 			want: []string{"@/components/Puppy", "date-fns"},
++		}, {
++			desc: "import dynamic",
++			name: "dynamic.ts",
++			js:   `let lamdba = () => import('./b').do_something("something")`,
++			want: []string{"./b"},
++		}, {
++			desc: "import special chars",
++			name: "page.js",
++			js:   `import BlogPage from "@/app/(auth)/blog/[slug]/page";`,
++			want: []string{"@/app/(auth)/blog/[slug]/page"},
+ 		}, {
+ 			desc: "import depth",
+ 			name: "deep.sass",
