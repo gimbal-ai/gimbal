@@ -25,6 +25,7 @@ def _mediapipe_repos():
     # These repos are from mediapipe's WORKSPACE file.
     http_archive(
         name = "libyuv",
+        strip_prefix = "libyuv-2525698acba9bf9b701ba6b4d9584291a1f62257",
         sha256 = "2c8a4e90db48856c87fd5fe0e237009eff004a95ac84e4d86b0980f108acbdfb",
         urls = ["https://github.com/lemenkov/libyuv/archive/2525698acba9bf9b701ba6b4d9584291a1f62257.tar.gz"],
         build_file = "@com_github_google_mediapipe//third_party:libyuv.BUILD",
