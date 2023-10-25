@@ -23,7 +23,7 @@
 
 namespace gml {
 namespace gem {
-namespace devices {
+namespace calculators {
 namespace argus {
 
 class ArgusCamSourceCalculator : public mediapipe::CalculatorBase {
@@ -34,10 +34,10 @@ class ArgusCamSourceCalculator : public mediapipe::CalculatorBase {
   absl::Status Close(mediapipe::CalculatorContext* cc) override;
 
  private:
-  ArgusCam argus_cam_;
+  ::gml::gem::devices::argus::ArgusCam argus_cam_;
 };
 
 }  // namespace argus
-}  // namespace devices
+}  // namespace calculators
 }  // namespace gem
 }  // namespace gml

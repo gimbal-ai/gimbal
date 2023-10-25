@@ -15,7 +15,7 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#include "src/gem/devices/camera/argus/calculators/argus_cam_calculator.h"
+#include "src/gem/calculators/plugin/argus/argus_cam_calculator.h"
 
 #include "absl/status/status.h"
 
@@ -24,7 +24,10 @@
 
 namespace gml {
 namespace gem {
-namespace devices {
+namespace calculators {
+namespace argus {
+
+using ::gml::gem::devices::argus::NvBufSurfaceWrapper;
 
 absl::Status ArgusCamSourceCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   cc->Outputs().Index(0).Set<NvBufSurfaceWrapper>();
@@ -52,6 +55,7 @@ absl::Status ArgusCamSourceCalculator::Close(mediapipe::CalculatorContext* /* cc
 
 REGISTER_CALCULATOR(ArgusCamSourceCalculator);
 
-}  // namespace devices
+}  // namespace argus
+}  // namespace calculators
 }  // namespace gem
 }  // namespace gml
