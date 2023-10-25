@@ -17,6 +17,7 @@
 
 #include "src/gem/exec/core/tensor_pool.h"
 #include "src/common/testing/testing.h"
+#include "src/gem/exec/core/tensor.h"
 
 namespace gml {
 namespace gem {
@@ -76,6 +77,28 @@ TEST(TensorPool, ensure_reused) {
   // creating another tensor of a different size should call create again.
   ASSERT_OK_AND_ASSIGN(tensor, pool.GetTensor(20));
   ASSERT_EQ(2, gNumTensorsCreated - initial_tensors_created);
+}
+
+class ShapedTensor : public ReshapeableTensor {
+ public:
+  explicit ShapedTensor(size_t size) : size_(size) {}
+
+  static StatusOr<std::unique_ptr<ShapedTensor>> Create(size_t size) {
+    return std::make_unique<ShapedTensor>(size);
+  }
+
+  size_t size() { return size_; }
+
+ private:
+  size_t size_;
+};
+
+TEST(TensorPool, shaped_tensor) {
+  TensorPool<ShapedTensor> pool;
+  ASSERT_OK_AND_ASSIGN(auto tensor, pool.GetTensor(TensorShape({1, 2, 5}), DataType::FLOAT32));
+  EXPECT_EQ(TensorShape({1, 2, 5}), tensor->Shape());
+  EXPECT_EQ(10 * sizeof(float), tensor->size());
+  EXPECT_EQ(DataType::FLOAT32, tensor->DataType());
 }
 
 }  // namespace core

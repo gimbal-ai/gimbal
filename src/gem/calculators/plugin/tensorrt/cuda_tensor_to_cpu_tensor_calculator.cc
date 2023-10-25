@@ -56,6 +56,9 @@ Status CUDATensorToCPUTensorCalculator::ProcessImpl(mediapipe::CalculatorContext
 
     GML_ASSIGN_OR_RETURN(auto cpu_tensor, exec_ctx->TensorPool()->GetTensor(cuda_tensor->size()));
 
+    GML_RETURN_IF_ERROR(cpu_tensor->Reshape(cuda_tensor->Shape()));
+    cpu_tensor->SetDataType(cuda_tensor->DataType());
+
     if (cudaMemcpy(cpu_tensor->data(), static_cast<uint8_t*>(cuda_tensor->data()),
                    cuda_tensor->size(), cudaMemcpyDeviceToHost) != cudaSuccess) {
       return Status(types::CODE_INTERNAL, "Failed to memcpy from cuda device to host");

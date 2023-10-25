@@ -21,6 +21,8 @@
 #include <cuda_runtime_api.h>
 
 #include "src/common/base/base.h"
+#include "src/gem/exec/core/data_type.h"
+#include "src/gem/exec/core/tensor.h"
 
 namespace gml {
 namespace gem {
@@ -32,7 +34,7 @@ namespace tensorrt {
  *
  * For now, there is no shape or data type information associated with the buffer.
  */
-class CUDATensor {
+class CUDATensor : public core::ReshapeableTensor {
  public:
   static StatusOr<std::unique_ptr<CUDATensor>> Create(size_t size) {
     void* cuda_buffer;

@@ -24,6 +24,9 @@
 #include <absl/base/internal/spinlock.h>
 
 #include "src/common/base/base.h"
+#include "src/gem/exec/core/data_type.h"
+#include "src/gem/exec/core/tensor.h"
+#include "src/gem/exec/core/tensor_traits.h"
 
 namespace gml {
 namespace gem {
@@ -64,6 +67,7 @@ class TensorPool : public gml::NotCopyable {
 
   ~TensorPool() { Clear(); }
 
+  template <typename Q = TTensor, typename = void>
   StatusOr<PoolManagedPtr> GetTensor(size_t tensor_size) {
     absl::base_internal::SpinLockHolder lock(&lock_);
     TTensor* ptr = nullptr;
@@ -77,6 +81,22 @@ class TensorPool : public gml::NotCopyable {
       pool_.emplace(std::move(tensor));
     }
     return PoolManagedPtr(ptr, deleter_);
+  }
+
+  template <typename Q = TTensor,
+            std::enable_if_t<TensorTraits<Q>::HasReshape() && TensorTraits<Q>::HasSetDataType(),
+                             void>* = nullptr>
+  StatusOr<PoolManagedPtr> GetTensor(const TensorShape& shape, DataType type) {
+    size_t size = DataTypeByteSize(type);
+    for (auto dim : shape) {
+      DCHECK(dim > 0);
+      size *= dim;
+    }
+
+    GML_ASSIGN_OR_RETURN(auto tensor, GetTensor(size));
+    GML_RETURN_IF_ERROR(tensor->Reshape(shape));
+    tensor->SetDataType(type);
+    return tensor;
   }
 
   void Release(TTensor* tensor) {

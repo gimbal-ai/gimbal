@@ -30,6 +30,8 @@ namespace gem {
 namespace calculators {
 namespace cpu_tensor {
 
+using ::gml::gem::exec::core::DataType;
+using ::gml::gem::exec::core::TensorShape;
 using ::gml::gem::exec::cpu_tensor::CPUTensorPtr;
 
 constexpr std::string_view kImageFrameTag = "IMAGE_FRAME";
@@ -52,8 +54,10 @@ Status ImageShapeCPUTensorCalculator::ProcessImpl(mediapipe::CalculatorContext* 
   const auto& image_frame = cc->Inputs().Tag(kImageFrameTag).Get<mediapipe::ImageFrame>();
 
   GML_ASSIGN_OR_RETURN(auto cpu_tensor, exec_ctx->TensorPool()->GetTensor(sizeof(float) * 2));
+  GML_RETURN_IF_ERROR(cpu_tensor->Reshape(TensorShape{1, 2}));
+  cpu_tensor->SetDataType(DataType::FLOAT32);
 
-  float* shape = reinterpret_cast<float*>(cpu_tensor->data());
+  float* shape = cpu_tensor->TypedData<DataType::FLOAT32>();
 
   shape[0] = static_cast<float>(image_frame.Height());
   shape[1] = static_cast<float>(image_frame.Width());

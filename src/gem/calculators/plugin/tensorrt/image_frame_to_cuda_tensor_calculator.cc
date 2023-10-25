@@ -33,6 +33,8 @@ namespace gem {
 namespace calculators {
 namespace tensorrt {
 
+using ::gml::gem::exec::core::DataType;
+using ::gml::gem::exec::core::TensorShape;
 using ::gml::gem::exec::tensorrt::CUDATensorPtr;
 
 static constexpr char kImageFrameTag[] = "IMAGE_FRAME";
@@ -77,6 +79,10 @@ Status ImageFrameToCUDATensorCalculator::ProcessImpl(mediapipe::CalculatorContex
   size_t chan_size = float_img.rows * float_img.cols * float_img.elemSize1();
   size_t bytes = chan_size * float_img.channels();
   GML_ASSIGN_OR_RETURN(auto tensor, exec_ctx->TensorPool()->GetTensor(bytes));
+
+  GML_RETURN_IF_ERROR(
+      tensor->Reshape(TensorShape{1, float_img.channels(), float_img.rows, float_img.cols}));
+  tensor->SetDataType(DataType::FLOAT32);
 
   // TODO(james): This is inefficient. We should convert directly to CUDA NHWC and then use the GPU
   // to convert to NCHW.

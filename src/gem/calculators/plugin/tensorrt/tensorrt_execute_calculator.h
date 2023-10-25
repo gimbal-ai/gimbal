@@ -27,6 +27,7 @@ namespace gem {
 namespace calculators {
 namespace tensorrt {
 
+using ::gml::gem::exec::core::DataType;
 using ::gml::gem::exec::tensorrt::CUDATensorPool;
 using ::gml::gem::exec::tensorrt::CUDATensorPtr;
 
@@ -47,11 +48,12 @@ class CUDATensorPoolOutputAllocator : public nvinfer1::IOutputAllocator {
 
   StatusOr<CUDATensorPtr> AcquireOutput(const std::string& name);
   const std::map<std::string, CUDATensorPtr>& Outputs() { return outputs_; }
+  void SetDataType(const std::string& name, DataType);
 
  private:
   CUDATensorPool* pool_;
   std::map<std::string, CUDATensorPtr> outputs_;
-  std::map<std::string, nvinfer1::Dims> shapes_;
+  std::map<std::string, DataType> output_data_types_;
 };
 
 }  // namespace internal

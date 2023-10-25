@@ -21,6 +21,8 @@
 
 #include "src/common/base/base.h"
 #include "src/gem/exec/core/context.h"
+#include "src/gem/exec/core/data_type.h"
+#include "src/gem/exec/core/tensor.h"
 #include "src/gem/exec/core/tensor_pool.h"
 
 namespace gml {
@@ -30,7 +32,7 @@ namespace cpu_tensor {
 
 // TODO(james): We should look into better options for our CPUTensor (eg. Eigen), but this
 // is a simple way forward for now.
-class CPUTensor {
+class CPUTensor : public core::ReshapeableTensor {
  public:
   static StatusOr<std::unique_ptr<CPUTensor>> Create(size_t size) {
     return std::make_unique<CPUTensor>(size);
@@ -39,6 +41,17 @@ class CPUTensor {
   uint8_t* data() { return data_.data(); }
   const uint8_t* data() const { return data_.data(); }
   size_t size() const { return data_.size(); }
+
+  template <core::DataType TDataType>
+  typename core::DataTypeTraits<TDataType>::value_type* TypedData() {
+    return reinterpret_cast<typename core::DataTypeTraits<TDataType>::value_type*>(data_.data());
+  }
+
+  template <core::DataType TDataType>
+  const typename core::DataTypeTraits<TDataType>::value_type* TypedData() const {
+    return reinterpret_cast<const typename core::DataTypeTraits<TDataType>::value_type*>(
+        data_.data());
+  }
 
  private:
   std::vector<uint8_t> data_;

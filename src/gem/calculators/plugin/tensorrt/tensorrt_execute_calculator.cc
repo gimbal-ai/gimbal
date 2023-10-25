@@ -28,12 +28,30 @@ namespace gem {
 namespace calculators {
 namespace tensorrt {
 
+using ::gml::gem::exec::core::DataType;
+using ::gml::gem::exec::core::TensorShape;
 using ::gml::gem::exec::tensorrt::CUDATensorPtr;
 using ::gml::gem::exec::tensorrt::ExecutionContext;
 
 namespace internal {
-void CUDATensorPoolOutputAllocator::notifyShape(const char*, const nvinfer1::Dims&) noexcept {
-  // TODO(james): set shape of cuda tensors.
+void CUDATensorPoolOutputAllocator::notifyShape(const char* tensor_name,
+                                                const nvinfer1::Dims& dims) noexcept {
+  auto tensor = outputs_[tensor_name];
+  if (tensor == nullptr) {
+    LOG(ERROR) << absl::Substitute(
+        "TensorRT notified shape for tensor '$0' that is not in output allocator.", tensor_name);
+    return;
+  }
+
+  TensorShape shape;
+  for (int i = 0; i < dims.nbDims; ++i) {
+    shape.push_back(dims.d[i]);
+  }
+  auto s = tensor->Reshape(shape);
+  if (!s.ok()) {
+    LOG(ERROR) << absl::Substitute("Failed to reshape CUDATensor '$0'", tensor_name);
+    return;
+  }
 }
 
 void* CUDATensorPoolOutputAllocator::reallocateOutput(const char* tensor_name, void* current_memory,
@@ -49,6 +67,7 @@ void* CUDATensorPoolOutputAllocator::reallocateOutput(const char* tensor_name, v
 
   // TODO(james): should figure out error checking here instead of using ConsumeValueOrDie.
   auto tensor = pool_->GetTensor(size).ConsumeValueOrDie();
+  tensor->SetDataType(output_data_types_[tensor_name]);
   outputs_.emplace(tensor_name, tensor);
   return tensor->data();
 }
@@ -63,7 +82,25 @@ StatusOr<CUDATensorPtr> CUDATensorPoolOutputAllocator::AcquireOutput(const std::
   return node_handle.mapped();
 }
 
+void CUDATensorPoolOutputAllocator::SetDataType(const std::string& name, DataType data_type) {
+  output_data_types_.emplace(name, data_type);
+}
+
 }  // namespace internal
+
+namespace {
+DataType TensorRTDataTypeToGML(nvinfer1::DataType dt) {
+  switch (dt) {
+    case nvinfer1::DataType::kFLOAT:
+      return DataType::FLOAT32;
+    case nvinfer1::DataType::kINT32:
+      return DataType::INT32;
+    default:
+      return DataType::UNKNOWN;
+  }
+}
+
+}  // namespace
 
 absl::Status TensorRTExecuteCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   GML_ABSL_RETURN_IF_ERROR(ExecutionContextBaseCalculator::UpdateContract(cc));
@@ -86,6 +123,8 @@ Status TensorRTExecuteCalculator::OpenImpl(mediapipe::CalculatorContext*,
     auto name = exec_ctx->CUDAEngine()->getIOTensorName(i);
     if (exec_ctx->CUDAEngine()->getTensorIOMode(name) == nvinfer1::TensorIOMode::kOUTPUT) {
       output_names_.emplace_back(name);
+      auto trt_data_type = exec_ctx->CUDAEngine()->getTensorDataType(name);
+      output_allocator_->SetDataType(name, TensorRTDataTypeToGML(trt_data_type));
       exec_ctx->NVExecutionContext()->setOutputAllocator(name, output_allocator_.get());
     } else {
       input_names_.emplace_back(name);
