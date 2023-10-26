@@ -13,7 +13,7 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("//bazel:gml_build_system.bzl", "gml_cc_library")
+load("//bazel:gml_build_system.bzl", "gml_cc_library", "gml_cc_test")
 
 package(default_visibility = [
     "//src/experimental:__subpackages__",
@@ -23,10 +23,25 @@ package(default_visibility = [
 gml_cc_library(
     name = "cc_library",
     srcs = [
+        "detections_to_mediapipe_calculator.cc",
+        "detections_to_mediapipe_calculator.h",
         "execution_context_calculator.h",
     ],
     deps = [
         "//src/gem/exec/core:cc_library",
+        "//src/shared/modelout/v1:modelout_cc_library",
         "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
+        "@com_github_google_mediapipe//mediapipe/framework/formats:detection_cc_proto",
+    ],
+)
+
+gml_cc_test(
+    name = "detections_to_mediapipe_calculator_test",
+    srcs = [
+        "detections_to_mediapipe_calculator_test.cc",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
     ],
 )
