@@ -19,12 +19,15 @@ load("//bazel:lib.bzl", "default_arg")
 load("//bazel:toolchain_transitions.bzl", "oci_image_arm64", "oci_image_x86_64")
 
 def _gml_oci_image(name, multiarch = False, **kwargs):
+    testonly = kwargs.pop("testonly", False)
+
     if "base" not in kwargs:
         default_arg(kwargs, "os", "linux")
         default_arg(kwargs, "architecture", "amd64")
 
     oci_image(
         name = name,
+        testonly = testonly,
         **kwargs
     )
 
@@ -34,6 +37,7 @@ def _gml_oci_image(name, multiarch = False, **kwargs):
         # Workaround to match how Skaffold tags the image after building it.
         repo_tags = ["bazel/" + native.package_name() + ":" + name],
         tags = ["manual"],
+        testonly = testonly,
     )
 
     if not multiarch:
@@ -73,6 +77,8 @@ def _gml_oci_image(name, multiarch = False, **kwargs):
     )
 
 def _gml_binary_image(name, binary, multiarch = False, **kwargs):
+    testonly = kwargs.pop("testonly", False)
+
     default_arg(kwargs, "base", "//:cc_base_image")
     default_arg(kwargs, "tars", [])
     default_arg(kwargs, "entrypoint", ["/app/" + Label(binary).name])
@@ -81,9 +87,10 @@ def _gml_binary_image(name, binary, multiarch = False, **kwargs):
         name = name + "_binary_tar",
         srcs = [binary],
         package_dir = "/app",
+        testonly = testonly,
     )
     kwargs["tars"] = kwargs["tars"] + [name + "_binary_tar"]
-    _gml_oci_image(name, multiarch = multiarch, **kwargs)
+    _gml_oci_image(name, multiarch = multiarch, testonly = testonly, **kwargs)
 
 def _host_cuda_ld_library_path(arch):
     paths = [
@@ -97,7 +104,7 @@ def _host_cuda_ld_library_path(arch):
 
     return ":".join(paths).format(arch = arch)
 
-def _gml_host_cuda_binary_image(name, binary, **kwargs):
+def _gml_host_cuda_binary_image(name, binary, testonly = 0, **kwargs):
     native.genrule(
         name = name + "_env_gen",
         outs = [name + ".env"],
@@ -108,7 +115,7 @@ def _gml_host_cuda_binary_image(name, binary, **kwargs):
     )
 
     default_arg(kwargs, "env", ":" + name + "_env_gen")
-    _gml_binary_image(name, binary = binary, **kwargs)
+    _gml_binary_image(name, binary = binary, testonly = testonly, **kwargs)
 
 gml_oci_image = _gml_oci_image
 gml_binary_image = _gml_binary_image
