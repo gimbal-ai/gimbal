@@ -14,6 +14,7 @@
 # SPDX-License-Identifier: Proprietary
 
 load("//bazel:gml_build_system.bzl", "gml_cc_binary", "gml_cc_library")
+load("//bazel:images.bzl", "gml_host_cuda_binary_image")
 
 package(default_visibility = [
     "//src/experimental:__subpackages__",
@@ -37,15 +38,19 @@ gml_cc_library(
     ],
 )
 
-# This binary currently can't be built because our arm64 sysroot is incompatible with the Jetson sysroot.
-# Hence, it is marked as a manual build.
 gml_cc_binary(
     name = "argus_cam_binary",
     srcs = ["argus_cam_binary.cc"],
     linkopts = ["-lX11"],
-    tags = ["manual"],
     deps = [
         ":cc_library",
-        "@com_nvidia_jetson_multimedia_api//:app_framework_api",
+        "@com_github_opencv_opencv//:opencv",
     ],
+)
+
+gml_host_cuda_binary_image(
+    name = "argus_cam_binary_image",
+    base = "//:cc_base_debug_image",
+    binary = ":argus_cam_binary",
+    multiarch = False,
 )
