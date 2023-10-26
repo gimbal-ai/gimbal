@@ -19,6 +19,7 @@
 
 #include "src/gem/calculators/core/execution_context_calculator.h"
 #include "src/gem/calculators/plugin/tensorrt/base.h"
+#include "src/gem/calculators/plugin/tensorrt/optionspb/tensorrt_execute_calculator_options.pb.h"
 #include "src/gem/exec/core/context.h"
 #include "src/gem/exec/plugin/tensorrt/cuda_tensor_pool.h"
 
@@ -77,8 +78,7 @@ class TensorRTExecuteCalculator : public ExecutionContextBaseCalculator {
 
  private:
   std::unique_ptr<internal::CUDATensorPoolOutputAllocator> output_allocator_;
-  std::vector<std::string> input_names_;
-  std::vector<std::string> output_names_;
+  optionspb::TensorRTExecuteCalculatorOptions options_;
 };
 
 }  // namespace tensorrt

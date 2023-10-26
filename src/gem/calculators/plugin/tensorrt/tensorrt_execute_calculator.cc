@@ -114,20 +114,19 @@ absl::Status TensorRTExecuteCalculator::GetContract(mediapipe::CalculatorContrac
   return absl::OkStatus();
 }
 
-Status TensorRTExecuteCalculator::OpenImpl(mediapipe::CalculatorContext*,
+Status TensorRTExecuteCalculator::OpenImpl(mediapipe::CalculatorContext* cc,
                                            ExecutionContext* exec_ctx) {
+  options_ = cc->Options<optionspb::TensorRTExecuteCalculatorOptions>();
+
   output_allocator_ =
       std::make_unique<internal::CUDATensorPoolOutputAllocator>(exec_ctx->TensorPool());
 
   for (int i = 0; i < exec_ctx->CUDAEngine()->getNbIOTensors(); ++i) {
     auto name = exec_ctx->CUDAEngine()->getIOTensorName(i);
     if (exec_ctx->CUDAEngine()->getTensorIOMode(name) == nvinfer1::TensorIOMode::kOUTPUT) {
-      output_names_.emplace_back(name);
       auto trt_data_type = exec_ctx->CUDAEngine()->getTensorDataType(name);
       output_allocator_->SetDataType(name, TensorRTDataTypeToGML(trt_data_type));
       exec_ctx->NVExecutionContext()->setOutputAllocator(name, output_allocator_.get());
-    } else {
-      input_names_.emplace_back(name);
     }
   }
   return Status::OK();
@@ -135,7 +134,7 @@ Status TensorRTExecuteCalculator::OpenImpl(mediapipe::CalculatorContext*,
 
 Status TensorRTExecuteCalculator::ProcessImpl(mediapipe::CalculatorContext* cc,
                                               ExecutionContext* exec_ctx) {
-  for (const auto& [i, name] : Enumerate(input_names_)) {
+  for (const auto& [i, name] : Enumerate(options_.input_onnx_name())) {
     const auto& packet = cc->Inputs().Index(i).Value();
     if (packet.IsEmpty()) {
       // We require all inputs to exist.
@@ -157,7 +156,7 @@ Status TensorRTExecuteCalculator::ProcessImpl(mediapipe::CalculatorContext* cc,
     return error::Internal("Failed to synchronize cuda stream");
   }
 
-  for (const auto& [i, name] : Enumerate(output_names_)) {
+  for (const auto& [i, name] : Enumerate(options_.output_onnx_name())) {
     GML_ASSIGN_OR_RETURN(auto tensor, output_allocator_->AcquireOutput(name));
     auto packet = mediapipe::MakePacket<CUDATensorPtr>(tensor).At(cc->InputTimestamp());
     cc->Outputs().Index(i).AddPacket(std::move(packet));
