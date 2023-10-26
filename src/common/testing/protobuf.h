@@ -129,6 +129,10 @@ inline ::testing::PolymorphicMatcher<ProtoMatcher> WithDifferencer(
       ProtoMatcher(differencer, matcher.impl().expected_text_pb_));
 }
 
+MATCHER_P(EqProtoMsg, msg, "") {
+  return google::protobuf::util::MessageDifferencer::Equals(arg, msg);
+}
+
 }  // namespace proto
 }  // namespace testing
 }  // namespace gml

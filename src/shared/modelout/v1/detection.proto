@@ -32,3 +32,12 @@ message Detection {
 
   NormalizedCenterRect bounding_box = 2;
 }
+
+// ImageDetections stores a list of all detections for a particular image. The image size is also
+// stored in order to ensure processing can maintain the aspect ratio.
+message ImageDetections {
+  repeated Detection detection = 1;
+
+  int32 image_width = 2;
+  int32 image_height = 3;
+}

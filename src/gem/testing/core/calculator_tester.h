@@ -111,6 +111,20 @@ class CalculatorTester : public mediapipe::CalculatorRunner {
     return *this;
   }
 
+  template <typename TData>
+  TData Result(std::string tag, size_t index) {
+    auto item_id = output_tag_map_->GetId(tag, index);
+    auto& packet_idx = packet_index_per_output_[item_id];
+
+    const auto& packets = Outputs().Get(tag, index).packets;
+    EXPECT_LT(packet_idx, packets.size());
+    const auto& packet = packets.at(packet_idx);
+
+    packet_idx++;
+
+    return packet.template Get<TData>();
+  }
+
  private:
   std::shared_ptr<mediapipe::tool::TagMap> output_tag_map_;
   std::map<mediapipe::CollectionItemId, int> packet_index_per_output_;

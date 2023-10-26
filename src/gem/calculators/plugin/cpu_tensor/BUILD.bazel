@@ -24,13 +24,17 @@ gml_cc_library(
     name = "cc_library",
     srcs = [
         "base.h",
+        "bounding_box_tensors_to_detections_calculator.cc",
+        "bounding_box_tensors_to_detections_calculator.h",
         "image_shape_cpu_tensor_calculator.cc",
         "image_shape_cpu_tensor_calculator.h",
     ],
     deps = [
         "//src/gem/calculators/core:cc_library",
+        "//src/gem/calculators/plugin/cpu_tensor/optionspb:optionspb_cc_library",
         "//src/gem/exec/core:cc_library",
         "//src/gem/exec/plugin/cpu_tensor:cc_library",
+        "//src/shared/modelout/v1:modelout_cc_library",
         "@com_github_google_mediapipe//mediapipe/framework/formats:image_frame",
         "@com_github_google_mediapipe//mediapipe/framework/formats:image_frame_opencv",
         "@com_github_opencv_opencv//:opencv",
@@ -41,6 +45,18 @@ gml_cc_test(
     name = "image_shape_cpu_tensor_calculator_test",
     srcs = [
         "image_shape_cpu_tensor_calculator_test.cc",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+        "//src/gem/testing/plugin/cpu_tensor:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "bounding_box_tensors_to_detections_calculator_test",
+    srcs = [
+        "bounding_box_tensors_to_detections_calculator_test.cc",
     ],
     deps = [
         ":cc_library",
