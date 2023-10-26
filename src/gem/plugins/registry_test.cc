@@ -73,7 +73,7 @@ TEST(Registry, simple_register_exec_ctx) {
 
 class SimpleModelBuilder : public ModelBuilder {
  public:
-  StatusOr<std::unique_ptr<Model>> Build(const specpb::ModelSpec&) {
+  StatusOr<std::unique_ptr<Model>> Build(storage::BlobStore*, const specpb::ModelSpec&) {
     return std::unique_ptr<Model>(new SimpleModel(15));
   }
 };
@@ -84,7 +84,7 @@ TEST(Registry, simple_register_model) {
   plugin_registry.RegisterModelBuilderOrDie<SimpleModelBuilder>("simple");
 
   specpb::ModelSpec spec;
-  auto model_or_s = plugin_registry.BuildModel("simple", spec);
+  auto model_or_s = plugin_registry.BuildModel("simple", nullptr, spec);
   ASSERT_OK(model_or_s);
   auto model = static_cast<SimpleModel*>(model_or_s.ValueOrDie().get());
   EXPECT_EQ(15, model->i());

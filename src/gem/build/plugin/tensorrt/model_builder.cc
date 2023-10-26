@@ -33,7 +33,8 @@ namespace tensorrt {
 using ::gml::gem::exec::tensorrt::Model;
 using ::gml::gem::exec::tensorrt::TensorRTLogger;
 
-StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(const specpb::ModelSpec& spec) {
+StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobStore* store,
+                                                                 const specpb::ModelSpec& spec) {
   ElapsedTimer timer;
   timer.Start();
   TensorRTLogger logger;
@@ -45,8 +46,15 @@ StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(const specpb::M
 
   auto parser =
       std::unique_ptr<nvonnxparser::IParser>(nvonnxparser::createParser(*network, logger));
-  parser->parseFromFile(spec.onnx_file_path().c_str(),
-                        static_cast<int32_t>(nvinfer1::ILogger::Severity::kWARNING));
+
+  {
+    GML_ASSIGN_OR_RETURN(auto onnx_blob, store->MapReadOnly(spec.onnx_blob_key()));
+    if (onnx_blob == nullptr) {
+      return error::InvalidArgument("ONNX model not found in BlobStore with key $0",
+                                    spec.onnx_blob_key());
+    }
+    parser->parse(onnx_blob->Data<char>(), onnx_blob->SizeForType<char>());
+  }
   std::vector<std::string> errors;
   for (int32_t i = 0; i < parser->getNbErrors(); ++i) {
     errors.emplace_back(parser->getError(i)->desc());

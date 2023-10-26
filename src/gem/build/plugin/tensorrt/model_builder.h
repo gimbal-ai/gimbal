@@ -21,6 +21,7 @@
 #include "src/gem/build/core/model_builder.h"
 #include "src/gem/exec/core/model.h"
 #include "src/gem/specpb/model.pb.h"
+#include "src/gem/storage/blob_store.h"
 
 namespace gml {
 namespace gem {
@@ -29,7 +30,8 @@ namespace tensorrt {
 
 class ModelBuilder : public core::ModelBuilder {
  public:
-  StatusOr<std::unique_ptr<exec::core::Model>> Build(const specpb::ModelSpec& spec) override;
+  StatusOr<std::unique_ptr<exec::core::Model>> Build(storage::BlobStore* store,
+                                                     const specpb::ModelSpec& spec) override;
 };
 
 }  // namespace tensorrt

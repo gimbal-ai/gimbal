@@ -32,5 +32,6 @@ gml_cc_library(
         "//src/common/perf:cc_library",
         "//src/gem/exec/plugin/tensorrt:cc_library",
         "//src/gem/plugins:cc_library",
+        "//src/gem/storage:cc_library",
     ],
 )

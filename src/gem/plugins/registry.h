@@ -25,6 +25,7 @@
 #include "src/gem/exec/core/context.h"
 #include "src/gem/exec/core/model.h"
 #include "src/gem/specpb/model.pb.h"
+#include "src/gem/storage/blob_store.h"
 
 namespace gml {
 namespace gem {
@@ -80,15 +81,17 @@ class Registry {
   }
 
   StatusOr<std::unique_ptr<exec::core::Model>> BuildModel(std::string_view name,
+                                                          storage::BlobStore* store,
                                                           const specpb::ModelSpec& spec) {
-    return model_builders_.Build(name, spec);
+    return model_builders_.Build(name, store, spec);
   }
 
  private:
   BuilderRegistry<build::core::ExecutionContextBuilder, exec::core::ExecutionContext,
                   exec::core::Model*>
       exec_ctx_builders_;
-  BuilderRegistry<build::core::ModelBuilder, exec::core::Model, const specpb::ModelSpec&>
+  BuilderRegistry<build::core::ModelBuilder, exec::core::Model, storage::BlobStore*,
+                  const specpb::ModelSpec&>
       model_builders_;
 };
 

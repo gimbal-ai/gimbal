@@ -29,5 +29,6 @@ gml_cc_library(
     deps = [
         "//src/gem/exec/core:cc_library",
         "//src/gem/specpb:specpb_cc_library",
+        "//src/gem/storage:cc_library",
     ],
 )

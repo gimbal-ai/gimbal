@@ -20,6 +20,7 @@
 #include "src/common/base/base.h"
 #include "src/gem/exec/core/model.h"
 #include "src/gem/specpb/model.pb.h"
+#include "src/gem/storage/blob_store.h"
 
 namespace gml {
 namespace gem {
@@ -34,7 +35,8 @@ using ::gml::gem::exec::core::Model;
 class ModelBuilder {
  public:
   virtual ~ModelBuilder() {}
-  virtual StatusOr<std::unique_ptr<Model>> Build(const specpb::ModelSpec& spec) = 0;
+  virtual StatusOr<std::unique_ptr<Model>> Build(storage::BlobStore* store,
+                                                 const specpb::ModelSpec& spec) = 0;
 };
 
 }  // namespace core
