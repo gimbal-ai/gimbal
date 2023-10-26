@@ -97,6 +97,73 @@ func (m *FleetInfo) GetTags() []string {
 	return nil
 }
 
+type DeviceInfo struct {
+	ID       *typespb.UUID `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" db:"id"`
+	Serial   string        `protobuf:"bytes,2,opt,name=serial,proto3" json:"serial,omitempty"`
+	Hostname string        `protobuf:"bytes,3,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	FleetID  *typespb.UUID `protobuf:"bytes,4,opt,name=fleet_id,json=fleetId,proto3" json:"fleet_id,omitempty" db:"fleet_id"`
+}
+
+func (m *DeviceInfo) Reset()      { *m = DeviceInfo{} }
+func (*DeviceInfo) ProtoMessage() {}
+func (*DeviceInfo) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e8daa588779d869f, []int{1}
+}
+func (m *DeviceInfo) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *DeviceInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_DeviceInfo.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *DeviceInfo) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeviceInfo.Merge(m, src)
+}
+func (m *DeviceInfo) XXX_Size() int {
+	return m.Size()
+}
+func (m *DeviceInfo) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeviceInfo.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeviceInfo proto.InternalMessageInfo
+
+func (m *DeviceInfo) GetID() *typespb.UUID {
+	if m != nil {
+		return m.ID
+	}
+	return nil
+}
+
+func (m *DeviceInfo) GetSerial() string {
+	if m != nil {
+		return m.Serial
+	}
+	return ""
+}
+
+func (m *DeviceInfo) GetHostname() string {
+	if m != nil {
+		return m.Hostname
+	}
+	return ""
+}
+
+func (m *DeviceInfo) GetFleetID() *typespb.UUID {
+	if m != nil {
+		return m.FleetID
+	}
+	return nil
+}
+
 type CreateFleetRequest struct {
 	Fleet *FleetInfo `protobuf:"bytes,1,opt,name=fleet,proto3" json:"fleet,omitempty"`
 }
@@ -104,7 +171,7 @@ type CreateFleetRequest struct {
 func (m *CreateFleetRequest) Reset()      { *m = CreateFleetRequest{} }
 func (*CreateFleetRequest) ProtoMessage() {}
 func (*CreateFleetRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{1}
+	return fileDescriptor_e8daa588779d869f, []int{2}
 }
 func (m *CreateFleetRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -147,7 +214,7 @@ type CreateFleetResponse struct {
 func (m *CreateFleetResponse) Reset()      { *m = CreateFleetResponse{} }
 func (*CreateFleetResponse) ProtoMessage() {}
 func (*CreateFleetResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{2}
+	return fileDescriptor_e8daa588779d869f, []int{3}
 }
 func (m *CreateFleetResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -191,7 +258,7 @@ type RegisterRequest struct {
 func (m *RegisterRequest) Reset()      { *m = RegisterRequest{} }
 func (*RegisterRequest) ProtoMessage() {}
 func (*RegisterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{3}
+	return fileDescriptor_e8daa588779d869f, []int{4}
 }
 func (m *RegisterRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -241,7 +308,7 @@ type RegisterResponse struct {
 func (m *RegisterResponse) Reset()      { *m = RegisterResponse{} }
 func (*RegisterResponse) ProtoMessage() {}
 func (*RegisterResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{4}
+	return fileDescriptor_e8daa588779d869f, []int{5}
 }
 func (m *RegisterResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -284,7 +351,7 @@ type GetFleetRequest struct {
 func (m *GetFleetRequest) Reset()      { *m = GetFleetRequest{} }
 func (*GetFleetRequest) ProtoMessage() {}
 func (*GetFleetRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{5}
+	return fileDescriptor_e8daa588779d869f, []int{6}
 }
 func (m *GetFleetRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -327,7 +394,7 @@ type GetFleetResponse struct {
 func (m *GetFleetResponse) Reset()      { *m = GetFleetResponse{} }
 func (*GetFleetResponse) ProtoMessage() {}
 func (*GetFleetResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{6}
+	return fileDescriptor_e8daa588779d869f, []int{7}
 }
 func (m *GetFleetResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -370,7 +437,7 @@ type UpdateStatusRequest struct {
 func (m *UpdateStatusRequest) Reset()      { *m = UpdateStatusRequest{} }
 func (*UpdateStatusRequest) ProtoMessage() {}
 func (*UpdateStatusRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{7}
+	return fileDescriptor_e8daa588779d869f, []int{8}
 }
 func (m *UpdateStatusRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -412,7 +479,7 @@ type UpdateStatusResponse struct {
 func (m *UpdateStatusResponse) Reset()      { *m = UpdateStatusResponse{} }
 func (*UpdateStatusResponse) ProtoMessage() {}
 func (*UpdateStatusResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{8}
+	return fileDescriptor_e8daa588779d869f, []int{9}
 }
 func (m *UpdateStatusResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -448,7 +515,7 @@ type ListFleetsRequest struct {
 func (m *ListFleetsRequest) Reset()      { *m = ListFleetsRequest{} }
 func (*ListFleetsRequest) ProtoMessage() {}
 func (*ListFleetsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{9}
+	return fileDescriptor_e8daa588779d869f, []int{10}
 }
 func (m *ListFleetsRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -491,7 +558,7 @@ type ListFleetsResponse struct {
 func (m *ListFleetsResponse) Reset()      { *m = ListFleetsResponse{} }
 func (*ListFleetsResponse) ProtoMessage() {}
 func (*ListFleetsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{10}
+	return fileDescriptor_e8daa588779d869f, []int{11}
 }
 func (m *ListFleetsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -527,8 +594,95 @@ func (m *ListFleetsResponse) GetFleets() []*FleetInfo {
 	return nil
 }
 
+type ListDevicesRequest struct {
+	FleetID *typespb.UUID `protobuf:"bytes,1,opt,name=fleet_id,json=fleetId,proto3" json:"fleet_id,omitempty"`
+}
+
+func (m *ListDevicesRequest) Reset()      { *m = ListDevicesRequest{} }
+func (*ListDevicesRequest) ProtoMessage() {}
+func (*ListDevicesRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e8daa588779d869f, []int{12}
+}
+func (m *ListDevicesRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ListDevicesRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ListDevicesRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ListDevicesRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListDevicesRequest.Merge(m, src)
+}
+func (m *ListDevicesRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *ListDevicesRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListDevicesRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListDevicesRequest proto.InternalMessageInfo
+
+func (m *ListDevicesRequest) GetFleetID() *typespb.UUID {
+	if m != nil {
+		return m.FleetID
+	}
+	return nil
+}
+
+type ListDevicesResponse struct {
+	Devices []*DeviceInfo `protobuf:"bytes,1,rep,name=devices,proto3" json:"devices,omitempty"`
+}
+
+func (m *ListDevicesResponse) Reset()      { *m = ListDevicesResponse{} }
+func (*ListDevicesResponse) ProtoMessage() {}
+func (*ListDevicesResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e8daa588779d869f, []int{13}
+}
+func (m *ListDevicesResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ListDevicesResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ListDevicesResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ListDevicesResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListDevicesResponse.Merge(m, src)
+}
+func (m *ListDevicesResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *ListDevicesResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListDevicesResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListDevicesResponse proto.InternalMessageInfo
+
+func (m *ListDevicesResponse) GetDevices() []*DeviceInfo {
+	if m != nil {
+		return m.Devices
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*FleetInfo)(nil), "gml.internal.controlplane.fleetmgr.v1.FleetInfo")
+	proto.RegisterType((*DeviceInfo)(nil), "gml.internal.controlplane.fleetmgr.v1.DeviceInfo")
 	proto.RegisterType((*CreateFleetRequest)(nil), "gml.internal.controlplane.fleetmgr.v1.CreateFleetRequest")
 	proto.RegisterType((*CreateFleetResponse)(nil), "gml.internal.controlplane.fleetmgr.v1.CreateFleetResponse")
 	proto.RegisterType((*RegisterRequest)(nil), "gml.internal.controlplane.fleetmgr.v1.RegisterRequest")
@@ -539,6 +693,8 @@ func init() {
 	proto.RegisterType((*UpdateStatusResponse)(nil), "gml.internal.controlplane.fleetmgr.v1.UpdateStatusResponse")
 	proto.RegisterType((*ListFleetsRequest)(nil), "gml.internal.controlplane.fleetmgr.v1.ListFleetsRequest")
 	proto.RegisterType((*ListFleetsResponse)(nil), "gml.internal.controlplane.fleetmgr.v1.ListFleetsResponse")
+	proto.RegisterType((*ListDevicesRequest)(nil), "gml.internal.controlplane.fleetmgr.v1.ListDevicesRequest")
+	proto.RegisterType((*ListDevicesResponse)(nil), "gml.internal.controlplane.fleetmgr.v1.ListDevicesResponse")
 }
 
 func init() {
@@ -546,52 +702,59 @@ func init() {
 }
 
 var fileDescriptor_e8daa588779d869f = []byte{
-	// 717 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x55, 0xcd, 0x6e, 0xd3, 0x40,
-	0x10, 0xce, 0x26, 0x6d, 0x48, 0xa6, 0xad, 0xd2, 0xba, 0x08, 0x45, 0x96, 0x70, 0x82, 0x11, 0xa2,
-	0x07, 0x64, 0xd3, 0x20, 0x01, 0x4d, 0x2f, 0xa8, 0x84, 0x42, 0x24, 0x7e, 0x84, 0xab, 0x5e, 0x2a,
-	0xa0, 0xb2, 0xe3, 0x8d, 0xbb, 0x92, 0xff, 0xba, 0xde, 0x54, 0xaa, 0x7a, 0x01, 0x09, 0x89, 0x2b,
-	0x57, 0x24, 0x1e, 0x80, 0x37, 0x81, 0x63, 0x8f, 0x3d, 0x45, 0xd4, 0xbd, 0x70, 0xac, 0xfa, 0x04,
-	0xc8, 0x6b, 0x3b, 0x4d, 0xff, 0xc0, 0x84, 0x9e, 0xec, 0x9d, 0x9d, 0xef, 0x9b, 0x99, 0x6f, 0x66,
-	0x6c, 0xb8, 0x13, 0xd0, 0x8e, 0xda, 0xf1, 0x5c, 0x46, 0x3d, 0xdb, 0xb7, 0x75, 0x17, 0xab, 0x5d,
-	0x1b, 0x63, 0xe6, 0x58, 0x54, 0xed, 0x3a, 0xbe, 0xa1, 0x6e, 0xcd, 0xf3, 0xa7, 0xe2, 0x53, 0x8f,
-	0x79, 0xc2, 0x2d, 0xcb, 0xb1, 0x15, 0xe2, 0x32, 0x4c, 0x5d, 0xdd, 0x56, 0x86, 0x61, 0x4a, 0x0a,
-	0x53, 0xb6, 0xe6, 0xc5, 0x05, 0xb6, 0x41, 0xa8, 0xb9, 0xee, 0xeb, 0x94, 0x6d, 0xab, 0x16, 0x61,
-	0x1b, 0x3d, 0x43, 0xe9, 0x78, 0x8e, 0x6a, 0x79, 0x96, 0xa7, 0x72, 0x26, 0xa3, 0xd7, 0xe5, 0x27,
-	0x7e, 0xe0, 0x6f, 0x71, 0x04, 0xf1, 0x7a, 0x9c, 0x8f, 0xe3, 0x78, 0xae, 0xca, 0xb6, 0x7d, 0x1c,
-	0xf8, 0x86, 0xda, 0xeb, 0x11, 0x33, 0xbe, 0x96, 0xbf, 0x23, 0x28, 0x2f, 0x47, 0x91, 0xda, 0x6e,
-	0xd7, 0x13, 0x1a, 0x90, 0x27, 0x66, 0x15, 0xd5, 0xd1, 0xdc, 0x44, 0xa3, 0xa2, 0x44, 0xb9, 0x71,
-	0x88, 0xb2, 0xba, 0xda, 0x6e, 0x2d, 0xcd, 0x84, 0xfd, 0x5a, 0xbe, 0xdd, 0x3a, 0xea, 0xd7, 0xae,
-	0x98, 0x46, 0x53, 0x26, 0xa6, 0xac, 0xe5, 0x89, 0x29, 0x3c, 0x82, 0xa2, 0x47, 0xad, 0x75, 0x62,
-	0x56, 0xf3, 0xe7, 0xe3, 0xaa, 0x61, 0xbf, 0x36, 0xfe, 0x8a, 0x5a, 0x1c, 0x3a, 0x11, 0x41, 0x63,
-	0x7f, 0x59, 0x1b, 0xf7, 0xa8, 0xd5, 0x36, 0x85, 0x1b, 0x30, 0xe6, 0xea, 0x0e, 0xae, 0x16, 0xea,
-	0x68, 0xae, 0xbc, 0x34, 0x75, 0xd4, 0xaf, 0x95, 0x23, 0xaf, 0xc8, 0x26, 0x6b, 0xfc, 0x2a, 0x72,
-	0x61, 0xba, 0x15, 0x54, 0xc7, 0xea, 0x85, 0x61, 0x97, 0xc8, 0x26, 0x6b, 0xfc, 0x4a, 0x7e, 0x03,
-	0xc2, 0x63, 0x8a, 0x75, 0x86, 0x79, 0x39, 0x1a, 0xde, 0xec, 0xe1, 0x80, 0x09, 0xcb, 0x30, 0xce,
-	0x85, 0x4c, 0x8a, 0xba, 0xab, 0x64, 0x12, 0x5c, 0x19, 0x48, 0xa2, 0xc5, 0x70, 0xf9, 0x2d, 0xcc,
-	0x9e, 0x60, 0x0f, 0x7c, 0xcf, 0x0d, 0xf0, 0xa5, 0xd1, 0x6b, 0x50, 0xd1, 0xb0, 0x45, 0x02, 0x86,
-	0x69, 0x9a, 0xf9, 0x4d, 0x98, 0x32, 0xf1, 0x16, 0xe9, 0xe0, 0xf5, 0x00, 0x53, 0xa2, 0xdb, 0x3c,
-	0x44, 0x59, 0x9b, 0x8c, 0x8d, 0x2b, 0xdc, 0x26, 0x88, 0x50, 0xda, 0xf0, 0x02, 0xc6, 0xe5, 0xcb,
-	0xf3, 0xfb, 0xc1, 0x59, 0x7e, 0x09, 0xd3, 0xc7, 0x9c, 0x49, 0xbe, 0x4d, 0x28, 0x27, 0xa4, 0x17,
-	0xf7, 0x79, 0x32, 0xec, 0xd7, 0x4a, 0x2d, 0xee, 0xd5, 0x6e, 0x69, 0xa5, 0xd8, 0xbf, 0x6d, 0xca,
-	0x4d, 0xa8, 0x3c, 0xc5, 0xec, 0x84, 0xba, 0xb7, 0xff, 0x34, 0x2f, 0xc5, 0x78, 0x5e, 0xa2, 0x21,
-	0x91, 0xd7, 0x60, 0xfa, 0x18, 0x7b, 0xc9, 0xda, 0xbd, 0x86, 0xd9, 0x55, 0xdf, 0xd4, 0x19, 0x5e,
-	0x61, 0x3a, 0xeb, 0x05, 0x69, 0x6e, 0xff, 0x53, 0xea, 0x35, 0xb8, 0x7a, 0x92, 0x32, 0x4e, 0x59,
-	0x5e, 0x86, 0x99, 0xe7, 0x24, 0x88, 0xeb, 0x18, 0x04, 0x9a, 0x1f, 0x2c, 0xc0, 0x05, 0x51, 0xca,
-	0x83, 0x05, 0x48, 0x26, 0x5e, 0x7e, 0x07, 0xc2, 0x30, 0x4f, 0x22, 0xc8, 0x33, 0x28, 0xf2, 0x8a,
-	0x82, 0x2a, 0xaa, 0x17, 0x46, 0x52, 0x24, 0xc1, 0x37, 0xbe, 0x14, 0xa0, 0xc2, 0xad, 0x2f, 0x2c,
-	0xba, 0x82, 0x69, 0x54, 0x95, 0xf0, 0x11, 0xc1, 0xc4, 0xd0, 0x08, 0x0b, 0x0b, 0x19, 0xd9, 0xcf,
-	0x2e, 0x95, 0xd8, 0x1c, 0x05, 0x9a, 0x14, 0xb9, 0x03, 0xa5, 0x74, 0x12, 0x84, 0xfb, 0x19, 0x79,
-	0x4e, 0x8d, 0x9d, 0xf8, 0xe0, 0x9f, 0x71, 0x49, 0xf0, 0x0f, 0x08, 0xe0, 0x58, 0x78, 0xe1, 0x61,
-	0x46, 0x9e, 0x33, 0x3d, 0x17, 0x17, 0x46, 0x40, 0xc6, 0x39, 0x34, 0xbe, 0xe6, 0x61, 0x36, 0xed,
-	0xcd, 0x13, 0xd3, 0xc2, 0x69, 0x7f, 0x76, 0xa0, 0x94, 0xae, 0x6b, 0x66, 0x61, 0x4e, 0x7d, 0x33,
-	0x32, 0x0b, 0x73, 0xe6, 0xbb, 0xf0, 0x09, 0xc1, 0xe4, 0xf0, 0xc4, 0x0b, 0x59, 0x5b, 0x7c, 0xce,
-	0xe6, 0x89, 0x8b, 0x23, 0x61, 0xe3, 0x4c, 0x96, 0x36, 0x77, 0xf7, 0xa5, 0xdc, 0xde, 0xbe, 0x94,
-	0x3b, 0xdc, 0x97, 0xd0, 0xfb, 0x50, 0x42, 0xdf, 0x42, 0x09, 0xfd, 0x08, 0x25, 0xb4, 0x1b, 0x4a,
-	0xe8, 0x67, 0x28, 0xa1, 0x5f, 0xa1, 0x94, 0x3b, 0x0c, 0x25, 0xf4, 0xf9, 0x40, 0xca, 0xed, 0x1e,
-	0x48, 0xb9, 0xbd, 0x03, 0x29, 0xb7, 0xb6, 0x68, 0x11, 0xc7, 0xc6, 0xcc, 0xd6, 0x8d, 0x40, 0xd1,
-	0x89, 0x1a, 0x9f, 0xd4, 0xbf, 0xfe, 0x8a, 0x17, 0xa3, 0xa7, 0x51, 0xe4, 0xbf, 0xc2, 0x7b, 0xbf,
-	0x03, 0x00, 0x00, 0xff, 0xff, 0xb5, 0x5b, 0xaf, 0x21, 0xbb, 0x07, 0x00, 0x00,
+	// 828 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x56, 0x4d, 0x6f, 0xeb, 0x44,
+	0x14, 0xcd, 0x24, 0x6d, 0x3e, 0x6e, 0x5a, 0xe5, 0x3d, 0x07, 0x3d, 0x45, 0x11, 0x38, 0x61, 0x10,
+	0xe2, 0x2d, 0x90, 0x4d, 0x82, 0xc4, 0xa3, 0xe9, 0x06, 0x95, 0x50, 0x1a, 0x41, 0x41, 0xb8, 0xea,
+	0xa6, 0x02, 0x2a, 0x3b, 0x9e, 0xb8, 0x96, 0xfc, 0x55, 0x7b, 0x52, 0xa9, 0xea, 0x06, 0x24, 0x24,
+	0xb6, 0x6c, 0x59, 0xb3, 0xe1, 0x57, 0xb0, 0x85, 0x65, 0x97, 0x5d, 0x45, 0xd4, 0xdd, 0xb0, 0xac,
+	0xfa, 0x0b, 0x90, 0x67, 0xec, 0xc4, 0x69, 0x52, 0x70, 0xf3, 0xba, 0xb2, 0x67, 0x3c, 0xe7, 0xdc,
+	0x73, 0xcf, 0xbd, 0x77, 0x64, 0x78, 0x3f, 0xf0, 0x87, 0xf2, 0xd0, 0x75, 0xa8, 0xef, 0x5a, 0x9e,
+	0xa5, 0x3a, 0x44, 0x1e, 0x59, 0x84, 0x50, 0xdb, 0xf0, 0xe5, 0x91, 0xed, 0x69, 0xf2, 0x59, 0x87,
+	0x3d, 0x25, 0xcf, 0x77, 0xa9, 0x2b, 0xbc, 0x6b, 0xd8, 0x96, 0x64, 0x3a, 0x94, 0xf8, 0x8e, 0x6a,
+	0x49, 0x69, 0x98, 0x94, 0xc0, 0xa4, 0xb3, 0x4e, 0x73, 0x8b, 0x9e, 0x98, 0xbe, 0x7e, 0xec, 0xa9,
+	0x3e, 0x3d, 0x97, 0x0d, 0x93, 0x9e, 0x8c, 0x35, 0x69, 0xe8, 0xda, 0xb2, 0xe1, 0x1a, 0xae, 0xcc,
+	0x98, 0xb4, 0xf1, 0x88, 0xad, 0xd8, 0x82, 0xbd, 0xf1, 0x08, 0xcd, 0xb7, 0xb8, 0x1e, 0xdb, 0x76,
+	0x1d, 0x99, 0x9e, 0x7b, 0x24, 0xf0, 0x34, 0x79, 0x3c, 0x36, 0x75, 0xfe, 0x19, 0xff, 0x89, 0xa0,
+	0xb2, 0x1b, 0x45, 0x1a, 0x38, 0x23, 0x57, 0xe8, 0x42, 0xde, 0xd4, 0x1b, 0xa8, 0x8d, 0x5e, 0x56,
+	0xbb, 0x35, 0x29, 0xd2, 0xc6, 0x20, 0xd2, 0xe1, 0xe1, 0xa0, 0xbf, 0xf3, 0x3c, 0x9c, 0xb4, 0xf2,
+	0x83, 0xfe, 0xdd, 0xa4, 0x55, 0xd2, 0xb5, 0x1e, 0x36, 0x75, 0xac, 0xe4, 0x4d, 0x5d, 0xf8, 0x04,
+	0x8a, 0xae, 0x6f, 0x1c, 0x9b, 0x7a, 0x23, 0xbf, 0x1c, 0xd7, 0x08, 0x27, 0xad, 0xf5, 0xaf, 0x7d,
+	0x83, 0x41, 0xab, 0x11, 0x94, 0x9f, 0xc7, 0xca, 0xba, 0xeb, 0x1b, 0x03, 0x5d, 0x78, 0x1b, 0xd6,
+	0x1c, 0xd5, 0x26, 0x8d, 0x42, 0x1b, 0xbd, 0xac, 0xec, 0x6c, 0xde, 0x4d, 0x5a, 0x95, 0xe8, 0x54,
+	0xb4, 0x87, 0x15, 0xf6, 0x29, 0x3a, 0x42, 0x55, 0x23, 0x68, 0xac, 0xb5, 0x0b, 0xe9, 0x23, 0xd1,
+	0x1e, 0x56, 0xd8, 0x27, 0xfc, 0x07, 0x02, 0xe8, 0x93, 0x33, 0x73, 0x48, 0x56, 0x4e, 0xe5, 0x05,
+	0x14, 0x03, 0xe2, 0x9b, 0xaa, 0xc5, 0x52, 0xa9, 0x28, 0xf1, 0x4a, 0x68, 0x42, 0xf9, 0xc4, 0x0d,
+	0xe8, 0x4c, 0xa4, 0x32, 0x5d, 0x0b, 0x7b, 0x50, 0x66, 0x95, 0x8a, 0x0c, 0x58, 0x5b, 0x1e, 0xed,
+	0xcd, 0x70, 0xd2, 0x2a, 0x71, 0x93, 0xa3, 0x90, 0x9b, 0x51, 0xc8, 0x04, 0x83, 0x95, 0x12, 0x7b,
+	0x1d, 0xe8, 0xf8, 0x5b, 0x10, 0x3e, 0xf5, 0x89, 0x4a, 0x09, 0x3b, 0xaa, 0x90, 0xd3, 0x31, 0x09,
+	0xa8, 0xb0, 0x0b, 0xeb, 0xec, 0x40, 0x9c, 0xca, 0x07, 0x52, 0xa6, 0x8e, 0x91, 0xa6, 0x35, 0x55,
+	0x38, 0x1c, 0x7f, 0x07, 0xf5, 0x39, 0xf6, 0xc0, 0x73, 0x9d, 0x80, 0x3c, 0x19, 0xbd, 0x02, 0x35,
+	0x85, 0x18, 0x66, 0x40, 0x89, 0x9f, 0x28, 0x7f, 0x07, 0x36, 0x75, 0x56, 0x8f, 0xe3, 0xd8, 0x54,
+	0xc4, 0xac, 0xdb, 0xe0, 0x9b, 0x07, 0x8b, 0xd6, 0xe6, 0xe7, 0xad, 0xc5, 0x5f, 0xc1, 0xb3, 0x19,
+	0x67, 0xac, 0xb7, 0x07, 0x95, 0x98, 0xf4, 0xe1, 0xea, 0x6e, 0x84, 0x93, 0x56, 0x39, 0x6e, 0x85,
+	0xbe, 0x52, 0xe6, 0xe7, 0x07, 0x3a, 0xee, 0x41, 0xed, 0x73, 0x42, 0xe7, 0xdc, 0x7d, 0xef, 0xbf,
+	0xba, 0xa4, 0xc8, 0xbb, 0x24, 0x6a, 0x0d, 0x7c, 0x04, 0xcf, 0x66, 0xd8, 0x27, 0xf6, 0xee, 0x1b,
+	0xa8, 0x1f, 0x7a, 0xba, 0x4a, 0xc9, 0x01, 0x55, 0xe9, 0x38, 0x48, 0xb4, 0xbd, 0x4e, 0xaa, 0x2f,
+	0xe0, 0x8d, 0x79, 0x4a, 0x2e, 0x19, 0xef, 0xc2, 0xf3, 0x2f, 0xcd, 0x80, 0xe7, 0x31, 0x0d, 0xd4,
+	0x99, 0x4e, 0xf0, 0x03, 0x51, 0x2a, 0xd3, 0x09, 0x8e, 0x47, 0x16, 0x7f, 0x0f, 0x42, 0x9a, 0x27,
+	0x36, 0x64, 0x0f, 0x8a, 0x2c, 0xa3, 0xa0, 0x81, 0xda, 0x85, 0x95, 0x1c, 0x89, 0xf1, 0x78, 0x9f,
+	0xf3, 0xf3, 0xcc, 0xa6, 0x42, 0x5f, 0xa5, 0x66, 0xed, 0x01, 0xa9, 0xd5, 0xd4, 0xac, 0xcd, 0x46,
+	0x4b, 0x83, 0xfa, 0x1c, 0x5d, 0xac, 0xf7, 0x0b, 0x28, 0x71, 0xc7, 0x12, 0xc1, 0x9d, 0x8c, 0x82,
+	0x67, 0xf7, 0x8c, 0x92, 0x30, 0x74, 0x7f, 0x2d, 0x40, 0x8d, 0x05, 0xde, 0x37, 0xfc, 0x03, 0xe2,
+	0x47, 0x9b, 0xc2, 0x4f, 0x08, 0xaa, 0xa9, 0xa9, 0x13, 0xb6, 0x32, 0xf2, 0x2f, 0xde, 0x03, 0xcd,
+	0xde, 0x2a, 0xd0, 0x38, 0xcf, 0x0b, 0x28, 0x27, 0xcd, 0x2b, 0x7c, 0x94, 0x91, 0xe7, 0xde, 0xa4,
+	0x34, 0x5f, 0x3d, 0x1a, 0x17, 0x07, 0xff, 0x11, 0x01, 0xcc, 0x7a, 0x45, 0xf8, 0x38, 0x23, 0xcf,
+	0x42, 0x9b, 0x36, 0xb7, 0x56, 0x40, 0x72, 0x0d, 0xdd, 0xdf, 0x0a, 0x50, 0x4f, 0x6a, 0xf3, 0x99,
+	0x6e, 0x90, 0xa4, 0x3e, 0x17, 0x50, 0x4e, 0x6e, 0x98, 0xcc, 0xc6, 0xdc, 0xbb, 0xe6, 0x32, 0x1b,
+	0xb3, 0x70, 0x95, 0xfd, 0x8c, 0x60, 0x23, 0x3d, 0xa4, 0x42, 0xd6, 0x12, 0x2f, 0xb9, 0x2c, 0x9a,
+	0xdb, 0x2b, 0x61, 0x63, 0x25, 0x51, 0x9b, 0xa6, 0xe6, 0x43, 0x78, 0x8c, 0xd3, 0xf3, 0x23, 0x9a,
+	0xb9, 0x4d, 0x97, 0x8c, 0xe3, 0xce, 0xe9, 0xe5, 0xb5, 0x98, 0xbb, 0xba, 0x16, 0x73, 0xb7, 0xd7,
+	0x22, 0xfa, 0x21, 0x14, 0xd1, 0xef, 0xa1, 0x88, 0xfe, 0x0a, 0x45, 0x74, 0x19, 0x8a, 0xe8, 0xef,
+	0x50, 0x44, 0xff, 0x84, 0x62, 0xee, 0x36, 0x14, 0xd1, 0x2f, 0x37, 0x62, 0xee, 0xf2, 0x46, 0xcc,
+	0x5d, 0xdd, 0x88, 0xb9, 0xa3, 0x6d, 0xc3, 0xb4, 0x2d, 0x42, 0x2d, 0x55, 0x0b, 0x24, 0xd5, 0x94,
+	0xf9, 0x4a, 0xfe, 0xdf, 0xbf, 0xb0, 0xed, 0xe8, 0xa9, 0x15, 0xd9, 0x5f, 0xd0, 0x87, 0xff, 0x06,
+	0x00, 0x00, 0xff, 0xff, 0x87, 0x36, 0x41, 0x5f, 0xb6, 0x09, 0x00, 0x00,
 }
 
 func (this *FleetInfo) Equal(that interface{}) bool {
@@ -629,6 +792,39 @@ func (this *FleetInfo) Equal(that interface{}) bool {
 		if this.Tags[i] != that1.Tags[i] {
 			return false
 		}
+	}
+	return true
+}
+func (this *DeviceInfo) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*DeviceInfo)
+	if !ok {
+		that2, ok := that.(DeviceInfo)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.ID.Equal(that1.ID) {
+		return false
+	}
+	if this.Serial != that1.Serial {
+		return false
+	}
+	if this.Hostname != that1.Hostname {
+		return false
+	}
+	if !this.FleetID.Equal(that1.FleetID) {
+		return false
 	}
 	return true
 }
@@ -877,6 +1073,59 @@ func (this *ListFleetsResponse) Equal(that interface{}) bool {
 	}
 	return true
 }
+func (this *ListDevicesRequest) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ListDevicesRequest)
+	if !ok {
+		that2, ok := that.(ListDevicesRequest)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.FleetID.Equal(that1.FleetID) {
+		return false
+	}
+	return true
+}
+func (this *ListDevicesResponse) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ListDevicesResponse)
+	if !ok {
+		that2, ok := that.(ListDevicesResponse)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if len(this.Devices) != len(that1.Devices) {
+		return false
+	}
+	for i := range this.Devices {
+		if !this.Devices[i].Equal(that1.Devices[i]) {
+			return false
+		}
+	}
+	return true
+}
 func (this *FleetInfo) GoString() string {
 	if this == nil {
 		return "nil"
@@ -891,6 +1140,23 @@ func (this *FleetInfo) GoString() string {
 	}
 	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
 	s = append(s, "Tags: "+fmt.Sprintf("%#v", this.Tags)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *DeviceInfo) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 8)
+	s = append(s, "&fmpb.DeviceInfo{")
+	if this.ID != nil {
+		s = append(s, "ID: "+fmt.Sprintf("%#v", this.ID)+",\n")
+	}
+	s = append(s, "Serial: "+fmt.Sprintf("%#v", this.Serial)+",\n")
+	s = append(s, "Hostname: "+fmt.Sprintf("%#v", this.Hostname)+",\n")
+	if this.FleetID != nil {
+		s = append(s, "FleetID: "+fmt.Sprintf("%#v", this.FleetID)+",\n")
+	}
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -1006,6 +1272,30 @@ func (this *ListFleetsResponse) GoString() string {
 	s = append(s, "&fmpb.ListFleetsResponse{")
 	if this.Fleets != nil {
 		s = append(s, "Fleets: "+fmt.Sprintf("%#v", this.Fleets)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ListDevicesRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&fmpb.ListDevicesRequest{")
+	if this.FleetID != nil {
+		s = append(s, "FleetID: "+fmt.Sprintf("%#v", this.FleetID)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ListDevicesResponse) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&fmpb.ListDevicesResponse{")
+	if this.Devices != nil {
+		s = append(s, "Devices: "+fmt.Sprintf("%#v", this.Devices)+",\n")
 	}
 	s = append(s, "}")
 	return strings.Join(s, "")
@@ -1177,6 +1467,7 @@ var _FleetMgrService_serviceDesc = grpc.ServiceDesc{
 type FleetMgrEdgeServiceClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 	UpdateStatus(ctx context.Context, in *UpdateStatusRequest, opts ...grpc.CallOption) (*UpdateStatusResponse, error)
+	ListDevices(ctx context.Context, in *ListDevicesRequest, opts ...grpc.CallOption) (*ListDevicesResponse, error)
 }
 
 type fleetMgrEdgeServiceClient struct {
@@ -1205,10 +1496,20 @@ func (c *fleetMgrEdgeServiceClient) UpdateStatus(ctx context.Context, in *Update
 	return out, nil
 }
 
+func (c *fleetMgrEdgeServiceClient) ListDevices(ctx context.Context, in *ListDevicesRequest, opts ...grpc.CallOption) (*ListDevicesResponse, error) {
+	out := new(ListDevicesResponse)
+	err := c.cc.Invoke(ctx, "/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/ListDevices", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FleetMgrEdgeServiceServer is the server API for FleetMgrEdgeService service.
 type FleetMgrEdgeServiceServer interface {
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	UpdateStatus(context.Context, *UpdateStatusRequest) (*UpdateStatusResponse, error)
+	ListDevices(context.Context, *ListDevicesRequest) (*ListDevicesResponse, error)
 }
 
 // UnimplementedFleetMgrEdgeServiceServer can be embedded to have forward compatible implementations.
@@ -1220,6 +1521,9 @@ func (*UnimplementedFleetMgrEdgeServiceServer) Register(ctx context.Context, req
 }
 func (*UnimplementedFleetMgrEdgeServiceServer) UpdateStatus(ctx context.Context, req *UpdateStatusRequest) (*UpdateStatusResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateStatus not implemented")
+}
+func (*UnimplementedFleetMgrEdgeServiceServer) ListDevices(ctx context.Context, req *ListDevicesRequest) (*ListDevicesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListDevices not implemented")
 }
 
 func RegisterFleetMgrEdgeServiceServer(s *grpc.Server, srv FleetMgrEdgeServiceServer) {
@@ -1262,6 +1566,24 @@ func _FleetMgrEdgeService_UpdateStatus_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FleetMgrEdgeService_ListDevices_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListDevicesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FleetMgrEdgeServiceServer).ListDevices(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/ListDevices",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FleetMgrEdgeServiceServer).ListDevices(ctx, req.(*ListDevicesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _FleetMgrEdgeService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService",
 	HandlerType: (*FleetMgrEdgeServiceServer)(nil),
@@ -1273,6 +1595,10 @@ var _FleetMgrEdgeService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateStatus",
 			Handler:    _FleetMgrEdgeService_UpdateStatus_Handler,
+		},
+		{
+			MethodName: "ListDevices",
+			Handler:    _FleetMgrEdgeService_ListDevices_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1324,6 +1650,67 @@ func (m *FleetInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			i -= size
 			i = encodeVarintFmpb(dAtA, i, uint64(size))
 		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.ID != nil {
+		{
+			size, err := m.ID.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintFmpb(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *DeviceInfo) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *DeviceInfo) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *DeviceInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.FleetID != nil {
+		{
+			size, err := m.FleetID.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintFmpb(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.Hostname) > 0 {
+		i -= len(m.Hostname)
+		copy(dAtA[i:], m.Hostname)
+		i = encodeVarintFmpb(dAtA, i, uint64(len(m.Hostname)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Serial) > 0 {
+		i -= len(m.Serial)
+		copy(dAtA[i:], m.Serial)
+		i = encodeVarintFmpb(dAtA, i, uint64(len(m.Serial)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -1684,6 +2071,78 @@ func (m *ListFleetsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *ListDevicesRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListDevicesRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ListDevicesRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.FleetID != nil {
+		{
+			size, err := m.FleetID.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintFmpb(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ListDevicesResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListDevicesResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ListDevicesResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Devices) > 0 {
+		for iNdEx := len(m.Devices) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Devices[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintFmpb(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintFmpb(dAtA []byte, offset int, v uint64) int {
 	offset -= sovFmpb(v)
 	base := offset
@@ -1718,6 +2177,31 @@ func (m *FleetInfo) Size() (n int) {
 			l = len(s)
 			n += 1 + l + sovFmpb(uint64(l))
 		}
+	}
+	return n
+}
+
+func (m *DeviceInfo) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ID != nil {
+		l = m.ID.Size()
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	l = len(m.Serial)
+	if l > 0 {
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	l = len(m.Hostname)
+	if l > 0 {
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	if m.FleetID != nil {
+		l = m.FleetID.Size()
+		n += 1 + l + sovFmpb(uint64(l))
 	}
 	return n
 }
@@ -1854,6 +2338,34 @@ func (m *ListFleetsResponse) Size() (n int) {
 	return n
 }
 
+func (m *ListDevicesRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.FleetID != nil {
+		l = m.FleetID.Size()
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	return n
+}
+
+func (m *ListDevicesResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Devices) > 0 {
+		for _, e := range m.Devices {
+			l = e.Size()
+			n += 1 + l + sovFmpb(uint64(l))
+		}
+	}
+	return n
+}
+
 func sovFmpb(x uint64) (n int) {
 	return (math_bits.Len64(x|1) + 6) / 7
 }
@@ -1869,6 +2381,19 @@ func (this *FleetInfo) String() string {
 		`OrgID:` + strings.Replace(fmt.Sprintf("%v", this.OrgID), "UUID", "typespb.UUID", 1) + `,`,
 		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
 		`Tags:` + fmt.Sprintf("%v", this.Tags) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *DeviceInfo) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&DeviceInfo{`,
+		`ID:` + strings.Replace(fmt.Sprintf("%v", this.ID), "UUID", "typespb.UUID", 1) + `,`,
+		`Serial:` + fmt.Sprintf("%v", this.Serial) + `,`,
+		`Hostname:` + fmt.Sprintf("%v", this.Hostname) + `,`,
+		`FleetID:` + strings.Replace(fmt.Sprintf("%v", this.FleetID), "UUID", "typespb.UUID", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -1974,6 +2499,31 @@ func (this *ListFleetsResponse) String() string {
 	repeatedStringForFleets += "}"
 	s := strings.Join([]string{`&ListFleetsResponse{`,
 		`Fleets:` + repeatedStringForFleets + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ListDevicesRequest) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ListDevicesRequest{`,
+		`FleetID:` + strings.Replace(fmt.Sprintf("%v", this.FleetID), "UUID", "typespb.UUID", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ListDevicesResponse) String() string {
+	if this == nil {
+		return "nil"
+	}
+	repeatedStringForDevices := "[]*DeviceInfo{"
+	for _, f := range this.Devices {
+		repeatedStringForDevices += strings.Replace(f.String(), "DeviceInfo", "DeviceInfo", 1) + ","
+	}
+	repeatedStringForDevices += "}"
+	s := strings.Join([]string{`&ListDevicesResponse{`,
+		`Devices:` + repeatedStringForDevices + `,`,
 		`}`,
 	}, "")
 	return s
@@ -2150,6 +2700,192 @@ func (m *FleetInfo) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Tags = append(m.Tags, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipFmpb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *DeviceInfo) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowFmpb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: DeviceInfo: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: DeviceInfo: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ID", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.ID == nil {
+				m.ID = &typespb.UUID{}
+			}
+			if err := m.ID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Serial", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Serial = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Hostname", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Hostname = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FleetID", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.FleetID == nil {
+				m.FleetID = &typespb.UUID{}
+			}
+			if err := m.FleetID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -2998,6 +3734,176 @@ func (m *ListFleetsResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.Fleets = append(m.Fleets, &FleetInfo{})
 			if err := m.Fleets[len(m.Fleets)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipFmpb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ListDevicesRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowFmpb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ListDevicesRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ListDevicesRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FleetID", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.FleetID == nil {
+				m.FleetID = &typespb.UUID{}
+			}
+			if err := m.FleetID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipFmpb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ListDevicesResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowFmpb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ListDevicesResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ListDevicesResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Devices", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Devices = append(m.Devices, &DeviceInfo{})
+			if err := m.Devices[len(m.Devices)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
