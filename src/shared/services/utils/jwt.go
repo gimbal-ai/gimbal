@@ -61,6 +61,9 @@ func ProtoToToken(pb *typespb.JWTClaims) (jwt.Token, error) {
 			Claim("Email", m.UserClaims.Email)
 	case *typespb.JWTClaims_ServiceClaims:
 		builder.Claim("ServiceID", m.ServiceClaims.ServiceID)
+	case *typespb.JWTClaims_DeviceClaims:
+		builder.Claim("DeviceID", m.DeviceClaims.DeviceID)
+		builder.Claim("FleetID", m.DeviceClaims.FleetID)
 	default:
 		log.WithField("type", m).Error("Could not find claims type")
 	}
@@ -98,6 +101,13 @@ func TokenToProto(token jwt.Token) (*typespb.JWTClaims, error) {
 		p.CustomClaims = &typespb.JWTClaims_ServiceClaims{
 			ServiceClaims: &typespb.ServiceJWTClaims{
 				ServiceID: GetServiceID(token),
+			},
+		}
+	case HasDeviceClaims(token):
+		p.CustomClaims = &typespb.JWTClaims_DeviceClaims{
+			DeviceClaims: &typespb.DeviceJWTClaims{
+				DeviceID: GetDeviceID(token),
+				FleetID:  GetFleetID(token),
 			},
 		}
 	}
@@ -181,14 +191,24 @@ func GetServiceID(t jwt.Token) string {
 	return serviceID.(string)
 }
 
-// GetClusterID fetches the ClusterID from the custom claims.
-func GetClusterID(t jwt.Token) string {
+// GetDeviceID fetches the DeviceID from the custom claims.
+func GetDeviceID(t jwt.Token) string {
 	claims := t.PrivateClaims()
-	clusterID, ok := claims["ClusterID"]
+	deviceID, ok := claims["DeviceID"]
 	if !ok {
 		return ""
 	}
-	return clusterID.(string)
+	return deviceID.(string)
+}
+
+// GetFleetID fetches the FleetID from the custom claims.
+func GetFleetID(t jwt.Token) string {
+	claims := t.PrivateClaims()
+	fleetID, ok := claims["FleetID"]
+	if !ok {
+		return ""
+	}
+	return fleetID.(string)
 }
 
 // HasUserClaims checks if the custom claims include UserClaims.
@@ -202,5 +222,12 @@ func HasUserClaims(t jwt.Token) bool {
 func HasServiceClaims(t jwt.Token) bool {
 	claims := t.PrivateClaims()
 	_, ok := claims["ServiceID"]
+	return ok
+}
+
+// HasDeviceClaims checks if the custom claims include DeviceClaims.
+func HasDeviceClaims(t jwt.Token) bool {
+	claims := t.PrivateClaims()
+	_, ok := claims["DeviceID"]
 	return ok
 }

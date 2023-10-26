@@ -33,6 +33,8 @@ const (
 	UserClaimType
 	// ServiceClaimType is a claim for a service.
 	ServiceClaimType
+	// DeviceClaimType is a claim for a device.
+	DeviceClaimType
 )
 
 // GetClaimsType gets the type of the given claim.
@@ -42,6 +44,8 @@ func GetClaimsType(c *typespb.JWTClaims) ClaimType {
 		return UserClaimType
 	case *typespb.JWTClaims_ServiceClaims:
 		return ServiceClaimType
+	case *typespb.JWTClaims_DeviceClaims:
+		return DeviceClaimType
 	default:
 		return UnknownClaimType
 	}
@@ -91,6 +95,24 @@ func GenerateJWTForService(serviceID string, audience string) *typespb.JWTClaims
 		CustomClaims: &typespb.JWTClaims_ServiceClaims{
 			ServiceClaims: &typespb.ServiceJWTClaims{
 				ServiceID: serviceID,
+			},
+		},
+	}
+	return &pbClaims
+}
+
+// GenerateJWTForDevice creates a protobuf claims for the given device.
+func GenerateJWTForDevice(deviceID string, fleetID string, audience string) *typespb.JWTClaims {
+	pbClaims := typespb.JWTClaims{
+		Audience:  audience,
+		Subject:   deviceID,
+		Issuer:    "GML",
+		ExpiresAt: time.Now().Add(time.Minute * 10).Unix(),
+		Scopes:    []string{"device"},
+		CustomClaims: &typespb.JWTClaims_DeviceClaims{
+			DeviceClaims: &typespb.DeviceJWTClaims{
+				DeviceID: deviceID,
+				FleetID:  fleetID,
 			},
 		},
 	}

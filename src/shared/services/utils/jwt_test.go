@@ -104,6 +104,26 @@ func TestProtoToToken_Service(t *testing.T) {
 	assert.Equal(t, "service_id", utils.GetServiceID(token))
 }
 
+func TestProtoToToken_Device(t *testing.T) {
+	p := getStandardClaimsPb()
+	p.Scopes = []string{"device"}
+	// Device claims.
+	deviceClaims := &typespb.DeviceJWTClaims{
+		DeviceID: "device_id",
+		FleetID:  "fleet_id",
+	}
+	p.CustomClaims = &typespb.JWTClaims_DeviceClaims{
+		DeviceClaims: deviceClaims,
+	}
+
+	token, err := utils.ProtoToToken(p)
+	require.NoError(t, err)
+
+	assert.Equal(t, []string{"device"}, utils.GetScopes(token))
+	assert.Equal(t, "device_id", utils.GetDeviceID(token))
+	assert.Equal(t, "fleet_id", utils.GetFleetID(token))
+}
+
 func TestTokenToProto_Standard(t *testing.T) {
 	builder := getStandardClaimsBuilder()
 
@@ -153,6 +173,23 @@ func TestTokenToProto_Service(t *testing.T) {
 	assert.Equal(t, []string{"service"}, pb.Scopes)
 	customClaims := pb.GetServiceClaims()
 	assert.Equal(t, "service_id", customClaims.ServiceID)
+}
+
+func TestTokenToProto_Device(t *testing.T) {
+	builder := getStandardClaimsBuilder().
+		Claim("Scopes", "device").
+		Claim("DeviceID", "device_id").
+		Claim("FleetID", "fleet_id")
+
+	token, err := builder.Build()
+	require.NoError(t, err)
+
+	pb, err := utils.TokenToProto(token)
+	require.NoError(t, err)
+	assert.Equal(t, []string{"device"}, pb.Scopes)
+	customClaims := pb.GetDeviceClaims()
+	assert.Equal(t, "device_id", customClaims.DeviceID)
+	assert.Equal(t, "fleet_id", customClaims.FleetID)
 }
 
 func TestTokenToProto_FailNoAudience(t *testing.T) {

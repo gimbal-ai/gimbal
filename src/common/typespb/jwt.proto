@@ -40,6 +40,7 @@ message JWTClaims {
   oneof custom_claims {
     UserJWTClaims user_claims = 9;
     ServiceJWTClaims service_claims = 10;
+    DeviceJWTClaims device_claims = 11;
   }
 }
 
@@ -63,4 +64,12 @@ message UserJWTClaims {
 // Claims for Service JWTs.
 message ServiceJWTClaims {
   string service_id = 1 [ (gogoproto.customname) = "ServiceID", (gogoproto.jsontag) = "serviceID" ];
+}
+
+// Claims for Device JWTs.
+message DeviceJWTClaims {
+  // The ID of the device.
+  string device_id = 1 [ (gogoproto.customname) = "DeviceID", (gogoproto.jsontag) = "deviceID" ];
+  // The ID of the fleet that the device is in.
+  string fleet_id = 2 [ (gogoproto.customname) = "FleetID", (gogoproto.jsontag) = "fleetID" ];
 }
