@@ -1,0 +1,29 @@
+diff --git a/Makefile b/Makefile
+index edf7b540..997f106f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -160,9 +160,11 @@ COMMON_UNITTEST_CFLAGS += $(CODEC_UNITTEST_CFLAGS)
+ 
+ .PHONY: test gtest-bootstrap clean $(PROJECT_NAME).pc $(PROJECT_NAME)-static.pc
+ 
+-generate-version:
++$(SRC_PATH)codec/common/inc/version_gen.h:
+ 	$(QUIET)sh $(SRC_PATH)codec/common/generate_version.sh $(SRC_PATH)
+ 
++generate-version: $(SRC_PATH)codec/common/inc/version_gen.h
++
+ codec/decoder/plus/src/welsDecoderExt.$(OBJ): | generate-version
+ codec/encoder/plus/src/welsEncoderExt.$(OBJ): | generate-version
+ 
+diff --git a/codec/common/inc/version_gen.h b/codec/common/inc/version_gen.h
+new file mode 100644
+index 00000000..74a1c45a
+--- /dev/null
++++ b/codec/common/inc/version_gen.h
+@@ -0,0 +1,6 @@
++#ifndef VERSION_GEN_H
++#define VERSION_GEN_H
++
++#define VERSION_NUMBER "0a48f4d"
++
++#endif // VERSION_GEN_H

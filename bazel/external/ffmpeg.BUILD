@@ -32,21 +32,25 @@ configure_make(
         "--disable-ffmpeg",
         "--disable-ffplay",
         "--disable-ffprobe",
-        # TODO(james): need to install yasm/nasm to get this to work.
-        # However, x86 isn't our main target arch (for this) yet so not going to deal with it for now.
-        "--disable-x86asm",
         # TODO(james): figure out how to pass `strip` binary from the correct toolchain.
         "--disable-stripping",
+        "--enable-libopenh264",
     ] + select({
         "@platforms//cpu:aarch64": ["--arch=aarch64"],
         "@platforms//cpu:x86_64": ["--arch=x86_64"],
     }),
+    env = {
+        "PKG_CONFIG_PATH": "$${EXT_BUILD_DEPS}/openh264/lib/pkgconfig",
+    },
     out_shared_libs = [
         "libavcodec.so.58",
         "libavformat.so.58",
         "libavutil.so.56",
         "libswscale.so.5",
         "libswresample.so.3",
+    ],
+    deps = [
+        "@com_github_cisco_openh264//:openh264",
     ],
     visibility = ["//visibility:public"],
 )

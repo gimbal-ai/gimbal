@@ -58,6 +58,9 @@ apt_pkg_list = [
   "qemu-system-x86",
   "qemu-user-static",
   "qemu-utils",
+
+  # nasm is needed to build openh264/ffmpeg on x86_64.
+  "nasm",
 ]
 
 apt_package apt_pkg_list do

@@ -316,4 +316,9 @@ REPOSITORY_LOCATIONS = dict(
         sha256 = "d03d2f5baa111681aa3115e40e24572fba562e88b499a27f525ccf751fb36701",
         urls = ["https://repo.download.nvidia.com/jetson/t234/pool/main/n/nvidia-l4t-camera/nvidia-l4t-camera_35.4.1-20230801124926_arm64.deb"],
     ),
+    com_github_cisco_openh264 = dict(
+        sha256 = "453afa66dacb560bc5fd0468aabee90c483741571bca820a39a1c07f0362dc32",
+        strip_prefix = "openh264-2.3.1",
+        urls = ["https://github.com/cisco/openh264/archive/refs/tags/v2.3.1.tar.gz"],
+    ),
 )
