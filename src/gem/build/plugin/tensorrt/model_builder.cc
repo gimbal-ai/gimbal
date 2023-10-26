@@ -33,12 +33,9 @@ namespace tensorrt {
 using ::gml::gem::exec::tensorrt::Model;
 using ::gml::gem::exec::tensorrt::TensorRTLogger;
 
-StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobStore* store,
-                                                                 const specpb::ModelSpec& spec) {
-  ElapsedTimer timer;
-  timer.Start();
-  TensorRTLogger logger;
-
+StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(storage::BlobStore* store,
+                                                                      const specpb::ModelSpec& spec,
+                                                                      TensorRTLogger logger) {
   auto builder = std::unique_ptr<nvinfer1::IBuilder>(nvinfer1::createInferBuilder(logger));
   uint32_t flag =
       1U << static_cast<uint32_t>(nvinfer1::NetworkDefinitionCreationFlag::kEXPLICIT_BATCH);
@@ -87,10 +84,37 @@ StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobSt
 
   auto serialized_model =
       std::unique_ptr<nvinfer1::IHostMemory>(builder->buildSerializedNetwork(*network, *config));
+  return serialized_model;
+}
+
+StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobStore* store,
+                                                                 const specpb::ModelSpec& spec) {
+  ElapsedTimer timer;
+  timer.Start();
+  TensorRTLogger logger;
 
   auto runtime = std::unique_ptr<nvinfer1::IRuntime>(nvinfer1::createInferRuntime(logger));
-  auto cuda_engine = std::unique_ptr<nvinfer1::ICudaEngine>(
-      runtime->deserializeCudaEngine(serialized_model->data(), serialized_model->size()));
+  std::unique_ptr<nvinfer1::ICudaEngine> cuda_engine;
+
+  auto engine_blob_key = spec.tensorrt_spec().engine_blob_key();
+  if (engine_blob_key != "") {
+    GML_ASSIGN_OR_RETURN(auto engine_blob, store->MapReadOnly(engine_blob_key));
+    if (engine_blob != nullptr) {
+      cuda_engine = std::unique_ptr<nvinfer1::ICudaEngine>(runtime->deserializeCudaEngine(
+          engine_blob->Data<char>(), engine_blob->SizeForType<char>()));
+    }
+  }
+  if (cuda_engine == nullptr) {
+    GML_ASSIGN_OR_RETURN(auto serialized_model, BuildSerializedModel(store, spec, logger));
+    cuda_engine = std::unique_ptr<nvinfer1::ICudaEngine>(
+        runtime->deserializeCudaEngine(serialized_model->data(), serialized_model->size()));
+
+    if (engine_blob_key != "") {
+      GML_RETURN_IF_ERROR(store->Upsert(engine_blob_key,
+                                        reinterpret_cast<const char*>(serialized_model->data()),
+                                        serialized_model->size()));
+    }
+  }
 
   auto context =
       std::unique_ptr<nvinfer1::IExecutionContext>(cuda_engine->createExecutionContext());

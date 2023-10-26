@@ -22,6 +22,11 @@ option go_package = "gimletlabs.ai/gimlet/src/gem/specpb;specpb";
 
 message TensorRTModelSpec {
   repeated TensorRTOptimizationProfile optimization_profile = 1;
+
+  // BlobStore key for a cached version of the engine. If not empty, the model builder will attempt
+  // to load the engine from the cached blob, if that fails it will build the engine and then insert
+  // the built engine into the BlobStore with this key.
+  string engine_blob_key = 2;
 }
 
 message TensorRTOptimizationProfile {
