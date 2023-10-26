@@ -52,12 +52,12 @@ NvBufSurfaceWrapper::NvBufSurfaceWrapper(int fd, NvBufSurface* nvbuf_surf)
     : fd_(fd), nvbuf_surf_(nvbuf_surf) {}
 
 NvBufSurfaceWrapper::~NvBufSurfaceWrapper() {
-  if (nvbuf_surf_ != nullptr) {
+  if (fd_ != -1 && nvbuf_surf_ != nullptr) {
     NvBufSurfaceDestroy(nvbuf_surf_);
   }
 }
 
-void NvBufSurfaceWrapper::DumpInfo() {
+void NvBufSurfaceWrapper::DumpInfo() const {
   LOG(INFO) << absl::Substitute("nvbuf_surf: batchSize $0", nvbuf_surf_->batchSize);
   LOG(INFO) << absl::Substitute("nvbuf_surf: numFilled $0", nvbuf_surf_->numFilled);
 
@@ -90,6 +90,15 @@ Status NvBufSurfaceWrapper::MapForCpu() {
   NvBufSurfaceSyncForCpu(nvbuf_surf_, kAllBuffers, kAllPlanes);
 
   return Status::OK();
+}
+
+bool NvBufSurfaceWrapper::IsMapped() const {
+  bool mapped = false;
+  if (nvbuf_surf_ != nullptr) {
+    // Check the first plane only. Assume the rest will be in sync.
+    mapped = nvbuf_surf_->surfaceList[0].mappedAddr.addr[0] != nullptr;
+  }
+  return mapped;
 }
 
 }  // namespace argus

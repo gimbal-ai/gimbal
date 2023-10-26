@@ -33,7 +33,7 @@ class NvBufSurfaceWrapper : public NotCopyable {
 
   ~NvBufSurfaceWrapper();
 
-  void DumpInfo();
+  void DumpInfo() const;
 
   /**
    * Maps the buffer for CPU access.
@@ -42,8 +42,13 @@ class NvBufSurfaceWrapper : public NotCopyable {
    */
   Status MapForCpu();
 
-  int fd() { return fd_; }
-  const NvBufSurfaceParams& surface() { return nvbuf_surf_->surfaceList[0]; }
+  /**
+   * Returns true of MapForCpu() has previously been called.
+   */
+  bool IsMapped() const;
+
+  int fd() const { return fd_; }
+  const NvBufSurfaceParams& surface() const { return nvbuf_surf_->surfaceList[0]; }
 
  private:
   NvBufSurfaceWrapper(int fd, NvBufSurface* nvbuf_surf);
