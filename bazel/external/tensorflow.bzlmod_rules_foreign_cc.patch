@@ -1,0 +1,20 @@
+diff --git a/tensorflow/workspace0.bzl b/tensorflow/workspace0.bzl
+index 95940ba6f2d..62574868d2c 100644
+--- a/tensorflow/workspace0.bzl
++++ b/tensorflow/workspace0.bzl
+@@ -8,7 +8,6 @@ load("@build_bazel_rules_swift//swift:repositories.bzl", "swift_rules_dependenci
+ load("@build_bazel_apple_support//lib:repositories.bzl", "apple_support_dependencies")
+ load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
+ load("@local_config_android//:android.bzl", "android_workspace")
+-load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_dependencies")
+ 
+ def _tf_bind():
+     """Bind targets for some external repositories"""
+@@ -132,7 +131,6 @@ def workspace():
+     # at the end of the WORKSPACE file.
+     _tf_bind()
+ 
+-    rules_foreign_cc_dependencies()
+     config_googleapis()
+ 
+ # Alias so it can be loaded without assigning to a different symbol to prevent

@@ -122,6 +122,8 @@ def _cc_deps():
             "//bazel/external:tensorflow.mediapipe_custom_ops.patch",
             # Some tensorflow deps only work if pulled from their mirrors
             "//bazel/external:tensorflow.use_mirror_for_gif.patch",
+            # Don't use WORKSPACE version of rules_foreign_cc.
+            "//bazel/external:tensorflow.bzlmod_rules_foreign_cc.patch",
         ],
         patch_args = ["-p1"],
         repo_mapping = {
