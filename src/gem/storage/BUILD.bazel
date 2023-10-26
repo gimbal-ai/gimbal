@@ -13,7 +13,7 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("//bazel:gml_build_system.bzl", "gml_cc_library")
+load("//bazel:gml_build_system.bzl", "gml_cc_library", "gml_cc_test")
 
 package(default_visibility = [
     "//src/experimental:__subpackages__",
@@ -24,6 +24,18 @@ gml_cc_library(
     name = "cc_library",
     srcs = [
         "blob_store.h",
+        "fs_blob_store.cc",
+        "fs_blob_store.h",
         "memory_blob.h",
     ],
+    deps = [
+        "//src/common/fs:cc_library",
+        "//src/common/system:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "fs_blob_store_test",
+    srcs = ["fs_blob_store_test.cc"],
+    deps = [":cc_library"],
 )
