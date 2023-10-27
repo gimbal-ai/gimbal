@@ -26,6 +26,7 @@ gml_cc_library(
         "context.h",
         "data_type.h",
         "model.h",
+        "planar_image.h",
         "tensor.h",
         "tensor_pool.h",
         "tensor_traits.h",
