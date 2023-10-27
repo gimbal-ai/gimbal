@@ -73,8 +73,9 @@ message RegisterResponse {
 }
 
 message GetFleetRequest {
-  // The ID of the fleet to fetch.
+  // Will use ID if supplied, else will try to lookup by name.
   gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
+  string name = 2;
 }
 
 message GetFleetResponse {
