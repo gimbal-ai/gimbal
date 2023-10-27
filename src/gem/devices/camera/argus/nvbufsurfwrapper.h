@@ -30,6 +30,8 @@ namespace argus {
 class NvBufSurfaceWrapper : public NotCopyable {
  public:
   static StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> Create(int fd);
+  static StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> TestOnlyCreatePlaceholder(
+      NvBufSurface* surf);
 
   ~NvBufSurfaceWrapper();
 

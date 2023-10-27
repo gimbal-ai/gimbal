@@ -13,7 +13,8 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("//bazel:gml_build_system.bzl", "gml_cc_library")
+load("//bazel:gml_build_system.bzl", "gml_cc_library", "gml_cc_test")
+load("//bazel:images.bzl", "gml_host_cuda_binary_image")
 
 package(default_visibility = [
     "//src/experimental:__subpackages__",
@@ -22,13 +23,42 @@ package(default_visibility = [
 
 gml_cc_library(
     name = "cc_library",
-    srcs = glob([
-        "*.h",
-        "*.cc",
-    ]),
+    srcs = glob(
+        [
+            "*.h",
+            "*.cc",
+        ],
+        exclude = ["**/*_test.cc"],
+    ),
     hdrs = ["argus_cam_calculator.h"],
     deps = [
         "//src/gem/devices/camera/argus:cc_library",
         "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
+        "@libyuv",
     ],
+)
+
+# Test is marked as manual, because it can only run on the Jeston device.
+gml_cc_test(
+    name = "nvbuf_to_image_frame_test",
+    srcs = [
+        "nvbuf_to_image_frame_test.cc",
+    ],
+    tags = ["manual"],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+        "@com_github_google_mediapipe//mediapipe/framework:calculator_runner",
+    ],
+)
+
+# Because the test needs to be run on the Jeston device, we put the test into a container image.
+# This image can then be deployed on the device as part of manually testing.
+# TODO(oazizi): Package the test data in the image as well.
+gml_host_cuda_binary_image(
+    name = "nvbuf_to_image_frame_test_image",
+    testonly = 1,
+    base = "//:cc_base_debug_image",
+    binary = ":nvbuf_to_image_frame_test",
+    multiarch = False,
 )

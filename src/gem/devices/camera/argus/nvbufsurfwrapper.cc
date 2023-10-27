@@ -48,6 +48,11 @@ StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> NvBufSurfaceWrapper::Create(int f
   return absl::WrapUnique<NvBufSurfaceWrapper>(new NvBufSurfaceWrapper(fd, nvbuf_surf));
 }
 
+StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> NvBufSurfaceWrapper::TestOnlyCreatePlaceholder(
+    NvBufSurface* surf) {
+  return absl::WrapUnique<NvBufSurfaceWrapper>(new NvBufSurfaceWrapper(-1, surf));
+}
+
 NvBufSurfaceWrapper::NvBufSurfaceWrapper(int fd, NvBufSurface* nvbuf_surf)
     : fd_(fd), nvbuf_surf_(nvbuf_surf) {}
 
