@@ -18,6 +18,7 @@
 package utils
 
 import (
+	"encoding/json"
 	"errors"
 	"strings"
 	"time"
@@ -56,9 +57,11 @@ func ProtoToToken(pb *typespb.JWTClaims) (jwt.Token, error) {
 
 	switch m := pb.CustomClaims.(type) {
 	case *typespb.JWTClaims_UserClaims:
+		authorizations, _ := json.Marshal(m.UserClaims.Authorizations)
 		builder.
 			Claim("UserID", m.UserClaims.UserID).
-			Claim("Email", m.UserClaims.Email)
+			Claim("Email", m.UserClaims.Email).
+			Claim("Authorizations", string(authorizations))
 	case *typespb.JWTClaims_ServiceClaims:
 		builder.Claim("ServiceID", m.ServiceClaims.ServiceID)
 	case *typespb.JWTClaims_DeviceClaims:
@@ -88,31 +91,97 @@ func TokenToProto(token jwt.Token) (*typespb.JWTClaims, error) {
 	p.Subject = token.Subject()
 
 	// Custom claims.
-	p.Scopes = GetScopes(token)
+	scopes := []string{}
+	claims := token.PrivateClaims()
+	cScopes, ok := claims["Scopes"]
+	if ok {
+		scopes = strings.Split(cScopes.(string), ",")
+	}
+	p.Scopes = scopes
+
 	switch {
 	case HasUserClaims(token):
-		p.CustomClaims = &typespb.JWTClaims_UserClaims{
-			UserClaims: &typespb.UserJWTClaims{
-				UserID: GetUserID(token),
-				Email:  GetEmail(token),
-			},
-		}
+		p.CustomClaims = userTokenToProto(token)
 	case HasServiceClaims(token):
-		p.CustomClaims = &typespb.JWTClaims_ServiceClaims{
-			ServiceClaims: &typespb.ServiceJWTClaims{
-				ServiceID: GetServiceID(token),
-			},
-		}
+		p.CustomClaims = serviceTokenToProto(token)
 	case HasDeviceClaims(token):
-		p.CustomClaims = &typespb.JWTClaims_DeviceClaims{
-			DeviceClaims: &typespb.DeviceJWTClaims{
-				DeviceID: GetDeviceID(token),
-				FleetID:  GetFleetID(token),
-			},
-		}
+		p.CustomClaims = deviceTokenToProto(token)
 	}
 
 	return p, nil
+}
+
+func userTokenToProto(token jwt.Token) *typespb.JWTClaims_UserClaims {
+	claims := token.PrivateClaims()
+
+	userID := ""
+	cUserID, ok := claims["UserID"]
+	if ok {
+		userID = cUserID.(string)
+	}
+
+	email := ""
+	cEmail, ok := claims["Email"]
+	if ok {
+		email = cEmail.(string)
+	}
+
+	authorizations := []*typespb.UserJWTClaims_AuthorizationDetails{}
+	cAuth, ok := claims["Authorizations"]
+	if ok {
+		castedAuth := cAuth.(string)
+		err := json.Unmarshal([]byte(castedAuth), &authorizations)
+		if err != nil {
+			log.WithError(err).Error("Failed to unmarshal authorizations")
+		}
+	}
+
+	return &typespb.JWTClaims_UserClaims{
+		UserClaims: &typespb.UserJWTClaims{
+			UserID:         userID,
+			Email:          email,
+			Authorizations: authorizations,
+		},
+	}
+}
+
+func serviceTokenToProto(token jwt.Token) *typespb.JWTClaims_ServiceClaims {
+	claims := token.PrivateClaims()
+
+	serviceID := ""
+	cServiceID, ok := claims["ServiceID"]
+	if ok {
+		serviceID = cServiceID.(string)
+	}
+
+	return &typespb.JWTClaims_ServiceClaims{
+		ServiceClaims: &typespb.ServiceJWTClaims{
+			ServiceID: serviceID,
+		},
+	}
+}
+
+func deviceTokenToProto(token jwt.Token) *typespb.JWTClaims_DeviceClaims {
+	claims := token.PrivateClaims()
+
+	deviceID := ""
+	cDeviceID, ok := claims["DeviceID"]
+	if ok {
+		deviceID = cDeviceID.(string)
+	}
+
+	fleetID := ""
+	cFleetID, ok := claims["FleetID"]
+	if ok {
+		fleetID = cFleetID.(string)
+	}
+
+	return &typespb.JWTClaims_DeviceClaims{
+		DeviceClaims: &typespb.DeviceJWTClaims{
+			DeviceID: deviceID,
+			FleetID:  fleetID,
+		},
+	}
 }
 
 // SignToken signs the token using the given signing key.
@@ -149,66 +218,6 @@ func SignJWTClaims(claims *typespb.JWTClaims, signingKey string) (string, error)
 		return "", err
 	}
 	return SignToken(token, signingKey)
-}
-
-// GetScopes fetches the Scopes from the custom claims.
-func GetScopes(t jwt.Token) []string {
-	claims := t.PrivateClaims()
-	scopes, ok := claims["Scopes"]
-	if !ok {
-		return []string{}
-	}
-	return strings.Split(scopes.(string), ",")
-}
-
-// GetUserID fetches the UserID from the custom claims.
-func GetUserID(t jwt.Token) string {
-	claims := t.PrivateClaims()
-	userID, ok := claims["UserID"]
-	if !ok {
-		return ""
-	}
-	return userID.(string)
-}
-
-// GetEmail fetches the Email from the custom claims.
-func GetEmail(t jwt.Token) string {
-	claims := t.PrivateClaims()
-	email, ok := claims["Email"]
-	if !ok {
-		return ""
-	}
-	return email.(string)
-}
-
-// GetServiceID fetches the ServiceID from the custom claims.
-func GetServiceID(t jwt.Token) string {
-	claims := t.PrivateClaims()
-	serviceID, ok := claims["ServiceID"]
-	if !ok {
-		return ""
-	}
-	return serviceID.(string)
-}
-
-// GetDeviceID fetches the DeviceID from the custom claims.
-func GetDeviceID(t jwt.Token) string {
-	claims := t.PrivateClaims()
-	deviceID, ok := claims["DeviceID"]
-	if !ok {
-		return ""
-	}
-	return deviceID.(string)
-}
-
-// GetFleetID fetches the FleetID from the custom claims.
-func GetFleetID(t jwt.Token) string {
-	claims := t.PrivateClaims()
-	fleetID, ok := claims["FleetID"]
-	if !ok {
-		return ""
-	}
-	return fleetID.(string)
 }
 
 // HasUserClaims checks if the custom claims include UserClaims.

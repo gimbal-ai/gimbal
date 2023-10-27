@@ -18,6 +18,7 @@
 package utils_test
 
 import (
+	"encoding/json"
 	"testing"
 	"time"
 
@@ -73,6 +74,16 @@ func TestProtoToToken_User(t *testing.T) {
 	userClaims := &typespb.UserJWTClaims{
 		UserID: "user_id",
 		Email:  "user@email.com",
+		Authorizations: []*typespb.UserJWTClaims_AuthorizationDetails{
+			{
+				Scopes: []string{"org_admin", "org_reader"},
+				OrgIDs: []string{"org1", "org2"},
+			},
+			{
+				Scopes: []string{"org_admin"},
+				OrgIDs: []string{"org3", "org4"},
+			},
+		},
 	}
 	p.CustomClaims = &typespb.JWTClaims_UserClaims{
 		UserClaims: userClaims,
@@ -81,9 +92,32 @@ func TestProtoToToken_User(t *testing.T) {
 	token, err := utils.ProtoToToken(p)
 	require.NoError(t, err)
 
-	assert.Equal(t, []string{"user"}, utils.GetScopes(token))
-	assert.Equal(t, "user_id", utils.GetUserID(token))
-	assert.Equal(t, "user@email.com", utils.GetEmail(token))
+	claims := token.PrivateClaims()
+	scopes, ok := claims["Scopes"]
+	require.True(t, ok)
+	userID, ok := claims["UserID"]
+	require.True(t, ok)
+	email, ok := claims["Email"]
+	require.True(t, ok)
+	authorizationsPb := []*typespb.UserJWTClaims_AuthorizationDetails{}
+	authorizations, ok := claims["Authorizations"]
+	require.True(t, ok)
+	err = json.Unmarshal([]byte(authorizations.(string)), &authorizationsPb)
+	require.NoError(t, err)
+
+	assert.Equal(t, "user", scopes.(string))
+	assert.Equal(t, "user_id", userID.(string))
+	assert.Equal(t, "user@email.com", email.(string))
+	assert.Equal(t, []*typespb.UserJWTClaims_AuthorizationDetails{
+		{
+			Scopes: []string{"org_admin", "org_reader"},
+			OrgIDs: []string{"org1", "org2"},
+		},
+		{
+			Scopes: []string{"org_admin"},
+			OrgIDs: []string{"org3", "org4"},
+		},
+	}, authorizationsPb)
 }
 
 func TestProtoToToken_Service(t *testing.T) {
@@ -100,8 +134,13 @@ func TestProtoToToken_Service(t *testing.T) {
 	token, err := utils.ProtoToToken(p)
 	require.NoError(t, err)
 
-	assert.Equal(t, []string{"service"}, utils.GetScopes(token))
-	assert.Equal(t, "service_id", utils.GetServiceID(token))
+	claims := token.PrivateClaims()
+	scopes, ok := claims["Scopes"]
+	require.True(t, ok)
+	serviceID, ok := claims["ServiceID"]
+	require.True(t, ok)
+	assert.Equal(t, "service", scopes.(string))
+	assert.Equal(t, "service_id", serviceID.(string))
 }
 
 func TestProtoToToken_Device(t *testing.T) {
@@ -119,9 +158,17 @@ func TestProtoToToken_Device(t *testing.T) {
 	token, err := utils.ProtoToToken(p)
 	require.NoError(t, err)
 
-	assert.Equal(t, []string{"device"}, utils.GetScopes(token))
-	assert.Equal(t, "device_id", utils.GetDeviceID(token))
-	assert.Equal(t, "fleet_id", utils.GetFleetID(token))
+	claims := token.PrivateClaims()
+	scopes, ok := claims["Scopes"]
+	require.True(t, ok)
+	fleetID, ok := claims["FleetID"]
+	require.True(t, ok)
+	deviceID, ok := claims["DeviceID"]
+	require.True(t, ok)
+
+	assert.Equal(t, "device", scopes.(string))
+	assert.Equal(t, "device_id", deviceID.(string))
+	assert.Equal(t, "fleet_id", fleetID.(string))
 }
 
 func TestTokenToProto_Standard(t *testing.T) {
@@ -142,12 +189,25 @@ func TestTokenToProto_Standard(t *testing.T) {
 }
 
 func TestTokenToProto_User(t *testing.T) {
+	authorizations := []*typespb.UserJWTClaims_AuthorizationDetails{
+		{
+			Scopes: []string{"org_admin", "org_reader"},
+			OrgIDs: []string{"org1", "org2"},
+		},
+		{
+			Scopes: []string{"org_admin"},
+			OrgIDs: []string{"org3", "org4"},
+		},
+	}
+	authJSON, _ := json.Marshal(authorizations)
+
 	builder := getStandardClaimsBuilder().
 		Claim("Scopes", "user").
 		Claim("UserID", "user_id").
 		Claim("OrgID", "org_id").
 		Claim("Email", "user@email.com").
-		Claim("IsAPIUser", false)
+		Claim("IsAPIUser", false).
+		Claim("Authorizations", string(authJSON))
 
 	token, err := builder.Build()
 	require.NoError(t, err)
@@ -158,6 +218,7 @@ func TestTokenToProto_User(t *testing.T) {
 	customClaims := pb.GetUserClaims()
 	assert.Equal(t, "user_id", customClaims.UserID)
 	assert.Equal(t, "user@email.com", customClaims.Email)
+	assert.Equal(t, authorizations, customClaims.Authorizations)
 }
 
 func TestTokenToProto_Service(t *testing.T) {
