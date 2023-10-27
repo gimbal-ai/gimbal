@@ -144,7 +144,9 @@ message CreateOrgResponse {
 
 // Request to fetch information about an org in the system.
 message GetOrgRequest {
+  // Will use ID if supplied, else will try to lookup by name.
   gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
+  string org_name = 2;
 }
 
 // Response to getting information about an org in the system.
