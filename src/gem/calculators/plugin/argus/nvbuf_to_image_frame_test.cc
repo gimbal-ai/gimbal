@@ -46,52 +46,6 @@ char kBufYFilename[] = "/app/testdata/buf_y";
 char kBufUFilename[] = "/app/testdata/buf_u";
 char kBufVFilename[] = "/app/testdata/buf_v";
 
-// This function populates parameters that match the testdata files (buf_u, buf_y, buf_v).
-void PopulateNvBufSurface(NvBufSurface* surf, NvBufSurfaceParams* surf_params, char* y_plane_ptr,
-                          char* u_plane_ptr, char* v_plane_ptr) {
-  constexpr int kPlaneY = 0;
-  constexpr int kPlaneU = 1;
-  constexpr int kPlaneV = 2;
-
-  surf_params->width = 1280;
-  surf_params->height = 720;
-  surf_params->pitch = 1280;
-  surf_params->colorFormat = NVBUF_COLOR_FORMAT_YUV420;
-  surf_params->layout = NVBUF_LAYOUT_PITCH;
-  surf_params->dataSize = 1835008;
-
-  surf_params->planeParams.num_planes = 3;
-  surf_params->planeParams.width[kPlaneY] = 1280;
-  surf_params->planeParams.height[kPlaneY] = 720;
-  surf_params->planeParams.pitch[kPlaneY] = 1280;
-  surf_params->planeParams.offset[kPlaneY] = 0;  // Irrelevant
-  surf_params->planeParams.psize[kPlaneY] = 1048576;
-  surf_params->planeParams.bytesPerPix[kPlaneY] = 1;
-  surf_params->mappedAddr.addr[kPlaneY] = y_plane_ptr;
-
-  surf_params->planeParams.width[kPlaneU] = 640;
-  surf_params->planeParams.height[kPlaneU] = 360;
-  surf_params->planeParams.pitch[kPlaneU] = 640;
-  surf_params->planeParams.offset[kPlaneU] = 0;  // Irrelevant
-  surf_params->planeParams.psize[kPlaneU] = 393216;
-  surf_params->planeParams.bytesPerPix[kPlaneU] = 1;
-  surf_params->mappedAddr.addr[kPlaneU] = u_plane_ptr;
-
-  surf_params->planeParams.width[kPlaneV] = 640;
-  surf_params->planeParams.height[kPlaneV] = 360;
-  surf_params->planeParams.pitch[kPlaneV] = 640;
-  surf_params->planeParams.offset[kPlaneV] = 0;  // Irrelevant
-  surf_params->planeParams.psize[kPlaneV] = 393216;
-  surf_params->planeParams.bytesPerPix[kPlaneV] = 1;
-  surf_params->mappedAddr.addr[kPlaneV] = v_plane_ptr;
-
-  surf->gpuId = 0;
-  surf->batchSize = 1;
-  surf->numFilled = 1;
-  surf->memType = NVBUF_MEM_DEFAULT;
-  surf->surfaceList = surf_params;
-}
-
 TEST(NvBufSurfToImageFrameCalculator, conversion) {
   using ::gml::gem::devices::argus::NvBufSurfaceWrapper;
 
@@ -100,13 +54,20 @@ TEST(NvBufSurfToImageFrameCalculator, conversion) {
   ASSERT_OK_AND_ASSIGN(std::string u_plane_buf, gml::ReadFileToString(kBufUFilename));
   ASSERT_OK_AND_ASSIGN(std::string v_plane_buf, gml::ReadFileToString(kBufVFilename));
 
-  NvBufSurface nvbufsurface;
-  NvBufSurfaceParams surf_params[0];
-  PopulateNvBufSurface(&nvbufsurface, &(surf_params[0]), y_plane_buf.data(), u_plane_buf.data(),
-                       v_plane_buf.data());
+  NvBufSurface* nvbufsurface;
+
+  NvBufSurfaceCreateParams create_params;
+  create_params.width = 1280;
+  create_params.height = 720;
+  create_params.colorFormat = NVBUF_COLOR_FORMAT_YUV420;
+  create_params.layout = NVBUF_LAYOUT_PITCH;
+  create_params.memType = NVBUF_MEM_DEFAULT;
+
+  NvBufSurfaceCreate(&nvbufsurface, 1, &create_params);
 
   ASSERT_OK_AND_ASSIGN(auto nvbuf_surf,
-                       NvBufSurfaceWrapper::TestOnlyCreatePlaceholder(&nvbufsurface));
+                       NvBufSurfaceWrapper::TestOnlyCreatePlaceholder(nvbufsurface));
+  ASSERT_OK(nvbuf_surf->MapForCpu());
 
   nvbuf_surf->DumpInfo();
 
@@ -120,8 +81,7 @@ TEST(NvBufSurfToImageFrameCalculator, conversion) {
 
   LOG(INFO) << "Running graph.";
 
-  auto s = runner.Run();
-  ASSERT_TRUE(s.ok());
+  ASSERT_OK(runner.Run());
 
   // Check output.
   const auto& outputs = runner.Outputs();
@@ -137,14 +97,6 @@ TEST(NvBufSurfToImageFrameCalculator, conversion) {
   EXPECT_EQ(output_image.NumberOfChannels(), 3);
   EXPECT_EQ(output_image.ByteDepth(), 1);
   EXPECT_EQ(output_image.PixelDataSize(), 1280 * 720 * 3);
-
-  // TODO(oazizi): The test above doesn't really check that the conversion has been done properly.
-  //               Need some way of actually checking the image pixel data.
-
-  // Something about these data structures doesn't let the test terminate.
-  // TODO(oazizi): Investigate further.
-  surf_params[0] = {};
-  nvbufsurface = {};
 }
 
 }  // namespace argus
