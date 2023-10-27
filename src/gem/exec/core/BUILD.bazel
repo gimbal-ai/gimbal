@@ -26,15 +26,26 @@ gml_cc_library(
         "context.h",
         "data_type.h",
         "model.h",
+        "planar_image.cc",
         "planar_image.h",
         "tensor.h",
         "tensor_pool.h",
         "tensor_traits.h",
+    ],
+    deps = [
+        "@com_github_google_mediapipe//mediapipe/framework/formats:yuv_image",
+        "@com_github_google_mediapipe//mediapipe/util:image_frame_util",
     ],
 )
 
 gml_cc_test(
     name = "tensor_pool_test",
     srcs = ["tensor_pool_test.cc"],
+    deps = [":cc_library"],
+)
+
+gml_cc_test(
+    name = "planar_image_test",
+    srcs = ["planar_image_test.cc"],
     deps = [":cc_library"],
 )

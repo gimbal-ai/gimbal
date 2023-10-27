@@ -66,6 +66,39 @@ class PlanarImage {
   virtual std::vector<Plane>& Planes() = 0;
 };
 
+template <typename TImage>
+StatusOr<std::vector<PlanarImage::Plane>> PlanesFromImage(TImage* image);
+
+template <typename TImage>
+class PlanarImageFor : public PlanarImage {
+ public:
+  static StatusOr<std::unique_ptr<PlanarImage>> Create(std::unique_ptr<TImage> image,
+                                                       ImageFormat format) {
+    auto planar_image = absl::WrapUnique(new PlanarImageFor<TImage>(std::move(image)));
+    GML_RETURN_IF_ERROR(planar_image->BuildPlanes());
+    planar_image->format_ = format;
+    return absl::WrapUnique<PlanarImage>(planar_image.release());
+  }
+
+  const std::vector<Plane>& Planes() const override { return planes_; }
+  std::vector<Plane>& Planes() override { return planes_; }
+
+  size_t Width() const override { return image_->width(); }
+  size_t Height() const override { return image_->height(); }
+  ImageFormat Format() const override { return format_; }
+
+ private:
+  Status BuildPlanes() {
+    GML_ASSIGN_OR_RETURN(planes_, PlanesFromImage(image_.get()));
+    return Status::OK();
+  }
+  PlanarImageFor(std::unique_ptr<TImage> image) : image_(std::move(image)) {}
+
+  std::unique_ptr<TImage> image_;
+  ImageFormat format_;
+  std::vector<PlanarImage::Plane> planes_;
+};
+
 }  // namespace core
 }  // namespace exec
 }  // namespace gem
