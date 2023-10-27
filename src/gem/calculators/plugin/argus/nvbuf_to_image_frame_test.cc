@@ -22,6 +22,7 @@
 #include <mediapipe/framework/calculator_runner.h>
 #include <mediapipe/framework/formats/image_frame.h>
 
+#include "src/common/base/file.h"
 #include "src/common/testing/testing.h"
 
 #include "src/gem/devices/camera/argus/nvbufsurfwrapper.h"
@@ -40,36 +41,14 @@ constexpr char kGraph[] = R"pb(
 // Expect to find the Y, U and V planes in three files.
 // Currently, these are set to a location in /tmp because of how the
 // test is run manually in a container on the device.
-// TODO(oazizi): Package the data in the image container, and fix these paths.
-std::string_view kBufYFilename = "/tmp/buf_y";
-std::string_view kBufUFilename = "/tmp/buf_u";
-std::string_view kBufVFilename = "/tmp/buf_v";
-
-std::vector<uint8_t> LoadImagePlane(std::string_view filename) {
-  std::ifstream plane_fstream(filename, std::ios::in | std::ios::binary);
-
-  LOG(INFO) << absl::Substitute("Loading image plane: $0", filename);
-
-  CHECK(plane_fstream.is_open());
-
-  plane_fstream.seekg(0, std::ios::end);
-  CHECK(!plane_fstream.fail());
-  std::streampos plane_fstream_size = plane_fstream.tellg();
-  CHECK_NE(plane_fstream_size, -1);
-  plane_fstream.seekg(0, std::ios::beg);
-  CHECK(!plane_fstream.fail());
-
-  std::vector<uint8_t> plane_buf;
-  plane_buf.reserve(plane_fstream_size);
-  plane_buf.insert(plane_buf.begin(), std::istream_iterator<uint8_t>(plane_fstream),
-                   std::istream_iterator<uint8_t>());
-
-  return plane_buf;
-}
+// TODO(oazizi): Fix these paths.
+char kBufYFilename[] = "/app/testdata/buf_y";
+char kBufUFilename[] = "/app/testdata/buf_u";
+char kBufVFilename[] = "/app/testdata/buf_v";
 
 // This function populates parameters that match the testdata files (buf_u, buf_y, buf_v).
-void PopulateNvBufSurface(NvBufSurface* surf, NvBufSurfaceParams* surf_params, uint8_t* y_plane_ptr,
-                          uint8_t* u_plane_ptr, uint8_t* v_plane_ptr) {
+void PopulateNvBufSurface(NvBufSurface* surf, NvBufSurfaceParams* surf_params, char* y_plane_ptr,
+                          char* u_plane_ptr, char* v_plane_ptr) {
   constexpr int kPlaneY = 0;
   constexpr int kPlaneU = 1;
   constexpr int kPlaneV = 2;
@@ -117,9 +96,9 @@ TEST(NvBufSurfToImageFrameCalculator, conversion) {
   using ::gml::gem::devices::argus::NvBufSurfaceWrapper;
 
   // Prepare an input image.
-  std::vector<uint8_t> y_plane_buf = LoadImagePlane(kBufYFilename);
-  std::vector<uint8_t> u_plane_buf = LoadImagePlane(kBufUFilename);
-  std::vector<uint8_t> v_plane_buf = LoadImagePlane(kBufVFilename);
+  ASSERT_OK_AND_ASSIGN(std::string y_plane_buf, gml::ReadFileToString(kBufYFilename));
+  ASSERT_OK_AND_ASSIGN(std::string u_plane_buf, gml::ReadFileToString(kBufUFilename));
+  ASSERT_OK_AND_ASSIGN(std::string v_plane_buf, gml::ReadFileToString(kBufVFilename));
 
   NvBufSurface nvbufsurface;
   NvBufSurfaceParams surf_params[0];

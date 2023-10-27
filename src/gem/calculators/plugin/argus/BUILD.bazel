@@ -13,6 +13,7 @@
 #
 # SPDX-License-Identifier: Proprietary
 
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("//bazel:gml_build_system.bzl", "gml_cc_library", "gml_cc_test")
 load("//bazel:images.bzl", "gml_host_cuda_binary_image")
 
@@ -44,6 +45,7 @@ gml_cc_test(
     srcs = [
         "nvbuf_to_image_frame_test.cc",
     ],
+    data = glob(["testdata/**/*"]),
     tags = ["manual"],
     deps = [
         ":cc_library",
@@ -52,13 +54,20 @@ gml_cc_test(
     ],
 )
 
+# Package the testdata so that the image below has access to them.
+pkg_tar(
+    name = "nvbuf_to_image_frame_test_data",
+    srcs = glob(["testdata/**/*"]),
+    package_dir = "/app/testdata",
+)
+
 # Because the test needs to be run on the Jeston device, we put the test into a container image.
 # This image can then be deployed on the device as part of manually testing.
-# TODO(oazizi): Package the test data in the image as well.
 gml_host_cuda_binary_image(
     name = "nvbuf_to_image_frame_test_image",
     testonly = 1,
     base = "//:cc_base_debug_image",
     binary = ":nvbuf_to_image_frame_test",
     multiarch = False,
+    tars = [":nvbuf_to_image_frame_test_data"],
 )
