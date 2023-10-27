@@ -53,6 +53,12 @@ func GenerateTestClaimsWithEmail(t *testing.T, email string) *typespb.JWTClaims 
 	return GenerateTestClaimsWithDuration(t, time.Minute*60, email)
 }
 
+// GenerateTestDeviceClaims generates valid test device claims.
+func GenerateTestDeviceClaims(_ *testing.T, deviceID string, fleetID string) *typespb.JWTClaims {
+	claims := utils.GenerateJWTForDevice(deviceID, fleetID, "gml.ai")
+	return claims
+}
+
 // GenerateTestJWTToken generates valid tokens for testing.
 func GenerateTestJWTToken(t *testing.T, signingKey string) string {
 	return GenerateTestJWTTokenWithDuration(t, signingKey, time.Minute*60)
