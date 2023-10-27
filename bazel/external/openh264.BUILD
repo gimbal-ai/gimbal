@@ -14,12 +14,17 @@
 # SPDX-License-Identifier: Proprietary
 
 load("@rules_foreign_cc//foreign_cc:defs.bzl", "make")
+load("@gml//bazel:foreign_cc.bzl", "collect_shared_libs")
 
 filegroup(
     name = "all",
     srcs = glob(["**"]),
     visibility = ["//visibility:public"],
 )
+
+SHARED_LIBS = [
+    "libopenh264.so.7",
+]
 
 make(
     name = "openh264",
@@ -28,11 +33,11 @@ make(
         "@platforms//cpu:x86_64": ["ARCH=x86_64"],
     }),
     lib_source = ":all",
-    out_shared_libs = [
-        "libopenh264.so.7",
-    ],
+    out_shared_libs = SHARED_LIBS,
     out_data_dirs = [
         "lib/pkgconfig",
     ],
     visibility = ["//visibility:public"],
 )
+
+collect_shared_libs(":openh264", SHARED_LIBS)

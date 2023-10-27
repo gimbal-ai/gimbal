@@ -14,12 +14,21 @@
 # SPDX-License-Identifier: Proprietary
 
 load("@rules_foreign_cc//foreign_cc:defs.bzl", "configure_make")
+load("@gml//bazel:foreign_cc.bzl", "collect_shared_libs")
 
 filegroup(
     name = "all",
     srcs = glob(["**"]),
     visibility = ["//visibility:public"],
 )
+
+SHARED_LIBS = [
+    "libavcodec.so.58",
+    "libavformat.so.58",
+    "libavutil.so.56",
+    "libswscale.so.5",
+    "libswresample.so.3",
+]
 
 configure_make(
     name = "ffmpeg",
@@ -42,15 +51,11 @@ configure_make(
     env = {
         "PKG_CONFIG_PATH": "$${EXT_BUILD_DEPS}/openh264/lib/pkgconfig",
     },
-    out_shared_libs = [
-        "libavcodec.so.58",
-        "libavformat.so.58",
-        "libavutil.so.56",
-        "libswscale.so.5",
-        "libswresample.so.3",
-    ],
+    out_shared_libs = SHARED_LIBS,
     deps = [
         "@com_github_cisco_openh264//:openh264",
     ],
     visibility = ["//visibility:public"],
 )
+
+collect_shared_libs(":ffmpeg", SHARED_LIBS)
