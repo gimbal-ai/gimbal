@@ -87,6 +87,8 @@ to access the UI.
     export AUTH0_ISSUER_BASE_URL='gimlet-dev.us.auth0.com'
     ```
 
+1. To point to a backend that isn't yours, set the `BACKEND` env var. We default to `${USER}.dev.app.gimletlabs.dev`
+
 1. From the `src/ui` directory, run `pnpm dev`.
 
     ```sh
