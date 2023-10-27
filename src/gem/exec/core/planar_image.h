@@ -46,11 +46,14 @@ enum class ImageFormat {
  * Accessing the data in the planes is also format dependent. Some formats don't have planes of the
  * same size, so `Width()` and `Height()` represent the width and height of the image itself and
  * don't necessarily correspond to the width and height of the planes.
+ *
+ * Implementations of this interface are under PlanarImageFor<TImage>. See that class for how to
+ * implement a new image format.
  */
 class PlanarImage {
  public:
   struct Plane {
-    uint8_t* data;
+    const uint8_t* data;
     // Planes can have padding at the end of the row, so row stride specifies the distance in bytes
     // from a row to the next row. row_stride = ceil(width*bits/8) + padding_bytes.
     int row_stride;
@@ -66,9 +69,18 @@ class PlanarImage {
   virtual std::vector<Plane>& Planes() = 0;
 };
 
-template <typename TImage>
-StatusOr<std::vector<PlanarImage::Plane>> PlanesFromImage(TImage* image);
-
+/**
+ * To implement the interface for an image format, provide implementations for the following
+ * three functions in a cc file:
+ *   template <>
+ *   Status PlanarImageFor<TYourImageType>::BuildPlanes()
+ *
+ *   template<>
+ *   size_t PlanarImageFor<TYourImageType>::Width() const
+ *
+ *   template<>
+ *   size_t PlanarImageFor<TYourImageType>::Height() const
+ */
 template <typename TImage>
 class PlanarImageFor : public PlanarImage {
  public:
@@ -83,15 +95,16 @@ class PlanarImageFor : public PlanarImage {
   const std::vector<Plane>& Planes() const override { return planes_; }
   std::vector<Plane>& Planes() override { return planes_; }
 
-  size_t Width() const override { return image_->width(); }
-  size_t Height() const override { return image_->height(); }
+  // Width() and Height() need to be implemented with template specialization.
+  size_t Width() const override;
+  size_t Height() const override;
+
   ImageFormat Format() const override { return format_; }
 
  private:
-  Status BuildPlanes() {
-    GML_ASSIGN_OR_RETURN(planes_, PlanesFromImage(image_.get()));
-    return Status::OK();
-  }
+  // BuildPlanes() needs to be implemented with template specialization.
+  Status BuildPlanes();
+
   PlanarImageFor(std::unique_ptr<TImage> image) : image_(std::move(image)) {}
 
   std::unique_ptr<TImage> image_;

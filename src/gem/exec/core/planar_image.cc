@@ -24,24 +24,37 @@ namespace gml {
 namespace gem {
 namespace exec {
 namespace core {
-constexpr int kYUVImageMaxNumFrames = 3;
+
+// Interface implementation for mediapipe::YUVImage
 
 template <>
-StatusOr<std::vector<PlanarImage::Plane>> PlanesFromImage<mediapipe::YUVImage>(
-    mediapipe::YUVImage* image) {
-  std::vector<PlanarImage::Plane> planes;
+Status PlanarImageFor<mediapipe::YUVImage>::BuildPlanes() {
+  constexpr int kYUVImageMaxNumFrames = 3;
+
+  mediapipe::YUVImage* image = image_.get();
+
   for (int i = 0; i < kYUVImageMaxNumFrames; ++i) {
-    auto data = image->mutable_data(i);
+    auto data = image->data(i);
     if (data == nullptr) {
       break;
     }
     auto stride = image->stride(i);
-    planes.push_back(PlanarImage::Plane{
+    planes_.push_back(PlanarImage::Plane{
         data,
         stride,
     });
   }
-  return planes;
+  return Status::OK();
+}
+
+template <>
+size_t PlanarImageFor<mediapipe::YUVImage>::Width() const {
+  return image_->width();
+}
+
+template <>
+size_t PlanarImageFor<mediapipe::YUVImage>::Height() const {
+  return image_->height();
 }
 
 }  // namespace core
