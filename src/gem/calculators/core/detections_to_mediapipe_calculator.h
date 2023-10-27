@@ -29,10 +29,10 @@ namespace core {
  *  DetectionsToMediapipeCalculator Graph API:
  *
  *  Inputs:
- *    modelout::v1:ImageDetections proto
+ *    std::vector<internal::api::corepb::v1::Detection> list of detection protos.
  *
  *  Outputs:
- *    mediapipe::DetectionList proto
+ *    std::vector<mediapipe::Detection> proto
  */
 class DetectionsToMediapipeCalculator : public mediapipe::CalculatorBase {
  public:

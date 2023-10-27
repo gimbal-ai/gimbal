@@ -47,7 +47,7 @@ using ::gml::gem::exec::core::TensorShape;
  *    ORIG_IMAGE_SHAPE (1 x 2) original image shape [width, height]
  *
  *  Outputs:
- *    DetectionList a proto containing a list of detections for the image.
+ *    std::vector<Detection> a list of detection protos for the image.
  */
 class BoundingBoxTensorsToDetections : public mediapipe::CalculatorBase {
  public:

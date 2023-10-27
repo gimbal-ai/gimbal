@@ -34,7 +34,6 @@ using ::gml::gem::exec::core::DataType;
 using ::gml::gem::exec::core::TensorShape;
 using ::gml::gem::exec::cpu_tensor::CPUTensorPool;
 using ::gml::internal::api::core::v1::Detection;
-using ::gml::internal::api::core::v1::ImageDetections;
 using ::gml::internal::api::core::v1::NormalizedCenterRect;
 
 static constexpr char kBoundingBoxToDetectionsNode[] = R"pbtxt(
@@ -43,7 +42,7 @@ input_stream: "BOX_TENSOR:box_tensor"
 input_stream: "SCORE_TENSOR:score_tensor"
 input_stream: "INDEX_TENSOR:index_tensor"
 input_stream: "ORIG_IMAGE_SHAPE:image_shape"
-output_stream: "image_detections"
+output_stream: "detection_list"
 node_options {
   [type.googleapis.com/gml.gem.calculators.cpu_tensor.optionspb.BoundingBoxToDetectionsOptions] {
     index_to_label: "person"
@@ -123,12 +122,10 @@ TEST_P(BoundingBoxTensorsToDetectionsTest, converts_correctly) {
   shape_data[0] = test_case.height;
   shape_data[1] = test_case.width;
 
-  ImageDetections expected_image_detections;
-  expected_image_detections.set_image_width(test_case.width);
-  expected_image_detections.set_image_height(test_case.height);
+  std::vector<Detection> expected_detections(test_case.expected_rects.size());
 
   for (size_t i = 0; i < test_case.expected_rects.size(); ++i) {
-    auto* d = expected_image_detections.add_detection();
+    auto* d = &expected_detections[i];
     auto* rect = d->mutable_bounding_box();
     rect->set_xc(test_case.expected_rects[i][0]);
     rect->set_yc(test_case.expected_rects[i][1]);
@@ -145,8 +142,8 @@ TEST_P(BoundingBoxTensorsToDetectionsTest, converts_correctly) {
       .ForInput("INDEX_TENSOR", std::move(index_tensor), 0)
       .ForInput("ORIG_IMAGE_SHAPE", std::move(orig_image_shape), 0)
       .Run()
-      .ExpectOutput<ImageDetections>("", 0, 0,
-                                     ::gml::testing::proto::EqProtoMsg(expected_image_detections));
+      .ExpectOutput<std::vector<Detection>>(
+          "", 0, 0, ::testing::Pointwise(::gml::testing::proto::EqProto(), expected_detections));
 }
 
 INSTANTIATE_TEST_SUITE_P(

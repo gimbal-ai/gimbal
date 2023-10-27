@@ -32,7 +32,6 @@ using ::gml::gem::exec::core::DataType;
 using ::gml::gem::exec::core::TensorShape;
 using ::gml::gem::exec::cpu_tensor::CPUTensorPtr;
 using ::gml::internal::api::core::v1::Detection;
-using ::gml::internal::api::core::v1::ImageDetections;
 using ::gml::internal::api::core::v1::NormalizedCenterRect;
 
 constexpr std::string_view kBoxTag = "BOX_TENSOR";
@@ -85,7 +84,7 @@ absl::Status BoundingBoxTensorsToDetections::GetContract(mediapipe::CalculatorCo
   cc->Inputs().Tag(kScoreTag).Set<CPUTensorPtr>();
   cc->Inputs().Tag(kIndicesTag).Set<CPUTensorPtr>();
   cc->Inputs().Tag(kShapeTag).Set<CPUTensorPtr>();
-  cc->Outputs().Index(0).Set<ImageDetections>();
+  cc->Outputs().Index(0).Set<std::vector<Detection>>();
   return absl::OkStatus();
 }
 
@@ -139,12 +138,10 @@ absl::Status BoundingBoxTensorsToDetections::Process(mediapipe::CalculatorContex
 
   const auto* orig_shape_data = original_shape->TypedData<DataType::FLOAT32>();
 
-  ImageDetections detections;
-  detections.set_image_height(static_cast<int32_t>(orig_shape_data[0]));
-  detections.set_image_width(static_cast<int32_t>(orig_shape_data[1]));
+  std::vector<Detection> detections(indices->Shape()[0]);
 
   for (int index_idx = 0; index_idx < indices->Shape()[0]; ++index_idx) {
-    auto* d = detections.add_detection();
+    auto* d = &detections[index_idx];
 
     const auto* index_triple = &indices_data[index_idx * index_step];
     const auto batch_idx = index_triple[0];
@@ -160,7 +157,7 @@ absl::Status BoundingBoxTensorsToDetections::Process(mediapipe::CalculatorContex
     bounding_box_converter_(box_coords, orig_shape_data, d->mutable_bounding_box());
   }
 
-  auto packet = mediapipe::MakePacket<ImageDetections>(std::move(detections));
+  auto packet = mediapipe::MakePacket<std::vector<Detection>>(std::move(detections));
   packet = packet.At(cc->InputTimestamp());
   cc->Outputs().Index(0).AddPacket(std::move(packet));
 

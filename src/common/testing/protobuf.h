@@ -133,6 +133,10 @@ MATCHER_P(EqProtoMsg, msg, "") {
   return google::protobuf::util::MessageDifferencer::Equals(arg, msg);
 }
 
+MATCHER(EqProto, "") {
+  return google::protobuf::util::MessageDifferencer::Equals(std::get<0>(arg), std::get<1>(arg));
+}
+
 }  // namespace proto
 }  // namespace testing
 }  // namespace gml

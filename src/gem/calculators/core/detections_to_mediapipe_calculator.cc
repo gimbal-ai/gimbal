@@ -19,16 +19,17 @@
 #include <mediapipe/framework/calculator_registry.h>
 #include "mediapipe/framework/formats/detection.pb.h"
 #include "src/api/corepb/v1/mediastream.pb.h"
+#include "src/common/base/base.h"
 
 namespace gml {
 namespace gem {
 namespace calculators {
 namespace core {
-using ::gml::internal::api::core::v1::ImageDetections;
+using ::gml::internal::api::core::v1::Detection;
 
 absl::Status DetectionsToMediapipeCalculator::GetContract(mediapipe::CalculatorContract* cc) {
-  cc->Inputs().Index(0).Set<ImageDetections>();
-  cc->Outputs().Index(0).Set<mediapipe::DetectionList>();
+  cc->Inputs().Index(0).Set<std::vector<Detection>>();
+  cc->Outputs().Index(0).Set<std::vector<mediapipe::Detection>>();
   return absl::OkStatus();
 }
 
@@ -37,16 +38,16 @@ absl::Status DetectionsToMediapipeCalculator::Open(mediapipe::CalculatorContext*
 }
 
 absl::Status DetectionsToMediapipeCalculator::Process(mediapipe::CalculatorContext* cc) {
-  auto image_detections = cc->Inputs().Index(0).Get<ImageDetections>();
-  mediapipe::DetectionList output_detections;
+  const auto& detections = cc->Inputs().Index(0).Get<std::vector<Detection>>();
+  std::vector<mediapipe::Detection> mp_detections(detections.size());
 
-  for (const auto& detection : image_detections.detection()) {
+  for (const auto& [i, detection] : Enumerate(detections)) {
     auto xc = detection.bounding_box().xc();
     auto yc = detection.bounding_box().yc();
     auto width = detection.bounding_box().width();
     auto height = detection.bounding_box().height();
 
-    auto* mp_detection = output_detections.add_detection();
+    auto* mp_detection = &mp_detections[i];
     mp_detection->add_label(detection.label(0).label());
     mp_detection->add_score(detection.label(0).score());
     auto* location_data = mp_detection->mutable_location_data();
@@ -57,7 +58,7 @@ absl::Status DetectionsToMediapipeCalculator::Process(mediapipe::CalculatorConte
     bounding_box->set_width(width);
     bounding_box->set_height(height);
   }
-  auto packet = mediapipe::MakePacket<mediapipe::DetectionList>(std::move(output_detections));
+  auto packet = mediapipe::MakePacket<std::vector<mediapipe::Detection>>(std::move(mp_detections));
   packet = packet.At(cc->InputTimestamp());
   cc->Outputs().Index(0).AddPacket(std::move(packet));
   return absl::OkStatus();
