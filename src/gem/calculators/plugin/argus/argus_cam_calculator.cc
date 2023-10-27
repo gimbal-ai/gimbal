@@ -36,6 +36,7 @@ absl::Status ArgusCamSourceCalculator::GetContract(mediapipe::CalculatorContract
 
 absl::Status ArgusCamSourceCalculator::Open(mediapipe::CalculatorContext* /* cc */) {
   GML_ABSL_RETURN_IF_ERROR(argus_cam_.Init());
+  timestamp_ = 0;
   return absl::OkStatus();
 }
 
@@ -43,7 +44,10 @@ absl::Status ArgusCamSourceCalculator::Process(mediapipe::CalculatorContext* cc)
   absl::Status s;
 
   GML_ABSL_ASSIGN_OR_RETURN(std::unique_ptr<NvBufSurfaceWrapper> buf, argus_cam_.ConsumeFrame());
-  cc->Outputs().Index(0).Add(buf.release(), cc->InputTimestamp());
+  auto ts = mediapipe::Timestamp(timestamp_);
+  cc->Outputs().Index(0).Add(buf.release(), ts);
+
+  timestamp_++;
 
   return absl::OkStatus();
 }
