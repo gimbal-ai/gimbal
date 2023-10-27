@@ -18,13 +18,13 @@
 #include "src/gem/calculators/core/detections_to_mediapipe_calculator.h"
 #include <mediapipe/framework/calculator_registry.h>
 #include "mediapipe/framework/formats/detection.pb.h"
-#include "src/shared/modelout/v1/detection.pb.h"
+#include "src/api/corepb/v1/mediastream.pb.h"
 
 namespace gml {
 namespace gem {
 namespace calculators {
 namespace core {
-using ::gml::shared::modelout::v1::ImageDetections;
+using ::gml::internal::api::core::v1::ImageDetections;
 
 absl::Status DetectionsToMediapipeCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   cc->Inputs().Index(0).Set<ImageDetections>();

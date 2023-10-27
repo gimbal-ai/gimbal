@@ -30,11 +30,11 @@ gml_cc_library(
         "image_shape_cpu_tensor_calculator.h",
     ],
     deps = [
+        "//src/api/corepb/v1:corepb_cc_library",
         "//src/gem/calculators/core:cc_library",
         "//src/gem/calculators/plugin/cpu_tensor/optionspb:optionspb_cc_library",
         "//src/gem/exec/core:cc_library",
         "//src/gem/exec/plugin/cpu_tensor:cc_library",
-        "//src/shared/modelout/v1:modelout_cc_library",
         "@com_github_google_mediapipe//mediapipe/framework/formats:image_frame",
         "@com_github_google_mediapipe//mediapipe/framework/formats:image_frame_opencv",
         "@com_github_opencv_opencv//:opencv",

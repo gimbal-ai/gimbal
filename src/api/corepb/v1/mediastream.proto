@@ -17,9 +17,9 @@
 
 syntax = "proto3";
 
-package gml.shared.modelout.v1;
+package gml.internal.api.core.v1;
 
-option go_package = "gimletlabs.ai/gimlet/src/shared/modelout/v1;modelout";
+option go_package = "gimletlabs.ai/gimlet/src/api/corepb/v1;corepb";
 
 // Label represents a label with its confidence score.
 message Label {
@@ -37,4 +37,23 @@ message NormalizedCenterRect {
   float yc = 2;
   float width = 3;
   float height = 4;
+}
+
+// Detection represents a bounding-box style object detection.
+message Detection {
+  // Support sending multiple labels for a single bounding box with associated confidence scores.
+  // Labels should be sorted by their associated confidence scores, such that label[0].score is the
+  // highest of all label scores.
+  repeated Label label = 1;
+
+  NormalizedCenterRect bounding_box = 2;
+}
+
+// ImageDetections stores a list of all detections for a particular image. The image size is also
+// stored in order to ensure processing can maintain the aspect ratio.
+message ImageDetections {
+  repeated Detection detection = 1;
+
+  int32 image_width = 2;
+  int32 image_height = 3;
 }

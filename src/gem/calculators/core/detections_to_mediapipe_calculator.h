@@ -18,7 +18,7 @@
 #pragma once
 
 #include <mediapipe/framework/calculator_framework.h>
-#include "src/shared/modelout/v1/detection.pb.h"
+#include "src/api/corepb/v1/mediastream.pb.h"
 
 namespace gml {
 namespace gem {

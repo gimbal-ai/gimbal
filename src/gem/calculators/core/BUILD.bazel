@@ -28,8 +28,8 @@ gml_cc_library(
         "execution_context_calculator.h",
     ],
     deps = [
+        "//src/api/corepb/v1:corepb_cc_library",
         "//src/gem/exec/core:cc_library",
-        "//src/shared/modelout/v1:modelout_cc_library",
         "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
         "@com_github_google_mediapipe//mediapipe/framework/formats:detection_cc_proto",
     ],

@@ -18,20 +18,20 @@
 #include <mediapipe/framework/formats/image_frame.h>
 #include "mediapipe/framework/formats/detection.pb.h"
 
+#include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/testing/protobuf.h"
 #include "src/common/testing/testing.h"
 #include "src/gem/calculators/core/detections_to_mediapipe_calculator.h"
 #include "src/gem/testing/core/calculator_tester.h"
-#include "src/shared/modelout/v1/detection.pb.h"
 
 namespace gml {
 namespace gem {
 namespace calculators {
 namespace core {
 
-using ::gml::shared::modelout::v1::Detection;
-using ::gml::shared::modelout::v1::ImageDetections;
-using ::gml::shared::modelout::v1::NormalizedCenterRect;
+using ::gml::internal::api::core::v1::Detection;
+using ::gml::internal::api::core::v1::ImageDetections;
+using ::gml::internal::api::core::v1::NormalizedCenterRect;
 
 static constexpr char kDetectionsToMediapipeNode[] = R"pbtxt(
 calculator: "DetectionsToMediapipeCalculator"

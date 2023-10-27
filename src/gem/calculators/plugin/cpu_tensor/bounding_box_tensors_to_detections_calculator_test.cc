@@ -17,13 +17,13 @@
 
 #include <mediapipe/framework/formats/image_frame.h>
 
+#include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/testing/protobuf.h"
 #include "src/common/testing/testing.h"
 #include "src/gem/calculators/plugin/cpu_tensor/optionspb/bounding_box_tensors_to_detections_options.pb.h"
 #include "src/gem/exec/plugin/cpu_tensor/context.h"
 #include "src/gem/testing/core/calculator_tester.h"
 #include "src/gem/testing/plugin/cpu_tensor/operators.h"
-#include "src/shared/modelout/v1/detection.pb.h"
 
 namespace gml {
 namespace gem {
@@ -33,9 +33,9 @@ namespace cpu_tensor {
 using ::gml::gem::exec::core::DataType;
 using ::gml::gem::exec::core::TensorShape;
 using ::gml::gem::exec::cpu_tensor::CPUTensorPool;
-using ::gml::shared::modelout::v1::Detection;
-using ::gml::shared::modelout::v1::ImageDetections;
-using ::gml::shared::modelout::v1::NormalizedCenterRect;
+using ::gml::internal::api::core::v1::Detection;
+using ::gml::internal::api::core::v1::ImageDetections;
+using ::gml::internal::api::core::v1::NormalizedCenterRect;
 
 static constexpr char kBoundingBoxToDetectionsNode[] = R"pbtxt(
 calculator: "BoundingBoxTensorsToDetections"

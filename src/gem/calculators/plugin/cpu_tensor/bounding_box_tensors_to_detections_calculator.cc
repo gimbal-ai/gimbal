@@ -19,8 +19,8 @@
 
 #include "src/gem/exec/plugin/cpu_tensor/context.h"
 
+#include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/gem/calculators/plugin/cpu_tensor/bounding_box_tensors_to_detections_calculator.h"
-#include "src/shared/modelout/v1/detection.pb.h"
 
 namespace gml {
 namespace gem {
@@ -31,9 +31,9 @@ using ::gml::gem::calculators::cpu_tensor::optionspb::BoundingBoxToDetectionsOpt
 using ::gml::gem::exec::core::DataType;
 using ::gml::gem::exec::core::TensorShape;
 using ::gml::gem::exec::cpu_tensor::CPUTensorPtr;
-using ::gml::shared::modelout::v1::Detection;
-using ::gml::shared::modelout::v1::ImageDetections;
-using ::gml::shared::modelout::v1::NormalizedCenterRect;
+using ::gml::internal::api::core::v1::Detection;
+using ::gml::internal::api::core::v1::ImageDetections;
+using ::gml::internal::api::core::v1::NormalizedCenterRect;
 
 constexpr std::string_view kBoxTag = "BOX_TENSOR";
 constexpr std::string_view kScoreTag = "SCORE_TENSOR";

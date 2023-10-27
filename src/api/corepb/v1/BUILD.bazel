@@ -20,7 +20,10 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 
 proto_library(
     name = "corepb_proto",
-    srcs = ["cp_edge.proto"],
+    srcs = [
+        "cp_edge.proto",
+        "mediastream.proto",
+    ],
     visibility = ["//visibility:public"],
     deps = [
         "//src/common/typespb:typespb_proto",
@@ -32,8 +35,14 @@ proto_library(
 
 proto_cc_library(
     name = "corepb_cc_library",
-    srcs = ["cp_edge.pb.cc"],
-    hdrs = ["cp_edge.pb.h"],
+    srcs = [
+        "cp_edge.pb.cc",
+        "mediastream.pb.cc",
+    ],
+    hdrs = [
+        "cp_edge.pb.h",
+        "mediastream.pb.h",
+    ],
     visibility = ["//visibility:public"],
     deps = [
         "//src/common/typespb:typespb_cc_library",
@@ -47,6 +56,8 @@ proto_compile(
     outputs = [
         "cp_edge.pb.cc",
         "cp_edge.pb.h",
+        "mediastream.pb.cc",
+        "mediastream.pb.h",
     ],
     plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
     proto = "corepb_proto",
@@ -55,8 +66,14 @@ proto_compile(
 
 proto_compile(
     name = "corepb_go_compile",
-    output_mappings = ["cp_edge.pb.go=gimletlabs.ai/gimlet/src/api/corepb/v1/cp_edge.pb.go"],
-    outputs = ["cp_edge.pb.go"],
+    output_mappings = [
+        "cp_edge.pb.go=gimletlabs.ai/gimlet/src/api/corepb/v1/cp_edge.pb.go",
+        "mediastream.pb.go=gimletlabs.ai/gimlet/src/api/corepb/v1/mediastream.pb.go",
+    ],
+    outputs = [
+        "cp_edge.pb.go",
+        "mediastream.pb.go",
+    ],
     plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
     proto = "corepb_proto",
     visibility = ["//visibility:public"],
@@ -64,7 +81,10 @@ proto_compile(
 
 proto_go_library(
     name = "corepb_go_proto",
-    srcs = ["cp_edge.pb.go"],
+    srcs = [
+        "cp_edge.pb.go",
+        "mediastream.pb.go",
+    ],
     importpath = "gimletlabs.ai/gimlet/src/api/corepb/v1",
     visibility = ["//visibility:public"],
     deps = [

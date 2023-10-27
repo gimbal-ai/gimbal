@@ -17,11 +17,11 @@
 
 #pragma once
 
+#include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/gem/calculators/plugin/cpu_tensor/base.h"
 #include "src/gem/calculators/plugin/cpu_tensor/optionspb/bounding_box_tensors_to_detections_options.pb.h"
 #include "src/gem/exec/core/tensor.h"
 #include "src/gem/exec/plugin/cpu_tensor/context.h"
-#include "src/shared/modelout/v1/detection.pb.h"
 
 namespace gml {
 namespace gem {
@@ -66,7 +66,7 @@ class BoundingBoxTensorsToDetections : public mediapipe::CalculatorBase {
   optionspb::BoundingBoxToDetectionsOptions options_;
 
   using BoundingBoxConvFunc = std::function<void(
-      const float*, const float*, ::gml::shared::modelout::v1::NormalizedCenterRect*)>;
+      const float*, const float*, ::gml::internal::api::core::v1::NormalizedCenterRect*)>;
   BoundingBoxConvFunc bounding_box_converter_;
 };
 
