@@ -46,6 +46,11 @@ message DeviceInfo {
   // The fleet that the device is in.
   gml.types.UUID fleet_id = 4
       [ (gogoproto.customname) = "FleetID", (gogoproto.moretags) = 'db:"fleet_id"' ];
+  // The last time the controlplane has heard from the device.
+  int64 last_heartbeat_ns = 5 [
+    (gogoproto.customname) = "LastHeartbeatNS",
+    (gogoproto.moretags) = 'db:"last_heartbeat_ns"'
+  ];
 }
 
 message CreateFleetRequest {
