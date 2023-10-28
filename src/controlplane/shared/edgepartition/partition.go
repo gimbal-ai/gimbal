@@ -81,11 +81,19 @@ func EdgeIDToPartition(id uuid.UUID) string {
 }
 
 func EdgeToCPNATSTopic(edgeID uuid.UUID, topic corepb.EdgeCPTopic, isDurable bool) (string, error) {
+	return edgeToCPNATSTopic(EdgeIDToPartition(edgeID), edgeID.String(), topic, isDurable)
+}
+
+func CPToEdgeNATSTopicBase(edgeID uuid.UUID) (string, error) {
+	return fmt.Sprintf("%s.%s.%s", cpToEdgePrefix, EdgeIDToPartition(edgeID), edgeID.String()), nil
+}
+
+func edgeToCPNATSTopic(partition string, edgeID string, topic corepb.EdgeCPTopic, isDurable bool) (string, error) {
 	gen := func(str string) string {
 		if isDurable {
 			str = "Durable" + str
 		}
-		return fmt.Sprintf("%s.%s.%s.%s", edgeToCPPrefix, EdgeIDToPartition(edgeID), edgeID.String(), str)
+		return fmt.Sprintf("%s.%s.%s.%s", edgeToCPPrefix, partition, edgeID, str)
 	}
 	switch topic {
 	case corepb.EDGE_CP_TOPIC_STATUS:
@@ -95,6 +103,6 @@ func EdgeToCPNATSTopic(edgeID uuid.UUID, topic corepb.EdgeCPTopic, isDurable boo
 	}
 }
 
-func CPToEdgeNATSTopicBase(edgeID uuid.UUID) (string, error) {
-	return fmt.Sprintf("%s.%s.%s", cpToEdgePrefix, EdgeIDToPartition(edgeID), edgeID.String()), nil
+func EdgeToCPNATSPartitionTopic(partition string, topic corepb.EdgeCPTopic, isDurable bool) (string, error) {
+	return edgeToCPNATSTopic(partition, "*", topic, isDurable)
 }

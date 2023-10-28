@@ -122,6 +122,37 @@ func TestEdgeToCPNATSTopic(t *testing.T) {
 	}
 }
 
+func TestEdgeToCPNATSPartitionTopic(t *testing.T) {
+	partition := "6ba"
+
+	tests := []struct {
+		name     string
+		expected string
+		topic    corepb.EdgeCPTopic
+		durable  bool
+	}{
+		{
+			name:     "status",
+			expected: "e2cp.6ba.*.status",
+			topic:    corepb.EDGE_CP_TOPIC_STATUS,
+			durable:  false,
+		},
+		{
+			name:     "Durablestatus",
+			expected: "e2cp.6ba.*.Durablestatus",
+			topic:    corepb.EDGE_CP_TOPIC_STATUS,
+			durable:  true,
+		},
+	}
+
+	for _, test := range tests {
+		actual, err := edgepartition.EdgeToCPNATSPartitionTopic(partition, test.topic, test.durable)
+
+		require.Nil(t, err)
+		assert.Equal(t, test.expected, actual)
+	}
+}
+
 func TestCPToEdgeNATSTopicBase(t *testing.T) {
 	id, _ := uuid.FromString("6ba7b810-9dad-11d1-80b4-00c04fd430c8") // Example UUID
 	actual, err := edgepartition.CPToEdgeNATSTopicBase(id)
