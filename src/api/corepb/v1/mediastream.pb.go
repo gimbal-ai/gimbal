@@ -6,6 +6,7 @@ package corepb
 import (
 	encoding_binary "encoding/binary"
 	fmt "fmt"
+	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
 	io "io"
 	math "math"
@@ -194,10 +195,144 @@ func (m *Detection) GetBoundingBox() *NormalizedCenterRect {
 	return nil
 }
 
+type DetectionList struct {
+	Detection []*Detection `protobuf:"bytes,1,rep,name=detection,proto3" json:"detection,omitempty"`
+}
+
+func (m *DetectionList) Reset()      { *m = DetectionList{} }
+func (*DetectionList) ProtoMessage() {}
+func (*DetectionList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d0e2e756820efd7b, []int{3}
+}
+func (m *DetectionList) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *DetectionList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_DetectionList.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *DetectionList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DetectionList.Merge(m, src)
+}
+func (m *DetectionList) XXX_Size() int {
+	return m.Size()
+}
+func (m *DetectionList) XXX_DiscardUnknown() {
+	xxx_messageInfo_DetectionList.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DetectionList proto.InternalMessageInfo
+
+func (m *DetectionList) GetDetection() []*Detection {
+	if m != nil {
+		return m.Detection
+	}
+	return nil
+}
+
+type ImageOverlayChunk struct {
+	FrameNumber int64 `protobuf:"varint,1,opt,name=frame_number,json=frameNumber,proto3" json:"frame_number,omitempty"`
+	EOF         bool  `protobuf:"varint,2,opt,name=eof,proto3" json:"eof,omitempty"`
+	// Types that are valid to be assigned to Overlay:
+	//
+	//	*ImageOverlayChunk_Detections
+	Overlay isImageOverlayChunk_Overlay `protobuf_oneof:"overlay"`
+}
+
+func (m *ImageOverlayChunk) Reset()      { *m = ImageOverlayChunk{} }
+func (*ImageOverlayChunk) ProtoMessage() {}
+func (*ImageOverlayChunk) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d0e2e756820efd7b, []int{4}
+}
+func (m *ImageOverlayChunk) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ImageOverlayChunk) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ImageOverlayChunk.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ImageOverlayChunk) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ImageOverlayChunk.Merge(m, src)
+}
+func (m *ImageOverlayChunk) XXX_Size() int {
+	return m.Size()
+}
+func (m *ImageOverlayChunk) XXX_DiscardUnknown() {
+	xxx_messageInfo_ImageOverlayChunk.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ImageOverlayChunk proto.InternalMessageInfo
+
+type isImageOverlayChunk_Overlay interface {
+	isImageOverlayChunk_Overlay()
+	Equal(interface{}) bool
+	MarshalTo([]byte) (int, error)
+	Size() int
+}
+
+type ImageOverlayChunk_Detections struct {
+	Detections *DetectionList `protobuf:"bytes,100,opt,name=detections,proto3,oneof" json:"detections,omitempty"`
+}
+
+func (*ImageOverlayChunk_Detections) isImageOverlayChunk_Overlay() {}
+
+func (m *ImageOverlayChunk) GetOverlay() isImageOverlayChunk_Overlay {
+	if m != nil {
+		return m.Overlay
+	}
+	return nil
+}
+
+func (m *ImageOverlayChunk) GetFrameNumber() int64 {
+	if m != nil {
+		return m.FrameNumber
+	}
+	return 0
+}
+
+func (m *ImageOverlayChunk) GetEOF() bool {
+	if m != nil {
+		return m.EOF
+	}
+	return false
+}
+
+func (m *ImageOverlayChunk) GetDetections() *DetectionList {
+	if x, ok := m.GetOverlay().(*ImageOverlayChunk_Detections); ok {
+		return x.Detections
+	}
+	return nil
+}
+
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*ImageOverlayChunk) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
+		(*ImageOverlayChunk_Detections)(nil),
+	}
+}
+
 func init() {
 	proto.RegisterType((*Label)(nil), "gml.internal.api.core.v1.Label")
 	proto.RegisterType((*NormalizedCenterRect)(nil), "gml.internal.api.core.v1.NormalizedCenterRect")
 	proto.RegisterType((*Detection)(nil), "gml.internal.api.core.v1.Detection")
+	proto.RegisterType((*DetectionList)(nil), "gml.internal.api.core.v1.DetectionList")
+	proto.RegisterType((*ImageOverlayChunk)(nil), "gml.internal.api.core.v1.ImageOverlayChunk")
 }
 
 func init() {
@@ -205,29 +340,38 @@ func init() {
 }
 
 var fileDescriptor_d0e2e756820efd7b = []byte{
-	// 337 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x91, 0xb1, 0x4e, 0xf3, 0x30,
-	0x10, 0xc7, 0xe3, 0xf4, 0x6b, 0xa5, 0xba, 0x9f, 0xbe, 0x21, 0xaa, 0x3e, 0x65, 0x3a, 0xaa, 0xb2,
-	0x74, 0xc1, 0x51, 0x5b, 0x31, 0xb1, 0x15, 0x46, 0x84, 0x44, 0x46, 0x16, 0xe4, 0x38, 0x56, 0x6a,
-	0xc9, 0x89, 0xa3, 0xc4, 0x94, 0x94, 0x89, 0x47, 0x60, 0xe1, 0x1d, 0x78, 0x14, 0xc6, 0x8e, 0x1d,
-	0xa9, 0xbb, 0x30, 0xf6, 0x11, 0x90, 0x93, 0x56, 0x0c, 0xd0, 0xed, 0x7e, 0xa7, 0xbb, 0x9f, 0xee,
-	0xaf, 0xc3, 0xa7, 0x65, 0xc1, 0x02, 0x9a, 0x8b, 0x80, 0xa9, 0x82, 0xe7, 0x51, 0xb0, 0x18, 0x07,
-	0x29, 0x8f, 0x05, 0x2d, 0x75, 0xc1, 0x69, 0x4a, 0xf2, 0x42, 0x69, 0xe5, 0xf9, 0x49, 0x2a, 0x89,
-	0xc8, 0x34, 0x2f, 0x32, 0x2a, 0x09, 0xcd, 0x05, 0xb1, 0xd3, 0x64, 0x31, 0x1e, 0x4e, 0x71, 0xfb,
-	0x9a, 0x46, 0x5c, 0x7a, 0x7d, 0xdc, 0x96, 0xb6, 0xf0, 0xd1, 0x00, 0x8d, 0xba, 0x61, 0x03, 0xb6,
-	0x5b, 0xda, 0x51, 0xdf, 0x1d, 0xa0, 0x91, 0x1b, 0x36, 0x30, 0x8c, 0x71, 0xff, 0x46, 0x15, 0x29,
-	0x95, 0xe2, 0x89, 0xc7, 0x97, 0xdc, 0x7a, 0x43, 0xce, 0xb4, 0xf7, 0x0f, 0xbb, 0x15, 0xab, 0x05,
-	0x6e, 0xe8, 0x56, 0xcc, 0xf2, 0x92, 0xed, 0x57, 0xdd, 0x25, 0xb3, 0xb6, 0x47, 0x11, 0xeb, 0xb9,
-	0xdf, 0x6a, 0x6c, 0x35, 0x78, 0xff, 0x71, 0x67, 0xce, 0x45, 0x32, 0xd7, 0xfe, 0x9f, 0xba, 0xbd,
-	0xa7, 0xe1, 0x2b, 0xc2, 0xdd, 0x2b, 0xae, 0x39, 0xd3, 0x42, 0x65, 0xde, 0xf9, 0xf7, 0x7d, 0xad,
-	0x51, 0x6f, 0x72, 0x42, 0x8e, 0x45, 0x22, 0x75, 0x9e, 0x43, 0x80, 0x5b, 0xfc, 0x37, 0x52, 0x0f,
-	0x59, 0x2c, 0xb2, 0xe4, 0x3e, 0x52, 0x55, 0x7d, 0x4c, 0x6f, 0x42, 0x8e, 0x6f, 0xff, 0x16, 0x2c,
-	0xec, 0x1d, 0x1c, 0x33, 0x55, 0xcd, 0xd8, 0x6a, 0x03, 0xce, 0x7a, 0x03, 0xce, 0x6e, 0x03, 0xe8,
-	0xd9, 0x00, 0x7a, 0x33, 0x80, 0xde, 0x0d, 0xa0, 0x95, 0x01, 0xf4, 0x61, 0x00, 0x7d, 0x1a, 0x70,
-	0x76, 0x06, 0xd0, 0xcb, 0x16, 0x9c, 0xd5, 0x16, 0x9c, 0xf5, 0x16, 0x9c, 0xbb, 0xb3, 0x44, 0xa4,
-	0x92, 0x6b, 0x49, 0xa3, 0x92, 0x50, 0x11, 0x34, 0x14, 0xfc, 0x78, 0xde, 0x45, 0x53, 0x45, 0x9d,
-	0xfa, 0x71, 0xd3, 0xaf, 0x00, 0x00, 0x00, 0xff, 0xff, 0xda, 0x02, 0x42, 0x92, 0xdf, 0x01, 0x00,
-	0x00,
+	// 487 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x52, 0x41, 0x6f, 0xd3, 0x30,
+	0x18, 0x8d, 0x53, 0xb6, 0x51, 0x77, 0x20, 0x11, 0x4d, 0x28, 0x70, 0xf0, 0x46, 0x76, 0xa0, 0x17,
+	0x1c, 0x6d, 0x13, 0x07, 0xc4, 0x89, 0x0e, 0x10, 0x93, 0xa6, 0x4d, 0xf8, 0xc8, 0xa5, 0x72, 0x1c,
+	0x37, 0xb1, 0x48, 0xe2, 0xc8, 0x71, 0x4a, 0xcb, 0x89, 0x9f, 0xc0, 0x85, 0xdf, 0x00, 0x3f, 0x85,
+	0x63, 0x8f, 0x3b, 0x21, 0x9a, 0x5e, 0x38, 0xee, 0x27, 0x20, 0x3b, 0x6d, 0x87, 0x04, 0x95, 0xb8,
+	0x7d, 0xef, 0xc9, 0xef, 0x7d, 0xef, 0x59, 0x1f, 0x3c, 0xac, 0x14, 0x0b, 0x69, 0x29, 0x42, 0x26,
+	0x15, 0x2f, 0xa3, 0x70, 0x7c, 0x14, 0xe6, 0x3c, 0x16, 0xb4, 0xd2, 0x8a, 0xd3, 0x1c, 0x97, 0x4a,
+	0x6a, 0xe9, 0xf9, 0x49, 0x9e, 0x61, 0x51, 0x68, 0xae, 0x0a, 0x9a, 0x61, 0x5a, 0x0a, 0x6c, 0x5e,
+	0xe3, 0xf1, 0xd1, 0xc3, 0x67, 0x3a, 0x15, 0x2a, 0x1e, 0x96, 0x54, 0xe9, 0x69, 0x98, 0x08, 0x9d,
+	0xd6, 0x11, 0x66, 0x32, 0x0f, 0x13, 0x99, 0xc8, 0xd0, 0x8a, 0xa3, 0x7a, 0x64, 0x91, 0x05, 0x76,
+	0x6a, 0x4d, 0x83, 0x13, 0xb8, 0x75, 0x4e, 0x23, 0x9e, 0x79, 0x7b, 0x70, 0x2b, 0x33, 0x83, 0x0f,
+	0x0e, 0x40, 0xbf, 0x4b, 0x5a, 0x60, 0xd8, 0xca, 0x6c, 0xf1, 0xdd, 0x03, 0xd0, 0x77, 0x49, 0x0b,
+	0x82, 0x18, 0xee, 0x5d, 0x48, 0x95, 0xd3, 0x4c, 0x7c, 0xe4, 0xf1, 0x29, 0x37, 0x91, 0x08, 0x67,
+	0xda, 0xbb, 0x0b, 0xdd, 0x09, 0xb3, 0x06, 0x2e, 0x71, 0x27, 0xcc, 0xe0, 0x29, 0x5b, 0x4a, 0xdd,
+	0x29, 0x33, 0x6e, 0x1f, 0x44, 0xac, 0x53, 0xbf, 0xd3, 0xba, 0x59, 0xe0, 0xdd, 0x87, 0xdb, 0x29,
+	0x17, 0x49, 0xaa, 0xfd, 0x5b, 0x96, 0x5e, 0xa2, 0xe0, 0x0b, 0x80, 0xdd, 0x97, 0x5c, 0x73, 0xa6,
+	0x85, 0x2c, 0xbc, 0xa7, 0x37, 0xf9, 0x3a, 0xfd, 0xde, 0xf1, 0x3e, 0xde, 0xf4, 0x1b, 0xd8, 0xf6,
+	0x59, 0x15, 0x78, 0x0b, 0x77, 0x23, 0x59, 0x17, 0xb1, 0x28, 0x92, 0x61, 0x24, 0x27, 0x36, 0x4c,
+	0xef, 0x18, 0x6f, 0x56, 0xff, 0xab, 0x18, 0xe9, 0xad, 0x3c, 0x06, 0x72, 0x12, 0x10, 0x78, 0x67,
+	0x1d, 0xeb, 0x5c, 0x54, 0xda, 0x7b, 0x01, 0xbb, 0xf1, 0x8a, 0x58, 0xc6, 0x3b, 0xdc, 0xbc, 0x60,
+	0xad, 0x25, 0x37, 0xaa, 0xe0, 0x2b, 0x80, 0xf7, 0xce, 0x72, 0x9a, 0xf0, 0xcb, 0x31, 0x57, 0x19,
+	0x9d, 0x9e, 0xa6, 0x75, 0xf1, 0xde, 0x7b, 0x04, 0x77, 0x47, 0x8a, 0xe6, 0x7c, 0x58, 0xd4, 0x79,
+	0xc4, 0x95, 0xfd, 0xd9, 0x0e, 0xe9, 0x59, 0xee, 0xc2, 0x52, 0xde, 0x03, 0xd8, 0xe1, 0x72, 0x64,
+	0x6b, 0xdd, 0x1e, 0xec, 0x34, 0x3f, 0xf6, 0x3b, 0xaf, 0x2e, 0x5f, 0x13, 0xc3, 0x79, 0x67, 0x10,
+	0xae, 0x17, 0x54, 0x7e, 0x6c, 0x8b, 0x3f, 0xfe, 0x8f, 0x5c, 0xa6, 0xd3, 0x1b, 0x87, 0xfc, 0x21,
+	0x1e, 0x74, 0xe1, 0x8e, 0x6c, 0x83, 0x0d, 0xd8, 0x6c, 0x8e, 0x9c, 0xab, 0x39, 0x72, 0xae, 0xe7,
+	0x08, 0x7c, 0x6a, 0x10, 0xf8, 0xd6, 0x20, 0xf0, 0xbd, 0x41, 0x60, 0xd6, 0x20, 0xf0, 0xb3, 0x41,
+	0xe0, 0x57, 0x83, 0x9c, 0xeb, 0x06, 0x81, 0xcf, 0x0b, 0xe4, 0xcc, 0x16, 0xc8, 0xb9, 0x5a, 0x20,
+	0xe7, 0xdd, 0x93, 0x44, 0xe4, 0x19, 0xd7, 0x19, 0x8d, 0x2a, 0x4c, 0x45, 0xd8, 0xa2, 0xf0, 0xaf,
+	0xab, 0x7f, 0xde, 0x4e, 0xd1, 0xb6, 0x3d, 0xce, 0x93, 0xdf, 0x01, 0x00, 0x00, 0xff, 0xff, 0xb0,
+	0x53, 0x6d, 0x13, 0x18, 0x03, 0x00, 0x00,
 }
 
 func (this *Label) Equal(that interface{}) bool {
@@ -322,6 +466,95 @@ func (this *Detection) Equal(that interface{}) bool {
 	}
 	return true
 }
+func (this *DetectionList) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*DetectionList)
+	if !ok {
+		that2, ok := that.(DetectionList)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if len(this.Detection) != len(that1.Detection) {
+		return false
+	}
+	for i := range this.Detection {
+		if !this.Detection[i].Equal(that1.Detection[i]) {
+			return false
+		}
+	}
+	return true
+}
+func (this *ImageOverlayChunk) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ImageOverlayChunk)
+	if !ok {
+		that2, ok := that.(ImageOverlayChunk)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.FrameNumber != that1.FrameNumber {
+		return false
+	}
+	if this.EOF != that1.EOF {
+		return false
+	}
+	if that1.Overlay == nil {
+		if this.Overlay != nil {
+			return false
+		}
+	} else if this.Overlay == nil {
+		return false
+	} else if !this.Overlay.Equal(that1.Overlay) {
+		return false
+	}
+	return true
+}
+func (this *ImageOverlayChunk_Detections) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ImageOverlayChunk_Detections)
+	if !ok {
+		that2, ok := that.(ImageOverlayChunk_Detections)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Detections.Equal(that1.Detections) {
+		return false
+	}
+	return true
+}
 func (this *Label) GoString() string {
 	if this == nil {
 		return "nil"
@@ -360,6 +593,40 @@ func (this *Detection) GoString() string {
 	}
 	s = append(s, "}")
 	return strings.Join(s, "")
+}
+func (this *DetectionList) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&corepb.DetectionList{")
+	if this.Detection != nil {
+		s = append(s, "Detection: "+fmt.Sprintf("%#v", this.Detection)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ImageOverlayChunk) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 7)
+	s = append(s, "&corepb.ImageOverlayChunk{")
+	s = append(s, "FrameNumber: "+fmt.Sprintf("%#v", this.FrameNumber)+",\n")
+	s = append(s, "EOF: "+fmt.Sprintf("%#v", this.EOF)+",\n")
+	if this.Overlay != nil {
+		s = append(s, "Overlay: "+fmt.Sprintf("%#v", this.Overlay)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ImageOverlayChunk_Detections) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&corepb.ImageOverlayChunk_Detections{` +
+		`Detections:` + fmt.Sprintf("%#v", this.Detections) + `}`}, ", ")
+	return s
 }
 func valueToGoStringMediastream(v interface{}, typ string) string {
 	rv := reflect.ValueOf(v)
@@ -501,6 +768,113 @@ func (m *Detection) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *DetectionList) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *DetectionList) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *DetectionList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Detection) > 0 {
+		for iNdEx := len(m.Detection) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Detection[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintMediastream(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ImageOverlayChunk) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ImageOverlayChunk) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ImageOverlayChunk) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Overlay != nil {
+		{
+			size := m.Overlay.Size()
+			i -= size
+			if _, err := m.Overlay.MarshalTo(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if m.EOF {
+		i--
+		if m.EOF {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.FrameNumber != 0 {
+		i = encodeVarintMediastream(dAtA, i, uint64(m.FrameNumber))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ImageOverlayChunk_Detections) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ImageOverlayChunk_Detections) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.Detections != nil {
+		{
+			size, err := m.Detections.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintMediastream(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa2
+	}
+	return len(dAtA) - i, nil
+}
 func encodeVarintMediastream(dAtA []byte, offset int, v uint64) int {
 	offset -= sovMediastream(v)
 	base := offset
@@ -568,6 +942,52 @@ func (m *Detection) Size() (n int) {
 	return n
 }
 
+func (m *DetectionList) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Detection) > 0 {
+		for _, e := range m.Detection {
+			l = e.Size()
+			n += 1 + l + sovMediastream(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *ImageOverlayChunk) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.FrameNumber != 0 {
+		n += 1 + sovMediastream(uint64(m.FrameNumber))
+	}
+	if m.EOF {
+		n += 2
+	}
+	if m.Overlay != nil {
+		n += m.Overlay.Size()
+	}
+	return n
+}
+
+func (m *ImageOverlayChunk_Detections) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Detections != nil {
+		l = m.Detections.Size()
+		n += 2 + l + sovMediastream(uint64(l))
+	}
+	return n
+}
+
 func sovMediastream(x uint64) (n int) {
 	return (math_bits.Len64(x|1) + 6) / 7
 }
@@ -610,6 +1030,43 @@ func (this *Detection) String() string {
 	s := strings.Join([]string{`&Detection{`,
 		`Label:` + repeatedStringForLabel + `,`,
 		`BoundingBox:` + strings.Replace(this.BoundingBox.String(), "NormalizedCenterRect", "NormalizedCenterRect", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *DetectionList) String() string {
+	if this == nil {
+		return "nil"
+	}
+	repeatedStringForDetection := "[]*Detection{"
+	for _, f := range this.Detection {
+		repeatedStringForDetection += strings.Replace(f.String(), "Detection", "Detection", 1) + ","
+	}
+	repeatedStringForDetection += "}"
+	s := strings.Join([]string{`&DetectionList{`,
+		`Detection:` + repeatedStringForDetection + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ImageOverlayChunk) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ImageOverlayChunk{`,
+		`FrameNumber:` + fmt.Sprintf("%v", this.FrameNumber) + `,`,
+		`EOF:` + fmt.Sprintf("%v", this.EOF) + `,`,
+		`Overlay:` + fmt.Sprintf("%v", this.Overlay) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ImageOverlayChunk_Detections) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ImageOverlayChunk_Detections{`,
+		`Detections:` + strings.Replace(fmt.Sprintf("%v", this.Detections), "DetectionList", "DetectionList", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -907,6 +1364,214 @@ func (m *Detection) Unmarshal(dAtA []byte) error {
 			if err := m.BoundingBox.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipMediastream(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthMediastream
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *DetectionList) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowMediastream
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: DetectionList: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: DetectionList: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Detection", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMediastream
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthMediastream
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthMediastream
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Detection = append(m.Detection, &Detection{})
+			if err := m.Detection[len(m.Detection)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipMediastream(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthMediastream
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ImageOverlayChunk) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowMediastream
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ImageOverlayChunk: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ImageOverlayChunk: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FrameNumber", wireType)
+			}
+			m.FrameNumber = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMediastream
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.FrameNumber |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field EOF", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMediastream
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.EOF = bool(v != 0)
+		case 100:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Detections", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMediastream
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthMediastream
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthMediastream
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &DetectionList{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Overlay = &ImageOverlayChunk_Detections{v}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

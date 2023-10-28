@@ -21,6 +21,8 @@ package gml.internal.api.core.v1;
 
 option go_package = "gimletlabs.ai/gimlet/src/api/corepb/v1;corepb";
 
+import "third_party/github.com/gogo/protobuf/gogoproto/gogo.proto";
+
 // Label represents a label with its confidence score.
 message Label {
   string label = 1;
@@ -47,4 +49,26 @@ message Detection {
   repeated Label label = 1;
 
   NormalizedCenterRect bounding_box = 2;
+}
+
+// DetectionList is a list of Detection protos. The only reason it's necessary is because oneofs
+// aren't allowed to have `repeated` fields.
+message DetectionList {
+  repeated Detection detection = 1;
+}
+
+// ImageOverlayChunk stores a chunk of image overlays (bounding boxes, segmentation masks, etc)
+// Each chunk only contains overlays for a single frame (not necessarily all the overlays for a
+// single frame).
+message ImageOverlayChunk {
+  // Monotonically increasing frame number.
+  int64 frame_number = 1;
+  // Whether this is the last overlay chunk for this frame
+  bool eof = 2 [ (gogoproto.customname) = "EOF" ];
+
+  oneof overlay {
+    // Each detection is a bounding box with a label.
+    DetectionList detections = 100;
+    // TODO(james): add segmentation overlay.
+  }
 }
