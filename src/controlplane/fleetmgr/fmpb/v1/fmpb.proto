@@ -24,6 +24,14 @@ option go_package = "gimletlabs.ai/gimlet/src/controlplane/fleetmgr/fmpb/v1;fmpb
 import "third_party/github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "src/common/typespb/uuid.proto";
 
+// DeviceStatus has all of the possible statuses a device can be in.
+enum DeviceStatus {
+  DEVICE_STATUS_UNKNOWN = 0;
+  DEVICE_STATUS_HEALTHY = 1;
+  DEVICE_STATUS_UNHEALTHY = 2;
+  DEVICE_STATUS_DISCONNECTED = 3;
+}
+
 message FleetInfo {
   // The ID of the fleet. Not filled in for create requests.
   gml.types.UUID id = 1 [ (gogoproto.customname) = "ID", (gogoproto.moretags) = 'db:"id"' ];
@@ -51,6 +59,7 @@ message DeviceInfo {
     (gogoproto.customname) = "LastHeartbeatNS",
     (gogoproto.moretags) = 'db:"last_heartbeat_ns"'
   ];
+  DeviceStatus status = 6;
 }
 
 message CreateFleetRequest {
