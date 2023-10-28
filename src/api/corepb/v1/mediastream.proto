@@ -72,3 +72,15 @@ message ImageOverlayChunk {
     // TODO(james): add segmentation overlay.
   }
 }
+
+// H264Chunk stores a chunk of h.264 encoded NAL units. The NAL units are stored packed into a
+// single byte array. Each chunk has the NAL units for no more than a single frame.
+message H264Chunk {
+  // Monotonically increasing frame number.
+  int64 frame_number = 1;
+  // Whether this is the last h264 chunk for this frame
+  bool eof = 2 [ (gogoproto.customname) = "EOF" ];
+
+  // NAL units in bytestream format (i.e. delineated by the 3-byte start code prefix 0x000001)
+  bytes nal_data = 3 [ (gogoproto.customname) = "NALData" ];
+}
