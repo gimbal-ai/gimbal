@@ -228,7 +228,7 @@ def _gml_deps():
     _bazel_repo(
         "com_github_benchsci_rules_nodejs_gazelle",
         patches = [
-            "//bazel/external:rules_nodejs_gazelle.default_types_deps.patch",
+            "//bazel/external:rules_nodejs_gazelle.builtins.patch",
             "//bazel/external:rules_nodejs_gazelle.import.patch",
             "//bazel/external:rules_nodejs_gazelle.snapshots.patch",
         ],

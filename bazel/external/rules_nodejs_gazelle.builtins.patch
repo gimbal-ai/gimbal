@@ -1,0 +1,34 @@
+diff --git a/gazelle/resolve.go b/gazelle/resolve.go
+index 0f72bad..e43c89b 100644
+--- a/gazelle/resolve.go
++++ b/gazelle/resolve.go
+@@ -231,7 +231,10 @@ func (lang *JS) Resolve(c *config.Config, ix *resolve.RuleIndex, rc *repo.Remote
+ 		}
+ 
+ 		// is it a builtin?
+-		if strings.HasPrefix(name, "node:") {
++
++		// is it a builtin?
++		if _, ok := BUILTINS[name]; ok || strings.HasPrefix(name, "node:") {
++			// add @types/node when using node.js builtin and have @types/nodes installed
+ 			if jsConfig.LookupTypes && r.Kind() == "ts_project" {
+ 				typesFound, npmLabel, _ := lang.isNpmDependency("@types/node", jsConfig)
+ 				if typesFound {
+@@ -240,17 +243,6 @@ func (lang *JS) Resolve(c *config.Config, ix *resolve.RuleIndex, rc *repo.Remote
+ 			}
+ 			continue
+ 		}
+-		if _, ok := BUILTINS[name]; ok {
+-			// add @types/node when using node.js builtin and have @types/nodes installed
+-			if jsConfig.LookupTypes && r.Kind() == "ts_project" {
+-				// does it have a corresponding @types/[...] declaration?
+-				typesFound, npmLabel, _ := lang.isNpmDependency("@types/"+name, jsConfig)
+-				if typesFound {
+-					depSet[fmt.Sprintf("%s@types/%s", npmLabel, name)] = true
+-				}
+-			}
+-			continue
+-		}
+ 
+ 		// Is user resolved
+ 		resolveResult := lang.tryResolve(name, c, ix, from)
