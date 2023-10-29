@@ -50,7 +50,7 @@ single_version_override(
 
 # rules_go/gazelle setup
 go_sdk = use_extension("@io_bazel_rules_go//go:extensions.bzl", "go_sdk")
-go_sdk.download(version = "1.21.1")
+go_sdk.download(version = "1.21.3")
 
 go_deps = use_extension("@bazel_gazelle//:extensions.bzl", "go_deps")
 go_deps.from_file(go_mod = "//:go.mod")
@@ -141,7 +141,7 @@ use_repo(pip, "pip")
 oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
 oci.pull(
     name = "distroless_nodejs",
-    digest = "sha256:64073c3dc7893a4f95f9199ed61155426be4c2623c1ac74e31968961d4a6f7b6",
-    image = "gcr.io/distroless/nodejs18-debian12",
+    digest = "sha256:d3b3e2272621ed6ac35bd7b95aeb3c703301ba5b0a20b3f14a9504ca96a8f086",
+    image = "gcr.io/distroless/nodejs20-debian12",
 )
 use_repo(oci, "distroless_nodejs")

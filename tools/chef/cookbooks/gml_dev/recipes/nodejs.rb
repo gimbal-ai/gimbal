@@ -41,5 +41,5 @@ end
 ENV["PATH"] = "/opt/gml_dev/tools/node/bin:#{ENV['PATH']}"
 
 execute "install node packages" do
-  command "npm install -g protobufjs@6.11.2 mega-linter-runner@7.4.0 pnpm@8.7.6 && npm cache clean --force"
+  command "npm install -g mega-linter-runner@7.4.0 pnpm@8.10.0 && npm cache clean --force"
 end

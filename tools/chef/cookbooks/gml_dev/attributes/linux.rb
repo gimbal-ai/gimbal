@@ -34,9 +34,9 @@ default["codecov"]["sha256"] =
   "648b599397548e4bb92429eec6391374c2cbb0edb835e3b3f03d4281c011f401"
 
 default["golang"]["download_path"] =
-  "https://go.dev/dl/go1.21.1.linux-amd64.tar.gz"
+  "https://go.dev/dl/go1.21.3.linux-amd64.tar.gz"
 default["golang"]["sha256"] =
-  "b3075ae1ce5dab85f89bc7905d1632de23ca196bd8336afd93fa97434cfa55ae"
+  "1241381b2843fae5a9707eec1f8fb2ef94d827990582c7c7c32f5bdfbfd420c8"
 
 default["golangci-lint"]["download_path"] =
   "https://github.com/golangci/golangci-lint/releases/download/v1.54.2/golangci-lint-1.54.2-linux-amd64.tar.gz"
@@ -44,9 +44,9 @@ default["golangci-lint"]["sha256"] =
   "17c9ca05253efe833d47f38caf670aad2202b5e6515879a99873fabd4c7452b3"
 
 default["nodejs"]["download_path"] =
-  "https://nodejs.org/dist/v18.16.0/node-v18.16.0-linux-x64.tar.xz"
+  "https://nodejs.org/dist/v20.9.0/node-v20.9.0-linux-x64.tar.xz"
 default["nodejs"]["sha256"] =
-  "44d93d9b4627fe5ae343012d855491d62c7381b236c347f7666a7ad070f26548"
+  "9033989810bf86220ae46b1381bdcdc6c83a0294869ba2ad39e1061f1e69217a"
 
 default["prototool"]["download_path"] =
   "https://github.com/uber/prototool/releases/download/v1.10.0/prototool-Linux-x86_64"
