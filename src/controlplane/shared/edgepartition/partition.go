@@ -38,7 +38,7 @@ const (
 	// KeySpaceSize is the number of hex characters to use for the keyspace size.
 	KeySpaceSize   = 3
 	edgeToCPPrefix = "e2cp"
-	cpToEdgePrefix = "e2cp"
+	cpToEdgePrefix = "cp2e"
 )
 
 func init() {

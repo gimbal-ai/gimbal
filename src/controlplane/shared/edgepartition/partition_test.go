@@ -156,7 +156,7 @@ func TestEdgeToCPNATSPartitionTopic(t *testing.T) {
 func TestCPToEdgeNATSTopicBase(t *testing.T) {
 	id, _ := uuid.FromString("6ba7b810-9dad-11d1-80b4-00c04fd430c8") // Example UUID
 	actual, err := edgepartition.CPToEdgeNATSTopicBase(id)
-	expected := "e2cp.6ba.6ba7b810-9dad-11d1-80b4-00c04fd430c8"
+	expected := "cp2e.6ba.6ba7b810-9dad-11d1-80b4-00c04fd430c8"
 
 	require.Nil(t, err)
 	assert.Equal(t, expected, actual)
@@ -165,7 +165,7 @@ func TestCPToEdgeNATSTopicBase(t *testing.T) {
 func TestCPToEdgeNATSTopic(t *testing.T) {
 	id, _ := uuid.FromString("6ba7b810-9dad-11d1-80b4-00c04fd430c8") // Example UUID
 	actual, err := edgepartition.CPToEdgeNATSTopic(id, corepb.CP_EDGE_TOPIC_STATUS)
-	expected := "e2cp.6ba.6ba7b810-9dad-11d1-80b4-00c04fd430c8.status"
+	expected := "cp2e.6ba.6ba7b810-9dad-11d1-80b4-00c04fd430c8.status"
 
 	require.Nil(t, err)
 	assert.Equal(t, expected, actual)
