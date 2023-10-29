@@ -42,6 +42,12 @@ message EdgeHeartbeat {
   int64 seq_id = 1 [ (gogoproto.customname) = "SeqID" ];
 }
 
+// EdgeHeartbeatAck is the message sent from the control plane to the edge device to acknowledge its
+// heartbeat.
+message EdgeHeartbeatAck {
+  int64 seq_id = 1 [ (gogoproto.customname) = "SeqID" ];
+}
+
 /****************************************************************************
  * Wrapper messages for each channel on the NATS bus from the edge.
  * They are named EdgeCP[*] for messages originating from the edge.
@@ -56,6 +62,7 @@ enum EdgeCPTopic {
 // CPEdgeTopic has the list of topics used between CP and edge.
 enum CPEdgeTopic {
   CP_EDGE_TOPIC_UNKNOWN = 0;
+  CP_EDGE_TOPIC_STATUS = 1;
 }
 
 // EdgeCPMetadata has basic routing information for shared bus.

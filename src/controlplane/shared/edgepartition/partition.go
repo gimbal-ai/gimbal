@@ -88,6 +88,19 @@ func CPToEdgeNATSTopicBase(edgeID uuid.UUID) (string, error) {
 	return fmt.Sprintf("%s.%s.%s", cpToEdgePrefix, EdgeIDToPartition(edgeID), edgeID.String()), nil
 }
 
+func CPToEdgeNATSTopic(edgeID uuid.UUID, topic corepb.CPEdgeTopic) (string, error) {
+	gen := func(str string) string {
+		base, _ := CPToEdgeNATSTopicBase(edgeID)
+		return fmt.Sprintf("%s.%s", base, str)
+	}
+	switch topic {
+	case corepb.CP_EDGE_TOPIC_STATUS:
+		return gen("status"), nil
+	default:
+		return "", fmt.Errorf("bad topic %s", topic.String())
+	}
+}
+
 func edgeToCPNATSTopic(partition string, edgeID string, topic corepb.EdgeCPTopic, isDurable bool) (string, error) {
 	gen := func(str string) string {
 		if isDurable {
