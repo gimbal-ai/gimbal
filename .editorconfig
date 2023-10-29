@@ -9,10 +9,13 @@ insert_final_newline = true
 # max_line_length = 120
 trim_trailing_whitespace = true
 
-[{**/testdata/**,.idea/**,**/.idea/**}]
-generated = true
-indent_size = unset
+[{**/testdata/**,.idea/**,**/.idea/**,**/.storybook/static/**}]
+charset = unset
+end_of_line = unset
 insert_final_newline = unset
+trim_trailing_whitespace = unset
+indent_style = unset
+indent_size = unset
 
 [{*.cc,*.h}]
 indent_size = unset
