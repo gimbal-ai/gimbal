@@ -20,6 +20,7 @@
 #include <mediapipe/framework/formats/yuv_image.h>
 
 #include "src/common/base/base.h"
+#include "src/common/base/error.h"
 
 namespace gml {
 namespace gem {
@@ -53,10 +54,15 @@ enum class ImageFormat {
 class PlanarImage {
  public:
   struct Plane {
+    Plane(const uint8_t* data, int row_stride) : data(data), row_stride(row_stride), bytes(0) {}
     const uint8_t* data;
     // Planes can have padding at the end of the row, so row stride specifies the distance in bytes
     // from a row to the next row. row_stride = ceil(width*bits/8) + padding_bytes.
     int row_stride;
+
+    // Number of bytes in the plane. This is set based on the format so template specializations of
+    // `PlanarImageFor` don't need to set it.
+    size_t bytes;
   };
 
   virtual ~PlanarImage() {}
@@ -89,6 +95,7 @@ class PlanarImageFor : public PlanarImage {
     auto planar_image = absl::WrapUnique(new PlanarImageFor<TImage>(std::move(image)));
     GML_RETURN_IF_ERROR(planar_image->BuildPlanes());
     planar_image->format_ = format;
+    GML_RETURN_IF_ERROR(planar_image->PlaneSizesFromFormat());
     return absl::WrapUnique<PlanarImage>(planar_image.release());
   }
 
@@ -104,6 +111,24 @@ class PlanarImageFor : public PlanarImage {
  private:
   // BuildPlanes() needs to be implemented with template specialization.
   Status BuildPlanes();
+
+  Status PlaneSizesFromFormat() {
+    switch (Format()) {
+      case ImageFormat::YUV_I420:
+        if (planes_.size() != 3) {
+          return error::Internal(
+              "PlanarImageFor<$0> created $1 planes instead of 3 for YUV_I420 "
+              "format",
+              typeid(TImage).name(), planes_.size());
+        }
+        planes_[0].bytes = planes_[0].row_stride * Height();
+        planes_[1].bytes = planes_[1].row_stride * ((Height() + 1) / 2);
+        planes_[2].bytes = planes_[1].bytes;
+        return Status::OK();
+      default:
+        return error::InvalidArgument("Unknown ImageFormat: $0", magic_enum::enum_name(Format()));
+    }
+  }
 
   PlanarImageFor(std::unique_ptr<TImage> image) : image_(std::move(image)) {}
 

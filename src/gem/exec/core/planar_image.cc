@@ -39,10 +39,7 @@ Status PlanarImageFor<mediapipe::YUVImage>::BuildPlanes() {
       break;
     }
     auto stride = image->stride(i);
-    planes_.push_back(PlanarImage::Plane{
-        data,
-        stride,
-    });
+    planes_.emplace_back(data, stride);
   }
   return Status::OK();
 }

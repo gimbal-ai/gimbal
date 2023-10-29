@@ -66,6 +66,10 @@ TEST(PlanarImageFor, YUVImage) {
   EXPECT_EQ(uv_stride, planar->Planes()[1].row_stride);
   EXPECT_EQ(uv_stride, planar->Planes()[2].row_stride);
 
+  EXPECT_EQ(y_size, planar->Planes()[0].bytes);
+  EXPECT_EQ(uv_size, planar->Planes()[1].bytes);
+  EXPECT_EQ(uv_size, planar->Planes()[2].bytes);
+
   for (size_t i = 0; i < planar->Height(); ++i) {
     for (size_t j = 0; j < planar->Width(); ++j) {
       EXPECT_EQ(1, planar->Planes()[0].data[i * y_stride + j]);
