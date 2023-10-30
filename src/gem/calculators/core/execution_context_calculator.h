@@ -20,6 +20,7 @@
 
 #include "src/common/base/base.h"
 #include "src/gem/exec/core/context.h"
+#include "src/gem/exec/core/control_context.h"
 
 namespace gml {
 namespace gem {
@@ -84,6 +85,9 @@ class ExecutionContextCalculator : public mediapipe::CalculatorBase {
  private:
   TExecutionContext* exec_ctx_;
 };
+
+using ControlExecutionContextCalculator =
+    ExecutionContextCalculator<exec::core::ControlExecutionContext>;
 
 }  // namespace core
 }  // namespace calculators
