@@ -15,7 +15,6 @@
 
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("//bazel:gml_build_system.bzl", "gml_cc_library", "gml_cc_test")
-load("//bazel:images.bzl", "gml_host_cuda_binary_image")
 
 package(default_visibility = [
     "//src/experimental:__subpackages__",
@@ -87,26 +86,33 @@ pkg_tar(
 
 # Because the test needs to be run on the Jeston device, we put the tests into container images.
 # The images can then be deployed on the device as part of manually testing.
-gml_host_cuda_binary_image(
-    name = "nvbuf_to_image_frame_test_image",
-    testonly = 1,
-    base = "//:cc_base_debug_image",
-    binary = ":nvbuf_to_image_frame_test",
-    multiarch = False,
-    tars = [
-        ":testdata",
-        ":ffmpeg_libs",
-    ],
-)
 
-gml_host_cuda_binary_image(
-    name = "nvbufsurf_planar_image_test_image",
-    testonly = 1,
-    base = "//:cc_base_debug_image",
-    binary = ":nvbufsurf_planar_image_test",
-    multiarch = False,
-    tars = [
-        ":testdata",
-        ":ffmpeg_libs",
-    ],
-)
+# These are disabled because they cause failures like:
+# //src/gem/calculators/plugin/argus:_nvbufsurf_planar_image_test_image_index_json: non-test target
+# TODO(oazizi): Investigate and fix.
+
+#load("//bazel:images.bzl", "gml_host_cuda_binary_image")
+#
+#gml_host_cuda_binary_image(
+#    name = "nvbuf_to_image_frame_test_image",
+#    testonly = 1,
+#    base = "//:cc_base_debug_image",
+#    binary = ":nvbuf_to_image_frame_test",
+#    multiarch = False,
+#    tars = [
+#        ":testdata",
+#        ":ffmpeg_libs",
+#    ],
+#)
+#
+#gml_host_cuda_binary_image(
+#    name = "nvbufsurf_planar_image_test_image",
+#    testonly = 1,
+#    base = "//:cc_base_debug_image",
+#    binary = ":nvbufsurf_planar_image_test",
+#    multiarch = False,
+#    tars = [
+#        ":testdata",
+#        ":ffmpeg_libs",
+#    ],
+#)
