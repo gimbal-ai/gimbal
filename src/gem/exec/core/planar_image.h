@@ -91,7 +91,7 @@ class PlanarImage {
 template <typename TImage>
 class PlanarImageFor : public PlanarImage {
  public:
-  static StatusOr<std::unique_ptr<PlanarImage>> Create(std::unique_ptr<TImage> image,
+  static StatusOr<std::unique_ptr<PlanarImage>> Create(std::shared_ptr<TImage> image,
                                                        ImageFormat format) {
     auto planar_image = absl::WrapUnique(new PlanarImageFor<TImage>(std::move(image)));
     GML_RETURN_IF_ERROR(planar_image->BuildPlanes());
@@ -131,9 +131,9 @@ class PlanarImageFor : public PlanarImage {
     }
   }
 
-  PlanarImageFor(std::unique_ptr<TImage> image) : image_(std::move(image)) {}
+  PlanarImageFor(std::shared_ptr<TImage> image) : image_(std::move(image)) {}
 
-  std::unique_ptr<TImage> image_;
+  std::shared_ptr<TImage> image_;
   ImageFormat format_;
   std::vector<PlanarImage::Plane> planes_;
 };

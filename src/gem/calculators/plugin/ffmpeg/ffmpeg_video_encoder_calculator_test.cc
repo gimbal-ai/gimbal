@@ -42,7 +42,7 @@ output_stream: "AV_PACKETS:av_packets"
 TEST(FFmpegVideoEncoderCalculator, runs_without_error) {
   testing::CalculatorTester tester(kFFmpegVideoEncoderNode);
 
-  auto yuv_image = std::make_unique<mediapipe::YUVImage>();
+  auto yuv_image = std::make_shared<mediapipe::YUVImage>();
 
   // TODO(james): refactor into common utility to test against a real image.
 

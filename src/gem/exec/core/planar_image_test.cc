@@ -25,7 +25,7 @@ namespace exec {
 namespace core {
 
 TEST(PlanarImageFor, YUVImage) {
-  auto yuv_image = std::make_unique<mediapipe::YUVImage>();
+  auto yuv_image = std::make_shared<mediapipe::YUVImage>();
   // Code for initializing YUVImage taken from mediapipe/util/image_frame_util.cc.
   const int width = 100;
   const int height = 200;

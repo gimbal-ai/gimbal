@@ -44,7 +44,7 @@ absl::Status ImageFrameToYUVPlanarImage::Open(mediapipe::CalculatorContext*) {
 absl::Status ImageFrameToYUVPlanarImage::Process(mediapipe::CalculatorContext* cc) {
   const auto& image_frame = cc->Inputs().Tag(kImageFrameTag).Get<mediapipe::ImageFrame>();
 
-  auto yuv_image = std::make_unique<mediapipe::YUVImage>();
+  auto yuv_image = std::make_shared<mediapipe::YUVImage>();
   mediapipe::image_frame_util::ImageFrameToYUVImage(image_frame, yuv_image.get());
 
   GML_ABSL_ASSIGN_OR_RETURN(auto planar,
