@@ -24,6 +24,8 @@ gml_cc_library(
     name = "cc_library",
     srcs = [
         "av_packet_wrapper.h",
+        "ffmpeg_video_encoder_calculator.cc",
+        "ffmpeg_video_encoder_calculator.h",
         "overlayed_ffmpeg_video_sink_calculator.cc",
         "overlayed_ffmpeg_video_sink_calculator.h",
     ],
@@ -32,12 +34,22 @@ gml_cc_library(
         "//src/gem/calculators/core:cc_library",
         "//src/gem/exec/core:cc_library",
         "@com_github_ffmpeg_ffmpeg//:ffmpeg",
+        "@com_github_google_mediapipe//mediapipe/framework/formats:video_stream_header",
     ],
 )
 
 gml_cc_test(
     name = "overlayed_ffmpeg_video_sink_calculator_test",
     srcs = ["overlayed_ffmpeg_video_sink_calculator_test.cc"],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "ffmpeg_video_encoder_calculator_test",
+    srcs = ["ffmpeg_video_encoder_calculator_test.cc"],
     deps = [
         ":cc_library",
         "//src/gem/testing/core:cc_library",

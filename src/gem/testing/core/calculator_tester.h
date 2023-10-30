@@ -112,7 +112,7 @@ class CalculatorTester : public mediapipe::CalculatorRunner {
   }
 
   template <typename TData>
-  TData Result(std::string tag, size_t index) {
+  const TData& Result(std::string tag, size_t index) {
     auto item_id = output_tag_map_->GetId(tag, index);
     auto& packet_idx = packet_index_per_output_[item_id];
 
