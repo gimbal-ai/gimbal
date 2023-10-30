@@ -40,7 +40,7 @@ Status PlanarImageFor<NvBufSurfaceWrapper>::BuildPlanes() {
     planes_[i].data = reinterpret_cast<uint8_t*>(image->surface().mappedAddr.addr[i]);
     planes_[i].row_stride = image->surface().planeParams.pitch[i];
 
-    if (planes_[i].data != nullptr) {
+    if (planes_[i].data == nullptr) {
       return error::Internal("Image plane pointer $0 is nullptr.", i);
     }
   }

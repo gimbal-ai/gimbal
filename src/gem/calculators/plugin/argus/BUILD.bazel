@@ -55,20 +55,58 @@ gml_cc_test(
     ],
 )
 
-# Package the testdata so that the image below has access to them.
+# Test is marked as manual, because it can only run on the Jeston device.
+gml_cc_test(
+    name = "nvbufsurf_planar_image_test",
+    srcs = [
+        "nvbufsurf_planar_image_test.cc",
+    ],
+    data = glob(["testdata/**/*"]),
+    tags = ["manual"],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+    ],
+)
+
+# Package the testdata so that the images below have access to them.
 pkg_tar(
-    name = "nvbuf_to_image_frame_test_data",
+    name = "testdata",
     srcs = glob(["testdata/**/*"]),
     package_dir = "/app/testdata",
 )
 
-# Because the test needs to be run on the Jeston device, we put the test into a container image.
-# This image can then be deployed on the device as part of manually testing.
+pkg_tar(
+    name = "ffmpeg_libs",
+    srcs = [
+        "@com_github_cisco_openh264//:shared_libs",
+        "@com_github_ffmpeg_ffmpeg//:shared_libs",
+    ],
+    package_dir = "/usr/lib/aarch64-linux-gnu",
+)
+
+# Because the test needs to be run on the Jeston device, we put the tests into container images.
+# The images can then be deployed on the device as part of manually testing.
 gml_host_cuda_binary_image(
     name = "nvbuf_to_image_frame_test_image",
     testonly = 1,
     base = "//:cc_base_debug_image",
     binary = ":nvbuf_to_image_frame_test",
     multiarch = False,
-    tars = [":nvbuf_to_image_frame_test_data"],
+    tars = [
+        ":testdata",
+        ":ffmpeg_libs",
+    ],
+)
+
+gml_host_cuda_binary_image(
+    name = "nvbufsurf_planar_image_test_image",
+    testonly = 1,
+    base = "//:cc_base_debug_image",
+    binary = ":nvbufsurf_planar_image_test",
+    multiarch = False,
+    tars = [
+        ":testdata",
+        ":ffmpeg_libs",
+    ],
 )
