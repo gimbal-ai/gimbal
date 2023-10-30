@@ -54,6 +54,7 @@ enum class ImageFormat {
 class PlanarImage {
  public:
   struct Plane {
+    Plane() = default;
     Plane(const uint8_t* data, int row_stride) : data(data), row_stride(row_stride), bytes(0) {}
     const uint8_t* data;
     // Planes can have padding at the end of the row, so row stride specifies the distance in bytes
