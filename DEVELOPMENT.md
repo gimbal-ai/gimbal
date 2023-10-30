@@ -4,7 +4,7 @@
 > gcloud auth is configured to log you out every 24h. You must re-login every 24h
 >
 > ```sh
-> gcloud auth login
+> gcloud auth login --update-adc
 > ```
 
 <!-- TOC -->
