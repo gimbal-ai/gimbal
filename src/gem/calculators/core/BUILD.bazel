@@ -26,6 +26,8 @@ gml_cc_library(
         "detections_to_mediapipe_calculator.cc",
         "detections_to_mediapipe_calculator.h",
         "execution_context_calculator.h",
+        "image_frame_to_yuv_planar_image.cc",
+        "image_frame_to_yuv_planar_image.h",
     ],
     deps = [
         "//src/api/corepb/v1:corepb_cc_library",
@@ -39,6 +41,17 @@ gml_cc_test(
     name = "detections_to_mediapipe_calculator_test",
     srcs = [
         "detections_to_mediapipe_calculator_test.cc",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "image_frame_to_yuv_planar_image_calculator_test",
+    srcs = [
+        "image_frame_to_yuv_planar_image_calculator_test.cc",
     ],
     deps = [
         ":cc_library",
