@@ -44,7 +44,7 @@ absl::Status ArgusCamSourceCalculator::Process(mediapipe::CalculatorContext* cc)
   absl::Status s;
 
   GML_ABSL_ASSIGN_OR_RETURN(std::unique_ptr<NvBufSurfaceWrapper> buf, argus_cam_.ConsumeFrame());
-
+  GML_ABSL_RETURN_IF_ERROR(buf->MapForCpu());
   // Convert to shared_ptr to give downstream mediapipe calculators flexibility,
   // specifically for use by the PlanarImage interface.
   std::shared_ptr<NvBufSurfaceWrapper> buf_shared = std::move(buf);
