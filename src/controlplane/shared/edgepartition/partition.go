@@ -96,6 +96,8 @@ func CPToEdgeNATSTopic(edgeID uuid.UUID, topic corepb.CPEdgeTopic) (string, erro
 	switch topic {
 	case corepb.CP_EDGE_TOPIC_STATUS:
 		return gen("status"), nil
+	case corepb.CP_EDGE_TOPIC_VIDEO:
+		return gen("video"), nil
 	default:
 		return "", fmt.Errorf("bad topic %s", topic.String())
 	}
@@ -111,6 +113,8 @@ func edgeToCPNATSTopic(partition string, edgeID string, topic corepb.EdgeCPTopic
 	switch topic {
 	case corepb.EDGE_CP_TOPIC_STATUS:
 		return gen("status"), nil
+	case corepb.EDGE_CP_TOPIC_VIDEO:
+		return gen("video"), nil
 	default:
 		return "", fmt.Errorf("bad topic %s", topic.String())
 	}

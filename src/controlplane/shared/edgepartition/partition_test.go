@@ -112,6 +112,18 @@ func TestEdgeToCPNATSTopic(t *testing.T) {
 			topic:    corepb.EDGE_CP_TOPIC_STATUS,
 			durable:  true,
 		},
+		{
+			name:     "video",
+			expected: "e2cp.6ba.6ba7b810-9dad-11d1-80b4-00c04fd430c8.video",
+			topic:    corepb.EDGE_CP_TOPIC_VIDEO,
+			durable:  false,
+		},
+		{
+			name:     "Durablevideo",
+			expected: "e2cp.6ba.6ba7b810-9dad-11d1-80b4-00c04fd430c8.Durablevideo",
+			topic:    corepb.EDGE_CP_TOPIC_VIDEO,
+			durable:  true,
+		},
 	}
 
 	for _, test := range tests {
@@ -141,6 +153,18 @@ func TestEdgeToCPNATSPartitionTopic(t *testing.T) {
 			name:     "Durablestatus",
 			expected: "e2cp.6ba.*.Durablestatus",
 			topic:    corepb.EDGE_CP_TOPIC_STATUS,
+			durable:  true,
+		},
+		{
+			name:     "video",
+			expected: "e2cp.6ba.*.video",
+			topic:    corepb.EDGE_CP_TOPIC_VIDEO,
+			durable:  false,
+		},
+		{
+			name:     "Durablevideo",
+			expected: "e2cp.6ba.*.Durablevideo",
+			topic:    corepb.EDGE_CP_TOPIC_VIDEO,
 			durable:  true,
 		},
 	}
