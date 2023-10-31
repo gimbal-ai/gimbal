@@ -112,13 +112,20 @@ message ListFleetsResponse {
   repeated FleetInfo fleets = 1;
 }
 
+message GetDeviceRequest {
+  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
+}
+
+message GetDeviceResponse {
+  DeviceInfo device = 1;
+}
+
 message ListDevicesRequest {
   // The fleetID of the fleet to get the devices of.
   gml.types.UUID fleet_id = 1 [ (gogoproto.customname) = "FleetID" ];
 }
 
 message ListDevicesResponse {
-  // The fleetID of the fleet to get the devices of.
   repeated DeviceInfo devices = 1;
 }
 
@@ -137,6 +144,8 @@ service FleetMgrEdgeService {
   rpc Register(RegisterRequest) returns (RegisterResponse);
   // UpdateStatus is used to update a devices's status, such as its last hearbeat.
   rpc UpdateStatus(UpdateStatusRequest) returns (UpdateStatusResponse);
+  // GetDevice gets the information about a particular device.
+  rpc GetDevice(GetDeviceRequest) returns (GetDeviceResponse);
   // ListDevices lists the edge devices in a fleet.
   rpc ListDevices(ListDevicesRequest) returns (ListDevicesResponse);
 }
