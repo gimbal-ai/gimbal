@@ -42,6 +42,8 @@ message FleetInfo {
   string name = 3 [ (gogoproto.moretags) = 'db:"name"' ];
   // Tags associated with the fleet.
   repeated string tags = 4 [ (gogoproto.moretags) = 'db:"tags"' ];
+  // The description of the fleet.
+  string description = 5 [ (gogoproto.moretags) = 'db:"description"' ];
 }
 
 message DeviceInfo {
