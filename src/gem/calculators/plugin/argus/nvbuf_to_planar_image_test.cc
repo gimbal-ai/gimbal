@@ -20,21 +20,24 @@
 
 #include <mediapipe/framework/calculator_framework.h>
 #include <mediapipe/framework/calculator_runner.h>
-#include <mediapipe/framework/formats/image_frame.h>
 
 #include "src/common/base/file.h"
 #include "src/common/testing/testing.h"
 
-#include "src/gem/calculators/plugin/argus/nvbuf_to_image_frame.h"
+#include "src/gem/calculators/plugin/argus/nvbuf_to_planar_image.h"
 #include "src/gem/devices/camera/argus/nvbufsurfwrapper.h"
+#include "src/gem/exec/core/planar_image.h"
 
 namespace gml {
 namespace gem {
 namespace calculators {
 namespace argus {
 
+using ::gml::gem::exec::core::ImageFormat;
+using ::gml::gem::exec::core::PlanarImageFor;
+
 constexpr char kGraph[] = R"pb(
-  calculator: "NvBufSurfToImageFrameCalculator"
+  calculator: "NvBufSurfToPlanarImageCalculator"
   input_stream: "nvbufsurface"
   output_stream: "image_frame"
 )pb";
@@ -47,7 +50,7 @@ char kBufYFilename[] = "/app/testdata/buf_y";
 char kBufUFilename[] = "/app/testdata/buf_u";
 char kBufVFilename[] = "/app/testdata/buf_v";
 
-TEST(NvBufSurfToImageFrameCalculator, conversion) {
+TEST(NvBufSurfToPlanarImageCalculator, conversion) {
   using ::gml::gem::devices::argus::NvBufSurfaceWrapper;
 
   // Prepare an input image.
@@ -90,14 +93,11 @@ TEST(NvBufSurfToImageFrameCalculator, conversion) {
 
   const std::vector<mediapipe::Packet>& output_packets = outputs.Index(0).packets;
   ASSERT_EQ(1, output_packets.size());
-  const auto& output_image = output_packets[0].Get<mediapipe::ImageFrame>();
+  const auto& output_image = output_packets[0].Get<PlanarImageFor<NvBufSurfaceWrapper>>();
 
   EXPECT_EQ(output_image.Width(), 1280);
   EXPECT_EQ(output_image.Height(), 720);
-  EXPECT_EQ(output_image.ChannelSize(), 1);
-  EXPECT_EQ(output_image.NumberOfChannels(), 3);
-  EXPECT_EQ(output_image.ByteDepth(), 1);
-  EXPECT_EQ(output_image.PixelDataSize(), 1280 * 720 * 3);
+  EXPECT_EQ(output_image.Format(), ImageFormat::YUV_I420);
 }
 
 }  // namespace argus
