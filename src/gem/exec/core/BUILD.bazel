@@ -48,5 +48,8 @@ gml_cc_test(
 gml_cc_test(
     name = "planar_image_test",
     srcs = ["planar_image_test.cc"],
-    deps = [":cc_library"],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core/testdata:cc_library",
+    ],
 )

@@ -53,5 +53,6 @@ gml_cc_test(
     deps = [
         ":cc_library",
         "//src/gem/testing/core:cc_library",
+        "//src/gem/testing/core/testdata:cc_library",
     ],
 )

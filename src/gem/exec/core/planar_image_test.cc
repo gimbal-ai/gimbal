@@ -18,6 +18,7 @@
 #include "src/gem/exec/core/planar_image.h"
 #include <mediapipe/framework/formats/yuv_image.h>
 #include "src/common/testing/testing.h"
+#include "src/gem/testing/core/testdata/test_image.h"
 
 namespace gml {
 namespace gem {
@@ -25,56 +26,46 @@ namespace exec {
 namespace core {
 
 TEST(PlanarImageFor, YUVImage) {
-  auto yuv_image = std::make_shared<mediapipe::YUVImage>();
-  // Code for initializing YUVImage taken from mediapipe/util/image_frame_util.cc.
-  const int width = 100;
-  const int height = 200;
-  const int uv_width = (width + 1) / 2;
-  const int uv_height = (height + 1) / 2;
-  // Align y_stride and uv_stride on 16-byte boundaries.
-  const int y_stride = (width + 15) & ~15;
-  const int uv_stride = (uv_width + 15) & ~15;
-  const int y_size = y_stride * height;
-  const int uv_size = uv_stride * uv_height;
-  uint8_t* data = reinterpret_cast<uint8_t*>(std::malloc(y_size + uv_size * 2));
-  std::function<void()> deallocate = [data]() { std::free(data); };
+  auto yuv_image_for_conversion = std::make_shared<mediapipe::YUVImage>();
+  testing::LoadTestImageAsYUVImage(yuv_image_for_conversion.get());
+  ASSERT_OK_AND_ASSIGN(
+      auto planar, PlanarImageFor<mediapipe::YUVImage>::Create(std::move(yuv_image_for_conversion),
+                                                               ImageFormat::YUV_I420));
 
-  uint8_t* y = data;
-  uint8_t* u = y + y_size;
-  uint8_t* v = u + uv_size;
+  auto expected_yuv_image = std::make_unique<mediapipe::YUVImage>();
+  testing::LoadTestImageAsYUVImage(expected_yuv_image.get());
 
-  for (int i = 0; i < y_size; i++) {
-    y[i] = 1;
-  }
-  for (int i = 0; i < uv_size; i++) {
-    u[i] = 2;
-    v[i] = 3;
-  }
-
-  yuv_image->Initialize(libyuv::FOURCC_I420, deallocate, y, y_stride, u, uv_stride, v, uv_stride,
-                        width, height);
-
-  ASSERT_OK_AND_ASSIGN(auto planar, PlanarImageFor<mediapipe::YUVImage>::Create(
-                                        std::move(yuv_image), ImageFormat::YUV_I420));
-
-  EXPECT_EQ(width, planar->Width());
-  EXPECT_EQ(height, planar->Height());
+  EXPECT_EQ(expected_yuv_image->width(), planar->Width());
+  EXPECT_EQ(expected_yuv_image->height(), planar->Height());
   EXPECT_EQ(ImageFormat::YUV_I420, planar->Format());
 
   ASSERT_EQ(3, planar->Planes().size());
-  EXPECT_EQ(y_stride, planar->Planes()[0].row_stride);
-  EXPECT_EQ(uv_stride, planar->Planes()[1].row_stride);
-  EXPECT_EQ(uv_stride, planar->Planes()[2].row_stride);
+  EXPECT_EQ(expected_yuv_image->stride(0), planar->Planes()[0].row_stride);
+  EXPECT_EQ(expected_yuv_image->stride(1), planar->Planes()[1].row_stride);
+  EXPECT_EQ(expected_yuv_image->stride(2), planar->Planes()[2].row_stride);
+
+  size_t y_size = expected_yuv_image->stride(0) * expected_yuv_image->height();
+  size_t uv_size = expected_yuv_image->stride(1) * (expected_yuv_image->height() / 2);
 
   EXPECT_EQ(y_size, planar->Planes()[0].bytes);
   EXPECT_EQ(uv_size, planar->Planes()[1].bytes);
   EXPECT_EQ(uv_size, planar->Planes()[2].bytes);
 
-  for (size_t i = 0; i < planar->Height(); ++i) {
-    for (size_t j = 0; j < planar->Width(); ++j) {
-      EXPECT_EQ(1, planar->Planes()[0].data[i * y_stride + j]);
-      EXPECT_EQ(2, planar->Planes()[1].data[(i / 2) * uv_stride + (j / 2)]);
-      EXPECT_EQ(3, planar->Planes()[2].data[(i / 2) * uv_stride + (j / 2)]);
+  for (size_t plane_idx = 0; plane_idx < planar->Planes().size(); ++plane_idx) {
+    const auto* expected_data = expected_yuv_image->data(plane_idx);
+    const auto* actual_data = planar->Planes()[plane_idx].data;
+    size_t width = expected_yuv_image->width();
+    size_t height = expected_yuv_image->height();
+    size_t stride = expected_yuv_image->stride(plane_idx);
+    if (plane_idx != 0) {
+      width = (width + 1) / 2;
+      height = (height + 1) / 2;
+    }
+    for (size_t row_idx = 0; row_idx < height; ++row_idx) {
+      const auto* expected_row = &expected_data[row_idx * stride];
+      const auto* actual_row = &actual_data[row_idx * stride];
+      EXPECT_EQ(0, std::memcmp(expected_row, actual_row, width))
+          << absl::Substitute("Plane $0 row $1 differs", plane_idx, row_idx);
     }
   }
 }

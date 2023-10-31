@@ -26,6 +26,7 @@ extern "C" {
 #include "src/gem/calculators/plugin/ffmpeg/ffmpeg_video_encoder_calculator.h"
 #include "src/gem/exec/core/planar_image.h"
 #include "src/gem/testing/core/calculator_tester.h"
+#include "src/gem/testing/core/testdata/test_image.h"
 
 namespace gml {
 namespace gem {
@@ -43,35 +44,8 @@ TEST(FFmpegVideoEncoderCalculator, runs_without_error) {
   testing::CalculatorTester tester(kFFmpegVideoEncoderNode);
 
   auto yuv_image = std::make_shared<mediapipe::YUVImage>();
+  testing::LoadTestImageAsYUVImage(yuv_image.get());
 
-  // TODO(james): refactor into common utility to test against a real image.
-
-  // Code for initializing YUVImage taken from mediapipe/util/image_frame_util.cc.
-  const int width = 640;
-  const int height = 380;
-  const int uv_width = (width + 1) / 2;
-  const int uv_height = (height + 1) / 2;
-  // Align y_stride and uv_stride on 16-byte boundaries.
-  const int y_stride = (width + 15) & ~15;
-  const int uv_stride = (uv_width + 15) & ~15;
-  const int y_size = y_stride * height;
-  const int uv_size = uv_stride * uv_height;
-  uint8_t* data = reinterpret_cast<uint8_t*>(std::malloc(y_size + uv_size * 2));
-  std::function<void()> deallocate = [data]() { std::free(data); };
-
-  uint8_t* y = data;
-  uint8_t* u = y + y_size;
-  uint8_t* v = u + uv_size;
-
-  for (int i = 0; i < y_size; i++) {
-    y[i] = 1;
-  }
-  for (int i = 0; i < uv_size; i++) {
-    u[i] = 2;
-    v[i] = 3;
-  }
-  yuv_image->Initialize(libyuv::FOURCC_I420, deallocate, y, y_stride, u, uv_stride, v, uv_stride,
-                        width, height);
   ASSERT_OK_AND_ASSIGN(auto planar_image,
                        exec::core::PlanarImageFor<mediapipe::YUVImage>::Create(
                            std::move(yuv_image), exec::core::ImageFormat::YUV_I420));

@@ -23,6 +23,8 @@
 #include "src/gem/calculators/core/image_frame_to_yuv_planar_image.h"
 #include "src/gem/exec/core/planar_image.h"
 #include "src/gem/testing/core/calculator_tester.h"
+#include "src/gem/testing/core/matchers.h"
+#include "src/gem/testing/core/testdata/test_image.h"
 
 namespace gml {
 namespace gem {
@@ -38,62 +40,21 @@ output_stream: "YUV_IMAGE:planar_image"
 TEST(ImageFrameToYUVPlanarImage, converts_correctly) {
   testing::CalculatorTester tester(kImageFrameToYUVPlanarImageNode);
 
-  auto yuv_image = std::make_shared<mediapipe::YUVImage>();
-  // Code for initializing YUVImage taken from mediapipe/util/image_frame_util.cc.
-  const int width = 100;
-  const int height = 200;
-  const int uv_width = (width + 1) / 2;
-  const int uv_height = (height + 1) / 2;
-  // Align y_stride and uv_stride on 16-byte boundaries.
-  const int y_stride = (width + 15) & ~15;
-  const int uv_stride = (uv_width + 15) & ~15;
-  const int y_size = y_stride * height;
-  const int uv_size = uv_stride * uv_height;
-  std::vector<uint8_t> data(y_size + uv_size * 2);
-  std::function<void()> deallocate = []() {};
-
-  uint8_t* y = data.data();
-  uint8_t* u = y + y_size;
-  uint8_t* v = u + uv_size;
-
-  for (int i = 0; i < y_size; i++) {
-    y[i] = 128;
-  }
-  for (int i = 0; i < uv_size; i++) {
-    u[i] = 128;
-    v[i] = 128;
-  }
-
-  yuv_image->Initialize(libyuv::FOURCC_I420, deallocate, y, y_stride, u, uv_stride, v, uv_stride,
-                        width, height);
-
   mediapipe::ImageFrame image_frame;
-  mediapipe::image_frame_util::YUVImageToImageFrame(*yuv_image, &image_frame);
+  testing::LoadTestImageAsImageFrame(&image_frame);
 
   tester.ForInput("IMAGE_FRAME", std::move(image_frame), 0).Run();
 
   const auto& planar = tester.Result<std::unique_ptr<exec::core::PlanarImage>>("YUV_IMAGE", 0);
 
-  EXPECT_EQ(width, planar->Width());
-  EXPECT_EQ(height, planar->Height());
-  EXPECT_EQ(exec::core::ImageFormat::YUV_I420, planar->Format());
+  auto expected_yuv_image = std::make_unique<mediapipe::YUVImage>();
+  testing::LoadTestImageAsYUVImage(expected_yuv_image.get());
 
-  ASSERT_EQ(3, planar->Planes().size());
-  EXPECT_EQ(y_stride, planar->Planes()[0].row_stride);
-  EXPECT_EQ(uv_stride, planar->Planes()[1].row_stride);
-  EXPECT_EQ(uv_stride, planar->Planes()[2].row_stride);
+  ASSERT_OK_AND_ASSIGN(auto expected_planar,
+                       exec::core::PlanarImageFor<mediapipe::YUVImage>::Create(
+                           std::move(expected_yuv_image), exec::core::ImageFormat::YUV_I420));
 
-  EXPECT_EQ(y_size, planar->Planes()[0].bytes);
-  EXPECT_EQ(uv_size, planar->Planes()[1].bytes);
-  EXPECT_EQ(uv_size, planar->Planes()[2].bytes);
-
-  for (size_t i = 0; i < planar->Height(); ++i) {
-    for (size_t j = 0; j < planar->Width(); ++j) {
-      EXPECT_EQ(128, planar->Planes()[0].data[i * y_stride + j]);
-      EXPECT_EQ(128, planar->Planes()[1].data[(i / 2) * uv_stride + (j / 2)]);
-      EXPECT_EQ(128, planar->Planes()[2].data[(i / 2) * uv_stride + (j / 2)]);
-    }
-  }
+  EXPECT_THAT(planar.get(), testing::PlanarImageEq(expected_planar.get()));
 }
 
 }  // namespace core
