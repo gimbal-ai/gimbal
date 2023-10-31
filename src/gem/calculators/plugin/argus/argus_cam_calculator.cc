@@ -27,6 +27,7 @@ namespace gem {
 namespace calculators {
 namespace argus {
 
+using ::gml::gem::calculators::argus::optionspb::ArgusCamSourceCalculatorOptions;
 using ::gml::gem::devices::argus::NvBufSurfaceWrapper;
 
 absl::Status ArgusCamSourceCalculator::GetContract(mediapipe::CalculatorContract* cc) {
@@ -34,8 +35,10 @@ absl::Status ArgusCamSourceCalculator::GetContract(mediapipe::CalculatorContract
   return absl::OkStatus();
 }
 
-absl::Status ArgusCamSourceCalculator::Open(mediapipe::CalculatorContext* /* cc */) {
-  GML_ABSL_RETURN_IF_ERROR(argus_cam_.Init());
+absl::Status ArgusCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
+  options_ = cc->Options<ArgusCamSourceCalculatorOptions>();
+  argus_cam_ = std::make_unique<devices::argus::ArgusCam>(options_.target_frame_rate());
+  GML_ABSL_RETURN_IF_ERROR(argus_cam_->Init());
   timestamp_ = 0;
   return absl::OkStatus();
 }
@@ -43,7 +46,7 @@ absl::Status ArgusCamSourceCalculator::Open(mediapipe::CalculatorContext* /* cc 
 absl::Status ArgusCamSourceCalculator::Process(mediapipe::CalculatorContext* cc) {
   absl::Status s;
 
-  GML_ABSL_ASSIGN_OR_RETURN(std::unique_ptr<NvBufSurfaceWrapper> buf, argus_cam_.ConsumeFrame());
+  GML_ABSL_ASSIGN_OR_RETURN(std::unique_ptr<NvBufSurfaceWrapper> buf, argus_cam_->ConsumeFrame());
   GML_ABSL_RETURN_IF_ERROR(buf->MapForCpu());
   // Convert to shared_ptr to give downstream mediapipe calculators flexibility,
   // specifically for use by the PlanarImage interface.
@@ -59,7 +62,7 @@ absl::Status ArgusCamSourceCalculator::Process(mediapipe::CalculatorContext* cc)
 }
 
 absl::Status ArgusCamSourceCalculator::Close(mediapipe::CalculatorContext* /* cc */) {
-  argus_cam_.Stop();
+  argus_cam_->Stop();
   return absl::OkStatus();
 }
 

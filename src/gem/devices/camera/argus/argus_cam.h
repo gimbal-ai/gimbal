@@ -32,7 +32,11 @@ namespace argus {
  * Provides a simple access model to the Argus camera on Nvidia Jetson devices.
  */
 class ArgusCam {
+  static constexpr uint64_t kDefaultTargetFrameRate = 30;
+
  public:
+  explicit ArgusCam(uint64_t target_frame_rate = kDefaultTargetFrameRate)
+      : target_frame_rate_(target_frame_rate) {}
   /**
    * Initialize the capture device. By default uses the first camera, but can choose other devices
    * as well.
@@ -56,6 +60,7 @@ class ArgusCam {
   Status PrepareConsumer(Argus::OutputStream* output_stream);
   Status StartCapture(Argus::Request* request);
 
+  uint64_t target_frame_rate_;
   Argus::UniqueObj<Argus::CameraProvider> camera_provider_obj_;
   Argus::CameraDevice* camera_device_ = nullptr;
   Argus::UniqueObj<Argus::CaptureSession> capture_session_obj_;

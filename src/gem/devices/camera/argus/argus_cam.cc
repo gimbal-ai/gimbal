@@ -32,9 +32,6 @@ namespace gem {
 namespace devices {
 namespace argus {
 
-// Top-level options.
-constexpr int kTargetFPS = 120;
-
 Status ArgusCam::SetupCamera(int device_num) {
   // Create the CameraProvider object and get the core interface.
   camera_provider_obj_ = Argus::UniqueObj<Argus::CameraProvider>(Argus::CameraProvider::create());
@@ -145,7 +142,8 @@ StatusOr<Argus::UniqueObj<Argus::Request>> ArgusCam::PrepareRequest(
     return error::Internal("Failed to get SourceSettings.");
   }
   source_settings->setSensorMode(sensor_mode);
-  source_settings->setFrameDurationRange(Argus::Range<uint64_t>(1000 * 1000 * 1000 / kTargetFPS));
+  source_settings->setFrameDurationRange(
+      Argus::Range<uint64_t>(1000 * 1000 * 1000 / target_frame_rate_));
 
   return request_obj;
 }

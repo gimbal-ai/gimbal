@@ -19,12 +19,15 @@
 
 #include <mediapipe/framework/calculator_framework.h>
 
+#include "src/gem/calculators/plugin/argus/optionspb/argus_cam_calculator_options.pb.h"
 #include "src/gem/devices/camera/argus/argus_cam.h"
 
 namespace gml {
 namespace gem {
 namespace calculators {
 namespace argus {
+
+using ::gml::gem::calculators::argus::optionspb::ArgusCamSourceCalculatorOptions;
 
 class ArgusCamSourceCalculator : public mediapipe::CalculatorBase {
  public:
@@ -34,7 +37,8 @@ class ArgusCamSourceCalculator : public mediapipe::CalculatorBase {
   absl::Status Close(mediapipe::CalculatorContext* cc) override;
 
  private:
-  ::gml::gem::devices::argus::ArgusCam argus_cam_;
+  ArgusCamSourceCalculatorOptions options_;
+  std::unique_ptr<::gml::gem::devices::argus::ArgusCam> argus_cam_;
   int64_t timestamp_;
 };
 
