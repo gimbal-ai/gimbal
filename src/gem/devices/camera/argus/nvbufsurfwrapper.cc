@@ -29,35 +29,22 @@ namespace gem {
 namespace devices {
 namespace argus {
 
-StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> NvBufSurfaceWrapper::Create(int fd) {
-  NvBufSurface* nvbuf_surf = nullptr;
-  int retval = NvBufSurfaceFromFd(fd, reinterpret_cast<void**>(&nvbuf_surf));
-  if (retval != 0) {
-    return error::Internal("NvBufSurfaceFromFd failed.");
-  }
-
-  if (nvbuf_surf->batchSize < 1) {
-    return error::Internal("No image batches in buffer.");
-  }
-
-  if (nvbuf_surf->batchSize > 1) {
-    LOG(WARNING) << absl::Substitute("Expected 1 batch in buffer, but found $0. Using buffer [0].",
-                                     nvbuf_surf->batchSize);
-  }
-
-  return absl::WrapUnique<NvBufSurfaceWrapper>(new NvBufSurfaceWrapper(fd, nvbuf_surf));
+StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> NvBufSurfaceWrapper::Create(
+    NvBufSurface* nvbuf_surf) {
+  return absl::WrapUnique<NvBufSurfaceWrapper>(new NvBufSurfaceWrapper(nvbuf_surf));
 }
 
-StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> NvBufSurfaceWrapper::TestOnlyCreatePlaceholder(
-    NvBufSurface* surf) {
-  return absl::WrapUnique<NvBufSurfaceWrapper>(new NvBufSurfaceWrapper(-1, surf));
-}
+NvBufSurfaceWrapper::NvBufSurfaceWrapper(NvBufSurface* nvbuf_surf) : nvbuf_surf_(nvbuf_surf) {}
 
-NvBufSurfaceWrapper::NvBufSurfaceWrapper(int fd, NvBufSurface* nvbuf_surf)
-    : fd_(fd), nvbuf_surf_(nvbuf_surf) {}
+NvBufSurfaceWrapper::NvBufSurfaceWrapper(NvBufSurfaceWrapper&& other)
+    : nvbuf_surf_(other.nvbuf_surf_) {
+  // Moved ownership over, so set pointer to nullptr to ensure there is no deallocation on
+  // destructor.
+  other.nvbuf_surf_ = nullptr;
+}
 
 NvBufSurfaceWrapper::~NvBufSurfaceWrapper() {
-  if (fd_ != -1 && nvbuf_surf_ != nullptr) {
+  if (nvbuf_surf_ != nullptr) {
     NvBufSurfaceDestroy(nvbuf_surf_);
   }
 }

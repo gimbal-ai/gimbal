@@ -227,13 +227,28 @@ StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> ArgusCam::ConsumeFrame() {
   image_buf_fd = nv_buffer->createNvBuffer(output_stream->getResolution(),
                                            NVBUF_COLOR_FORMAT_YUV420, NVBUF_LAYOUT_PITCH);
 
-  GML_ASSIGN_OR_RETURN(std::unique_ptr<NvBufSurfaceWrapper> nvbuf_surf,
-                       NvBufSurfaceWrapper::Create(image_buf_fd));
+  NvBufSurface* nvbuf_surf = nullptr;
+  int retval = NvBufSurfaceFromFd(image_buf_fd, reinterpret_cast<void**>(&nvbuf_surf));
+  if (retval != 0) {
+    return error::Internal("NvBufSurfaceFromFd() failed.");
+  }
+
+  if (nvbuf_surf->batchSize < 1) {
+    return error::Internal("No image batches in buffer.");
+  }
+
+  if (nvbuf_surf->batchSize > 1) {
+    LOG(WARNING) << absl::Substitute("Expected 1 batch in buffer, but found $0. Using buffer [0].",
+                                     nvbuf_surf->batchSize);
+  }
+
+  GML_ASSIGN_OR_RETURN(std::unique_ptr<NvBufSurfaceWrapper> nvbuf_surf_wrapper,
+                       NvBufSurfaceWrapper::Create(nvbuf_surf));
 
   // Dump information on the first frame only, to avoid being noisy.
   // TODO(oazizi): Change this to a VLOG once we have more confidence.
   if (frame->getNumber() == 0) {
-    nvbuf_surf->DumpInfo();
+    nvbuf_surf_wrapper->DumpInfo();
   }
 
   // TODO(oazizi): May want to find a way to recycle buffers. Needs perf study.
@@ -243,7 +258,7 @@ StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> ArgusCam::ConsumeFrame() {
   //    return absl::Internal("Failed to copy to NV buffer.");
   //  }
 
-  return nvbuf_surf;
+  return nvbuf_surf_wrapper;
 }
 
 void ArgusCam::Stop() {

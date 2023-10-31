@@ -29,10 +29,9 @@ namespace argus {
 // A wrapper around the image buf fd, with managed resources.
 class NvBufSurfaceWrapper : public NotCopyable {
  public:
-  static StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> Create(int fd);
-  static StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> TestOnlyCreatePlaceholder(
-      NvBufSurface* surf);
+  static StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> Create(NvBufSurface* nv_buf_surf);
 
+  NvBufSurfaceWrapper(NvBufSurfaceWrapper&& other);
   ~NvBufSurfaceWrapper();
 
   void DumpInfo() const;
@@ -49,13 +48,11 @@ class NvBufSurfaceWrapper : public NotCopyable {
    */
   bool IsMapped() const;
 
-  int fd() const { return fd_; }
   const NvBufSurfaceParams& surface() const { return nvbuf_surf_->surfaceList[0]; }
 
  private:
-  NvBufSurfaceWrapper(int fd, NvBufSurface* nvbuf_surf);
+  NvBufSurfaceWrapper(NvBufSurface* nvbuf_surf);
 
-  const int fd_ = -1;
   NvBufSurface* nvbuf_surf_ = nullptr;
 };
 

@@ -59,8 +59,7 @@ TEST(PlanarImageFor, NvBufSurfaceWrapper) {
 
   NvBufSurfaceCreate(&nvbufsurface, 1, &create_params);
 
-  ASSERT_OK_AND_ASSIGN(auto nvbuf_surf,
-                       NvBufSurfaceWrapper::TestOnlyCreatePlaceholder(nvbufsurface));
+  ASSERT_OK_AND_ASSIGN(auto nvbuf_surf, NvBufSurfaceWrapper::Create(nvbufsurface));
   ASSERT_OK(nvbuf_surf->MapForCpu());
 
   nvbuf_surf->DumpInfo();
