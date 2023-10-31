@@ -48,8 +48,10 @@ absl::Status ArgusCamSourceCalculator::Process(mediapipe::CalculatorContext* cc)
   // Convert to shared_ptr to give downstream mediapipe calculators flexibility,
   // specifically for use by the PlanarImage interface.
   std::shared_ptr<NvBufSurfaceWrapper> buf_shared = std::move(buf);
-  auto ts = mediapipe::Timestamp(timestamp_);
-  cc->Outputs().Index(0).Add(&buf_shared, ts);
+
+  auto packet = mediapipe::MakePacket<std::shared_ptr<NvBufSurfaceWrapper>>(std::move(buf_shared));
+  packet = packet.At(mediapipe::Timestamp(timestamp_));
+  cc->Outputs().Index(0).AddPacket(std::move(packet));
 
   timestamp_++;
 
