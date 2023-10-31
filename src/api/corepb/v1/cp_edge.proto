@@ -64,6 +64,7 @@ message CPRunModelAck {}
 /****************************************************************************
  * Wrapper messages for each channel on the NATS bus from the edge.
  * They are named EdgeCP[*] for messages originating from the edge.
+ * They are named CPEdge[*] for messages originating from the control plane.
  *****************************************************************************/
 
 // EdgeCPTopic has the list of topics used between edge and CP.
@@ -90,7 +91,7 @@ message EdgeCPMetadata {
   google.protobuf.Timestamp recv_timestamp = 3;
 }
 
-// EdgeCPStatus has status message and is on the .Status topic.
+// EdgeCPMessage has status message and is on the .Status topic.
 message EdgeCPMessage {
   // Associated metadata.
   EdgeCPMetadata metadata = 1;
@@ -99,7 +100,7 @@ message EdgeCPMessage {
   google.protobuf.Any msg = 1000;
 }
 
-// EdgeCPMetadata has basic routing information for shared bus.
+// CPEdgeMetadata has basic routing information for shared bus.
 message CPEdgeMetadata {
   // The topic of this message.
   CPEdgeTopic topic = 1;
@@ -109,7 +110,7 @@ message CPEdgeMetadata {
   google.protobuf.Timestamp recv_timestamp = 3;
 }
 
-// EdgeCPStatus has status message and is on the .Status topic.
+// CPEdgeMessage wraps the message sent from the control plane to the edge.
 message CPEdgeMessage {
   // Associated metadata.
   CPEdgeMetadata metadata = 1;
