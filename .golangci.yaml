@@ -37,7 +37,7 @@ linters:
   disable-all: false
 linters-settings:
   errcheck:
-    ignore: database/sql:Rollback
+    ignore: database/sql:Rollback,nhooyr.io/websocket:CloseNow
   gci:
     sections:
     - standard
