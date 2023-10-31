@@ -60,6 +60,7 @@ use_repo(
     "com_github_blang_semver_v4",
     "com_github_bmatcuk_doublestar",
     "com_github_cenkalti_backoff_v4",
+    "com_github_fatih_color",
     "com_github_getsentry_sentry_go",
     "com_github_gofrs_uuid_v5",
     "com_github_gogo_protobuf",
