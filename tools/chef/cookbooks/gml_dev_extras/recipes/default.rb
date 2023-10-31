@@ -118,6 +118,7 @@ end
 execute "install go binaries" do
   ENV["GOPATH"] = "/opt/gml_dev/gopath"
   command %(go install github.com/bazelbuild/buildtools/buildifier@latest && \
+            go install github.com/bazelbuild/buildtools/buildozer@latest && \
             go install github.com/derailed/k9s@v0.27.4 && \
             go clean -modcache && \
             go clean -cache)
