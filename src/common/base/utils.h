@@ -225,7 +225,7 @@ inline StatusOr<T> AsciiHexToBytes(std::string s, const std::vector<char>& separ
 
   T bytes;
 
-  for (unsigned int i = 0; i < s.length(); i += 2) {
+  for (size_t i = 0; i < s.length(); i += 2) {
     std::string byte_string = s.substr(i, 2);
 
     errno = 0;

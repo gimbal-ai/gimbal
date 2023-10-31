@@ -55,3 +55,13 @@ gml_cc_test(
         ":cc_library",
     ],
 )
+
+# This test only works properly on the host machine (not inside containers), so test is marked manual.
+gml_cc_test(
+    name = "mac_address_test",
+    srcs = ["mac_address_test.cc"],
+    tags = ["manual"],
+    deps = [
+        ":cc_library",
+    ],
+)
