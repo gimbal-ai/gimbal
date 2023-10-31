@@ -34,7 +34,7 @@ namespace argus {
 using devices::argus::NvBufSurfaceWrapper;
 
 absl::Status NvBufSurfToImageFrameCalculator::GetContract(mediapipe::CalculatorContract* cc) {
-  cc->Inputs().Index(0).Set<NvBufSurfaceWrapper>();
+  cc->Inputs().Index(0).Set<std::shared_ptr<NvBufSurfaceWrapper>>();
   cc->Outputs().Index(0).Set<mediapipe::ImageFrame>();
   return absl::OkStatus();
 }
@@ -44,14 +44,13 @@ absl::Status NvBufSurfToImageFrameCalculator::Open(mediapipe::CalculatorContext*
 }
 
 absl::Status NvBufSurfToImageFrameCalculator::Process(mediapipe::CalculatorContext* cc) {
-  const NvBufSurfaceWrapper& nvbuf_surf =
-      cc->Inputs().Index(0).Get<devices::argus::NvBufSurfaceWrapper>();
+  const auto& nvbuf_surf = cc->Inputs().Index(0).Get<std::shared_ptr<NvBufSurfaceWrapper>>();
 
-  if (!nvbuf_surf.IsMapped()) {
+  if (!nvbuf_surf->IsMapped()) {
     return absl::InternalError("The provided nvbuf is not mapped to CPU memory.");
   }
 
-  const NvBufSurfaceParams& surf_params = nvbuf_surf.surface();
+  const NvBufSurfaceParams& surf_params = nvbuf_surf->surface();
   if (surf_params.planeParams.num_planes != 3) {
     return absl::InternalError(
         absl::Substitute("Expecting 3 planes, but got $0.", surf_params.planeParams.num_planes));
