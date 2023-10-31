@@ -57,6 +57,11 @@ REPOSITORY_LOCATIONS = dict(
         strip_prefix = "grpc-1.51.1",
         urls = ["https://github.com/grpc/grpc/archive/refs/tags/v1.51.1.tar.gz"],
     ),
+    com_github_libuv_libuv = dict(
+        sha256 = "371e5419708f6aaeb8656671f89400b92a9bba6443369af1bb70bcd6e4b3c764",
+        strip_prefix = "libuv-1.42.0",
+        urls = ["https://github.com/libuv/libuv/archive/refs/tags/v1.42.0.tar.gz"],
+    ),
     com_github_nats_io_natsc = dict(
         sha256 = "16e700d912034faefb235a955bd920cfe4d449a260d0371b9694d722eb617ae1",
         strip_prefix = "nats.c-3.3.0",

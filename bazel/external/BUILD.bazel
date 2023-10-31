@@ -82,3 +82,23 @@ cmake(
     ],
     deps = ["@boringssl//:ssl"],
 )
+
+cmake(
+    name = "libuv",
+    build_args = [
+        "--",  # <- Pass remaining options to the native tool.
+        "-j`nproc`",
+        "-l`nproc`",
+    ],
+    cache_entries = {
+        "BUILDING_UV_SHARED": "OFF",
+        "BUILD_TESTING": "OFF",
+        "LIBUV_BUILD_TESTS": "OFF",
+        "USING_UV_SHARED": "OFF",
+    },
+    lib_name = "libuv_a",
+    lib_source = "@com_github_libuv_libuv//:all",
+    targets = [
+        "uv_a",
+    ],
+)
