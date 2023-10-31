@@ -49,6 +49,19 @@ message EdgeHeartbeatAck {
 }
 
 /****************************************************************************
+ * Messages that are used to signal start/stop of execution on the edge, etc.
+ * These should be sent on the .EXEC topic.
+ *****************************************************************************/
+
+// CPRunModel is a temporary message sent from the control plane to the edge device  to signal
+// starting of the model/mediapipe graph on the edge. In the future, this will be separated into
+// separate Setup and Run phases.
+message CPRunModel {}
+// CPRunModelAck is a temporary message sent from the edge to the control plane to acknowledge that
+// it received a CPRunModel message.
+message CPRunModelAck {}
+
+/****************************************************************************
  * Wrapper messages for each channel on the NATS bus from the edge.
  * They are named EdgeCP[*] for messages originating from the edge.
  *****************************************************************************/
@@ -57,12 +70,14 @@ message EdgeHeartbeatAck {
 enum EdgeCPTopic {
   EDGE_CP_TOPIC_UNKNOWN = 0;
   EDGE_CP_TOPIC_STATUS = 1;
+  EDGE_CP_TOPIC_EXEC = 3;
 }
 
 // CPEdgeTopic has the list of topics used between CP and edge.
 enum CPEdgeTopic {
   CP_EDGE_TOPIC_UNKNOWN = 0;
   CP_EDGE_TOPIC_STATUS = 1;
+  CP_EDGE_TOPIC_EXEC = 3;
 }
 
 // EdgeCPMetadata has basic routing information for shared bus.
