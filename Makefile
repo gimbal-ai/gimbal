@@ -36,12 +36,27 @@ gazelle: go-mod-tidy update-python-manifest ## Run gazelle.
 update-python-manifest:
 	$(BAZEL) run //:gazelle_python_manifest.update
 
-.PHONY: lint
-lint:
+.PHONY: pnpm-install
+pnpm-install:
 	cd src/ui && pnpm install
+
+.PHONY: lint
+lint: pnpm-install
 	$(MEGALINTER) \
 		--fix \
 		--env NODE_PATH="/tmp/lint/src/ui/node_modules" \
 		--env REPORT_OUTPUT_FOLDER=none \
 		--env GITHUB_TOKEN="${GITHUB_TOKEN}" \
 		--image=us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/megalinter-gml-custom:20231006155643
+
+.PHONY: jest
+jest: pnpm-install
+	cd src/ui && pnpm jest
+
+.PHONY: devui
+devui: pnpm-install
+	cd src/ui && pnpm dev
+
+.PHONY: storybook
+storybook: pnpm-install
+	cd src/ui && pnpm storybook
