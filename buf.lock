@@ -1,0 +1,7 @@
+---
+version: v1
+deps:
+- remote: buf.build
+  owner: opentelemetry
+  repository: opentelemetry
+  commit: c4dfbc51f3cd4089778555a2ac5d9bc093ed2956

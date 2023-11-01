@@ -1,0 +1,101 @@
+# Copyright © 2023- Gimlet Labs, Inc.
+# All Rights Reserved.
+#
+# NOTICE:  All information contained herein is, and remains
+# the property of Gimlet Labs, Inc. and its suppliers,
+# if any.  The intellectual and technical concepts contained
+# herein are proprietary to Gimlet Labs, Inc. and its suppliers and
+# may be covered by U.S. and Foreign Patents, patents in process,
+# and are protected by trade secret or copyright law. Dissemination
+# of this information or reproduction of this material is strictly
+# forbidden unless prior written permission is obtained from
+# Gimlet Labs, Inc.
+#
+# SPDX-License-Identifier: Proprietary
+
+load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
+load("@build_stack_rules_proto//rules/cc:grpc_cc_library.bzl", "grpc_cc_library")
+load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_library")
+load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "v1_proto",
+    srcs = ["logs_service.proto"],
+    strip_import_prefix = "/third_party/github.com/open-telemetry/opentelemetry-proto",
+    visibility = ["//visibility:public"],
+    deps = ["//third_party/github.com/open-telemetry/opentelemetry-proto/opentelemetry/proto/logs/v1:v1_proto"],
+)
+
+grpc_cc_library(
+    name = "v1_grpc_cc_library",
+    srcs = ["logs_service.grpc.pb.cc"],
+    hdrs = ["logs_service.grpc.pb.h"],
+    strip_include_prefix = "/third_party/github.com/open-telemetry/opentelemetry-proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":v1_cc_library",
+        "@com_github_grpc_grpc//:grpc++",
+        "@com_github_grpc_grpc//:grpc++_reflection",
+    ],
+)
+
+proto_cc_library(
+    name = "v1_cc_library",
+    srcs = ["logs_service.pb.cc"],
+    hdrs = ["logs_service.pb.h"],
+    strip_include_prefix = "/third_party/github.com/open-telemetry/opentelemetry-proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/github.com/open-telemetry/opentelemetry-proto/opentelemetry/proto/logs/v1:v1_cc_library",
+        "@com_google_protobuf//:protobuf",
+    ],
+)
+
+proto_compile(
+    name = "v1_cpp_compile",
+    output_mappings = [
+        "logs_service.grpc.pb.cc=opentelemetry/proto/collector/logs/v1/logs_service.grpc.pb.cc",
+        "logs_service.grpc.pb.h=opentelemetry/proto/collector/logs/v1/logs_service.grpc.pb.h",
+        "logs_service.pb.cc=opentelemetry/proto/collector/logs/v1/logs_service.pb.cc",
+        "logs_service.pb.h=opentelemetry/proto/collector/logs/v1/logs_service.pb.h",
+    ],
+    outputs = [
+        "logs_service.grpc.pb.cc",
+        "logs_service.grpc.pb.h",
+        "logs_service.pb.cc",
+        "logs_service.pb.h",
+    ],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:cpp",
+        "@build_stack_rules_proto//plugin/grpc/grpc:protoc-gen-grpc-cpp",
+    ],
+    proto = "v1_proto",
+    visibility = ["//visibility:public"],
+)
+
+proto_compile(
+    name = "v1_go_compile",
+    options = {"@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick": ["plugins=grpc"]},
+    output_mappings = ["logs_service.pb.go=go.opentelemetry.io/proto/otlp/collector/logs/v1/logs_service.pb.go"],
+    outputs = ["logs_service.pb.go"],
+    plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
+    proto = "v1_proto",
+    visibility = ["//visibility:public"],
+)
+
+proto_go_library(
+    name = "v1_go_proto",
+    srcs = ["logs_service.pb.go"],
+    importpath = "go.opentelemetry.io/proto/otlp/collector/logs/v1",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/github.com/open-telemetry/opentelemetry-proto/opentelemetry/proto/logs/v1:v1_go_proto",
+        "@com_github_gogo_protobuf//proto",
+        "@com_github_gogo_protobuf//protoc-gen-gogo/descriptor",
+        "@com_github_gogo_protobuf//types",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//status",
+    ],
+)

@@ -1,0 +1,41 @@
+diff --git a/pkg/rule/rules_cc/cc_library.go b/pkg/rule/rules_cc/cc_library.go
+index b3e4b7a9..bb2e2c7b 100644
+--- a/pkg/rule/rules_cc/cc_library.go
++++ b/pkg/rule/rules_cc/cc_library.go
+@@ -39,12 +39,23 @@ func (s *CcLibrary) Name() string {
+ 	return s.Config.Library.BaseName() + s.RuleNameSuffix
+ }
+ 
++func (s *CcLibrary) removeImportPrefix(path string) string {
++	var prefix string
++	if s.Config.Library.StripImportPrefix() != "" {
++		prefix = s.Config.Library.StripImportPrefix()[1:] + "/"
++	} else {
++		prefix = ""
++	}
++	return strings.TrimPrefix(path, prefix)
++}
++
+ // Srcs computes the srcs list for the rule.
+ func (s *CcLibrary) Srcs() []string {
+ 	srcs := make([]string, 0)
++	rel := s.removeImportPrefix(s.Config.Rel)
+ 	for _, output := range s.Outputs {
+ 		if strings.HasSuffix(output, ".cc") {
+-			srcs = append(srcs, protoc.StripRel(s.Config.Rel, output))
++			srcs = append(srcs, protoc.StripRel(rel, output))
+ 		}
+ 	}
+ 	return srcs
+@@ -53,9 +64,10 @@ func (s *CcLibrary) Srcs() []string {
+ // Hdrs computes the hdrs list for the rule.
+ func (s *CcLibrary) Hdrs() []string {
+ 	hdrs := make([]string, 0)
++	rel := s.removeImportPrefix(s.Config.Rel)
+ 	for _, output := range s.Outputs {
+ 		if strings.HasSuffix(output, ".h") {
+-			hdrs = append(hdrs, protoc.StripRel(s.Config.Rel, output))
++			hdrs = append(hdrs, protoc.StripRel(rel, output))
+ 		}
+ 	}
+ 	return hdrs

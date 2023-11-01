@@ -35,6 +35,7 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.17.0
 	github.com/stretchr/testify v1.8.4
+	go.opentelemetry.io/proto/otlp v1.0.0 // gazelle:ignore
 	go.uber.org/mock v0.3.0
 	golang.org/x/net v0.17.0
 	golang.org/x/oauth2 v0.13.0
@@ -130,3 +131,5 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
+
+replace go.opentelemetry.io/proto/otlp v1.0.0 => ./third_party/github.com/open-telemetry/opentelemetry-proto/opentelemetry/proto // gazelle:ignore
