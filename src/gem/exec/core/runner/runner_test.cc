@@ -15,6 +15,8 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include <gtest/gtest.h>
+
 #include <google/protobuf/text_format.h>
 #include <mediapipe/framework/calculator_base.h>
 #include <mediapipe/framework/calculator_graph.h>
@@ -84,11 +86,11 @@ TEST(Runner, run_simple_graph_with_side_packet) {
   Runner runner(spec);
 
   std::string test_str("test1234");
-  int num_ticks = 10;
+  constexpr int kNumTicks = 10;
 
   std::map<std::string, mediapipe::Packet> side_packets;
   side_packets.emplace("string_to_output", mediapipe::MakePacket<std::string>(test_str));
-  side_packets.emplace("num_ticks", mediapipe::MakePacket<int>(num_ticks));
+  side_packets.emplace("num_ticks", mediapipe::MakePacket<int>(kNumTicks));
 
   ASSERT_OK(runner.Init(side_packets));
 
@@ -103,7 +105,51 @@ TEST(Runner, run_simple_graph_with_side_packet) {
   ASSERT_OK(runner.Start());
   ASSERT_OK(runner.Wait());
 
-  EXPECT_EQ(num_ticks, num_output_packets);
+  EXPECT_EQ(kNumTicks, num_output_packets);
+}
+
+MATCHER_P(CalculatorProfileNameIs, element, "") { return arg.name() == element; }
+
+TEST(Runner, collect_stats) {
+  specpb::ExecutionSpec spec;
+
+  ASSERT_TRUE(google::protobuf::TextFormat::ParseFromString(kExecutionSpecPbtxt, &spec));
+
+  constexpr int kHistIntervalSizeUSec = 1000;
+  constexpr int kNumHistIntervals = 100;
+
+  auto* profiler_config = spec.mutable_graph()->mutable_profiler_config();
+  profiler_config->set_enable_profiler(true);
+  profiler_config->set_enable_stream_latency(true);
+  profiler_config->set_histogram_interval_size_usec(kHistIntervalSizeUSec);
+  profiler_config->set_num_histogram_intervals(kNumHistIntervals);
+
+  Runner runner(spec);
+
+  std::string test_str("test1234");
+  constexpr int kNumTicks = 10;
+
+  std::map<std::string, mediapipe::Packet> side_packets;
+  side_packets.emplace("string_to_output", mediapipe::MakePacket<std::string>(test_str));
+  side_packets.emplace("num_ticks", mediapipe::MakePacket<int>(kNumTicks));
+
+  ASSERT_OK(runner.Init(side_packets));
+  ASSERT_OK(runner.AddOutputStreamCallback<std::string>(
+      "output", [&](const std::string&, const mediapipe::Timestamp&) { return Status::OK(); }));
+  ASSERT_OK(runner.Start());
+  ASSERT_OK(runner.Wait());
+
+  std::vector<mediapipe::CalculatorProfile> profiles;
+  EXPECT_OK(runner.GetCalculatorProfiles(&profiles));
+
+  EXPECT_THAT(profiles, ::testing::UnorderedElementsAre(
+                            CalculatorProfileNameIs("CountingSourceCalculator"),
+                            CalculatorProfileNameIs("OutputTextSidePacketCalculator")));
+
+  // Now check some additional values on calculator[0] (doesn't really matter which one it is).
+  EXPECT_EQ(profiles[0].process_runtime().interval_size_usec(), kHistIntervalSizeUSec);
+  EXPECT_EQ(profiles[0].process_runtime().num_intervals(), kNumHistIntervals);
+  EXPECT_EQ(profiles[0].process_runtime().count_size(), kNumHistIntervals);
 }
 
 }  // namespace core
