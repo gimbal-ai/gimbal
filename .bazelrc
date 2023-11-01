@@ -9,6 +9,8 @@ build --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
 fetch --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
 query --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
 
+build --@io_opentelemetry_cpp//api:with_abseil=true
+
 # Use strict action env to prevent leaks of env vars.
 build --incompatible_strict_action_env
 
