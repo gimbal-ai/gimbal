@@ -326,4 +326,9 @@ REPOSITORY_LOCATIONS = dict(
         strip_prefix = "openh264-2.3.1",
         urls = ["https://github.com/cisco/openh264/archive/refs/tags/v2.3.1.tar.gz"],
     ),
+    io_opentelemetry_cpp = dict(
+        sha256 = "09c208a21fb1159d114a3ea15dc1bcc5dee28eb39907ba72a6012d2c7b7564a0",
+        strip_prefix = "opentelemetry-cpp-1.12.0",
+        urls = ["https://github.com/open-telemetry/opentelemetry-cpp/archive/refs/tags/v1.12.0.tar.gz"],
+    ),
 )

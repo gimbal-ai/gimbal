@@ -133,6 +133,7 @@ def _cc_deps():
     _bazel_repo("com_github_neargye_magic_enum")
     _bazel_repo("com_github_thoughtspot_threadstacks")
     _bazel_repo("com_intel_tbb")
+    _bazel_repo("io_opentelemetry_cpp")
 
     # Dependencies where we provide an external BUILD file.
     _bazel_repo("com_github_arun11299_cpp_jwt", build_file = "//bazel/external:cpp_jwt.BUILD")
