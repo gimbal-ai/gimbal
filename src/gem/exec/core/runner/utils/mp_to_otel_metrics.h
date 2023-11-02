@@ -26,6 +26,9 @@ namespace gml {
 namespace gem {
 namespace utils {
 
+/**
+ * Converts MediaPipe's profile stats into OTel metrics format.
+ */
 Status CalculatorProfileVecToOTelProto(
     const std::vector<mediapipe::CalculatorProfile>& profiles,
     opentelemetry::proto::metrics::v1::ResourceMetrics* metrics_out);

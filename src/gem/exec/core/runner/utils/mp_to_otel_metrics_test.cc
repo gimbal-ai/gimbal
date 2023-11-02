@@ -83,8 +83,9 @@ process_output_latency {
 }
 )";
 
-// TODO(oazizi): Removed the time_unix_nano fields. Once the timestamp can be injected,
-//               update this test.
+// Note: This expectation is missing the time_unix_nano fields, and so we use a partial
+//       PB check in the test below.
+// TODO(oazizi): Once the timestamp can be injected, update this test.
 const char kExpectedPB[] = R"(
 scope_metrics {
   scope {

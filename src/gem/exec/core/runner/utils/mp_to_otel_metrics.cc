@@ -23,6 +23,28 @@ namespace gml {
 namespace gem {
 namespace utils {
 
+using Metric = ::opentelemetry::proto::metrics::v1::Metric;
+
+namespace {
+
+void PopulateIntSumMetric(Metric* metric, std::string_view name, std::string_view desc,
+                          std::string_view unit, int64_t time_since_epoch_ns, int64_t value) {
+  metric->set_name(std::string(name));
+  metric->set_description(std::string(desc));
+  metric->set_unit(std::string(unit));
+
+  auto* sum = metric->mutable_sum();
+  sum->set_is_monotonic(true);
+  sum->set_aggregation_temporality(
+      opentelemetry::proto::metrics::v1::AGGREGATION_TEMPORALITY_CUMULATIVE);
+
+  auto* data_point = sum->add_data_points();
+  data_point->set_time_unix_nano(time_since_epoch_ns);
+  data_point->set_as_int(value);
+}
+
+}  // namespace
+
 Status CalculatorProfileVecToOTelProto(
     const std::vector<mediapipe::CalculatorProfile>& profiles,
     opentelemetry::proto::metrics::v1::ResourceMetrics* metrics_out) {
@@ -43,38 +65,24 @@ Status CalculatorProfileVecToOTelProto(
   for (const auto& p : profiles) {
     // Populate open_runtime.
     {
-      auto* open_runtime_metric = scope_metrics->add_metrics();
-      open_runtime_metric->set_name(absl::StrCat(kMPStatPrefix, p.name(), "_open_runtime"));
-      open_runtime_metric->set_description(absl::Substitute(
-          "The time the mediapipe $0 stage has spent in the Open() call.", p.name()));
-      open_runtime_metric->set_unit("usec");
-
-      auto* sum = open_runtime_metric->mutable_sum();
-      sum->set_is_monotonic(true);
-      sum->set_aggregation_temporality(
-          opentelemetry::proto::metrics::v1::AGGREGATION_TEMPORALITY_CUMULATIVE);
-
-      auto* data_point = sum->add_data_points();
-      data_point->set_time_unix_nano(time_since_epoch_ns);
-      data_point->set_as_int(p.open_runtime());
+      Metric* open_runtime_metric = scope_metrics->add_metrics();
+      std::string name = absl::StrCat(kMPStatPrefix, p.name(), "_open_runtime");
+      std::string desc = absl::Substitute(
+          "The time the mediapipe $0 stage has spent in the Open() call.", p.name());
+      std::string unit = "usec";
+      PopulateIntSumMetric(open_runtime_metric, name, desc, unit, time_since_epoch_ns,
+                           p.open_runtime());
     }
 
     // Populate close_runtime.
     {
-      auto* close_runtime_metric = scope_metrics->add_metrics();
-      close_runtime_metric->set_name(absl::StrCat(kMPStatPrefix, p.name(), "_close_runtime"));
-      close_runtime_metric->set_description(absl::Substitute(
-          "The time the mediapipe $0 stage has spent in the Close() call.", p.name()));
-      close_runtime_metric->set_unit("usec");
-
-      auto* sum = close_runtime_metric->mutable_sum();
-      sum->set_is_monotonic(true);
-      sum->set_aggregation_temporality(
-          opentelemetry::proto::metrics::v1::AGGREGATION_TEMPORALITY_CUMULATIVE);
-
-      auto* data_point = sum->add_data_points();
-      data_point->set_time_unix_nano(time_since_epoch_ns);
-      data_point->set_as_int(p.close_runtime());
+      Metric* close_runtime_metric = scope_metrics->add_metrics();
+      std::string name = absl::StrCat(kMPStatPrefix, p.name(), "_close_runtime");
+      std::string desc = absl::Substitute(
+          "The time the mediapipe $0 stage has spent in the Close() call.", p.name());
+      std::string unit = "usec";
+      PopulateIntSumMetric(close_runtime_metric, name, desc, unit, time_since_epoch_ns,
+                           p.close_runtime());
     }
 
     // Populate process_runtime histogram.
