@@ -170,4 +170,13 @@ oci.pull(
         "linux/arm64",
     ],
 )
-use_repo(oci, "distroless_nodejs", "postgres_15", "timescale_timescaledb_pg15")
+oci.pull(
+    name = "victoria_metrics_1_93_6",
+    digest = "sha256:d82583468b3f90dda5681b9a3496185ba1c2db6938e9dba36f3a05ebe6963f9c",  # v1.93.6 multiarch digest
+    image = "index.docker.io/victoriametrics/victoria-metrics",
+    platforms = [
+        "linux/amd64",
+        "linux/arm64",
+    ],
+)
+use_repo(oci, "distroless_nodejs", "postgres_15", "timescale_timescaledb_pg15", "victoria_metrics_1_93_6")

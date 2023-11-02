@@ -6,6 +6,7 @@ file_extensions:
 file_names_regex:
 - "WORKSPACE"
 - "BUILD.bazel"
+- "MODULE.bazel"
 linters:
 - linter_name: buildifier
   linter_url: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
