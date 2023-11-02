@@ -43,11 +43,10 @@ class Runner {
 
   bool HasError() { return graph_.HasError(); }
 
-  Status GetCalculatorProfiles(std::vector<mediapipe::CalculatorProfile>* profiles) {
-    GML_RETURN_IF_ERROR(
-        StatusAdapter<absl::Status>(graph_.profiler()->GetCalculatorProfiles(profiles)));
-    return Status::OK();
-  }
+  /**
+   * Returns performance information about the running graph.
+   */
+  Status GetCalculatorProfiles(std::vector<mediapipe::CalculatorProfile>* profiles);
 
   template <typename TPacket>
   Status AddOutputStreamCallback(

@@ -48,6 +48,12 @@ Status Runner::Wait() {
   return Status::OK();
 }
 
+Status Runner::GetCalculatorProfiles(std::vector<mediapipe::CalculatorProfile>* profiles) {
+  GML_RETURN_IF_ERROR(
+      StatusAdapter<absl::Status>(graph_.profiler()->GetCalculatorProfiles(profiles)));
+  return Status::OK();
+}
+
 }  // namespace core
 }  // namespace exec
 }  // namespace gem
