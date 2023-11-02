@@ -62,6 +62,8 @@ message DeviceInfo {
     (gogoproto.moretags) = 'db:"last_heartbeat_ns"'
   ];
   DeviceStatus status = 6;
+  // Tags associated with the device.
+  repeated string tags = 7 [ (gogoproto.moretags) = 'db:"tags"' ];
 }
 
 message CreateFleetRequest {
@@ -131,6 +133,16 @@ message ListDevicesResponse {
   repeated DeviceInfo devices = 1;
 }
 
+message UpdateDeviceRequest {
+  // This is the Gimlet assigned device ID for this device.
+  gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
+  // Tags associated with the device.
+  repeated string tags = 2;
+}
+
+message UpdateDeviceResponse {}
+
+// FleetMgrService is responsible for communciating with the API service about fleets and devices.
 service FleetMgrService {
   // Creates a new fleet for the org.
   rpc CreateFleet(CreateFleetRequest) returns (CreateFleetResponse);
@@ -138,8 +150,11 @@ service FleetMgrService {
   rpc GetFleet(GetFleetRequest) returns (GetFleetResponse);
   // List all fleets in the org.
   rpc ListFleets(ListFleetsRequest) returns (ListFleetsResponse);
+  // UpdateDevice updates information about a device, such as its tags.
+  rpc UpdateDevice(UpdateDeviceRequest) returns (UpdateDeviceResponse);
 }
 
+// FleetMgrEdgeService is responsible for communicating with the devices about their state.
 service FleetMgrEdgeService {
   // Register adds a device as part of the fleet. If the device has already been registered it
   // simply returns with the existing config.

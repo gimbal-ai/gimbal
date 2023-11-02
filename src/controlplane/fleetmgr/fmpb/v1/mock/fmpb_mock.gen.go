@@ -100,6 +100,26 @@ func (mr *MockFleetMgrServiceClientMockRecorder) ListFleets(ctx, in any, opts ..
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListFleets", reflect.TypeOf((*MockFleetMgrServiceClient)(nil).ListFleets), varargs...)
 }
 
+// UpdateDevice mocks base method.
+func (m *MockFleetMgrServiceClient) UpdateDevice(ctx context.Context, in *fmpb.UpdateDeviceRequest, opts ...grpc.CallOption) (*fmpb.UpdateDeviceResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateDevice", varargs...)
+	ret0, _ := ret[0].(*fmpb.UpdateDeviceResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateDevice indicates an expected call of UpdateDevice.
+func (mr *MockFleetMgrServiceClientMockRecorder) UpdateDevice(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateDevice", reflect.TypeOf((*MockFleetMgrServiceClient)(nil).UpdateDevice), varargs...)
+}
+
 // MockFleetMgrServiceServer is a mock of FleetMgrServiceServer interface.
 type MockFleetMgrServiceServer struct {
 	ctrl     *gomock.Controller
@@ -166,6 +186,21 @@ func (m *MockFleetMgrServiceServer) ListFleets(arg0 context.Context, arg1 *fmpb.
 func (mr *MockFleetMgrServiceServerMockRecorder) ListFleets(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListFleets", reflect.TypeOf((*MockFleetMgrServiceServer)(nil).ListFleets), arg0, arg1)
+}
+
+// UpdateDevice mocks base method.
+func (m *MockFleetMgrServiceServer) UpdateDevice(arg0 context.Context, arg1 *fmpb.UpdateDeviceRequest) (*fmpb.UpdateDeviceResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateDevice", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.UpdateDeviceResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateDevice indicates an expected call of UpdateDevice.
+func (mr *MockFleetMgrServiceServerMockRecorder) UpdateDevice(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateDevice", reflect.TypeOf((*MockFleetMgrServiceServer)(nil).UpdateDevice), arg0, arg1)
 }
 
 // MockFleetMgrEdgeServiceClient is a mock of FleetMgrEdgeServiceClient interface.
