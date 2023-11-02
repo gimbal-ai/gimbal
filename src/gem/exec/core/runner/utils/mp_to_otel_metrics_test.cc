@@ -86,6 +86,9 @@ process_output_latency {
 // Note: This expectation is missing the time_unix_nano fields, and so we use a partial
 //       PB check in the test below.
 // TODO(oazizi): Once the timestamp can be injected, update this test.
+
+// Note: This expectation was created from studying the protobuf spec.
+//       It should be validated that this conforms to the metrics consumer's expectations.
 const char kExpectedPB[] = R"(
 scope_metrics {
   scope {
@@ -116,6 +119,99 @@ scope_metrics {
       is_monotonic: true
     }
   }
+  metrics {
+    name: "mediapipe_CountingSourceCalculator_process_runtime_histogram"
+    description: "The time the mediapipe CountingSourceCalculator stage has spent in the Process() call."
+    unit: "usec"
+    histogram {
+      data_points {
+        count: 11
+        sum: 42
+        bucket_counts: 11
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        explicit_bounds: 1000
+        explicit_bounds: 2000
+        explicit_bounds: 3000
+        explicit_bounds: 4000
+        explicit_bounds: 5000
+        explicit_bounds: 6000
+        explicit_bounds: 7000
+        explicit_bounds: 8000
+        explicit_bounds: 9000
+      }
+      aggregation_temporality: AGGREGATION_TEMPORALITY_CUMULATIVE
+    }
+  }
+  metrics {
+    name: "mediapipe_CountingSourceCalculator_process_input_latency_histogram"
+    description: "The Process() input latency of the mediapipe CountingSourceCalculator stage."
+    unit: "usec"
+    histogram {
+      data_points {
+        count: 11
+        sum: 42
+        bucket_counts: 11
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        explicit_bounds: 1000
+        explicit_bounds: 2000
+        explicit_bounds: 3000
+        explicit_bounds: 4000
+        explicit_bounds: 5000
+        explicit_bounds: 6000
+        explicit_bounds: 7000
+        explicit_bounds: 8000
+        explicit_bounds: 9000
+      }
+      aggregation_temporality: AGGREGATION_TEMPORALITY_CUMULATIVE
+    }
+  }
+  metrics {
+    name: "mediapipe_CountingSourceCalculator_process_output_latency_histogram"
+    description: "The Process() output latency of the mediapipe CountingSourceCalculator stage."
+    unit: "usec"
+    histogram {
+      data_points {
+        count: 11
+        sum: 42
+        bucket_counts: 11
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        bucket_counts: 0
+        explicit_bounds: 1000
+        explicit_bounds: 2000
+        explicit_bounds: 3000
+        explicit_bounds: 4000
+        explicit_bounds: 5000
+        explicit_bounds: 6000
+        explicit_bounds: 7000
+        explicit_bounds: 8000
+        explicit_bounds: 9000
+      }
+      aggregation_temporality: AGGREGATION_TEMPORALITY_CUMULATIVE
+      }
+    }
 }
 )";
 
@@ -131,6 +227,31 @@ TEST(MpToOTelMetrics, Basic) {
 
   std::string metrics_text;
   google::protobuf::TextFormat::PrintToString(metrics, &metrics_text);
+}
+
+TEST(MpToOTelMetrics, MalformedInput) {
+  // This PB has a mismatch between num_intervals and number of count fields.
+  const char kMediapipePB[] = R"(
+    name: "CountingSourceCalculator"
+    open_runtime: 10
+    close_runtime: 20
+    process_runtime {
+      total: 30
+      interval_size_usec: 1000
+      num_intervals: 10
+      count: 11
+      count: 0
+      count: 0
+      count: 0
+    }
+  )";
+
+  ::mediapipe::CalculatorProfile calculator_profile;
+  ::google::protobuf::TextFormat::ParseFromString(kMediapipePB, &calculator_profile);
+
+  opentelemetry::proto::metrics::v1::ResourceMetrics metrics;
+  EXPECT_NOT_OK(CalculatorProfileVecToOTelProto(
+      std::vector<mediapipe::CalculatorProfile>{calculator_profile}, &metrics));
 }
 
 }  // namespace utils

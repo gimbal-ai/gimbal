@@ -27,8 +27,8 @@ using Metric = ::opentelemetry::proto::metrics::v1::Metric;
 
 namespace {
 
-void PopulateIntSumMetric(Metric* metric, std::string_view name, std::string_view desc,
-                          std::string_view unit, int64_t time_since_epoch_ns, int64_t value) {
+Status PopulateIntSumMetric(Metric* metric, std::string_view name, std::string_view desc,
+                            std::string_view unit, int64_t time_since_epoch_ns, int64_t value) {
   metric->set_name(std::string(name));
   metric->set_description(std::string(desc));
   metric->set_unit(std::string(unit));
@@ -41,6 +41,47 @@ void PopulateIntSumMetric(Metric* metric, std::string_view name, std::string_vie
   auto* data_point = sum->add_data_points();
   data_point->set_time_unix_nano(time_since_epoch_ns);
   data_point->set_as_int(value);
+
+  return Status::OK();
+}
+
+Status PopulateIntHistogramMetric(Metric* metric, std::string_view name, std::string_view desc,
+                                  std::string_view unit, int64_t time_since_epoch_ns,
+                                  const ::mediapipe::TimeHistogram& value) {
+  metric->set_name(std::string(name));
+  metric->set_description(std::string(desc));
+  metric->set_unit(std::string(unit));
+
+  auto* histogram = metric->mutable_histogram();
+  histogram->set_aggregation_temporality(
+      opentelemetry::proto::metrics::v1::AGGREGATION_TEMPORALITY_CUMULATIVE);
+
+  auto* data_point = histogram->add_data_points();
+  data_point->set_time_unix_nano(time_since_epoch_ns);
+
+  data_point->set_sum(value.total());
+
+  if (value.num_intervals() != value.count_size()) {
+    return error::Internal(
+        "Inconsistency in sizes: num_interval=$0 count_size=$1. Metric histogram is incomplete.",
+        value.num_intervals(), value.count_size());
+  }
+
+  auto interval = value.interval_size_usec();
+  auto current_boundary = 0;
+  for (int i = 0; i < value.num_intervals() - 1; ++i) {
+    current_boundary += interval;
+    data_point->add_explicit_bounds(current_boundary);
+  }
+
+  int64_t total_count = 0;
+  for (const auto& count : value.count()) {
+    data_point->add_bucket_counts(count);
+    total_count += count;
+  }
+  data_point->set_count(total_count);
+
+  return Status::OK();
 }
 
 }  // namespace
@@ -62,6 +103,8 @@ Status CalculatorProfileVecToOTelProto(
 
   constexpr std::string_view kMPStatPrefix = "mediapipe_";
 
+  Status status;
+
   for (const auto& p : profiles) {
     // Populate open_runtime.
     {
@@ -70,8 +113,8 @@ Status CalculatorProfileVecToOTelProto(
       std::string desc = absl::Substitute(
           "The time the mediapipe $0 stage has spent in the Open() call.", p.name());
       std::string unit = "usec";
-      PopulateIntSumMetric(open_runtime_metric, name, desc, unit, time_since_epoch_ns,
-                           p.open_runtime());
+      GML_RETURN_IF_ERROR(PopulateIntSumMetric(open_runtime_metric, name, desc, unit,
+                                               time_since_epoch_ns, p.open_runtime()));
     }
 
     // Populate close_runtime.
@@ -81,18 +124,43 @@ Status CalculatorProfileVecToOTelProto(
       std::string desc = absl::Substitute(
           "The time the mediapipe $0 stage has spent in the Close() call.", p.name());
       std::string unit = "usec";
-      PopulateIntSumMetric(close_runtime_metric, name, desc, unit, time_since_epoch_ns,
-                           p.close_runtime());
+      GML_RETURN_IF_ERROR(PopulateIntSumMetric(close_runtime_metric, name, desc, unit,
+                                               time_since_epoch_ns, p.close_runtime()));
     }
 
     // Populate process_runtime histogram.
-    // TODO(oazizi): Implement this.
+    {
+      Metric* process_runtime_metric = scope_metrics->add_metrics();
+      std::string name = absl::StrCat(kMPStatPrefix, p.name(), "_process_runtime_histogram");
+      std::string desc = absl::Substitute(
+          "The time the mediapipe $0 stage has spent in the Process() call.", p.name());
+      std::string unit = "usec";
+      GML_RETURN_IF_ERROR(PopulateIntHistogramMetric(process_runtime_metric, name, desc, unit,
+                                                     time_since_epoch_ns, p.process_runtime()));
+    }
 
     // Populate process_input_latency histogram.
-    // TODO(oazizi): Implement this.
+    {
+      Metric* process_input_latency_metric = scope_metrics->add_metrics();
+      std::string name = absl::StrCat(kMPStatPrefix, p.name(), "_process_input_latency_histogram");
+      std::string desc =
+          absl::Substitute("The Process() input latency of the mediapipe $0 stage.", p.name());
+      std::string unit = "usec";
+      GML_RETURN_IF_ERROR(PopulateIntHistogramMetric(process_input_latency_metric, name, desc, unit,
+                                                     time_since_epoch_ns, p.process_runtime()));
+    }
 
     // Populate process_output_latency histogram.
-    // TODO(oazizi): Implement this.
+    {
+      Metric* process_output_latency_metric = scope_metrics->add_metrics();
+      std::string name = absl::StrCat(kMPStatPrefix, p.name(), "_process_output_latency_histogram");
+      std::string desc =
+          absl::Substitute("The Process() output latency of the mediapipe $0 stage.", p.name());
+      std::string unit = "usec";
+      GML_RETURN_IF_ERROR(PopulateIntHistogramMetric(process_output_latency_metric, name, desc,
+                                                     unit, time_since_epoch_ns,
+                                                     p.process_runtime()));
+    }
   }
 
   return Status::OK();

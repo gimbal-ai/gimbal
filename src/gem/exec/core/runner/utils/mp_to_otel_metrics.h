@@ -28,6 +28,10 @@ namespace utils {
 
 /**
  * Converts MediaPipe's profile stats into OTel metrics format.
+ *
+ * Function will try to forge through any recoverable errors, but will still return an error
+ *  status for the *first* error that was encountered. The resulting proto *may* still be usable
+ * even if the translation error was encountered.
  */
 Status CalculatorProfileVecToOTelProto(
     const std::vector<mediapipe::CalculatorProfile>& profiles,
