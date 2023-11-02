@@ -85,6 +85,7 @@ gml_oci_image(
 
 # gazelle:exclude **/node_modules
 # gazelle:exclude external
+# gazelle:exclude **/*.d.ts
 # gazelle:go_naming_convention import
 
 # gazelle:js_extension disabled
