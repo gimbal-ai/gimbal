@@ -30,6 +30,59 @@ namespace gml {
 namespace gem {
 namespace utils {
 
+// Note: This test input was collected from a real MediaPipe run, but then
+// manually modified to have 10 buckets instead of the original 100.
+const char kMediapipePB[] = R"(
+name: "CountingSourceCalculator"
+open_runtime: 37
+close_runtime: 0
+process_runtime {
+  total: 42
+  interval_size_usec: 1000
+  num_intervals: 10
+  count: 11
+  count: 0
+  count: 0
+  count: 0
+  count: 0
+  count: 0
+  count: 0
+  count: 0
+  count: 0
+  count: 0
+}
+process_input_latency {
+  total: 0
+  interval_size_usec: 1000
+  num_intervals: 10
+  count: 11
+  count: 0
+  count: 0
+  count: 0
+  count: 0
+  count: 0
+  count: 0
+  count: 0
+  count: 0
+  count: 0
+}
+process_output_latency {
+  total: 42
+  interval_size_usec: 1000
+  num_intervals: 10
+  count: 11
+  count: 0
+  count: 0
+  count: 0
+  count: 0
+  count: 0
+  count: 0
+  count: 0
+  count: 0
+  count: 0
+}
+)";
+
 // TODO(oazizi): Removed the time_unix_nano fields. Once the timestamp can be injected,
 //               update this test.
 const char kExpectedPB[] = R"(
@@ -63,17 +116,11 @@ scope_metrics {
     }
   }
 }
-
 )";
 
 TEST(MpToOTelMetrics, Basic) {
-  auto input_file = testing::BazelRunfilePath(
-      "src/gem/exec/core/runner/utils/testdata/mediapipe_calculator_stats.txtpb");
-
-  GML_ASSIGN_OR_EXIT(std::string input_str, ReadFileToString(input_file));
-
   ::mediapipe::CalculatorProfile calculator_profile;
-  ::google::protobuf::TextFormat::ParseFromString(input_str, &calculator_profile);
+  ::google::protobuf::TextFormat::ParseFromString(kMediapipePB, &calculator_profile);
 
   opentelemetry::proto::metrics::v1::ResourceMetrics metrics;
   EXPECT_OK(CalculatorProfileVecToOTelProto(

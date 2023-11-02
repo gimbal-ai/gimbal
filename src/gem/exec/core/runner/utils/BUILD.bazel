@@ -27,7 +27,6 @@ gml_cc_library(
         "mp_to_otel_metrics.h",
     ],
     hdrs = ["mp_to_otel_metrics.h"],
-    data = ["testdata/mediapipe_calculator_stats.txtpb"],
     deps = [
         "//src/gem/plugins:cc_library",
         "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
