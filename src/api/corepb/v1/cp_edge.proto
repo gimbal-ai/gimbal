@@ -25,6 +25,7 @@ import "gogoproto/gogo.proto";
 import "src/common/typespb/uuid.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
+import "opentelemetry/proto/metrics/v1/metrics.proto";
 
 /**
  * This file contains all the messages that are shared between the control plane and edge.
@@ -78,6 +79,17 @@ message VideoStreamStop {}
 message VideoStreamKeepAlive {}
 
 /****************************************************************************
+ * Messages that are used to stream metrics from the edge.
+ * These should be sent on the .METRICS topic.
+ *****************************************************************************/
+
+// EdgeOtelMetrics is a message sent from the edge to the controlplane containing arbitrary OTel
+// format metrics.
+message EdgeOTelMetrics {
+  opentelemetry.proto.metrics.v1.ResourceMetrics resource_metrics = 1;
+}
+
+/****************************************************************************
  * Wrapper messages for each channel on the NATS bus from the edge.
  * They are named EdgeCP[*] for messages originating from the edge.
  * They are named CPEdge[*] for messages originating from the control plane.
@@ -89,6 +101,7 @@ enum EdgeCPTopic {
   EDGE_CP_TOPIC_STATUS = 1;
   EDGE_CP_TOPIC_VIDEO = 2;
   EDGE_CP_TOPIC_EXEC = 3;
+  EDGE_CP_TOPIC_METRICS = 4;
 }
 
 // CPEdgeTopic has the list of topics used between CP and edge.
@@ -97,6 +110,7 @@ enum CPEdgeTopic {
   CP_EDGE_TOPIC_STATUS = 1;
   CP_EDGE_TOPIC_VIDEO = 2;
   CP_EDGE_TOPIC_EXEC = 3;
+  CP_EDGE_TOPIC_METRICS = 4;
 }
 
 // EdgeCPMetadata has basic routing information for shared bus.
