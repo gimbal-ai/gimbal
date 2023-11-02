@@ -21,6 +21,7 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 proto_library(
     name = "gogoproto_proto",
     srcs = ["gogo.proto"],
+    strip_import_prefix = "/third_party/github.com/gogo/protobuf",
     visibility = ["//visibility:public"],
     deps = ["@com_google_protobuf//:descriptor_proto"],
 )
@@ -54,12 +55,17 @@ proto_cc_library(
     name = "gogoproto_cc_library",
     srcs = ["gogo.pb.cc"],
     hdrs = ["gogo.pb.h"],
+    strip_include_prefix = "/third_party/github.com/gogo/protobuf",
     visibility = ["//visibility:public"],
     deps = ["@com_google_protobuf//:protobuf"],
 )
 
 proto_compile(
     name = "gogoproto_cpp_compile",
+    output_mappings = [
+        "gogo.pb.cc=gogoproto/gogo.pb.cc",
+        "gogo.pb.h=gogoproto/gogo.pb.h",
+    ],
     outputs = [
         "gogo.pb.cc",
         "gogo.pb.h",

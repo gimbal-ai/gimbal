@@ -21,7 +21,7 @@ package gml.types;
 
 option go_package = "gimletlabs.ai/gimlet/src/common/typespb;typespb";
 
-import "third_party/github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "gogoproto/gogo.proto";
 
 // Store the basic JWT claim information.
 message JWTClaims {

@@ -21,7 +21,7 @@ package gml.internal.controlplane.directory.v1;
 
 option go_package = "gimletlabs.ai/gimlet/src/controlplane/directory/directorypb/v1;directorypb";
 
-import "third_party/github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "gogoproto/gogo.proto";
 import "google/protobuf/wrappers.proto";
 
 import "src/common/typespb/uuid.proto";

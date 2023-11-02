@@ -21,7 +21,7 @@ package gml.internal.controlplane.fleetmgr.v1;
 
 option go_package = "gimletlabs.ai/gimlet/src/controlplane/fleetmgr/fmpb/v1;fmpb";
 
-import "third_party/github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "gogoproto/gogo.proto";
 import "src/common/typespb/uuid.proto";
 
 // DeviceStatus has all of the possible statuses a device can be in.

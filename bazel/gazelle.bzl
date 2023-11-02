@@ -18,6 +18,7 @@ load("@rules_python_gazelle_plugin//:def.bzl", "GAZELLE_PYTHON_RUNTIME_DEPS")
 
 _THIRD_PARTY_IMPORTS = [
     "//third_party/github.com/open-telemetry/opentelemetry-proto:imports.csv",
+    "//third_party/github.com/gogo/protobuf:imports.csv",
 ]
 
 _GAZELLE_COMMON_ATTRS = dict(

@@ -21,7 +21,7 @@ package gml.internal.api.core.v1;
 
 option go_package = "gimletlabs.ai/gimlet/src/api/corepb/v1;corepb";
 
-import "third_party/github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "gogoproto/gogo.proto";
 import "src/common/typespb/uuid.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";

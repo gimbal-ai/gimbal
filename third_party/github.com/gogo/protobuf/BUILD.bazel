@@ -13,4 +13,5 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-# gazelle:prefix github.com/gogo/protobuf
+exports_files(["imports.csv"])
+# gazelle:proto_strip_import_prefix /third_party/github.com/gogo/protobuf
