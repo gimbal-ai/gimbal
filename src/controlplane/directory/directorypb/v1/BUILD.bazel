@@ -90,6 +90,7 @@ proto_go_library(
         "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_go_proto",
         "@com_github_gogo_protobuf//proto",
         "@com_github_gogo_protobuf//protoc-gen-gogo/descriptor",
+        "@com_github_gogo_protobuf//sortkeys",
         "@com_github_gogo_protobuf//types",
         "@org_golang_google_grpc//:go_default_library",
         "@org_golang_google_grpc//codes",

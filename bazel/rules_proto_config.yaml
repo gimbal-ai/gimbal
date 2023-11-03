@@ -9,6 +9,7 @@ plugins:
   implementation: gogo:protobuf:protoc-gen-gogoslick
   deps:
   - "@com_github_gogo_protobuf//proto"
+  - "@com_github_gogo_protobuf//sortkeys"
   - "@com_github_gogo_protobuf//types"
   - "@com_github_gogo_protobuf//protoc-gen-gogo/descriptor"
   - "@org_golang_google_grpc//:go_default_library"
