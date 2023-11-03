@@ -30,6 +30,7 @@ go_library(
         "@com_github_ory_dockertest_v3//:dockertest",
         "@com_github_ory_dockertest_v3//docker",
         "@com_github_prometheus_client_golang//api/prometheus/v1:prometheus",
+        "@com_github_prometheus_common//model",
         "@com_github_sirupsen_logrus//:logrus",
         "@com_github_spf13_viper//:viper",
         "@io_bazel_rules_go//go/runfiles:go_default_library",
@@ -41,6 +42,10 @@ gml_go_test(
     srcs = ["victoriametricstest_test.go"],
     deps = [
         ":victoriametricstest",
+        "//src/shared/services/victoriametrics",
+        "@com_github_cenkalti_backoff_v4//:backoff",
+        "@com_github_prometheus_common//model",
+        "@com_github_stretchr_testify//assert",
         "@com_github_stretchr_testify//require",
     ],
 )

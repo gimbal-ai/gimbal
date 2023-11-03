@@ -27,11 +27,28 @@ import (
 	"github.com/ory/dockertest/v3"
 	"github.com/ory/dockertest/v3/docker"
 	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
+	"github.com/prometheus/common/model"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
 	"gimletlabs.ai/gimlet/src/shared/services/victoriametrics"
 )
+
+func IsMetricAvailable(ctx context.Context, conn v1.API, query string) error {
+	res, _, err := conn.Query(ctx, query, time.Now())
+	if err != nil {
+		return err
+	}
+	switch res.Type() {
+	case model.ValVector:
+		items := res.(model.Vector)
+		if items.Len() < 1 {
+			return fmt.Errorf("empty results")
+		}
+		return nil
+	}
+	return fmt.Errorf("metric type %s not yet supported", res.Type().String())
+}
 
 // SetupTestVictoriaMetrics sets up a test instance for victoriametrics.
 func SetupTestVictoriaMetrics() (v1.API, func(), error) {
@@ -60,6 +77,7 @@ func SetupTestVictoriaMetrics() (v1.API, func(), error) {
 		&dockertest.RunOptions{
 			Repository: "victoriametrics/victoria-metrics",
 			Tag:        "v1.93.6",
+			Cmd:        []string{"-search.latencyOffset=0s", "-search.disableCache"},
 		}, func(config *docker.HostConfig) {
 			config.AutoRemove = true
 			config.RestartPolicy = docker.RestartPolicy{Name: "no"}
@@ -87,13 +105,20 @@ func SetupTestVictoriaMetrics() (v1.API, func(), error) {
 		return nil, nil, err
 	}
 
-	viper.Set("victoriametrics_address", fmt.Sprintf("http://%s:%s", resource.Container.NetworkSettings.Gateway, resource.GetPort("8428/tcp")))
+	// Single node mode uses the same host/port for inserts as well as selects.
+	viper.Set("victoriametrics_insert_scheme", "http")
+	viper.Set("victoriametrics_insert_host", resource.Container.NetworkSettings.Gateway)
+	viper.Set("victoriametrics_insert_port", resource.GetPort("8428/tcp"))
+
+	viper.Set("victoriametrics_select_scheme", "http")
+	viper.Set("victoriametrics_select_host", resource.Container.NetworkSettings.Gateway)
+	viper.Set("victoriametrics_select_port", resource.GetPort("8428/tcp"))
 
 	var conn v1.API
 	if err = pool.Retry(func() error {
 		log.SetLevel(log.WarnLevel)
 		log.Info("trying to connect")
-		conn = victoriametrics.MustConnectVictoriaMetrics()
+		conn = victoriametrics.MustConnectVictoriaMetricsSelect()
 		_, _, err := conn.Query(context.Background(), "up", time.Now(), v1.WithTimeout(5*time.Second))
 		return err
 	}); err != nil {

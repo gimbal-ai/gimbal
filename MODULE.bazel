@@ -87,6 +87,7 @@ use_repo(
     "com_github_ory_dockertest_v3",
     "com_github_phayes_freeport",
     "com_github_prometheus_client_golang",
+    "com_github_prometheus_common",
     "com_github_puerkitobio_goquery",
     "com_github_segmentio_analytics_go_v3",
     "com_github_sercand_kuberesolver_v5",
