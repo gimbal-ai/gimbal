@@ -83,6 +83,7 @@ gml_oci_image(
     visibility = ["//visibility:public"],
 )
 
+# gazelle:exclude **/coverage
 # gazelle:exclude **/node_modules
 # gazelle:exclude external
 # gazelle:exclude **/*.d.ts
