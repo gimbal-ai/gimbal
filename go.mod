@@ -9,6 +9,7 @@ require (
 	github.com/blang/semver/v4 v4.0.0
 	github.com/bmatcuk/doublestar v1.3.4
 	github.com/cenkalti/backoff/v4 v4.2.1
+	github.com/fatih/color v1.15.0
 	github.com/getsentry/sentry-go v0.25.0
 	github.com/gofrs/uuid/v5 v5.0.0
 	github.com/gogo/protobuf v1.3.2
@@ -35,7 +36,6 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.17.0
 	github.com/stretchr/testify v1.8.4
-	go.opentelemetry.io/proto/otlp v1.0.0 // gazelle:ignore
 	go.uber.org/mock v0.3.0
 	golang.org/x/net v0.17.0
 	golang.org/x/oauth2 v0.13.0
@@ -61,7 +61,6 @@ require (
 	github.com/docker/docker v20.10.24+incompatible // indirect
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
-	github.com/fatih/color v1.15.0
 	github.com/felixge/httpsnoop v1.0.3 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
@@ -131,5 +130,7 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
+
+require go.opentelemetry.io/proto/otlp v1.0.0 // gazelle:ignore
 
 replace go.opentelemetry.io/proto/otlp v1.0.0 => ./third_party/github.com/open-telemetry/opentelemetry-proto/opentelemetry/proto // gazelle:ignore
