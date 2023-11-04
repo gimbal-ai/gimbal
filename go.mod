@@ -31,7 +31,7 @@ require (
 	github.com/phayes/freeport v0.0.0-20220201140144-74d24b5ae9f5
 	github.com/prometheus/client_golang v1.17.0
 	github.com/prometheus/common v0.45.0
-	github.com/segmentio/analytics-go/v3 v3.2.1
+	github.com/segmentio/analytics-go/v3 v3.3.0
 	github.com/sercand/kuberesolver/v5 v5.1.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/pflag v1.0.5
