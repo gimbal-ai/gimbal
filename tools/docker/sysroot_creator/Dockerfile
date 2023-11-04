@@ -15,7 +15,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-FROM debian:bookworm@sha256:7d3e8810c96a6a278c218eb8e7f01efaec9d65f50c54aae37421dc3cbeba6535
+FROM debian:bookworm@sha256:fab22df37377621693c68650b06680c0d8f7c6bf816ec92637944778db3ca2c0
 
 RUN apt-get update -y && \
   apt-get install -y golang curl xz-utils
