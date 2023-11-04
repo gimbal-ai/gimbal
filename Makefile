@@ -40,15 +40,6 @@ update-python-manifest:
 pnpm-install:
 	cd src/ui && pnpm install
 
-.PHONY: lint
-lint: pnpm-install
-	$(MEGALINTER) \
-		--fix \
-		--env NODE_PATH="/tmp/lint/src/ui/node_modules" \
-		--env REPORT_OUTPUT_FOLDER=none \
-		--env GITHUB_TOKEN="${GITHUB_TOKEN}" \
-		--image=us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/megalinter-gml-custom:20231104152701
-
 .PHONY: jest
 jest: pnpm-install
 	cd src/ui && pnpm jest
@@ -60,3 +51,18 @@ devui: pnpm-install
 .PHONY: storybook
 storybook: pnpm-install
 	cd src/ui && pnpm storybook
+
+.PHONY: genfiles
+genfiles:
+	scripts/update_graphql_types.sh
+	scripts/update_go_protos.sh
+	go generate ./...
+
+.PHONY: lint
+lint: pnpm-install
+	$(MEGALINTER) \
+		--fix \
+		--env NODE_PATH="/tmp/lint/src/ui/node_modules" \
+		--env REPORT_OUTPUT_FOLDER=none \
+		--env GITHUB_TOKEN="${GITHUB_TOKEN}" \
+		--image=us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/megalinter-gml-custom:20231104152701
