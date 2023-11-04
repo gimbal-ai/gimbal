@@ -13,7 +13,7 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-FROM docker.io/oxsecurity/megalinter-cupcake:v7@sha256:171f2f5049a598aee1c752ebe830dc17c81ae5a003aabc08b87f09edada5f78f
+FROM docker.io/oxsecurity/megalinter-cupcake:v7@sha256:ff010a1d58b07764dc4fb24493fdb23bb632c705a2a7047a6fb0855bf3e819ae
 
 COPY .tflint.hcl $HOME/.tflint.hcl
 
