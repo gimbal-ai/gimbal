@@ -56,6 +56,7 @@ storybook: pnpm-install
 genfiles:
 	scripts/update_graphql_types.sh
 	scripts/update_go_protos.sh
+	scripts/update_visspec_types.sh
 	go generate ./...
 
 .PHONY: lint
