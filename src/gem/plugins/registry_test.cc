@@ -60,7 +60,7 @@ class SimpleModel : public Model {
 };
 
 TEST(Registry, simple_register_exec_ctx) {
-  Registry plugin_registry;
+  auto& plugin_registry = Registry::GetInstance();
 
   plugin_registry.RegisterExecContextBuilderOrDie<SimpleExecutionContextBuilder>("simple");
 
@@ -79,7 +79,7 @@ class SimpleModelBuilder : public ModelBuilder {
 };
 
 TEST(Registry, simple_register_model) {
-  Registry plugin_registry;
+  auto& plugin_registry = Registry::GetInstance();
 
   plugin_registry.RegisterModelBuilderOrDie<SimpleModelBuilder>("simple");
 

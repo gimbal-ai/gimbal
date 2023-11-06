@@ -134,45 +134,28 @@ def gml_default_features():
     ]
 
 # PL C++ library targets should be specified with this function.
-def gml_cc_library_internal(
-        name,
-        srcs = [],
-        hdrs = [],
-        data = [],
-        copts = [],
-        includes = [],
-        visibility = None,
-        tcmalloc_dep = False,
-        repository = "",
-        linkstamp = None,
-        linkopts = [],
-        local_defines = [],
-        defines = [],
-        tags = [],
-        testonly = 0,
-        deps = [],
-        strip_include_prefix = None):
+def gml_cc_library_internal(name, **kwargs):
+    copts = kwargs.pop("copts", [])
+    deps = kwargs.pop("deps", [])
+    tcmalloc_dep = kwargs.pop("tcmalloc_dep", False)
+    repository = kwargs.pop("repository", "")
+    alwayslink = kwargs.pop("alwayslink", True)
+    linkstatic = kwargs.pop("linkstatic", True)
+    defines = kwargs.pop("defines", [])
+    features = kwargs.pop("features", [])
+
     if tcmalloc_dep:
         deps += _tcmalloc_external_deps(repository)
+
     cc_library(
         name = name,
-        srcs = srcs,
-        hdrs = hdrs,
-        data = data,
         copts = gml_copts() + copts,
-        includes = includes,
-        visibility = visibility,
-        tags = tags,
         deps = deps + _default_external_deps(),
-        alwayslink = 1,
-        linkstatic = 1,
-        linkstamp = linkstamp,
-        linkopts = linkopts,
-        local_defines = local_defines,
+        alwayslink = alwayslink,
+        linkstatic = linkstatic,
         defines = gml_defines() + defines,
-        testonly = testonly,
-        strip_include_prefix = strip_include_prefix,
-        features = gml_default_features(),
+        features = features + gml_default_features(),
+        **kwargs
     )
 
 def gml_cc_library(**kwargs):

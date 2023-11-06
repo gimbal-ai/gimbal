@@ -15,8 +15,6 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#include "src/gem/build/plugin/tensorrt/plugin.h"
-
 #include "src/common/base/base.h"
 #include "src/gem/build/core/execution_context_builder.h"
 #include "src/gem/build/plugin/tensorrt/model_builder.h"
@@ -30,7 +28,7 @@ namespace tensorrt {
 
 using ::gml::gem::exec::tensorrt::ExecutionContext;
 
-static constexpr std::string_view kPluginName = "TensorRT";
+static constexpr std::string_view kPluginName = "tensorrt";
 
 void RegisterPluginOrDie(plugins::Registry* plugin_registry) {
   plugin_registry
@@ -38,6 +36,8 @@ void RegisterPluginOrDie(plugins::Registry* plugin_registry) {
           kPluginName);
   plugin_registry->RegisterModelBuilderOrDie<ModelBuilder>(kPluginName);
 }
+
+GML_REGISTER_PLUGIN(RegisterPluginOrDie);
 
 }  // namespace tensorrt
 }  // namespace build

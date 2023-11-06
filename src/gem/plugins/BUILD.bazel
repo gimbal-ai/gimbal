@@ -14,15 +14,21 @@
 # SPDX-License-Identifier: Proprietary
 
 load("//bazel:gml_build_system.bzl", "gml_cc_library", "gml_cc_test")
+load("//src/gem/plugins:plugins.bzl", "plugin_settings")
 
 package(default_visibility = [
     "//src:__subpackages__",
     "//src/experimental:__subpackages__",
 ])
 
+plugin_settings()
+
 gml_cc_library(
     name = "cc_library",
     srcs = [
+        "registry.cc",
+    ],
+    hdrs = [
         "registry.h",
     ],
     deps = [

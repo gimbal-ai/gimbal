@@ -15,8 +15,6 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#include "src/gem/build/plugin/cpu_tensor/plugin.h"
-
 #include "src/common/base/base.h"
 #include "src/gem/build/core/execution_context_builder.h"
 #include "src/gem/exec/plugin/cpu_tensor/context.h"
@@ -36,6 +34,8 @@ void RegisterPluginOrDie(plugins::Registry* plugin_registry) {
       ->RegisterExecContextBuilderOrDie<core::DefaultExecutionContextBuilder<ExecutionContext>>(
           kPluginName);
 }
+
+GML_REGISTER_PLUGIN(RegisterPluginOrDie);
 
 }  // namespace cpu_tensor
 }  // namespace build

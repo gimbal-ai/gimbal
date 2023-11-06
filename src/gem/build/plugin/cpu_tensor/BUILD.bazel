@@ -13,19 +13,19 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("//bazel:gml_build_system.bzl", "gml_cc_library")
+load("//src/gem/plugins:plugins.bzl", "gem_plugin_cc_library")
 
 package(default_visibility = [
     "//src/experimental:__subpackages__",
     "//src/gem:__subpackages__",
 ])
 
-gml_cc_library(
+gem_plugin_cc_library(
     name = "cc_library",
     srcs = [
         "plugin.cc",
-        "plugin.h",
     ],
+    plugin_name = "cpu_tensor",
     deps = [
         "//src/gem/exec/plugin/cpu_tensor:cc_library",
         "//src/gem/plugins:cc_library",

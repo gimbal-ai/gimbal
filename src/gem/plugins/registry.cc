@@ -15,19 +15,23 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#pragma once
-
-#include "src/common/base/base.h"
 #include "src/gem/plugins/registry.h"
 
 namespace gml {
 namespace gem {
-namespace build {
-namespace tensorrt {
+namespace plugins {
 
-void RegisterPluginOrDie(plugins::Registry* plugin_registry);
+namespace {
+std::unique_ptr<Registry> g_instance;
+}  // namespace
 
-}  // namespace tensorrt
-}  // namespace build
+Registry& Registry::GetInstance() {
+  if (g_instance == nullptr) {
+    g_instance = std::make_unique<Registry>();
+  }
+  return *g_instance;
+}
+
+}  // namespace plugins
 }  // namespace gem
 }  // namespace gml

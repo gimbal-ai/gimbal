@@ -13,14 +13,15 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("//bazel:gml_build_system.bzl", "gml_cc_library", "gml_cc_test")
+load("//bazel:gml_build_system.bzl", "gml_cc_test")
+load("//src/gem/plugins:plugins.bzl", "gem_plugin_cc_library")
 
 package(default_visibility = [
     "//src/experimental:__subpackages__",
     "//src/gem/plugins/cpu_tensor:__subpackages__",
 ])
 
-gml_cc_library(
+gem_plugin_cc_library(
     name = "cc_library",
     srcs = [
         "av_packet_wrapper.h",
@@ -29,6 +30,7 @@ gml_cc_library(
         "overlayed_ffmpeg_video_sink_calculator.cc",
         "overlayed_ffmpeg_video_sink_calculator.h",
     ],
+    plugin_name = "ffmpeg",
     deps = [
         "//src/api/corepb/v1:corepb_cc_library",
         "//src/gem/calculators/core:cc_library",

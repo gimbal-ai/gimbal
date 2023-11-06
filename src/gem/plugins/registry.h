@@ -65,6 +65,8 @@ class BuilderRegistry {
  */
 class Registry {
  public:
+  static Registry& GetInstance();
+
   template <typename T>
   void RegisterExecContextBuilderOrDie(std::string_view name) {
     exec_ctx_builders_.RegisterOrDie<T>(name);
@@ -94,6 +96,13 @@ class Registry {
                   const specpb::ModelSpec&>
       model_builders_;
 };
+
+#define GML_REGISTER_PLUGIN(reg_func)                        \
+  bool __register_plugin__() {                               \
+    reg_func(&::gml::gem::plugins::Registry::GetInstance()); \
+    return true;                                             \
+  }                                                          \
+  __attribute__((unused)) static bool ___plugin___ = __register_plugin__()
 
 }  // namespace plugins
 }  // namespace gem

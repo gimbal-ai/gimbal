@@ -14,15 +14,16 @@
 # SPDX-License-Identifier: Proprietary
 
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
-load("//bazel:gml_build_system.bzl", "gml_cc_library", "gml_cc_test")
+load("//bazel:gml_build_system.bzl", "gml_cc_test")
 load("//bazel:images.bzl", "gml_host_cuda_binary_image")
+load("//src/gem/plugins:plugins.bzl", "gem_plugin_cc_library")
 
 package(default_visibility = [
     "//src/experimental:__subpackages__",
     "//src/gem:__subpackages__",
 ])
 
-gml_cc_library(
+gem_plugin_cc_library(
     name = "cc_library",
     srcs = glob(
         [
@@ -32,6 +33,7 @@ gml_cc_library(
         exclude = ["**/*_test.cc"],
     ),
     hdrs = ["argus_cam_calculator.h"],
+    plugin_name = "argus",
     deps = [
         "//src/gem/calculators/plugin/argus/optionspb:optionspb_cc_library",
         "//src/gem/devices/camera/argus:cc_library",

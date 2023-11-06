@@ -13,15 +13,16 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("//bazel:gml_build_system.bzl", "gml_cc_binary", "gml_cc_library")
+load("//bazel:gml_build_system.bzl", "gml_cc_binary")
 load("//bazel:images.bzl", "gml_host_cuda_binary_image")
+load("//src/gem/plugins:plugins.bzl", "gem_plugin_cc_library")
 
 package(default_visibility = [
     "//src/experimental:__subpackages__",
     "//src/gem:__subpackages__",
 ])
 
-gml_cc_library(
+gem_plugin_cc_library(
     name = "cc_library",
     srcs = glob(
         [
@@ -31,6 +32,7 @@ gml_cc_library(
         exclude = ["argus_cam_binary.cc"],
     ),
     hdrs = ["argus_cam.h"],
+    plugin_name = "argus",
     deps = [
         "@com_nvidia_jetson_multimedia_api//:libargus_headers",
         "@com_nvidia_jetson_multimedia_utils//:libnvbufsurface.so",

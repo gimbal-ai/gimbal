@@ -13,21 +13,23 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("//bazel:gml_build_system.bzl", "gml_cc_library")
+load("//src/gem/plugins:plugins.bzl", "gem_plugin_cc_library")
 
 package(default_visibility = [
     "//src/experimental:__subpackages__",
     "//src/gem:__subpackages__",
 ])
 
-gml_cc_library(
+gem_plugin_cc_library(
     name = "cc_library",
     srcs = [
         "model_builder.cc",
-        "model_builder.h",
         "plugin.cc",
-        "plugin.h",
     ],
+    hdrs = [
+        "model_builder.h",
+    ],
+    plugin_name = "tensorrt",
     deps = [
         "//src/common/perf:cc_library",
         "//src/gem/exec/plugin/tensorrt:cc_library",
