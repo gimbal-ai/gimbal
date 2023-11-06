@@ -33,8 +33,15 @@ TEST(MacAddrStrToInt, Basic) {
   ASSERT_NOT_OK(MacAddrStrToInt("01:02:03:04:05"));
 }
 
-TEST(NonVirtualNetDevices, Basic) {
-  ASSERT_OK_AND_ASSIGN(std::set<NetDevice> devices, NonVirtualNetDevices());
+class NetDeviceReaderTest : public ::testing::Test {
+ protected:
+  void SetUp() { ASSERT_OK_AND_ASSIGN(resolver_, NetDeviceReader::Create()); }
+
+  std::unique_ptr<NetDeviceReader> resolver_;
+};
+
+TEST_F(NetDeviceReaderTest, NonVirtualNetDevices) {
+  ASSERT_OK_AND_ASSIGN(std::set<NetDevice> devices, resolver_->NonVirtualNetDevices());
 
   // Note this assertion expect that the test is running on a host with at least one physical
   // device. If this turns out not to be universally true for our environments, it should be
@@ -47,8 +54,8 @@ TEST(NonVirtualNetDevices, Basic) {
   }
 }
 
-TEST(SystemMacAddress, Basic) {
-  ASSERT_OK_AND_ASSIGN(NetDevice device, SystemMacAddress());
+TEST_F(NetDeviceReaderTest, SystemMacAddress) {
+  ASSERT_OK_AND_ASSIGN(NetDevice device, resolver_->SystemMacAddress());
 
   uint64_t mac_addr = device.mac_address().addr;
 

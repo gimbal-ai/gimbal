@@ -20,10 +20,19 @@
 #pragma once
 
 #include <cstdint>
+#include <filesystem>
+
 #include "src/common/base/base.h"
 
 namespace gml {
 namespace system {
+
+/**
+ * Converts a MAC address in string form "00:1A:2B:3C:4D:5E", which is the form found in
+ * /sys/class/net/<device>/address, to its integer representation.
+ * The 00 byte is the MSB, while 5E is the LSB.
+ */
+StatusOr<uint64_t> MacAddrStrToInt(std::string_view mac_addr_str_in);
 
 struct MacAddress {
   uint64_t addr;
@@ -55,27 +64,43 @@ class NetDevice {
   MacAddress mac_addr_{0};
 };
 
-/**
- * Converts a MAC address in string form "00:1A:2B:3C:4D:5E", which is the form found in
- * /sys/class/net/<device>/address, to its integer representation.
- * The 00 byte is the MSB, while 5E is the LSB.
- */
-StatusOr<uint64_t> MacAddrStrToInt(std::string_view mac_addr_str_in);
+class NetDeviceReader {
+ public:
+  /**
+   * Create a NetDeviceReader instance, from which one can query net devices.
+   *
+   * NOTE: For instances that run inside a container, this function may be given a path to the host
+   * /sys/class/net filesystem to get access to the host net devices.
+   * For example, the host /sys may be mounted inside the container at a location like /host_sys,
+   * and then this reader may be provided /host_sys/class/net as the sys_class_net_path. This is
+   * particularly useful if trying to read the host MacAddress for a device ID.
+   */
+  static StatusOr<std::unique_ptr<NetDeviceReader>> Create(
+      const std::filesystem::path& sys_class_net_path = kDefaultSysClassNet);
 
-/**
- * Returns the set of non-virtual networking devices from the host.
- * Any virtual devices (like lo, docker and br devices) are excluded.
- * Virtual devices are those found under /sys/devices/virtual.
- */
-StatusOr<std::set<NetDevice>> NonVirtualNetDevices();
+  /**
+   * Returns the set of non-virtual networking devices from the host.
+   * Any virtual devices (like lo, docker and br devices) are excluded.
+   * Virtual devices are those found under /sys/devices/virtual.
+   */
+  StatusOr<std::set<NetDevice>> NonVirtualNetDevices();
 
-/**
- * Returns the lexicographically first non-virtual device from the system that has a globally unique
- * MAC address, as determined by the corresponding MAC address bit. If no globally unique MAC
- * address bits are available, then it returns the lexicographically first physical MAC address,
- * even if it is locally administered.
- */
-StatusOr<NetDevice> SystemMacAddress();
+  /**
+   * Returns the lexicographically first non-virtual device from the system that has a globally
+   * unique MAC address, as determined by the corresponding MAC address bit. If no globally unique
+   * MAC address bits are available, then it returns the lexicographically first physical MAC
+   * address, even if it is locally administered.
+   */
+  StatusOr<NetDevice> SystemMacAddress();
+
+ private:
+  const static inline std::filesystem::path kDefaultSysClassNet = "/sys/class/net";
+
+  NetDeviceReader(const std::filesystem::path& sys_class_net_path)
+      : sys_class_net_path_(sys_class_net_path) {}
+
+  std::filesystem::path sys_class_net_path_;
+};
 
 }  // namespace system
 }  // namespace gml

@@ -27,11 +27,6 @@
 namespace gml {
 namespace system {
 
-// TODO(oazizi): Make this configurable. In containerized environments, we're going to want
-//               to mount /sys to /host/sys and use that directory for looking up MAC addresses/
-//               MAC addresses of devices inside containers are not unique.
-const std::string kSysClassNet = "/sys/class/net";
-
 StatusOr<uint64_t> MacAddrStrToInt(std::string_view mac_addr_str_in) {
   std::string_view mac_addr_str = absl::StripAsciiWhitespace(mac_addr_str_in);
 
@@ -51,11 +46,27 @@ StatusOr<uint64_t> MacAddrStrToInt(std::string_view mac_addr_str_in) {
   return mac_addr;
 }
 
-StatusOr<std::set<NetDevice>> NonVirtualNetDevices() {
+StatusOr<std::unique_ptr<NetDeviceReader>> NetDeviceReader::Create(
+    const std::filesystem::path& sys_class_net_path) {
+  auto reader = std::unique_ptr<NetDeviceReader>(new NetDeviceReader(sys_class_net_path));
+
+  if (!std::filesystem::exists(reader->sys_class_net_path_)) {
+    return error::NotFound("The provided path $0 does not exist.");
+  }
+
+  if (!std::filesystem::is_directory(reader->sys_class_net_path_)) {
+    return error::NotFound("The provided path $0 is not a directory.");
+  }
+
+  return reader;
+}
+
+StatusOr<std::set<NetDevice>> NetDeviceReader::NonVirtualNetDevices() {
   std::set<NetDevice> net_devices;
 
-  if (std::filesystem::exists(kSysClassNet) && std::filesystem::is_directory(kSysClassNet)) {
-    for (const auto& entry : std::filesystem::directory_iterator(kSysClassNet)) {
+  if (std::filesystem::exists(sys_class_net_path_) &&
+      std::filesystem::is_directory(sys_class_net_path_)) {
+    for (const auto& entry : std::filesystem::directory_iterator(sys_class_net_path_)) {
       std::filesystem::path device_name = entry.path().filename();
       std::filesystem::path addr_file = entry / std::filesystem::path("address");
 
@@ -80,7 +91,7 @@ StatusOr<std::set<NetDevice>> NonVirtualNetDevices() {
   return net_devices;
 }
 
-StatusOr<NetDevice> SystemMacAddress() {
+StatusOr<NetDevice> NetDeviceReader::SystemMacAddress() {
   GML_ASSIGN_OR_RETURN(std::set<NetDevice> devices, NonVirtualNetDevices());
 
   // Scan for the first MAC address that is globally unique.
@@ -98,7 +109,8 @@ StatusOr<NetDevice> SystemMacAddress() {
     return device;
   }
 
-  return error::NotFound("Error: Could not find a non-virtual net device in $0.", kSysClassNet);
+  return error::NotFound("Error: Could not find a non-virtual net device in $0.",
+                         sys_class_net_path_.string());
 }
 
 }  // namespace system
