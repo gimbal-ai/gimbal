@@ -75,7 +75,9 @@ TEST(NvBufSurfToImageFrameCalculator, conversion) {
   mediapipe::CalculatorRunner runner(kGraph);
 
   // Run the calculator for a single packet.
-  mediapipe::Packet p = mediapipe::Adopt(nvbuf_surf.release()).At(mediapipe::Timestamp(1000));
+  mediapipe::Packet p =
+      mediapipe::MakePacket<std::shared_ptr<NvBufSurfaceWrapper>>(std::move(nvbuf_surf));
+  p = p.At(mediapipe::Timestamp(1000));
   runner.MutableInputs()->Index(0).packets.push_back(p);
 
   EXPECT_EQ(runner.Outputs().NumEntries(), 1);
