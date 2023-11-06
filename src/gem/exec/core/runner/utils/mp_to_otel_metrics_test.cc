@@ -92,41 +92,41 @@ process_output_latency {
 const char kExpectedPB[] = R"(
 scope_metrics {
   scope {
-    name: "mediapipe"
+    name: "gml_gem_exec_mp"
     version: "v0.0.1"
   }
   metrics {
-    name: "mediapipe_CountingSourceCalculator_open_runtime"
-    description: "The time the mediapipe CountingSourceCalculator stage has spent in the Open() call."
-    unit: "usec"
+    name: "gml_gem_exec_mp_open_runtime_seconds_total"
+    description: "The time mediapipe has spent in the Open() call."
+    unit: "seconds"
     sum {
       data_points {
-        as_int: 37
+        as_double: 3.7e-05
       }
       aggregation_temporality: AGGREGATION_TEMPORALITY_CUMULATIVE
       is_monotonic: true
     }
   }
   metrics {
-    name: "mediapipe_CountingSourceCalculator_close_runtime"
-    description: "The time the mediapipe CountingSourceCalculator stage has spent in the Close() call."
-    unit: "usec"
+    name: "gml_gem_exec_mp_close_runtime_seconds_total"
+    description: "The time mediapipe has spent in the Close() call."
+    unit: "seconds"
     sum {
       data_points {
-        as_int: 0
+        as_double: 0
       }
       aggregation_temporality: AGGREGATION_TEMPORALITY_CUMULATIVE
       is_monotonic: true
     }
   }
   metrics {
-    name: "mediapipe_CountingSourceCalculator_process_runtime_histogram"
-    description: "The time the mediapipe CountingSourceCalculator stage has spent in the Process() call."
-    unit: "usec"
+    name: "gml_gem_exec_mp_process_runtime_seconds"
+    description: "The time mediapipe has spent in the Process() call."
+    unit: "seconds"
     histogram {
       data_points {
         count: 11
-        sum: 42
+        sum: 4.2e-05
         bucket_counts: 11
         bucket_counts: 0
         bucket_counts: 0
@@ -137,27 +137,27 @@ scope_metrics {
         bucket_counts: 0
         bucket_counts: 0
         bucket_counts: 0
-        explicit_bounds: 1000
-        explicit_bounds: 2000
-        explicit_bounds: 3000
-        explicit_bounds: 4000
-        explicit_bounds: 5000
-        explicit_bounds: 6000
-        explicit_bounds: 7000
-        explicit_bounds: 8000
-        explicit_bounds: 9000
+        explicit_bounds: 0.001
+        explicit_bounds: 0.002
+        explicit_bounds: 0.003
+        explicit_bounds: 0.004
+        explicit_bounds: 0.005
+        explicit_bounds: 0.006
+        explicit_bounds: 0.007
+        explicit_bounds: 0.008
+        explicit_bounds: 0.009
       }
       aggregation_temporality: AGGREGATION_TEMPORALITY_CUMULATIVE
     }
   }
   metrics {
-    name: "mediapipe_CountingSourceCalculator_process_input_latency_histogram"
-    description: "The Process() input latency of the mediapipe CountingSourceCalculator stage."
-    unit: "usec"
+    name: "gml_gem_exec_mp_process_input_latency_seconds"
+    description: "The Process() input latency of mediapipe."
+    unit: "seconds"
     histogram {
       data_points {
         count: 11
-        sum: 42
+        sum: 4.2e-05
         bucket_counts: 11
         bucket_counts: 0
         bucket_counts: 0
@@ -168,27 +168,27 @@ scope_metrics {
         bucket_counts: 0
         bucket_counts: 0
         bucket_counts: 0
-        explicit_bounds: 1000
-        explicit_bounds: 2000
-        explicit_bounds: 3000
-        explicit_bounds: 4000
-        explicit_bounds: 5000
-        explicit_bounds: 6000
-        explicit_bounds: 7000
-        explicit_bounds: 8000
-        explicit_bounds: 9000
+        explicit_bounds: 0.001
+        explicit_bounds: 0.002
+        explicit_bounds: 0.003
+        explicit_bounds: 0.004
+        explicit_bounds: 0.005
+        explicit_bounds: 0.006
+        explicit_bounds: 0.007
+        explicit_bounds: 0.008
+        explicit_bounds: 0.009
       }
       aggregation_temporality: AGGREGATION_TEMPORALITY_CUMULATIVE
     }
   }
   metrics {
-    name: "mediapipe_CountingSourceCalculator_process_output_latency_histogram"
-    description: "The Process() output latency of the mediapipe CountingSourceCalculator stage."
-    unit: "usec"
+    name: "gml_gem_exec_mp_process_output_latency_seconds"
+    description: "The Process() output latency of mediapipe."
+    unit: "seconds"
     histogram {
       data_points {
         count: 11
-        sum: 42
+        sum: 4.2e-05
         bucket_counts: 11
         bucket_counts: 0
         bucket_counts: 0
@@ -199,15 +199,15 @@ scope_metrics {
         bucket_counts: 0
         bucket_counts: 0
         bucket_counts: 0
-        explicit_bounds: 1000
-        explicit_bounds: 2000
-        explicit_bounds: 3000
-        explicit_bounds: 4000
-        explicit_bounds: 5000
-        explicit_bounds: 6000
-        explicit_bounds: 7000
-        explicit_bounds: 8000
-        explicit_bounds: 9000
+        explicit_bounds: 0.001
+        explicit_bounds: 0.002
+        explicit_bounds: 0.003
+        explicit_bounds: 0.004
+        explicit_bounds: 0.005
+        explicit_bounds: 0.006
+        explicit_bounds: 0.007
+        explicit_bounds: 0.008
+        explicit_bounds: 0.009
       }
       aggregation_temporality: AGGREGATION_TEMPORALITY_CUMULATIVE
       }

@@ -15,6 +15,8 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include <vector>
+
 #include "src/gem/exec/core/runner/utils/mp_to_otel_metrics.h"
 
 #include <mediapipe/framework/calculator_framework.h>
@@ -27,11 +29,14 @@ using Metric = ::opentelemetry::proto::metrics::v1::Metric;
 
 namespace {
 
-Status PopulateIntSumMetric(Metric* metric, std::string_view name, std::string_view desc,
-                            std::string_view unit, int64_t time_since_epoch_ns, int64_t value) {
-  metric->set_name(std::string(name));
-  metric->set_description(std::string(desc));
-  metric->set_unit(std::string(unit));
+constexpr int64_t kUSecondsPerSecond = 1000 * 1000;
+
+Status PopulateSumMetric(Metric* metric, std::string&& name, std::string&& desc, std::string&& unit,
+                         absl::flat_hash_map<std::string, std::string>&& attributes,
+                         int64_t time_since_epoch_ns, int64_t value) {
+  metric->set_name(std::move(name));
+  metric->set_description(std::move(desc));
+  metric->set_unit(std::move(unit));
 
   auto* sum = metric->mutable_sum();
   sum->set_is_monotonic(true);
@@ -40,17 +45,25 @@ Status PopulateIntSumMetric(Metric* metric, std::string_view name, std::string_v
 
   auto* data_point = sum->add_data_points();
   data_point->set_time_unix_nano(time_since_epoch_ns);
-  data_point->set_as_int(value);
+  data_point->set_as_double(static_cast<double>(value) / kUSecondsPerSecond);
+
+  for (auto [k, v] : attributes) {
+    auto* attribute = data_point->add_attributes();
+    attribute->set_key(k);
+    attribute->mutable_value()->set_string_value(std::move(v));
+  }
 
   return Status::OK();
 }
 
-Status PopulateIntHistogramMetric(Metric* metric, std::string_view name, std::string_view desc,
-                                  std::string_view unit, int64_t time_since_epoch_ns,
-                                  const ::mediapipe::TimeHistogram& value) {
-  metric->set_name(std::string(name));
-  metric->set_description(std::string(desc));
-  metric->set_unit(std::string(unit));
+Status PopulateHistogramMetric(Metric* metric, std::string&& name, std::string&& desc,
+                               std::string&& unit,
+                               absl::flat_hash_map<std::string, std::string>&& attributes,
+                               int64_t time_since_epoch_ns,
+                               const ::mediapipe::TimeHistogram& value) {
+  metric->set_name(std::move(name));
+  metric->set_description(std::move(desc));
+  metric->set_unit(std::move(unit));
 
   auto* histogram = metric->mutable_histogram();
   histogram->set_aggregation_temporality(
@@ -59,7 +72,7 @@ Status PopulateIntHistogramMetric(Metric* metric, std::string_view name, std::st
   auto* data_point = histogram->add_data_points();
   data_point->set_time_unix_nano(time_since_epoch_ns);
 
-  data_point->set_sum(value.total());
+  data_point->set_sum(static_cast<double>(value.total()) / kUSecondsPerSecond);
 
   if (value.num_intervals() != value.count_size()) {
     return error::Internal(
@@ -67,11 +80,11 @@ Status PopulateIntHistogramMetric(Metric* metric, std::string_view name, std::st
         value.num_intervals(), value.count_size());
   }
 
-  auto interval = value.interval_size_usec();
-  auto current_boundary = 0;
+  int64_t interval = value.interval_size_usec();
+  int64_t current_boundary = 0;
   for (int i = 0; i < value.num_intervals() - 1; ++i) {
     current_boundary += interval;
-    data_point->add_explicit_bounds(current_boundary);
+    data_point->add_explicit_bounds(static_cast<double>(current_boundary) / kUSecondsPerSecond);
   }
 
   int64_t total_count = 0;
@@ -80,6 +93,12 @@ Status PopulateIntHistogramMetric(Metric* metric, std::string_view name, std::st
     total_count += count;
   }
   data_point->set_count(total_count);
+
+  for (auto [k, v] : attributes) {
+    auto* attribute = data_point->add_attributes();
+    attribute->set_key(k);
+    attribute->mutable_value()->set_string_value(std::move(v));
+  }
 
   return Status::OK();
 }
@@ -98,68 +117,75 @@ Status CalculatorProfileVecToOTelProto(
       std::chrono::duration_cast<std::chrono::nanoseconds>(time_since_epoch).count();
 
   auto* scope_metrics = metrics_out->add_scope_metrics();
-  scope_metrics->mutable_scope()->set_name("mediapipe");
+  // Scope information will be ignored by our metrics store, but setting for completeness.
+  scope_metrics->mutable_scope()->set_name("gml_gem_exec_mp");
   scope_metrics->mutable_scope()->set_version("v0.0.1");
 
-  constexpr std::string_view kMPStatPrefix = "mediapipe_";
+  constexpr std::string_view kStatPrefix = "gml_gem_exec_mp_";
 
   Status status;
 
   for (const auto& p : profiles) {
+    const std::pair<std::string, std::string> kStageNameAttr{"stage", p.name()};
+
     // Populate open_runtime.
     {
       Metric* open_runtime_metric = scope_metrics->add_metrics();
-      std::string name = absl::StrCat(kMPStatPrefix, p.name(), "_open_runtime");
-      std::string desc = absl::Substitute(
-          "The time the mediapipe $0 stage has spent in the Open() call.", p.name());
-      std::string unit = "usec";
-      GML_RETURN_IF_ERROR(PopulateIntSumMetric(open_runtime_metric, name, desc, unit,
-                                               time_since_epoch_ns, p.open_runtime()));
+      std::string name = absl::StrCat(kStatPrefix, "open_runtime_seconds_total");
+      std::string desc = "The time mediapipe has spent in the Open() call.";
+      std::string unit = "seconds";
+      absl::flat_hash_map<std::string, std::string> attributes{kStageNameAttr};
+      GML_RETURN_IF_ERROR(PopulateSumMetric(open_runtime_metric, std::move(name), std::move(desc),
+                                            std::move(unit), std::move(attributes),
+                                            time_since_epoch_ns, p.open_runtime()));
     }
 
     // Populate close_runtime.
     {
       Metric* close_runtime_metric = scope_metrics->add_metrics();
-      std::string name = absl::StrCat(kMPStatPrefix, p.name(), "_close_runtime");
-      std::string desc = absl::Substitute(
-          "The time the mediapipe $0 stage has spent in the Close() call.", p.name());
-      std::string unit = "usec";
-      GML_RETURN_IF_ERROR(PopulateIntSumMetric(close_runtime_metric, name, desc, unit,
-                                               time_since_epoch_ns, p.close_runtime()));
+      std::string name = absl::StrCat(kStatPrefix, "close_runtime_seconds_total");
+      std::string desc = "The time mediapipe has spent in the Close() call.";
+      std::string unit = "seconds";
+      absl::flat_hash_map<std::string, std::string> attributes{kStageNameAttr};
+      GML_RETURN_IF_ERROR(PopulateSumMetric(close_runtime_metric, std::move(name), std::move(desc),
+                                            std::move(unit), std::move(attributes),
+                                            time_since_epoch_ns, p.close_runtime()));
     }
 
     // Populate process_runtime histogram.
     {
       Metric* process_runtime_metric = scope_metrics->add_metrics();
-      std::string name = absl::StrCat(kMPStatPrefix, p.name(), "_process_runtime_histogram");
-      std::string desc = absl::Substitute(
-          "The time the mediapipe $0 stage has spent in the Process() call.", p.name());
-      std::string unit = "usec";
-      GML_RETURN_IF_ERROR(PopulateIntHistogramMetric(process_runtime_metric, name, desc, unit,
-                                                     time_since_epoch_ns, p.process_runtime()));
+      std::string name = absl::StrCat(kStatPrefix, "process_runtime_seconds");
+      std::string desc = "The time mediapipe has spent in the Process() call.";
+      std::string unit = "seconds";
+      absl::flat_hash_map<std::string, std::string> attributes{kStageNameAttr};
+      GML_RETURN_IF_ERROR(PopulateHistogramMetric(
+          process_runtime_metric, std::move(name), std::move(desc), std::move(unit),
+          std::move(attributes), time_since_epoch_ns, p.process_runtime()));
     }
 
     // Populate process_input_latency histogram.
     {
       Metric* process_input_latency_metric = scope_metrics->add_metrics();
-      std::string name = absl::StrCat(kMPStatPrefix, p.name(), "_process_input_latency_histogram");
-      std::string desc =
-          absl::Substitute("The Process() input latency of the mediapipe $0 stage.", p.name());
-      std::string unit = "usec";
-      GML_RETURN_IF_ERROR(PopulateIntHistogramMetric(process_input_latency_metric, name, desc, unit,
-                                                     time_since_epoch_ns, p.process_runtime()));
+      std::string name = absl::StrCat(kStatPrefix, "process_input_latency_seconds");
+      std::string desc = "The Process() input latency of mediapipe.";
+      std::string unit = "seconds";
+      absl::flat_hash_map<std::string, std::string> attributes{kStageNameAttr};
+      GML_RETURN_IF_ERROR(PopulateHistogramMetric(
+          process_input_latency_metric, std::move(name), std::move(desc), std::move(unit),
+          std::move(attributes), time_since_epoch_ns, p.process_runtime()));
     }
 
     // Populate process_output_latency histogram.
     {
       Metric* process_output_latency_metric = scope_metrics->add_metrics();
-      std::string name = absl::StrCat(kMPStatPrefix, p.name(), "_process_output_latency_histogram");
-      std::string desc =
-          absl::Substitute("The Process() output latency of the mediapipe $0 stage.", p.name());
-      std::string unit = "usec";
-      GML_RETURN_IF_ERROR(PopulateIntHistogramMetric(process_output_latency_metric, name, desc,
-                                                     unit, time_since_epoch_ns,
-                                                     p.process_runtime()));
+      std::string name = absl::StrCat(kStatPrefix, "process_output_latency_seconds");
+      std::string desc = "The Process() output latency of mediapipe.";
+      std::string unit = "seconds";
+      absl::flat_hash_map<std::string, std::string> attributes{kStageNameAttr};
+      GML_RETURN_IF_ERROR(PopulateHistogramMetric(
+          process_output_latency_metric, std::move(name), std::move(desc), std::move(unit),
+          std::move(attributes), time_since_epoch_ns, p.process_runtime()));
     }
   }
 
