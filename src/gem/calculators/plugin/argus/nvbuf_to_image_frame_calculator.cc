@@ -15,7 +15,7 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#include "src/gem/calculators/plugin/argus/nvbuf_to_image_frame.h"
+#include "src/gem/calculators/plugin/argus/nvbuf_to_image_frame_calculator.h"
 
 #include "absl/status/status.h"
 
