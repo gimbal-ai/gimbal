@@ -56,7 +56,7 @@ absl::Status ArgusCamSourceCalculator::Process(mediapipe::CalculatorContext* cc)
   packet = packet.At(mediapipe::Timestamp(timestamp_));
   cc->Outputs().Index(0).AddPacket(std::move(packet));
 
-  timestamp_++;
+  ++timestamp_;
 
   return absl::OkStatus();
 }

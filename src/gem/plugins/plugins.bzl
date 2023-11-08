@@ -45,6 +45,12 @@ PLUGINS = dict(
             "//src/gem/build/plugin/tensorrt:cc_library",
         ],
     ),
+    opencv_cam = struct(
+        enabled_by_default = True,
+        libs = [
+            "//src/gem/calculators/plugin/opencv_cam:cc_library",
+        ],
+    ),
 )
 
 def _plugin_enabled(plugin_name):

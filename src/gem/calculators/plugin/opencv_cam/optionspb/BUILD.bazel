@@ -1,0 +1,69 @@
+# Copyright © 2023- Gimlet Labs, Inc.
+# All Rights Reserved.
+#
+# NOTICE:  All information contained herein is, and remains
+# the property of Gimlet Labs, Inc. and its suppliers,
+# if any.  The intellectual and technical concepts contained
+# herein are proprietary to Gimlet Labs, Inc. and its suppliers and
+# may be covered by U.S. and Foreign Patents, patents in process,
+# and are protected by trade secret or copyright law. Dissemination
+# of this information or reproduction of this material is strictly
+# forbidden unless prior written permission is obtained from
+# Gimlet Labs, Inc.
+#
+# SPDX-License-Identifier: Proprietary
+
+load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
+load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_library")
+load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "optionspb_proto",
+    srcs = ["opencv_cam_calculator_options.proto"],
+    visibility = ["//visibility:public"],
+)
+
+proto_cc_library(
+    name = "optionspb_cc_library",
+    srcs = ["opencv_cam_calculator_options.pb.cc"],
+    hdrs = ["opencv_cam_calculator_options.pb.h"],
+    visibility = ["//visibility:public"],
+    deps = ["@com_google_protobuf//:protobuf"],
+)
+
+proto_compile(
+    name = "optionspb_cpp_compile",
+    outputs = [
+        "opencv_cam_calculator_options.pb.cc",
+        "opencv_cam_calculator_options.pb.h",
+    ],
+    plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
+    proto = "optionspb_proto",
+    visibility = ["//visibility:public"],
+)
+
+proto_compile(
+    name = "optionspb_go_compile",
+    output_mappings = ["opencv_cam_calculator_options.pb.go=gimletlabs.ai/gimlet/src/gem/calculators/plugin/opencv_cam/optionspb/opencv_cam_calculator_options.pb.go"],
+    outputs = ["opencv_cam_calculator_options.pb.go"],
+    plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
+    proto = "optionspb_proto",
+    visibility = ["//visibility:public"],
+)
+
+proto_go_library(
+    name = "optionspb_go_proto",
+    srcs = ["opencv_cam_calculator_options.pb.go"],
+    importpath = "gimletlabs.ai/gimlet/src/gem/calculators/plugin/opencv_cam/optionspb",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_gogo_protobuf//proto",
+        "@com_github_gogo_protobuf//protoc-gen-gogo/descriptor",
+        "@com_github_gogo_protobuf//sortkeys",
+        "@com_github_gogo_protobuf//types",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//status",
+    ],
+)
