@@ -35,7 +35,10 @@ def _jest_test(name = "", srcs = [], deps = [], data = [], **kwargs):
     node_modules = kwargs.pop("node_modules", "//src/ui:node_modules")
     tags = kwargs.pop("tags", ["jest"])
 
-    seen = {"//src/ui:setup_jest": True}
+    seen = {
+        "//src/ui:cp_setup_jest": True,
+        "//src/ui:cp_tsconfig": True,
+    }
     for d in deps:
         seen[d] = True
     for d in data:
