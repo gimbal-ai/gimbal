@@ -62,6 +62,7 @@ go_deps = use_extension("@bazel_gazelle//:extensions.bzl", "go_deps")
 go_deps.from_file(go_mod = "//:go.mod")
 use_repo(
     go_deps,
+    "ag_pault_go_debian",
     "com_github_bazelbuild_buildtools",
     "com_github_blang_semver_v4",
     "com_github_bmatcuk_doublestar",

@@ -30,6 +30,7 @@ go_library(
     importpath = "gimletlabs.ai/gimlet/tools/docker/sysroot_creator/package_satisifier",
     visibility = ["//visibility:private"],
     deps = [
+        "@ag_pault_go_debian//version",
         "@com_github_sirupsen_logrus//:logrus",
         "@com_github_spf13_cobra//:cobra",
         "@com_github_spf13_viper//:viper",

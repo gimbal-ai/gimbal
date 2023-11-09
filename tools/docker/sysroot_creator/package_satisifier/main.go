@@ -118,6 +118,7 @@ func satisfyDeps() {
 			log.WithError(err).Fatal("failed to parse package database")
 		}
 	}
+
 	dependencySatisfier := newDepSatisfier(db, filteredSpec)
 	debs, err := dependencySatisfier.listRequiredDebs()
 	if err != nil {

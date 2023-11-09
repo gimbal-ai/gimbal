@@ -25,48 +25,94 @@ import (
 	"io"
 	"regexp"
 	"strings"
+
+	debVersion "pault.ag/go/debian/version"
 )
 
-var simpleDepRegex *regexp.Regexp
+var singleDepRegex *regexp.Regexp
 
 func init() {
-	simpleDepRegex = regexp.MustCompile(`([^ :]*)([:][^ ]+)?(.*)?`)
+	depRegex := `(?P<pkg_name>[^ :]*)(?P<arch>[:][^ ]+)?( \((?P<version_op>[<>=]+) (?P<version>[^)]+)\))?`
+	singleDepRegex = regexp.MustCompile(depRegex)
+}
+
+type versionCompareType string
+
+const (
+	lessThan      versionCompareType = "<<"
+	lessThanEq    versionCompareType = "<="
+	eq            versionCompareType = "="
+	greaterThanEq versionCompareType = ">="
+	greaterThan   versionCompareType = ">>"
+)
+
+type versionedDependency struct {
+	name       string
+	version    *debVersion.Version
+	versionCmp versionCompareType
+}
+
+func (d *versionedDependency) versionString() string {
+	if d.version == nil {
+		return ""
+	}
+	return d.version.String()
+}
+
+func (d *versionedDependency) String() string {
+	return fmt.Sprintf("%s (%s %s)", d.name, d.versionCmp, d.versionString())
 }
 
 type dependency struct {
 	// anyOf stores each package that could satisfy this dependency. i.e. an OR dependency on each of the packages listed.
-	anyOf []string
+	anyOf []*versionedDependency
 }
 
 func (d *dependency) String() string {
-	return strings.Join(d.anyOf, " | ")
+	strs := []string{}
+	for _, vd := range d.anyOf {
+		strs = append(strs, vd.String())
+	}
+	return strings.Join(strs, " | ")
 }
 
 type pkg struct {
 	name     string
+	version  debVersion.Version
 	filename string
 	depends  []*dependency
 	// list of virtual packages provided by this package.
-	provides       []string
+	provides       []*versionedDependency
 	downloadPrefix string
 }
 
+func (p *pkg) versionString() string {
+	return p.version.String()
+}
+
+type (
+	pkgVersions        map[string]*pkg
+	versionedPkgSet    map[string]pkgVersions
+	versionedProviders map[string][]*versionedDependency
+)
+
 type database struct {
-	packages         map[string]*pkg
-	virtualProviders map[string][]string
+	packages         versionedPkgSet
+	virtualProviders map[string]versionedProviders
 }
 
 func (p *pkg) String() string {
 	b := &strings.Builder{}
 	_, _ = b.WriteString("Package: " + p.name + "\n")
+	_, _ = b.WriteString("Version: " + p.versionString() + "\n")
 	_, _ = b.WriteString("Depends:\n")
 	for _, dep := range p.depends {
 		_, _ = b.WriteString(dep.String())
 		_, _ = b.WriteString("\n")
 	}
 	_, _ = b.WriteString("Provides:\n")
-	for _, name := range p.provides {
-		_, _ = b.WriteString(name + "\n")
+	for _, dep := range p.provides {
+		_, _ = b.WriteString(dep.String() + "\n")
 	}
 	return b.String()
 }
@@ -75,7 +121,7 @@ func newPkg(name string, downloadPrefix string) *pkg {
 	return &pkg{
 		name:           name,
 		depends:        make([]*dependency, 0),
-		provides:       make([]string, 0),
+		provides:       make([]*versionedDependency, 0),
 		downloadPrefix: downloadPrefix,
 	}
 }
@@ -83,30 +129,52 @@ func newPkg(name string, downloadPrefix string) *pkg {
 func parseProvides(str string, curPkg *pkg) error {
 	provides := strings.Split(str, ", ")
 	for _, depStr := range provides {
-		name, err := parseSimpleDep(depStr)
+		dep, err := parseVersionedDep(depStr)
 		if err != nil {
 			return err
 		}
-		curPkg.provides = append(curPkg.provides, name)
+		curPkg.provides = append(curPkg.provides, dep)
 	}
 	return nil
 }
 
-func parseSimpleDep(depStr string) (string, error) {
-	matches := simpleDepRegex.FindStringSubmatch(depStr)
-	if len(matches) < 2 {
-		return "", fmt.Errorf("no regex match for dependency: %s", depStr)
+func parseVersionedDep(depStr string) (*versionedDependency, error) {
+	matches := singleDepRegex.FindStringSubmatch(depStr)
+	result := make(map[string]string)
+	for i, name := range singleDepRegex.SubexpNames() {
+		if i != 0 && name != "" {
+			result[name] = matches[i]
+		}
 	}
-	return matches[1], nil
+	if result["pkg_name"] == "" {
+		return nil, fmt.Errorf("could not parse dependency: %s", depStr)
+	}
+
+	dep := &versionedDependency{
+		name: result["pkg_name"],
+	}
+
+	if result["version_op"] != "" {
+		dep.versionCmp = versionCompareType(result["version_op"])
+	}
+	if result["version"] != "" {
+		ver, err := debVersion.Parse(result["version"])
+		if err != nil {
+			return nil, err
+		}
+		dep.version = &ver
+	}
+
+	return dep, nil
 }
 
 func parseDep(str string) (*dependency, error) {
 	depStrings := strings.Split(str, " | ")
 	dep := &dependency{
-		anyOf: make([]string, 0),
+		anyOf: make([]*versionedDependency, 0),
 	}
 	for _, depStr := range depStrings {
-		depPkg, err := parseSimpleDep(depStr)
+		depPkg, err := parseVersionedDep(depStr)
 		if err != nil {
 			return nil, err
 		}
@@ -129,9 +197,32 @@ func parseDepends(str string, curPkg *pkg) error {
 
 func newPackageDatabase() *database {
 	return &database{
-		packages:         make(map[string]*pkg),
-		virtualProviders: make(map[string][]string),
+		packages:         make(versionedPkgSet),
+		virtualProviders: make(map[string]versionedProviders),
 	}
+}
+
+func (db *database) addPackage(p *pkg) {
+	if _, ok := db.packages[p.name]; !ok {
+		db.packages[p.name] = make(pkgVersions)
+	}
+	versions := db.packages[p.name]
+	versions[p.versionString()] = p
+}
+
+func (db *database) addVirtualPkgWithProvider(virtual *versionedDependency, provider *pkg) {
+	if _, ok := db.virtualProviders[virtual.name]; !ok {
+		db.virtualProviders[virtual.name] = make(versionedProviders)
+	}
+	vp := db.virtualProviders[virtual.name]
+	if _, ok := vp[virtual.versionString()]; !ok {
+		vp[virtual.versionString()] = make([]*versionedDependency, 0, 1)
+	}
+	vp[virtual.versionString()] = append(vp[virtual.versionString()], &versionedDependency{
+		name:       provider.name,
+		version:    &provider.version,
+		versionCmp: eq,
+	})
 }
 
 func (db *database) parsePackageDatabase(r io.Reader, downloadPrefix string) error {
@@ -145,19 +236,24 @@ func (db *database) parsePackageDatabase(r io.Reader, downloadPrefix string) err
 		line := scanner.Text()
 		if strings.HasPrefix(line, "Package:") {
 			if curPkg != nil {
-				db.packages[curPkg.name] = curPkg
+				db.addPackage(curPkg)
 			}
 			curPkg = newPkg(strings.TrimPrefix(line, "Package: "), downloadPrefix)
+		}
+		if strings.HasPrefix(line, "Version: ") {
+			ver, err := debVersion.Parse(strings.TrimPrefix(line, "Version: "))
+			if err != nil {
+				return err
+			}
+			curPkg.version = ver
 		}
 		if strings.HasPrefix(line, "Provides: ") {
 			if err := parseProvides(strings.TrimPrefix(line, "Provides: "), curPkg); err != nil {
 				return err
 			}
+
 			for _, virtualPkg := range curPkg.provides {
-				if _, ok := db.virtualProviders[virtualPkg]; !ok {
-					db.virtualProviders[virtualPkg] = make([]string, 0)
-				}
-				db.virtualProviders[virtualPkg] = append(db.virtualProviders[virtualPkg], curPkg.name)
+				db.addVirtualPkgWithProvider(virtualPkg, curPkg)
 			}
 		}
 		if strings.HasPrefix(line, "Pre-Depends: ") {
@@ -178,7 +274,7 @@ func (db *database) parsePackageDatabase(r io.Reader, downloadPrefix string) err
 		return err
 	}
 	if curPkg != nil {
-		db.packages[curPkg.name] = curPkg
+		db.addPackage(curPkg)
 	}
 	return nil
 }
