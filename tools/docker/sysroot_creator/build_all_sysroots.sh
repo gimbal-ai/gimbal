@@ -22,6 +22,7 @@ set -e
 output_dir="$(realpath "$1")"
 docker_image_tag="$2"
 sysroot_download_url="$3"
+cache_dir="$(realpath "$4")"
 
 tot="$(git rev-parse --show-toplevel)"
 
@@ -60,25 +61,6 @@ for config in "${extra_sysroots[@]}"; do
   variant_features["${variant}"]="${var_feats}"
 done
 
-pkgdb_dir="$(mktemp -d)"
-
-debian_arch() {
-  case "$1" in
-  aarch64)
-    echo "arm64"
-    ;;
-  x86_64)
-    echo "amd64"
-    ;;
-  esac
-}
-
-download_package_index() {
-  deb_arch="$(debian_arch "$1")"
-  curl -fL "http://ftp.debian.org/debian/dists/bookworm/main/binary-${deb_arch}/Packages.xz" |
-    xz --decompress >"${pkgdb_dir}/${deb_arch}"
-}
-
 sysroot_filename() {
   arch="$1"
   variant="$2"
@@ -109,10 +91,11 @@ build_sysroot() {
   fname="$(sysroot_filename "$@")"
   echo "Building ${output_dir}/${fname}"
   docker run -it -v "${output_dir}":/build \
-    -v "${pkgdb_dir}":/pkgdb \
+    -v "${cache_dir}":/cache \
     "${docker_image_tag}" \
-    "/pkgdb/$(debian_arch "${arch}")" \
+    "/cache" \
     "/build/${fname}" \
+    "${arch}" \
     "${variant}" \
     "${features[@]}"
 }
@@ -200,7 +183,6 @@ EOF
 }
 
 for arch in "${architectures[@]}"; do
-  download_package_index "${arch}"
   for variant in "${variants[@]}"; do
     build_sysroot "${arch}" "${variant}"
     gen_bzl "${arch}" "${variant}"
@@ -274,5 +256,3 @@ echo "create_sysroots = _create_sysroots" >>"${create_sysroots_bzl}"
 echo "register_sysroots = _register_sysroots" >>"${register_sysroots_bzl}"
 
 echo "sysroot_settings = _sysroot_settings" >>"${settings_bzl}"
-
-rm -rf "${pkgdb_dir:?}"

@@ -22,7 +22,7 @@ set -e
 trap exit INT
 
 if [ "$#" -lt 4 ]; then
-  echo "Usage: build_tar_for_packages.sh <package_satisifier_path> <yaml_base_dir> <package_database_file> <output_tar_path> <variant> [<features>...]"
+  echo "Usage: build_tar_for_packages.sh <package_satisifier_path> <yaml_base_dir> <download_cache_dir> <output_tar_path> <arch> <variant> [<features>...]"
   echo -e "\t This script downloads all of the debs (along with depedencies) it finds in the yamls for the variant and features"
   echo -e "\t and extracts them into a single 'sysroot'"
   echo -e "\t The 'sysroot' is then tar'd and output at <output_tar_path>"
@@ -31,10 +31,11 @@ fi
 
 package_satisifier_path="$(realpath "$1")"
 yaml_base_dir="$(realpath "$2")"
-package_database_file="$(realpath "$3")"
+cache_dir="$(realpath "$3")"
 output_tar_path="$(realpath "$4")"
-variant="$5"
-features=("default" "${@:6}")
+arch="$5"
+variant="$6"
+features=("default" "${@:7}")
 
 base_paths=()
 
@@ -78,15 +79,14 @@ for feat in "${features[@]}"; do
   yamls+=("${feat_yamls[@]}")
 done
 
-package_parser_args=("--pkgdb" "${package_database_file}")
+package_parser_args=("satisfy" "--download_cache_dir" "${cache_dir}" "--arch" "${arch}")
 for yaml in "${yamls[@]}"; do
   package_parser_args+=("--specs" "${yaml}")
 done
 
-debian_mirror="${DEBIAN_MIRROR:-http://ftp.us.debian.org/debian/}"
 debs=()
 while read -r deb; do
-  debs+=("${debian_mirror}/${deb}")
+  debs+=("${deb}")
 done < <("${package_satisifier_path}" "${package_parser_args[@]}")
 
 echo "Dependencies to be added to archive:"

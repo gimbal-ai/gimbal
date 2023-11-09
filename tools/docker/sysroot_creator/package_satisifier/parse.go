@@ -22,7 +22,7 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"os"
+	"io"
 	"regexp"
 	"strings"
 )
@@ -47,7 +47,8 @@ type pkg struct {
 	filename string
 	depends  []*dependency
 	// list of virtual packages provided by this package.
-	provides []string
+	provides       []string
+	downloadPrefix string
 }
 
 type database struct {
@@ -70,11 +71,12 @@ func (p *pkg) String() string {
 	return b.String()
 }
 
-func newPkg(name string) *pkg {
+func newPkg(name string, downloadPrefix string) *pkg {
 	return &pkg{
-		name:     name,
-		depends:  make([]*dependency, 0),
-		provides: make([]string, 0),
+		name:           name,
+		depends:        make([]*dependency, 0),
+		provides:       make([]string, 0),
+		downloadPrefix: downloadPrefix,
 	}
 }
 
@@ -125,18 +127,16 @@ func parseDepends(str string, curPkg *pkg) error {
 	return nil
 }
 
-func parsePackageDatabase(path string) (*database, error) {
-	f, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-
-	db := &database{
+func newPackageDatabase() *database {
+	return &database{
 		packages:         make(map[string]*pkg),
 		virtualProviders: make(map[string][]string),
 	}
+}
+
+func (db *database) parsePackageDatabase(r io.Reader, downloadPrefix string) error {
 	var curPkg *pkg
-	scanner := bufio.NewScanner(f)
+	scanner := bufio.NewScanner(r)
 	// Increase maximum token size of scanner.
 	bufSize := 512 * 1024
 	buf := make([]byte, 0, bufSize)
@@ -147,11 +147,11 @@ func parsePackageDatabase(path string) (*database, error) {
 			if curPkg != nil {
 				db.packages[curPkg.name] = curPkg
 			}
-			curPkg = newPkg(strings.TrimPrefix(line, "Package: "))
+			curPkg = newPkg(strings.TrimPrefix(line, "Package: "), downloadPrefix)
 		}
 		if strings.HasPrefix(line, "Provides: ") {
 			if err := parseProvides(strings.TrimPrefix(line, "Provides: "), curPkg); err != nil {
-				return nil, err
+				return err
 			}
 			for _, virtualPkg := range curPkg.provides {
 				if _, ok := db.virtualProviders[virtualPkg]; !ok {
@@ -162,12 +162,12 @@ func parsePackageDatabase(path string) (*database, error) {
 		}
 		if strings.HasPrefix(line, "Pre-Depends: ") {
 			if err := parseDepends(strings.TrimPrefix(line, "Pre-Depends: "), curPkg); err != nil {
-				return nil, err
+				return err
 			}
 		}
 		if strings.HasPrefix(line, "Depends: ") {
 			if err := parseDepends(strings.TrimPrefix(line, "Depends: "), curPkg); err != nil {
-				return nil, err
+				return err
 			}
 		}
 		if strings.HasPrefix(line, "Filename: ") {
@@ -175,10 +175,10 @@ func parsePackageDatabase(path string) (*database, error) {
 		}
 	}
 	if err := scanner.Err(); err != nil {
-		return nil, err
+		return err
 	}
 	if curPkg != nil {
 		db.packages[curPkg.name] = curPkg
 	}
-	return db, nil
+	return nil
 }

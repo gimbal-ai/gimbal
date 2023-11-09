@@ -21,6 +21,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 go_library(
     name = "package_satisifier_lib",
     srcs = [
+        "downloader.go",
         "main.go",
         "parse.go",
         "satisfier.go",
@@ -30,8 +31,9 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "@com_github_sirupsen_logrus//:logrus",
-        "@com_github_spf13_pflag//:pflag",
+        "@com_github_spf13_cobra//:cobra",
         "@com_github_spf13_viper//:viper",
+        "@com_github_ulikunitz_xz//:xz",
         "@in_gopkg_yaml_v3//:yaml_v3",
     ],
 )

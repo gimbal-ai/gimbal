@@ -11,3 +11,12 @@ path_excludes:
 - usr/share/
 extra_dirs:
 - tmp/
+package_databases:
+- name: debian
+  architectures:
+    x86_64:
+      index_url: http://ftp.debian.org/debian/dists/bookworm/main/binary-amd64/Packages.xz
+      download_prefix: http://ftp.us.debian.org/debian/
+    aarch64:
+      index_url: http://ftp.debian.org/debian/dists/bookworm/main/binary-arm64/Packages.xz
+      download_prefix: http://ftp.us.debian.org/debian/

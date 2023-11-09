@@ -26,14 +26,16 @@ import (
 )
 
 type spec struct {
-	Includes []string `yaml:"include"`
-	Excludes []string `yaml:"exclude"`
+	Includes         []string     `yaml:"include"`
+	Excludes         []string     `yaml:"exclude"`
+	PackageDatabases []*pkgdbSpec `yaml:"package_databases"`
 }
 
 func (s *spec) removeIncludesFromExclude() *spec {
 	newSpec := &spec{
-		Includes: s.Includes,
-		Excludes: make([]string, 0),
+		Includes:         s.Includes,
+		Excludes:         make([]string, 0),
+		PackageDatabases: s.PackageDatabases,
 	}
 	incMap := make(map[string]bool)
 	for _, inc := range s.Includes {
@@ -77,6 +79,7 @@ func parseAndCombineSpecs(paths []string) (*spec, error) {
 func combine(specs []*spec) (*spec, error) {
 	combinedIncldues := make(map[string]bool)
 	combinedExcludes := make(map[string]bool)
+	combinedDbs := []*pkgdbSpec{}
 
 	for _, s := range specs {
 		for _, inc := range s.Includes {
@@ -85,10 +88,12 @@ func combine(specs []*spec) (*spec, error) {
 		for _, exc := range s.Excludes {
 			combinedExcludes[exc] = true
 		}
+		combinedDbs = append(combinedDbs, s.PackageDatabases...)
 	}
 	s := &spec{
-		Includes: make([]string, 0, len(combinedIncldues)),
-		Excludes: make([]string, 0, len(combinedExcludes)),
+		Includes:         make([]string, 0, len(combinedIncldues)),
+		Excludes:         make([]string, 0, len(combinedExcludes)),
+		PackageDatabases: combinedDbs,
 	}
 	for inc := range combinedIncldues {
 		s.Includes = append(s.Includes, inc)
@@ -97,4 +102,14 @@ func combine(specs []*spec) (*spec, error) {
 		s.Excludes = append(s.Excludes, exc)
 	}
 	return s, nil
+}
+
+type pkgdbSpec struct {
+	Name          string             `yaml:"name"`
+	Architectures map[string]*archdb `yaml:"architectures"`
+}
+
+type archdb struct {
+	IndexURL       string `yaml:"index_url"`
+	DownloadPrefix string `yaml:"download_prefix"`
 }

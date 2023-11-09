@@ -34,9 +34,11 @@ require (
 	github.com/segmentio/analytics-go/v3 v3.3.0
 	github.com/sercand/kuberesolver/v5 v5.1.1
 	github.com/sirupsen/logrus v1.9.3
+	github.com/spf13/cobra v1.8.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.17.0
 	github.com/stretchr/testify v1.8.4
+	github.com/ulikunitz/xz v0.5.11
 	go.uber.org/mock v0.3.0
 	golang.org/x/net v0.17.0
 	golang.org/x/oauth2 v0.13.0
@@ -74,6 +76,7 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/imdario/mergo v0.3.12 // indirect
+	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect

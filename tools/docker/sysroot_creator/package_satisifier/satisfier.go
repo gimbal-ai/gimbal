@@ -85,7 +85,8 @@ func (ds *depSatisfier) listRequiredDebs() ([]string, error) {
 			}
 			continue
 		}
-		debs = append(debs, p.filename)
+		url := fmt.Sprintf("%s/%s", p.downloadPrefix, p.filename)
+		debs = append(debs, url)
 
 		// Mark all virtual packages this real package provides as visited.
 		for _, provided := range p.provides {

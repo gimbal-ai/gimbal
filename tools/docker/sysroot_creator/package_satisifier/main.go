@@ -20,36 +20,80 @@
 package main
 
 import (
+	"compress/gzip"
 	"fmt"
+	"io"
 	"os"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/spf13/pflag"
+	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/ulikunitz/xz"
 )
 
-func init() {
-	pflag.String("pkgdb", "", "Debian distribution extracted Packages.xz file.")
-	pflag.StringSlice("specs", []string{}, "List of yaml files specifying packages to include/exclude in the sysroot")
+var rootCmd = &cobra.Command{
+	Use:   "root",
+	Short: "root command used by other commands",
 }
 
-func main() {
-	pflag.Parse()
-	_ = viper.BindPFlags(pflag.CommandLine)
+var satisfyCmd = &cobra.Command{
+	Use:   "satisfy",
+	Short: "satisfy dependencies for the given specs",
+	Run: func(cmd *cobra.Command, args []string) {
+		_ = viper.BindPFlags(cmd.Flags())
+		satisfyDeps()
+	},
+}
+
+func init() {
+	satisfyCmd.Flags().String("download_cache_dir", "", "Directory containing cached downloads")
+	satisfyCmd.Flags().StringSlice("specs", []string{}, "List of yaml files specifying packages to include/exclude from the sysroot and where to get them from")
+	satisfyCmd.Flags().String("arch", "", "Architecture to build sysroot for")
+
+	rootCmd.AddCommand(satisfyCmd)
+}
+
+func packageDBReader(d *downloader, url string) (io.Reader, func(), error) {
+	contents, err := d.Download(url)
+	if err != nil {
+		return nil, func() {}, err
+	}
+	cleanup := func() { contents.Close() }
+	var r io.Reader
+	r = contents
+	if strings.HasSuffix(url, "xz") {
+		r, err = xz.NewReader(r)
+		if err != nil {
+			return nil, cleanup, err
+		}
+	} else if strings.HasSuffix(url, "gz") {
+		r, err = gzip.NewReader(r)
+		if err != nil {
+			return nil, cleanup, err
+		}
+	}
+	return r, cleanup, nil
+}
+
+func satisfyDeps() {
 	log.SetOutput(os.Stderr)
 
-	packageDatabaseFile := viper.GetString("pkgdb")
-	if packageDatabaseFile == "" {
-		log.Fatal("must specify pkgdb")
+	downloadCacheDir := viper.GetString("download_cache_dir")
+	if downloadCacheDir == "" {
+		log.Fatal("must specify download_cache_dir")
 	}
 	specs := viper.GetStringSlice("specs")
 	if len(specs) == 0 {
 		log.Fatal("must specify at least one spec")
 	}
+	arch := viper.GetString("arch")
+	if arch == "" {
+		log.Fatal("must specify arch")
+	}
 
-	db, err := parsePackageDatabase(packageDatabaseFile)
-	if err != nil {
-		log.WithError(err).Fatal("failed to parse package database")
+	d := &downloader{
+		dir: downloadCacheDir,
 	}
 
 	combinedSpec, err := parseAndCombineSpecs(specs)
@@ -58,13 +102,34 @@ func main() {
 	}
 	filteredSpec := combinedSpec.removeIncludesFromExclude()
 
-	dependencySatisfier := newDepSatisfier(db, filteredSpec)
+	db := newPackageDatabase()
 
+	for _, dbSpec := range combinedSpec.PackageDatabases {
+		archSpec, ok := dbSpec.Architectures[arch]
+		if !ok {
+			continue
+		}
+		r, cleanup, err := packageDBReader(d, archSpec.IndexURL)
+		defer cleanup()
+		if err != nil {
+			log.WithError(err).Fatal("failed to download package database index")
+		}
+		if err := db.parsePackageDatabase(r, archSpec.DownloadPrefix); err != nil {
+			log.WithError(err).Fatal("failed to parse package database")
+		}
+	}
+	dependencySatisfier := newDepSatisfier(db, filteredSpec)
 	debs, err := dependencySatisfier.listRequiredDebs()
 	if err != nil {
 		log.WithError(err).Fatal("failed to find all required packages")
 	}
-	for _, filename := range debs {
-		fmt.Println(filename)
+	for _, url := range debs {
+		fmt.Println(url)
+	}
+}
+
+func main() {
+	if err := rootCmd.Execute(); err != nil {
+		log.WithError(err).Fatal("failed to execute package_satisfier")
 	}
 }
