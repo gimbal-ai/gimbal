@@ -76,6 +76,12 @@ def _sysroot_repo_impl(rctx):
         },
     )
 
+SYSROOT_ENV_VARS = [
+    # Make sure to copy all GML_ENABLE_SYSROOT_* flags from .bazelrc here.
+    "GML_ENABLE_SYSROOT_DEBUG",
+    "GML_ENABLE_SYSROOT_JETSON",
+]
+
 sysroot_repo = repository_rule(
     implementation = _sysroot_repo_impl,
     attrs = {
@@ -87,10 +93,7 @@ sysroot_repo = repository_rule(
         "urls": attr.string_list(mandatory = True, doc = "list of mirrors to download the sysroot tarball from"),
         "variant": attr.string(mandatory = True, doc = "Use case variant of the sysroot. One of 'runtime', 'build', or 'test'"),
     },
-    environ = [
-        # Make sure to copy all GML_ENABLE_SYSROOT_* flags from .bazelrc here.
-        "GML_ENABLE_SYSROOT_DEBUG",
-    ],
+    environ = SYSROOT_ENV_VARS,
 )
 
 SysrootInfo = provider(
@@ -125,6 +128,7 @@ _sysroot_archs = {
     "x86_64": True,
 }
 _sysroot_libc_versions = {
+    "glibc2_31": True,
     "glibc2_36": True,
 }
 

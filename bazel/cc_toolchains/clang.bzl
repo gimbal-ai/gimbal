@@ -18,7 +18,7 @@
 load("//bazel:repository_locations.bzl", "REPOSITORY_LOCATIONS")
 load("//bazel/cc_toolchains:settings.bzl", "HOST_GLIBC_VERSION")
 load("//bazel/cc_toolchains:utils.bzl", "abi")
-load("//bazel/cc_toolchains/sysroots:sysroots.bzl", "only_register_if_not_enabled", "sysroot_repo_name")
+load("//bazel/cc_toolchains/sysroots:sysroots.bzl", "SYSROOT_ENV_VARS", "only_register_if_not_enabled", "sysroot_repo_name")
 
 def _download_repo(rctx, repo_name, output):
     loc = REPOSITORY_LOCATIONS[repo_name]
@@ -109,4 +109,5 @@ clang_toolchain = repository_rule(
         use_for_host_tools = attr.bool(default = False),
         sysroot_features = attr.string_list(default = []),
     ),
+    environ = SYSROOT_ENV_VARS,
 )

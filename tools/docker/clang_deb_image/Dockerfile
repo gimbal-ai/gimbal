@@ -65,6 +65,7 @@ COPY build_llvm.sh /scripts/build_llvm.sh
 #   - The host ubuntu:18.04 root (i.e. no sysroot).
 #   - x86_64 glibc2.36 sysroot.
 #   - aarch64 glibc2.36 sysroot.
+#   - aarch64 glibc2.31 sysroot (for the jetson).
 
 #--------------------------------------------------------
 # 1. Host LLVM/Clang
@@ -78,13 +79,17 @@ RUN /scripts/build_llvm.sh \
 
 WORKDIR /sysroots/archives
 # Download build sysroots.
-RUN curl -L https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-amd64-build.tar.gz -o sysroot-amd64-build.tar.gz && \
+RUN curl -L https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231108122317/sysroot-x86_64-glibc2_36-build.tar.gz -o sysroot-amd64-build.tar.gz && \
   mkdir -p /sysroots/x86_64 && \
   tar -C /sysroots/x86_64 -xzf sysroot-amd64-build.tar.gz
 
-RUN curl -L https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20230921163852/sysroot-arm64-build.tar.gz -o sysroot-arm64-build.tar.gz && \
+RUN curl -L https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231108122317/sysroot-aarch64-glibc2_36-build.tar.gz -o sysroot-arm64-build.tar.gz && \
   mkdir -p /sysroots/aarch64 && \
   tar -C /sysroots/aarch64 -xzf sysroot-arm64-build.tar.gz
+
+RUN curl -L https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231108122317/sysroot-aarch64-glibc2_31-build-jetson.tar.gz -o sysroot-jetson-build.tar.gz && \
+  mkdir -p /sysroots/jetson && \
+  tar -C /sysroots/jetson -xzf sysroot-jetson-build.tar.gz
 
 WORKDIR /llvm_all
 
@@ -120,6 +125,16 @@ RUN /scripts/build_llvm.sh \
   --install_dir /opt/libcxx-15.0-aarch64-sysroot \
   --build_type libcxx \
   --sysroot /sysroots/aarch64 \
+  --target_arch aarch64
+
+# jetson sysroot
+RUN /scripts/build_llvm.sh \
+  --llvm_git_repo "${LLVM_GIT_PATH}" \
+  --c_compiler_path "${CLANG}" \
+  --cxx_compiler_path "${CLANGPP}" \
+  --install_dir /opt/libcxx-15.0-jetson-sysroot \
+  --build_type libcxx \
+  --sysroot /sysroots/jetson \
   --target_arch aarch64
 
 
@@ -187,6 +202,17 @@ RUN /scripts/build_llvm.sh \
   --build_type llvm_libs \
   --target_libcxx_path /opt/libcxx-15.0-aarch64-sysroot \
   --sysroot /sysroots/aarch64 \
+  --target_arch aarch64
+
+# jetson sysroot
+RUN /scripts/build_llvm.sh \
+  --llvm_git_repo "${LLVM_GIT_PATH}" \
+  --c_compiler_path "${CLANG}" \
+  --cxx_compiler_path "${CLANGPP}" \
+  --install_dir /opt/llvm-15.0-libcxx-jetson-sysroot \
+  --build_type llvm_libs \
+  --target_libcxx_path /opt/libcxx-15.0-jetson-sysroot \
+  --sysroot /sysroots/jetson \
   --target_arch aarch64
 
 #--------------------------------------------------------

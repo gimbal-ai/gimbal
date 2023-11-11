@@ -84,6 +84,7 @@ def _com_llvm_lib():
 
     _bazel_repo("com_llvm_lib_aarch64_glibc2_36", build_file = "//bazel/external:llvm.BUILD")
     _bazel_repo("com_llvm_lib_libcpp_aarch64_glibc2_36", build_file = "//bazel/external:llvm.BUILD")
+    _bazel_repo("com_llvm_lib_libcpp_aarch64_glibc2_31", build_file = "//bazel/external:llvm.BUILD")
 
 def _cc_deps():
     # Pinned transitive dependencies.

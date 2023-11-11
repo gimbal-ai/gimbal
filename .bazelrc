@@ -79,9 +79,14 @@ test:aarch64_sysroot --test_timeout=180,600,1800,3600
 test:aarch64_sysroot --test_env=QEMU_STRACE
 test:aarch64_sysroot --test_tag_filters=-no_libcpp,-disabled
 
-# Eventually, we'll need a jetson-specific sysroot, but use aarch64_sysroot for now.
-build:jetson --config=aarch64_sysroot
-build:jetson --//src/gem/plugins:enable_argus=true
+build:jetson_sysroot --config=clang-libc++
+build:jetson_sysroot --//bazel/cc_toolchains:libc_version=glibc2_31
+build:jetson_sysroot --platforms=//bazel/cc_toolchains:linux-aarch64
+build:jetson_sysroot --//src/gem/plugins:enable_argus
+build:jetson_sysroot --//src/gem/plugins:enable_tensorrt
+build:jetson_sysroot --config=enable_sysroot_jetson
+build:jetson_sysroot --config=sysroot-base
+test:jetson_sysroot --test_env=LD_LIBRARY_PATH=/usr/lib/aarch64-linux-gnu/tegra
 
 # Build for Clang using Libc++.
 build:clang-libc++ --//bazel/cc_toolchains:compiler=clang

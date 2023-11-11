@@ -40,6 +40,14 @@ def _gml_create_cc_toolchains():
         libc_version = "glibc2_36",
     )
     clang_toolchain(
+        name = "clang-15.0-aarch64-glibc2.31-sysroot",
+        toolchain_repo = "com_llvm_clang_15",
+        target_arch = "aarch64",
+        clang_version = "15.0.6",
+        libc_version = "glibc2_31",
+        sysroot_features = ["jetson"],
+    )
+    clang_toolchain(
         name = "clang-15.0-exec",
         toolchain_repo = "com_llvm_clang_15",
         target_arch = "x86_64",

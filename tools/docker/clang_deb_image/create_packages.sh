@@ -42,6 +42,7 @@ tar_libcxx() {
 tar_libcxx ""
 tar_libcxx "x86_64"
 tar_libcxx "aarch64"
+tar_libcxx "jetson"
 
 tar_args=('--exclude=*.so'
   '--exclude=*.so.*')
@@ -75,6 +76,7 @@ tar_llvm_libs "libcxx" "" "msan"
 tar_llvm_libs "libcxx" "" "tsan"
 tar_llvm_libs "libcxx" "x86_64"
 tar_llvm_libs "libcxx" "aarch64"
+tar_llvm_libs "libcxx" "jetson"
 
 tar_llvm_libs "libstdc++" ""
 tar_llvm_libs "libstdc++" "x86_64"
