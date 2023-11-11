@@ -84,15 +84,10 @@ for yaml in "${yamls[@]}"; do
   package_parser_args+=("--specs" "${yaml}")
 done
 
-debs=()
+deb_paths=()
 while read -r deb; do
-  debs+=("${deb}")
+  deb_paths+=("${deb}")
 done < <("${package_satisifier_path}" "${package_parser_args[@]}")
-
-echo "Dependencies to be added to archive:"
-for deb in "${debs[@]}"; do
-  echo "- ${deb}"
-done
 
 declare -A paths_to_exclude
 while read -r path; do
@@ -136,12 +131,10 @@ create_root_cert() {
 }
 
 inside_tmpdir() {
-  echo "${debs[@]}" | xargs curl -fLO --remote-name-all &>/dev/null
-
   root_dir="root"
-  while read -r deb; do
+  for deb in "${deb_paths[@]}"; do
     dpkg-deb -x "${deb}" "${root_dir}" &>/dev/null
-  done < <(ls -- *.deb)
+  done
 
   create_root_cert "${root_dir}"
 

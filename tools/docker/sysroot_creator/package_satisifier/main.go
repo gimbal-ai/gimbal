@@ -124,8 +124,16 @@ func satisfyDeps() {
 	if err != nil {
 		log.WithError(err).Fatal("failed to find all required packages")
 	}
+	fmt.Fprintf(os.Stderr, "Dependencies to be added to archive:\n")
 	for _, url := range debs {
-		fmt.Println(url)
+		fmt.Fprintf(os.Stderr, "- %s\n", url)
+
+		r, err := d.Download(url)
+		if err != nil {
+			log.WithError(err).Fatal("failed to download deb")
+		}
+		r.Close()
+		fmt.Println(d.cachePath(url))
 	}
 }
 
