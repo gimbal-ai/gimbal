@@ -22,6 +22,7 @@ package gml.internal.controlplane.fleetmgr.v1;
 option go_package = "gimletlabs.ai/gimlet/src/controlplane/fleetmgr/fmpb/v1;fmpb";
 
 import "gogoproto/gogo.proto";
+import "google/protobuf/timestamp.proto";
 import "src/common/typespb/uuid.proto";
 
 // DeviceStatus has all of the possible statuses a device can be in.
@@ -44,6 +45,8 @@ message FleetInfo {
   repeated string tags = 4 [ (gogoproto.moretags) = 'db:"tags"' ];
   // The description of the fleet.
   string description = 5 [ (gogoproto.moretags) = 'db:"description"' ];
+  // The timestamp when the fleet was created.
+  google.protobuf.Timestamp created_at = 6 [ (gogoproto.moretags) = 'db:"created_at"' ];
 }
 
 message DeviceInfo {
