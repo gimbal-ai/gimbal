@@ -1,0 +1,10 @@
+---
+include:
+# dash provides /bin/sh. Things like popen will fail with weird errors if /bin/sh doesn't exist.
+- dash
+# Some of our tests require these shell utilities
+- bash
+- grep
+- gawk
+- sed
+- libc-bin

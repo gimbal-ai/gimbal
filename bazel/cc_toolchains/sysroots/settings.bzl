@@ -19,6 +19,22 @@ load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
 
 def _sysroot_settings():
     bool_flag(
+        name = "sysroot_enable_jetson",
+        build_setting_default = False,
+    )
+    native.config_setting(
+        name = "sysroot_jetson_enabled",
+        flag_values = {
+            ":sysroot_enable_jetson": "True",
+        },
+    )
+    native.config_setting(
+        name = "sysroot_jetson_disabled",
+        flag_values = {
+            ":sysroot_enable_jetson": "False",
+        },
+    )
+    bool_flag(
         name = "sysroot_enable_debug",
         build_setting_default = False,
     )

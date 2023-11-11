@@ -36,6 +36,10 @@ sysroots=(
   "x86_64 build glibc2_36 default"
   "x86_64 test glibc2_36 default"
   "x86_64 test glibc2_36 default debug"
+
+  "aarch64 runtime glibc2_31 default_focal jetson"
+  "aarch64 build glibc2_31 default_focal jetson"
+  "aarch64 test glibc2_31 default_focal jetson"
 )
 
 # collect features that are enabled for each variant in any sysroot.

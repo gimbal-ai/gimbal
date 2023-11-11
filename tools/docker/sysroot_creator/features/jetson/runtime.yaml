@@ -1,0 +1,26 @@
+---
+include:
+- libnvinfer8 (= 8.5.2-1+cuda11.4)
+- libnvinfer-plugin8 (= 8.5.2-1+cuda11.4)
+- libnvonnxparsers8 (= 8.5.2-1+cuda11.4)
+- nvidia-l4t-camera
+- nvidia-l4t-core
+- nvidia-l4t-cuda
+- nvidia-l4t-jetson-multimedia-api
+- nvidia-l4t-kernel-headers
+- nvidia-l4t-multimedia
+- nvidia-l4t-multimedia-utils
+exclude:
+- libgstreamer-plugins-bad1.0-0
+- systemd
+package_databases:
+- name: jetson-common
+  architectures:
+    aarch64:
+      index_url: https://repo.download.nvidia.com/jetson/common/dists/r35.4/main/binary-arm64/Packages.gz
+      download_prefix: https://repo.download.nvidia.com/jetson/common
+- name: jetson-t234
+  architectures:
+    aarch64:
+      index_url: https://repo.download.nvidia.com/jetson/t234/dists/r35.4/main/binary-arm64/Packages.gz
+      download_prefix: https://repo.download.nvidia.com/jetson/t234

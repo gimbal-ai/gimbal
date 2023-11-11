@@ -1,0 +1,5 @@
+---
+include:
+- libnvinfer-dev (= 8.5.2-1+cuda11.4)
+- libnvinfer-plugin8 (= 8.5.2-1+cuda11.4)
+- libnvonnxparsers-dev (= 8.5.2-1+cuda11.4)
