@@ -26,31 +26,33 @@ cache_dir="$(realpath "$4")"
 
 tot="$(git rev-parse --show-toplevel)"
 
-libc_version="glibc2_36"
-
-# For each arch and variant a sysroot with only default features is produced.
-# To enable sysroots with extra features see extra_sysroots below.
-architectures=("aarch64" "x86_64")
-variants=("runtime" "build" "test")
-
-extra_sysroots=(
-  # Extra sysroots to produce in 'arch variant feat1 feat2' format.
-  "x86_64 test debug"
-  "aarch64 test debug"
+# Sysroots to produce in 'arch variant libc_version feat1 feat2' format.
+sysroots=(
+  "aarch64 runtime glibc2_36 default"
+  "aarch64 build glibc2_36 default"
+  "aarch64 test glibc2_36 default"
+  "aarch64 test glibc2_36 default debug"
+  "x86_64 runtime glibc2_36 default"
+  "x86_64 build glibc2_36 default"
+  "x86_64 test glibc2_36 default"
+  "x86_64 test glibc2_36 default debug"
 )
 
-# collect features that are enabled for each variant in any extra_sysroot.
+# collect features that are enabled for each variant in any sysroot.
 # This is used to ensure the featureless versions of the variants are not used
 # when a feature is enabled.
 declare -A variant_features
-for config in "${extra_sysroots[@]}"; do
+for config in "${sysroots[@]}"; do
   read -ra config_arr <<<"$config"
   arch="${config_arr[0]}"
   variant="${config_arr[1]}"
-  features=("${config_arr[@]:2}")
+  features=("${config_arr[@]:3}")
 
   var_feats="${variant_features["${variant}"]}"
   for feat in "${features[@]}"; do
+    if [[ "${feat}" == "default"* ]]; then
+      continue
+    fi
     if ! grep "${feat}" < <(echo "${var_feats}") &>/dev/null; then
       if [[ -n "${var_feats}" ]]; then
         var_feats="${var_feats} "
@@ -64,9 +66,13 @@ done
 sysroot_filename() {
   arch="$1"
   variant="$2"
-  features=("${@:3}")
-  fname="sysroot-${arch}-${variant}"
+  libc_version="$3"
+  features=("${@:4}")
+  fname="sysroot-${arch}-${libc_version}-${variant}"
   for feat in "${features[@]}"; do
+    if [[ "${feat}" == "default"* ]]; then
+      continue
+    fi
     fname="${fname}-${feat}"
   done
   fname="${fname}.tar.gz"
@@ -76,9 +82,13 @@ sysroot_filename() {
 sysroot_name() {
   arch="$1"
   variant="$2"
-  features=("${@:3}")
+  libc_version="$3"
+  features=("${@:4}")
   name="sysroot_${arch}_${libc_version}_${variant}"
   for feat in "${features[@]}"; do
+    if [[ "${feat}" == "default"* ]]; then
+      continue
+    fi
     name="${name}_${feat}"
   done
   echo "${name}"
@@ -87,7 +97,8 @@ sysroot_name() {
 build_sysroot() {
   arch="$1"
   variant="$2"
-  features=("${@:3}")
+  libc_version="$3"
+  features=("${@:4}")
   fname="$(sysroot_filename "$@")"
   echo "Building ${output_dir}/${fname}"
   docker run -it -v "${output_dir}":/build \
@@ -137,7 +148,8 @@ sysroot_names="$(mktemp)"
 gen_bzl() {
   arch="$1"
   variant="$2"
-  features=("${@:3}")
+  libc_version="$3"
+  features=("${@:4}")
 
   name="$(sysroot_name "$@")"
   fname="$(sysroot_filename "$@")"
@@ -145,6 +157,9 @@ gen_bzl() {
 
   feat_list=""
   for feat in "${features[@]}"; do
+    if [[ "${feat}" == "default"* ]]; then
+      continue
+    fi
     if [[ -n "${feat_list}" ]]; then
       feat_list="${feat_list}, "
     fi
@@ -182,24 +197,21 @@ EOF
   echo "${name}" >>"${sysroot_names}"
 }
 
-for arch in "${architectures[@]}"; do
-  for variant in "${variants[@]}"; do
-    build_sysroot "${arch}" "${variant}"
-    gen_bzl "${arch}" "${variant}"
-  done
-done
-
 declare -A uniq_features
 
-for config in "${extra_sysroots[@]}"; do
+for config in "${sysroots[@]}"; do
   read -ra config_arr <<<"$config"
 
   arch="${config_arr[0]}"
   variant="${config_arr[1]}"
-  features=("${config_arr[@]:2}")
-  build_sysroot "${arch}" "${variant}" "${features[@]}"
-  gen_bzl "${arch}" "${variant}" "${features[@]}"
+  libc_version="${config_arr[2]}"
+  features=("${config_arr[@]:3}")
+  build_sysroot "${config_arr[@]}"
+  gen_bzl "${config_arr[@]}"
   for feat in "${features[@]}"; do
+    if [[ "${feat}" == "default"* ]]; then
+      continue
+    fi
     uniq_features["${feat}"]=true
   done
 done

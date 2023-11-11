@@ -35,7 +35,7 @@ cache_dir="$(realpath "$3")"
 output_tar_path="$(realpath "$4")"
 arch="$5"
 variant="$6"
-features=("default" "${@:7}")
+features=("${@:7}")
 
 base_paths=()
 
