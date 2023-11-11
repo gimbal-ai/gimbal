@@ -215,9 +215,9 @@ REPOSITORY_LOCATIONS = dict(
         manual_license_name = "llvm/llvm-project",
     ),
     org_tensorflow = dict(
-        sha256 = "ce357fd0728f0d1b0831d1653f475591662ec5bca736a94ff789e6b1944df19f",
-        strip_prefix = "tensorflow-2.14.0",
-        urls = ["https://github.com/tensorflow/tensorflow/archive/refs/tags/v2.14.0.tar.gz"],
+        sha256 = "0a7c004769fe726396a27e96ce0e494b297662305c7b4f2c749ea4c0ad5bc39a",
+        strip_prefix = "tensorflow-3ee6de0b9ae296d0a5fc59815bdb776b3200263f",
+        urls = ["https://github.com/gimletlabs/tensorflow/archive/3ee6de0b9ae296d0a5fc59815bdb776b3200263f.tar.gz"],
     ),
     unix_cc_toolchain_config = dict(
         sha256 = "2c1d60ef4d586909f138c28409780e102e2ebd619e7d462ded26dce43a8f9ffb",

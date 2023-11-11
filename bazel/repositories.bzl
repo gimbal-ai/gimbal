@@ -109,23 +109,6 @@ def _cc_deps():
     _bazel_repo("com_google_flatbuffers")
     _bazel_repo(
         "org_tensorflow",
-        patches = [
-            # Disable tensorflow's custom mirrors because they're sometimes flaky.
-            "//bazel/external:tensorflow.disable_mirrors.patch",
-            # Disable python in tensorflow, since we don't use it.
-            "//bazel/external:tensorflow.disable_py.patch",
-            # Don't call grpc_extra_deps in tensorflow's deps b/c we already run it in our WORKSPACE.
-            "//bazel/external:tensorflow.skip_grpc_extra_deps.patch",
-            # Fixes lifted from the mediapipe repo to get tensorflow to work with mediapipe.
-            "//bazel/external:tensorflow.mediapipe_compatibility_fixes.patch",
-            # Lifted from the mediapipe repo.
-            "//bazel/external:tensorflow.mediapipe_custom_ops.patch",
-            # Some tensorflow deps only work if pulled from their mirrors
-            "//bazel/external:tensorflow.use_mirror_for_gif.patch",
-            # Don't use WORKSPACE version of rules_foreign_cc.
-            "//bazel/external:tensorflow.bzlmod_rules_foreign_cc.patch",
-        ],
-        patch_args = ["-p1"],
         repo_mapping = {
             "@python": "@python_3_9",
         },
