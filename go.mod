@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.1
-	github.com/bazelbuild/buildtools v0.0.0-20230926111657-7d855c59baeb
+	github.com/bazelbuild/buildtools v0.0.0-20231017121127-23aa65d4e117
 	github.com/bazelbuild/rules_go v0.42.0
 	github.com/blang/semver/v4 v4.0.0
 	github.com/bmatcuk/doublestar v1.3.4
