@@ -166,20 +166,6 @@ def _cc_deps():
     _bazel_repo("com_github_opencv_opencv", build_file = "//bazel/external:opencv.BUILD")
     _bazel_repo(
         "com_github_google_mediapipe",
-        patches = [
-            # Use the opencv we build.
-            "//bazel/external:mediapipe.our_opencv.patch",
-            # Only generate cc and/or go protos.
-            "//bazel/external:mediapipe.disable_extra_protos.patch",
-            # Use the ffmpeg we build.
-            "//bazel/external:mediapipe.our_ffmpeg.patch",
-            # Make mediapipe compatible with our version of opencv.
-            "//bazel/external:mediapipe.opencv4_fix.patch",
-            # Make the mediapipe hand tracking example visible for testing purposes.
-            # TODO(james): remove this once we have our own usage of mediapipe.
-            "//bazel/external:mediapipe.example_visibility.patch",
-        ],
-        patch_args = ["-p1"],
         repo_mapping = {
             "@com_github_glog_glog": "@com_github_google_glog",
             "@mediapipe": "@com_github_google_mediapipe",

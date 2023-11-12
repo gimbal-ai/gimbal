@@ -321,9 +321,9 @@ REPOSITORY_LOCATIONS = dict(
         ],
     ),
     com_github_google_mediapipe = dict(
-        sha256 = "d9ca0c8b8962096f4528101c46001b4dd32d6094f258da7e854f337bf1a31d6b",
-        strip_prefix = "mediapipe-0.10.5",
-        urls = ["https://github.com/google/mediapipe/archive/refs/tags/v0.10.5.tar.gz"],
+        sha256 = "e13534766bb75cdc80a245224118df55db2d67130b45ad123b9e8bb9bae45f79",
+        strip_prefix = "mediapipe-f015476a6b1f5e5ff27f10b0dbd6f4cdee8bb1d7",
+        urls = ["https://github.com/gimletlabs/mediapipe/archive/f015476a6b1f5e5ff27f10b0dbd6f4cdee8bb1d7.tar.gz"],
     ),
     com_nvidia_jetson_multimedia_api = dict(
         sha256 = "a28d46509bbe2c2f0dd40c9e43854b5cf95c33ac04502176c68f3c2f1cd7883e",
