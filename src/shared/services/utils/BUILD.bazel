@@ -30,6 +30,8 @@ go_library(
         "@com_github_lestrrat_go_jwx_v2//jwk",
         "@com_github_lestrrat_go_jwx_v2//jwt",
         "@com_github_sirupsen_logrus//:logrus",
+        "@com_github_spf13_viper//:viper",
+        "@org_golang_google_grpc//metadata",
     ],
 )
 

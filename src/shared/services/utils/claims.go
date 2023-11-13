@@ -18,7 +18,13 @@
 package utils
 
 import (
+	"context"
+	"fmt"
 	"time"
+
+	log "github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
+	"google.golang.org/grpc/metadata"
 
 	"gimletlabs.ai/gimlet/src/common/typespb"
 )
@@ -117,4 +123,18 @@ func GenerateJWTForDevice(deviceID string, fleetID string, audience string) *typ
 		},
 	}
 	return &pbClaims
+}
+
+// ContextWithServiceClaims returns a context with service claims attached to bearer auth.
+func ContextWithServiceClaims(ctx context.Context, serviceID string) (context.Context, error) {
+	serviceClaims := GenerateJWTForService(serviceID, viper.GetString("domain_name"))
+	serviceToken, err := SignJWTClaims(serviceClaims, viper.GetString("jwt_signing_key"))
+	if err != nil {
+		log.WithError(err).Error("Failed to sign JWT claims")
+		return ctx, err
+	}
+
+	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", fmt.Sprintf("bearer %s", serviceToken))
+
+	return ctx, nil
 }
