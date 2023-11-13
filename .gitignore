@@ -55,6 +55,7 @@ vendor/*
 user.bazelrc
 bes.bazelrc
 github.bazelrc
+docker.bes.bazelrc
 
 # A cache directory to be use by Bazel.
 .bazel-cache
