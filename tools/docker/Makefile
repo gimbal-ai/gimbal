@@ -90,7 +90,7 @@ upload_all_sysroots: build_all_sysroots
 ##############################################
 # Megalinter Build
 ##############################################
-megalinter/.tflint.hcl:
+megalinter/.tflint.hcl: ../../.tflint.hcl
 	@cp ../../.tflint.hcl $@
 .PHONY: build_and_push_megalinter
 build_and_push_megalinter: megalinter/Dockerfile megalinter/.tflint.hcl
