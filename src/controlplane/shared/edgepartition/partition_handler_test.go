@@ -22,6 +22,7 @@ import (
 	"testing"
 
 	"github.com/gofrs/uuid/v5"
+	proto "github.com/gogo/protobuf/proto"
 	"github.com/gogo/protobuf/types"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
@@ -60,7 +61,7 @@ func TestPartitionHandler_MessageHandler(t *testing.T) {
 	}
 
 	handlers := make(map[string]edgepartition.MessageHandler)
-	handlers["gml.internal.api.core.v1.EdgeHeartbeat"] = handler
+	handlers[proto.MessageName(&corepb.EdgeHeartbeat{})] = handler
 	s := edgepartition.NewPartitionHandler(nc, corepb.EDGE_CP_TOPIC_STATUS, handlers)
 	err := s.Start()
 	require.NoError(t, err)

@@ -47,6 +47,7 @@ gml_go_test(
         "//src/shared/services/natstest",
         "//src/shared/uuidutils",
         "@com_github_gofrs_uuid_v5//:uuid",
+        "@com_github_gogo_protobuf//proto",
         "@com_github_gogo_protobuf//types",
         "@com_github_spf13_viper//:viper",
         "@com_github_stretchr_testify//assert",
