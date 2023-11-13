@@ -9,3 +9,7 @@ deps:
   owner: gogo
   repository: protobuf
   commit: b03c65ea87cdc3521ede29f62fe3ce239267c1bc
+- remote: buf.build
+  owner: gimletlabs
+  repository: mediapipe
+  commit: f63ffbbf97e4473bbe07a27056b76533

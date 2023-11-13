@@ -48,7 +48,7 @@ absl::Status DetectionsToMediapipeCalculator::Process(mediapipe::CalculatorConte
     mp_detection->add_label(detection.label(0).label());
     mp_detection->add_score(detection.label(0).score());
     auto* location_data = mp_detection->mutable_location_data();
-    location_data->set_format(mediapipe::LocationData::RELATIVE_BOUNDING_BOX);
+    location_data->set_format(mediapipe::LocationData::LOCATION_FORMAT_RELATIVE_BOUNDING_BOX);
     auto* bounding_box = location_data->mutable_relative_bounding_box();
     bounding_box->set_xmin(xc - (width / 2));
     bounding_box->set_ymin(yc - (height / 2));

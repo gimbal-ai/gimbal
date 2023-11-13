@@ -7,8 +7,6 @@ build:
   - bazel-out
   - bazel-testlogs
   - third_party
-  # Ignore any protos that use mediapipe protos.
-  - src/gem/specpb
 breaking:
   use:
   - FILE
@@ -23,3 +21,4 @@ lint:
 deps:
 - buf.build/opentelemetry/opentelemetry:c4dfbc51f3cd4089778555a2ac5d9bc093ed2956
 - buf.build/gogo/protobuf:b03c65ea87cdc3521ede29f62fe3ce239267c1bc
+- buf.build/gimletlabs/mediapipe:f63ffbbf97e4473bbe07a27056b76533

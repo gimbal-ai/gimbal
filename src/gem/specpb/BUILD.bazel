@@ -15,12 +15,9 @@
 
 load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
 load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_library")
+load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
-# We have to manually resolve mediapipe protos.
-# gazelle:proto_language go enable false
-# gazelle:proto_language cpp enable false
-# gazelle:proto disable
 proto_library(
     name = "specpb_proto",
     srcs = [
@@ -29,9 +26,7 @@ proto_library(
         "tensorrt_model.proto",
     ],
     visibility = ["//visibility:public"],
-    deps = [
-        "@com_github_google_mediapipe//mediapipe/framework:calculator_proto",
-    ],
+    deps = ["//third_party/github.com/google/mediapipe/mediapipe/framework:framework_proto"],
 )
 
 proto_cc_library(
@@ -48,7 +43,7 @@ proto_cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "@com_github_google_mediapipe//mediapipe/framework:calculator_cc_proto",
+        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_cc_library",
         "@com_google_protobuf//:protobuf",
     ],
 )
@@ -66,4 +61,42 @@ proto_compile(
     plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
     proto = "specpb_proto",
     visibility = ["//visibility:public"],
+)
+
+proto_compile(
+    name = "specpb_go_compile",
+    output_mappings = [
+        "execution.pb.go=gimletlabs.ai/gimlet/src/gem/specpb/execution.pb.go",
+        "model.pb.go=gimletlabs.ai/gimlet/src/gem/specpb/model.pb.go",
+        "tensorrt_model.pb.go=gimletlabs.ai/gimlet/src/gem/specpb/tensorrt_model.pb.go",
+    ],
+    outputs = [
+        "execution.pb.go",
+        "model.pb.go",
+        "tensorrt_model.pb.go",
+    ],
+    plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
+    proto = "specpb_proto",
+    visibility = ["//visibility:public"],
+)
+
+proto_go_library(
+    name = "specpb_go_proto",
+    srcs = [
+        "execution.pb.go",
+        "model.pb.go",
+        "tensorrt_model.pb.go",
+    ],
+    importpath = "gimletlabs.ai/gimlet/src/gem/specpb",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_go_proto",
+        "@com_github_gogo_protobuf//proto",
+        "@com_github_gogo_protobuf//protoc-gen-gogo/descriptor",
+        "@com_github_gogo_protobuf//sortkeys",
+        "@com_github_gogo_protobuf//types",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//status",
+    ],
 )

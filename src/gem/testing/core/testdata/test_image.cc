@@ -39,7 +39,7 @@ cv::Mat LoadTestImageAsOpencvMat() {
 
 void LoadTestImageAsImageFrame(mediapipe::ImageFrame* image_frame) {
   auto mat = LoadTestImageAsOpencvMat();
-  image_frame->Reset(mediapipe::ImageFormat::SRGB, mat.cols, mat.rows,
+  image_frame->Reset(mediapipe::ImageFormat::FORMAT_SRGB, mat.cols, mat.rows,
                      mediapipe::ImageFrame::kDefaultAlignmentBoundary);
   CHECK(mat.type() == CV_8UC3);
 

@@ -41,15 +41,15 @@ absl::Status SetupFormatConversion(const cv::Mat& frame, mediapipe::ImageFormat:
 
   switch (frame.channels()) {
     case 1:
-      format = mediapipe::ImageFormat::GRAY8;
+      format = mediapipe::ImageFormat::FORMAT_GRAY8;
       return absl::UnavailableError(
           absl::Substitute("Unsupported format $0", magic_enum::enum_name(format)));
     case 3:
-      format = mediapipe::ImageFormat::SRGB;
+      format = mediapipe::ImageFormat::FORMAT_SRGB;
       color_conversion = cv::COLOR_BGR2RGB;
       return absl::OkStatus();
     case 4:
-      format = mediapipe::ImageFormat::SRGBA;
+      format = mediapipe::ImageFormat::FORMAT_SRGBA;
       color_conversion = cv::COLOR_BGRA2RGBA;
       return absl::OkStatus();
     default:

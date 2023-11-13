@@ -1,0 +1,199 @@
+# Copyright © 2023- Gimlet Labs, Inc.
+# All Rights Reserved.
+#
+# NOTICE:  All information contained herein is, and remains
+# the property of Gimlet Labs, Inc. and its suppliers,
+# if any.  The intellectual and technical concepts contained
+# herein are proprietary to Gimlet Labs, Inc. and its suppliers and
+# may be covered by U.S. and Foreign Patents, patents in process,
+# and are protected by trade secret or copyright law. Dissemination
+# of this information or reproduction of this material is strictly
+# forbidden unless prior written permission is obtained from
+# Gimlet Labs, Inc.
+#
+# SPDX-License-Identifier: Proprietary
+
+load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
+load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_library")
+load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "framework_proto",
+    srcs = [
+        "calculator.proto",
+        "calculator_contract_test.proto",
+        "calculator_options.proto",
+        "calculator_profile.proto",
+        "mediapipe_options.proto",
+        "packet_factory.proto",
+        "packet_generator.proto",
+        "packet_test.proto",
+        "status_handler.proto",
+        "stream_handler.proto",
+        "test_calculators.proto",
+        "thread_pool_executor.proto",
+    ],
+    strip_import_prefix = "/third_party/github.com/google/mediapipe",
+    visibility = ["//visibility:public"],
+    deps = ["@com_google_protobuf//:any_proto"],
+)
+
+proto_cc_library(
+    name = "framework_cc_library",
+    srcs = [
+        "calculator.pb.cc",
+        "calculator_contract_test.pb.cc",
+        "calculator_options.pb.cc",
+        "calculator_profile.pb.cc",
+        "mediapipe_options.pb.cc",
+        "packet_factory.pb.cc",
+        "packet_generator.pb.cc",
+        "packet_test.pb.cc",
+        "status_handler.pb.cc",
+        "stream_handler.pb.cc",
+        "test_calculators.pb.cc",
+        "thread_pool_executor.pb.cc",
+    ],
+    hdrs = [
+        "calculator.pb.h",
+        "calculator_contract_test.pb.h",
+        "calculator_options.pb.h",
+        "calculator_profile.pb.h",
+        "mediapipe_options.pb.h",
+        "packet_factory.pb.h",
+        "packet_generator.pb.h",
+        "packet_test.pb.h",
+        "status_handler.pb.h",
+        "stream_handler.pb.h",
+        "test_calculators.pb.h",
+        "thread_pool_executor.pb.h",
+    ],
+    strip_include_prefix = "/third_party/github.com/google/mediapipe",
+    visibility = ["//visibility:public"],
+    deps = ["@com_google_protobuf//:protobuf"],
+)
+
+proto_compile(
+    name = "framework_cpp_compile",
+    output_mappings = [
+        "calculator.pb.cc=mediapipe/framework/calculator.pb.cc",
+        "calculator.pb.h=mediapipe/framework/calculator.pb.h",
+        "calculator_contract_test.pb.cc=mediapipe/framework/calculator_contract_test.pb.cc",
+        "calculator_contract_test.pb.h=mediapipe/framework/calculator_contract_test.pb.h",
+        "calculator_options.pb.cc=mediapipe/framework/calculator_options.pb.cc",
+        "calculator_options.pb.h=mediapipe/framework/calculator_options.pb.h",
+        "calculator_profile.pb.cc=mediapipe/framework/calculator_profile.pb.cc",
+        "calculator_profile.pb.h=mediapipe/framework/calculator_profile.pb.h",
+        "mediapipe_options.pb.cc=mediapipe/framework/mediapipe_options.pb.cc",
+        "mediapipe_options.pb.h=mediapipe/framework/mediapipe_options.pb.h",
+        "packet_factory.pb.cc=mediapipe/framework/packet_factory.pb.cc",
+        "packet_factory.pb.h=mediapipe/framework/packet_factory.pb.h",
+        "packet_generator.pb.cc=mediapipe/framework/packet_generator.pb.cc",
+        "packet_generator.pb.h=mediapipe/framework/packet_generator.pb.h",
+        "packet_test.pb.cc=mediapipe/framework/packet_test.pb.cc",
+        "packet_test.pb.h=mediapipe/framework/packet_test.pb.h",
+        "status_handler.pb.cc=mediapipe/framework/status_handler.pb.cc",
+        "status_handler.pb.h=mediapipe/framework/status_handler.pb.h",
+        "stream_handler.pb.cc=mediapipe/framework/stream_handler.pb.cc",
+        "stream_handler.pb.h=mediapipe/framework/stream_handler.pb.h",
+        "test_calculators.pb.cc=mediapipe/framework/test_calculators.pb.cc",
+        "test_calculators.pb.h=mediapipe/framework/test_calculators.pb.h",
+        "thread_pool_executor.pb.cc=mediapipe/framework/thread_pool_executor.pb.cc",
+        "thread_pool_executor.pb.h=mediapipe/framework/thread_pool_executor.pb.h",
+    ],
+    outputs = [
+        "calculator.pb.cc",
+        "calculator.pb.h",
+        "calculator_contract_test.pb.cc",
+        "calculator_contract_test.pb.h",
+        "calculator_options.pb.cc",
+        "calculator_options.pb.h",
+        "calculator_profile.pb.cc",
+        "calculator_profile.pb.h",
+        "mediapipe_options.pb.cc",
+        "mediapipe_options.pb.h",
+        "packet_factory.pb.cc",
+        "packet_factory.pb.h",
+        "packet_generator.pb.cc",
+        "packet_generator.pb.h",
+        "packet_test.pb.cc",
+        "packet_test.pb.h",
+        "status_handler.pb.cc",
+        "status_handler.pb.h",
+        "stream_handler.pb.cc",
+        "stream_handler.pb.h",
+        "test_calculators.pb.cc",
+        "test_calculators.pb.h",
+        "thread_pool_executor.pb.cc",
+        "thread_pool_executor.pb.h",
+    ],
+    plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
+    proto = "framework_proto",
+    visibility = ["//visibility:public"],
+)
+
+proto_compile(
+    name = "framework_go_compile",
+    output_mappings = [
+        "calculator.pb.go=github.com/google/mediapipe/mediapipe/framework/calculator.pb.go",
+        "calculator_contract_test.pb.go=github.com/google/mediapipe/mediapipe/framework/calculator_contract_test.pb.go",
+        "calculator_options.pb.go=github.com/google/mediapipe/mediapipe/framework/calculator_options.pb.go",
+        "calculator_profile.pb.go=github.com/google/mediapipe/mediapipe/framework/calculator_profile.pb.go",
+        "mediapipe_options.pb.go=github.com/google/mediapipe/mediapipe/framework/mediapipe_options.pb.go",
+        "packet_factory.pb.go=github.com/google/mediapipe/mediapipe/framework/packet_factory.pb.go",
+        "packet_generator.pb.go=github.com/google/mediapipe/mediapipe/framework/packet_generator.pb.go",
+        "packet_test.pb.go=github.com/google/mediapipe/mediapipe/framework/packet_test.pb.go",
+        "status_handler.pb.go=github.com/google/mediapipe/mediapipe/framework/status_handler.pb.go",
+        "stream_handler.pb.go=github.com/google/mediapipe/mediapipe/framework/stream_handler.pb.go",
+        "test_calculators.pb.go=github.com/google/mediapipe/mediapipe/framework/test_calculators.pb.go",
+        "thread_pool_executor.pb.go=github.com/google/mediapipe/mediapipe/framework/thread_pool_executor.pb.go",
+    ],
+    outputs = [
+        "calculator.pb.go",
+        "calculator_contract_test.pb.go",
+        "calculator_options.pb.go",
+        "calculator_profile.pb.go",
+        "mediapipe_options.pb.go",
+        "packet_factory.pb.go",
+        "packet_generator.pb.go",
+        "packet_test.pb.go",
+        "status_handler.pb.go",
+        "stream_handler.pb.go",
+        "test_calculators.pb.go",
+        "thread_pool_executor.pb.go",
+    ],
+    plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
+    proto = "framework_proto",
+    visibility = ["//visibility:public"],
+)
+
+proto_go_library(
+    name = "framework_go_proto",
+    srcs = [
+        "calculator.pb.go",
+        "calculator_contract_test.pb.go",
+        "calculator_options.pb.go",
+        "calculator_profile.pb.go",
+        "mediapipe_options.pb.go",
+        "packet_factory.pb.go",
+        "packet_generator.pb.go",
+        "packet_test.pb.go",
+        "status_handler.pb.go",
+        "stream_handler.pb.go",
+        "test_calculators.pb.go",
+        "thread_pool_executor.pb.go",
+    ],
+    importpath = "github.com/google/mediapipe/mediapipe/framework",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_gogo_protobuf//proto",
+        "@com_github_gogo_protobuf//protoc-gen-gogo/descriptor",
+        "@com_github_gogo_protobuf//sortkeys",
+        "@com_github_gogo_protobuf//types",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//status",
+        "@org_golang_google_protobuf//types/known/anypb",
+    ],
+)

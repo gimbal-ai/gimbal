@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option go_package="github.com/google/mediapipe/mediapipe/framework/tool";
+package mediapipe;
+
+// The value for a template parameter.
+// The value can be either a simple value, a dictionary, or a list.
+message TemplateArgument {
+  oneof param_value {
+    // A string value for the parameter.
+    string str = 1;
+    // A numeric value for the parameter.
+    double num = 2;
+    // A dictionary of values for the parameter.
+    TemplateDict dict = 3;
+  }
+  // An ordered list of values for the parameter.
+  repeated TemplateArgument element = 4;
+}
+
+// A dictionary of parameter values.
+message TemplateDict {
+  message Parameter {
+    string key = 1;
+    TemplateArgument value = 2;
+  }
+  // A map from parameter name to parameter value.
+  repeated Parameter arg = 1;
+}

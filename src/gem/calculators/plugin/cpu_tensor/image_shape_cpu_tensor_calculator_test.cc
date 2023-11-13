@@ -43,8 +43,7 @@ TEST(ImageShapeCPUTensorCalculator, CorrectImageShape) {
   constexpr int32_t kWidth = 10;
   constexpr int32_t kHeight = 50;
 
-  mediapipe::ImageFrame img_frame(mediapipe::ImageFormat::Format::ImageFormat_Format_SRGB, kWidth,
-                                  kHeight);
+  mediapipe::ImageFrame img_frame(mediapipe::ImageFormat::FORMAT_SRGB, kWidth, kHeight);
 
   ASSERT_OK_AND_ASSIGN(auto expected_tensor,
                        cpu_exec_ctx->TensorPool()->GetTensor(sizeof(float) * 2));

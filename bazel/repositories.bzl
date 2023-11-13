@@ -164,6 +164,7 @@ def _cc_deps():
         build_file = "//bazel/external:ffmpeg.BUILD",
     )
     _bazel_repo("com_github_opencv_opencv", build_file = "//bazel/external:opencv.BUILD")
+
     _bazel_repo(
         "com_github_google_mediapipe",
         repo_mapping = {

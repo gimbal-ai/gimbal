@@ -136,6 +136,12 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-require go.opentelemetry.io/proto/otlp v1.0.0 // gazelle:ignore
+require (
+	github.com/google/mediapipe/mediapipe v0.10.5 // gazelle:ignore
+	go.opentelemetry.io/proto/otlp v1.0.0 // gazelle:ignore
+)
 
-replace go.opentelemetry.io/proto/otlp v1.0.0 => ./third_party/github.com/open-telemetry/opentelemetry-proto/opentelemetry/proto // gazelle:ignore
+replace (
+	github.com/google/mediapipe/mediapipe v0.10.5 => ./third_party/github.com/google/mediapipe/mediapipe // gazelle:ignore
+	go.opentelemetry.io/proto/otlp v1.0.0 => ./third_party/github.com/open-telemetry/opentelemetry-proto/opentelemetry/proto // gazelle:ignore
+)

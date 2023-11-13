@@ -1,0 +1,56 @@
+syntax = "proto2";
+option go_package="github.com/google/mediapipe/mediapipe/framework/tool";
+package mediapipe;
+
+import "mediapipe/framework/calculator.proto";
+import "mediapipe/framework/calculator_options.proto";
+import "mediapipe/framework/deps/proto_descriptor.proto";
+import "mediapipe/framework/tool/calculator_graph_template_argument.proto";
+
+option java_package = "com.google.mediapipe.proto";
+option java_outer_classname = "GraphTemplateProto";
+
+// A template rule or a template rule argument expression.
+message TemplateExpression {
+  // A template parameter name or a literal value.
+  optional string param = 1;
+
+  // A template rule operation or a template expression operation.
+  optional string op = 2;
+
+  // Nested template expressions, which define the operation args.
+  // TODO: Rename this field to avoid collision with TemplateDict::arg.
+  repeated TemplateExpression arg = 3;
+
+  // The path within the protobuf to the modified field values.
+  optional string path = 4;
+
+  // The FieldDescriptor::Type of the modified field.
+  optional mediapipe.FieldDescriptorProto.Type field_type = 5;
+
+  // The FieldDescriptor::Type of each map key in the path.
+  repeated mediapipe.FieldDescriptorProto.Type key_type = 6;
+
+  // Alternative value for the modified field, in protobuf binary format.
+  optional string field_value = 7;
+}
+
+// A protobuf extension defining a list of template rules.
+message CalculatorGraphTemplate {
+  // The base configuration.
+  optional CalculatorGraphConfig config = 1;
+
+  // The list of template rules.
+  repeated TemplateExpression rule = 2;
+}
+
+// Options for a mediapipe template subgraph consisting of
+// mediapipe template arguments.
+message TemplateSubgraphOptions {
+  extend mediapipe.CalculatorOptions {
+    optional TemplateSubgraphOptions ext = 172998261;
+  }
+
+  // The template arguments used to expand the template for the subgraph.
+  optional TemplateDict dict = 1;
+}

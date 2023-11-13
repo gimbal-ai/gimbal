@@ -89,7 +89,7 @@ bounding_box {
 label: "bottle"
 score: 0.9
 location_data {
-  format: RELATIVE_BOUNDING_BOX
+  format: LOCATION_FORMAT_RELATIVE_BOUNDING_BOX
   relative_bounding_box {
     xmin: 0.45
     ymin: 0.1
