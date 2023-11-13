@@ -33,7 +33,7 @@ using ::threadstacks::StackTraceCollector;
 
 // ErrLog without buffering.
 static void ErrLog(const char* msg) {
-  int n = write(STDERR_FILENO, msg, strlen(msg));
+  ssize_t n = write(STDERR_FILENO, msg, strlen(msg));
   GML_UNUSED(n);
 }
 
@@ -77,7 +77,7 @@ void SignalAction::SigHandler(int sig, siginfo_t* info, void* ucontext) {
     StackTraceCollector collector;
     auto results = collector.Collect(&error);
     if (results.empty()) {
-      std::cerr << "StackTrace collection failed: " << error << std::endl;
+      std::cerr << "StackTrace collection failed: " << error << '\n';
     } else {
       const auto& trace = StackTraceCollector::ToPrettyString(results);
       ErrLog(trace.c_str());
@@ -113,7 +113,7 @@ void SignalAction::InstallSigHandlers() {
     std::memset(&saction, 0, sizeof(saction));
     sigemptyset(&saction.sa_mask);
     // Reset the signal handler, so crash within the handler will kill the process.
-    saction.sa_flags = (SA_SIGINFO | SA_ONSTACK | SA_RESETHAND | SA_NODEFER);
+    saction.sa_flags = static_cast<int>(SA_SIGINFO | SA_ONSTACK | SA_RESETHAND | SA_NODEFER);
     saction.sa_sigaction = SigHandler;
     auto* handler = &previous_handlers_[idx++];
     CHECK_EQ(sigaction(sig, &saction, handler), 0);

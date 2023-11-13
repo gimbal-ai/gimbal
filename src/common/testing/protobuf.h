@@ -33,9 +33,7 @@
 #include "src/common/base/logging.h"
 #include "src/common/testing/line_diff.h"
 
-namespace gml {
-namespace testing {
-namespace proto {
+namespace gml::testing::proto {
 
 struct ProtoMatcher {
   ProtoMatcher(google::protobuf::util::MessageDifferencer* differencer, std::string text_pb)
@@ -137,6 +135,4 @@ MATCHER(EqProto, "") {
   return google::protobuf::util::MessageDifferencer::Equals(std::get<0>(arg), std::get<1>(arg));
 }
 
-}  // namespace proto
-}  // namespace testing
-}  // namespace gml
+}  // namespace gml::testing::proto

@@ -31,6 +31,6 @@ namespace gml {
  * @param cmd Command to execute.
  * @return Output (stdout) as a string.
  */
-StatusOr<std::string> Exec(std::string cmd);
+StatusOr<std::string> Exec(const std::string& cmd);
 
 }  // namespace gml

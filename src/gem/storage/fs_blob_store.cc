@@ -15,10 +15,12 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#include <errno.h>
+#include "src/gem/storage/fs_blob_store.h"
+
 #include <fcntl.h>
 #include <sys/mman.h>
 
+#include <cerrno>
 #include <filesystem>
 #include <fstream>
 
@@ -26,12 +28,9 @@
 #include "src/common/fs/fs_wrapper.h"
 #include "src/common/system/linux_file_wrapper.h"
 #include "src/gem/storage/blob_store.h"
-#include "src/gem/storage/fs_blob_store.h"
 #include "src/gem/storage/memory_blob.h"
 
-namespace gml {
-namespace gem {
-namespace storage {
+namespace gml::gem::storage {
 
 MemoryMappedBlob::~MemoryMappedBlob() {
   auto ret = munmap(mmap_addr_, size_);
@@ -41,7 +40,7 @@ MemoryMappedBlob::~MemoryMappedBlob() {
 }
 
 StatusOr<std::unique_ptr<const MemoryBlob>> MemoryMappedBlob::CreateReadOnly(
-    std::filesystem::path path) {
+    const std::filesystem::path& path) {
   GML_ASSIGN_OR_RETURN(auto file, system::LinuxFile::Open(path.string(), O_RDONLY));
   auto fsize = lseek(file->fd(), 0, SEEK_END);
   if (fsize == static_cast<off_t>(-1)) {
@@ -53,7 +52,7 @@ StatusOr<std::unique_ptr<const MemoryBlob>> MemoryMappedBlob::CreateReadOnly(
     return error::Internal("Failed to seek to beginning of file $0: $1", path.string(),
                            std::strerror(errno));
   }
-  void* addr = mmap(NULL, fsize, PROT_READ, MAP_PRIVATE, file->fd(), 0);
+  void* addr = mmap(nullptr, fsize, PROT_READ, MAP_PRIVATE, file->fd(), 0);
   if (addr == MAP_FAILED) {
     return error::Internal("Failed to memory map file $0: $1", path.string(), std::strerror(errno));
   }
@@ -62,7 +61,8 @@ StatusOr<std::unique_ptr<const MemoryBlob>> MemoryMappedBlob::CreateReadOnly(
   return std::unique_ptr<const MemoryBlob>(new MemoryMappedBlob(addr, fsize));
 }
 
-StatusOr<std::unique_ptr<FilesystemBlobStore>> FilesystemBlobStore::Create(std::string directory) {
+StatusOr<std::unique_ptr<FilesystemBlobStore>> FilesystemBlobStore::Create(
+    const std::string& directory) {
   GML_RETURN_IF_ERROR(fs::CreateDirectories(directory));
   return std::unique_ptr<FilesystemBlobStore>(new FilesystemBlobStore(directory));
 }
@@ -84,13 +84,11 @@ Status FilesystemBlobStore::UpsertImpl(std::string key, const char* data, size_t
   if (!f.is_open()) {
     return error::InvalidArgument("Failed to open file for blob $0", key);
   }
-  f.write(data, size);
+  f.write(data, static_cast<int>(size));
   if (f.bad() || f.fail()) {
     return error::Internal("Failed to write to file when setting blob $0", key);
   }
   return Status::OK();
 }
 
-}  // namespace storage
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::storage

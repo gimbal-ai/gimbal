@@ -21,10 +21,7 @@
 #include "src/gem/exec/plugin/tensorrt/context.h"
 #include "src/gem/plugins/registry.h"
 
-namespace gml {
-namespace gem {
-namespace build {
-namespace tensorrt {
+namespace gml::gem::build::tensorrt {
 
 using ::gml::gem::exec::tensorrt::ExecutionContext;
 
@@ -39,7 +36,4 @@ void RegisterPluginOrDie(plugins::Registry* plugin_registry) {
 
 GML_REGISTER_PLUGIN(RegisterPluginOrDie);
 
-}  // namespace tensorrt
-}  // namespace build
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::build::tensorrt

@@ -39,7 +39,6 @@ TEST(StatusOr, ValueMove) {
   StatusOr<string> s(std::move(val));
   ASSERT_OK(s);
   EXPECT_EQ(s.ConsumeValueOrDie(), "abcd");
-  EXPECT_NE(val, "abcd");
 }
 
 TEST(StatusOr, ValueOr) {

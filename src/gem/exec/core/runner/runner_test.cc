@@ -27,10 +27,7 @@
 #include "src/gem/plugins/registry.h"
 #include "src/gem/specpb/execution.pb.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace core {
+namespace gml::gem::exec::core {
 
 /**
  * OutputTextSidePacketCalculator outputs the string it's given as side packet STR, everytime an
@@ -47,9 +44,8 @@ class OutputTextSidePacketCalculator : public mediapipe::CalculatorBase {
   absl::Status Open(mediapipe::CalculatorContext*) override { return absl::OkStatus(); }
   absl::Status Close(mediapipe::CalculatorContext*) override { return absl::OkStatus(); }
   absl::Status Process(mediapipe::CalculatorContext* cc) override {
-    auto packet =
-        mediapipe::MakePacket<std::string>(cc->InputSidePackets().Tag("STR").Get<std::string>())
-            .At(cc->InputTimestamp());
+    std::string in = cc->InputSidePackets().Tag("STR").Get<std::string>();
+    auto packet = mediapipe::MakePacket<std::string>(in).At(cc->InputTimestamp());
     cc->Outputs().Tag("STR").AddPacket(std::move(packet));
     return absl::OkStatus();
   }
@@ -78,7 +74,7 @@ graph {
 }
 )pbtxt";
 
-TEST(Runner, run_simple_graph_with_side_packet) {
+TEST(Runner, RunSimpleGraphWithSidePacket) {
   specpb::ExecutionSpec spec;
 
   ASSERT_TRUE(google::protobuf::TextFormat::ParseFromString(kExecutionSpecPbtxt, &spec));
@@ -110,7 +106,7 @@ TEST(Runner, run_simple_graph_with_side_packet) {
 
 MATCHER_P(CalculatorProfileNameIs, element, "") { return arg.name() == element; }
 
-TEST(Runner, collect_stats) {
+TEST(Runner, CollectStats) {
   specpb::ExecutionSpec spec;
 
   ASSERT_TRUE(google::protobuf::TextFormat::ParseFromString(kExecutionSpecPbtxt, &spec));
@@ -152,7 +148,4 @@ TEST(Runner, collect_stats) {
   EXPECT_EQ(profiles[0].process_runtime().count_size(), kNumHistIntervals);
 }
 
-}  // namespace core
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::core

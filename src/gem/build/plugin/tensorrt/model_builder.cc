@@ -25,10 +25,7 @@
 #include "src/gem/exec/core/model.h"
 #include "src/gem/exec/plugin/tensorrt/model.h"
 
-namespace gml {
-namespace gem {
-namespace build {
-namespace tensorrt {
+namespace gml::gem::build::tensorrt {
 
 using ::gml::gem::exec::tensorrt::Model;
 using ::gml::gem::exec::tensorrt::TensorRTLogger;
@@ -121,7 +118,7 @@ StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobSt
 
   timer.Stop();
 
-  auto elapsed_seconds = timer.ElapsedTime_us() / (1000 * 1000);
+  auto elapsed_seconds = timer.ElapsedTime_us() / (1000ULL * 1000ULL);
 
   LOG(INFO) << absl::Substitute("Successfully built TensorRT engine in $0s", elapsed_seconds);
 
@@ -129,7 +126,4 @@ StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobSt
       new Model(std::move(logger), std::move(runtime), std::move(cuda_engine), std::move(context)));
 }
 
-}  // namespace tensorrt
-}  // namespace build
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::build::tensorrt

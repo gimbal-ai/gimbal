@@ -17,19 +17,19 @@
 
 #pragma once
 
+#include <utility>
+
 #include "src/common/base/base.h"
 #include "src/gem/storage/memory_blob.h"
 
-namespace gml {
-namespace gem {
-namespace storage {
+namespace gml::gem::storage {
 
 /**
  * BlobStore is the base class for binary blob stores.
  */
 class BlobStore {
  public:
-  virtual ~BlobStore() {}
+  virtual ~BlobStore() = default;
 
   /**
    * MapReadOnly maps a stored blob into memory for reading only. How the blob is mapped into memory
@@ -44,13 +44,11 @@ class BlobStore {
   Status Upsert(std::string key, const TData* data, size_t size) {
     static_assert(sizeof(TData) >= sizeof(char));
     constexpr size_t data_size = sizeof(TData) / sizeof(char);
-    return UpsertImpl(key, reinterpret_cast<const char*>(data), size * data_size);
+    return UpsertImpl(std::move(key), reinterpret_cast<const char*>(data), size * data_size);
   }
 
  protected:
   virtual Status UpsertImpl(std::string key, const char* data, size_t size) = 0;
 };
 
-}  // namespace storage
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::storage

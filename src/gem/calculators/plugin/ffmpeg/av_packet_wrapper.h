@@ -21,10 +21,9 @@ extern "C" {
 #include <libavcodec/avcodec.h>
 }
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace ffmpeg {
+#include <memory>
+
+namespace gml::gem::calculators::ffmpeg {
 
 class AVPacketWrapper {
  public:
@@ -58,7 +57,4 @@ class AVPacketWrapper {
   bool ref_;
 };
 
-}  // namespace ffmpeg
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::ffmpeg

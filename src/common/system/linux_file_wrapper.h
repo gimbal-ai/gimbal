@@ -21,8 +21,7 @@
 
 #include "src/common/base/statusor.h"
 
-namespace gml {
-namespace system {
+namespace gml::system {
 
 class LinuxFile {
  public:
@@ -40,5 +39,4 @@ class LinuxFile {
   int fd_;
 };
 
-}  // namespace system
-}  // namespace gml
+}  // namespace gml::system

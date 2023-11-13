@@ -22,8 +22,7 @@
 #include <absl/strings/str_replace.h>
 #include <string>
 
-namespace gml {
-namespace grpc {
+namespace gml::grpc {
 
 /**
  * @brief Transform the method path from gRPC format to protobuf format.
@@ -39,5 +38,4 @@ inline std::string MethodPath(std::string_view grpc_path) {
   return absl::StrReplaceAll(grpc_path, {{"/", "."}});
 }
 
-}  // namespace grpc
-}  // namespace gml
+}  // namespace gml::grpc

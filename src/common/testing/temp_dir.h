@@ -23,8 +23,7 @@
 
 #include "src/common/base/env.h"
 
-namespace gml {
-namespace testing {
+namespace gml::testing {
 
 /**
  * A RAII-style temporary directory. The ctor creates a brand new temporary directory under the
@@ -60,5 +59,4 @@ class TempDir {
   std::filesystem::path temp_dir_path_;
 };
 
-}  // namespace testing
-}  // namespace gml
+}  // namespace gml::testing

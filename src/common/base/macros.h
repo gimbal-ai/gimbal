@@ -74,6 +74,6 @@
 #endif
 
 // For debugging.
-#define GML_LOG_VAR(var) LOG(INFO) << #var ": " << var;
+#define GML_LOG_VAR(var) LOG(INFO) << #var ": " << (var);
 
 // clang-format on

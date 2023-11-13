@@ -20,10 +20,7 @@
 #include "src/common/testing/testing.h"
 #include "src/gem/testing/core/testdata/test_image.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace core {
+namespace gml::gem::exec::core {
 
 TEST(PlanarImageFor, YUVImage) {
   auto yuv_image_for_conversion = std::make_shared<mediapipe::YUVImage>();
@@ -44,14 +41,15 @@ TEST(PlanarImageFor, YUVImage) {
   EXPECT_EQ(expected_yuv_image->stride(1), planar->Planes()[1].row_stride);
   EXPECT_EQ(expected_yuv_image->stride(2), planar->Planes()[2].row_stride);
 
-  size_t y_size = expected_yuv_image->stride(0) * expected_yuv_image->height();
-  size_t uv_size = expected_yuv_image->stride(1) * (expected_yuv_image->height() / 2);
+  size_t y_size = static_cast<size_t>(expected_yuv_image->stride(0)) * expected_yuv_image->height();
+  size_t uv_size =
+      static_cast<size_t>(expected_yuv_image->stride(1)) * (expected_yuv_image->height() / 2);
 
   EXPECT_EQ(y_size, planar->Planes()[0].bytes);
   EXPECT_EQ(uv_size, planar->Planes()[1].bytes);
   EXPECT_EQ(uv_size, planar->Planes()[2].bytes);
 
-  for (size_t plane_idx = 0; plane_idx < planar->Planes().size(); ++plane_idx) {
+  for (int plane_idx = 0; plane_idx < static_cast<int>(planar->Planes().size()); ++plane_idx) {
     const auto* expected_data = expected_yuv_image->data(plane_idx);
     const auto* actual_data = planar->Planes()[plane_idx].data;
     size_t width = expected_yuv_image->width();
@@ -70,7 +68,4 @@ TEST(PlanarImageFor, YUVImage) {
   }
 }
 
-}  // namespace core
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::core

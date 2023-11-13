@@ -25,8 +25,7 @@
 #include <memory>
 #include <string>
 
-namespace gml {
-namespace event {
+namespace gml::event {
 
 struct NATSTLSConfig {
   std::string ca_cert;
@@ -163,5 +162,4 @@ class NATSConnector : public NATSConnectorBase {
   MessageHandlerCB msg_handler_;
 };
 
-}  // namespace event
-}  // namespace gml
+}  // namespace gml::event

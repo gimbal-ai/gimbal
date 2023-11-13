@@ -21,10 +21,8 @@
 
 #include "src/common/testing/testing.h"
 
-namespace gml {
-namespace grpc {
+namespace gml::grpc {
 
 TEST(MethodPathTest, ResutlsAreAsExpected) { EXPECT_EQ("a.b.c.foo", MethodPath("/a.b.c/foo")); }
 
-}  // namespace grpc
-}  // namespace gml
+}  // namespace gml::grpc

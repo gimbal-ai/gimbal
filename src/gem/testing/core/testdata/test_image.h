@@ -21,9 +21,7 @@
 #include <mediapipe/framework/formats/yuv_image.h>
 #include <opencv2/core.hpp>
 
-namespace gml {
-namespace gem {
-namespace testing {
+namespace gml::gem::testing {
 
 cv::Mat LoadTestImageAsOpencvMat();
 
@@ -31,6 +29,4 @@ void LoadTestImageAsImageFrame(mediapipe::ImageFrame* image_frame);
 
 void LoadTestImageAsYUVImage(mediapipe::YUVImage* yuv_image);
 
-}  // namespace testing
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::testing

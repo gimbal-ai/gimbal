@@ -24,8 +24,7 @@
 
 #include "src/common/base/base.h"
 
-namespace gml {
-namespace metrics {
+namespace gml::metrics {
 
 /**
  * MetricsSystem is a wrapper around OTel metrics. It is structured such that it is
@@ -77,5 +76,4 @@ class MetricsSystem {
   std::shared_ptr<opentelemetry::sdk::metrics::MetricReader> reader_;
 };
 
-}  // namespace metrics
-}  // namespace gml
+}  // namespace gml::metrics

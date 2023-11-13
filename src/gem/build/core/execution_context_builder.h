@@ -21,10 +21,7 @@
 #include "src/gem/exec/core/context.h"
 #include "src/gem/exec/core/model.h"
 
-namespace gml {
-namespace gem {
-namespace build {
-namespace core {
+namespace gml::gem::build::core {
 
 using ::gml::gem::exec::core::ExecutionContext;
 using ::gml::gem::exec::core::Model;
@@ -34,7 +31,7 @@ using ::gml::gem::exec::core::Model;
  */
 class ExecutionContextBuilder {
  public:
-  virtual ~ExecutionContextBuilder() {}
+  virtual ~ExecutionContextBuilder() = default;
   virtual StatusOr<std::unique_ptr<ExecutionContext>> Build(Model* model) = 0;
 };
 
@@ -45,7 +42,7 @@ class ExecutionContextBuilder {
 template <typename TExecutionContext>
 class DefaultExecutionContextBuilder : public ExecutionContextBuilder {
  public:
-  ~DefaultExecutionContextBuilder() override {}
+  ~DefaultExecutionContextBuilder() override = default;
 
   StatusOr<std::unique_ptr<ExecutionContext>> Build(Model* model) override {
     return BuildInternal(model);
@@ -74,7 +71,4 @@ class DefaultExecutionContextBuilder : public ExecutionContextBuilder {
   }
 };
 
-}  // namespace core
-}  // namespace build
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::build::core

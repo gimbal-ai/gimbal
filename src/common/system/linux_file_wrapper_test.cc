@@ -15,16 +15,17 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#include <errno.h>
+#include "src/common/system/linux_file_wrapper.h"
+
 #include <fcntl.h>
 
-#include "src/common/system/linux_file_wrapper.h"
+#include <cerrno>
+
 #include "src/common/testing/testing.h"
 
-namespace gml {
-namespace system {
+namespace gml::system {
 
-TEST(LinuxFile, file_closed_after_destructor) {
+TEST(LinuxFile, FileClosedAfterDestructor) {
   int fd;
   {
     ASSERT_OK_AND_ASSIGN(auto file, LinuxFile::Open("/tmp", O_TMPFILE | O_RDWR, S_IRWXU));
@@ -37,5 +38,4 @@ TEST(LinuxFile, file_closed_after_destructor) {
   ASSERT_EQ(EBADF, errno);
 }
 
-}  // namespace system
-}  // namespace gml
+}  // namespace gml::system

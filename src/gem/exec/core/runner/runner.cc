@@ -18,10 +18,7 @@
 #include "src/gem/exec/core/runner/runner.h"
 #include "src/common/base/base.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace core {
+namespace gml::gem::exec::core {
 
 Status Runner::Init(const std::map<std::string, mediapipe::Packet>& extra_side_packets) {
   GML_RETURN_IF_ERROR(graph_.Initialize(spec_.graph()));
@@ -54,7 +51,4 @@ Status Runner::GetCalculatorProfiles(std::vector<mediapipe::CalculatorProfile>* 
   return Status::OK();
 }
 
-}  // namespace core
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::core

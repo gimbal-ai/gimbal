@@ -25,8 +25,7 @@
 
 #include "src/common/event/dispatcher.h"
 
-namespace gml {
-namespace event {
+namespace gml::event {
 
 /**
  * API is the interface for event system.
@@ -49,5 +48,4 @@ class API {
 
 using APIUPtr = std::unique_ptr<API>;
 
-}  // namespace event
-}  // namespace gml
+}  // namespace gml::event

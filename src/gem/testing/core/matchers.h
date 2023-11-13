@@ -21,9 +21,7 @@
 #include "src/common/testing/testing.h"
 #include "src/gem/exec/core/planar_image.h"
 
-namespace gml {
-namespace gem {
-namespace testing {
+namespace gml::gem::testing {
 
 MATCHER_P(PlanarImageEq, expected, "") {
   auto* actual = arg;
@@ -74,6 +72,4 @@ MATCHER_P(PlanarImageEq, expected, "") {
   return true;
 }
 
-}  // namespace testing
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::testing

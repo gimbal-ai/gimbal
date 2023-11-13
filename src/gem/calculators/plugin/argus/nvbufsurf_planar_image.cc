@@ -21,10 +21,7 @@
 
 // This file provides an implementation of PlanarImage for NvBufSurfaceWrapper.
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace core {
+namespace gml::gem::exec::core {
 
 using ::gml::gem::devices::argus::NvBufSurfaceWrapper;
 
@@ -58,7 +55,4 @@ size_t PlanarImageFor<NvBufSurfaceWrapper>::Height() const {
   return image_->surface().height;
 }
 
-}  // namespace core
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::core

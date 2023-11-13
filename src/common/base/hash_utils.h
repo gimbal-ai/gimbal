@@ -19,6 +19,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 namespace gml {
 
 /**
@@ -31,10 +33,11 @@ namespace gml {
 inline uint64_t HashCombine(uint64_t h1, uint64_t h2) {
   // Murmur-inspired hashing.
   const uint64_t kMul = 0x9ddfea08eb382d69ULL;
+  constexpr int kBitShift = 47;
   uint64_t a = (h1 ^ h2) * kMul;
-  a ^= (a >> 47);
+  a ^= (a >> kBitShift);
   uint64_t b = (h2 ^ a) * kMul;
-  b ^= (b >> 47);
+  b ^= (b >> kBitShift);
   b *= kMul;
   return b;
 }

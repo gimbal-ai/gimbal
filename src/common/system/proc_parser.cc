@@ -21,7 +21,6 @@
 #include <limits>
 #include <string>
 #include <string_view>
-#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -33,11 +32,10 @@
 #include "src/common/system/proc_parser.h"
 #include "src/common/system/proc_pid_path.h"
 
-namespace gml {
-namespace system {
+namespace gml::system {
 
 // Separators of the fields in the various files in the proc filesystem.
-constexpr char kFieldSeparators[] = "\t ";
+constexpr std::string_view kFieldSeparators = "\t ";
 
 /**
  * Only local network interfaces with these prefixes are included in rx/tx computations.
@@ -176,7 +174,7 @@ Status ProcParser::ParseProcPIDNetDev(int32_t pid, NetworkStats* out) const {
 
   std::string line;
   while (std::getline(ifs, line)) {
-    std::vector<std::string_view> split = absl::StrSplit(line, " ", absl::SkipWhitespace());
+    std::vector<std::string_view> split = absl::StrSplit(line, ' ', absl::SkipWhitespace());
     // We check less than in case more fields are added later.
     if (split.size() < kProcNetDevNumFields) {
       return error::Internal("failed to parse net dev file, incorrect number of fields");
@@ -218,7 +216,7 @@ Status ProcParser::ParseProcPIDStat(int32_t pid, int64_t page_size_bytes,
   std::string line;
   bool ok = true;
   if (std::getline(ifs, line)) {
-    std::vector<std::string_view> split = absl::StrSplit(line, " ", absl::SkipWhitespace());
+    std::vector<std::string_view> split = absl::StrSplit(line, ' ', absl::SkipWhitespace());
     // We check less than in case more fields are added later.
     if (split.size() < kProcStatNumFields) {
       return error::Unknown("Incorrect number of fields in stat file: $0.", fpath.string());
@@ -234,7 +232,7 @@ Status ProcParser::ParseProcPIDStat(int32_t pid, int64_t page_size_bytes,
 
     // When split_size > kProcStatNumFields, there are spaces in the command we need to handle.
     // command_offset adjusts index for the number of spaces in the command field.
-    int command_offset = std::count(out->process_name.begin(), out->process_name.end(), ' ');
+    size_t command_offset = std::count(out->process_name.begin(), out->process_name.end(), ' ');
 
     ok &= absl::SimpleAtoi(split[kProcStatPIDField], &out->pid);
 
@@ -281,7 +279,7 @@ Status ProcParser::ParseProcPIDStatIO(int32_t pid, ProcessStats* out) const {
   const auto fpath = ProcPidPath(pid, "io");
 
   // Just to be safe when using offsetof, make sure object is standard layout.
-  static_assert(std::is_standard_layout<ProcessStats>::value);
+  static_assert(std::is_standard_layout_v<ProcessStats>);
 
   static absl::flat_hash_map<std::string_view, size_t> field_name_to_offset_map{
       {"rchar", offsetof(ProcessStats, rchar_bytes)},
@@ -311,7 +309,7 @@ Status ProcParser::ParseProcStat(SystemStats* out) const {
   std::string line;
   bool ok = true;
   while (std::getline(ifs, line)) {
-    std::vector<std::string_view> split = absl::StrSplit(line, " ", absl::SkipWhitespace());
+    std::vector<std::string_view> split = absl::StrSplit(line, ' ', absl::SkipWhitespace());
 
     if (!split.empty() && split[0] == "cpu") {
       if (split.size() < kProcStatCPUNumFields) {
@@ -345,7 +343,7 @@ Status ProcParser::ParseProcMemInfo(SystemStats* out) const {
   const auto fpath = ProcPath("meminfo");
 
   // Just to be safe when using offsetof, make sure object is standard layout.
-  static_assert(std::is_standard_layout<SystemStats>::value);
+  static_assert(std::is_standard_layout_v<SystemStats>);
 
   // clang-format off
   static absl::flat_hash_map<std::string_view, size_t> field_name_to_offset_map {
@@ -383,7 +381,7 @@ Status ProcParser::ParseProcPIDStatus(int32_t pid, ProcessStatus* out) const {
   const auto fpath = ProcPidPath(pid, "status");
 
   // Just to be safe when using offsetof, make sure object is standard layout.
-  static_assert(std::is_standard_layout<ProcessStatus>::value);
+  static_assert(std::is_standard_layout_v<ProcessStatus>);
 
   // clang-format off
   static absl::flat_hash_map<std::string_view, size_t> field_name_to_offset_map {
@@ -448,10 +446,10 @@ StatusOr<size_t> ProcParser::ParseProcPIDPss(const int32_t pid) const {
 Status ProcParser::ParseProcMapsFile(int32_t pid, std::string filename,
                                      std::vector<ProcessSMaps>* out) const {
   CHECK(out != nullptr);
-  const auto fpath = ProcPidPath(pid, filename);
+  const auto fpath = ProcPidPath(pid, std::move(filename));
 
   // Just to be safe when using offsetof, make sure object is standard layout.
-  static_assert(std::is_standard_layout<ProcessSMaps>::value);
+  static_assert(std::is_standard_layout_v<ProcessSMaps>);
 
   // clang-format off
   static absl::flat_hash_map<std::string_view, size_t> field_name_to_offset_map {
@@ -509,11 +507,11 @@ Status ProcParser::ParseProcMapsFile(int32_t pid, std::string filename,
         return error::Internal("Failed to parse file: $0.", fpath.string());
       }
       std::vector<std::string_view> vmem =
-          absl::StrSplit(split[0], absl::MaxSplits("-", 2), absl::SkipWhitespace());
+          absl::StrSplit(split[0], absl::MaxSplits('-', 2), absl::SkipWhitespace());
 
       auto& smap_info = out->emplace_back();
-      smap_info.vmem_start = std::strtoull(vmem[0].data(), NULL, 16);
-      smap_info.vmem_end = std::strtoull(vmem[1].data(), NULL, 16);
+      smap_info.vmem_start = std::strtoull(vmem[0].data(), nullptr, 16);
+      smap_info.vmem_end = std::strtoull(vmem[1].data(), nullptr, 16);
       smap_info.permissions = std::string(split[1]);
       smap_info.offset = split[2];
       smap_info.pathname = "[anonymous]";
@@ -607,7 +605,7 @@ std::string ProcParser::GetPIDCmdline(int32_t pid) const {
   std::string line = "";
   std::string cmdline = "";
   while (std::getline(ifs, line)) {
-    cmdline += std::move(line);
+    cmdline += line;
   }
 
   // Strip out extra null character at the end of the string.
@@ -625,7 +623,7 @@ std::string ProcParser::GetPIDCmdline(int32_t pid) const {
 
 StatusOr<std::filesystem::path> ProcParser::GetExePath(const int32_t pid) const {
   const auto exe_link = ProcPidPath(pid, "exe");
-  GML_ASSIGN_OR_RETURN(const std::filesystem::path host_exe, fs::ReadSymlink(exe_link));
+  GML_ASSIGN_OR_RETURN(std::filesystem::path host_exe, fs::ReadSymlink(exe_link));
   if (host_exe.empty() || host_exe == "/") {
     // Not sure what causes this, but some symlinks point to "/".
     // Seems to happen with PIDs that are short-lived (we can never catch it in the act).
@@ -648,7 +646,7 @@ Status ProcParser::ReadProcPIDFDLink(int32_t pid, int32_t fd, std::string* out) 
 }
 
 std::string_view LineWithPrefix(std::string_view content, std::string_view prefix) {
-  const std::vector<std::string_view> lines = absl::StrSplit(content, "\n");
+  const std::vector<std::string_view> lines = absl::StrSplit(content, '\n');
   for (const auto& line : lines) {
     if (absl::StartsWith(line, prefix)) {
       return line;
@@ -708,7 +706,7 @@ Status ProcParser::ReadNSPid(pid_t pid, std::vector<std::string>* ns_pids) const
                                   proc_pid_status_path.string(), ns_pid_line);
   }
   for (size_t i = 1; i < fields.size(); ++i) {
-    ns_pids->push_back(std::string(fields[i]));
+    ns_pids->emplace_back(fields[i]);
   }
   return Status::OK();
 }
@@ -758,10 +756,10 @@ StatusOr<int64_t> GetPIDStartTimeTicks(const std::filesystem::path& proc_pid_pat
 
   // When split_size > kProcStatNumFields, there are spaces in the command we need to handle.
   // command_offset adjusts index for the number of spaces in the command field.
-  int command_offset =
-      std::count(line.begin() + open_paren_idx, line.begin() + close_paren_idx, ' ');
+  size_t command_offset = std::count(line.begin() + static_cast<int>(open_paren_idx),
+                                     line.begin() + static_cast<int>(close_paren_idx), ' ');
 
-  std::vector<std::string_view> split = absl::StrSplit(line, " ", absl::SkipWhitespace());
+  std::vector<std::string_view> split = absl::StrSplit(line, ' ', absl::SkipWhitespace());
   // We check less than in case more fields are added later.
   if (split.size() < kProcStatNumFields) {
     return error::Internal("Unexpected number of columns: $0, in file: $1.", split.size(),
@@ -798,7 +796,7 @@ Status ProcParser::ReadMountInfos(pid_t pid,
                                   std::vector<ProcParser::MountInfo>* mount_infos) const {
   const std::filesystem::path proc_pid_mount_info_path = ProcPidPath(pid) / "mountinfo";
   GML_ASSIGN_OR_RETURN(std::string content, gml::ReadFileToString(proc_pid_mount_info_path));
-  std::vector<std::string_view> lines = absl::StrSplit(content, "\n", absl::SkipWhitespace());
+  std::vector<std::string_view> lines = absl::StrSplit(content, '\n', absl::SkipWhitespace());
   for (const auto line : lines) {
     ProcParser::MountInfo& mount_info = mount_infos->emplace_back();
     GML_RETURN_IF_ERROR(ParseMountInfo(line, &mount_info));
@@ -812,7 +810,7 @@ StatusOr<absl::flat_hash_set<std::string>> ProcParser::GetMapPaths(pid_t pid) co
 
   const std::filesystem::path proc_pid_maps_path = ProcPidPath(pid) / "maps";
   GML_ASSIGN_OR_RETURN(std::string content, gml::ReadFileToString(proc_pid_maps_path));
-  std::vector<std::string_view> lines = absl::StrSplit(content, "\n", absl::SkipWhitespace());
+  std::vector<std::string_view> lines = absl::StrSplit(content, '\n', absl::SkipWhitespace());
   for (const auto line : lines) {
     std::vector<std::string_view> fields =
         absl::StrSplit(line, absl::MaxSplits(' ', kProcMapNumFields), absl::SkipWhitespace());
@@ -826,14 +824,16 @@ StatusOr<absl::flat_hash_set<std::string>> ProcParser::GetMapPaths(pid_t pid) co
   return map_paths;
 }
 
-StatusOr<ProcParser::ProcessSMaps> ProcParser::GetExecutableMapEntry(pid_t pid, std::string libpath,
+StatusOr<ProcParser::ProcessSMaps> ProcParser::GetExecutableMapEntry(pid_t pid,
+                                                                     const std::string& libpath,
                                                                      uint64_t vmem_start) {
   std::vector<ProcParser::ProcessSMaps> map_entries;
   GML_RETURN_IF_ERROR(ParseProcPIDMaps(pid, &map_entries));
   for (const auto& entry : map_entries) {
     if (entry.pathname.compare(libpath) != 0 || entry.permissions.compare("r-xp") != 0 ||
-        entry.vmem_start != vmem_start)
+        entry.vmem_start != vmem_start) {
       continue;
+    }
 
     VLOG(1) << absl::Substitute("Found ProcessSMap for $0: vmem_start $1 permission $2",
                                 entry.pathname, absl::Hex(entry.vmem_start), entry.permissions);
@@ -843,5 +843,4 @@ StatusOr<ProcParser::ProcessSMaps> ProcParser::GetExecutableMapEntry(pid_t pid, 
   return error::NotFound(absl::Substitute("Could not find maps entry for $0", libpath));
 }
 
-}  // namespace system
-}  // namespace gml
+}  // namespace gml::system

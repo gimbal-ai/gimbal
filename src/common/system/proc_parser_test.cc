@@ -33,8 +33,7 @@
 
 DECLARE_string(proc_path);
 
-namespace gml {
-namespace system {
+namespace gml::system {
 
 using ::testing::_;
 using ::testing::Contains;
@@ -273,18 +272,18 @@ TEST_F(ProcParserTest, ParsePIDSMaps) {
   EXPECT_EQ("[anonymous]", stats[3].pathname);
 }
 
-TEST_F(ProcParserTest, read_pid_start_time) {
+TEST_F(ProcParserTest, ReadPIDStartTime) {
   GML_SET_FOR_SCOPE(FLAGS_proc_path, GetPathToTestDataFile("testdata/proc"));
   ASSERT_OK_AND_EQ(parser_->GetPIDStartTimeTicks(123), 14329);
 }
 
-TEST_F(ProcParserTest, read_pid_cmdline) {
+TEST_F(ProcParserTest, ReadPIDCmdline) {
   GML_SET_FOR_SCOPE(FLAGS_proc_path, GetPathToTestDataFile("testdata/proc"));
   EXPECT_THAT("/usr/lib/slack/slack --force-device-scale-factor=1.5 --high-dpi-support=1",
               parser_->GetPIDCmdline(123));
 }
 
-TEST_F(ProcParserTest, read_pid_metadata_null) {
+TEST_F(ProcParserTest, ReadPIDMetadataNull) {
   GML_SET_FOR_SCOPE(FLAGS_proc_path, GetPathToTestDataFile("testdata/proc"));
   EXPECT_THAT("/usr/lib/at-spi2-core/at-spi2-registryd --use-gnome-session",
               parser_->GetPIDCmdline(456));
@@ -292,7 +291,7 @@ TEST_F(ProcParserTest, read_pid_metadata_null) {
 
 // This test does not work because bazel uses symlinks itself,
 // which then causes ReadProcPIDFDLink to resolve the wrong link.
-TEST_F(ProcParserTest, read_proc_fd_link) {
+TEST_F(ProcParserTest, ReadProcFDLink) {
   GML_SET_FOR_SCOPE(FLAGS_proc_path, GetPathToTestDataFile("testdata/proc"));
   {
     // Bazel doesn't copy symlink testdata as symlinks, so we create the missing symlink testdata
@@ -403,5 +402,4 @@ TEST(ProcParserGetExePathTest, CheckTestProcess) {
   EXPECT_THAT(proc_exe.string(), MatchesRegex(kExpectedPathRegex));
 }
 
-}  // namespace system
-}  // namespace gml
+}  // namespace gml::system

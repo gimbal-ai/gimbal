@@ -27,10 +27,7 @@
 
 #include "src/common/base/base.h"
 
-namespace gml {
-namespace gem {
-namespace devices {
-namespace argus {
+namespace gml::gem::devices::argus {
 
 Status ArgusCam::SetupCamera(int device_num) {
   // Create the CameraProvider object and get the core interface.
@@ -270,7 +267,4 @@ void ArgusCam::Stop() {
   capture_session->waitForIdle();
 }
 
-}  // namespace argus
-}  // namespace devices
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::devices::argus

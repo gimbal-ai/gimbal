@@ -19,10 +19,7 @@
 
 #include <mediapipe/framework/calculator_framework.h>
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace core {
+namespace gml::gem::calculators::core {
 
 /**
  *  ImageFrameToPlanarYUVImage Graph API:
@@ -41,7 +38,4 @@ class ImageFrameToYUVPlanarImage : public mediapipe::CalculatorBase {
   absl::Status Close(mediapipe::CalculatorContext* cc) override;
 };
 
-}  // namespace core
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::core

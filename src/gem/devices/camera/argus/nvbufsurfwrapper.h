@@ -21,17 +21,14 @@
 
 #include "src/common/base/base.h"
 
-namespace gml {
-namespace gem {
-namespace devices {
-namespace argus {
+namespace gml::gem::devices::argus {
 
 // A wrapper around the image buf fd, with managed resources.
 class NvBufSurfaceWrapper : public NotCopyable {
  public:
   static StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> Create(NvBufSurface* nv_buf_surf);
 
-  NvBufSurfaceWrapper(NvBufSurfaceWrapper&& other);
+  NvBufSurfaceWrapper(NvBufSurfaceWrapper&& other) noexcept;
   ~NvBufSurfaceWrapper();
 
   void DumpInfo() const;
@@ -51,12 +48,9 @@ class NvBufSurfaceWrapper : public NotCopyable {
   const NvBufSurfaceParams& surface() const { return nvbuf_surf_->surfaceList[0]; }
 
  private:
-  NvBufSurfaceWrapper(NvBufSurface* nvbuf_surf);
+  explicit NvBufSurfaceWrapper(NvBufSurface* nvbuf_surf);
 
   NvBufSurface* nvbuf_surf_ = nullptr;
 };
 
-}  // namespace argus
-}  // namespace devices
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::devices::argus

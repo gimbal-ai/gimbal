@@ -22,10 +22,7 @@
 #include "src/common/base/base.h"
 #include "src/common/base/error.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace core {
+namespace gml::gem::exec::core {
 
 /**
  * ImageFormat enumerates our names for image formats. Since there are many names for image formats
@@ -66,7 +63,7 @@ class PlanarImage {
     size_t bytes;
   };
 
-  virtual ~PlanarImage() {}
+  virtual ~PlanarImage() = default;
 
   virtual size_t Width() const = 0;
   virtual size_t Height() const = 0;
@@ -131,14 +128,11 @@ class PlanarImageFor : public PlanarImage {
     }
   }
 
-  PlanarImageFor(std::shared_ptr<TImage> image) : image_(std::move(image)) {}
+  explicit PlanarImageFor(std::shared_ptr<TImage> image) : image_(std::move(image)) {}
 
   std::shared_ptr<TImage> image_;
   ImageFormat format_;
   std::vector<PlanarImage::Plane> planes_;
 };
 
-}  // namespace core
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::core

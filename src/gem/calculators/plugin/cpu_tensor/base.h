@@ -19,16 +19,10 @@
 #include "src/gem/exec/core/context.h"
 #include "src/gem/exec/plugin/cpu_tensor/context.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace cpu_tensor {
+namespace gml::gem::calculators::cpu_tensor {
 
 using ::gml::gem::exec::cpu_tensor::ExecutionContext;
 
 using ExecutionContextBaseCalculator = core::ExecutionContextCalculator<ExecutionContext>;
 
-}  // namespace cpu_tensor
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::cpu_tensor

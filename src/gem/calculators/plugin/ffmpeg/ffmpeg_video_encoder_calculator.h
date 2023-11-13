@@ -28,10 +28,7 @@ extern "C" {
 #include <mediapipe/framework/formats/video_stream_header.h>
 #include "src/gem/calculators/plugin/ffmpeg/av_packet_wrapper.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace ffmpeg {
+namespace gml::gem::calculators::ffmpeg {
 
 /**
  * FFMPEGVideoEncoderCalculator Graph API:
@@ -62,13 +59,10 @@ class FFmpegVideoEncoderCalculator : public mediapipe::CalculatorBase {
 
   int64_t height_;
   int64_t width_;
-  uint64_t frame_number_;
+  int64_t frame_number_;
 
   bool codec_setup_ = false;
   absl::Status SetupCodec(int64_t height, int64_t width, int frame_rate);
 };
 
-}  // namespace ffmpeg
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::ffmpeg

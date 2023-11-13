@@ -24,8 +24,7 @@
 using opentelemetry::sdk::metrics::AggregationTemporality;
 using opentelemetry::sdk::metrics::InstrumentType;
 
-namespace gml {
-namespace metrics {
+namespace gml::metrics {
 
 namespace {
 std::unique_ptr<MetricsSystem> g_instance;
@@ -99,5 +98,4 @@ opentelemetry::proto::metrics::v1::ResourceMetrics MetricsSystem::CollectAllAsPr
 
 opentelemetry::sdk::metrics::MetricReader* MetricsSystem::Reader() { return reader_.get(); };
 
-}  // namespace metrics
-}  // namespace gml
+}  // namespace gml::metrics

@@ -25,8 +25,7 @@
 
 #include "src/common/event/dispatcher.h"
 
-namespace gml {
-namespace event {
+namespace gml::event {
 
 namespace {
 
@@ -54,5 +53,4 @@ SchedulerUPtr RealTimeSystem::CreateScheduler(Scheduler* base_scheduler) {
   return std::make_unique<ProxyScheduler>(base_scheduler);
 }
 
-}  // namespace event
-}  // namespace gml
+}  // namespace gml::event

@@ -26,9 +26,7 @@
 #include "src/common/base/base.h"
 #include "src/common/testing/test_environment.h"
 
-namespace gml {
-namespace gem {
-namespace testing {
+namespace gml::gem::testing {
 
 constexpr std::string_view kTestPNGPath = "src/gem/testing/core/testdata/test.jpg";
 
@@ -54,6 +52,4 @@ void LoadTestImageAsYUVImage(mediapipe::YUVImage* yuv_image) {
   mediapipe::image_frame_util::ImageFrameToYUVImage(image_frame, yuv_image);
 }
 
-}  // namespace testing
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::testing

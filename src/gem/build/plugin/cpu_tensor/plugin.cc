@@ -20,10 +20,7 @@
 #include "src/gem/exec/plugin/cpu_tensor/context.h"
 #include "src/gem/plugins/registry.h"
 
-namespace gml {
-namespace gem {
-namespace build {
-namespace cpu_tensor {
+namespace gml::gem::build::cpu_tensor {
 
 using ::gml::gem::exec::cpu_tensor::ExecutionContext;
 
@@ -37,7 +34,4 @@ void RegisterPluginOrDie(plugins::Registry* plugin_registry) {
 
 GML_REGISTER_PLUGIN(RegisterPluginOrDie);
 
-}  // namespace cpu_tensor
-}  // namespace build
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::build::cpu_tensor

@@ -22,10 +22,7 @@
 #include "src/gem/exec/core/context.h"
 #include "src/gem/exec/core/control_context.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace core {
+namespace gml::gem::calculators::core {
 
 using ::gml::gem::exec::core::ExecutionContext;
 
@@ -66,7 +63,7 @@ class ExecutionContextCalculator : public mediapipe::CalculatorBase {
     exec_ctx_ = static_cast<TExecutionContext*>(
         cc->InputSidePackets().Tag(kExecutionContextTag).Get<ExecutionContext*>());
     if (exec_ctx_ == nullptr) {
-      return absl::Status(absl::StatusCode::kInvalidArgument, "EXEC_CTX is null");
+      return {absl::StatusCode::kInvalidArgument, "EXEC_CTX is null"};
     }
     GML_ABSL_RETURN_IF_ERROR(OpenImpl(cc, exec_ctx_));
     return absl::OkStatus();
@@ -89,7 +86,4 @@ class ExecutionContextCalculator : public mediapipe::CalculatorBase {
 using ControlExecutionContextCalculator =
     ExecutionContextCalculator<exec::core::ControlExecutionContext>;
 
-}  // namespace core
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::core

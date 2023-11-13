@@ -23,10 +23,7 @@
 #include "src/gem/exec/core/data_type.h"
 #include "src/gem/exec/core/tensor.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace core {
+namespace gml::gem::exec::core {
 
 namespace internal {
 
@@ -56,7 +53,4 @@ class TensorTraits {
   static constexpr bool HasSetDataType() { return internal::has_set_datatype_fn<T>::value; }
 };
 
-}  // namespace core
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::core

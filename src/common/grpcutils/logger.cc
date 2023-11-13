@@ -50,9 +50,11 @@ class LoggingInterceptor : public grpc::experimental::Interceptor {
       auto duration = stop_time - start_time_;
       auto duration_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(duration).count();
       if (status_.ok()) {
-        LOG(INFO) << absl::StrFormat("%s: %s", info_->method(), PrettyDuration(duration_ns));
+        LOG(INFO) << absl::StrFormat("%s: %s", info_->method(),
+                                     PrettyDuration(static_cast<double>(duration_ns)));
       } else {
-        LOG(ERROR) << absl::StrFormat("%s: %s %s", info_->method(), PrettyDuration(duration_ns),
+        LOG(ERROR) << absl::StrFormat("%s: %s %s", info_->method(),
+                                      PrettyDuration(static_cast<double>(duration_ns)),
                                       status_.error_message());
       }
     }

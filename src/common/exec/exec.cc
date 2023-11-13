@@ -25,7 +25,7 @@
 
 namespace gml {
 
-StatusOr<std::string> Exec(std::string cmd) {
+StatusOr<std::string> Exec(const std::string& cmd) {
   std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.c_str(), "r"), pclose);
   if (pipe == nullptr) {
     return error::Internal("popen() failed!");

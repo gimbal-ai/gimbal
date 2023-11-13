@@ -28,10 +28,7 @@ extern "C" {
 #include "src/gem/calculators/plugin/ffmpeg/ffmpeg_video_encoder_calculator.h"
 #include "src/gem/exec/core/planar_image.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace ffmpeg {
+namespace gml::gem::calculators::ffmpeg {
 
 using AVPacketWrappers = std::vector<std::unique_ptr<AVPacketWrapper>>;
 
@@ -52,8 +49,7 @@ absl::Status FFmpegVideoEncoderCalculator::GetContract(mediapipe::CalculatorCont
   } else if (cc->InputSidePackets().HasTag(kFrameRateTag)) {
     cc->InputSidePackets().Tag(kFrameRateTag).Set<int>();
   } else {
-    return absl::Status(absl::StatusCode::kInvalidArgument,
-                        "Must specify one of VIDEO_HEADER or FRAME_RATE");
+    return {absl::StatusCode::kInvalidArgument, "Must specify one of VIDEO_HEADER or FRAME_RATE"};
   }
   cc->Outputs().Tag(kAVPacketsTag).Set<AVPacketWrappers>();
   return absl::OkStatus();
@@ -63,15 +59,15 @@ absl::Status FFmpegVideoEncoderCalculator::Open(mediapipe::CalculatorContext*) {
   avcodec_register_all();
   codec_ = avcodec_find_encoder_by_name(kCodecName);
   if (!codec_) {
-    return absl::Status(absl::StatusCode::kInvalidArgument, "Codec not found");
+    return {absl::StatusCode::kInvalidArgument, "Codec not found"};
   }
   codec_ctx_ = avcodec_alloc_context3(codec_);
   if (!codec_ctx_) {
-    return absl::Status(absl::StatusCode::kInternal, "Failed to allocate codec context");
+    return {absl::StatusCode::kInternal, "Failed to allocate codec context"};
   }
   av_packet_ = AVPacketWrapper::Create();
   if (!av_packet_->packet()) {
-    return absl::Status(absl::StatusCode::kInternal, "Failed to allocate AVPacket");
+    return {absl::StatusCode::kInternal, "Failed to allocate AVPacket"};
   }
   frame_ = av_frame_alloc();
 
@@ -85,8 +81,8 @@ absl::Status FFmpegVideoEncoderCalculator::SetupCodec(int64_t height, int64_t wi
   height_ = height;
   width_ = width;
   codec_ctx_->bit_rate = kTargetKiloBitrate * 1000;
-  codec_ctx_->width = width_;
-  codec_ctx_->height = height_;
+  codec_ctx_->width = static_cast<int>(width_);
+  codec_ctx_->height = static_cast<int>(height_);
 
   codec_ctx_->time_base = AVRational{1, frame_rate};
   codec_ctx_->framerate = AVRational{frame_rate, 1};
@@ -122,8 +118,7 @@ absl::Status FFmpegVideoEncoderCalculator::SetupCodec(int64_t height, int64_t wi
 
 absl::Status FFmpegVideoEncoderCalculator::Process(mediapipe::CalculatorContext* cc) {
   if (cc->InputTimestamp() == mediapipe::Timestamp::PreStream()) {
-    const mediapipe::VideoHeader& video_header =
-        cc->Inputs().Tag(kVideoHeaderTag).Get<mediapipe::VideoHeader>();
+    const auto& video_header = cc->Inputs().Tag(kVideoHeaderTag).Get<mediapipe::VideoHeader>();
     return SetupCodec(video_header.height, video_header.width,
                       static_cast<int>(video_header.frame_rate));
   }
@@ -140,10 +135,9 @@ absl::Status FFmpegVideoEncoderCalculator::Process(mediapipe::CalculatorContext*
   auto planes = planar_image->Planes();
 
   if (planes.size() != 3) {
-    return absl::Status(
-        absl::StatusCode::kInvalidArgument,
-        absl::Substitute("Expected YUV PlanarImage in 3-plane format, received $0 planes.",
-                         planes.size()));
+    return {absl::StatusCode::kInvalidArgument,
+            absl::Substitute("Expected YUV PlanarImage in 3-plane format, received $0 planes.",
+                             planes.size())};
   }
 
   for (size_t i = 0; i < planes.size(); ++i) {
@@ -156,7 +150,7 @@ absl::Status FFmpegVideoEncoderCalculator::Process(mediapipe::CalculatorContext*
 
   auto ret = avcodec_send_frame(codec_ctx_, frame_);
   if (ret < 0) {
-    return absl::Status(absl::StatusCode::kInternal, "Error sending frame to ffmpeg for encoding");
+    return {absl::StatusCode::kInternal, "Error sending frame to ffmpeg for encoding"};
   }
 
   std::vector<std::unique_ptr<AVPacketWrapper>> av_packets;
@@ -166,7 +160,7 @@ absl::Status FFmpegVideoEncoderCalculator::Process(mediapipe::CalculatorContext*
     if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF) {
       break;
     } else if (ret < 0) {
-      return absl::Status(absl::StatusCode::kInternal, "Error during encoding");
+      return {absl::StatusCode::kInternal, "Error during encoding"};
     }
     auto out_av_packet = AVPacketWrapper::CreateRef(mut_av_packet);
     av_packets.emplace_back(std::move(out_av_packet));
@@ -192,7 +186,4 @@ absl::Status FFmpegVideoEncoderCalculator::Close(mediapipe::CalculatorContext*) 
 
 REGISTER_CALCULATOR(FFmpegVideoEncoderCalculator);
 
-}  // namespace ffmpeg
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::ffmpeg

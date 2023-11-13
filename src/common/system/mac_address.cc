@@ -24,8 +24,7 @@
 #include "src/common/base/utils.h"
 #include "src/common/system/mac_address.h"
 
-namespace gml {
-namespace system {
+namespace gml::system {
 
 StatusOr<uint64_t> MacAddrStrToInt(std::string_view mac_addr_str_in) {
   std::string_view mac_addr_str = absl::StripAsciiWhitespace(mac_addr_str_in);
@@ -41,7 +40,7 @@ StatusOr<uint64_t> MacAddrStrToInt(std::string_view mac_addr_str_in) {
                            mac_addr_str);
   }
 
-  uint64_t mac_addr = utils::BEndianBytesToInt<uint64_t, kMacAddrBytes>(mac_addr_bytes);
+  auto mac_addr = utils::BEndianBytesToInt<uint64_t, kMacAddrBytes>(mac_addr_bytes);
 
   return mac_addr;
 }
@@ -113,5 +112,4 @@ StatusOr<NetDevice> NetDeviceReader::SystemMacAddress() {
                          sys_class_net_path_.string());
 }
 
-}  // namespace system
-}  // namespace gml
+}  // namespace gml::system

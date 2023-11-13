@@ -25,8 +25,7 @@
 
 #include "src/common/event/timer.h"
 
-namespace gml {
-namespace event {
+namespace gml::event {
 
 // Alias to make it easier to reference.
 using SystemTimePoint = std::chrono::time_point<std::chrono::system_clock>;
@@ -68,5 +67,4 @@ class TimeSystem : public TimeSource {
   virtual SchedulerUPtr CreateScheduler(Scheduler* base_scheduler) = 0;
 };
 
-}  // namespace event
-}  // namespace gml
+}  // namespace gml::event

@@ -27,8 +27,7 @@
 using gml::event::APIImpl;
 using gml::event::RealTimeSystem;
 
-namespace gml {
-namespace event {
+namespace gml::event {
 
 int g_compute_pi_destructor_count = 0;
 
@@ -36,7 +35,7 @@ namespace {
 
 class ComputePi : public gml::event::AsyncTask {
  public:
-  ~ComputePi() { ++g_compute_pi_destructor_count; }
+  ~ComputePi() override { ++g_compute_pi_destructor_count; }
 
   void Work() override {
     ++work_call_count_;
@@ -80,7 +79,7 @@ class LibuvDispatcherTest : public ::testing::Test {
   std::unique_ptr<Dispatcher> dispatcher_;
 };
 
-TEST_F(LibuvDispatcherTest, test_timed_events) {
+TEST_F(LibuvDispatcherTest, TestTimedEvents) {
   // This test is meant to exercise the event code so we can find any TSAN/ASAN failures.
   // It is not meant to be a precise test for the timing logic since that will likely make the
   // test flaky.
@@ -151,5 +150,4 @@ TEST_F(LibuvDispatcherTest, threadpool) {
   dispatcher_->Exit();
 }
 
-}  // namespace event
-}  // namespace gml
+}  // namespace gml::event

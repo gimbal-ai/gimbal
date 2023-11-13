@@ -22,10 +22,7 @@
 #include "src/gem/calculators/core/execution_context_calculator.h"
 #include "src/gem/exec/core/control_context.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace ffmpeg {
+namespace gml::gem::calculators::ffmpeg {
 
 /**
  *  OverlayedFFmpegVideoSinkCalculator Graph API:
@@ -48,7 +45,4 @@ class OverlayedFFmpegVideoSinkCalculator : public core::ControlExecutionContextC
                      exec::core::ControlExecutionContext* control_ctx) override;
 };
 
-}  // namespace ffmpeg
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::ffmpeg

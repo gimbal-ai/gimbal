@@ -19,10 +19,7 @@
 
 #include "src/common/base/base.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace core {
+namespace gml::gem::exec::core {
 
 /**
  * Model represents a plugin-specific built model. From gem::core's perspective, it's just an opaque
@@ -30,10 +27,7 @@ namespace core {
  */
 class Model {
  public:
-  virtual ~Model() {}
+  virtual ~Model() = default;
 };
 
-}  // namespace core
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::core

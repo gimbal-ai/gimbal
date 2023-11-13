@@ -18,10 +18,7 @@
 #include "src/gem/calculators/plugin/tensorrt/base.h"
 #include "src/gem/exec/plugin/tensorrt/context.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace tensorrt {
+namespace gml::gem::calculators::tensorrt {
 
 /**
  * ImageFrameToCUDATensorCalculator Graph API:
@@ -45,7 +42,4 @@ class ImageFrameToCUDATensorCalculator : public ExecutionContextBaseCalculator {
   Status CloseImpl(mediapipe::CalculatorContext* cc, tensorrt::ExecutionContext* exec_ctx) override;
 };
 
-}  // namespace tensorrt
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::tensorrt

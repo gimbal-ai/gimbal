@@ -36,17 +36,20 @@ namespace gml {
  * But can be used in other cases as well, without harm.
  */
 template <typename TCharType = char, size_t N>
-inline constexpr std::basic_string_view<TCharType> ConstStringView(const TCharType (&a)[N]) {
+inline constexpr std::basic_string_view<TCharType> ConstStringView(
+    const TCharType (&a)[N]) {  // NOLINT(modernize-avoid-c-arrays)
   return std::basic_string_view<TCharType>(a, N - 1);
 }
 
 template <typename TCharType = char, size_t N>
-inline std::basic_string<TCharType> ConstString(const char (&a)[N]) {
+inline std::basic_string<TCharType> ConstString(
+    const char (&a)[N]) {  // NOLINT(modernize-avoid-c-arrays)
   return std::basic_string<TCharType>(reinterpret_cast<const TCharType*>(a), N - 1);
 }
 
 template <typename TCharType = char, size_t N>
-inline constexpr std::basic_string_view<TCharType> CharArrayStringView(const TCharType (&a)[N]) {
+inline constexpr std::basic_string_view<TCharType> CharArrayStringView(
+    const TCharType (&a)[N]) {  // NOLINT(modernize-avoid-c-arrays)
   return std::basic_string_view<TCharType>(a, N);
 }
 
@@ -71,7 +74,8 @@ class ArrayView {
   constexpr ArrayView(const T (&a)[N]) : elements_(a), size_(N) {}
   constexpr ArrayView(const T* ptr, size_t size) : elements_(ptr), size_(size) {}
   template <std::size_t N>
-  constexpr ArrayView(const std::array<T, N>& arr) : elements_(arr.data()), size_(arr.size()) {}
+  constexpr ArrayView(const std::array<T, N>& arr)  // NOLINT(google-explicit-constructor)
+      : elements_(arr.data()), size_(arr.size()) {}
 
   constexpr size_t size() const { return size_; }
   constexpr const T& operator[](size_t i) const { return elements_[i]; }
@@ -145,9 +149,9 @@ template <typename T>
 using DequeView = ContainerView<T, std::deque>;
 
 struct __attribute__((packed)) int24_t {
-  operator int() const { return data; }
-  int24_t(int x) : data(x) {}
-  int24_t() {}
+  explicit operator int() const { return data; }
+  explicit int24_t(int x) : data(x) {}
+  int24_t() = default;
   int32_t data : 24;
 };
 
@@ -157,9 +161,9 @@ inline int operator<<(int24_t left, int shift) {
 }
 
 struct __attribute__((packed)) uint24_t {
-  operator int() const { return data; }
-  uint24_t(int x) : data(x) {}
-  uint24_t() {}
+  explicit operator int() const { return data; }
+  explicit uint24_t(int x) : data(x) {}
+  uint24_t() = default;
   uint32_t data : 24;
 };
 
@@ -171,4 +175,4 @@ inline int operator<<(uint24_t left, int shift) {
 }  // namespace gml
 
 // When used in a constexpr function, this will prevent compilation if assert does not pass.
-#define COMPILE_TIME_ASSERT(expr, msg) (expr || error::Internal(#msg).ok())
+#define COMPILE_TIME_ASSERT(expr, msg) ((expr) || error::Internal(#msg).ok())

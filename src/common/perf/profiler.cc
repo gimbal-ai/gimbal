@@ -26,8 +26,7 @@
 #include "gperftools/heap-profiler.h"
 #include "gperftools/profiler.h"
 
-namespace gml {
-namespace profiler {
+namespace gml::profiler {
 
 bool CPU::ProfilerAvailable() { return ProfilingIsEnabledForAllThreads() == 0; }
 
@@ -70,8 +69,7 @@ void Heap::ForceLink() {
   HeapProfilerDump("");
 }
 
-}  // namespace profiler
-}  // namespace gml
+}  // namespace gml::profiler
 
 #else  // !PROFILER_AVAILABLE
 

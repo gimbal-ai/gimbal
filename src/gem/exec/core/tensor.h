@@ -22,10 +22,7 @@
 #include "src/common/base/base.h"
 #include "src/gem/exec/core/data_type.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace core {
+namespace gml::gem::exec::core {
 
 class TensorShape : public std::vector<int32_t> {
  public:
@@ -58,7 +55,4 @@ class ReshapeableTensor {
   core::DataType data_type_;
 };
 
-}  // namespace core
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::core

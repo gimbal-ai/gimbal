@@ -26,8 +26,7 @@
 
 DECLARE_string(proc_path);
 
-namespace gml {
-namespace system {
+namespace gml::system {
 
 const std::string& proc_path();
 
@@ -39,7 +38,7 @@ std::filesystem::path ProcPath(Paths... token_pack) {
   if constexpr (n > 0) {
     // GCC will complain about an unused variable (toks) if this code is *not*
     // inside of "if constexpr".
-    std::filesystem::path toks[n] = {token_pack...};
+    std::array<std::filesystem::path, n> toks = {token_pack...};
     for (const auto& tok : toks) {
       proc_pid_path = proc_pid_path / tok.relative_path();
     }
@@ -57,5 +56,4 @@ std::filesystem::path ProcPidRootPath(pid_t pid, Paths... token_pack) {
   return ProcPidPath(pid, "root", token_pack...);
 }
 
-}  // namespace system
-}  // namespace gml
+}  // namespace gml::system

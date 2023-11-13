@@ -68,11 +68,24 @@ gml_cc_library_internal(
     hdrs = ["version.h"],
 )
 
+_DEFAULT_DEFINES = [
+    'BUILD_SCM_STATUS=\\"Modified\\"',
+    'BUILD_SCM_REVISION=\\"0000000\\"',
+    'BUILD_TAG=\\"0.0.0-dev\\"',
+    'BUILD_NUMBER=\\"0\\"',
+    'BUILT_BY=\\"Unknown\\"',
+    "BUILD_TIMESTAMP=0",
+]
+
 gml_cc_library_internal(
     name = "version_linkstamp",
     srcs = select({
         "//bazel:stamped": [":gen_version_linkstamp"],
-        "//conditions:default": ["placeholder_version_linkstamp.cc"],
+        "//conditions:default": ["version_linkstamp.cc"],
+    }),
+    defines = select({
+        "//bazel:stamped": [],
+        "//conditions:default": _DEFAULT_DEFINES,
     }),
     # Usage of this library has serious implications for caching. The use should
     # be restricted to binaries.
@@ -89,6 +102,7 @@ gml_cc_library_internal(
     name = "test_version_linkstamp",
     testonly = 1,
     srcs = [
-        "placeholder_version_linkstamp.cc",
+        "version_linkstamp.cc",
     ],
+    defines = _DEFAULT_DEFINES,
 )

@@ -19,10 +19,7 @@
 #include "src/gem/calculators/plugin/cpu_tensor/base.h"
 #include "src/gem/exec/plugin/cpu_tensor/context.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace cpu_tensor {
+namespace gml::gem::calculators::cpu_tensor {
 
 using ::gml::gem::exec::cpu_tensor::ExecutionContext;
 
@@ -45,7 +42,4 @@ class ImageShapeCPUTensorCalculator : public ExecutionContextBaseCalculator {
   Status CloseImpl(mediapipe::CalculatorContext* cc, ExecutionContext* exec_ctx) override;
 };
 
-}  // namespace cpu_tensor
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::cpu_tensor

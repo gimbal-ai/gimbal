@@ -19,22 +19,21 @@
 
 #include <mediapipe/framework/calculator_graph.h>
 
+#include <utility>
+
 #include "src/common/base/base.h"
 #include "src/gem/exec/core/model.h"
 #include "src/gem/plugins/registry.h"
 #include "src/gem/specpb/execution.pb.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace core {
+namespace gml::gem::exec::core {
 
 /**
  * Runner executes an ExecutionSpec until stopped.
  */
 class Runner {
  public:
-  explicit Runner(const specpb::ExecutionSpec& spec) : spec_(spec) {}
+  explicit Runner(specpb::ExecutionSpec spec) : spec_(std::move(spec)) {}
 
   Status Init(const std::map<std::string, mediapipe::Packet>& extra_side_packets);
   Status Start();
@@ -53,12 +52,12 @@ class Runner {
       const std::string& stream_name,
       std::function<Status(const TPacket&, const mediapipe::Timestamp&)> cb) {
     if (!initialized_) {
-      return Status(types::CODE_INVALID_ARGUMENT,
-                    "Cannot add output stream callback before initialization");
+      return {types::CODE_INVALID_ARGUMENT,
+              "Cannot add output stream callback before initialization"};
     }
     if (started_) {
-      return Status(types::CODE_INVALID_ARGUMENT,
-                    "Cannot add output stream callback after graph is already running");
+      return {types::CODE_INVALID_ARGUMENT,
+              "Cannot add output stream callback after graph is already running"};
     }
 
     GML_RETURN_IF_ERROR(graph_.ObserveOutputStream(
@@ -80,7 +79,4 @@ class Runner {
   bool started_ = false;
 };
 
-}  // namespace core
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::core

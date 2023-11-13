@@ -24,10 +24,7 @@
 #include "src/gem/exec/core/data_type.h"
 #include "src/gem/exec/core/tensor.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace tensorrt {
+namespace gml::gem::exec::tensorrt {
 
 /**
  * CUDATensor represents a device-resident tensor allocated with cudaMalloc.
@@ -61,7 +58,4 @@ class CUDATensor : public core::ReshapeableTensor {
   size_t size_;
 };
 
-}  // namespace tensorrt
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::tensorrt

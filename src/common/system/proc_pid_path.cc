@@ -23,10 +23,8 @@
 
 DEFINE_string(proc_path, "/proc", "Path to proc filesystem.");
 
-namespace gml {
-namespace system {
+namespace gml::system {
 
 const std::string& proc_path() { return FLAGS_proc_path; }
 
-}  // namespace system
-}  // namespace gml
+}  // namespace gml::system

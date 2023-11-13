@@ -28,8 +28,7 @@
 #include "src/common/base/status.h"
 #include "src/common/typespb/status.pb.h"
 
-namespace gml {
-namespace error {
+namespace gml::error {
 
 // Declare convenience functions:
 // error::InvalidArgument(...)
@@ -57,6 +56,14 @@ DECLARE_ERROR(FailedPrecondition, CODE_FAILED_PRECONDITION)
 
 #undef DECLARE_ERROR
 
+inline char toupper(char c) {
+  return static_cast<char>(std::toupper(static_cast<unsigned char>(c)));
+}
+
+inline char tolower(char c) {
+  return static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+}
+
 inline std::string CodeToString(gml::types::Code code) {
   std::string_view code_str_view = magic_enum::enum_name(code);
   if (code_str_view.empty()) {
@@ -71,13 +78,12 @@ inline std::string CodeToString(gml::types::Code code) {
     if (c == '_') {
       c = ' ';
     } else {
-      c = (last == ' ') ? std::toupper(c) : std::tolower(c);
+      c = (last == ' ') ? toupper(c) : tolower(c);
     }
-    last = c;
+    last = static_cast<unsigned char>(c);
   });
 
   return code_str;
 }
 
-}  // namespace error
-}  // namespace gml
+}  // namespace gml::error

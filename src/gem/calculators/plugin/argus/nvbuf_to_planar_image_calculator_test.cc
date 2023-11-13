@@ -28,10 +28,7 @@
 #include "src/gem/devices/camera/argus/nvbufsurfwrapper.h"
 #include "src/gem/exec/core/planar_image.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace argus {
+namespace gml::gem::calculators::argus {
 
 using ::gml::gem::exec::core::ImageFormat;
 using ::gml::gem::exec::core::PlanarImageFor;
@@ -100,7 +97,4 @@ TEST(NvBufSurfToPlanarImageCalculator, conversion) {
   EXPECT_EQ(output_image.Format(), ImageFormat::YUV_I420);
 }
 
-}  // namespace argus
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::argus

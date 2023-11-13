@@ -21,10 +21,7 @@
 
 #include "src/gem/exec/plugin/tensorrt/context.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace tensorrt {
+namespace gml::gem::exec::tensorrt {
 
 cudaStream_t ExecutionContext::CUDAStream() {
   // TODO(james): look into utilizing CUDA streams. For now everything runs fully
@@ -32,7 +29,4 @@ cudaStream_t ExecutionContext::CUDAStream() {
   return nullptr;
 }
 
-}  // namespace tensorrt
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::tensorrt

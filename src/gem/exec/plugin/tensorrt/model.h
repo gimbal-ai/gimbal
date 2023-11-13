@@ -23,10 +23,7 @@
 #include "src/common/base/base.h"
 #include "src/gem/exec/core/model.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace tensorrt {
+namespace gml::gem::exec::tensorrt {
 
 class TensorRTLogger : public nvinfer1::ILogger {
   void log(Severity, const char* msg) noexcept override {
@@ -50,7 +47,7 @@ class Model : public core::Model {
         cuda_engine_(std::move(cuda_engine)),
         context_(std::move(context)) {}
 
-  ~Model() override {}
+  ~Model() override = default;
   nvinfer1::IExecutionContext* NVExecutionContext() { return context_.get(); }
   nvinfer1::ICudaEngine* CUDAEngine() { return cuda_engine_.get(); }
 
@@ -61,7 +58,4 @@ class Model : public core::Model {
   std::unique_ptr<nvinfer1::IExecutionContext> context_;
 };
 
-}  // namespace tensorrt
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::tensorrt

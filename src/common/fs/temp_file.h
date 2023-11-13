@@ -22,8 +22,7 @@
 #include <filesystem>
 #include <memory>
 
-namespace gml {
-namespace fs {
+namespace gml::fs {
 
 /**
  * Returns a unique temporary file that is automatically be deleted.
@@ -45,5 +44,4 @@ class TempFile {
   std::FILE* f_;
 };
 
-}  // namespace fs
-}  // namespace gml
+}  // namespace gml::fs

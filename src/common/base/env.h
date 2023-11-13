@@ -28,6 +28,7 @@
 #include <string>
 
 #include "src/common/base/logging.h"
+#include "src/common/base/mixins.h"
 
 namespace gml {
 
@@ -44,7 +45,7 @@ class EnvironmentGuard {
 // and it will print out stats when it falls out of scope, at exit.
 class ProcessStatsMonitor {
  public:
-  ProcessStatsMonitor() { Reset(); }
+  ProcessStatsMonitor() : start_usage_() { Reset(); }
 
   ~ProcessStatsMonitor() { PrintCPUTime(); }
 

@@ -74,7 +74,7 @@ class SignalAction : public NotCopyable {
   /**
    * Signal handlers will be installed for these signals which have a fatal outcome.
    */
-  static constexpr int kFatalSignals[] = {SIGABRT, SIGBUS, SIGFPE, SIGILL, SIGSEGV};
+  static constexpr std::array kFatalSignals = {SIGABRT, SIGBUS, SIGFPE, SIGILL, SIGSEGV};
 
   static constexpr int kPageSizeBytes = 4 * 1024;
   /**
@@ -101,7 +101,7 @@ class SignalAction : public NotCopyable {
   void RemoveSigHandlers();
 
   char* altstack_{};
-  std::array<struct sigaction, sizeof(kFatalSignals) / sizeof(int)> previous_handlers_;
+  std::array<struct sigaction, kFatalSignals.size()> previous_handlers_;
   stack_t previous_altstack_;
   std::list<const FatalErrorHandlerInterface*> fatal_error_handlers_;
 };

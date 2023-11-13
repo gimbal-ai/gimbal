@@ -22,9 +22,7 @@
 #include <mediapipe/framework/calculator_framework.h>
 #include "opentelemetry/exporters/otlp/otlp_metric_utils.h"
 
-namespace gml {
-namespace gem {
-namespace utils {
+namespace gml::gem::utils {
 
 /**
  * Converts MediaPipe's profile stats into OTel metrics format.
@@ -37,6 +35,4 @@ Status CalculatorProfileVecToOTelProto(
     const std::vector<mediapipe::CalculatorProfile>& profiles,
     opentelemetry::proto::metrics::v1::ResourceMetrics* metrics_out);
 
-}  // namespace utils
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::utils

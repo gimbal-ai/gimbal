@@ -21,15 +21,13 @@
 
 #include <mediapipe/framework/calculator_framework.h>
 
-namespace gml {
-namespace gem {
-namespace utils {
+namespace gml::gem::utils {
 
 using Metric = ::opentelemetry::proto::metrics::v1::Metric;
 
 namespace {
 
-constexpr int64_t kUSecondsPerSecond = 1000 * 1000;
+constexpr int64_t kUSecondsPerSecond = 1000LL * 1000LL;
 
 Status PopulateSumMetric(Metric* metric, std::string&& name, std::string&& desc, std::string&& unit,
                          absl::flat_hash_map<std::string, std::string>&& attributes,
@@ -192,6 +190,4 @@ Status CalculatorProfileVecToOTelProto(
   return Status::OK();
 }
 
-}  // namespace utils
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::utils

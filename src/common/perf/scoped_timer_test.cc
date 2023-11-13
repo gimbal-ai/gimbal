@@ -26,7 +26,7 @@
 
 namespace gml {
 
-TEST(scoped_timer, time_basic) {
+TEST(ScopedTimer, TimeBasic) {
   FLAGS_alsologtostderr = true;
   testing::internal::CaptureStderr();
   {

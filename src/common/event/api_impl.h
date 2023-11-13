@@ -23,8 +23,7 @@
 
 #include "src/common/event/api.h"
 
-namespace gml {
-namespace event {
+namespace gml::event {
 
 /**
  * APIImpl is the default implementation of the API.
@@ -41,5 +40,4 @@ class APIImpl : public API {
   TimeSystem* time_system_;
 };
 
-}  // namespace event
-}  // namespace gml
+}  // namespace gml::event

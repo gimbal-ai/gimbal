@@ -26,13 +26,12 @@
 #include "src/common/base/types.h"
 #include "src/common/base/utils.h"
 
-namespace gml {
-namespace utils {
+namespace gml::utils {
 
 TEST(UtilsTest, TestReverseArrayBytes) {
   {
-    char result[4];
-    char input[] = {'\x12', '\x34', '\x56', '\x78'};
+    std::array<char, 4> result;
+    std::array<char, 4> input = {'\x12', '\x34', '\x56', '\x78'};
     ReverseBytes(input, result);
     char expected[] = "\x78\x56\x34\x12";
     EXPECT_EQ(result[0], expected[0]);
@@ -42,8 +41,8 @@ TEST(UtilsTest, TestReverseArrayBytes) {
   }
 
   {
-    uint8_t result[4];
-    uint8_t input[] = {'\x12', '\x34', '\x56', '\x78'};
+    std::array<uint8_t, 4> result;
+    std::array<uint8_t, 4> input = {'\x12', '\x34', '\x56', '\x78'};
     ReverseBytes(input, result);
     uint8_t expected[] = "\x78\x56\x34\x12";
     EXPECT_EQ(result[0], expected[0]);
@@ -80,8 +79,8 @@ TEST(UtilsTest, TestReverseBytesInvertability) {
 
   for (int i = 0; i < 100000; ++i) {
     {
-      int32_t x = uniform_uint32_dist(rng);
-      int32_t y = ReverseBytes(&x);
+      uint32_t x = uniform_uint32_dist(rng);
+      uint32_t y = ReverseBytes(&x);
       EXPECT_EQ(ReverseBytes(&y), x);
     }
 
@@ -119,8 +118,8 @@ TEST(UtilsTest, TestLEndianBytesToInt) {
 }
 
 TEST(UtilsTest, TestLEndianBytesToFloat) {
-  std::string float_bytes = ConstString("\x33\x33\x23\x41");
-  std::string double_bytes = ConstString("\x66\x66\x66\x66\x66\x66\x24\x40");
+  std::string float_bytes = ConstString(R"(33#A)");
+  std::string double_bytes = ConstString(R"(ffffff$@)");
 
   EXPECT_FLOAT_EQ(LEndianBytesToFloat<float>(float_bytes), 10.2f);
   EXPECT_DOUBLE_EQ(LEndianBytesToFloat<double>(double_bytes), 10.2);
@@ -139,7 +138,7 @@ TEST(UtilsTest, TestLEndianBytesToFloatUnAligned) {
 
 TEST(UtilsTest, TestIntToLEndianBytes) {
   {
-    char result[4];
+    std::array<char, 4> result;
     IntToLEndianBytes(0x12345678, result);
     char expected[] = "\x78\x56\x34\x12";
     EXPECT_EQ(result[0], expected[0]);
@@ -149,7 +148,7 @@ TEST(UtilsTest, TestIntToLEndianBytes) {
   }
 
   {
-    char result[3];
+    std::array<char, 3> result;
     IntToLEndianBytes(198, result);
     char expected[] = "\xc6\x00\x00";
     EXPECT_EQ(result[0], expected[0]);
@@ -158,7 +157,7 @@ TEST(UtilsTest, TestIntToLEndianBytes) {
   }
 
   {
-    uint8_t result[4];
+    std::array<uint8_t, 4> result;
     IntToLEndianBytes(0x12345678, result);
     uint8_t expected[] = "\x78\x56\x34\x12";
     EXPECT_EQ(result[0], expected[0]);
@@ -168,7 +167,7 @@ TEST(UtilsTest, TestIntToLEndianBytes) {
   }
 
   {
-    uint8_t result[8];
+    std::array<uint8_t, 8> result;
     IntToLEndianBytes(0x123456789abcdef0, result);
     uint8_t expected[] = "\xf0\xde\xbc\x9a\x78\x56\x34\x12";
     EXPECT_EQ(result[0], expected[0]);
@@ -184,7 +183,7 @@ TEST(UtilsTest, TestIntToLEndianBytes) {
 
 TEST(UtilsTest, TestIntToBEndianBytes) {
   {
-    char result[4];
+    std::array<char, 4> result;
     IntToBEndianBytes(0x12345678, result);
     char expected[] = "\x12\x34\x56\x78";
     EXPECT_EQ(result[0], expected[0]);
@@ -194,7 +193,7 @@ TEST(UtilsTest, TestIntToBEndianBytes) {
   }
 
   {
-    char result[3];
+    std::array<char, 3> result;
     IntToBEndianBytes(198, result);
     char expected[] = "\x00\x00\xc6";
     EXPECT_EQ(result[0], expected[0]);
@@ -203,7 +202,7 @@ TEST(UtilsTest, TestIntToBEndianBytes) {
   }
 
   {
-    uint8_t result[4];
+    std::array<uint8_t, 4> result;
     IntToBEndianBytes(0x12345678, result);
     uint8_t expected[] = "\x12\x34\x56\x78";
     EXPECT_EQ(result[0], expected[0]);
@@ -213,7 +212,7 @@ TEST(UtilsTest, TestIntToBEndianBytes) {
   }
 
   {
-    uint8_t result[8];
+    std::array<uint8_t, 8> result;
     IntToBEndianBytes(0x123456789abcdef0, result);
     uint8_t expected[] = "\x12\x34\x56\x78\x9a\xbc\xde\xf0";
     EXPECT_EQ(result[0], expected[0]);
@@ -253,8 +252,8 @@ TEST(UtilsTest, TestBEndianBytesToInt) {
 }
 
 TEST(UtilsTest, TestBEndianBytesToFloat) {
-  std::string float_bytes = ConstString("\x41\x23\x33\x33");
-  std::string double_bytes = ConstString("\x40\x24\x66\x66\x66\x66\x66\x66");
+  std::string float_bytes = ConstString(R"(A#33)");
+  std::string double_bytes = ConstString(R"(@$ffffff)");
 
   EXPECT_FLOAT_EQ(BEndianBytesToFloat<float>(float_bytes), 10.2f);
   EXPECT_DOUBLE_EQ(BEndianBytesToFloat<double>(double_bytes), 10.2);
@@ -296,5 +295,4 @@ TEST(UtilsTest, MemCpy) {
   }
 }
 
-}  // namespace utils
-}  // namespace gml
+}  // namespace gml::utils

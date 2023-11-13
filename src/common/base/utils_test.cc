@@ -412,7 +412,7 @@ TEST(LinearInterpolate, SymmetryUInt64) {
 TEST(LinearInterpolate, LargeIntPrecision) {
   uint64_t x_a = 0;
   uint64_t x_b = 10;
-  int64_t y_a = 1ULL << 63;
+  int64_t y_a = 1LL << 63;
   int64_t y_b = y_a + 10000;
   uint64_t value = 5;
   EXPECT_EQ(y_a + 5000, LinearInterpolate(x_a, x_b, y_a, y_b, value));

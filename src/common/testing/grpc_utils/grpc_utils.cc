@@ -91,14 +91,12 @@ int64_t grpc_test_sanitizer_slowdown_factor() {
   int64_t sanitizer_multiplier = 1;
   if (BuiltUnderValgrind()) {
     sanitizer_multiplier = 20;
-  } else if (BuiltUnderTsan()) {
+  } else if (BuiltUnderTsan() || BuiltUnderUbsan()) {
     sanitizer_multiplier = 5;
   } else if (BuiltUnderAsan()) {
     sanitizer_multiplier = 3;
   } else if (BuiltUnderMsan()) {
     sanitizer_multiplier = 4;
-  } else if (BuiltUnderUbsan()) {
-    sanitizer_multiplier = 5;
   }
   return sanitizer_multiplier;
 }

@@ -24,8 +24,7 @@
 #include <absl/memory/memory.h>
 #include "src/common/base/logging.h"
 
-namespace gml {
-namespace grpc {
+namespace gml::grpc {
 
 using ::google::protobuf::Descriptor;
 using ::google::protobuf::DescriptorPool;
@@ -36,7 +35,7 @@ using ::google::protobuf::MethodDescriptor;
 using ::google::protobuf::ServiceDescriptor;
 using ::google::protobuf::SimpleDescriptorDatabase;
 
-ServiceDescriptorDatabase::ServiceDescriptorDatabase(FileDescriptorSet fdset)
+ServiceDescriptorDatabase::ServiceDescriptorDatabase(const FileDescriptorSet& fdset)
     : desc_db_(), desc_pool_(&desc_db_), message_factory_() {
   for (const auto& fd : fdset.file()) {
     if (!desc_db_.Add(fd)) {
@@ -91,5 +90,4 @@ std::vector<::google::protobuf::ServiceDescriptorProto> ServiceDescriptorDatabas
   return services;
 }
 
-}  // namespace grpc
-}  // namespace gml
+}  // namespace gml::grpc

@@ -28,8 +28,7 @@
 #include "src/common/base/base.h"
 #include "src/common/event/api.h"
 
-namespace gml {
-namespace event {
+namespace gml::event {
 
 namespace {
 /**
@@ -42,7 +41,7 @@ class LibuvRunnableAsyncTask : public RunnableAsyncTask {
     work_.data = this;
   }
 
-  virtual ~LibuvRunnableAsyncTask() = default;
+  ~LibuvRunnableAsyncTask() override = default;
 
   /**
    * Run queues work on the event queue to run on the threadpool.
@@ -70,7 +69,7 @@ void OnUVWalkClose(uv_handle_t* handle, void* /*arg*/) { uv_close(handle, nullpt
 }  // namespace
 
 //----- Timer
-LibuvTimer::LibuvTimer(TimerCB cb, uv_loop_t* loop) : cb_(cb) {
+LibuvTimer::LibuvTimer(TimerCB cb, uv_loop_t* loop) : cb_(std::move(cb)) {
   int rc = uv_timer_init(loop, &timer_);
   CHECK(rc == 0) << "Failed to initialize uv_timer";
 }
@@ -133,10 +132,10 @@ LibuvScheduler::LibuvScheduler(std::string_view name) : name_(std::string(name))
   CHECK(rc == 0) << "Failed to init Libuv loop";
   stop_handler_.data = this;
   uv_async_init(&uv_loop_, &stop_handler_, [](uv_async_t* h) {
-    LibuvScheduler* s = reinterpret_cast<LibuvScheduler*>(h->data);
+    auto* s = reinterpret_cast<LibuvScheduler*>(h->data);
     LOG(INFO) << s->LogEntry("Loop stopped");
     uv_close(reinterpret_cast<uv_handle_t*>(h), [](uv_handle_t* h) {
-      LibuvScheduler* s = reinterpret_cast<LibuvScheduler*>(h->data);
+      auto* s = reinterpret_cast<LibuvScheduler*>(h->data);
       LOG(INFO) << s->LogEntry("Stop finished");
     });
   });
@@ -146,7 +145,7 @@ void LibuvScheduler::LoopExit() {
   // Should signal run loop to exit, and also wait for exit to complete.
   if (int rc = uv_loop_close(&uv_loop_); rc != 0) {
     if (rc == UV_EBUSY) {
-      uv_walk(&uv_loop_, OnUVWalkClose, NULL);
+      uv_walk(&uv_loop_, OnUVWalkClose, nullptr);
       // Give it a chance to cleanup.
       Run(Dispatcher::RunType::Block);
     } else {
@@ -230,7 +229,7 @@ LibuvDispatcher::LibuvDispatcher(std::string_view name, const API& api, TimeSyst
 
   post_async_handler_.data = this;
   uv_async_init(base_scheduler_.uv_loop(), &post_async_handler_, [](uv_async_t* h) {
-    LibuvDispatcher* d = reinterpret_cast<LibuvDispatcher*>(h->data);
+    auto* d = reinterpret_cast<LibuvDispatcher*>(h->data);
     d->RunPostCallbacks();
   });
   // Don't block the event loop if this is the only reference.
@@ -288,12 +287,11 @@ void LibuvDispatcher::DoDeferredDelete() {
 
   // Loop through to delete to make sure deletion is done in the right order.
   deferred_deleting_ = true;
-  for (size_t i = 0; i < to_delete.size(); ++i) {
-    to_delete[i].reset();
+  for (auto& del : to_delete) {
+    del.reset();
   }
   to_delete.clear();
   deferred_deleting_ = false;
 }
 
-}  // namespace event
-}  // namespace gml
+}  // namespace gml::event

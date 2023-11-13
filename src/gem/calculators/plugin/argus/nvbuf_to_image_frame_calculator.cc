@@ -26,10 +26,7 @@
 
 #include "src/gem/devices/camera/argus/nvbufsurfwrapper.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace argus {
+namespace gml::gem::calculators::argus {
 
 using devices::argus::NvBufSurfaceWrapper;
 
@@ -85,7 +82,4 @@ absl::Status NvBufSurfToImageFrameCalculator::Close(mediapipe::CalculatorContext
 
 REGISTER_CALCULATOR(NvBufSurfToImageFrameCalculator);
 
-}  // namespace argus
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::argus

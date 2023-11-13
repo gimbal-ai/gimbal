@@ -26,10 +26,8 @@
 
 #include "src/common/typespb/status.pb.h"
 
-namespace gml {
-namespace error {
+namespace gml::error {
 
 std::string CodeToString(gml::types::Code code);
 
-}  // namespace error
-}  // namespace gml
+}  // namespace gml::error

@@ -28,8 +28,7 @@
 #include "src/common/event/time_system.h"
 #include "src/common/event/timer.h"
 
-namespace gml {
-namespace event {
+namespace gml::event {
 
 /**
  * Callback invoked when a dispatcher post() runs.
@@ -133,5 +132,4 @@ class Scheduler {
 
 using SchedulerUPtr = std::unique_ptr<Scheduler>;
 
-}  // namespace event
-}  // namespace gml
+}  // namespace gml::event

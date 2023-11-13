@@ -20,8 +20,7 @@
 #include "src/common/event/api_impl.h"
 #include "src/common/event/libuv.h"
 
-namespace gml {
-namespace event {
+namespace gml::event {
 
 DispatcherUPtr event::APIImpl::AllocateDispatcher(std::string_view name) {
   return std::make_unique<LibuvDispatcher>(name, *this, time_system_);
@@ -29,5 +28,4 @@ DispatcherUPtr event::APIImpl::AllocateDispatcher(std::string_view name) {
 
 const event::TimeSource& APIImpl::TimeSourceRef() const { return *time_system_; }
 
-}  // namespace event
-}  // namespace gml
+}  // namespace gml::event

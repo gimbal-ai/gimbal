@@ -56,7 +56,7 @@ GML_SUPPRESS_WARNINGS_END()
   LOG_IF(DFATAL, GOOGLE_PREDICT_BRANCH_NOT_TAKEN(!(condition))) << "Check failed: " #condition " "
 
 #define ECHECK_OK(status) \
-  LOG_IF(DFATAL, GOOGLE_PREDICT_BRANCH_NOT_TAKEN(!(status.ok()))) << "Check failed: " #status " "
+  LOG_IF(DFATAL, GOOGLE_PREDICT_BRANCH_NOT_TAKEN(!((status).ok()))) << "Check failed: " #status " "
 
 // In optimized mode, CheckOpString provides to hint to compiler that
 // the if statement is unlikely.
@@ -78,6 +78,11 @@ GML_SUPPRESS_WARNINGS_END()
 namespace gml {
 
 // Indent provides a consitent indent base on level.
-inline std::string Indent(int level) { return std::string(level, '\t'); }
+inline std::string Indent(int level) {
+  // NOLINTBEGIN(modernize-return-braced-init-list): std::string isn't smart enough to pick the
+  // right constructor if we use a braced initializer list.
+  return std::string(level, '\t');
+  // NOLINTEND(modernize-return-braced-init-list)
+}
 
 }  // namespace gml

@@ -19,10 +19,7 @@
 
 #include "src/gem/exec/plugin/cpu_tensor/cpu_tensor.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace cpu_tensor {
+namespace gml::gem::exec::cpu_tensor {
 
 inline bool operator==(const CPUTensor& a, const CPUTensor& b) {
   if (a.size() != b.size()) {
@@ -31,7 +28,4 @@ inline bool operator==(const CPUTensor& a, const CPUTensor& b) {
   return std::memcmp(a.data(), b.data(), a.size()) == 0;
 }
 
-}  // namespace cpu_tensor
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::cpu_tensor

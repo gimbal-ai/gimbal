@@ -28,8 +28,7 @@
 #define PROFILER_AVAILABLE
 #endif
 
-namespace gml {
-namespace profiler {
+namespace gml::profiler {
 
 class CPU {
  public:
@@ -92,5 +91,4 @@ class Heap {
   static void ForceLink();
 };
 
-}  // namespace profiler
-}  // namespace gml
+}  // namespace gml::profiler

@@ -20,10 +20,7 @@
 #include "src/common/base/base.h"
 #include "src/gem/exec/core/planar_image.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace core {
+namespace gml::gem::exec::core {
 
 // Interface implementation for mediapipe::YUVImage
 
@@ -54,7 +51,4 @@ size_t PlanarImageFor<mediapipe::YUVImage>::Height() const {
   return image_->height();
 }
 
-}  // namespace core
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::core

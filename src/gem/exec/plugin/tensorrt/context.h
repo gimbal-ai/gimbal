@@ -26,10 +26,7 @@
 #include "src/gem/exec/plugin/tensorrt/cuda_tensor_pool.h"
 #include "src/gem/exec/plugin/tensorrt/model.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace tensorrt {
+namespace gml::gem::exec::tensorrt {
 
 /**
  * ExecutionContext allows calculators to interact with a built TensorRT model. It also has a
@@ -37,9 +34,9 @@ namespace tensorrt {
  */
 class ExecutionContext : public core::ExecutionContext {
  public:
-  ExecutionContext(core::Model* model) : model_(static_cast<tensorrt::Model*>(model)) {}
+  explicit ExecutionContext(core::Model* model) : model_(static_cast<tensorrt::Model*>(model)) {}
 
-  ~ExecutionContext() override {}
+  ~ExecutionContext() override = default;
 
   nvinfer1::IExecutionContext* NVExecutionContext() { return model_->NVExecutionContext(); }
   nvinfer1::ICudaEngine* CUDAEngine() { return model_->CUDAEngine(); }
@@ -52,7 +49,4 @@ class ExecutionContext : public core::ExecutionContext {
   Model* model_;
 };
 
-}  // namespace tensorrt
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::tensorrt

@@ -21,16 +21,10 @@
 #include "src/gem/exec/core/tensor_pool.h"
 #include "src/gem/exec/plugin/tensorrt/cuda_tensor.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace tensorrt {
+namespace gml::gem::exec::tensorrt {
 
 using CUDATensorPool = core::TensorPool<CUDATensor>;
 
 using CUDATensorPtr = CUDATensorPool::PoolManagedPtr;
 
-}  // namespace tensorrt
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::tensorrt

@@ -231,7 +231,7 @@ inline StatusOr<T> AsciiHexToBytes(std::string s, const std::vector<char>& separ
     errno = 0;
     char* end_ptr;
     const char* byte_string_ptr = byte_string.c_str();
-    uint8_t byte = static_cast<uint8_t>(strtol(byte_string_ptr, &end_ptr, 16));
+    auto byte = static_cast<uint8_t>(strtol(byte_string_ptr, &end_ptr, 16));
 
     // Make sure we processed two ASCII characters, and there were no errors.
     if (end_ptr != byte_string_ptr + 2 || errno != 0) {
@@ -382,7 +382,7 @@ StatusOr<TEnum> EnumCast(TIn x) {
  * Returns lines split from the input content.
  */
 inline std::vector<std::string_view> GetLines(std::string_view content) {
-  return absl::StrSplit(content, "\n", absl::SkipWhitespace());
+  return absl::StrSplit(content, '\n', absl::SkipWhitespace());
 }
 
 /**

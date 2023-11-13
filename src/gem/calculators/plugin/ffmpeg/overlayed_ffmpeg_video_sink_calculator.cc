@@ -21,15 +21,15 @@ extern "C" {
 
 #include <mediapipe/framework/calculator_framework.h>
 #include <mediapipe/framework/calculator_registry.h>
+
+#include <memory>
+
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/base/base.h"
 #include "src/gem/calculators/plugin/ffmpeg/av_packet_wrapper.h"
 #include "src/gem/calculators/plugin/ffmpeg/overlayed_ffmpeg_video_sink_calculator.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace ffmpeg {
+namespace gml::gem::calculators::ffmpeg {
 
 using ::gml::internal::api::core::v1::Detection;
 using ::gml::internal::api::core::v1::H264Chunk;
@@ -39,7 +39,7 @@ constexpr std::string_view kDetectionsTag = "DETECTIONS";
 constexpr std::string_view kAVPacketTag = "AV_PACKETS";
 
 // TODO(james): move this into calculator options
-constexpr size_t kMaxDesiredChunkSize = 512 * 1024;
+constexpr size_t kMaxDesiredChunkSize = 512UL * 1024UL;
 
 constexpr float kChunkSizeFudgeFactor = 0.1f;
 constexpr size_t kMaxChunkSize =
@@ -68,7 +68,7 @@ Status DetectionsToImageOverlayChunks(const std::vector<Detection>& detections,
     if (chunk->mutable_detections()->detection_size() > 0 &&
         chunk_size + detection_size > kMaxChunkSize) {
       image_overlay_chunks->emplace_back(*chunk);
-      chunk.reset(new ImageOverlayChunk);
+      chunk = std::make_unique<ImageOverlayChunk>();
       chunk_size = kImageOverlayChunkOverhead;
     }
 
@@ -94,7 +94,7 @@ Status AVPacketsToH264Chunks(const std::vector<std::unique_ptr<AVPacketWrapper>>
     auto* av_packet = packet->packet();
     if (chunk->mutable_nal_data()->size() > 0 && chunk_size + av_packet->size > kMaxChunkSize) {
       h264_chunks->emplace_back(*chunk);
-      chunk.reset(new H264Chunk);
+      chunk = std::make_unique<H264Chunk>();
       chunk_size = kH264ChunkOverhead;
     }
 
@@ -161,7 +161,4 @@ Status OverlayedFFmpegVideoSinkCalculator::ProcessImpl(
 
 REGISTER_CALCULATOR(OverlayedFFmpegVideoSinkCalculator);
 
-}  // namespace ffmpeg
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::ffmpeg

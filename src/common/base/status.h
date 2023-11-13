@@ -63,7 +63,7 @@ class GML_MUST_USE_RESULT Status {
 
   std::string ToString() const;
 
-  static Status OK() { return Status(); }
+  static Status OK() { return {}; }
 
   gml::types::Status ToProto() const;
   void ToProto(gml::types::Status* status_pb) const;
@@ -71,13 +71,13 @@ class GML_MUST_USE_RESULT Status {
  private:
   struct State {
     // Needed for a call in status.cc.
-    State() {}
+    State() = default;
     State(const State& state) noexcept;
     State(gml::types::Code code, std::string msg, std::unique_ptr<google::protobuf::Any> context)
-        : code(code), msg(msg), context(std::move(context)) {}
+        : code(code), msg(std::move(msg)), context(std::move(context)) {}
     State(gml::types::Code code, std::string msg,
           std::unique_ptr<google::protobuf::Message> generic_pb_context)
-        : code(code), msg(msg) {
+        : code(code), msg(std::move(msg)) {
       if (generic_pb_context == nullptr) {
         return;
       }
@@ -98,9 +98,7 @@ class GML_MUST_USE_RESULT Status {
   std::unique_ptr<State> state_;
 };
 
-inline Status::State::State(const State& state) noexcept {
-  code = state.code;
-  msg = state.msg;
+inline Status::State::State(const State& state) noexcept : code(state.code), msg(state.msg) {
   if (!state.context) {
     context = nullptr;
     return;
@@ -110,7 +108,7 @@ inline Status::State::State(const State& state) noexcept {
 }
 
 inline Status::Status(const Status& s) noexcept
-    : state_((s.state_ == nullptr) ? nullptr : new State(*s.state_)) {}
+    : state_((s.state_ == nullptr) ? nullptr : new(std::nothrow) State(*s.state_)) {}
 
 inline void Status::operator=(const Status& s) noexcept {
   // The following condition catches both aliasing (when this == &s),
@@ -133,7 +131,7 @@ inline bool Status::operator!=(const Status& x) const { return !(*this == x); }
 template <typename T>
 inline Status StatusAdapter(const T&) noexcept {
   static_assert(sizeof(T) == 0, "Implement custom status adapter, or include correct .h file.");
-  return Status(types::CODE_UNIMPLEMENTED, "Should never get here");
+  return {types::CODE_UNIMPLEMENTED, "Should never get here"};
 }
 
 template <>
@@ -144,7 +142,7 @@ inline Status StatusAdapter<Status>(const Status& s) noexcept {
 // Conversion of proto status message.
 template <>
 inline Status StatusAdapter<gml::types::Status>(const gml::types::Status& s) noexcept {
-  return Status(s);
+  return {s};
 };
 
 inline gml::types::Code AbslCodeToStatusCode(absl::StatusCode code) noexcept {
@@ -228,15 +226,15 @@ inline absl::StatusCode StatusCodeToAbslCode(gml::types::Code code) noexcept {
 template <>
 inline Status StatusAdapter<absl::Status>(const absl::Status& s) noexcept {
   if (s.code() == absl::StatusCode::kOk) {
-    return Status();
+    return {};
   }
-  return Status(AbslCodeToStatusCode(s.code()), std::string(s.message()));
+  return {AbslCodeToStatusCode(s.code()), std::string(s.message())};
 }
 
 template <typename T>
 inline absl::Status AbslStatusAdapter(const T&) noexcept {
   static_assert(sizeof(T) == 0, "Implement custom status adapter, or include correct .h file.");
-  return absl::Status(absl::StatusCode::kUnimplemented, "Should never get here");
+  return {absl::StatusCode::kUnimplemented, "Should never get here"};
 }
 
 template <>
@@ -246,15 +244,15 @@ inline absl::Status AbslStatusAdapter(const absl::Status& s) noexcept {
 
 template <>
 inline absl::Status AbslStatusAdapter(const Status& s) noexcept {
-  return absl::Status(StatusCodeToAbslCode(s.code()), s.msg());
+  return {StatusCodeToAbslCode(s.code()), s.msg()};
 }
 
 }  // namespace gml
 
 #define GML_RETURN_IF_ERROR_IMPL(__status_name__, __status) \
   do {                                                      \
-    const auto& __status_name__ = (__status);               \
-    if (!__status_name__.ok()) {                            \
+    const auto&(__status_name__) = (__status);              \
+    if (!(__status_name__).ok()) {                          \
       return StatusAdapter(__status_name__);                \
     }                                                       \
   } while (false)
@@ -266,8 +264,8 @@ inline absl::Status AbslStatusAdapter(const Status& s) noexcept {
 
 #define GML_ABSL_RETURN_IF_ERROR_IMPL(__status_name__, __status) \
   do {                                                           \
-    const auto& __status_name__ = (__status);                    \
-    if (!__status_name__.ok()) {                                 \
+    const auto&(__status_name__) = (__status);                   \
+    if (!(__status_name__).ok()) {                               \
       return AbslStatusAdapter(__status_name__);                 \
     }                                                            \
   } while (false)
@@ -277,12 +275,12 @@ inline absl::Status AbslStatusAdapter(const Status& s) noexcept {
 #define GML_ABSL_RETURN_IF_ERROR(__status) \
   GML_ABSL_RETURN_IF_ERROR_IMPL(GML_UNIQUE_NAME(__status__), __status)
 
-#define GML_EXIT_IF_ERROR(__status) \
-  {                                 \
-    if (!__status.ok()) {           \
-      LOG(ERROR) << __status.msg(); \
-      exit(1);                      \
-    }                               \
+#define GML_EXIT_IF_ERROR(__status)   \
+  {                                   \
+    if (!(__status).ok()) {           \
+      LOG(ERROR) << (__status).msg(); \
+      exit(1);                        \
+    }                                 \
   }
 
 #define GML_CHECK_OK_PREPEND(to_call, msg)            \

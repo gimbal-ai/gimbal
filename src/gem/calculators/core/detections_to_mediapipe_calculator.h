@@ -20,10 +20,7 @@
 #include <mediapipe/framework/calculator_framework.h>
 #include "src/api/corepb/v1/mediastream.pb.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace core {
+namespace gml::gem::calculators::core {
 
 /**
  *  DetectionsToMediapipeCalculator Graph API:
@@ -42,7 +39,4 @@ class DetectionsToMediapipeCalculator : public mediapipe::CalculatorBase {
   absl::Status Close(mediapipe::CalculatorContext* cc) override;
 };
 
-}  // namespace core
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::core

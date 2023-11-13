@@ -18,11 +18,9 @@
 #include "src/gem/storage/fs_blob_store.h"
 #include "src/common/testing/testing.h"
 
-namespace gml {
-namespace gem {
-namespace storage {
+namespace gml::gem::storage {
 
-TEST(FilesystemBlobStore, set_and_get) {
+TEST(FilesystemBlobStore, SetAndGet) {
   ASSERT_OK_AND_ASSIGN(auto store, FilesystemBlobStore::Create("/tmp/blobs"));
   std::vector<float> floats;
   floats.push_back(1.0);
@@ -36,6 +34,4 @@ TEST(FilesystemBlobStore, set_and_get) {
   EXPECT_EQ(2.0, received_blob->Data<float>()[1]);
 }
 
-}  // namespace storage
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::storage

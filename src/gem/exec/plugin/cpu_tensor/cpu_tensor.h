@@ -25,10 +25,7 @@
 #include "src/gem/exec/core/tensor.h"
 #include "src/gem/exec/core/tensor_pool.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace cpu_tensor {
+namespace gml::gem::exec::cpu_tensor {
 
 // TODO(james): We should look into better options for our CPUTensor (eg. Eigen), but this
 // is a simple way forward for now.
@@ -60,7 +57,4 @@ class CPUTensor : public core::ReshapeableTensor {
 using CPUTensorPool = core::TensorPool<CPUTensor>;
 using CPUTensorPtr = CPUTensorPool::PoolManagedPtr;
 
-}  // namespace cpu_tensor
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::cpu_tensor

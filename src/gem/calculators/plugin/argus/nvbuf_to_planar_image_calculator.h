@@ -19,10 +19,7 @@
 
 #include <mediapipe/framework/calculator_framework.h>
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace argus {
+namespace gml::gem::calculators::argus {
 
 /**
  * NvBufSurfToPlanarImageCalculator API:
@@ -42,7 +39,4 @@ class NvBufSurfToPlanarImageCalculator : public mediapipe::CalculatorBase {
   absl::Status Close(mediapipe::CalculatorContext* cc) override;
 };
 
-}  // namespace argus
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::argus

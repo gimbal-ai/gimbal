@@ -27,15 +27,13 @@
 #include "src/common/testing/testing.h"
 #include "src/gem/exec/core/context.h"
 
-namespace gml {
-namespace gem {
-namespace testing {
+namespace gml::gem::testing {
 
 using ::gml::gem::exec::core::ExecutionContext;
 
 class CalculatorTester : public mediapipe::CalculatorRunner {
  public:
-  explicit CalculatorTester(std::string node_config)
+  explicit CalculatorTester(const std::string& node_config)
       : mediapipe::CalculatorRunner(node_config), output_tag_map_(Outputs().TagMap()) {
     for (mediapipe::CollectionItemId id = Outputs().BeginId(); id < Outputs().EndId(); ++id) {
       packet_index_per_output_.emplace(id, 0);
@@ -43,7 +41,7 @@ class CalculatorTester : public mediapipe::CalculatorRunner {
   }
 
   template <typename TData>
-  CalculatorTester& ForInputSidePacket(size_t index, TData data) {
+  CalculatorTester& ForInputSidePacket(int index, TData data) {
     return ForInputSidePacket<TData>("", index, std::move(data));
   }
 
@@ -53,7 +51,7 @@ class CalculatorTester : public mediapipe::CalculatorRunner {
   }
 
   template <typename TData>
-  CalculatorTester& ForInputSidePacket(std::string tag, size_t index, TData data) {
+  CalculatorTester& ForInputSidePacket(const std::string& tag, int index, TData data) {
     MutableSidePackets()->Get(tag, index) = mediapipe::MakePacket<TData>(std::move(data));
     return *this;
   }
@@ -64,17 +62,17 @@ class CalculatorTester : public mediapipe::CalculatorRunner {
   }
 
   template <typename TData>
-  CalculatorTester& ForInput(std::string tag, TData data, int64_t timestamp) {
+  CalculatorTester& ForInput(const std::string& tag, TData data, int64_t timestamp) {
     return ForInput(tag, 0, std::move(data), timestamp);
   }
 
   template <typename TData>
-  CalculatorTester& ForInput(size_t index, TData data, int64_t timestamp) {
+  CalculatorTester& ForInput(int index, TData data, int64_t timestamp) {
     return ForInput("", index, std::move(data), timestamp);
   }
 
   template <typename TData>
-  CalculatorTester& ForInput(std::string tag, size_t index, TData data, int64_t timestamp) {
+  CalculatorTester& ForInput(const std::string& tag, int index, TData data, int64_t timestamp) {
     auto packet = mediapipe::MakePacket<TData>(std::move(data));
     packet = packet.At(mediapipe::Timestamp(timestamp));
     MutableInputs()->Get(tag, index).packets.emplace_back(std::move(packet));
@@ -96,7 +94,7 @@ class CalculatorTester : public mediapipe::CalculatorRunner {
   }
 
   template <typename TData, typename... TMatchers>
-  CalculatorTester& ExpectOutput(std::string tag, size_t index, int64_t expected_timestamp,
+  CalculatorTester& ExpectOutput(const std::string& tag, int index, int64_t expected_timestamp,
                                  TMatchers... matchers) {
     auto item_id = output_tag_map_->GetId(tag, index);
     auto& packet_idx = packet_index_per_output_[item_id];
@@ -112,7 +110,7 @@ class CalculatorTester : public mediapipe::CalculatorRunner {
   }
 
   template <typename TData>
-  const TData& Result(std::string tag, size_t index) {
+  const TData& Result(const std::string& tag, int index) {
     auto item_id = output_tag_map_->GetId(tag, index);
     auto& packet_idx = packet_index_per_output_[item_id];
 
@@ -130,6 +128,4 @@ class CalculatorTester : public mediapipe::CalculatorRunner {
   std::map<mediapipe::CollectionItemId, int> packet_index_per_output_;
 };
 
-}  // namespace testing
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::testing

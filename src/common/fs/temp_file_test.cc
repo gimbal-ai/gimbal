@@ -27,8 +27,7 @@
 #include "src/common/fs/temp_file.h"
 #include "src/common/testing/testing.h"
 
-namespace gml {
-namespace fs {
+namespace gml::fs {
 
 TEST(TempFile, Basic) {
   std::unique_ptr<TempFile> tmpf = TempFile::Create();
@@ -64,5 +63,4 @@ TEST(TempFile, ReferenceKeepsFileAccessible) {
   EXPECT_EQ(line, "Some data");
 }
 
-}  // namespace fs
-}  // namespace gml
+}  // namespace gml::fs

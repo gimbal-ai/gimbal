@@ -21,10 +21,7 @@
 #include "src/gem/exec/plugin/tensorrt/context.h"
 #include "src/gem/exec/plugin/tensorrt/cuda_tensor_pool.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace tensorrt {
+namespace gml::gem::calculators::tensorrt {
 
 /**
  * CUDATensorToCPUTensorCalculator Graph API:
@@ -49,7 +46,4 @@ class CUDATensorToCPUTensorCalculator
                    exec::cpu_tensor::ExecutionContext* exec_ctx) override;
 };
 
-}  // namespace tensorrt
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::tensorrt

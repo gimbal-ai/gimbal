@@ -21,8 +21,7 @@
 #include "src/common/base/logging.h"
 #include "src/common/base/statusor.h"
 
-namespace gml {
-namespace system {
+namespace gml::system {
 
 StatusOr<std::unique_ptr<LinuxFile>> LinuxFile::Open(const std::string& path, int flags, int mode) {
   int fd = open(path.c_str(), flags, mode);
@@ -39,5 +38,4 @@ LinuxFile::~LinuxFile() {
   ECHECK(ret == 0) << absl::Substitute("Failed to close file descriptor: $0", std::strerror(errno));
 }
 
-}  // namespace system
-}  // namespace gml
+}  // namespace gml::system

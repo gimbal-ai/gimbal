@@ -43,7 +43,7 @@ class SubProcess : public NotCopyMoveable {
    * process' mount namespace, and execute the command.
    */
   explicit SubProcess(int mnt_ns_pid = -1);
-  ~SubProcess();
+  ~SubProcess() = default;
 
   /**
    * Start the command.
@@ -122,7 +122,7 @@ class SubProcess : public NotCopyMoveable {
       WriteDirection = 1,
     };
     void CloseIfNotClosed(PipeDirection direction);
-    int fd_[2] = {-1, -1};
+    std::array<int, 2> fd_ = {-1, -1};
   };
   // Setup the child runtime environment. This can only be called inside the child process.
   void SetupChild(StartOptions options);

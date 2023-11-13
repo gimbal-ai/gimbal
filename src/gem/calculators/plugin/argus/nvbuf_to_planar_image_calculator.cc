@@ -25,10 +25,7 @@
 #include "src/gem/devices/camera/argus/nvbufsurfwrapper.h"
 #include "src/gem/exec/core/planar_image.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace argus {
+namespace gml::gem::calculators::argus {
 
 using ::gml::gem::devices::argus::NvBufSurfaceWrapper;
 using ::gml::gem::exec::core::ImageFormat;
@@ -75,7 +72,4 @@ absl::Status NvBufSurfToPlanarImageCalculator::Close(mediapipe::CalculatorContex
 
 REGISTER_CALCULATOR(NvBufSurfToPlanarImageCalculator);
 
-}  // namespace argus
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::argus

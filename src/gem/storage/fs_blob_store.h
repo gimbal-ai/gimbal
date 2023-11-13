@@ -23,13 +23,12 @@
 #include "src/gem/storage/blob_store.h"
 #include "src/gem/storage/memory_blob.h"
 
-namespace gml {
-namespace gem {
-namespace storage {
+namespace gml::gem::storage {
 
 class MemoryMappedBlob : public MemoryBlob {
  public:
-  static StatusOr<std::unique_ptr<const MemoryBlob>> CreateReadOnly(std::filesystem::path path);
+  static StatusOr<std::unique_ptr<const MemoryBlob>> CreateReadOnly(
+      const std::filesystem::path& path);
 
   ~MemoryMappedBlob() override;
 
@@ -53,16 +52,14 @@ class FilesystemBlobStore : public BlobStore {
  public:
   StatusOr<std::unique_ptr<const MemoryBlob>> MapReadOnly(std::string key) const override;
 
-  static StatusOr<std::unique_ptr<FilesystemBlobStore>> Create(std::string directory);
+  static StatusOr<std::unique_ptr<FilesystemBlobStore>> Create(const std::string& directory);
 
  protected:
   Status UpsertImpl(std::string key, const char* data, size_t size) override;
 
  private:
-  FilesystemBlobStore(std::string directory) : directory_(directory) {}
+  explicit FilesystemBlobStore(const std::string& directory) : directory_(directory) {}
   std::filesystem::path directory_;
 };
 
-}  // namespace storage
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::storage

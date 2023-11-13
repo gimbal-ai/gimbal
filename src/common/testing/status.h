@@ -44,20 +44,22 @@ inline ::testing::AssertionResult IsOK(const Status& status) {
 #define EXPECT_NOT_OK(value) EXPECT_FALSE(IsOK(::gml::StatusAdapter(value)))
 #define ASSERT_OK(value) ASSERT_TRUE(IsOK(::gml::StatusAdapter(value)))
 #define ASSERT_NOT_OK(value) ASSERT_FALSE(IsOK(::gml::StatusAdapter(value)))
-#define EXPECT_PTR_VAL_EQ(val1, val2) EXPECT_EQ(*val1, *val2)
+#define EXPECT_PTR_VAL_EQ(val1, val2) EXPECT_EQ(*(val1), *(val2))
 
+// NOLINTBEGIN(bugprone-macro-parentheses)
 #define ASSERT_OK_AND_ASSIGN_IMPL(statusor, lhs, rexpr) \
   auto statusor = rexpr;                                \
   ASSERT_OK(statusor);                                  \
-  lhs = std::move(statusor.ValueOrDie())
+  lhs = std::move((statusor).ValueOrDie())
+// NOLINTEND(bugprone-macro-parentheses)
 
 #define ASSERT_OK_AND_ASSIGN(lhs, rexpr) \
   ASSERT_OK_AND_ASSIGN_IMPL(GML_CONCAT_NAME(__status_or_value__, __COUNTER__), lhs, rexpr)
 
 #define ASSERT_HAS_VALUE_AND_ASSIGN_IMPL(optional_var, lhs, rexpr) \
-  auto optional_var = rexpr;                                       \
-  ASSERT_TRUE(optional_var.has_value());                           \
-  lhs = optional_var.value()
+  auto(optional_var) = rexpr;                                      \
+  ASSERT_TRUE((optional_var).has_value());                         \
+  (lhs) = (optional_var).value()
 
 // For use with std::optional in testing.
 #define ASSERT_HAS_VALUE_AND_ASSIGN(lhs, rexpr) \
@@ -95,9 +97,7 @@ inline ::testing::AssertionResult IsOK(const Status& status) {
 #define ASSERT_OK_AND_GT(expr, value) ASSERT_OK_AND(ASSERT_GT, expr, value)
 #define ASSERT_OK_AND_THAT(expr, value) ASSERT_OK_AND(ASSERT_THAT, expr, value)
 
-namespace gml {
-namespace testing {
-namespace status {
+namespace gml::testing::status {
 
 template <typename ValueType>
 struct IsOKAndHoldsMatcher {
@@ -134,6 +134,4 @@ auto StatusMsgIs(const TMessageMatcherType& msg_matcher) {
   return ::testing::Property(&Status::msg, msg_matcher);
 }
 
-}  // namespace status
-}  // namespace testing
-}  // namespace gml
+}  // namespace gml::testing::status

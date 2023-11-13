@@ -22,7 +22,7 @@
 
 namespace gml {
 
-TEST(ECheckTest, check_true) {
+TEST(ECheckTest, CheckTrue) {
   ECHECK(true);
 
   ECHECK_EQ(1, 1);
@@ -41,7 +41,7 @@ TEST(ECheckTest, check_true) {
   ECHECK_GT(2, 1);
 }
 
-TEST(ECheckTest, check_false) {
+TEST(ECheckTest, CheckFalse) {
   // Behavior changes based on build type.
   // Rely on build system (Jenkins) to stress both cases.
   EXPECT_DEBUG_DEATH((ECHECK(false)), "");

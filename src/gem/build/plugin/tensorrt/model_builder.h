@@ -23,10 +23,7 @@
 #include "src/gem/specpb/model.pb.h"
 #include "src/gem/storage/blob_store.h"
 
-namespace gml {
-namespace gem {
-namespace build {
-namespace tensorrt {
+namespace gml::gem::build::tensorrt {
 
 class ModelBuilder : public core::ModelBuilder {
  public:
@@ -34,7 +31,4 @@ class ModelBuilder : public core::ModelBuilder {
                                                      const specpb::ModelSpec& spec) override;
 };
 
-}  // namespace tensorrt
-}  // namespace build
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::build::tensorrt

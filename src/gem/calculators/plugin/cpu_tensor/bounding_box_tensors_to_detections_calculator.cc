@@ -22,10 +22,7 @@
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/gem/calculators/plugin/cpu_tensor/bounding_box_tensors_to_detections_calculator.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace cpu_tensor {
+namespace gml::gem::calculators::cpu_tensor {
 
 using ::gml::gem::calculators::cpu_tensor::optionspb::BoundingBoxToDetectionsOptions;
 using ::gml::gem::exec::core::DataType;
@@ -143,7 +140,7 @@ absl::Status BoundingBoxTensorsToDetections::Process(mediapipe::CalculatorContex
   for (int index_idx = 0; index_idx < indices->Shape()[0]; ++index_idx) {
     auto* d = &detections[index_idx];
 
-    const auto* index_triple = &indices_data[index_idx * index_step];
+    const auto* index_triple = &indices_data[static_cast<ptrdiff_t>(index_idx * index_step)];
     const auto batch_idx = index_triple[0];
     const auto class_idx = index_triple[1];
     const auto box_idx = index_triple[2];
@@ -216,7 +213,4 @@ Status BoundingBoxTensorsToDetections::CheckShapes(const TensorShape& boxes,
 
 REGISTER_CALCULATOR(BoundingBoxTensorsToDetections);
 
-}  // namespace cpu_tensor
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::cpu_tensor

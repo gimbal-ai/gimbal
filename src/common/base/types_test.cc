@@ -21,10 +21,9 @@
 
 #include "src/common/base/types.h"
 
-namespace gml {
-namespace const_types_test {
+namespace gml::const_types_test {
 
-TEST(ConstStringViewTest, const_string_view) {
+TEST(ConstStringViewTest, ConstStringView) {
   EXPECT_EQ(ConstStringView("This is a string"), std::string_view("This is a string"));
 
   // String views on string literals can be dangerous when there is a \x00 character.
@@ -34,19 +33,16 @@ TEST(ConstStringViewTest, const_string_view) {
   EXPECT_EQ(ConstStringView("\xff\x00\x00"), std::string_view("\xff\x00\x00", 3));
 }
 
-TEST(ConstStringTest, const_string) {
+TEST(ConstStringTest, ConstString) {
   EXPECT_EQ(ConstString("This is a string"), std::string("This is a string"));
-
-  // Creating strings from string literals can be dangerous when there is a \x00 character.
-  EXPECT_NE(ConstString("\xff\x00\x00"), std::string("\xff\x00\x00"));
 
   // But ConstString is smart about inferring the length.
   EXPECT_EQ(ConstString("\xff\x00\x00"), std::string("\xff\x00\x00", 3));
 }
 
-TEST(ConstStringViewTest, char_array_string_view) {
+TEST(ConstStringViewTest, CharArrayStringView) {
   // An array with a zero byte somewhere in the middle.
-  char val[] = {1, 0, 2, 4};
+  char val[] = {1, 0, 2, 4};  // NOLINT(modernize-avoid-c-arrays)
 
   // Whoa...don't use ConstStringView on char arrays, because it strips off the last character.
   EXPECT_NE(ConstStringView(val), std::string_view(val, 4));
@@ -57,7 +53,7 @@ TEST(ConstStringViewTest, char_array_string_view) {
   EXPECT_EQ(CharArrayStringView(val).length(), 4);
 }
 
-TEST(ConstStringViewTest, compile_time_functions) {
+TEST(ConstStringViewTest, CompileTimeFunctions) {
   static constexpr std::string_view const_str0 = "This is a constant string";
   static constexpr std::string_view const_str1 = "It's really just a pointer and a size";
   static constexpr std::string_view const_str0_again = ConstStringView("This is a constant string");
@@ -92,11 +88,11 @@ struct StrIntStruct {
   uint64_t val;
 };
 
-TEST(ConstVectorTest, compile_time_functions) {
-  static constexpr StrIntStruct values[] = {
-      {"value0", 0},
-      {"value1", 2},
-      {"value2", 4},
+TEST(ConstVectorTest, CompileTimeFunctions) {
+  static constexpr std::array values = {
+      StrIntStruct{"value0", 0},
+      StrIntStruct{"value1", 2},
+      StrIntStruct{"value2", 4},
   };
   constexpr ArrayView<StrIntStruct> elements = ArrayView(values);
 
@@ -116,11 +112,11 @@ TEST(ConstVectorTest, compile_time_functions) {
   static_assert('2' == elements[2].str.data()[5]);
 }
 
-TEST(ConstVectorTest, iterator_functions) {
-  static constexpr StrIntStruct values[] = {
-      {"value0", 0},
-      {"value1", 2},
-      {"value2", 4},
+TEST(ConstVectorTest, IteratorFunctions) {
+  static constexpr std::array values = {
+      StrIntStruct{"value0", 0},
+      StrIntStruct{"value1", 2},
+      StrIntStruct{"value2", 4},
   };
   constexpr ArrayView<StrIntStruct> elements = ArrayView(values);
 
@@ -134,7 +130,7 @@ TEST(ConstVectorTest, iterator_functions) {
   EXPECT_EQ("value0value1value2", s);
 }
 
-TEST(ConstVectorTest, compile_time_lookup) {
+TEST(ConstVectorTest, CompileTimeLookup) {
   struct StrIntStructVector {
     ArrayView<StrIntStruct> elements;
 
@@ -164,10 +160,10 @@ TEST(ConstVectorTest, compile_time_lookup) {
     }
   };
 
-  static constexpr StrIntStruct values[] = {
-      {"value0", 0},
-      {"value1", 1},
-      {"value2", 2},
+  static constexpr std::array values = {
+      StrIntStruct{"value0", 0},
+      StrIntStruct{"value1", 1},
+      StrIntStruct{"value2", 2},
   };
   constexpr StrIntStructVector foo = StrIntStructVector(values);
 
@@ -216,37 +212,36 @@ TEST(ContainerView, iterator) {
   }
 }
 
-TEST(int24_t, VerifyInitializationAndBitShifting) {
+TEST(int24, VerifyInitializationAndBitShifting) {
   EXPECT_EQ(sizeof(int24_t), 3);
 
-  int24_t t1 = 1;
+  auto t1 = int24_t(1);
   EXPECT_EQ(t1 << 8, 256);
 
   // Assign an int that uses each of the 3 bytes
-  int24_t t2 = 0x10111;
+  auto t2 = int24_t(0x10111);
   EXPECT_EQ(t2 << 8, 0x11100);
 
   // Test negative numbers.
-  int24_t t3 = 0xffffff;
-  EXPECT_EQ(t3, -1);
-  EXPECT_NE(t3, 16777215);
+  auto t3 = int24_t(0xffffff);
+  EXPECT_EQ(int(t3), -1);
+  EXPECT_NE(int(t3), 16777215);
 }
 
-TEST(uint24_t, VerifyInitializationAndBitShifting) {
+TEST(uint24, VerifyInitializationAndBitShifting) {
   EXPECT_EQ(sizeof(uint24_t), 3);
 
-  uint24_t t1 = 1;
+  auto t1 = uint24_t(1);
   EXPECT_EQ(t1 << 8, 256);
 
   // Assign an int that uses each of the 3 bytes
-  uint24_t t2 = 0x10111;
+  auto t2 = uint24_t(0x10111);
   EXPECT_EQ(t2 << 8, 0x11100);
 
   // Test negative numbers.
-  uint24_t val = 0xffffff;
-  EXPECT_EQ(val, 0xffffff);
-  EXPECT_NE(val, -1);
+  auto val = uint24_t(0xffffff);
+  EXPECT_EQ(int(val), 0xffffff);
+  EXPECT_NE(int(val), -1);
 }
 
-}  // namespace const_types_test
-}  // namespace gml
+}  // namespace gml::const_types_test

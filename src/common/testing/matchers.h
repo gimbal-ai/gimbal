@@ -25,13 +25,11 @@
 
 #include "src/common/fs/fs_wrapper.h"
 
-namespace gml {
-namespace testing {
+namespace gml::testing {
 
 MATCHER(PathExists, "are paths that exist") {
   *result_listener << absl::Substitute("where the path $0 does not exist", arg.string());
   return fs::Exists(arg);
 }
 
-}  // namespace testing
-}  // namespace gml
+}  // namespace gml::testing

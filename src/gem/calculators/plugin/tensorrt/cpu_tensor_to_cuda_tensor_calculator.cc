@@ -24,10 +24,7 @@
 #include "src/gem/exec/plugin/tensorrt/context.h"
 #include "src/gem/exec/plugin/tensorrt/cuda_tensor_pool.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace tensorrt {
+namespace gml::gem::calculators::tensorrt {
 
 using ::gml::gem::exec::tensorrt::CUDATensorPtr;
 
@@ -76,7 +73,4 @@ Status CPUTensorToCUDATensorCalculator::CloseImpl(mediapipe::CalculatorContext*,
 
 REGISTER_CALCULATOR(CPUTensorToCUDATensorCalculator);
 
-}  // namespace tensorrt
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::tensorrt

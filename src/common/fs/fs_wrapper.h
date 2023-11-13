@@ -27,8 +27,7 @@
 
 #include "src/common/base/base.h"
 
-namespace gml {
-namespace fs {
+namespace gml::fs {
 
 // These are wrappers around std::filesystem functions to convert error codes to Status.
 // More functions should be added as needed.
@@ -87,8 +86,8 @@ StatusOr<bool> Equivalent(const std::filesystem::path& p1, const std::filesystem
  *
  * Returns error if parent isn't a parent of child.
  */
-StatusOr<std::filesystem::path> GetChildRelPath(std::filesystem::path parent,
-                                                std::filesystem::path child);
+StatusOr<std::filesystem::path> GetChildRelPath(const std::filesystem::path& parent,
+                                                const std::filesystem::path& child);
 
 struct PathSplit {
   std::filesystem::path parent;
@@ -101,5 +100,4 @@ struct PathSplit {
  */
 std::vector<PathSplit> EnumerateParentPaths(const std::filesystem::path& path);
 
-}  // namespace fs
-}  // namespace gml
+}  // namespace gml::fs

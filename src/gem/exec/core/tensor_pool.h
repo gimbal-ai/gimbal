@@ -28,10 +28,7 @@
 #include "src/gem/exec/core/tensor.h"
 #include "src/gem/exec/core/tensor_traits.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace core {
+namespace gml::gem::exec::core {
 
 /**
  * TensorPool manages a pool of tensors to allow reusing tensor allocations.
@@ -54,7 +51,7 @@ class TensorPool : public gml::NotCopyable {
  public:
   class Deleter {
    public:
-    Deleter(TensorPool<TTensor>* pool) : pool_(pool) {}
+    explicit Deleter(TensorPool<TTensor>* pool) : pool_(pool) {}
     void operator()(TTensor* ptr) { pool_->Release(ptr); }
 
    private:
@@ -128,7 +125,4 @@ class TensorPool : public gml::NotCopyable {
   std::unordered_set<std::unique_ptr<TTensor>> pool_;
 };
 
-}  // namespace core
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::core

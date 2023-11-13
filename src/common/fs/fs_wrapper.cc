@@ -21,8 +21,7 @@
 
 #include "src/common/fs/fs_wrapper.h"
 
-namespace gml {
-namespace fs {
+namespace gml::fs {
 
 std::filesystem::path TempDirectoryPath() {
   std::error_code ec;
@@ -135,8 +134,8 @@ Status RemoveAll(const std::filesystem::path& path) {
   std::error_code ec;
   // Apparently, remove_all() uses -1 but in an unsigned type to indicate an error.
   // https://en.cppreference.com/w/cpp/filesystem/remove
-  constexpr std::uintmax_t kErrorCode = static_cast<std::uintmax_t>(-1);
-  constexpr std::uintmax_t kNothingRemoved = static_cast<std::uintmax_t>(0);
+  constexpr auto kErrorCode = static_cast<std::uintmax_t>(-1);
+  constexpr auto kNothingRemoved = static_cast<std::uintmax_t>(0);
   const std::uintmax_t r = std::filesystem::remove_all(path, ec);
   if (r == kErrorCode) {
     return error::InvalidArgument("Could not delete $0 [ec=$1]", path.string(), ec.message());
@@ -173,7 +172,7 @@ StatusOr<int64_t> SpaceAvailableInBytes(const std::filesystem::path& path) {
     return error::InvalidArgument("Could not check space available $0 [ec=$1]", path.string(),
                                   ec.message());
   }
-  return si.available;
+  return static_cast<int64_t>(si.available);
 }
 
 StatusOr<bool> IsEmpty(const std::filesystem::path& f) {
@@ -238,8 +237,8 @@ bool IsParent(const std::filesystem::path& child, const std::filesystem::path& p
 
 }  // namespace
 
-StatusOr<std::filesystem::path> GetChildRelPath(std::filesystem::path child,
-                                                std::filesystem::path parent) {
+StatusOr<std::filesystem::path> GetChildRelPath(const std::filesystem::path& child,
+                                                const std::filesystem::path& parent) {
   if (child.empty() || parent.empty()) {
     return error::InvalidArgument("Both paths must not be empty, child=$0, parent=$1",
                                   child.string(), parent.string());
@@ -277,5 +276,4 @@ std::vector<PathSplit> EnumerateParentPaths(const std::filesystem::path& path) {
   return res;
 }
 
-}  // namespace fs
-}  // namespace gml
+}  // namespace gml::fs

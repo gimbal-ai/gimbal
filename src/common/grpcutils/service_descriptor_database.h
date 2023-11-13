@@ -32,8 +32,7 @@
 
 #include "src/common/base/base.h"
 
-namespace gml {
-namespace grpc {
+namespace gml::grpc {
 
 struct MethodInputOutput {
   std::unique_ptr<google::protobuf::Message> input;
@@ -45,7 +44,7 @@ struct MethodInputOutput {
  */
 class ServiceDescriptorDatabase {
  public:
-  explicit ServiceDescriptorDatabase(google::protobuf::FileDescriptorSet fdset);
+  explicit ServiceDescriptorDatabase(const google::protobuf::FileDescriptorSet& fdset);
 
   /**
    * @brief Returns empty instances of the input and output type of the method specified by the
@@ -81,5 +80,4 @@ class ServiceDescriptorDatabase {
 
 // TODO(yzhao): Benchmark dynamic message parsing.
 
-}  // namespace grpc
-}  // namespace gml
+}  // namespace gml::grpc

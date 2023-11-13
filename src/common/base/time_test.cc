@@ -30,7 +30,7 @@ TEST(StringToRange, basic) {
   EXPECT_EQ(20, output_pair.second);
 }
 
-TEST(StringToRange, invalid_format) { ASSERT_NOT_OK(StringToTimeRange("hi")); }
+TEST(StringToRange, InvalidFormat) { ASSERT_NOT_OK(StringToTimeRange("hi")); }
 
 TEST(StringToTime, basic) {
   EXPECT_OK_AND_EQ(StringToTimeInt("-2m"), -120000000000);
@@ -41,7 +41,7 @@ TEST(StringToTime, basic) {
   EXPECT_OK_AND_EQ(StringToTimeInt("10ms"), 10000000);
 }
 
-TEST(StringToTime, invalid_format) { EXPECT_FALSE(StringToTimeInt("hello").ok()); }
+TEST(StringToTime, InvalidFormat) { EXPECT_FALSE(StringToTimeInt("hello").ok()); }
 
 TEST(PrettyDuration, strings) {
   EXPECT_EQ("1.23 \u03BCs", PrettyDuration(1230));

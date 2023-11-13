@@ -21,11 +21,11 @@
 
 #include <cstdint>
 #include <filesystem>
+#include <utility>
 
 #include "src/common/base/base.h"
 
-namespace gml {
-namespace system {
+namespace gml::system {
 
 /**
  * Converts a MAC address in string form "00:1A:2B:3C:4D:5E", which is the form found in
@@ -96,11 +96,10 @@ class NetDeviceReader {
  private:
   const static inline std::filesystem::path kDefaultSysClassNet = "/sys/class/net";
 
-  NetDeviceReader(const std::filesystem::path& sys_class_net_path)
-      : sys_class_net_path_(sys_class_net_path) {}
+  explicit NetDeviceReader(std::filesystem::path sys_class_net_path)
+      : sys_class_net_path_(std::move(sys_class_net_path)) {}
 
   std::filesystem::path sys_class_net_path_;
 };
 
-}  // namespace system
-}  // namespace gml
+}  // namespace gml::system

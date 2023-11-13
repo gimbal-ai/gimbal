@@ -22,10 +22,7 @@
 #include "src/gem/calculators/plugin/argus/optionspb/argus_cam_calculator_options.pb.h"
 #include "src/gem/devices/camera/argus/argus_cam.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace argus {
+namespace gml::gem::calculators::argus {
 
 using ::gml::gem::calculators::argus::optionspb::ArgusCamSourceCalculatorOptions;
 
@@ -42,7 +39,4 @@ class ArgusCamSourceCalculator : public mediapipe::CalculatorBase {
   int64_t timestamp_;
 };
 
-}  // namespace argus
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::argus

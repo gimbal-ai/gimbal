@@ -25,10 +25,7 @@
 #include "src/gem/calculators/plugin/cpu_tensor/image_shape_cpu_tensor_calculator.h"
 #include "src/gem/exec/plugin/cpu_tensor/context.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace cpu_tensor {
+namespace gml::gem::calculators::cpu_tensor {
 
 using ::gml::gem::exec::core::DataType;
 using ::gml::gem::exec::core::TensorShape;
@@ -74,7 +71,4 @@ Status ImageShapeCPUTensorCalculator::CloseImpl(mediapipe::CalculatorContext*, E
 
 REGISTER_CALCULATOR(ImageShapeCPUTensorCalculator);
 
-}  // namespace cpu_tensor
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::cpu_tensor

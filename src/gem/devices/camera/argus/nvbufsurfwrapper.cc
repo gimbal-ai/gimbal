@@ -24,10 +24,7 @@
 
 #include "src/common/base/base.h"
 
-namespace gml {
-namespace gem {
-namespace devices {
-namespace argus {
+namespace gml::gem::devices::argus {
 
 StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> NvBufSurfaceWrapper::Create(
     NvBufSurface* nvbuf_surf) {
@@ -36,7 +33,7 @@ StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> NvBufSurfaceWrapper::Create(
 
 NvBufSurfaceWrapper::NvBufSurfaceWrapper(NvBufSurface* nvbuf_surf) : nvbuf_surf_(nvbuf_surf) {}
 
-NvBufSurfaceWrapper::NvBufSurfaceWrapper(NvBufSurfaceWrapper&& other)
+NvBufSurfaceWrapper::NvBufSurfaceWrapper(NvBufSurfaceWrapper&& other) noexcept
     : nvbuf_surf_(other.nvbuf_surf_) {
   // Moved ownership over, so set pointer to nullptr to ensure there is no deallocation on
   // destructor.
@@ -93,7 +90,4 @@ bool NvBufSurfaceWrapper::IsMapped() const {
   return mapped;
 }
 
-}  // namespace argus
-}  // namespace devices
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::devices::argus

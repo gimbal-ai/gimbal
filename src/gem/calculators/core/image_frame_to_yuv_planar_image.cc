@@ -23,10 +23,7 @@
 
 #include "src/gem/exec/core/planar_image.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace core {
+namespace gml::gem::calculators::core {
 
 constexpr std::string_view kImageFrameTag = "IMAGE_FRAME";
 constexpr std::string_view kYUVImageTag = "YUV_IMAGE";
@@ -63,7 +60,4 @@ absl::Status ImageFrameToYUVPlanarImage::Close(mediapipe::CalculatorContext*) {
 
 REGISTER_CALCULATOR(ImageFrameToYUVPlanarImage);
 
-}  // namespace core
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::core

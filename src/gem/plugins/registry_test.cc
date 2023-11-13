@@ -24,9 +24,7 @@
 
 #include "src/common/testing/testing.h"
 
-namespace gml {
-namespace gem {
-namespace plugins {
+namespace gml::gem::plugins {
 
 using ::gml::gem::build::core::ExecutionContextBuilder;
 using ::gml::gem::build::core::ModelBuilder;
@@ -45,7 +43,7 @@ class SimpleExecutionContext : public ExecutionContext {
 
 class SimpleExecutionContextBuilder : public ExecutionContextBuilder {
  public:
-  StatusOr<std::unique_ptr<ExecutionContext>> Build(Model*) {
+  StatusOr<std::unique_ptr<ExecutionContext>> Build(Model*) override {
     return std::unique_ptr<ExecutionContext>(new SimpleExecutionContext(10));
   }
 };
@@ -59,7 +57,7 @@ class SimpleModel : public Model {
   size_t i_;
 };
 
-TEST(Registry, simple_register_exec_ctx) {
+TEST(Registry, SimpleRegisterExecCtx) {
   auto& plugin_registry = Registry::GetInstance();
 
   plugin_registry.RegisterExecContextBuilderOrDie<SimpleExecutionContextBuilder>("simple");
@@ -73,12 +71,12 @@ TEST(Registry, simple_register_exec_ctx) {
 
 class SimpleModelBuilder : public ModelBuilder {
  public:
-  StatusOr<std::unique_ptr<Model>> Build(storage::BlobStore*, const specpb::ModelSpec&) {
+  StatusOr<std::unique_ptr<Model>> Build(storage::BlobStore*, const specpb::ModelSpec&) override {
     return std::unique_ptr<Model>(new SimpleModel(15));
   }
 };
 
-TEST(Registry, simple_register_model) {
+TEST(Registry, SimpleRegisterModel) {
   auto& plugin_registry = Registry::GetInstance();
 
   plugin_registry.RegisterModelBuilderOrDie<SimpleModelBuilder>("simple");
@@ -90,6 +88,4 @@ TEST(Registry, simple_register_model) {
   EXPECT_EQ(15, model->i());
 }
 
-}  // namespace plugins
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::plugins

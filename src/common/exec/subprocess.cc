@@ -33,18 +33,6 @@ namespace gml {
 
 SubProcess::SubProcess(int mnt_ns_pid) : mnt_ns_pid_(mnt_ns_pid) {}
 
-SubProcess::~SubProcess() {
-  // One thought is to call Kill() here to avoid forgetting call Kill() explicitly.
-  //
-  // That creates confusions on its effect when dtor is invoked by the child process.
-  // Kill() called inside child process is sending a signal to pid 0, which according to:
-  // https://man7.org/linux/man-pages/man2/kill.2.html
-  // ```
-  // If pid equals 0, then sig is sent to every process in the process group of the calling process.
-  // ```
-  // That is equivalent to parent calling Kill().
-}
-
 namespace {
 
 std::filesystem::path MountNamespacePath(int pid) {
@@ -233,12 +221,12 @@ int SubProcess::GetStatus() const {
 }
 
 Status SubProcess::Stdout(std::string* out) {
-  char buffer[1024];
+  std::array<char, 1024> buffer;
 
   // Try to deplete all available data from the pipe. But still proceed if there is no more data.
-  int len;
+  ssize_t len;
   do {
-    len = read(pipe_.ReadFd(), &buffer, sizeof(buffer));
+    len = read(pipe_.ReadFd(), buffer.data(), sizeof(buffer));
 
     // Don't treat EAGAIN or EWOULDBLOCK as errors,
     // Treat them as if we've grabbed all the available data, since a future call will succeed.
@@ -248,7 +236,7 @@ Status SubProcess::Stdout(std::string* out) {
     }
 
     if (len > 0) {
-      out->append(buffer, len);
+      out->append(buffer.data(), len);
     }
   } while (len == sizeof(buffer));
 
@@ -262,7 +250,7 @@ SubProcess::Pipe::~Pipe() {
 Status SubProcess::Pipe::Open(int flags) {
   // Create the pipe, see `man pipe2` for how these 2 file descriptors are used.
   // Also set the pipe to be non-blocking, so when reading from pipe won't block.
-  if (pipe2(fd_, flags) == -1) {
+  if (pipe2(fd_.data(), flags) == -1) {
     return error::Internal("Could not create pipe.");
   }
   return Status::OK();

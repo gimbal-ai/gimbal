@@ -17,9 +17,7 @@
 
 #include "src/gem/plugins/registry.h"
 
-namespace gml {
-namespace gem {
-namespace plugins {
+namespace gml::gem::plugins {
 
 namespace {
 std::unique_ptr<Registry> g_instance;
@@ -32,6 +30,4 @@ Registry& Registry::GetInstance() {
   return *g_instance;
 }
 
-}  // namespace plugins
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::plugins

@@ -30,10 +30,8 @@
 #include <absl/container/flat_hash_map.h>
 #include <absl/container/flat_hash_set.h>
 #include "src/common/base/base.h"
-#include "src/common/system/system.h"
 
-namespace gml {
-namespace system {
+namespace gml::system {
 
 /*
  * ProcParser is use to parse system proc pseudo filesystem.
@@ -63,8 +61,10 @@ class ProcParser {
   // We store all the cpu/memory/io stats together since they belong to a
   // single pid and are meant to be consumed together.
   struct ProcessStats {
+    ProcessStats& operator=(const ProcessStats&) = default;
+
     int64_t pid = -1;
-    std::string process_name;
+    std::string process_name = "";
 
     // Fault information.
     int64_t minor_faults = 0;
@@ -364,7 +364,8 @@ class ProcParser {
    * The following function call would return the first entry listed above:
    * GetExecutableMapEntry(<pid>, "/usr/lib/x86_64-linux-gnu/libc-2.31.so", 0x7f1a50b24000)
    **/
-  StatusOr<ProcessSMaps> GetExecutableMapEntry(pid_t pid, std::string libpath, uint64_t vmem_start);
+  StatusOr<ProcessSMaps> GetExecutableMapEntry(pid_t pid, const std::string& libpath,
+                                               uint64_t vmem_start);
 
  private:
   static Status ParseNetworkStatAccumulateIFaceData(
@@ -387,5 +388,4 @@ class ProcParser {
 // uses a filesystem path as an arg.
 StatusOr<int64_t> GetPIDStartTimeTicks(const std::filesystem::path& proc_pid_path);
 
-}  // namespace system
-}  // namespace gml
+}  // namespace gml::system

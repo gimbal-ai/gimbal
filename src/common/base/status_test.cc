@@ -39,7 +39,7 @@ TEST(Status, Default) {
 
 TEST(Status, EqCopy) {
   Status a(gml::types::CODE_UNKNOWN, "Badness");
-  Status b = a;
+  const Status& b = a;
 
   ASSERT_EQ(a, b);
 }
@@ -56,7 +56,7 @@ Status MacroTestFn(const Status& s) {
   return Status::OK();
 }
 
-TEST(Status, gml_return_if_error_test) {
+TEST(Status, GMLReturnIfError) {
   EXPECT_EQ(Status::OK(), MacroTestFn(Status::OK()));
 
   auto err_status = Status(gml::types::CODE_UNKNOWN, "an error");
@@ -76,7 +76,7 @@ TEST(Status, gml_return_if_error_test) {
   EXPECT_EQ(1, call_count);
 }
 
-TEST(Status, to_proto) {
+TEST(Status, ToProto) {
   Status s1(gml::types::CODE_UNKNOWN, "error 1");
   auto pb1 = s1.ToProto();
   EXPECT_EQ(gml::types::CODE_UNKNOWN, pb1.err_code());
@@ -92,7 +92,7 @@ TEST(Status, to_proto) {
   EXPECT_EQ(s2, Status(status_proto));
 }
 
-TEST(Status, no_context_tests) {
+TEST(Status, NoContextTests) {
   Status s1(gml::types::CODE_UNKNOWN, "error 1");
   EXPECT_FALSE(s1.has_context());
 }
@@ -106,16 +106,16 @@ std::unique_ptr<google::protobuf::Message> MakeTestMessage() {
   return parent_pb;
 }
 
-TEST(Status, context_copy_tests) {
+TEST(Status, ContextCopyTests) {
   Status s1(gml::types::CODE_UNKNOWN, "error 1", MakeTestMessage());
   EXPECT_TRUE(s1.has_context());
-  Status s2 = s1;
+  const Status& s2 = s1;
   EXPECT_TRUE(s2.has_context());
   EXPECT_EQ(s1, s2);
   EXPECT_EQ(s1.context()->DebugString(), s2.context()->DebugString());
 }
 
-TEST(Status, context_vs_no_context_status) {
+TEST(Status, ContextNoContext) {
   Status s1(gml::types::CODE_UNKNOWN, "error 1", MakeTestMessage());
   Status s2(s1.code(), s1.msg());
   EXPECT_NE(s1, s2);
@@ -124,7 +124,7 @@ TEST(Status, context_vs_no_context_status) {
   EXPECT_NE(s1.ToProto().DebugString(), s2.ToProto().DebugString());
 }
 
-TEST(StatusAdapter, proto_with_context_test) {
+TEST(StatusAdapter, ProtoWithContext) {
   // from_proto
   Status s1(gml::types::CODE_UNKNOWN, "error 1", MakeTestMessage());
   auto pb1 = s1.ToProto();
@@ -137,37 +137,37 @@ TEST(StatusAdapter, proto_with_context_test) {
   EXPECT_EQ(s1, s3);
 }
 
-TEST(Status, context_nullptr_test) {
+TEST(Status, ContextNullptr) {
   // nullptr for context should mean statuses are the same.
   Status s1(gml::types::CODE_UNKNOWN, "error 1", nullptr);
   Status s2(gml::types::CODE_UNKNOWN, "error 1");
   EXPECT_EQ(s1, s2);
 }
 
-TEST(StatusAdapter, from_proto) {
+TEST(StatusAdapter, FromProto) {
   Status s1(gml::types::CODE_UNKNOWN, "error 1");
   auto pb1 = s1.ToProto();
   EXPECT_EQ(s1, StatusAdapter(pb1));
 }
 
-TEST(StatusAdapter, from_proto_without_error) {
+TEST(StatusAdapter, FromProtoWithoutError) {
   auto pb1 = Status::OK().ToProto();
-  std::cout << pb1.DebugString() << std::endl;
+  std::cout << pb1.DebugString() << '\n';
   EXPECT_TRUE(Status::OK() == StatusAdapter(pb1));
 }
 
-TEST(StatusAdapter, from_absl) {
+TEST(StatusAdapter, FromAbsl) {
   absl::Status absl_status(absl::StatusCode::kInvalidArgument, "error 1");
   Status gml_status(gml::types::CODE_INVALID_ARGUMENT, "error 1");
   EXPECT_EQ(gml_status, StatusAdapter(absl_status));
 }
 
-TEST(StatusAdapter, from_absl_without_error) {
+TEST(StatusAdapter, FromAbslWithoutError) {
   absl::Status absl_status;
   EXPECT_EQ(Status::OK(), StatusAdapter(absl_status));
 }
 
-TEST(AbslStatusAdapter, from_status) {
+TEST(AbslStatusAdapter, FromStatus) {
   Status gml_status(gml::types::CODE_INVALID_ARGUMENT, "error 1");
   absl::Status absl_status(absl::StatusCode::kInvalidArgument, "error 1");
   EXPECT_EQ(absl_status, AbslStatusAdapter(gml_status));

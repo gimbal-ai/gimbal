@@ -27,8 +27,7 @@
 #include "src/common/base/base.h"
 #include "src/common/event/deferred_delete.h"
 
-namespace gml {
-namespace event {
+namespace gml::event {
 
 /**
  * AsyncTask is an interface for tasks that we can run on the threadpool.
@@ -57,7 +56,7 @@ using AsyncTaskUPtr = std::unique_ptr<AsyncTask>;
 class RunnableAsyncTask : public DeferredDeletable {
  public:
   explicit RunnableAsyncTask(std::unique_ptr<AsyncTask> task) : task_(std::move(task)) {}
-  virtual ~RunnableAsyncTask() = default;
+  ~RunnableAsyncTask() override = default;
 
   virtual void Run() = 0;
 
@@ -66,5 +65,4 @@ class RunnableAsyncTask : public DeferredDeletable {
 };
 using RunnableAsyncTaskUPtr = std::unique_ptr<RunnableAsyncTask>;
 
-}  // namespace event
-}  // namespace gml
+}  // namespace gml::event

@@ -23,8 +23,7 @@
 
 #include "src/common/base/base.h"
 
-namespace gml {
-namespace testing {
+namespace gml::testing {
 
 namespace {
 
@@ -44,8 +43,8 @@ struct LinePair {
 
 std::vector<LinePair> TraceLCS(const std::vector<std::vector<Direction>>& directions) {
   std::vector<LinePair> line_pairs;
-  int i = directions.size() - 1;
-  int j = directions.begin()->size() - 1;
+  int i = static_cast<int>(directions.size()) - 1;
+  int j = static_cast<int>(directions.begin()->size()) - 1;
   while (i >= 0 && j >= 0) {
     if (directions[i][j] == Direction::kDiag) {
       line_pairs.push_back({static_cast<size_t>(i - 1), static_cast<size_t>(j - 1)});
@@ -129,13 +128,13 @@ std::string Diff(const std::vector<std::string>& lhs, const std::vector<std::str
 std::string DiffLines(const std::string& lhs, const std::string& rhs, DiffPolicy policy) {
   switch (policy) {
     case DiffPolicy::kDefault: {
-      std::vector<std::string> lhs_lines = absl::StrSplit(lhs, "\n");
-      std::vector<std::string> rhs_lines = absl::StrSplit(rhs, "\n");
+      std::vector<std::string> lhs_lines = absl::StrSplit(lhs, '\n');
+      std::vector<std::string> rhs_lines = absl::StrSplit(rhs, '\n');
       return Diff(lhs_lines, rhs_lines);
     }
     case DiffPolicy::kIgnoreBlankLines: {
-      std::vector<std::string> lhs_lines = absl::StrSplit(lhs, "\n", absl::SkipEmpty());
-      std::vector<std::string> rhs_lines = absl::StrSplit(rhs, "\n", absl::SkipEmpty());
+      std::vector<std::string> lhs_lines = absl::StrSplit(lhs, '\n', absl::SkipEmpty());
+      std::vector<std::string> rhs_lines = absl::StrSplit(rhs, '\n', absl::SkipEmpty());
       return Diff(lhs_lines, rhs_lines);
     }
   }
@@ -143,5 +142,4 @@ std::string DiffLines(const std::string& lhs, const std::string& rhs, DiffPolicy
   return {};
 }
 
-}  // namespace testing
-}  // namespace gml
+}  // namespace gml::testing

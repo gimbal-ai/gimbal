@@ -27,9 +27,7 @@
 #include "src/gem/specpb/model.pb.h"
 #include "src/gem/storage/blob_store.h"
 
-namespace gml {
-namespace gem {
-namespace plugins {
+namespace gml::gem::plugins {
 
 /**
  * BuilderRegistry is a template for creating a registry for an arbitrary Builder type.
@@ -104,6 +102,4 @@ class Registry {
   }                                                          \
   __attribute__((unused)) static bool ___plugin___ = __register_plugin__()
 
-}  // namespace plugins
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::plugins

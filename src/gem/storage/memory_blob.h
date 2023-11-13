@@ -19,9 +19,7 @@
 
 #include "src/common/base/base.h"
 
-namespace gml {
-namespace gem {
-namespace storage {
+namespace gml::gem::storage {
 
 /**
  * MemoryBlob is the base class for a binary blob of data in memory.
@@ -46,7 +44,7 @@ class MemoryBlob : gml::NotCopyable {
     return size() / data_size;
   }
 
-  virtual ~MemoryBlob() {}
+  virtual ~MemoryBlob() = default;
 
  protected:
   virtual char* data() = 0;
@@ -54,6 +52,4 @@ class MemoryBlob : gml::NotCopyable {
   virtual size_t size() const = 0;
 };
 
-}  // namespace storage
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::storage

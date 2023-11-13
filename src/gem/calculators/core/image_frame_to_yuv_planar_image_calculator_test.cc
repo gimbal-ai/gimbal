@@ -26,10 +26,7 @@
 #include "src/gem/testing/core/matchers.h"
 #include "src/gem/testing/core/testdata/test_image.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace core {
+namespace gml::gem::calculators::core {
 
 static constexpr char kImageFrameToYUVPlanarImageNode[] = R"pbtxt(
 calculator: "ImageFrameToYUVPlanarImage"
@@ -37,7 +34,7 @@ input_stream: "IMAGE_FRAME:image_frame"
 output_stream: "YUV_IMAGE:planar_image"
 )pbtxt";
 
-TEST(ImageFrameToYUVPlanarImage, converts_correctly) {
+TEST(ImageFrameToYUVPlanarImage, ConvertsCorrectly) {
   testing::CalculatorTester tester(kImageFrameToYUVPlanarImageNode);
 
   mediapipe::ImageFrame image_frame;
@@ -57,7 +54,4 @@ TEST(ImageFrameToYUVPlanarImage, converts_correctly) {
   EXPECT_THAT(planar.get(), testing::PlanarImageEq(expected_planar.get()));
 }
 
-}  // namespace core
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::core

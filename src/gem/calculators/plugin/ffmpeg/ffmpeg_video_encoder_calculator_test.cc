@@ -15,7 +15,6 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#include "src/gem/exec/core/control_context.h"
 extern "C" {
 #include <libavcodec/avcodec.h>
 }
@@ -24,14 +23,12 @@ extern "C" {
 
 #include "src/gem/calculators/plugin/ffmpeg/av_packet_wrapper.h"
 #include "src/gem/calculators/plugin/ffmpeg/ffmpeg_video_encoder_calculator.h"
+#include "src/gem/exec/core/control_context.h"
 #include "src/gem/exec/core/planar_image.h"
 #include "src/gem/testing/core/calculator_tester.h"
 #include "src/gem/testing/core/testdata/test_image.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace ffmpeg {
+namespace gml::gem::calculators::ffmpeg {
 
 static constexpr char kFFmpegVideoEncoderNode[] = R"pbtxt(
 calculator: "FFmpegVideoEncoderCalculator"
@@ -40,7 +37,7 @@ input_stream: "PLANAR_IMAGE:planar_image"
 output_stream: "AV_PACKETS:av_packets"
 )pbtxt";
 
-TEST(FFmpegVideoEncoderCalculator, runs_without_error) {
+TEST(FFmpegVideoEncoderCalculator, RunsWithoutError) {
   testing::CalculatorTester tester(kFFmpegVideoEncoderNode);
 
   auto yuv_image = std::make_shared<mediapipe::YUVImage>();
@@ -76,7 +73,4 @@ TEST(FFmpegVideoEncoderCalculator, runs_without_error) {
   }
 }
 
-}  // namespace ffmpeg
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::ffmpeg

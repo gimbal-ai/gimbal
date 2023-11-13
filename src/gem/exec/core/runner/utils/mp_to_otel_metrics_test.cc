@@ -26,9 +26,7 @@
 #include "src/common/testing/testing.h"
 #include "src/gem/exec/core/runner/utils/mp_to_otel_metrics.h"
 
-namespace gml {
-namespace gem {
-namespace utils {
+namespace gml::gem::utils {
 
 // Note: This test input was collected from a real MediaPipe run, but then
 // manually modified to have 10 buckets instead of the original 100.
@@ -254,6 +252,4 @@ TEST(MpToOTelMetrics, MalformedInput) {
       std::vector<mediapipe::CalculatorProfile>{calculator_profile}, &metrics));
 }
 
-}  // namespace utils
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::utils

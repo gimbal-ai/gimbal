@@ -23,10 +23,7 @@
 #include "src/common/base/base.h"
 #include "src/gem/devices/camera/argus/nvbufsurfwrapper.h"
 
-namespace gml {
-namespace gem {
-namespace devices {
-namespace argus {
+namespace gml::gem::devices::argus {
 
 /**
  * Provides a simple access model to the Argus camera on Nvidia Jetson devices.
@@ -68,7 +65,4 @@ class ArgusCam {
   Argus::UniqueObj<EGLStream::FrameConsumer> frame_consumer_obj_;
 };
 
-}  // namespace argus
-}  // namespace devices
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::devices::argus

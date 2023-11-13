@@ -16,20 +16,27 @@
  */
 
 #include "src/gem/exec/core/tensor_pool.h"
+
+#include <exception>
+#include <utility>
+
 #include "src/common/testing/testing.h"
 #include "src/gem/exec/core/tensor.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace core {
+namespace gml::gem::exec::core {
 
 static int gNumTensorsCreated = 0;
 
 class TestTensor {
  public:
   explicit TestTensor(size_t size) : size_(size), cb_([]() {}) {}
-  ~TestTensor() { cb_(); }
+  ~TestTensor() {
+    try {
+      cb_();
+    } catch (std::exception) {
+      CHECK(false);
+    }
+  }
   static StatusOr<std::unique_ptr<TestTensor>> Create(size_t size) {
     gNumTensorsCreated++;
     return std::make_unique<TestTensor>(size);
@@ -38,20 +45,20 @@ class TestTensor {
   size_t size() { return size_; }
 
   using Callback = std::function<void(void)>;
-  void SetDestructorCallback(Callback func) { cb_ = func; }
+  void SetDestructorCallback(Callback func) { cb_ = std::move(func); }
 
  private:
   size_t size_;
   Callback cb_;
 };
 
-TEST(TensorPool, get_tensor) {
+TEST(TensorPool, GetTensor) {
   TensorPool<TestTensor> pool;
   ASSERT_OK_AND_ASSIGN(auto tensor, pool.GetTensor(10));
   EXPECT_EQ(10, tensor->size());
 }
 
-TEST(TensorPool, ensure_not_destroyed) {
+TEST(TensorPool, EnsureNotDestroyed) {
   bool destructed = false;
   {
     TensorPool<TestTensor> pool;
@@ -65,7 +72,7 @@ TEST(TensorPool, ensure_not_destroyed) {
   ASSERT_TRUE(destructed) << "Tensor was not destructed when pool went out of scope";
 }
 
-TEST(TensorPool, ensure_reused) {
+TEST(TensorPool, EnsureReused) {
   auto initial_tensors_created = gNumTensorsCreated;
   TensorPool<TestTensor> pool;
   ASSERT_OK_AND_ASSIGN(auto tensor, pool.GetTensor(10));
@@ -93,7 +100,7 @@ class ShapedTensor : public ReshapeableTensor {
   size_t size_;
 };
 
-TEST(TensorPool, shaped_tensor) {
+TEST(TensorPool, ShapedTensor) {
   TensorPool<ShapedTensor> pool;
   ASSERT_OK_AND_ASSIGN(auto tensor, pool.GetTensor(TensorShape({1, 2, 5}), DataType::FLOAT32));
   EXPECT_EQ(TensorShape({1, 2, 5}), tensor->Shape());
@@ -101,7 +108,4 @@ TEST(TensorPool, shaped_tensor) {
   EXPECT_EQ(DataType::FLOAT32, tensor->DataType());
 }
 
-}  // namespace core
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::core

@@ -25,8 +25,7 @@
 
 #include "src/common/event/time_system.h"
 
-namespace gml {
-namespace event {
+namespace gml::event {
 
 /**
  * Real-world time implementation of TimeSource.
@@ -50,5 +49,4 @@ class RealTimeSystem : public TimeSystem {
   RealTimeSource time_source_;
 };
 
-}  // namespace event
-}  // namespace gml
+}  // namespace gml::event

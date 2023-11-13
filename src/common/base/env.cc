@@ -72,7 +72,9 @@ void ProcessStatsMonitor::Reset() {
 }
 
 namespace {
-double TimevalToNanoseconds(const struct timeval& x) { return x.tv_sec * 1e9 + x.tv_usec * 1e3; }
+double TimevalToNanoseconds(const struct timeval& x) {
+  return static_cast<double>(x.tv_sec) * 1e9 + static_cast<double>(x.tv_usec) * 1e3;
+}
 }  // namespace
 
 void ProcessStatsMonitor::PrintCPUTime() {
@@ -90,8 +92,9 @@ void ProcessStatsMonitor::PrintCPUTime() {
   double stime_ns = end_stime_ns - start_stime_ns;
 
   LOG(INFO) << absl::StrFormat("CPU usage: %0.1f%% user, %0.1f%% system, %0.1f%% total",
-                               100 * utime_ns / run_time.count(), 100 * stime_ns / run_time.count(),
-                               100 * (utime_ns + stime_ns) / run_time.count());
+                               100 * utime_ns / static_cast<double>(run_time.count()),
+                               100 * stime_ns / static_cast<double>(run_time.count()),
+                               100 * (utime_ns + stime_ns) / static_cast<double>(run_time.count()));
 }
 
 std::optional<std::string> GetEnv(const std::string& env_var) {

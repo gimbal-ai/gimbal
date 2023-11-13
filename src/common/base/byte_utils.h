@@ -25,8 +25,7 @@
 
 #include "src/common/base/logging.h"
 
-namespace gml {
-namespace utils {
+namespace gml::utils {
 
 using u8string = std::basic_string<uint8_t>;
 using u8string_view = std::basic_string_view<uint8_t>;
@@ -39,17 +38,17 @@ void ReverseBytes(const uint8_t* x, uint8_t* y) {
 }
 
 template <typename TCharType, size_t N>
-void ReverseBytes(const TCharType (&x)[N], TCharType (&y)[N]) {
-  const uint8_t* x_bytes = reinterpret_cast<const uint8_t*>(x);
-  uint8_t* y_bytes = reinterpret_cast<uint8_t*>(y);
+void ReverseBytes(const std::array<TCharType, N>& x, std::array<TCharType, N>& y) {
+  const auto* x_bytes = reinterpret_cast<const uint8_t*>(x.data());
+  auto* y_bytes = reinterpret_cast<uint8_t*>(y.data());
   ReverseBytes<N>(x_bytes, y_bytes);
 }
 
 template <typename T>
 T ReverseBytes(const T* x) {
   T y;
-  const uint8_t* x_bytes = reinterpret_cast<const uint8_t*>(x);
-  uint8_t* y_bytes = reinterpret_cast<uint8_t*>(&y);
+  const auto* x_bytes = reinterpret_cast<const uint8_t*>(x);
+  auto* y_bytes = reinterpret_cast<uint8_t*>(&y);
   ReverseBytes<sizeof(T)>(x_bytes, y_bytes);
   return y;
 }
@@ -114,7 +113,7 @@ TFloatType LEndianBytesToFloat(std::string_view buf) {
  * @param result the destination buffer.
  */
 template <typename TCharType, size_t N>
-void IntToLEndianBytes(int64_t num, TCharType (&result)[N]) {
+void IntToLEndianBytes(int64_t num, std::array<TCharType, N>& result) {
   static_assert(N <= sizeof(int64_t));
   for (size_t i = 0; i < N; i++) {
     result[i] = (num >> (i * 8));
@@ -129,7 +128,7 @@ void IntToLEndianBytes(int64_t num, TCharType (&result)[N]) {
  * @param result the destination buffer.
  */
 template <typename TCharType, size_t N>
-void IntToBEndianBytes(int64_t num, TCharType (&result)[N]) {
+void IntToBEndianBytes(int64_t num, std::array<TCharType, N>& result) {
   static_assert(N <= sizeof(int64_t));
   for (size_t i = 0; i < N; i++) {
     result[i] = (num >> ((N - i - 1) * 8));
@@ -185,7 +184,7 @@ TFloatType BEndianBytesToFloat(std::string_view buf) {
 
   // Note that unlike LEndianBytesToFloat, we don't use memcpy to align the data.
   // That is because ReverseBytes will naturally cause the alignment to occur when it copies bytes.
-  const TFloatType* ptr = reinterpret_cast<const TFloatType*>(buf.data());
+  const auto* ptr = reinterpret_cast<const TFloatType*>(buf.data());
   return ReverseBytes<TFloatType>(ptr);
 }
 
@@ -208,5 +207,4 @@ TValueType MemCpy(const TByteType* buf) {
   return MemCpy<TValueType>(static_cast<const void*>(buf));
 }
 
-}  // namespace utils
-}  // namespace gml
+}  // namespace gml::utils

@@ -130,7 +130,7 @@ std::string InitBytes(int size) {
   std::string buf;
   buf.resize(size);
   for (int i = 0; i < size; ++i) {
-    buf[i] = i;
+    buf[i] = static_cast<char>(i);
   }
   return buf;
 }

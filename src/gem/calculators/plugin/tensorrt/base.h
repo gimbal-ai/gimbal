@@ -19,16 +19,10 @@
 #include "src/gem/exec/core/context.h"
 #include "src/gem/exec/plugin/tensorrt/context.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace tensorrt {
+namespace gml::gem::calculators::tensorrt {
 
 using ::gml::gem::exec::tensorrt::ExecutionContext;
 
 using ExecutionContextBaseCalculator = core::ExecutionContextCalculator<ExecutionContext>;
 
-}  // namespace tensorrt
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::tensorrt

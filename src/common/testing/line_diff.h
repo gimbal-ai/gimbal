@@ -24,8 +24,7 @@
 
 #include <absl/strings/substitute.h>
 
-namespace gml {
-namespace testing {
+namespace gml::testing {
 
 // Returns a text representation of the diffs between 2 sequences of text lines.
 std::string Diff(const std::vector<std::string>& lhs, const std::vector<std::string>& rhs);
@@ -42,5 +41,4 @@ enum class DiffPolicy {
 std::string DiffLines(const std::string& lhs, const std::string& rhs,
                       DiffPolicy = DiffPolicy::kDefault);
 
-}  // namespace testing
-}  // namespace gml
+}  // namespace gml::testing

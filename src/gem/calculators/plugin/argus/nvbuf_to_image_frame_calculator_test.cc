@@ -28,10 +28,7 @@
 #include "src/gem/calculators/plugin/argus/nvbuf_to_image_frame_calculator.h"
 #include "src/gem/devices/camera/argus/nvbufsurfwrapper.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace argus {
+namespace gml::gem::calculators::argus {
 
 constexpr char kGraph[] = R"pb(
   calculator: "NvBufSurfToImageFrameCalculator"
@@ -102,7 +99,4 @@ TEST(NvBufSurfToImageFrameCalculator, conversion) {
   EXPECT_EQ(output_image.PixelDataSize(), 1280 * 720 * 3);
 }
 
-}  // namespace argus
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::argus

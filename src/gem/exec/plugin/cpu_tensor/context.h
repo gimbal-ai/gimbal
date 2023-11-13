@@ -21,10 +21,7 @@
 #include "src/gem/exec/core/context.h"
 #include "src/gem/exec/plugin/cpu_tensor/cpu_tensor.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace cpu_tensor {
+namespace gml::gem::exec::cpu_tensor {
 
 class ExecutionContext : public core::ExecutionContext {
  public:
@@ -38,7 +35,4 @@ class ExecutionContext : public core::ExecutionContext {
   CPUTensorPool tensor_pool_;
 };
 
-}  // namespace cpu_tensor
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::cpu_tensor

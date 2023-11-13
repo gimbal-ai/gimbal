@@ -27,10 +27,7 @@ extern "C" {
 #include "src/gem/calculators/plugin/ffmpeg/overlayed_ffmpeg_video_sink_calculator.h"
 #include "src/gem/testing/core/calculator_tester.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace ffmpeg {
+namespace gml::gem::calculators::ffmpeg {
 
 using ::gml::internal::api::core::v1::Detection;
 using ::gml::internal::api::core::v1::H264Chunk;
@@ -45,14 +42,14 @@ input_stream: "AV_PACKETS:av_packets"
 
 struct FFmpegVideoSinkTestCase {
   std::vector<std::string> detection_pbtxts;
-  std::vector<size_t> av_packet_sizes;
+  std::vector<int> av_packet_sizes;
   std::vector<std::string> expected_overlay_chunk_pbtxts;
   std::vector<std::vector<size_t>> expected_h264_chunks_ids;
 };
 
 class OverlayedFFmpegVideoSinkTest : public ::testing::TestWithParam<FFmpegVideoSinkTestCase> {};
 
-TEST_P(OverlayedFFmpegVideoSinkTest, outputs_expected_chunks) {
+TEST_P(OverlayedFFmpegVideoSinkTest, OutputsExpectedChunks) {
   auto test_case = GetParam();
 
   auto config = absl::Substitute(kOverlayedFFmpegVideoSinkNode);
@@ -313,7 +310,4 @@ detections {
                                      },
                              }));
 
-}  // namespace ffmpeg
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::ffmpeg

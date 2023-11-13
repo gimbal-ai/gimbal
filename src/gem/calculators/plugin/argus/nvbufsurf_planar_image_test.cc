@@ -24,10 +24,7 @@
 #include "src/gem/devices/camera/argus/nvbufsurfwrapper.h"
 #include "src/gem/exec/core/planar_image.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace args {
+namespace gml::gem::calculators::args {
 
 using ::gml::gem::devices::argus::NvBufSurfaceWrapper;
 
@@ -83,7 +80,4 @@ TEST(PlanarImageFor, NvBufSurfaceWrapper) {
   EXPECT_EQ(768, planar->Planes()[2].row_stride);
 }
 
-}  // namespace args
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::args

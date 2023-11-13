@@ -34,10 +34,8 @@
 #include <absl/base/thread_annotations.h>
 #include <absl/synchronization/mutex.h>
 #include "src/common/event/dispatcher.h"
-#include "src/common/event/event.h"
 
-namespace gml {
-namespace event {
+namespace gml::event {
 
 class API;
 
@@ -127,5 +125,4 @@ class LibuvDispatcher : public Dispatcher {
   TimerUPtr deferred_delete_timer_;
 };
 
-}  // namespace event
-}  // namespace gml
+}  // namespace gml::event

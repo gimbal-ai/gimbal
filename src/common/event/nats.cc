@@ -22,14 +22,13 @@
 #include <nats/adapters/libuv.h>
 #include <nats/nats.h>
 
-namespace gml {
-namespace event {
+namespace gml::event {
 
 Status NATSConnectorBase::ConnectBase(Dispatcher* base_dispatcher) {
   natsOptions* nats_opts = nullptr;
   natsOptions_Create(&nats_opts);
 
-  LibuvDispatcher* dispatcher = dynamic_cast<LibuvDispatcher*>(base_dispatcher);
+  auto* dispatcher = dynamic_cast<LibuvDispatcher*>(base_dispatcher);
   if (dispatcher == nullptr) {
     return error::InvalidArgument("Only libuv based dispatcher is allowed");
   }
@@ -83,5 +82,4 @@ void NATSConnectorBase::ReconnectedCB(natsConnection* nc, void* closure) {
   LOG(INFO) << "nats reconnected " << ++connector->reconnect_count_;
 }
 
-}  // namespace event
-}  // namespace gml
+}  // namespace gml::event

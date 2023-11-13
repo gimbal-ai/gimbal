@@ -17,14 +17,13 @@
 
 #pragma once
 
+#include <utility>
+
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/base/base.h"
 #include "src/gem/exec/core/context.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace core {
+namespace gml::gem::exec::core {
 
 using ::gml::internal::api::core::v1::H264Chunk;
 using ::gml::internal::api::core::v1::ImageOverlayChunk;
@@ -38,7 +37,7 @@ class ControlExecutionContext : public ExecutionContext {
       std::function<Status(const std::vector<ImageOverlayChunk>&, const std::vector<H264Chunk>&)>;
 
   void RegisterVideoWithOverlaysCallback(VideoWithOverlaysCallback cb) {
-    video_w_overlays_cb_ = cb;
+    video_w_overlays_cb_ = std::move(cb);
   }
 
   void ClearVideoWithOverlaysCallback() { video_w_overlays_cb_ = nullptr; }
@@ -51,7 +50,4 @@ class ControlExecutionContext : public ExecutionContext {
   VideoWithOverlaysCallback video_w_overlays_cb_;
 };
 
-}  // namespace core
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::core

@@ -19,10 +19,7 @@
 
 #include "src/common/base/base.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace core {
+namespace gml::gem::exec::core {
 
 /**
  * ExecutionContext represents a plugin-specific context to be passed to plugin calculators.
@@ -31,10 +28,7 @@ namespace core {
  */
 class ExecutionContext {
  public:
-  virtual ~ExecutionContext() {}
+  virtual ~ExecutionContext() = default;
 };
 
-}  // namespace core
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::core

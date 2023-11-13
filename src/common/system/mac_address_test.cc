@@ -20,8 +20,7 @@
 #include "src/common/system/mac_address.h"
 #include "src/common/testing/testing.h"
 
-namespace gml {
-namespace system {
+namespace gml::system {
 
 using ::testing::IsEmpty;
 using ::testing::Not;
@@ -35,7 +34,7 @@ TEST(MacAddrStrToInt, Basic) {
 
 class NetDeviceReaderTest : public ::testing::Test {
  protected:
-  void SetUp() { ASSERT_OK_AND_ASSIGN(resolver_, NetDeviceReader::Create()); }
+  void SetUp() override { ASSERT_OK_AND_ASSIGN(resolver_, NetDeviceReader::Create()); }
 
   std::unique_ptr<NetDeviceReader> resolver_;
 };
@@ -49,7 +48,7 @@ TEST_F(NetDeviceReaderTest, NonVirtualNetDevices) {
   ASSERT_THAT(devices, Not(IsEmpty()));
 
   // Print out for visual inspection.
-  for (auto d : devices) {
+  for (const auto& d : devices) {
     LOG(INFO) << absl::StrFormat("name=%s addr=%x", d.name(), d.mac_address().addr);
   }
 }
@@ -71,5 +70,4 @@ TEST_F(NetDeviceReaderTest, SystemMacAddress) {
   EXPECT_TRUE(device.mac_address().GloballyUnique());
 }
 
-}  // namespace system
-}  // namespace gml
+}  // namespace gml::system

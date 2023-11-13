@@ -24,10 +24,8 @@
 #include <string>
 
 #include "src/common/base/base.h"
-#include "src/common/clock/clock_conversion.h"
 
-namespace gml {
-namespace system {
+namespace gml::system {
 
 DECLARE_string(host_path);
 
@@ -44,9 +42,7 @@ class Config : public NotCopyable {
 
   /**
    * Resets the underlying static instance. Used for testing purposes.
-   * @param converter unique_ptr to a ClockConverter instance to use for the Config.
    */
-  static void ResetInstance(std::unique_ptr<clock::ClockConverter> converter);
   static void ResetInstance();
 
   /**
@@ -80,15 +76,12 @@ class Config : public NotCopyable {
 
   const std::filesystem::path& host_path() const { return host_path_; }
   const std::filesystem::path& sysfs_path() const { return sysfs_path_; }
-  clock::ClockConverter* clock_converter() const { return clock_converter_.get(); }
 
  private:
-  explicit Config(std::unique_ptr<clock::ClockConverter> clock_converter);
+  explicit Config();
 
   const std::filesystem::path host_path_;
   const std::filesystem::path sysfs_path_;
-  std::unique_ptr<clock::ClockConverter> clock_converter_;
 };
 
-}  // namespace system
-}  // namespace gml
+}  // namespace gml::system

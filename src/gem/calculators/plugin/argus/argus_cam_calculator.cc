@@ -22,10 +22,7 @@
 #include <mediapipe/framework/calculator_framework.h>
 #include "src/gem/devices/camera/argus/argus_cam.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace argus {
+namespace gml::gem::calculators::argus {
 
 using ::gml::gem::calculators::argus::optionspb::ArgusCamSourceCalculatorOptions;
 using ::gml::gem::devices::argus::NvBufSurfaceWrapper;
@@ -68,7 +65,4 @@ absl::Status ArgusCamSourceCalculator::Close(mediapipe::CalculatorContext* /* cc
 
 REGISTER_CALCULATOR(ArgusCamSourceCalculator);
 
-}  // namespace argus
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::argus

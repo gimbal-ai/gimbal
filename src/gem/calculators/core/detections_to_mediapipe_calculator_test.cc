@@ -24,15 +24,12 @@
 #include "src/gem/calculators/core/detections_to_mediapipe_calculator.h"
 #include "src/gem/testing/core/calculator_tester.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace core {
+namespace gml::gem::calculators::core {
 
 using ::gml::internal::api::core::v1::Detection;
 using ::gml::internal::api::core::v1::NormalizedCenterRect;
 
-static constexpr char kDetectionsToMediapipeNode[] = R"pbtxt(
+constexpr std::string_view kDetectionsToMediapipeNode = R"pbtxt(
 calculator: "DetectionsToMediapipeCalculator"
 input_stream: "detection_list"
 output_stream: "mp_detection_list"
@@ -45,7 +42,7 @@ struct DetectionsToMediapipeTestCase {
 
 class DetectionsToMediapipeTest : public ::testing::TestWithParam<DetectionsToMediapipeTestCase> {};
 
-TEST_P(DetectionsToMediapipeTest, converts_correctly) {
+TEST_P(DetectionsToMediapipeTest, ConvertsCorrectly) {
   auto test_case = GetParam();
 
   auto config = absl::Substitute(kDetectionsToMediapipeNode);
@@ -104,7 +101,4 @@ location_data {
                              },
                          }));
 
-}  // namespace core
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::core

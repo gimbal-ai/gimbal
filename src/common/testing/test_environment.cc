@@ -25,8 +25,7 @@
 
 #include "tools/cpp/runfiles/runfiles.h"
 
-namespace gml {
-namespace testing {
+namespace gml::testing {
 
 using bazel::tools::cpp::runfiles::Runfiles;
 
@@ -50,5 +49,4 @@ std::filesystem::path BazelRunfilePath(const std::filesystem::path& rel_path) {
   return path;
 }
 
-}  // namespace testing
-}  // namespace gml
+}  // namespace gml::testing

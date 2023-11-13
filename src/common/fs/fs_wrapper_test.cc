@@ -22,8 +22,7 @@
 #include "src/common/fs/fs_wrapper.h"
 #include "src/common/testing/testing.h"
 
-namespace gml {
-namespace fs {
+namespace gml::fs {
 
 using ::gml::testing::status::StatusIs;
 using ::testing::ElementsAre;
@@ -170,5 +169,4 @@ TEST_F(FSWrapperTest, SpaceAvailableInBytesError) {
   EXPECT_NOT_OK(SpaceAvailableInBytes(fake_path));
 }
 
-}  // namespace fs
-}  // namespace gml
+}  // namespace gml::fs

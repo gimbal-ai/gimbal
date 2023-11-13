@@ -23,8 +23,7 @@
 #include <functional>
 #include <memory>
 
-namespace gml {
-namespace event {
+namespace gml::event {
 /**
  * Callback for timer after expiration.
  */
@@ -56,5 +55,4 @@ class Timer {
 
 using TimerUPtr = std::unique_ptr<Timer>;
 
-}  // namespace event
-}  // namespace gml
+}  // namespace gml::event

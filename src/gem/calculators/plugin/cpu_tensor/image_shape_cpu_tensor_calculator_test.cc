@@ -22,10 +22,7 @@
 #include "src/gem/testing/core/calculator_tester.h"
 #include "src/gem/testing/plugin/cpu_tensor/operators.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace cpu_tensor {
+namespace gml::gem::calculators::cpu_tensor {
 
 using ::gml::gem::exec::cpu_tensor::CPUTensorPtr;
 using ::gml::gem::exec::cpu_tensor::ExecutionContext;
@@ -38,7 +35,7 @@ input_stream: "IMAGE_FRAME:image_frame"
 output_stream: "IMAGE_SHAPE:image_shape"
 )pbtxt";
 
-TEST(ImageShapeCPUTensorCalculator, correct_image_shape) {
+TEST(ImageShapeCPUTensorCalculator, CorrectImageShape) {
   auto cpu_exec_ctx = std::make_unique<ExecutionContext>();
 
   CalculatorTester tester(kImageShapeNode);
@@ -61,7 +58,4 @@ TEST(ImageShapeCPUTensorCalculator, correct_image_shape) {
       .ExpectOutput<CPUTensorPtr>("IMAGE_SHAPE", 0, ::testing::Pointee(*expected_tensor));
 }
 
-}  // namespace cpu_tensor
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::cpu_tensor

@@ -21,10 +21,7 @@
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/base/base.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace core {
+namespace gml::gem::calculators::core {
 using ::gml::internal::api::core::v1::Detection;
 
 absl::Status DetectionsToMediapipeCalculator::GetContract(mediapipe::CalculatorContract* cc) {
@@ -70,7 +67,4 @@ absl::Status DetectionsToMediapipeCalculator::Close(mediapipe::CalculatorContext
 
 REGISTER_CALCULATOR(DetectionsToMediapipeCalculator);
 
-}  // namespace core
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::core

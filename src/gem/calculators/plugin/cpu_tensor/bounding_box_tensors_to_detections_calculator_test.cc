@@ -25,10 +25,7 @@
 #include "src/gem/testing/core/calculator_tester.h"
 #include "src/gem/testing/plugin/cpu_tensor/operators.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace cpu_tensor {
+namespace gml::gem::calculators::cpu_tensor {
 
 using ::gml::gem::exec::core::DataType;
 using ::gml::gem::exec::core::TensorShape;
@@ -67,7 +64,7 @@ struct BoundingBoxTestCase {
 
 class BoundingBoxTensorsToDetectionsTest : public ::testing::TestWithParam<BoundingBoxTestCase> {};
 
-TEST_P(BoundingBoxTensorsToDetectionsTest, converts_correctly) {
+TEST_P(BoundingBoxTensorsToDetectionsTest, ConvertsCorrectly) {
   auto test_case = GetParam();
 
   CPUTensorPool pool;
@@ -119,8 +116,8 @@ TEST_P(BoundingBoxTensorsToDetectionsTest, converts_correctly) {
   ASSERT_OK_AND_ASSIGN(auto orig_image_shape, pool.GetTensor(TensorShape{1, 2}, DataType::FLOAT32));
 
   auto* shape_data = orig_image_shape->TypedData<DataType::FLOAT32>();
-  shape_data[0] = test_case.height;
-  shape_data[1] = test_case.width;
+  shape_data[0] = static_cast<float>(test_case.height);
+  shape_data[1] = static_cast<float>(test_case.width);
 
   std::vector<Detection> expected_detections(test_case.expected_rects.size());
 
@@ -240,7 +237,4 @@ INSTANTIATE_TEST_SUITE_P(
 
         }));
 
-}  // namespace cpu_tensor
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::cpu_tensor

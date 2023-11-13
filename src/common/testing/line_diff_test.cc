@@ -24,8 +24,7 @@
 
 #include "src/common/base/base.h"
 
-namespace gml {
-namespace testing {
+namespace gml::testing {
 
 using ::testing::StrEq;
 
@@ -84,5 +83,4 @@ b)",
 l:b)"));
 }
 
-}  // namespace testing
-}  // namespace gml
+}  // namespace gml::testing

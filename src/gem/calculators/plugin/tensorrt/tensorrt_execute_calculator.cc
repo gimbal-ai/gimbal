@@ -23,10 +23,7 @@
 #include "src/gem/exec/plugin/tensorrt/context.h"
 #include "src/gem/exec/plugin/tensorrt/cuda_tensor_pool.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace tensorrt {
+namespace gml::gem::calculators::tensorrt {
 
 using ::gml::gem::exec::core::DataType;
 using ::gml::gem::exec::core::TensorShape;
@@ -170,7 +167,4 @@ Status TensorRTExecuteCalculator::CloseImpl(mediapipe::CalculatorContext*, Execu
 
 REGISTER_CALCULATOR(TensorRTExecuteCalculator);
 
-}  // namespace tensorrt
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::tensorrt

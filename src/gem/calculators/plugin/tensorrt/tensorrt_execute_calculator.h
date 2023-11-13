@@ -23,10 +23,7 @@
 #include "src/gem/exec/core/context.h"
 #include "src/gem/exec/plugin/tensorrt/cuda_tensor_pool.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace tensorrt {
+namespace gml::gem::calculators::tensorrt {
 
 using ::gml::gem::exec::core::DataType;
 using ::gml::gem::exec::tensorrt::CUDATensorPool;
@@ -39,7 +36,7 @@ namespace internal {
  */
 class CUDATensorPoolOutputAllocator : public nvinfer1::IOutputAllocator {
  public:
-  virtual ~CUDATensorPoolOutputAllocator() {}
+  virtual ~CUDATensorPoolOutputAllocator() = default;
   explicit CUDATensorPoolOutputAllocator(CUDATensorPool* pool) : pool_(pool) {}
 
   void notifyShape(const char*, const nvinfer1::Dims&) noexcept override;
@@ -81,7 +78,4 @@ class TensorRTExecuteCalculator : public ExecutionContextBaseCalculator {
   optionspb::TensorRTExecuteCalculatorOptions options_;
 };
 
-}  // namespace tensorrt
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::tensorrt

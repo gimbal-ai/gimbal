@@ -30,22 +30,22 @@ constexpr std::size_t kColorCount = magic_enum::enum_count<Color>();
 // Tests values that go beyond MAGIC_ENUM_RANGE_MAX.
 enum class WideColor { INFRARED = -1024, RED = 2, VIOLET = 256, ULTRAVIOLET = 1024 };
 
-TEST(MagicEnum, num_elements) { EXPECT_EQ(kColorCount, 3); }
+TEST(MagicEnum, NumElements) { EXPECT_EQ(kColorCount, 3); }
 
-TEST(MagicEnum, enum_to_string) {
+TEST(MagicEnum, EnumToString) {
   Color color = Color::RED;
   std::string_view color_name = magic_enum::enum_name(color);
   EXPECT_EQ(color_name, "RED");
 }
 
-TEST(MagicEnum, unknown_enum_to_string) {
-  Color color = static_cast<Color>(1);
+TEST(MagicEnum, UnknownEnumToString) {
+  auto color = static_cast<Color>(1);
   std::string_view color_name = magic_enum::enum_name(color);
   EXPECT_EQ(color_name, "");
 }
 
 // This tests that we have MAGIC_ENUM_RANGE_MAX set properly.
-TEST(MagicEnum, large_enum_to_string) {
+TEST(MagicEnum, LargeEnumToString) {
   // We can see VIOLET because its value is exactly MAGIC_ENUM_RANGE_MAX.
   {
     WideColor color = WideColor::VIOLET;
@@ -70,67 +70,67 @@ TEST(MagicEnum, large_enum_to_string) {
 
 // Like enum_to_string above, but passing name through template parameter.
 // Good for constexpr.
-TEST(MagicEnum, static_enum_to_string) {
+TEST(MagicEnum, StaticEnumToString) {
   constexpr Color color = Color::BLUE;
   std::string_view color_name = magic_enum::enum_name<color>();
   CHECK_EQ(color_name, "BLUE");
 }
 
-TEST(MagicEnum, enum_to_integer) {
+TEST(MagicEnum, EnumToInteger) {
   Color color = Color::RED;
   EXPECT_EQ(magic_enum::enum_integer(color), 2);
 }
 
-TEST(MagicEnum, valid_string_to_enum) {
+TEST(MagicEnum, ValidStringToEnum) {
   std::string_view color_name("GREEN");
   std::optional<Color> color = magic_enum::enum_cast<Color>(color_name);
   ASSERT_TRUE(color.has_value());
-  EXPECT_EQ(color.value(), Color::GREEN);
+  EXPECT_EQ(color.value_or(Color{}), Color::GREEN);
 }
 
-TEST(MagicEnum, invalid_string_to_enum) {
+TEST(MagicEnum, InvalidStringToEnum) {
   std::string_view color_name("YURPLE");
   std::optional<Color> color = magic_enum::enum_cast<Color>(color_name);
   ASSERT_FALSE(color.has_value());
 }
 
-TEST(MagicEnum, valid_integer_to_enum) {
+TEST(MagicEnum, ValidIntegerToEnum) {
   std::optional<Color> color = magic_enum::enum_cast<Color>(2);
   ASSERT_TRUE(color.has_value());
-  EXPECT_EQ(color.value(), Color::RED);
+  EXPECT_EQ(color.value_or(Color{}), Color::RED);
 }
 
-TEST(MagicEnum, invalid_integer_to_enum) {
+TEST(MagicEnum, InvalidIntegerToEnum) {
   std::optional<Color> color = magic_enum::enum_cast<Color>(999);
   ASSERT_FALSE(color.has_value());
 }
 
-TEST(MagicEnum, valid_indexed_access) {
+TEST(MagicEnum, ValidIndexedAccess) {
   Color color = magic_enum::enum_value<Color>(1);
   EXPECT_EQ(color, Color::BLUE);
 }
 
 // Note that this test must be in a Test Suite than the rest, according to:
 // https://github.com/google/googletest/blob/master/googletest/docs/advanced.md#death-test-naming
-TEST(MagicEnumDeathTest, invalid_indexed_access) {
+TEST(MagicEnumDeathTest, InvalidIndexedAccess) {
 #if !defined(NDEBUG)
   EXPECT_DEATH((void)magic_enum::enum_value<Color>(999), "");
 #endif
 }
 
-TEST(MagicEnum, enum_value_sequence) {
+TEST(MagicEnum, EnumValueSequence) {
   std::array<Color, kColorCount> colors = magic_enum::enum_values<Color>();
   std::array<Color, kColorCount> expected_values = {Color::RED, Color::BLUE, Color::GREEN};
   EXPECT_EQ(colors, expected_values);
 }
 
-TEST(MagicEnum, enum_names_sequence) {
+TEST(MagicEnum, EnumNamesSequence) {
   std::array<std::string_view, kColorCount> color_names = magic_enum::enum_names<Color>();
   std::array<std::string_view, kColorCount> expected_values = {"RED", "BLUE", "GREEN"};
   EXPECT_EQ(color_names, expected_values);
 }
 
-TEST(MagicEnum, enum_entries_sequence) {
+TEST(MagicEnum, EnumEntriesSequence) {
   std::array<std::pair<Color, std::string_view>, kColorCount> color_entries =
       magic_enum::enum_entries<Color>();
   std::array<std::pair<Color, std::string_view>, kColorCount> expected_entries = {
@@ -140,15 +140,15 @@ TEST(MagicEnum, enum_entries_sequence) {
   EXPECT_EQ(color_entries, expected_entries);
 }
 
-TEST(MagicEnum, ostream_operator) {
+TEST(MagicEnum, OstreamOperator) {
   using magic_enum::ostream_operators::operator<<;
   Color color = Color::BLUE;
   std::ostringstream buffer;
-  buffer << color << std::endl;
+  buffer << color << '\n';
   EXPECT_EQ(buffer.str(), "BLUE\n");
 }
 
-TEST(MagicEnum, bitwise_operators) {
+TEST(MagicEnum, BitwiseOperators) {
   enum class Flags { A = 1 << 0, B = 1 << 1, C = 1 << 2, D = 1 << 3 };
   using magic_enum::bitwise_operators::operator|;
   using magic_enum::bitwise_operators::operator&;
@@ -164,7 +164,7 @@ TEST(MagicEnum, bitwise_operators) {
   EXPECT_FALSE(((flagsAB & ~flagsBC) & Flags::B) == Flags::B);
 }
 
-TEST(MagicEnum, is_unscoped_enum) {
+TEST(MagicEnum, IsUnscopedEnum) {
   enum color { red, green, blue };
   enum class direction { left, right };
 

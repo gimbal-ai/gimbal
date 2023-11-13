@@ -23,10 +23,7 @@
 
 #include "src/common/base/base.h"
 
-namespace gml {
-namespace gem {
-namespace exec {
-namespace core {
+namespace gml::gem::exec::core {
 
 enum class DataType {
   UNKNOWN = 0,
@@ -63,7 +60,4 @@ static inline size_t DataTypeByteSize(DataType type) {
   }
 }
 
-}  // namespace core
-}  // namespace exec
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::exec::core

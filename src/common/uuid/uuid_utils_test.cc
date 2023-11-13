@@ -23,7 +23,7 @@
 
 namespace gml {
 
-TEST(ParseUUID, basic_test) {
+TEST(ParseUUID, BasicTest) {
   gml::types::UUID uuid_pb;
   uuid_pb.set_high_bits(0xea8aa095697f49f1);
   uuid_pb.set_low_bits(0xb127d50e5b6e2645);
@@ -31,7 +31,7 @@ TEST(ParseUUID, basic_test) {
   EXPECT_EQ(parsed.str(), "ea8aa095-697f-49f1-b127-d50e5b6e2645");
 }
 
-TEST(ToProto, uuid_basic) {
+TEST(ToProto, UUIDBasic) {
   auto uuid = sole::rebuild("ea8aa095-697f-49f1-b127-d50e5b6e2645");
   gml::types::UUID uuid_proto;
   ToProto(uuid, &uuid_proto);
@@ -39,7 +39,7 @@ TEST(ToProto, uuid_basic) {
   EXPECT_EQ(0xb127d50e5b6e2645, uuid_proto.low_bits());
 }
 
-TEST(UUIDUtils, regression_test) {
+TEST(UUIDUtils, RegressionTest) {
   for (int i = 0; i < 1000; i++) {
     auto uuid = sole::uuid4();
     gml::types::UUID uuid_proto;
@@ -49,7 +49,7 @@ TEST(UUIDUtils, regression_test) {
   }
 }
 
-TEST(UUIDUtils, clear_uuid_makes_uuid_zero) {
+TEST(UUIDUtils, ClearUUIDMakesZeroUUID) {
   auto uuid = sole::uuid4();
   ClearUUID(&uuid);
   EXPECT_EQ(0, uuid.ab);

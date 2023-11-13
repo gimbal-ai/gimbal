@@ -23,10 +23,7 @@
 #include "src/gem/exec/core/tensor.h"
 #include "src/gem/exec/plugin/cpu_tensor/context.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace cpu_tensor {
+namespace gml::gem::calculators::cpu_tensor {
 
 using ::gml::gem::exec::core::DataType;
 using ::gml::gem::exec::core::TensorShape;
@@ -70,7 +67,4 @@ class BoundingBoxTensorsToDetections : public mediapipe::CalculatorBase {
   BoundingBoxConvFunc bounding_box_converter_;
 };
 
-}  // namespace cpu_tensor
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::cpu_tensor

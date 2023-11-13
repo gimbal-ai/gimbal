@@ -26,8 +26,7 @@
 
 #include "src/common/testing/testing.h"
 
-namespace gml {
-namespace grpc {
+namespace gml::grpc {
 
 using ::gml::testing::proto::EqualsProto;
 using ::google::protobuf::FileDescriptorSet;
@@ -77,7 +76,7 @@ const char kTestProtoBuf[] = R"proto(
 
 class ServiceDescriptorDatabaseTest : public ::testing::Test {
  protected:
-  void SetUp() {
+  void SetUp() override {
     FileDescriptorSet fd_set;
     ASSERT_TRUE(TextFormat::ParseFromString(kTestProtoBuf, fd_set.add_file()));
 
@@ -120,5 +119,4 @@ TEST_F(ServiceDescriptorDatabaseTest, AllServices) {
   EXPECT_EQ("CheckoutAgainService", services[1].name());
 }
 
-}  // namespace grpc
-}  // namespace gml
+}  // namespace gml::grpc

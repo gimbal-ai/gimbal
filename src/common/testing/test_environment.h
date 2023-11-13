@@ -26,11 +26,10 @@
 // Useful for setting a flag for the duration of a test.
 #define GML_SET_FOR_SCOPE(var, val) \
   auto var##__orig = var;           \
-  DEFER(var = var##__orig);         \
-  var = val;
+  DEFER((var) = var##__orig);       \
+  (var) = val;
 
-namespace gml {
-namespace testing {
+namespace gml::testing {
 
 /**
  * Returns the path to a runfile, specified by a path relative to ToT.
@@ -38,5 +37,4 @@ namespace testing {
  */
 std::filesystem::path BazelRunfilePath(const std::filesystem::path& rel_path);
 
-}  // namespace testing
-}  // namespace gml
+}  // namespace gml::testing

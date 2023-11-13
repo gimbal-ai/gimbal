@@ -24,8 +24,7 @@
 #include "src/common/base/error.h"
 #include "src/common/typespb/status.pb.h"
 
-namespace gml {
-namespace error {
+namespace gml::error {
 
 TEST(CodeToString, strings) {
   EXPECT_EQ("Ok", CodeToString(gml::types::CODE_OK));
@@ -41,7 +40,7 @@ TEST(CodeToString, strings) {
   EXPECT_EQ("Unimplemented", CodeToString(gml::types::CODE_UNIMPLEMENTED));
 }
 
-TEST(CodeToString, UNKNOWN_ERROR) {
+TEST(CodeToString, UnknownError) {
   EXPECT_TRUE(
       absl::StartsWith(CodeToString(static_cast<gml::types::Code>(1024)), "Unknown error_code"));
 }
@@ -52,5 +51,4 @@ TEST(ErrorDeclerations, Cancelled) {
   ASSERT_EQ("test_message 0", cancelled.msg());
 }
 
-}  // namespace error
-}  // namespace gml
+}  // namespace gml::error

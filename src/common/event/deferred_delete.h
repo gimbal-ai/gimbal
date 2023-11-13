@@ -21,8 +21,7 @@
 
 #include <memory>
 
-namespace gml {
-namespace event {
+namespace gml::event {
 
 /**
  * If an object derives from this class, it can be passed to the dispatcher who guarantees to delete
@@ -36,5 +35,4 @@ class DeferredDeletable {
 
 using DeferredDeletableUPtr = std::unique_ptr<DeferredDeletable>;
 
-}  // namespace event
-}  // namespace gml
+}  // namespace gml::event
