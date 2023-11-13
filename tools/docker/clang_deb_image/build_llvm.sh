@@ -281,7 +281,11 @@ build_full_clang() {
   projects_to_build="clang;clang-tools-extra;polly;llvm;lld;compiler-rt"
   target_archs="X86;AArch64"
   extra_cmake_options+=("-DLLVM_STATIC_LINK_CXX_STDLIB=ON")
-  extra_patches+=("/patches/install_tblgen.15.0.6.patch")
+  extra_patches+=(
+    "/patches/install_tblgen.15.0.6.patch"
+    # Patch backported to 15.0.6 from https://reviews.llvm.org/D158929, to add exit code to clang-tidy-diff.py.
+    "/patches/clang_tidy_diff.15.0.6.patch"
+  )
   run_llvm_build
 }
 
@@ -312,7 +316,10 @@ build_minimal_clang() {
     "-DCLANG_PLUGIN_SUPPORT=OFF")
   extra_patches+=(
     "/patches/static_tinfo.15.0.6.patch"
-    "/patches/disable_shared_libclang.15.0.6.patch")
+    "/patches/disable_shared_libclang.15.0.6.patch"
+    # Patch backported to 15.0.6 from https://reviews.llvm.org/D158929, to add exit code to clang-tidy-diff.py.
+    "/patches/clang_tidy_diff.15.0.6.patch"
+  )
   target_ldflags="${target_ldflags} -static-libgcc"
   with_host_tblgen
   run_llvm_build

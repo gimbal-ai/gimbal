@@ -1,3 +1,19 @@
+diff --git a/aspects.bzl b/aspects.bzl
+index 616f0ee..7de5a48 100644
+--- a/aspects.bzl
++++ b/aspects.bzl
+@@ -91,9 +91,11 @@ def _get_compile_flags(dep):
+     options = []
+     compilation_context = dep[CcInfo].compilation_context
+     for define in compilation_context.defines.to_list():
++        define = define.replace('"', '\\"')
+         options.append("-D\"{}\"".format(define))
+ 
+     for define in compilation_context.local_defines.to_list():
++        define = define.replace('"', '\\"')
+         options.append("-D\"{}\"".format(define))
+ 
+     for system_include in compilation_context.system_includes.to_list():
 diff --git a/generate.py b/generate.py
 index b7764b1..32f08a5 100755
 --- a/generate.py

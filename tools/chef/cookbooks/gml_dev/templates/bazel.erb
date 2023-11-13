@@ -28,7 +28,7 @@ fi;
 # Don't send a config value by default.
 config=
 # Check if comamnd is either build, test, run.
-if [[ "$1" == "build" || "$1" == "test" || "$1" == "run" ]]; then
+if [[ "$1" == "build" || "$1" == "test" || "$1" == "run" || "$1" == "cquery" || "$1" == "aquery" ]]; then
   # Check and see if a config parameter is specified, otherwise set the config to be the default "x86_64_sysroot".
   if [[ ! "$@" =~ "--config" ]]; then
     config="--config=x86_64_sysroot"

@@ -112,121 +112,121 @@ REPOSITORY_LOCATIONS = dict(
         urls = ["https://github.com/oneapi-src/oneTBB/archive/e6104c9599f7f10473caf545199f7468c0a8e52f.tar.gz"],
     ),
     com_llvm_clang_15 = dict(
-        sha256 = "ea768e03b0b3d60994ca884f1316e43dbd8f672307f6e6ae33a2f4747f394af0",
+        sha256 = "3383bc528091462ec707ce21ef6d595d396ff6f04e6776b5735e5e1234d0a33d",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231106153411/clang-min-15.0-20231106153411.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231108142731/clang-min-15.0-20231108142731.tar.gz",
         ],
         manual_license_name = "llvm/llvm-project",
     ),
     com_llvm_lib_x86_64_glibc_host = dict(
-        sha256 = "83970e217fe62d05260f0523985fba31a9c47d3c89b34edcd17dee41921a46d5",
+        sha256 = "a242a754a4b26cf90872bf2d5bbc4d8518b60ebbcf8294ddef3a79ff362bd47a",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231106153411/llvm-15.0-20231106153411-libstdc%2B%2B.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231108142731/llvm-15.0-20231108142731-libstdc%2B%2B.tar.gz",
         ],
         manual_license_name = "llvm/llvm-project",
     ),
     com_llvm_lib_libcpp_x86_64_glibc_host = dict(
-        sha256 = "e55e4bcfbb4d676248bd4ddfde098599f91af4b2070ae9ea623a246b5efdfad6",
+        sha256 = "bf5a068624251e6eeb7cddaaa7b04b2781a947bc3086d6f193d7ddffafa9641a",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231106153411/llvm-15.0-20231106153411-libcxx.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231108142731/llvm-15.0-20231108142731-libcxx.tar.gz",
         ],
         manual_license_name = "llvm/llvm-project",
     ),
     com_llvm_lib_libcpp_x86_64_glibc_host_asan = dict(
-        sha256 = "f256f416ab885190d951a9731bb72a5374b44e3c9322ba8e45a842336dc16f82",
+        sha256 = "89ddad42e60c63f4e81770a175325fa43d2ec9624d6502a11abaec1ef76946a9",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231106153411/llvm-15.0-20231106153411-libcxx-asan.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231108142731/llvm-15.0-20231108142731-libcxx-asan.tar.gz",
         ],
         manual_license_name = "llvm/llvm-project",
     ),
     com_llvm_lib_libcpp_x86_64_glibc_host_msan = dict(
-        sha256 = "b12d5741a9b902966dbe990247af995911d2e52f7cd5f83a8de0d2eaf3a456d5",
+        sha256 = "4fc31a499eed4fa0acbe164fbb14c5ec7de5e56c325e565155a4811f4fe44449",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231106153411/llvm-15.0-20231106153411-libcxx-msan.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231108142731/llvm-15.0-20231108142731-libcxx-msan.tar.gz",
         ],
         manual_license_name = "llvm/llvm-project",
     ),
     com_llvm_lib_libcpp_x86_64_glibc_host_tsan = dict(
-        sha256 = "36378509e726378ad919c7833472418ed6191957b4ad8bc885a5a277203b1339",
+        sha256 = "db11bbad23a4430ad660777c2bf5a0049f0243f3c021011c301d8c555e4939b7",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231106153411/llvm-15.0-20231106153411-libcxx-tsan.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231108142731/llvm-15.0-20231108142731-libcxx-tsan.tar.gz",
         ],
         manual_license_name = "llvm/llvm-project",
     ),
     com_llvm_lib_x86_64_glibc2_36 = dict(
-        sha256 = "8e58326130a122bfeee2cd725d358174639d03031b51678de4c5bb471aaa4269",
+        sha256 = "191ae1ca61f09345f9cee71eef8bb11b2c5f5d4426095773374757ecb932153a",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231106153411/llvm-15.0-20231106153411-libstdc++-x86_64-sysroot.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231108142731/llvm-15.0-20231108142731-libstdc++-x86_64-sysroot.tar.gz",
         ],
         manual_license_name = "llvm/llvm-project",
     ),
     com_llvm_lib_libcpp_x86_64_glibc2_36 = dict(
-        sha256 = "746f04c8704da88e8d992f852623c5c7b9339517f9af061f8bd9d70735a544c9",
+        sha256 = "fda709b8473d7cee09338b9fb316f313d0621b944350a213251eb5ff5e65e627",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231106153411/llvm-15.0-20231106153411-libcxx-x86_64-sysroot.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231108142731/llvm-15.0-20231108142731-libcxx-x86_64-sysroot.tar.gz",
         ],
         manual_license_name = "llvm/llvm-project",
     ),
     com_llvm_lib_libcpp_aarch64_glibc2_31 = dict(
-        sha256 = "3df31fb9c82c7c5511189bcd82b8ba28dcc5b195863274799e90cd46f846cb63",
+        sha256 = "7c03edc88613e4f69d0b09cc5f7a4d466d83b4aa584079d226d07751a0561aca",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231106153411/llvm-15.0-20231106153411-libcxx-jetson-sysroot.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231108142731/llvm-15.0-20231108142731-libcxx-jetson-sysroot.tar.gz",
         ],
         manual_license_name = "llvm/llvm-project",
     ),
     com_llvm_lib_aarch64_glibc2_36 = dict(
-        sha256 = "916b654e3ca1400fa47fcd6fb1fb76b2d3b05deef7f9c6124bf4ceb6ba3e0f7b",
+        sha256 = "48a28c1ba2ee1e93dcef38e6d19c4e74059bc046440e897bd00f6fea209c80e9",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231106153411/llvm-15.0-20231106153411-libstdc++-aarch64-sysroot.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231108142731/llvm-15.0-20231108142731-libstdc++-aarch64-sysroot.tar.gz",
         ],
         manual_license_name = "llvm/llvm-project",
     ),
     com_llvm_lib_libcpp_aarch64_glibc2_36 = dict(
-        sha256 = "c7e7ed45e543caf7ea098829adc3fcbf249124f55380eeb597cf51b72dbc4dd1",
+        sha256 = "5f0708bc3ce9c794ec879c4439909c4a8514236cf6c3ebfb0b44283eca8f4448",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231106153411/llvm-15.0-20231106153411-libcxx-aarch64-sysroot.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231108142731/llvm-15.0-20231108142731-libcxx-aarch64-sysroot.tar.gz",
         ],
         manual_license_name = "llvm/llvm-project",
     ),
     com_llvm_libcxx_x86_64_glibc_host = dict(
-        sha256 = "3ed4cc0601cd3b86e85a07d445c71125e5f22730e53c17486da545071a09ed82",
+        sha256 = "ef0c8958d7fb3752d97a88496a70c591043360100c2aaccf120c0ce22a2ee3db",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231106153411/libcxx-15.0-20231106153411.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231108142731/libcxx-15.0-20231108142731.tar.gz",
         ],
         manual_license_name = "llvm/llvm-project",
     ),
     com_llvm_libcxx_x86_64_glibc2_36 = dict(
-        sha256 = "3df795d6c373bc39a0e5da701f51cb5304127da15ae0683076b023fb04f31d19",
+        sha256 = "c4119805a87b596848d2f6cfe90e5b873ec223962b3a07fe25e01b5640a01b3a",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231106153411/libcxx-15.0-20231106153411-x86_64-sysroot.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231108142731/libcxx-15.0-20231108142731-x86_64-sysroot.tar.gz",
         ],
         manual_license_name = "llvm/llvm-project",
     ),
     com_llvm_libcxx_aarch64_glibc2_36 = dict(
-        sha256 = "51181a642c73672e1847027d65c5a09b047f1df64d73d01b30714d99584454a7",
+        sha256 = "c2254beb98c99d769542ad407654e7e5b30d2661c80af6e123b92b4b0395d275",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231106153411/libcxx-15.0-20231106153411-aarch64-sysroot.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231108142731/libcxx-15.0-20231108142731-aarch64-sysroot.tar.gz",
         ],
         manual_license_name = "llvm/llvm-project",
     ),
     com_llvm_libcxx_aarch64_glibc2_31 = dict(
-        sha256 = "f06d6d8dcd3759f8b6521c7cd9acd9501d7c94f14f4b85ad32652653d606d17f",
+        sha256 = "6a3c1b6d4094a42ff333ff3a6dea8d4bd44ef5e9a3896dada8673a76d70496ca",
         strip_prefix = "",
         urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231106153411/libcxx-15.0-20231106153411-jetson-sysroot.tar.gz",
+            "https://storage.googleapis.com/gimlet-dev-infra-public/clang/15.0-20231108142731/libcxx-15.0-20231108142731-jetson-sysroot.tar.gz",
         ],
         manual_license_name = "llvm/llvm-project",
     ),

@@ -20,8 +20,8 @@ if !platform_family?("debian")
 end
 
 # TODO(zasgar): Replace with gml versions.
-default["clang-linters"]["version"]    = "15.0-20230921235320"
+default["clang-linters"]["version"]    = "15.0-20231108142731"
 default["clang-linters"]["deb"]        =
   "https://storage.googleapis.com/gimlet-dev-infra-public/clang/#{default['clang-linters']['version']}/clang-linters-#{default['clang-linters']['version']}.deb"
 default["clang-linters"]["deb_sha256"] =
-  "d1b57b13c22942fc254b0eabcbdb5f2c8f4c1f5102cb4487c267282f10a78c7f"
+  "fdcfc2b522227f4cb13de75f475f4268eed9f44c9b95a88ab814e11481a0d72e"

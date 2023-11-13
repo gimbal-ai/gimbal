@@ -19,11 +19,11 @@ if !platform_family?("debian")
   return
 end
 
-default["clang"]["version"]    = "15.0-20230921235320"
+default["clang"]["version"]    = "15.0-20231108142731"
 default["clang"]["deb"]        =
   "https://storage.googleapis.com/gimlet-dev-infra-public/clang/#{default['clang']['version']}/clang-#{default['clang']['version']}.deb"
 default["clang"]["deb_sha256"] =
-  "f5763d7be26a6b735d9c40ab598c401ac601e767cdfd5b170b7586cc7227d64d"
+  "6e9f167dff3b5e5dc07361b6ce31b14636b820a4895d31cb5d65efe4a638f097"
 
 # default['gperftools']['version']    = '2.10-pl1'
 # default['gperftools']['deb']        =
