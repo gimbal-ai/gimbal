@@ -155,6 +155,8 @@ service FleetMgrService {
   rpc ListFleets(ListFleetsRequest) returns (ListFleetsResponse);
   // UpdateDevice updates information about a device, such as its tags.
   rpc UpdateDevice(UpdateDeviceRequest) returns (UpdateDeviceResponse);
+  // UpdateFleet updates information about a fleet, such as its name, description and tags.
+  rpc UpdateFleet(UpdateFleetRequest) returns (UpdateFleetResponse);
 }
 
 // FleetMgrEdgeService is responsible for communicating with the devices about their state.
@@ -169,3 +171,9 @@ service FleetMgrEdgeService {
   // ListDevices lists the edge devices in a fleet.
   rpc ListDevices(ListDevicesRequest) returns (ListDevicesResponse);
 }
+
+message UpdateFleetRequest {
+  FleetInfo fleet = 1;
+}
+
+message UpdateFleetResponse {}
