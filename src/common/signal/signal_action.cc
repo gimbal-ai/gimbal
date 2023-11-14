@@ -61,8 +61,9 @@ void SignalAction::RegisterFatalErrorHandler(const FatalErrorHandlerInterface& h
 void SignalAction::SigHandler(int sig, siginfo_t* info, void* ucontext) {
   // Don't dump stack trace for term signal.
   if (sig != SIGTERM) {
-    LOG(ERROR) << absl::StrFormat("Caught %s, suspect faulting address %p. Trace:", strsignal(sig),
-                                  info->si_addr);
+    ErrLog(absl::StrFormat("Caught %s, suspect faulting address %p. Trace:", strsignal(sig),
+                           info->si_addr)
+               .c_str());
 
     // First print out the current threads stack in as safe of a way as possible.
     threadstacks::BackwardsTrace tracer;
