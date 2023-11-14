@@ -21,11 +21,25 @@ package(default_visibility = [
 
 gml_cc_library(
     name = "cc_library",
+    srcs = [
+        "grpc_bridge.cc",
+    ],
     hdrs = [
         "gem_info.h",
+        "grpc_bridge.h",
+        "message_handler.h",
     ],
     deps = [
+        "//src/api/corepb/v1:corepb_cc_library",
+        "//src/common/event:cc_library",
+        "//src/common/signal:cc_library",
+        "//src/common/system:cc_library",
         "//src/common/uuid:cc_library",
+        "//src/controlplane/egw/egwpb/v1:egwpb_cc_library",
+        "//src/controlplane/egw/egwpb/v1:egwpb_grpc_cc_library",
+        "//src/controlplane/fleetmgr/fmpb/v1:fmpb_cc_library",
+        "//src/controlplane/fleetmgr/fmpb/v1:fmpb_grpc_cc_library",
         "@com_github_rlyeh_sole//:sole",
+        "@com_intel_tbb//:tbb",
     ],
 )
