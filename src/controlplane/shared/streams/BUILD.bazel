@@ -17,15 +17,14 @@ load("@gml//bazel:gml_build_system.bzl", "gml_go_test")
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
-    name = "msgbus",
-    srcs = [
-        "jetstream.go",
-        "nats.go",
-    ],
-    importpath = "gimletlabs.ai/gimlet/src/shared/services/msgbus",
+    name = "streams",
+    srcs = ["streams.go"],
+    importpath = "gimletlabs.ai/gimlet/src/controlplane/shared/streams",
     visibility = ["//visibility:public"],
     deps = [
-        "@com_github_cenkalti_backoff_v4//:backoff",
+        "//src/api/corepb/v1:corepb_go_proto",
+        "//src/controlplane/shared/edgepartition",
+        "//src/shared/services/msgbus",
         "@com_github_nats_io_nats_go//:nats_go",
         "@com_github_nats_io_nats_go//jetstream",
         "@com_github_sirupsen_logrus//:logrus",
@@ -35,12 +34,17 @@ go_library(
 )
 
 gml_go_test(
-    name = "msgbus_test",
-    srcs = ["jetstream_test.go"],
+    name = "streams_test",
+    srcs = ["streams_test.go"],
     deps = [
-        ":msgbus",
+        ":streams",
+        "//src/api/corepb/v1:corepb_go_proto",
+        "//src/controlplane/shared/edgepartition",
+        "//src/shared/services/msgbus",
         "//src/shared/services/natstest",
+        "@com_github_gofrs_uuid_v5//:uuid",
         "@com_github_nats_io_nats_go//jetstream",
+        "@com_github_spf13_viper//:viper",
         "@com_github_stretchr_testify//assert",
         "@com_github_stretchr_testify//require",
     ],
