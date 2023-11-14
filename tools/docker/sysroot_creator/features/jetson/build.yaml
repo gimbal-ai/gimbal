@@ -3,3 +3,13 @@ include:
 - libnvinfer-dev (= 8.5.2-1+cuda11.4)
 - libnvinfer-plugin8 (= 8.5.2-1+cuda11.4)
 - libnvonnxparsers-dev (= 8.5.2-1+cuda11.4)
+- nvidia-l4t-camera
+- nvidia-l4t-core
+- nvidia-l4t-cuda
+- nvidia-l4t-jetson-multimedia-api
+- nvidia-l4t-kernel-headers
+- nvidia-l4t-multimedia
+- nvidia-l4t-multimedia-utils
+exclude:
+- libgstreamer-plugins-bad1.0-0
+- systemd

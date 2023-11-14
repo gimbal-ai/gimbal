@@ -1,18 +1,9 @@
 ---
 include:
-- libnvinfer8 (= 8.5.2-1+cuda11.4)
-- libnvinfer-plugin8 (= 8.5.2-1+cuda11.4)
-- libnvonnxparsers8 (= 8.5.2-1+cuda11.4)
-- nvidia-l4t-camera
-- nvidia-l4t-core
-- nvidia-l4t-cuda
-- nvidia-l4t-jetson-multimedia-api
-- nvidia-l4t-kernel-headers
-- nvidia-l4t-multimedia
-- nvidia-l4t-multimedia-utils
-exclude:
-- libgstreamer-plugins-bad1.0-0
-- systemd
+# At runtime we mount all necessary nvidia libs from the host,
+# so we don't need anything beyond `default` here.
+# (with the exception of `ldconfig` which is required by nvidia's container runtime toolkit.
+- libc-bin
 package_databases:
 - name: jetson-common
   architectures:
