@@ -23,10 +23,12 @@ gml_cc_library(
     name = "cc_library",
     srcs = [
         "grpc_bridge.cc",
+        "heartbeat.cc",
     ],
     hdrs = [
         "gem_info.h",
         "grpc_bridge.h",
+        "heartbeat.h",
         "message_handler.h",
     ],
     deps = [
