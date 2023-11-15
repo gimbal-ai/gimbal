@@ -44,6 +44,10 @@ pnpm-install:
 jest: pnpm-install
 	cd src/ui && pnpm jest
 
+.PHONY: jestu
+jestu: pnpm-install
+	cd src/ui && pnpm jest -u
+
 .PHONY: devui
 devui: pnpm-install
 	cd src/ui && pnpm dev
