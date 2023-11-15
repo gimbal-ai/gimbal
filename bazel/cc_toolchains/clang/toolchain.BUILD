@@ -37,6 +37,7 @@ tool_paths = {
     "objcopy": "{toolchain_path}/bin/llvm-objcopy",
     "objdump": "{toolchain_path}/bin/llvm-objdump",
     "strip": "{toolchain_path}/bin/llvm-strip",
+    "clang-tidy": "{toolchain_path}/bin/clang-tidy",
 }
 
 includes = [

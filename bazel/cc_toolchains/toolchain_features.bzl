@@ -408,7 +408,17 @@ def _objcopy_action(ctx):
         ],
     )
 
-def _cpp_action(ctx):
+def _clangtidy_action(ctx):
+    tools = []
+    if "clang-tidy" in ctx.attr.tool_paths:
+        tools.append(tool(path = ctx.attr.tool_paths["clang-tidy"]))
+    return action_config(
+        action_name = "clang-tidy",
+        enabled = "clang-tidy" in ctx.attr.tool_paths,
+        tools = tools,
+    )
+
+def _cpreprocess_action(ctx):
     return action_config(
         action_name = "c-preprocess",
         enabled = True,
@@ -417,8 +427,20 @@ def _cpp_action(ctx):
         ],
     )
 
+def _cplusplus_action(ctx):
+    tools = []
+    if "c++" in ctx.attr.tool_paths:
+        tools.append(tool(path = ctx.attr.tool_paths["c++"]))
+    return action_config(
+        action_name = "c++",
+        enabled = "c++" in ctx.attr.tool_paths,
+        tools = tools,
+    )
+
 def gml_action_configs(ctx):
     return [
         _objcopy_action(ctx),
-        _cpp_action(ctx),
+        _cpreprocess_action(ctx),
+        _clangtidy_action(ctx),
+        _cplusplus_action(ctx),
     ]

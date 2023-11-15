@@ -22,6 +22,8 @@ import (
 	_ "github.com/bazelbuild/buildtools/build"
 	// Used for gazelle plugin.
 	_ "github.com/bmatcuk/doublestar"
+	// We use the yq cli for bazel commands.
+	_ "github.com/mikefarah/yq/v4/pkg/yqlib"
 	// Used by our proto libs.
 	_ "google.golang.org/protobuf/types/known/anypb"
 )

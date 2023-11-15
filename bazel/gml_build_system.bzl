@@ -22,6 +22,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_test")
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
 load("@rules_python//python:defs.bzl", "py_test")
 load("//bazel:lib.bzl", "default_arg")
+load("//bazel/clang_tidy:clang_tidy.bzl", "clang_tidy")
 
 def gml_copts():
     """Common options for gimlet build
@@ -42,9 +43,9 @@ def gml_copts():
     # Since abseil's BUILD.bazel doesn't provide any system 'includes', add them in manually here.
     # In contrast, libraries like googletest do provide includes, so no need to add those.
     manual_system_includes = [
-        "-isystem external/abseil-cpp~20230802.0",
-        "-isystem external/org_tensorflow",
-        "-isystem external/com_github_google_mediapipe",
+        "-isystemexternal/abseil-cpp~20230802.0",
+        "-isystemexternal/org_tensorflow",
+        "-isystemexternal/com_github_google_mediapipe",
     ]
 
     tcmalloc_flags = select({
@@ -143,19 +144,40 @@ def gml_cc_library_internal(name, **kwargs):
     linkstatic = kwargs.pop("linkstatic", True)
     defines = kwargs.pop("defines", [])
     features = kwargs.pop("features", [])
+    srcs = kwargs.pop("srcs", [])
+    hdrs = kwargs.pop("hdrs", [])
+    testonly = kwargs.pop("testonly", False)
 
     if tcmalloc_dep:
         deps += _tcmalloc_external_deps(repository)
 
+    copts = gml_copts() + copts
+    deps = deps + _default_external_deps()
+    defines = gml_defines() + defines
+    features = features + gml_default_features()
+
     cc_library(
         name = name,
-        copts = gml_copts() + copts,
-        deps = deps + _default_external_deps(),
+        copts = copts,
+        deps = deps,
+        srcs = srcs,
+        hdrs = hdrs,
         alwayslink = alwayslink,
         linkstatic = linkstatic,
-        defines = gml_defines() + defines,
-        features = features + gml_default_features(),
+        defines = defines,
+        features = features,
+        testonly = testonly,
         **kwargs
+    )
+
+    clang_tidy(
+        name = name + ".clangtidy",
+        srcs = srcs + hdrs,
+        library = ":" + name,
+        tags = ["manual"],
+        copts = copts,
+        features = features,
+        testonly = testonly,
     )
 
 def gml_cc_library(**kwargs):
@@ -265,12 +287,14 @@ def gml_cc_test_library(
         repository = "",
         tags = [],
         defines = []):
+    copts = gml_copts()
+    features = gml_default_features()
     cc_library(
         name = name,
         srcs = srcs,
         hdrs = hdrs,
         data = data,
-        copts = gml_copts(),
+        copts = copts,
         testonly = 1,
         deps = deps + [
             "@com_google_googletest//:gtest",
@@ -281,7 +305,17 @@ def gml_cc_test_library(
         visibility = visibility,
         alwayslink = 1,
         linkstatic = 1,
-        features = gml_default_features(),
+        features = features,
+    )
+
+    clang_tidy(
+        name = name + ".clangtidy",
+        srcs = srcs + hdrs,
+        library = ":" + name,
+        tags = ["manual"],
+        copts = copts,
+        features = features,
+        testonly = 1,
     )
 
 # PL C++ mock targets should be specified with this function.

@@ -23,10 +23,7 @@
 #include "src/common/testing/testing.h"
 #include "src/gem/calculators/plugin/opencv_cam/opencv_cam_calculator.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace opencv {
+namespace gml::gem::calculators::opencv {
 
 static constexpr char kGraph[] = R"pb(
   calculator: "OpenCVCamSourceCalculator"
@@ -43,7 +40,7 @@ static constexpr char kGraph[] = R"pb(
 // Note however, that the image check is not done in this test, since the camera
 // output will be different everytime.
 // TODO(oazizi): Investigate a loopback device to make the test deterministic.
-TEST(OpenCVCamSourceCalculator, capture_image) {
+TEST(OpenCVCamSourceCalculator, CaptureImage) {
   mediapipe::CalculatorRunner runner(kGraph);
 
   LOG(INFO) << "Running graph.";
@@ -65,7 +62,4 @@ TEST(OpenCVCamSourceCalculator, capture_image) {
   cv::imwrite(kOutFile, mediapipe::formats::MatView(&output_frame));
 }
 
-}  // namespace opencv
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::opencv

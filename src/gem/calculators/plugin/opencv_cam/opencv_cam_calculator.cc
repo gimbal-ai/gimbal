@@ -25,12 +25,9 @@
 #include <mediapipe/framework/formats/image_frame.h>
 #include <mediapipe/framework/formats/image_frame_opencv.h>
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace opencv {
+namespace gml::gem::calculators::opencv {
 
-// using ::gml::gem::calculators::argus::optionspb::OpenCVCamSourceCalculatorOptions;
+using ::gml::gem::calculators::opencv_cam::optionspb::OpenCVCamSourceCalculatorOptions;
 
 namespace {
 
@@ -125,7 +122,8 @@ absl::Status OpenCVCamSourceCalculator::Process(mediapipe::CalculatorContext* cc
 
   ++timestamp_;
 
-  if (options_.max_num_frames() > 0 && timestamp_ >= options_.max_num_frames()) {
+  if (options_.max_num_frames() > 0 &&
+      timestamp_ >= static_cast<int64_t>(options_.max_num_frames())) {
     return mediapipe::tool::StatusStop();
   }
 
@@ -139,7 +137,4 @@ absl::Status OpenCVCamSourceCalculator::Close(mediapipe::CalculatorContext* /* c
 
 REGISTER_CALCULATOR(OpenCVCamSourceCalculator);
 
-}  // namespace opencv
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::opencv

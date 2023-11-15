@@ -83,6 +83,7 @@ use_repo(
     "com_github_jarcoal_httpmock",
     "com_github_jmoiron_sqlx",
     "com_github_lestrrat_go_jwx_v2",
+    "com_github_mikefarah_yq_v4",
     "com_github_nats_io_nats_go",
     "com_github_nats_io_nats_server_v2",
     "com_github_ory_dockertest_v3",

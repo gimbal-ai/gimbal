@@ -67,6 +67,12 @@ filegroup(
 )
 
 filegroup(
+    name = "toolchain_clangtidy_files",
+    srcs = [":clangtidy"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
     name = "toolchain_include",
     srcs = glob([
         "{toolchain_path}/lib/clang/{clang_version}/include/**",
@@ -99,6 +105,13 @@ filegroup(
     ],
 )
 
+filegroup(
+    name = "clangtidy",
+    srcs = [
+        "{toolchain_path}/bin/clang-tidy",
+    ],
+)
+
 [
     filegroup(
         name = binary,
@@ -126,6 +139,7 @@ filegroup(
         ":toolchain_linker_files",
         ":toolchain_objcopy_files",
         ":toolchain_strip_files",
+        ":toolchain_clangtidy_files",
     ],
     visibility = ["//visibility:public"],
 )

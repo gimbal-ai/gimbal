@@ -13,17 +13,7 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "deps",
-    srcs = ["external.go"],
-    importpath = "gimletlabs.ai/gimlet/bazel/external/deps",
-    visibility = ["//visibility:public"],
-    deps = [
-        "@com_github_bazelbuild_buildtools//build",
-        "@com_github_bmatcuk_doublestar//:doublestar",
-        "@com_github_mikefarah_yq_v4//pkg/yqlib",
-        "@org_golang_google_protobuf//types/known/anypb",
-    ],
-)
+exports_files([
+    "generate_compilation_database.sh.tpl",
+    "run_clang_tidy.sh.tpl",
+])

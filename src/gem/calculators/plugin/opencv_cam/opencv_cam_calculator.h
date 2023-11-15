@@ -23,10 +23,7 @@
 #include "mediapipe/framework/formats/image_format.pb.h"
 #include "src/gem/calculators/plugin/opencv_cam/optionspb/opencv_cam_calculator_options.pb.h"
 
-namespace gml {
-namespace gem {
-namespace calculators {
-namespace opencv {
+namespace gml::gem::calculators::opencv {
 
 using ::gml::gem::calculators::opencv_cam::optionspb::OpenCVCamSourceCalculatorOptions;
 
@@ -42,7 +39,7 @@ class OpenCVCamSourceCalculator : public mediapipe::CalculatorBase {
 
   OpenCVCamSourceCalculatorOptions options_;
   std::unique_ptr<cv::VideoCapture> cap_;
-  uint64_t timestamp_;
+  int64_t timestamp_;
 
   mediapipe::ImageFormat::Format format_;
   cv::ColorConversionCodes color_conversion_;
@@ -50,7 +47,4 @@ class OpenCVCamSourceCalculator : public mediapipe::CalculatorBase {
   int32_t height_;
 };
 
-}  // namespace opencv
-}  // namespace calculators
-}  // namespace gem
-}  // namespace gml
+}  // namespace gml::gem::calculators::opencv

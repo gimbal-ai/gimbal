@@ -34,6 +34,7 @@ gml_cc_library(
         "tensor_traits.h",
     ],
     deps = [
+        "//src/api/corepb/v1:corepb_cc_library",
         "@com_github_google_mediapipe//mediapipe/framework/formats:yuv_image",
         "@com_github_google_mediapipe//mediapipe/util:image_frame_util",
     ],
