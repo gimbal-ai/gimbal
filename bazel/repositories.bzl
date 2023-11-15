@@ -18,7 +18,7 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("//bazel:deb_archive.bzl", "deb_archive")
 load("//bazel/cc_toolchains:deps.bzl", "cc_toolchain_config_repo")
-load(":repository_locations.bzl", "REPOSITORY_LOCATIONS")
+load(":repository_locations.bzl", "LOCAL_REPOSITORY_LOCATIONS", "REPOSITORY_LOCATIONS")
 
 # Make all contents of an external repository accessible under a filegroup.
 # Used for external HTTP archives, e.g. cares.
@@ -69,6 +69,25 @@ def _deb_repo(name, **kwargs):
         urls = location["urls"],
         sha256 = location["sha256"],
         strip_prefix = location.get("strip_prefix", ""),
+        **kwargs
+    )
+
+def _local_repo(name, **kwargs):  # buildifier: disable=unused-variable
+    # `existing_rule_keys` contains the names of repositories that have already
+    # been defined in the Bazel workspace. By skipping repos with existing keys,
+    # users can override dependency versions by using standard Bazel repository
+    # rules in their WORKSPACE files.
+    existing_rule_keys = native.existing_rules().keys()
+    if name in existing_rule_keys:
+        # This repository has already been defined, probably because the user
+        # wants to override the version. Do nothing.
+        return
+
+    location = LOCAL_REPOSITORY_LOCATIONS[name]
+
+    native.new_local_repository(
+        name = name,
+        path = location["path"],
         **kwargs
     )
 

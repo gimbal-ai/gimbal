@@ -358,3 +358,12 @@ REPOSITORY_LOCATIONS = dict(
         urls = ["https://github.com/openvinotoolkit/mlas/archive/7a35e48a723944972088627be1a8b60841e8f6a5.tar.gz"],
     ),
 )
+
+# To use a local repo for local development, add the path to point to your local directory below.
+#   ex: path = "/home/user/path/to/repo"
+# then replace `_bazel_repo(repo, ...)` with `_local_repo(repo, ...)` in `repositories.bzl`.
+LOCAL_REPOSITORY_LOCATIONS = dict(
+    com_example_repo = dict(
+        path = "/home/user/path/to_repo",
+    ),
+)
