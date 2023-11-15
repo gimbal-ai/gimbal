@@ -53,7 +53,7 @@ absl::Status NvBufSurfToImageFrameCalculator::Process(mediapipe::CalculatorConte
         absl::Substitute("Expecting 3 planes, but got $0.", surf_params.planeParams.num_planes));
   }
 
-  auto image_frame = std::make_unique<mediapipe::ImageFrame>(mediapipe::ImageFormat::SRGB,
+  auto image_frame = std::make_unique<mediapipe::ImageFrame>(mediapipe::ImageFormat::FORMAT_SRGB,
                                                              surf_params.width, surf_params.height);
 
   auto y_buf_ptr = reinterpret_cast<uint8_t*>(surf_params.mappedAddr.addr[0]);

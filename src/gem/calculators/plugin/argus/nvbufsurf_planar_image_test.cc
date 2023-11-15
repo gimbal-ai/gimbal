@@ -29,18 +29,18 @@ namespace gml::gem::calculators::args {
 using ::gml::gem::devices::argus::NvBufSurfaceWrapper;
 
 // Expect to find the Y, U and V planes in three files.
-// Currently, these are set to a location in /tmp because of how the
-// test is run manually in a container on the device.
-// TODO(oazizi): Fix these paths.
-char kBufYFilename[] = "/app/testdata/buf_y";
-char kBufUFilename[] = "/app/testdata/buf_u";
-char kBufVFilename[] = "/app/testdata/buf_v";
+constexpr std::string_view kBufYFilename = "src/gem/calculators/plugin/argus/testdata/buf_y";
+constexpr std::string_view kBufUFilename = "src/gem/calculators/plugin/argus/testdata/buf_u";
+constexpr std::string_view kBufVFilename = "src/gem/calculators/plugin/argus/testdata/buf_v";
 
 TEST(PlanarImageFor, NvBufSurfaceWrapper) {
   // Prepare an input image.
-  ASSERT_OK_AND_ASSIGN(std::string y_plane_buf, gml::ReadFileToString(kBufYFilename));
-  ASSERT_OK_AND_ASSIGN(std::string u_plane_buf, gml::ReadFileToString(kBufUFilename));
-  ASSERT_OK_AND_ASSIGN(std::string v_plane_buf, gml::ReadFileToString(kBufVFilename));
+  ASSERT_OK_AND_ASSIGN(std::string y_plane_buf,
+                       gml::ReadFileToString(testing::BazelRunfilePath(kBufYFilename)));
+  ASSERT_OK_AND_ASSIGN(std::string u_plane_buf,
+                       gml::ReadFileToString(testing::BazelRunfilePath(kBufUFilename)));
+  ASSERT_OK_AND_ASSIGN(std::string v_plane_buf,
+                       gml::ReadFileToString(testing::BazelRunfilePath(kBufVFilename)));
 
   NvBufSurface* nvbufsurface;
 

@@ -19,10 +19,12 @@
 
 #include <gtest/gtest.h>
 #include "src/common/base/base.h"
+#include "src/common/testing/test_environment.h"
 
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);
   gml::EnvironmentGuard env_guard(&argc, argv);
+  gml::testing::SetTestBinaryName(argv[0]);
   int retval = RUN_ALL_TESTS();
   return retval;
 }

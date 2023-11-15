@@ -45,6 +45,7 @@ gml_cc_library(
     name = "test_main",
     srcs = ["test_main.cc"],
     deps = [
+        ":cc_library",
         "@com_google_googletest//:gtest",
     ],
 )

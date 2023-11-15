@@ -32,6 +32,11 @@
 namespace gml::testing {
 
 /**
+ * Set the test's binary name. Used for determining the runfiles path
+ */
+void SetTestBinaryName(std::string_view name);
+
+/**
  * Returns the path to a runfile, specified by a path relative to ToT.
  * Path is valid when run through bazel.
  */

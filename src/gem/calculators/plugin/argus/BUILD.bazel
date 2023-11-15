@@ -13,9 +13,8 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("//bazel:gml_build_system.bzl", "gml_cc_test")
-load("//bazel:images.bzl", "gml_host_cuda_binary_image")
+load("//bazel:images.bzl", "gml_jetson_image")
 load("//src/gem/plugins:plugins.bzl", "gem_plugin_cc_library")
 
 package(default_visibility = [
@@ -53,7 +52,7 @@ gem_plugin_cc_library(
 gml_cc_test(
     name = "nvbufsurf_planar_image_test",
     srcs = [
-        "nvbufsurf_planar_image.cc",
+        "nvbufsurf_planar_image_test.cc",
     ],
     data = glob(["testdata/**/*"]),
     tags = ["manual"],
@@ -67,7 +66,7 @@ gml_cc_test(
 gml_cc_test(
     name = "nvbuf_to_image_frame_calculator_test",
     srcs = [
-        "nvbuf_to_image_frame_calculator.cc",
+        "nvbuf_to_image_frame_calculator_test.cc",
     ],
     data = glob(["testdata/**/*"]),
     tags = ["manual"],
@@ -92,59 +91,31 @@ gml_cc_test(
     ],
 )
 
-# Package the testdata so that the images below have access to them.
-pkg_tar(
-    name = "testdata",
-    srcs = glob(["testdata/**/*"]),
-    package_dir = "/app/testdata",
-)
-
-pkg_tar(
-    name = "ffmpeg_libs",
-    srcs = [
-        "@com_github_cisco_openh264//:shared_libs",
-        "@com_github_ffmpeg_ffmpeg//:shared_libs",
-    ],
-    package_dir = "/usr/lib/aarch64-linux-gnu",
-)
-
-gml_host_cuda_binary_image(
+gml_jetson_image(
     name = "nvbufsurf_planar_image_calculator_test_image",
     testonly = 1,
-    base = "//:cc_base_debug_image",
     binary = ":nvbufsurf_planar_image_test",
+    include_runfiles = True,
     multiarch = False,
     tags = ["manual"],
-    tars = [
-        ":testdata",
-        ":ffmpeg_libs",
-    ],
 )
 
 # Because the test needs to be run on the Jeston device, we put the tests into container images.
 # The images can then be deployed on the device as part of manually testing.
-gml_host_cuda_binary_image(
+gml_jetson_image(
     name = "nvbuf_to_image_frame_calculator_test_image",
     testonly = 1,
-    base = "//:cc_base_debug_image",
     binary = ":nvbuf_to_image_frame_calculator_test",
+    include_runfiles = True,
     multiarch = False,
     tags = ["manual"],
-    tars = [
-        ":testdata",
-        ":ffmpeg_libs",
-    ],
 )
 
-gml_host_cuda_binary_image(
+gml_jetson_image(
     name = "nvbuf_to_planar_image_calculator_test_image",
     testonly = 1,
-    base = "//:cc_base_debug_image",
     binary = ":nvbuf_to_planar_image_calculator_test",
+    include_runfiles = True,
     multiarch = False,
     tags = ["manual"],
-    tars = [
-        ":testdata",
-        ":ffmpeg_libs",
-    ],
 )
