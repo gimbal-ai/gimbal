@@ -26,6 +26,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	"golang.org/x/sync/errgroup"
 
 	"gimletlabs.ai/gimlet/src/api/corepb/v1"
 	"gimletlabs.ai/gimlet/src/controlplane/shared/edgepartition"
@@ -33,7 +34,7 @@ import (
 )
 
 func init() {
-	pflag.Int("jetstream_cluster_size", 5, "The number of JetStream replicas, used to configure stream replication.")
+	pflag.Int("jetstream_cluster_size", 3, "The number of JetStream replicas, used to configure stream replication.")
 }
 
 var defaultConsumerConfig = jetstream.ConsumerConfig{
@@ -45,6 +46,10 @@ var defaultConsumerConfig = jetstream.ConsumerConfig{
 
 var DurableStreamTopics = []corepb.EdgeCPTopic{
 	corepb.EDGE_CP_TOPIC_METRICS,
+}
+
+var EdgeCPTopicToStreamName = map[corepb.EdgeCPTopic]string{
+	corepb.EDGE_CP_TOPIC_METRICS: "metrics",
 }
 
 // MustConnectCPJetStream creates a new JetStream connection.
@@ -75,7 +80,7 @@ func getDurableStreams() []jetstream.StreamConfig {
 
 	return []jetstream.StreamConfig{
 		{
-			Name:     "metrics",
+			Name:     EdgeCPTopicToStreamName[corepb.EDGE_CP_TOPIC_METRICS],
 			MaxAge:   15 * time.Minute,
 			Replicas: clusterSize,
 			Subjects: []string{metricsTopic},
@@ -119,6 +124,10 @@ func InitializeConsumers(js jetstream.JetStream, serviceName string, streamName 
 	}
 
 	// Update or create any new consumers.
+	ctx, cancel = context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	createGroup, ctx := errgroup.WithContext(ctx)
+
 	for _, c := range consumers {
 		var config jetstream.ConsumerConfig
 		if c.Config == nil {
@@ -126,18 +135,23 @@ func InitializeConsumers(js jetstream.JetStream, serviceName string, streamName 
 		} else {
 			config = *c.Config
 		}
-
 		config.Durable = msgbus.FormatConsumerName(c.Subject, serviceName)
 		config.FilterSubject = c.Subject
 
-		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-		defer cancel()
-		_, err = js.CreateOrUpdateConsumer(ctx, streamName, config)
-		if err != nil {
-			return err
-		}
 		// Track which existing consumers should still exist.
 		updatedConsumerMap[config.Durable] = true
+
+		createGroup.Go(func() error {
+			_, err = js.CreateOrUpdateConsumer(ctx, streamName, config)
+			if err != nil {
+				return err
+			}
+			return nil
+		})
+	}
+
+	if err := createGroup.Wait(); err != nil {
+		return err
 	}
 
 	// Delete any old, unused consumers.
@@ -152,6 +166,29 @@ func InitializeConsumers(js jetstream.JetStream, serviceName string, streamName 
 		if err != nil {
 			return err
 		}
+	}
+
+	return nil
+}
+
+func InitializeConsumersForPartition(consumerName string, js jetstream.JetStream, topic corepb.EdgeCPTopic, config *jetstream.ConsumerConfig) error {
+	consumers := make([]*CPConsumer, 0)
+	partitions := edgepartition.GenerateRange()
+	for _, p := range partitions {
+		sub, err := edgepartition.EdgeToCPNATSPartitionTopic(p, topic, true)
+		if err != nil {
+			return err
+		}
+
+		consumers = append(consumers, &CPConsumer{
+			Subject: sub,
+			Config:  config,
+		})
+	}
+
+	err := InitializeConsumers(js, consumerName, EdgeCPTopicToStreamName[topic], consumers)
+	if err != nil {
+		return err
 	}
 
 	return nil

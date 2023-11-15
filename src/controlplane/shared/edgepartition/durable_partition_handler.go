@@ -72,6 +72,7 @@ func (p *DurablePartitionHandler) startDurablePartitionHandler(partition string)
 	if err != nil {
 		return err
 	}
+
 	topicLog := log.WithField("topic", topic)
 	sub, err := p.js.PersistentSubscribe(topic, p.consumer, func(msg jetstream.Msg) {
 		e2CpMsg := &corepb.EdgeCPMessage{}
