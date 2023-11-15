@@ -21,16 +21,9 @@ package(default_visibility = ["//src:__subpackages__"])
 
 gml_cc_library(
     name = "cc_library",
-    srcs = glob(
-        [
-            "*.h",
-            "*.cc",
-        ],
-        exclude = [
-            "**/*_test.cc",
-            "**/*_benchmark.cc",
-        ],
-    ),
+    srcs = [
+        "uuid_utils.h",
+    ],
     hdrs = ["uuid.h"],
     deps = [
         "@com_github_rlyeh_sole//:sole",

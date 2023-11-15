@@ -21,11 +21,14 @@ package(default_visibility = ["//src:__subpackages__"])
 
 gml_cc_library(
     name = "cc_library",
-    srcs = glob(
-        ["*.cc"],
-        exclude = ["**/*_test.cc"],
-    ),
-    hdrs = glob(["*.h"]),
+    srcs = [
+        "signal_action.cc",
+    ],
+    hdrs = [
+        "fatal_handler.h",
+        "signal.h",
+        "signal_action.h",
+    ],
     deps = [
         "//src/common/system:cc_library",
         "@com_github_thoughtspot_threadstacks//threadstacks:signal_handler",

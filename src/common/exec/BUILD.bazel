@@ -21,11 +21,14 @@ package(default_visibility = ["//src:__subpackages__"])
 
 gml_cc_library_internal(
     name = "cc_library",
-    srcs = glob(
-        ["*.cc"],
-        exclude = ["**/*_test.cc"],
-    ),
-    hdrs = glob(["*.h"]),
+    srcs = [
+        "exec.cc",
+        "subprocess.cc",
+    ],
+    hdrs = [
+        "exec.h",
+        "subprocess.h",
+    ],
     deps = [
         "//src/common/base:cc_library",
         "//src/common/system:cc_library",

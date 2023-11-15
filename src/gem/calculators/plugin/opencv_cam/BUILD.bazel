@@ -25,7 +25,6 @@ gem_plugin_cc_library(
     name = "cc_library",
     srcs = [
         "opencv_cam_calculator.cc",
-        "opencv_cam_calculator.h",
     ],
     hdrs = ["opencv_cam_calculator.h"],
     plugin_name = "opencv_cam",

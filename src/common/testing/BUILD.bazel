@@ -23,16 +23,16 @@ package(default_visibility = [
 
 gml_cc_library(
     name = "cc_library",
-    srcs = glob(
-        [
-            "*.h",
-            "*.cc",
-        ],
-        exclude = [
-            "**/*_test.cc",
-            "test_main.cc",
-        ],
-    ),
+    srcs = [
+        "line_diff.cc",
+        "line_diff.h",
+        "matchers.h",
+        "protobuf.h",
+        "status.h",
+        "temp_dir.h",
+        "test_environment.cc",
+        "test_environment.h",
+    ],
     hdrs = ["testing.h"],
     deps = [
         "//src/common/fs:cc_library",

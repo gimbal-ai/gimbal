@@ -21,14 +21,15 @@ package(default_visibility = ["//src:__subpackages__"])
 
 gml_cc_library(
     name = "cc_library",
-    srcs = glob(
-        [
-            "*.h",
-            "*.cc",
-        ],
-        exclude = ["**/*_test.cc"],
-    ),
-    hdrs = glob(["*.h"]),
+    srcs = [
+        "logger.cc",
+        "service_descriptor_database.cc",
+    ],
+    hdrs = [
+        "logger.h",
+        "service_descriptor_database.h",
+        "utils.h",
+    ],
     deps = [
         "@com_github_grpc_grpc//:grpc++",
     ],

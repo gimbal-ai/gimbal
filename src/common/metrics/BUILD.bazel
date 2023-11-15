@@ -23,7 +23,6 @@ gml_cc_library(
     name = "cc_library",
     srcs = [
         "metrics_system.cc",
-        "metrics_system.h",
     ],
     hdrs = ["metrics_system.h"],
     deps = [

@@ -23,13 +23,16 @@ package(default_visibility = [
 
 gml_cc_library_internal(
     name = "cc_library",
-    srcs = glob(
-        [
-            "*.h",
-            "*.cc",
-        ],
-        exclude = ["**/*_test.cc"],
-    ),
+    srcs = [
+        "elapsed_timer.h",
+        "memory_tracker.cc",
+        "memory_tracker.h",
+        "profiler.cc",
+        "profiler.h",
+        "scoped_profiler.h",
+        "scoped_timer.h",
+        "tcmalloc.h",
+    ],
     hdrs = ["perf.h"],
     tcmalloc_dep = True,
     deps = [

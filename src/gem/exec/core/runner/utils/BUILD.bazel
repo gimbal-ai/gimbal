@@ -24,7 +24,6 @@ gml_cc_library(
     name = "cc_library",
     srcs = [
         "mp_to_otel_metrics.cc",
-        "mp_to_otel_metrics.h",
     ],
     hdrs = ["mp_to_otel_metrics.h"],
     deps = [

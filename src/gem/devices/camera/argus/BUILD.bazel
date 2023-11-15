@@ -24,13 +24,9 @@ package(default_visibility = [
 
 gem_plugin_cc_library(
     name = "cc_library",
-    srcs = glob(
-        [
-            "*.h",
-            "*.cc",
-        ],
-        exclude = ["argus_cam_binary.cc"],
-    ),
+    srcs = [
+        "argus_cam.cc",
+    ],
     hdrs = ["argus_cam.h"],
     plugin_name = "argus",
     deps = [

@@ -21,18 +21,17 @@ package(default_visibility = ["//src:__subpackages__"])
 
 gml_cc_library(
     name = "cc_library",
-    srcs = glob(
-        [
-            "*.h",
-            "*.cc",
-        ],
-        exclude = [
-            "**/*_mock.h",
-            "**/*_test.cc",
-            "**/*_benchmark.cc",
-            "socket_info_tool.cc",
-        ],
-    ),
+    srcs = [
+        "config.h",
+        "linux_file_wrapper.cc",
+        "linux_file_wrapper.h",
+        "mac_address.cc",
+        "mac_address.h",
+        "proc_parser.cc",
+        "proc_parser.h",
+        "proc_pid_path.cc",
+        "proc_pid_path.h",
+    ],
     hdrs = ["system.h"],
     deps = [
         "//src/common/fs:cc_library",

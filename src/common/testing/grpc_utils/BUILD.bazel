@@ -21,8 +21,8 @@ package(default_visibility = ["//src:__subpackages__"])
 
 gml_cc_library(
     name = "cc_library",
-    srcs = glob(["*.cc"]),
-    hdrs = glob(["*.h"]),
+    srcs = ["grpc_utils.cc"],
+    hdrs = ["grpc_utils.h"],
     deps = [
         "@com_github_grpc_grpc//:grpc++",
     ],

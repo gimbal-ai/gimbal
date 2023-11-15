@@ -26,11 +26,8 @@ gem_plugin_cc_library(
     name = "cc_library",
     srcs = [
         "argus_cam_calculator.cc",
-        "argus_cam_calculator.h",
         "nvbuf_to_image_frame_calculator.cc",
-        "nvbuf_to_image_frame_calculator.h",
         "nvbuf_to_planar_image_calculator.cc",
-        "nvbuf_to_planar_image_calculator.h",
         "nvbufsurf_planar_image.cc",
     ],
     hdrs = [

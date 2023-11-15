@@ -21,13 +21,25 @@ package(default_visibility = ["//src:__subpackages__"])
 
 gml_cc_library(
     name = "cc_library",
-    srcs = glob(
-        ["*.cc"],
-        exclude = [
-            "*_test.cc",
-        ],
-    ),
-    hdrs = glob(["*.h"]),
+    srcs = [
+        "api_impl.cc",
+        "api_impl.h",
+        "libuv.cc",
+        "nats.cc",
+        "real_time_system.cc",
+    ],
+    hdrs = [
+        "api.h",
+        "deferred_delete.h",
+        "dispatcher.h",
+        "event.h",
+        "libuv.h",
+        "nats.h",
+        "real_time_system.h",
+        "task.h",
+        "time_system.h",
+        "timer.h",
+    ],
     deps = [
         "//bazel/external:libuv",
         "//bazel/external:natsc",

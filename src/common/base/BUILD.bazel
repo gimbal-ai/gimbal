@@ -24,17 +24,32 @@ package(default_visibility = [
 
 gml_cc_library_internal(
     name = "cc_library",
-    srcs = glob(
-        ["*.cc"],
-        exclude = [
-            "**/*_test.cc",
-            "**/*_benchmark.cc",
-        ],
-    ),
-    hdrs = glob(
-        ["*.h"],
-        exclude = ["test_utils.h"],
-    ),
+    srcs = [
+        "env.cc",
+        "file.cc",
+        "status.cc",
+    ],
+    hdrs = [
+        "arch.h",
+        "base.h",
+        "byte_utils.h",
+        "defer.h",
+        "enum_utils.h",
+        "env.h",
+        "error.h",
+        "error_strings.h",
+        "file.h",
+        "hash_utils.h",
+        "logging.h",
+        "macros.h",
+        "mixins.h",
+        "status.h",
+        "statusor.h",
+        "thread.h",
+        "time.h",
+        "types.h",
+        "utils.h",
+    ],
     deps = [
         "//src/common/typespb:typespb_cc_library",
         "@com_google_absl//absl/status",
