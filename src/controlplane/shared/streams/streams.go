@@ -43,6 +43,10 @@ var defaultConsumerConfig = jetstream.ConsumerConfig{
 	MaxAckPending: 50,
 }
 
+var DurableStreamTopics = []corepb.EdgeCPTopic{
+	corepb.EDGE_CP_TOPIC_METRICS,
+}
+
 // MustConnectCPJetStream creates a new JetStream connection.
 func MustConnectCPJetStream(nc *nats.Conn) jetstream.JetStream {
 	js := msgbus.MustConnectJetStream(nc)
