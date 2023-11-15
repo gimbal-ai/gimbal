@@ -106,11 +106,6 @@ REPOSITORY_LOCATIONS = dict(
             "https://github.com/protocolbuffers/protobuf-javascript/archive/refs/tags/v3.21.2.tar.gz",
         ],
     ),
-    com_intel_tbb = dict(
-        sha256 = "91eab849ab1442db72317f8c968c5a1010f8546ca35f26086201262096c8a8a9",
-        strip_prefix = "oneTBB-e6104c9599f7f10473caf545199f7468c0a8e52f",
-        urls = ["https://github.com/oneapi-src/oneTBB/archive/e6104c9599f7f10473caf545199f7468c0a8e52f.tar.gz"],
-    ),
     com_llvm_clang_15 = dict(
         sha256 = "3383bc528091462ec707ce21ef6d595d396ff6f04e6776b5735e5e1234d0a33d",
         urls = [
@@ -346,6 +341,16 @@ REPOSITORY_LOCATIONS = dict(
         sha256 = "09c208a21fb1159d114a3ea15dc1bcc5dee28eb39907ba72a6012d2c7b7564a0",
         strip_prefix = "opentelemetry-cpp-1.12.0",
         urls = ["https://github.com/open-telemetry/opentelemetry-cpp/archive/refs/tags/v1.12.0.tar.gz"],
+    ),
+    com_github_oneapi_oneTBB = dict(
+        sha256 = "487023a955e5a3cc6d3a0d5f89179f9b6c0ae7222613a7185b0227ba0c83700b",
+        strip_prefix = "oneTBB-2021.10.0",
+        urls = ["https://github.com/oneapi-src/oneTBB/archive/refs/tags/v2021.10.0.tar.gz"],
+    ),
+    com_github_openvinotoolkit_oneDNN = dict(
+        sha256 = "3c51d577f9e7e4cbd94ad08d267502953ec64513241dda6595b2608fafc8314c",
+        strip_prefix = "oneDNN-2ead5d4fe5993a797d9a7a4b8b5557b96f6ec90e",
+        urls = ["https://github.com/openvinotoolkit/oneDNN/archive/2ead5d4fe5993a797d9a7a4b8b5557b96f6ec90e.tar.gz"],
     ),
     com_github_openvinotoolkit_mlas = dict(
         sha256 = "b7fdd19523a88373d19fd8d5380f64c2834040fa50a6f0774acf08f3fa858daa",

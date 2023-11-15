@@ -45,7 +45,7 @@ gml_cc_library(
         "//src/controlplane/egw/egwpb/v1:egwpb_grpc_cc_library",
         "//src/controlplane/fleetmgr/fmpb/v1:fmpb_cc_library",
         "//src/controlplane/fleetmgr/fmpb/v1:fmpb_grpc_cc_library",
+        "@com_github_oneapi_oneTBB//:tbb",
         "@com_github_rlyeh_sole//:sole",
-        "@com_intel_tbb//:tbb",
     ],
 )
