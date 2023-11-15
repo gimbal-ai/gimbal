@@ -347,4 +347,9 @@ REPOSITORY_LOCATIONS = dict(
         strip_prefix = "opentelemetry-cpp-1.12.0",
         urls = ["https://github.com/open-telemetry/opentelemetry-cpp/archive/refs/tags/v1.12.0.tar.gz"],
     ),
+    com_github_openvinotoolkit_mlas = dict(
+        sha256 = "b7fdd19523a88373d19fd8d5380f64c2834040fa50a6f0774acf08f3fa858daa",
+        strip_prefix = "mlas-7a35e48a723944972088627be1a8b60841e8f6a5",
+        urls = ["https://github.com/openvinotoolkit/mlas/archive/7a35e48a723944972088627be1a8b60841e8f6a5.tar.gz"],
+    ),
 )
