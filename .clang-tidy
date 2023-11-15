@@ -12,8 +12,9 @@ Checks: >
   bugprone-*,
   modernize-*,
   performance-*,
-  -modernize-use-trailing-return-type,
-  -modernize-use-nodiscard,
   -clang-analyzer-cplusplus.NewDeleteLeaks,
   -clang-analyzer-optin*,
+  -modernize-avoid-bind,
+  -modernize-use-nodiscard,
+  -modernize-use-trailing-return-type,
 FormatStyle: google
