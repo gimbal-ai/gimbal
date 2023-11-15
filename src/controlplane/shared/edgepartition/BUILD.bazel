@@ -19,6 +19,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 go_library(
     name = "edgepartition",
     srcs = [
+        "durable_partition_handler.go",
         "partition.go",
         "partition_handler.go",
     ],
@@ -26,9 +27,11 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//src/api/corepb/v1:corepb_go_proto",
+        "//src/shared/services/msgbus",
         "@com_github_gofrs_uuid_v5//:uuid",
         "@com_github_gogo_protobuf//types",
         "@com_github_nats_io_nats_go//:nats_go",
+        "@com_github_nats_io_nats_go//jetstream",
         "@com_github_sirupsen_logrus//:logrus",
         "@com_github_spf13_pflag//:pflag",
         "@com_github_spf13_viper//:viper",
@@ -38,17 +41,20 @@ go_library(
 gml_go_test(
     name = "edgepartition_test",
     srcs = [
+        "durable_partition_handler_test.go",
         "partition_handler_test.go",
         "partition_test.go",
     ],
     deps = [
         ":edgepartition",
         "//src/api/corepb/v1:corepb_go_proto",
+        "//src/shared/services/msgbus",
         "//src/shared/services/natstest",
         "//src/shared/uuidutils",
         "@com_github_gofrs_uuid_v5//:uuid",
         "@com_github_gogo_protobuf//proto",
         "@com_github_gogo_protobuf//types",
+        "@com_github_nats_io_nats_go//jetstream",
         "@com_github_spf13_viper//:viper",
         "@com_github_stretchr_testify//assert",
         "@com_github_stretchr_testify//require",
