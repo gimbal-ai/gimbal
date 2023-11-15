@@ -23,11 +23,13 @@ proto_library(
     srcs = [
         "cp_edge.proto",
         "mediastream.proto",
+        "model_exec.proto",
     ],
     visibility = ["//visibility:public"],
     deps = [
         "//src/common/typespb:typespb_proto",
         "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_proto",
+        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_proto",
         "//third_party/github.com/open-telemetry/opentelemetry-proto/opentelemetry/proto/metrics/v1:v1_proto",
         "@com_google_protobuf//:any_proto",
         "@com_google_protobuf//:timestamp_proto",
@@ -39,15 +41,18 @@ proto_cc_library(
     srcs = [
         "cp_edge.pb.cc",
         "mediastream.pb.cc",
+        "model_exec.pb.cc",
     ],
     hdrs = [
         "cp_edge.pb.h",
         "mediastream.pb.h",
+        "model_exec.pb.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
         "//src/common/typespb:typespb_cc_library",
         "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_cc_library",
+        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_cc_library",
         "//third_party/github.com/open-telemetry/opentelemetry-proto/opentelemetry/proto/metrics/v1:v1_cc_library",
         "@com_google_protobuf//:protobuf",
     ],
@@ -60,6 +65,8 @@ proto_compile(
         "cp_edge.pb.h",
         "mediastream.pb.cc",
         "mediastream.pb.h",
+        "model_exec.pb.cc",
+        "model_exec.pb.h",
     ],
     plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
     proto = "corepb_proto",
@@ -71,10 +78,12 @@ proto_compile(
     output_mappings = [
         "cp_edge.pb.go=gimletlabs.ai/gimlet/src/api/corepb/v1/cp_edge.pb.go",
         "mediastream.pb.go=gimletlabs.ai/gimlet/src/api/corepb/v1/mediastream.pb.go",
+        "model_exec.pb.go=gimletlabs.ai/gimlet/src/api/corepb/v1/model_exec.pb.go",
     ],
     outputs = [
         "cp_edge.pb.go",
         "mediastream.pb.go",
+        "model_exec.pb.go",
     ],
     plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
     proto = "corepb_proto",
@@ -86,12 +95,14 @@ proto_go_library(
     srcs = [
         "cp_edge.pb.go",
         "mediastream.pb.go",
+        "model_exec.pb.go",
     ],
     importpath = "gimletlabs.ai/gimlet/src/api/corepb/v1",
     visibility = ["//visibility:public"],
     deps = [
         "//src/common/typespb:typespb_go_proto",
         "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_go_proto",
+        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_go_proto",
         "//third_party/github.com/open-telemetry/opentelemetry-proto/opentelemetry/proto/metrics/v1:v1_go_proto",
         "@com_github_gogo_protobuf//proto",
         "@com_github_gogo_protobuf//protoc-gen-gogo/descriptor",

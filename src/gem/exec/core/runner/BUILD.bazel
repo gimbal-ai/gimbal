@@ -27,8 +27,8 @@ gml_cc_library(
         "runner.h",
     ],
     deps = [
+        "//src/api/corepb/v1:corepb_cc_library",
         "//src/gem/plugins:cc_library",
-        "//src/gem/specpb:specpb_cc_library",
         "@com_github_google_mediapipe//mediapipe/calculators/image:image_transformation_calculator",
         "@com_github_google_mediapipe//mediapipe/calculators/video:opencv_video_decoder_calculator",
         "@com_github_google_mediapipe//mediapipe/calculators/video:opencv_video_encoder_calculator",

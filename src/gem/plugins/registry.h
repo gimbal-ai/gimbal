@@ -19,15 +19,17 @@
 
 #include <absl/container/flat_hash_map.h>
 
+#include "src/api/corepb/v1/model_exec.pb.h"
 #include "src/common/base/base.h"
 #include "src/gem/build/core/execution_context_builder.h"
 #include "src/gem/build/core/model_builder.h"
 #include "src/gem/exec/core/context.h"
 #include "src/gem/exec/core/model.h"
-#include "src/gem/specpb/model.pb.h"
 #include "src/gem/storage/blob_store.h"
 
 namespace gml::gem::plugins {
+
+using ::gml::internal::api::core::v1::ModelSpec;
 
 /**
  * BuilderRegistry is a template for creating a registry for an arbitrary Builder type.
@@ -82,7 +84,7 @@ class Registry {
 
   StatusOr<std::unique_ptr<exec::core::Model>> BuildModel(std::string_view name,
                                                           storage::BlobStore* store,
-                                                          const specpb::ModelSpec& spec) {
+                                                          const ModelSpec& spec) {
     return model_builders_.Build(name, store, spec);
   }
 
@@ -91,7 +93,7 @@ class Registry {
                   exec::core::Model*>
       exec_ctx_builders_;
   BuilderRegistry<build::core::ModelBuilder, exec::core::Model, storage::BlobStore*,
-                  const specpb::ModelSpec&>
+                  const ModelSpec&>
       model_builders_;
 };
 

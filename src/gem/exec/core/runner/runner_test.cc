@@ -22,12 +22,14 @@
 #include <mediapipe/framework/calculator_graph.h>
 #include <mediapipe/framework/calculator_registry.h>
 
+#include "src/api/corepb/v1/model_exec.pb.h"
 #include "src/common/testing/testing.h"
 #include "src/gem/exec/core/runner/runner.h"
 #include "src/gem/plugins/registry.h"
-#include "src/gem/specpb/execution.pb.h"
 
 namespace gml::gem::exec::core {
+
+using ::gml::internal::api::core::v1::ExecutionSpec;
 
 /**
  * OutputTextSidePacketCalculator outputs the string it's given as side packet STR, everytime an
@@ -75,7 +77,7 @@ graph {
 )pbtxt";
 
 TEST(Runner, RunSimpleGraphWithSidePacket) {
-  specpb::ExecutionSpec spec;
+  ExecutionSpec spec;
 
   ASSERT_TRUE(google::protobuf::TextFormat::ParseFromString(kExecutionSpecPbtxt, &spec));
 
@@ -107,7 +109,7 @@ TEST(Runner, RunSimpleGraphWithSidePacket) {
 MATCHER_P(CalculatorProfileNameIs, element, "") { return arg.name() == element; }
 
 TEST(Runner, CollectStats) {
-  specpb::ExecutionSpec spec;
+  ExecutionSpec spec;
 
   ASSERT_TRUE(google::protobuf::TextFormat::ParseFromString(kExecutionSpecPbtxt, &spec));
 

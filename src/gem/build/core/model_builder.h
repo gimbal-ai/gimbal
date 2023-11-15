@@ -17,14 +17,15 @@
 
 #pragma once
 
+#include "src/api/corepb/v1/model_exec.pb.h"
 #include "src/common/base/base.h"
 #include "src/gem/exec/core/model.h"
-#include "src/gem/specpb/model.pb.h"
 #include "src/gem/storage/blob_store.h"
 
 namespace gml::gem::build::core {
 
 using ::gml::gem::exec::core::Model;
+using ::gml::internal::api::core::v1::ModelSpec;
 
 /**
  * ModelBuilder is the base class for plugin ModelBuilders.
@@ -33,7 +34,7 @@ class ModelBuilder {
  public:
   virtual ~ModelBuilder() = default;
   virtual StatusOr<std::unique_ptr<Model>> Build(storage::BlobStore* store,
-                                                 const specpb::ModelSpec& spec) = 0;
+                                                 const ModelSpec& spec) = 0;
 };
 
 }  // namespace gml::gem::build::core

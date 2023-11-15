@@ -17,9 +17,30 @@
 
 syntax = "proto3";
 
-package gml.gem.specpb;
-option go_package = "gimletlabs.ai/gimlet/src/gem/specpb;specpb";
+package gml.internal.api.core.v1;
 
+option go_package = "gimletlabs.ai/gimlet/src/api/corepb/v1;corepb";
+
+import "mediapipe/framework/calculator.proto";
+
+// ExecutionSpec defines what models/processing GEM should run, where to send the output, etc. The
+// current spec definitions are temporary and subject to change significantly.
+message ExecutionSpec {
+  // Mediapipe graph to run.
+  mediapipe.CalculatorGraphConfig graph = 1;
+}
+
+// ModelSpec defines how to prepare the model. The current spec definitions are temporary and
+// subject to change significantly.
+message ModelSpec {
+  string onnx_blob_key = 1;
+
+  // Plugin specs.
+  // TensorRT specific specifications.
+  TensorRTModelSpec tensorrt_spec = 100;
+}
+
+// TensorRTModelSpec defines TensorRT specific parameters for building a TensorRT engine.
 message TensorRTModelSpec {
   repeated TensorRTOptimizationProfile optimization_profile = 1;
 
@@ -29,10 +50,14 @@ message TensorRTModelSpec {
   string engine_blob_key = 2;
 }
 
+// TensorRTOptimizationProfile defines TensorRT specific parameters to aid TensorRT profiling based
+// optimization.
 message TensorRTOptimizationProfile {
   repeated TensorRTTensorShapeRange tensor_shape_range = 1;
 }
 
+// TensorRTTensorShapeRange represents the range of shapes that a tensor is allowed to take.
+// TensorRT uses this to aid in optimization.
 message TensorRTTensorShapeRange {
   // For now we explicitly set the tensor shape instead of specifying a min/opt/max range.
   string tensor_name = 1;

@@ -31,7 +31,7 @@ using ::gml::gem::exec::tensorrt::Model;
 using ::gml::gem::exec::tensorrt::TensorRTLogger;
 
 StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(storage::BlobStore* store,
-                                                                      const specpb::ModelSpec& spec,
+                                                                      const ModelSpec& spec,
                                                                       TensorRTLogger logger) {
   auto builder = std::unique_ptr<nvinfer1::IBuilder>(nvinfer1::createInferBuilder(logger));
   uint32_t flag =
@@ -85,7 +85,7 @@ StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(storage::B
 }
 
 StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobStore* store,
-                                                                 const specpb::ModelSpec& spec) {
+                                                                 const ModelSpec& spec) {
   ElapsedTimer timer;
   timer.Start();
   TensorRTLogger logger;

@@ -32,9 +32,9 @@ gml_cc_library(
         "registry.h",
     ],
     deps = [
+        "//src/api/corepb/v1:corepb_cc_library",
         "//src/gem/build/core:cc_library",
         "//src/gem/exec/core:cc_library",
-        "//src/gem/specpb:specpb_cc_library",
         "//src/gem/storage:cc_library",
     ],
 )

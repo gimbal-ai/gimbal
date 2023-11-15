@@ -16,11 +16,11 @@
  */
 
 #include "src/gem/plugins/registry.h"
+#include "src/api/corepb/v1/model_exec.pb.h"
 #include "src/gem/build/core/execution_context_builder.h"
 #include "src/gem/build/core/model_builder.h"
 #include "src/gem/exec/core/context.h"
 #include "src/gem/exec/core/model.h"
-#include "src/gem/specpb/model.pb.h"
 
 #include "src/common/testing/testing.h"
 
@@ -30,6 +30,7 @@ using ::gml::gem::build::core::ExecutionContextBuilder;
 using ::gml::gem::build::core::ModelBuilder;
 using ::gml::gem::exec::core::ExecutionContext;
 using ::gml::gem::exec::core::Model;
+using ::gml::internal::api::core::v1::ModelSpec;
 
 class SimpleExecutionContext : public ExecutionContext {
  public:
@@ -71,7 +72,7 @@ TEST(Registry, SimpleRegisterExecCtx) {
 
 class SimpleModelBuilder : public ModelBuilder {
  public:
-  StatusOr<std::unique_ptr<Model>> Build(storage::BlobStore*, const specpb::ModelSpec&) override {
+  StatusOr<std::unique_ptr<Model>> Build(storage::BlobStore*, const ModelSpec&) override {
     return std::unique_ptr<Model>(new SimpleModel(15));
   }
 };
@@ -81,7 +82,7 @@ TEST(Registry, SimpleRegisterModel) {
 
   plugin_registry.RegisterModelBuilderOrDie<SimpleModelBuilder>("simple");
 
-  specpb::ModelSpec spec;
+  ModelSpec spec;
   auto model_or_s = plugin_registry.BuildModel("simple", nullptr, spec);
   ASSERT_OK(model_or_s);
   auto model = static_cast<SimpleModel*>(model_or_s.ValueOrDie().get());

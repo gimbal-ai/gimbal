@@ -21,19 +21,21 @@
 
 #include <utility>
 
+#include "src/api/corepb/v1/model_exec.pb.h"
 #include "src/common/base/base.h"
 #include "src/gem/exec/core/model.h"
 #include "src/gem/plugins/registry.h"
-#include "src/gem/specpb/execution.pb.h"
 
 namespace gml::gem::exec::core {
+
+using ::gml::internal::api::core::v1::ExecutionSpec;
 
 /**
  * Runner executes an ExecutionSpec until stopped.
  */
 class Runner {
  public:
-  explicit Runner(specpb::ExecutionSpec spec) : spec_(std::move(spec)) {}
+  explicit Runner(ExecutionSpec spec) : spec_(std::move(spec)) {}
 
   Status Init(const std::map<std::string, mediapipe::Packet>& extra_side_packets);
   Status Start();
@@ -71,7 +73,7 @@ class Runner {
   }
 
  private:
-  specpb::ExecutionSpec spec_;
+  ExecutionSpec spec_;
   mediapipe::CalculatorGraph graph_;
   std::vector<std::unique_ptr<ExecutionContext>> exec_ctxs_;
   std::map<std::string, mediapipe::Packet> side_packets_;

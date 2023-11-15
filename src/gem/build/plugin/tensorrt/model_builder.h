@@ -17,18 +17,20 @@
 
 #pragma once
 
+#include "src/api/corepb/v1/model_exec.pb.h"
 #include "src/common/base/base.h"
 #include "src/gem/build/core/model_builder.h"
 #include "src/gem/exec/core/model.h"
-#include "src/gem/specpb/model.pb.h"
 #include "src/gem/storage/blob_store.h"
 
 namespace gml::gem::build::tensorrt {
 
+using ::gml::internal::api::core::v1::ModelSpec;
+
 class ModelBuilder : public core::ModelBuilder {
  public:
   StatusOr<std::unique_ptr<exec::core::Model>> Build(storage::BlobStore* store,
-                                                     const specpb::ModelSpec& spec) override;
+                                                     const ModelSpec& spec) override;
 };
 
 }  // namespace gml::gem::build::tensorrt
