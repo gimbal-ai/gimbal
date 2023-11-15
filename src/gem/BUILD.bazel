@@ -25,7 +25,9 @@ gml_cc_library(
         "gem.cc",
     ],
     deps = [
+        "//src/gem/controller:cc_library",
         "//src/shared/version:cc_library",
+        "@com_github_rlyeh_sole//:sole",
     ],
 )
 

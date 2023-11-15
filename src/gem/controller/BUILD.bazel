@@ -22,13 +22,17 @@ package(default_visibility = [
 gml_cc_library(
     name = "cc_library",
     srcs = [
+        "controller.cc",
         "grpc_bridge.cc",
         "heartbeat.cc",
+        "lifecycle.cc",
     ],
     hdrs = [
+        "controller.h",
         "gem_info.h",
         "grpc_bridge.h",
         "heartbeat.h",
+        "lifecycle.h",
         "message_handler.h",
     ],
     deps = [
