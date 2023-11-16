@@ -309,6 +309,11 @@ REPOSITORY_LOCATIONS = dict(
         strip_prefix = "oneTBB-2021.10.0",
         urls = ["https://github.com/oneapi-src/oneTBB/archive/refs/tags/v2021.10.0.tar.gz"],
     ),
+    com_github_openvinotoolkit_openvino = dict(
+        sha256 = "ff88596b342440185874ddbe22874b47ad7b923f14671921af760b15c98aacd6",
+        strip_prefix = "openvino-2023.1.0",
+        urls = ["https://github.com/openvinotoolkit/openvino/archive/refs/tags/2023.1.0.tar.gz"],
+    ),
     com_github_openvinotoolkit_oneDNN = dict(
         sha256 = "3c51d577f9e7e4cbd94ad08d267502953ec64513241dda6595b2608fafc8314c",
         strip_prefix = "oneDNN-2ead5d4fe5993a797d9a7a4b8b5557b96f6ec90e",
@@ -318,6 +323,16 @@ REPOSITORY_LOCATIONS = dict(
         sha256 = "b7fdd19523a88373d19fd8d5380f64c2834040fa50a6f0774acf08f3fa858daa",
         strip_prefix = "mlas-7a35e48a723944972088627be1a8b60841e8f6a5",
         urls = ["https://github.com/openvinotoolkit/mlas/archive/7a35e48a723944972088627be1a8b60841e8f6a5.tar.gz"],
+    ),
+    com_github_zeux_pugixml = dict(
+        sha256 = "2f10e276870c64b1db6809050a75e11a897a8d7456c4be5c6b2e35a11168a015",
+        strip_prefix = "pugixml-1.14",
+        urls = ["https://github.com/zeux/pugixml/releases/download/v1.14/pugixml-1.14.tar.gz"],
+    ),
+    com_github_herumi_xbyak = dict(
+        sha256 = "41f3dc7727a48c751024c92fa4da24a4a1e0ed16b7930c79d05b76960b19562d",
+        strip_prefix = "xbyak-6.73",
+        urls = ["https://github.com/herumi/xbyak/archive/refs/tags/v6.73.tar.gz"],
     ),
 )
 

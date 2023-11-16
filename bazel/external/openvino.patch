@@ -1,0 +1,15 @@
+diff --git a/src/cmake/ie_parallel.cmake b/src/cmake/ie_parallel.cmake
+index 62e5d2d06f..89c952d19f 100644
+--- a/src/cmake/ie_parallel.cmake
++++ b/src/cmake/ie_parallel.cmake
+@@ -167,7 +167,9 @@ macro(ov_find_package_tbb)
+ 
+                 # TBB on system is not found, download prebuilt one
+                 # if TBBROOT env variable is not defined
+-                ov_download_tbb()
++
++                # Gimlet: Disable download.
++		# ov_download_tbb()
+ 
+                 # fallback variant for TBB 2018 and older where TBB have not had cmake interface
+                 if(DEFINED TBBROOT OR DEFINED ENV{TBBROOT})

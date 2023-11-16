@@ -146,9 +146,13 @@ def _cc_deps():
         patch_args = ["-p1"],
     )
 
+    # OpenVINO and its dependencies.
+    _bazel_repo("com_github_zeux_pugixml", build_file = "//bazel/external:pugixml.BUILD")
+    _bazel_repo("com_github_herumi_xbyak", build_file = "//bazel/external:xbyak.BUILD")
+    _bazel_repo("com_github_openvinotoolkit_mlas", build_file = "//bazel/external:mlas.BUILD", patches = ["//bazel/external:mlas.patch"], patch_args = ["-p1"])
     _bazel_repo("com_github_oneapi_oneTBB", build_file = "//bazel/external:tbb.BUILD")
     _bazel_repo("com_github_openvinotoolkit_oneDNN", build_file = "//bazel/external:dnnl.BUILD", patches = ["//bazel/external:dnnl.patch"], patch_args = ["-p1"])
-    _bazel_repo("com_github_openvinotoolkit_mlas", build_file = "//bazel/external:mlas.BUILD", patches = ["//bazel/external:mlas.patch"], patch_args = ["-p1"])
+    _bazel_repo("com_github_openvinotoolkit_openvino", build_file = "//bazel/external:openvino.BUILD", patches = ["//bazel/external:openvino.patch"], patch_args = ["-p1"])
 
     # Dependencies where we provide an external BUILD file.
     _bazel_repo("com_github_arun11299_cpp_jwt", build_file = "//bazel/external:cpp_jwt.BUILD")
