@@ -187,39 +187,33 @@ def gml_cc_library(**kwargs):
     gml_cc_library_internal(**kwargs)
 
 # PL C++ binary targets should be specified with this function.
-def _gml_cc_binary(
-        name,
-        srcs = [],
-        data = [],
-        args = [],
-        testonly = 0,
-        visibility = None,
-        repository = "",
-        stamp = 0,
-        tags = [],
-        deps = [],
-        copts = [],
-        linkopts = [],
-        defines = []):
-    if not linkopts:
-        linkopts = gml_linkopts()
-    deps = deps
+def _gml_cc_binary(name, **kwargs):
+    copts = kwargs.pop("copts", [])
+    deps = kwargs.pop("deps", [])
+    linkopts = kwargs.pop("linkopts", [])
+    linkstatic = kwargs.pop("linkstatic", True)
+    repository = kwargs.pop("repository", "")
+    malloc = kwargs.pop("malloc", _tcmalloc_external_dep(repository))
+    features = kwargs.pop("features", [])
+    defines = kwargs.pop("defines", [])
+
+    copts += gml_copts()
+    linkopts += gml_linkopts()
+    deps += _default_external_deps()
+    deps += _default_internal_deps()
+    defines += gml_defines()
+    features += gml_default_features()
+
     cc_binary(
         name = name,
-        srcs = srcs,
-        data = data,
-        args = args,
         copts = gml_copts() + copts,
         linkopts = linkopts,
-        testonly = testonly,
-        linkstatic = 1,
-        visibility = visibility,
-        malloc = _tcmalloc_external_dep(repository),
-        stamp = stamp,
-        tags = tags,
-        deps = deps + _default_external_deps() + _default_internal_deps(),
-        defines = gml_defines() + defines,
-        features = gml_default_features(),
+        linkstatic = linkstatic,
+        malloc = malloc,
+        deps = deps,
+        defines = defines,
+        features = features,
+        **kwargs
     )
 
 # PL C++ test targets should be specified with this function.

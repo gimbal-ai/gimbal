@@ -62,6 +62,8 @@ def _clang_toolchain_impl(rctx):
         "BUILD.bazel.tpl",
         Label("@gml//bazel/cc_toolchains/clang:toolchain.BUILD"),
         substitutions = {
+            "{extra_includes}": str(rctx.attr.extra_includes),
+            "{extra_link_flags}": str(rctx.attr.extra_link_flags),
             "{libcxx_build}": libcxx_build,
             "{toolchain_files_build}": toolchain_files_build,
         },
@@ -108,6 +110,8 @@ clang_toolchain = repository_rule(
         clang_version = attr.string(mandatory = True),
         use_for_host_tools = attr.bool(default = False),
         sysroot_features = attr.string_list(default = []),
+        extra_includes = attr.string_list(default = []),
+        extra_link_flags = attr.string_list(default = []),
     ),
     environ = SYSROOT_ENV_VARS,
 )

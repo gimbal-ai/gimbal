@@ -26,20 +26,27 @@ gem_plugin_cc_library(
     name = "cc_library",
     srcs = [
         "argus_cam.cc",
+        "nvbufsurfwrapper.cc",
     ],
-    hdrs = ["argus_cam.h"],
+    hdrs = [
+        "argus_cam.h",
+        "nvbufsurfwrapper.h",
+    ],
+    linkopts = [
+        "-lnvbufsurface",
+        "-lnvargus",
+    ],
     plugin_name = "argus",
-    deps = [
-        "@com_nvidia_jetson_multimedia_api//:libargus_headers",
-        "@com_nvidia_jetson_multimedia_utils//:libnvbufsurface.so",
-        "@com_nvidia_l4t_camera//:libnvargus.so",
-    ],
 )
 
 gml_cc_binary(
     name = "argus_cam_binary",
     srcs = ["argus_cam_binary.cc"],
-    linkopts = ["-lX11"],
+    linkopts = [
+        "-lX11",
+        "-ldl",
+        "-lunwind",
+    ],
     deps = [
         ":cc_library",
         "@com_github_opencv_opencv//:opencv",

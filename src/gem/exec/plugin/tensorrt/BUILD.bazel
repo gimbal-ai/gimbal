@@ -29,11 +29,13 @@ gem_plugin_cc_library(
         "cuda_tensor_pool.h",
         "model.h",
     ],
+    linkopts = [
+        "-lnvinfer",
+        "-lcudart",
+    ],
     plugin_name = "tensorrt",
     deps = [
         "//src/gem/exec/core:cc_library",
         "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
-        "@com_github_nvidia_tensorrt//:tensorrt",
-        "@com_github_onnx_onnx_tensorrt//:nvonnxparser",
     ],
 )

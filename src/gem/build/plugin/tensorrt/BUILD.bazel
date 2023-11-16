@@ -29,6 +29,10 @@ gem_plugin_cc_library(
     hdrs = [
         "model_builder.h",
     ],
+    linkopts = [
+        "-lnvinfer",
+        "-lnvonnxparser",
+    ],
     plugin_name = "tensorrt",
     deps = [
         "//src/common/perf:cc_library",

@@ -13,7 +13,7 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("@clang-15.0-aarch64-glibc2.31-sysroot//:register_toolchain.bzl", _register_jetson_sysroot = "register_toolchain")
+load("@clang-15.0-aarch64-glibc2.31-jetson-sysroot//:register_toolchain.bzl", _register_jetson_sysroot = "register_toolchain")
 load("@clang-15.0-aarch64-glibc2.36-sysroot//:register_toolchain.bzl", _register_aarch64_sysroot = "register_toolchain")
 load("@clang-15.0-exec//:register_toolchain.bzl", _register_exec = "register_toolchain")
 load("@clang-15.0-x86_64//:register_toolchain.bzl", _register = "register_toolchain")

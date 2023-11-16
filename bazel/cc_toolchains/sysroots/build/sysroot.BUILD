@@ -29,9 +29,10 @@ filegroup(
 filegroup(
     name = "compiler_files",
     srcs = glob([
-        "usr/local/include/**",
+        "usr/local/**",
         "usr/include/{target_arch}-linux-{abi}/**",
         "usr/include/**",
+        "usr/src/**",
         "usr/include/c++/12/**",
         "usr/include/{target_arch}-linux-{abi}/c++/12/**",
         "usr/include/c++/12/backward/**",
@@ -48,6 +49,7 @@ filegroup(
         "lib64/**",
         "usr/lib/{target_arch}-linux-{abi}/**",
         "usr/lib/gcc/{target_arch}-linux-{abi}/**",
+        "usr/local/**/lib/**",
     ]),
     visibility = ["//visibility:public"],
 )

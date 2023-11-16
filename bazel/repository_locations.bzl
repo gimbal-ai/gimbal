@@ -252,32 +252,6 @@ REPOSITORY_LOCATIONS = dict(
             "https://github.com/stackb/rules_proto/archive/v2.0.1.tar.gz",
         ],
     ),
-    nvidia_stubs = dict(
-        sha256 = "eed79efc454c2493f3e1a6277be6d351ec33b4ba4c27306168898dd1d0480f46",
-        urls = [
-            "https://storage.googleapis.com/gimlet-dev-infra-public/nvidia-stubs/20231009012327/nvidia_stubs.tar.gz",
-        ],
-    ),
-    com_gitlab_nvidia_headers_cudart = dict(
-        sha256 = "0d1e2249f4e75c96a51d327a4cfcf95413e90b59855c09c738f5ed4a50df469c",
-        strip_prefix = "cudart-cuda-11.4.4",
-        urls = ["https://gitlab.com/nvidia/headers/cuda-individual/cudart/-/archive/cuda-11.4.4/cudart-cuda-11.4.4.tar.gz"],
-    ),
-    com_gitlab_nvidia_headers_nvcc = dict(
-        sha256 = "677ec9463140e74c66c8936f18a8c658f6a3a440d3ccf54f9e4f3622a1853326",
-        strip_prefix = "nvcc-cuda-11.4.4",
-        urls = ["https://gitlab.com/nvidia/headers/cuda-individual/nvcc/-/archive/cuda-11.4.4/nvcc-cuda-11.4.4.tar.gz"],
-    ),
-    com_github_nvidia_tensorrt = dict(
-        sha256 = "72a297e39d143dbe94592244903aab82ef4cd7c773ce7cf6b562d9355da9cf67",
-        strip_prefix = "TensorRT-8.5.2",
-        urls = ["https://github.com/NVIDIA/TensorRT/archive/refs/tags/8.5.2.tar.gz"],
-    ),
-    com_github_onnx_onnx_tensorrt = dict(
-        sha256 = "5c90c8b65828af0079a8bc2189d0c6c161f1fc0b2522f2ac8b65aa30da42ccb2",
-        strip_prefix = "onnx-tensorrt-release-8.5-GA",
-        urls = ["https://github.com/onnx/onnx-tensorrt/archive/refs/tags/release/8.5-GA.tar.gz"],
-    ),
     com_github_ffmpeg_ffmpeg = dict(
         sha256 = "5f417a4c00ec7874d255b24dbca33246be7ea72253bd9449bf9ebac51133e2a8",
         strip_prefix = "FFmpeg-n4.3.6",
@@ -319,18 +293,6 @@ REPOSITORY_LOCATIONS = dict(
         sha256 = "0746834dc40600ee75fcc6b18181b612094c25badafeeba7c53ca2f3f0813d46",
         strip_prefix = "mediapipe-ce4f6d5e71538a7610ce7b181ace904f4986fd96",
         urls = ["https://github.com/gimletlabs/mediapipe/archive/ce4f6d5e71538a7610ce7b181ace904f4986fd96.tar.gz"],
-    ),
-    com_nvidia_jetson_multimedia_api = dict(
-        sha256 = "a28d46509bbe2c2f0dd40c9e43854b5cf95c33ac04502176c68f3c2f1cd7883e",
-        urls = ["https://repo.download.nvidia.com/jetson/common/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_35.4.1-20230801124926_arm64.deb"],
-    ),
-    com_nvidia_jetson_multimedia_utils = dict(
-        sha256 = "f390756fa416f13285ec9647499baa3d9eaad262b9932257aafdff46f56c9580",
-        urls = ["https://repo.download.nvidia.com/jetson/t194/pool/main/n/nvidia-l4t-multimedia-utils/nvidia-l4t-multimedia-utils_35.4.1-20230801124926_arm64.deb"],
-    ),
-    com_nvidia_l4t_camera = dict(
-        sha256 = "d03d2f5baa111681aa3115e40e24572fba562e88b499a27f525ccf751fb36701",
-        urls = ["https://repo.download.nvidia.com/jetson/t234/pool/main/n/nvidia-l4t-camera/nvidia-l4t-camera_35.4.1-20230801124926_arm64.deb"],
     ),
     com_github_cisco_openh264 = dict(
         sha256 = "453afa66dacb560bc5fd0468aabee90c483741571bca820a39a1c07f0362dc32",

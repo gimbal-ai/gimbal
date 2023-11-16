@@ -51,6 +51,11 @@ includes = [
     "{libcxx_path}/include/c++/v1",
 ]
 
+extra_include_flags = [
+    "-isystem{}".format(d)
+    for d in {extra_includes}
+]
+
 cc_toolchain_config(
     name = "toolchain_config",
     abi_libc_version = "{libc_version}",
@@ -75,7 +80,7 @@ cc_toolchain_config(
     cxx_flags = [
         "-std=c++17",
         "-fPIC",
-    ],
+    ] + extra_include_flags,
     dbg_compile_flags = ["-g"],
     enable_sanitizers = not {use_for_host_tools},
     host_system_name = "{host_arch}-unknown-linux-{host_abi}",
@@ -90,7 +95,7 @@ cc_toolchain_config(
         "-Wl,-z,relro,-z,now",
         "-Bexternal/{this_repo}/{toolchain_path}/bin",
         "-lm",
-    ] + (["-no-pie"] if {use_for_host_tools} else []),
+    ] + (["-no-pie"] if {use_for_host_tools} else []) + {extra_link_flags},
     opt_compile_flags = [
         "-g0",
         "-O2",

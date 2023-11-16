@@ -3,6 +3,7 @@ include:
 - libnvinfer-dev (= 8.5.2-1+cuda11.4)
 - libnvinfer-plugin8 (= 8.5.2-1+cuda11.4)
 - libnvonnxparsers-dev (= 8.5.2-1+cuda11.4)
+- cuda-nvcc-11-4
 - nvidia-l4t-camera
 - nvidia-l4t-core
 - nvidia-l4t-cuda

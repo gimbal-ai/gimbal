@@ -55,6 +55,8 @@ def _include_all_repo(name, **kwargs):
     kwargs["build_file_content"] = BUILD_ALL_CONTENT
     _http_archive_repo_impl(name, **kwargs)
 
+# _deb_repo is unused after removing nvidia debs, but it might be useful in the future.
+# buildifier: disable=unused-variable
 def _deb_repo(name, **kwargs):
     existing_rule_keys = native.existing_rules().keys()
     if name in existing_rule_keys:
@@ -165,16 +167,6 @@ def _cc_deps():
         patch_args = ["-p1"],
     )
     _include_all_repo("com_github_libuv_libuv", patches = ["//bazel/external:libuv.patch"], patch_args = ["-p1"])
-
-    # NVIDIA deps.
-    _bazel_repo("nvidia_stubs", build_file = "//bazel/external:nvidia_stubs.BUILD")
-    _bazel_repo("com_gitlab_nvidia_headers_cudart", build_file = "//bazel/external:cudart.BUILD")
-    _bazel_repo("com_gitlab_nvidia_headers_nvcc", build_file = "//bazel/external:nvcc.BUILD")
-    _bazel_repo("com_github_nvidia_tensorrt", build_file = "//bazel/external:tensorrt.BUILD")
-    _bazel_repo("com_github_onnx_onnx_tensorrt", build_file = "//bazel/external:onnx_tensorrt.BUILD")
-    _deb_repo("com_nvidia_jetson_multimedia_api", build_file = "//bazel/external:jetson_multimedia_api.BUILD")
-    _deb_repo("com_nvidia_jetson_multimedia_utils", build_file = "//bazel/external:jetson_multimedia_utils.BUILD")
-    _deb_repo("com_nvidia_l4t_camera", build_file = "//bazel/external:l4t_camera.BUILD")
 
     # mediapipe deps.
     _bazel_repo(
