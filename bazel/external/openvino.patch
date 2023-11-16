@@ -1,5 +1,21 @@
+diff --git a/cmake/templates/OpenVINOConfig.cmake.in b/cmake/templates/OpenVINOConfig.cmake.in
+index 9eb1cfdd35..feb10096bf 100644
+--- a/cmake/templates/OpenVINOConfig.cmake.in
++++ b/cmake/templates/OpenVINOConfig.cmake.in
+@@ -176,7 +176,10 @@ macro(_ov_find_tbb)
+ 
+             set(enable_system_tbb "@ENABLE_SYSTEM_TBB@")
+             if(NOT enable_system_tbb)
+-                set_and_check(_tbb_dir "@PACKAGE_IE_TBB_DIR@")
++                # [GML] Because bazel builds in a build_tmpdir, the TBB path is wrong.
++                # [GML] This is a hack to fix-up the path.
++                string(REPLACE ".build_tmpdir" "" _gml_package_ie_tbb_dir "@PACKAGE_IE_TBB_DIR@")
++                set_and_check(_tbb_dir ${_gml_package_ie_tbb_dir})
+ 
+                 # see https://stackoverflow.com/questions/28070810/cmake-generate-error-on-windows-as-it-uses-as-escape-seq
+                 if(DEFINED ENV{TBBROOT})
 diff --git a/src/cmake/ie_parallel.cmake b/src/cmake/ie_parallel.cmake
-index 62e5d2d06f..89c952d19f 100644
+index 62e5d2d06f..76bf39cb67 100644
 --- a/src/cmake/ie_parallel.cmake
 +++ b/src/cmake/ie_parallel.cmake
 @@ -167,7 +167,9 @@ macro(ov_find_package_tbb)
@@ -8,8 +24,46 @@ index 62e5d2d06f..89c952d19f 100644
                  # if TBBROOT env variable is not defined
 -                ov_download_tbb()
 +
-+                # Gimlet: Disable download.
-+		# ov_download_tbb()
++                # [GML] Disable download.
++                # ov_download_tbb()
  
                  # fallback variant for TBB 2018 and older where TBB have not had cmake interface
                  if(DEFINED TBBROOT OR DEFINED ENV{TBBROOT})
+diff --git a/src/plugins/intel_cpu/CMakeLists.txt b/src/plugins/intel_cpu/CMakeLists.txt
+index 3212bdefc7..225ef169f2 100644
+--- a/src/plugins/intel_cpu/CMakeLists.txt
++++ b/src/plugins/intel_cpu/CMakeLists.txt
+@@ -123,10 +123,10 @@ target_compile_definitions(${TARGET_NAME} PRIVATE IMPLEMENT_INFERENCE_EXTENSION_
+ target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+ if (ENABLE_MLAS_FOR_CPU)
+     target_link_libraries(${TARGET_NAME} PRIVATE mlas)
+-    target_include_directories(${TARGET_NAME} SYSTEM PRIVATE $<TARGET_PROPERTY:mlas,INCLUDE_DIRECTORIES>)
++    target_include_directories(${TARGET_NAME} SYSTEM PRIVATE ${MLAS_INCLUDE_DIRS})
+     add_definitions(-DOV_CPU_WITH_MLAS)
+ endif()
+-target_include_directories(${TARGET_NAME} SYSTEM PRIVATE $<TARGET_PROPERTY:dnnl,INCLUDE_DIRECTORIES>)
++target_include_directories(${TARGET_NAME} SYSTEM PRIVATE ${DNNL_INCLUDE_DIRS})
+ # Cross compiled function
+ # TODO: The same for proposal, proposalONNX, topk
+ cross_compiled_file(${TARGET_NAME}
+diff --git a/src/plugins/intel_cpu/thirdparty/CMakeLists.txt b/src/plugins/intel_cpu/thirdparty/CMakeLists.txt
+index 98935a0792..8f40c454ae 100644
+--- a/src/plugins/intel_cpu/thirdparty/CMakeLists.txt
++++ b/src/plugins/intel_cpu/thirdparty/CMakeLists.txt
+@@ -133,8 +133,13 @@ function(ov_add_onednn)
+ endfunction()
+ 
+ if(ENABLE_MLAS_FOR_CPU)
+-    add_subdirectory(mlas)
+-    ov_install_static_lib(mlas cpu)
++    #add_subdirectory(mlas)
++    #ov_install_static_lib(mlas cpu)
++
++    include_directories(${MLAS_INCLUDE_DIRS})
++    link_directories(${MLAS_LIBRARY_DIRS})
+ endif()
+ 
+-ov_add_onednn()
++#ov_add_onednn()
++include_directories(${DNNL_INCLUDE_DIRS})
++link_directories(${DNNL_LIBRARY_DIRS})

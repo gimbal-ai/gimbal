@@ -1,5 +1,5 @@
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 55caa0771..290a4f890 100644
+index efebb5156..290a4f890 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
 @@ -277,19 +277,21 @@ if(UNIX AND DNNL_INSTALL_MODE STREQUAL "BUNDLE_V2")
@@ -36,3 +36,16 @@ index 55caa0771..290a4f890 100644
  
  if(DNNL_GPU_RUNTIME STREQUAL "OCL")
      install(FILES
+@@ -311,3 +313,12 @@ if(WIN32)
+     endif()
+     set(CTESTCONFIG_PATH "${CTESTCONFIG_PATH}" PARENT_SCOPE)
+ endif()
++
++
++
++install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/"
++        DESTINATION include
++        FILES_MATCHING
++        PATTERN "*.h"
++        PATTERN "*.hpp")
++
