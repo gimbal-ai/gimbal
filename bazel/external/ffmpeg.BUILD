@@ -41,9 +41,12 @@ configure_make(
         "--disable-ffmpeg",
         "--disable-ffplay",
         "--disable-ffprobe",
-        # TODO(james): figure out how to pass `strip` binary from the correct toolchain.
-        "--disable-stripping",
         "--enable-libopenh264",
+        "--ar=$$EXT_BUILD_ROOT/$(AR)",
+        "--cc=$$EXT_BUILD_ROOT/$(CC)",
+        "--cxx=$$EXT_BUILD_ROOT/$(CC)",
+        "--nm=$$EXT_BUILD_ROOT/$(NM)",
+        "--strip=$$EXT_BUILD_ROOT/$(STRIP)",
     ] + select({
         "@platforms//cpu:aarch64": ["--arch=aarch64"],
         "@platforms//cpu:x86_64": ["--arch=x86_64"],

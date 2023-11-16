@@ -171,10 +171,6 @@ def _cc_deps():
     # mediapipe deps.
     _bazel_repo(
         "com_github_ffmpeg_ffmpeg",
-        patches = [
-            "//bazel/external:ffmpeg.fix_configure.patch",
-        ],
-        patch_args = ["-p1"],
         build_file = "//bazel/external:ffmpeg.BUILD",
     )
     _bazel_repo("com_github_opencv_opencv", build_file = "//bazel/external:opencv.BUILD")
