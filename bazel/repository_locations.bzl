@@ -334,6 +334,11 @@ REPOSITORY_LOCATIONS = dict(
         strip_prefix = "xbyak-6.73",
         urls = ["https://github.com/herumi/xbyak/archive/refs/tags/v6.73.tar.gz"],
     ),
+    com_github_onnx_onnx = dict(
+        sha256 = "c757132e018dd0dd171499ef74fca88b74c5430a20781ec53da19eb7f937ef68",
+        strip_prefix = "onnx-1.15.0",
+        urls = ["https://github.com/onnx/onnx/archive/refs/tags/v1.15.0.tar.gz"],
+    ),
 )
 
 # To use a local repo for local development, add the path to point to your local directory below.

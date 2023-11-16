@@ -152,6 +152,7 @@ def _cc_deps():
     _bazel_repo("com_github_openvinotoolkit_mlas", build_file = "//bazel/external:mlas.BUILD", patches = ["//bazel/external:mlas.patch"], patch_args = ["-p1"])
     _bazel_repo("com_github_oneapi_oneTBB", build_file = "//bazel/external:tbb.BUILD")
     _bazel_repo("com_github_openvinotoolkit_oneDNN", build_file = "//bazel/external:dnnl.BUILD", patches = ["//bazel/external:dnnl.patch"], patch_args = ["-p1"])
+    _bazel_repo("com_github_onnx_onnx", build_file = "//bazel/external:onnx.BUILD")
     _bazel_repo("com_github_openvinotoolkit_openvino", build_file = "//bazel/external:openvino.BUILD", patches = ["//bazel/external:openvino.patch"], patch_args = ["-p1"])
 
     # Dependencies where we provide an external BUILD file.
