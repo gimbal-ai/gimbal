@@ -104,11 +104,11 @@ cmake(
         # Bypass opencv's cmake search mechanisms for deps we build.
         "HAVE_FFMPEG": "TRUE",
         "FFMPEG_LIBRARIES": ";".join([
-            "$EXT_BUILD_DEPS/ffmpeg/lib/{lib}".format(lib=lib)
+            "$$EXT_BUILD_DEPS/ffmpeg/lib/{lib}".format(lib=lib)
             for lib in ["libavcodec.so.58", "libavformat.so.58", "libavutil.so.56", "libswresample.so.3", "libswscale.so.5"]
         ]),
-        "FFMPEG_LIBRARY_DIRS": "$EXT_BUILD_DEPS/ffmpeg/lib",
-        "FFMPEG_INCLUDE_DIRS": "$EXT_BUILD_DEPS/ffmpeg/include",
+        "FFMPEG_LIBRARY_DIRS": "$$EXT_BUILD_DEPS/ffmpeg/lib",
+        "FFMPEG_INCLUDE_DIRS": "$$EXT_BUILD_DEPS/ffmpeg/include",
         "FFMPEG_libavcodec_VERSION": "58.91.100",
         "FFMPEG_libavformat_VERSION": "58.45.100",
         "FFMPEG_libavutil_VERSION": "56.51.100",

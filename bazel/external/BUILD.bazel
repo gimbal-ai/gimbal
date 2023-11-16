@@ -64,7 +64,7 @@ cmake(
         # This forces nats to link against boringssl instead of openssl.
         # Since some of our services use both GRPC and nats, this lets
         # us have a single SSL library.
-        "CMAKE_SYSTEM_PREFIX_PATH": "$EXT_BUILD_DEPS",
+        "CMAKE_SYSTEM_PREFIX_PATH": "$$EXT_BUILD_DEPS",
         "NATS_BUILD_EXAMPLES": "OFF",
         "NATS_BUILD_LIB_SHARED": "OFF",
         "NATS_BUILD_STREAMING": "OFF",
