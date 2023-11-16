@@ -34,14 +34,25 @@ namespace gml::system {
  */
 StatusOr<uint64_t> MacAddrStrToInt(std::string_view mac_addr_str_in);
 
-struct MacAddress {
-  uint64_t addr;
+/**
+ * Converts a MAC address from the int format to string in the form "00:1A:2B:3C:4D:5E".
+ */
+std::string MacAddrIntToStr(uint64_t addr);
 
+class MacAddress {
+ public:
+  explicit MacAddress(uint64_t addr) : addr_(addr) {}
+  uint64_t value() { return addr_; }
+  std::string str() { return MacAddrIntToStr(addr_); }
+
+  bool Unicast() const { return (addr_ & kUnicastBitMask) == 0; }
+  bool GloballyUnique() const { return (addr_ & kGloballyUniqueBitMask) == 0; }
+
+ private:
   static constexpr uint64_t kUnicastBitMask = (1ULL << 40);
   static constexpr uint64_t kGloballyUniqueBitMask = (1ULL << 41);
 
-  bool Unicast() const { return (addr & kUnicastBitMask) == 0; }
-  bool GloballyUnique() const { return (addr & kGloballyUniqueBitMask) == 0; }
+  uint64_t addr_;
 };
 
 /**
@@ -49,9 +60,9 @@ struct MacAddress {
  */
 class NetDevice {
  public:
-  NetDevice() = default;
+  NetDevice() : mac_addr_(0){};
   NetDevice(std::string name, uint64_t mac_addr)
-      : name_(std::move(name)), mac_addr_(MacAddress{mac_addr}) {}
+      : name_(std::move(name)), mac_addr_(MacAddress(mac_addr)) {}
 
   const std::string& name() const { return name_; }
   MacAddress mac_address() const { return mac_addr_; }
@@ -61,7 +72,7 @@ class NetDevice {
 
  private:
   std::string name_;
-  MacAddress mac_addr_{0};
+  MacAddress mac_addr_;
 };
 
 class NetDeviceReader {

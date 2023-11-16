@@ -79,8 +79,7 @@ StatusOr<std::string> GetDeviceSerial() {
   if (!dev.mac_address().GloballyUnique()) {
     return error::FailedPrecondition("Failed to get unique mac address");
   }
-  uint64_t addr = dev.mac_address().addr;
-  return absl::StrFormat("%12x", addr);
+  return dev.mac_address().str();
 }
 
 }  // namespace

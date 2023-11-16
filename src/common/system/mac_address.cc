@@ -26,14 +26,16 @@
 
 namespace gml::system {
 
+namespace {
+// MAC addresses are 48 bits long.
+constexpr size_t kMacAddrBytes = 6;
+}  // namespace
+
 StatusOr<uint64_t> MacAddrStrToInt(std::string_view mac_addr_str_in) {
   std::string_view mac_addr_str = absl::StripAsciiWhitespace(mac_addr_str_in);
 
   GML_ASSIGN_OR_RETURN(std::string mac_addr_bytes,
                        AsciiHexToBytes<std::string>(std::string(mac_addr_str), {':'}));
-
-  // MAC addresses are 48 bits long.
-  constexpr size_t kMacAddrBytes = 6;
 
   if (mac_addr_bytes.length() != kMacAddrBytes) {
     return error::Internal("Unexpected length ($0) for mac address $1", mac_addr_bytes.length(),
@@ -43,6 +45,14 @@ StatusOr<uint64_t> MacAddrStrToInt(std::string_view mac_addr_str_in) {
   auto mac_addr = utils::BEndianBytesToInt<uint64_t, kMacAddrBytes>(mac_addr_bytes);
 
   return mac_addr;
+}
+
+std::string MacAddrIntToStr(uint64_t addr) {
+  std::basic_string_view<uint8_t> bytes(reinterpret_cast<uint8_t*>(&addr), kMacAddrBytes);
+
+  std::string out;
+  return absl::StrJoin(bytes.rbegin(), bytes.rend(), ":",
+                       [](std::string* out, char c) { out->append(absl::StrFormat("%02X", c)); });
 }
 
 StatusOr<std::unique_ptr<NetDeviceReader>> NetDeviceReader::Create(

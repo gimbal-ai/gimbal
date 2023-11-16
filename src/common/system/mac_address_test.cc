@@ -32,6 +32,11 @@ TEST(MacAddrStrToInt, Basic) {
   ASSERT_NOT_OK(MacAddrStrToInt("01:02:03:04:05"));
 }
 
+TEST(MacAddrIntToStr, Basic) {
+  ASSERT_EQ(MacAddrIntToStr(1), "00:00:00:00:00:01");
+  ASSERT_EQ(MacAddrIntToStr(0x010203040506), "01:02:03:04:05:06");
+}
+
 class NetDeviceReaderTest : public ::testing::Test {
  protected:
   void SetUp() override { ASSERT_OK_AND_ASSIGN(resolver_, NetDeviceReader::Create()); }
@@ -49,14 +54,14 @@ TEST_F(NetDeviceReaderTest, NonVirtualNetDevices) {
 
   // Print out for visual inspection.
   for (const auto& d : devices) {
-    LOG(INFO) << absl::StrFormat("name=%s addr=%x", d.name(), d.mac_address().addr);
+    LOG(INFO) << absl::StrFormat("name=%s addr=%x", d.name(), d.mac_address().value());
   }
 }
 
 TEST_F(NetDeviceReaderTest, SystemMacAddress) {
   ASSERT_OK_AND_ASSIGN(NetDevice device, resolver_->SystemMacAddress());
 
-  uint64_t mac_addr = device.mac_address().addr;
+  uint64_t mac_addr = device.mac_address().value();
 
   LOG(INFO) << absl::StrFormat("Mac Address = %x", mac_addr);
 
