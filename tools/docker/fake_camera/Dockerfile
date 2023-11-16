@@ -30,7 +30,7 @@ WORKDIR /app
 ADD loop_video.sh ./
 
 ENV VIDEO_DEVICE=/dev/video0
-ENV GCS_BUCKET=gml-dev-infra-videos
+ENV GCS_BUCKET=gml-dev-videos
 ENV VIDEO_FILE=gimlets/tictoc.mp4
 
 ENTRYPOINT ["/bin/bash", "-c"]
