@@ -4,6 +4,19 @@ include:
 # so we don't need anything beyond `default` here.
 # (with the exception of `ldconfig` which is required by nvidia's container runtime toolkit.
 - libc-bin
+# `libnvargus` requires an active X11 server, we use `xvfb` to emulate one.
+- xvfb
+- x11-xkb-utils
+# xvfb-run requires a number of script utilities.
+- bash
+- dash
+- gawk
+- util-linux
+- coreutils
+path_excludes:
+- usr/bin/X11
+extra_dirs:
+- xscreens/
 package_databases:
 - name: jetson-common
   architectures:

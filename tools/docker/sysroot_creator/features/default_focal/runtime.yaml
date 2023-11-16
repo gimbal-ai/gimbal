@@ -8,7 +8,7 @@ include:
 - zlib1g
 - libunwind8
 path_excludes:
-- usr/share/
+- usr/share/man
 extra_dirs:
 - tmp/
 package_databases:

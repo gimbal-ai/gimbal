@@ -163,13 +163,26 @@ def _jetson_host_ld_library_path():
     return ":".join(paths).format(arch = arch)
 
 def _gml_jetson_image(name, binary, **kwargs):
+    default_arg(kwargs, "tars", [])
+
     native.genrule(
         name = name + "_env_gen",
         outs = [name + ".env"],
         cmd = "> $@ echo LD_LIBRARY_PATH=" + _jetson_host_ld_library_path(),
     )
 
+    needs_xvfb = kwargs.pop("needs_xvfb", False)
+    if needs_xvfb:
+        pkg_tar(
+            name = name + "_xvfb_tar",
+            srcs = ["//src/gem/scripts:xvfb_wrapper.sh"],
+            package_dir = "/scripts",
+        )
+        kwargs["tars"].append(":" + name + "_xvfb_tar")
+        default_arg(kwargs, "entrypoint", ["/scripts/xvfb_wrapper.sh", "/app/" + Label(binary).name])
+
     default_arg(kwargs, "env", ":" + name + "_env_gen")
+
     _gml_binary_image(
         name,
         binary = binary,
