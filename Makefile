@@ -61,6 +61,7 @@ genfiles:
 	scripts/update_graphql_types.sh
 	scripts/update_go_protos.sh
 	scripts/update_visspec_types.sh
+	scripts/update_globalcss.sh
 	go generate ./...
 
 .PHONY: lint
