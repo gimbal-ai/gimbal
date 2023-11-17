@@ -17,10 +17,11 @@
 
 #pragma once
 
-#include "opentelemetry/exporters/otlp/otlp_metric_utils.h"
-#include "opentelemetry/metrics/provider.h"
-#include "opentelemetry/sdk/metrics/meter_provider.h"
-#include "opentelemetry/sdk/metrics/metric_reader.h"
+#include <opentelemetry/exporters/otlp/otlp_metric_utils.h>
+#include <opentelemetry/metrics/provider.h>
+#include <opentelemetry/sdk/metrics/meter.h>
+#include <opentelemetry/sdk/metrics/meter_provider.h>
+#include <opentelemetry/sdk/metrics/metric_reader.h>
 
 #include "src/common/base/base.h"
 
@@ -52,6 +53,8 @@ class MetricsSystem {
    */
   static MetricsSystem& GetInstance();
 
+  static void ResetInstance();
+
   /**
    * Main interface to creating and updating statistics. See OTel or test code for examples
    * of how to use it.
@@ -67,6 +70,46 @@ class MetricsSystem {
    * Returns the reader for custom access to the Collect() call.
    */
   opentelemetry::sdk::metrics::MetricReader* Reader();
+
+  /**
+   * Returns a histogram with the given custom bounds.
+   */
+  template <typename T>
+  std::unique_ptr<opentelemetry::metrics::Histogram<T>> CreateHistogramWithBounds(
+      std::string name, const std::vector<double>& bounds) {
+    auto provider = GetMeterProvider();
+    auto meter = provider->GetMeter("gml");
+
+    auto instrument_selector = std::make_unique<opentelemetry::sdk::metrics::InstrumentSelector>(
+        opentelemetry::sdk::metrics::InstrumentType::kHistogram, name, "");
+    auto* sdk_meter = static_cast<opentelemetry::sdk::metrics::Meter*>(meter.get());
+    auto* scope = sdk_meter->GetInstrumentationScope();
+    auto meter_selector = std::make_unique<opentelemetry::sdk::metrics::MeterSelector>(
+        scope->GetName(), scope->GetVersion(), scope->GetSchemaURL());
+
+    auto histogram_aggregation_config =
+        std::make_shared<opentelemetry::sdk::metrics::HistogramAggregationConfig>();
+    histogram_aggregation_config->boundaries_ = bounds;
+    auto aggregation_config = std::shared_ptr<opentelemetry::sdk::metrics::AggregationConfig>(
+        std::move(histogram_aggregation_config));
+    auto histogram_view = std::make_unique<opentelemetry::sdk::metrics::View>(
+        name, "", "", opentelemetry::sdk::metrics::AggregationType::kHistogram,
+        std::move(aggregation_config));
+
+    auto* sdk_provider = static_cast<opentelemetry::sdk::metrics::MeterProvider*>(provider.get());
+    sdk_provider->AddView(std::move(instrument_selector), std::move(meter_selector),
+                          std::move(histogram_view));
+
+    std::unique_ptr<opentelemetry::metrics::Histogram<T>> histogram;
+    if constexpr (std::is_same_v<T, uint64_t>) {
+      histogram = meter->CreateUInt64Histogram(name);
+    } else if constexpr (std::is_same_v<T, double>) {
+      histogram = meter->CreateDoubleHistogram(name);
+    } else {
+      CHECK(false) << "Only uint64_t or double supported for CreateHistogramWithBounds";
+    }
+    return histogram;
+  }
 
  private:
   MetricsSystem() = default;

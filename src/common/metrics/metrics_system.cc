@@ -69,9 +69,14 @@ void MetricsSystem::Init() {
   g_instance->reader_ = std::move(reader);
 }
 
+void MetricsSystem::ResetInstance() {
+  g_instance.reset();
+  Init();
+}
+
 MetricsSystem& MetricsSystem::GetInstance() {
   if (g_instance == nullptr) {
-    Init();
+    MetricsSystem::ResetInstance();
   };
   return *g_instance;
 }

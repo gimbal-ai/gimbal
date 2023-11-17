@@ -23,6 +23,7 @@
 using opentelemetry::proto::metrics::v1::ResourceMetrics;
 
 TEST(MetricsTest, CollectAllAsProto) {
+  ::gml::metrics::MetricsSystem::ResetInstance();
   ::gml::metrics::MetricsSystem& metrics_sys = ::gml::metrics::MetricsSystem::GetInstance();
 
   auto provider = metrics_sys.GetMeterProvider();
@@ -39,6 +40,7 @@ TEST(MetricsTest, CollectAllAsProto) {
 }
 
 TEST(MetricsTest, Reader) {
+  ::gml::metrics::MetricsSystem::ResetInstance();
   ::gml::metrics::MetricsSystem& metrics_sys = ::gml::metrics::MetricsSystem::GetInstance();
 
   auto provider = metrics_sys.GetMeterProvider();
@@ -60,4 +62,36 @@ TEST(MetricsTest, Reader) {
   reader->Collect(results_cb);
 
   EXPECT_EQ(count, 2);
+}
+
+TEST(MetricsTest, CreateHistogramWithBounds) {
+  ::gml::metrics::MetricsSystem::ResetInstance();
+  ::gml::metrics::MetricsSystem& metrics_sys = ::gml::metrics::MetricsSystem::GetInstance();
+
+  auto hist = metrics_sys.CreateHistogramWithBounds<uint64_t>("test_metric", {0.0, 10.0, 50.0});
+
+  hist->Record(1, {{"test", "test1"}}, {});
+  hist->Record(10, {{"test", "test1"}}, {});
+  hist->Record(11, {{"test", "test2"}}, {});
+
+  ResourceMetrics proto = metrics_sys.CollectAllAsProto();
+
+  ASSERT_EQ(1, proto.scope_metrics_size());
+  ASSERT_EQ(1, proto.scope_metrics(0).metrics_size());
+  auto metric = proto.scope_metrics(0).metrics(0);
+  EXPECT_EQ(metric.name(), "test_metric");
+  ASSERT_TRUE(metric.has_histogram());
+  const auto& histogram = metric.histogram();
+  ASSERT_EQ(2, histogram.data_points_size());
+  const auto& dp0 = histogram.data_points(0);
+  ASSERT_EQ(3, dp0.explicit_bounds_size());
+  EXPECT_THAT(dp0.explicit_bounds(), ::testing::ElementsAre(0.0, 10.0, 50.0));
+  ASSERT_EQ(4, dp0.bucket_counts_size());
+  EXPECT_THAT(dp0.bucket_counts(), ::testing::ElementsAre(0, 2, 0, 0));
+
+  const auto& dp1 = histogram.data_points(1);
+  ASSERT_EQ(3, dp1.explicit_bounds_size());
+  EXPECT_THAT(dp1.explicit_bounds(), ::testing::ElementsAre(0.0, 10.0, 50.0));
+  ASSERT_EQ(4, dp1.bucket_counts_size());
+  EXPECT_THAT(dp1.bucket_counts(), ::testing::ElementsAre(0, 0, 1, 0));
 }

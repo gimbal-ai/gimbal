@@ -23,6 +23,8 @@ package(default_visibility = [
 gml_cc_library(
     name = "cc_library",
     srcs = [
+        "detections_summary_calculator.cc",
+        "detections_summary_calculator.h",
         "detections_to_mediapipe_calculator.cc",
         "detections_to_mediapipe_calculator.h",
         "execution_context_calculator.h",
@@ -31,9 +33,11 @@ gml_cc_library(
     ],
     deps = [
         "//src/api/corepb/v1:corepb_cc_library",
+        "//src/common/metrics:cc_library",
         "//src/gem/exec/core:cc_library",
         "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
         "@com_github_google_mediapipe//mediapipe/framework/formats:detection_cc_proto",
+        "@io_opentelemetry_cpp//sdk/src/metrics",
     ],
 )
 
@@ -57,5 +61,16 @@ gml_cc_test(
         ":cc_library",
         "//src/gem/testing/core:cc_library",
         "//src/gem/testing/core/testdata:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "detections_summary_calculator_test",
+    srcs = [
+        "detections_summary_calculator_test.cc",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
     ],
 )
