@@ -72,7 +72,7 @@ cmake(
         "MLAS_INCLUDE_DIRS": "$$EXT_BUILD_DEPS/libmlas/include",
         "DNNL_LIBRARY_DIRS": "$$EXT_BUILD_DEPS/dnnl/lib",
         "DNNL_INCLUDE_DIRS": "$$EXT_BUILD_DEPS/dnnl/include",
-        "TBBROOT": "$EXT_BUILD_DEPS",
+        "TBBROOT": "$$EXT_BUILD_DEPS",
     },
     visibility = ["//visibility:public"],
     lib_name = "openvino",
