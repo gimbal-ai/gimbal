@@ -38,6 +38,9 @@ cmake(
         # DNNL_ENABLE_JIT_PROFILING causes a linking issue, so turn it off. See:
         # https://github.com/oneapi-src/oneDNN/blob/e3243ab905f4171c1d7f5f05b2458b843402ea96/cmake/options.cmake#L218
         "DNNL_ENABLE_JIT_PROFILING": "OFF",
+        # ITT gets statically linked and causes a conflict with TBB which also has it. Remove it for now.
+        # TODO(oazizi): Fix build so ITT can be enabled.
+        "DNNL_ENABLE_ITT_TASKS": "OFF",
         "TBBROOT": "$$EXT_BUILD_DEPS",
     },
     visibility = ["//visibility:public"],
