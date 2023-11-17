@@ -32,6 +32,7 @@
 #include "src/gem/controller/grpc_bridge.h"
 #include "src/gem/controller/heartbeat.h"
 #include "src/gem/controller/model_exec_handler.h"
+#include "src/gem/controller/video_stream_handler.h"
 #include "src/gem/exec/core/control_context.h"
 
 namespace gml::gem::controller {
@@ -138,9 +139,12 @@ Status Controller::Init() {
   auto hb_handler = std::make_shared<HeartbeatHandler>(dispatcher(), &info_, bridge_.get());
   auto exec_handler =
       std::make_shared<ModelExecHandler>(dispatcher(), &info_, bridge_.get(), ctrl_exec_ctx_.get());
+  auto video_handler = std::make_shared<VideoStreamHandler>(dispatcher(), &info_, bridge_.get(),
+                                                            ctrl_exec_ctx_.get());
 
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_STATUS, hb_handler));
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_EXEC, exec_handler));
+  GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_VIDEO, video_handler));
 
   GML_RETURN_IF_ERROR(bridge_->Run());
 

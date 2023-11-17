@@ -28,6 +28,7 @@ gml_cc_library(
         "heartbeat.cc",
         "lifecycle.cc",
         "model_exec_handler.cc",
+        "video_stream_handler.cc",
     ],
     hdrs = [
         "controller.h",
@@ -37,6 +38,7 @@ gml_cc_library(
         "lifecycle.h",
         "message_handler.h",
         "model_exec_handler.h",
+        "video_stream_handler.h",
     ],
     deps = [
         "//src/api/corepb/v1:corepb_cc_library",

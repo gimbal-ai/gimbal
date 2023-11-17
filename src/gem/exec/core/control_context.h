@@ -37,17 +37,28 @@ class ControlExecutionContext : public ExecutionContext {
       std::function<Status(const std::vector<ImageOverlayChunk>&, const std::vector<H264Chunk>&)>;
 
   void RegisterVideoWithOverlaysCallback(VideoWithOverlaysCallback cb) {
+    absl::base_internal::SpinLockHolder lock(&lock_);
     video_w_overlays_cb_ = std::move(cb);
   }
 
-  void ClearVideoWithOverlaysCallback() { video_w_overlays_cb_ = nullptr; }
+  void ClearVideoWithOverlaysCallback() {
+    absl::base_internal::SpinLockHolder lock(&lock_);
+    video_w_overlays_cb_ = nullptr;
+  }
 
-  bool HasVideoWithOverlaysCallback() { return !!video_w_overlays_cb_; }
+  bool HasVideoWithOverlaysCallback() {
+    absl::base_internal::SpinLockHolder lock(&lock_);
+    return !!video_w_overlays_cb_;
+  }
 
-  const VideoWithOverlaysCallback& GetVideoWithOverlaysCallback() { return video_w_overlays_cb_; }
+  VideoWithOverlaysCallback GetVideoWithOverlaysCallback() {
+    absl::base_internal::SpinLockHolder lock(&lock_);
+    return video_w_overlays_cb_;
+  }
 
  private:
-  VideoWithOverlaysCallback video_w_overlays_cb_;
+  absl::base_internal::SpinLock lock_;
+  VideoWithOverlaysCallback video_w_overlays_cb_ ABSL_GUARDED_BY(lock_);
 };
 
 }  // namespace gml::gem::exec::core
