@@ -50,7 +50,7 @@ MEGALINTER_IMAGE_TAG := "$(REPOSITORY)/megalinter-gml-custom:$(MEGALINTER_REV)"
 ## Fake camera image
 REPOSITORY := us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts
 FAKE_CAMERA_BUILD_DIR := $(BUILD_DIR)/fake_camera
-FAKE_CAMERA_REV := "v0.1"
+FAKE_CAMERA_REV := "v0.2"
 FAKE_CAMERA_IMAGE_TAG := "$(REPOSITORY)/fake_camera:$(FAKE_CAMERA_REV)"
 
 ## NVIDIA stub creator

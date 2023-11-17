@@ -15,5 +15,11 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-gcsfuse -o ro "$GCS_BUCKET" /videos
-ffmpeg -stream_loop -1 -re -i "/videos/$VIDEO_FILE" -vf format=yuv420p -f v4l2 "$VIDEO_DEVICE"
+OUT="$(basename "$VIDEO_FILE")"
+gsutil cp "$GCS_BUCKET$VIDEO_FILE" "$OUT"
+
+if [[ $AUTOSELECT_DEVICE == "true" ]]; then
+  VIDEO_DEVICE=$(find /dev/video* | tail -1)
+fi
+
+ffmpeg -stream_loop -1 -re -i "$OUT" -vf format=yuv420p -f v4l2 "$VIDEO_DEVICE"
