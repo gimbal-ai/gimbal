@@ -104,7 +104,7 @@ void GRPCBridge::Writer() {
 }
 
 Status GRPCBridge::SendMessageToBridge(gml::internal::api::core::v1::EdgeCPTopic topic,
-                                       google::protobuf::Message& msg) {
+                                       const google::protobuf::Message& msg) {
   // Wrap outgoing message.
   auto wrapper = std::make_unique<BridgeRequest>();
   wrapper->set_topic(topic);

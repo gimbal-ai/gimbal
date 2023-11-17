@@ -14,6 +14,7 @@
 # SPDX-License-Identifier: Proprietary
 
 load("//bazel:gml_build_system.bzl", "gml_cc_binary", "gml_cc_library")
+load("//bazel:images.bzl", "gml_jetson_image")
 
 package(default_visibility = [
     "//src:__subpackages__",
@@ -33,10 +34,20 @@ gml_cc_library(
 
 gml_cc_binary(
     name = "gem",
-    stamp = -1,
+    data = [
+        "yolo_exec_spec.pbtxt",
+        "yolo_model_spec.pbtxt",
+    ],
     deps = [
         ":cc_library",
         "//src/shared/version:cc_library",
         "//src/shared/version:version_linkstamp",
     ],
+)
+
+gml_jetson_image(
+    name = "gem_jetson_image",
+    binary = ":gem",
+    include_runfiles = True,
+    needs_xvfb = True,
 )

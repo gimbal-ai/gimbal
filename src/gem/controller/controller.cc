@@ -31,6 +31,8 @@
 #include "src/gem/controller/controller.h"
 #include "src/gem/controller/grpc_bridge.h"
 #include "src/gem/controller/heartbeat.h"
+#include "src/gem/controller/model_exec_handler.h"
+#include "src/gem/exec/core/control_context.h"
 
 namespace gml::gem::controller {
 
@@ -46,8 +48,10 @@ using gml::internal::controlplane::fleetmgr::v1::FleetMgrEdgeService;
 using gml::internal::controlplane::fleetmgr::v1::RegisterRequest;
 using gml::internal::controlplane::fleetmgr::v1::RegisterResponse;
 
+using internal::api::core::v1::CP_EDGE_TOPIC_EXEC;
 using internal::api::core::v1::CP_EDGE_TOPIC_STATUS;
 using internal::api::core::v1::CP_EDGE_TOPIC_VIDEO;
+using internal::api::core::v1::EDGE_CP_TOPIC_EXEC;
 using internal::api::core::v1::EDGE_CP_TOPIC_STATUS;
 
 DEFINE_string(device_serial, gflags::StringFromEnv("GML_DEVICE_SERIAL", ""),
@@ -127,10 +131,16 @@ Status Controller::Init() {
 
   bridge_->RegisterOnMessageReadHandler(
       std::bind(&Controller::HandleMessage, this, std::placeholders::_1));
+
+  ctrl_exec_ctx_ = std::make_unique<exec::core::ControlExecutionContext>();
+
   // Register message handlers.
   auto hb_handler = std::make_shared<HeartbeatHandler>(dispatcher(), &info_, bridge_.get());
+  auto exec_handler =
+      std::make_shared<ModelExecHandler>(dispatcher(), &info_, bridge_.get(), ctrl_exec_ctx_.get());
 
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_STATUS, hb_handler));
+  GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_EXEC, exec_handler));
 
   GML_RETURN_IF_ERROR(bridge_->Run());
 
@@ -147,6 +157,9 @@ Status Controller::Run() {
 
 Status Controller::Stop(std::chrono::milliseconds timeout) {
   GML_UNUSED(timeout);
+  for (const auto& p : message_handlers_) {
+    GML_RETURN_IF_ERROR(p.second->Finish());
+  }
   return Status::OK();
 }
 
@@ -169,6 +182,7 @@ Status Controller::RegisterMessageHandler(CPEdgeTopic topic,
   if (message_handlers_.contains(topic)) {
     return error::AlreadyExists("message handler already exists for case: $0", topic);
   }
+  GML_RETURN_IF_ERROR(handler->Init());
   message_handlers_[topic] = std::move(handler);
   return Status::OK();
 }

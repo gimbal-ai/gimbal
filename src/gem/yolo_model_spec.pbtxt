@@ -1,0 +1,19 @@
+onnx_blob_key: "yolov3.onnx"
+
+tensorrt_spec {
+  optimization_profile {
+    tensor_shape_range {
+      tensor_name: "input_1"
+      dim: 1
+      dim: 3
+      dim: 416
+      dim: 416
+    }
+    tensor_shape_range {
+      tensor_name: "image_shape"
+      dim: 1
+      dim: 2
+    }
+  }
+  engine_blob_key: "yolov3.engine"
+}

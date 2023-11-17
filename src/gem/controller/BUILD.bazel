@@ -14,6 +14,7 @@
 # SPDX-License-Identifier: Proprietary
 
 load("//bazel:gml_build_system.bzl", "gml_cc_library")
+load("//src/gem/plugins:plugins.bzl", "select_plugins")
 
 package(default_visibility = [
     "//src:__subpackages__",
@@ -26,6 +27,7 @@ gml_cc_library(
         "grpc_bridge.cc",
         "heartbeat.cc",
         "lifecycle.cc",
+        "model_exec_handler.cc",
     ],
     hdrs = [
         "controller.h",
@@ -34,6 +36,7 @@ gml_cc_library(
         "heartbeat.h",
         "lifecycle.h",
         "message_handler.h",
+        "model_exec_handler.h",
     ],
     deps = [
         "//src/api/corepb/v1:corepb_cc_library",
@@ -45,7 +48,14 @@ gml_cc_library(
         "//src/controlplane/egw/egwpb/v1:egwpb_grpc_cc_library",
         "//src/controlplane/fleetmgr/fmpb/v1:fmpb_cc_library",
         "//src/controlplane/fleetmgr/fmpb/v1:fmpb_grpc_cc_library",
+        "//src/gem/calculators/core:cc_library",
+        "//src/gem/exec/core/runner:cc_library",
+        "//src/gem/plugins:cc_library",
+        "@com_github_google_mediapipe//mediapipe/calculators/core:flow_limiter_calculator",
+        "@com_github_google_mediapipe//mediapipe/calculators/util:annotation_overlay_calculator",
+        "@com_github_google_mediapipe//mediapipe/calculators/util:detections_to_render_data_calculator",
+        "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
         "@com_github_oneapi_oneTBB//:tbb",
         "@com_github_rlyeh_sole//:sole",
-    ],
+    ] + select_plugins(),
 )

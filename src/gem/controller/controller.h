@@ -31,6 +31,7 @@
 #include "src/controlplane/egw/egwpb/v1/egwpb.grpc.pb.h"
 #include "src/controlplane/fleetmgr/fmpb/v1/fmpb.grpc.pb.h"
 #include "src/gem/controller/message_handler.h"
+#include "src/gem/exec/core/control_context.h"
 
 namespace gml::gem::controller {
 
@@ -76,6 +77,8 @@ class Controller : public gml::NotCopyable {
   std::unique_ptr<gml::internal::controlplane::egw::v1::EGWService::Stub> egwstub_;
   absl::flat_hash_map<gml::internal::api::core::v1::CPEdgeTopic, std::shared_ptr<MessageHandler>>
       message_handlers_;
+
+  std::unique_ptr<exec::core::ControlExecutionContext> ctrl_exec_ctx_;
 };
 
 }  // namespace gml::gem::controller

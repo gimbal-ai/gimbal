@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
   GML_CHECK_OK(controller->Run());
   GML_CHECK_OK(controller->Stop(std::chrono::seconds(1)));
 
-  TerminationHandler::set_controller(nullptr);
+  TerminationHandler::set_controller(controller.get());
 
   return 0;
 }

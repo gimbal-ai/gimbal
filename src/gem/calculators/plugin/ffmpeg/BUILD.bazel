@@ -18,7 +18,7 @@ load("//src/gem/plugins:plugins.bzl", "gem_plugin_cc_library")
 
 package(default_visibility = [
     "//src/experimental:__subpackages__",
-    "//src/gem/plugins/cpu_tensor:__subpackages__",
+    "//src/gem:__subpackages__",
 ])
 
 gem_plugin_cc_library(

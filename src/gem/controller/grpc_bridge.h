@@ -52,7 +52,7 @@ class GRPCBridge {
   // messages are generally written on sequentially to avoid issues since gRPC can only have a
   // single outstanding read/write.
   Status SendMessageToBridge(gml::internal::api::core::v1::EdgeCPTopic,
-                             google::protobuf::Message& msg);
+                             const google::protobuf::Message& msg);
 
   // Register a message handler to be called on message read. This is called on the reader thread
   // and should not block.
