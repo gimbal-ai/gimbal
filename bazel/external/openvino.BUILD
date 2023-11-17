@@ -17,7 +17,14 @@ load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake")
 
 filegroup(
     name = "source",
-    srcs = glob(["**"]),
+    srcs = glob(
+        ["**"],
+        # There is a file docs/img/BASIC_IE_API_workflow_С.svg, where what might seem like a `C` is actually
+        # a UTF-8 cyrillic character (0xd0a1). This causes problems for our build, so just exclude the file.
+        # We use this method, instead of fixing the file using a patch to remove or rename the file,
+        # because the patch gets confused with the cyrillic character.
+        exclude = ["docs/img/*"],
+    ),
     visibility = ["//visibility:public"],
 )
 
@@ -80,6 +87,9 @@ cmake(
     targets = [
         "openvino",
         "openvino_c",
+    ],
+    defines = [
+        "OPENVINO_STATIC_LIBRARY",
     ],
     out_lib_dir = "runtime/lib/intel64",
     out_include_dir = "runtime/include",
