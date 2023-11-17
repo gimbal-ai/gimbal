@@ -38,7 +38,7 @@ bazel-*
 **/.vscode/*.log
 
 # ctags file
-tags
+/tags
 
 # Python cache files.
 .cache
