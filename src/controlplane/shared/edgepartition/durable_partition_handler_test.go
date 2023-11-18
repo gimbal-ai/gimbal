@@ -86,16 +86,15 @@ func TestDurablePartitionHandler_MessageHandler(t *testing.T) {
 	var wg sync.WaitGroup
 
 	wg.Add(1)
-	handler := func(md *corepb.EdgeCPMetadata, anyMsg *types.Any, msg jetstream.Msg) {
+	handler := func(md *corepb.EdgeCPMetadata, anyMsg *types.Any) error {
 		assert.Equal(t, corepb.EDGE_CP_TOPIC_STATUS, md.Topic)
 		assert.Equal(t, utils.ProtoFromUUID(deviceID), md.DeviceID)
 		hbMsg := &corepb.EdgeHeartbeat{}
 		err := types.UnmarshalAny(anyMsg, hbMsg)
 		require.NoError(t, err)
 		assert.Equal(t, int64(10), hbMsg.SeqID)
-		err = msg.Ack()
-		require.NoError(t, err)
 		wg.Done()
+		return nil
 	}
 
 	handlers := make(map[string]edgepartition.DurableMessageHandler)

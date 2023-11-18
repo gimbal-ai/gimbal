@@ -18,6 +18,7 @@
 package edgepartition
 
 import (
+	"errors"
 	"sync"
 
 	"github.com/gogo/protobuf/types"
@@ -28,7 +29,9 @@ import (
 	"gimletlabs.ai/gimlet/src/shared/services/msgbus"
 )
 
-type DurableMessageHandler func(*corepb.EdgeCPMetadata, *types.Any, jetstream.Msg)
+var ErrInvalidMessage = errors.New("message format invalid or unexpected")
+
+type DurableMessageHandler func(*corepb.EdgeCPMetadata, *types.Any) error
 
 // DurablePartitionHandler handles any incoming Jetstream messages from an edge device.
 type DurablePartitionHandler struct {
@@ -67,33 +70,50 @@ func (p *DurablePartitionHandler) Start() error {
 	return nil
 }
 
+func (p *DurablePartitionHandler) handleMessage(topic string, msg jetstream.Msg) error {
+	topicLog := log.WithField("topic", topic)
+
+	e2CpMsg := &corepb.EdgeCPMessage{}
+	err := e2CpMsg.Unmarshal(msg.Data())
+	if err != nil {
+		return err
+	}
+
+	msgType, err := types.AnyMessageName(e2CpMsg.Msg)
+	if err != nil {
+		topicLog.WithError(err).WithField("deviceID", e2CpMsg.Metadata.DeviceID).Error("Failed to get type of any message")
+		return ErrInvalidMessage
+	}
+
+	funcHandler, ok := p.messageHandlers[msgType]
+	if !ok {
+		topicLog.WithField("msgType", msgType).WithField("deviceID", e2CpMsg.Metadata.DeviceID).Error("Message type does not match any expected messages")
+		return ErrInvalidMessage
+	}
+
+	return funcHandler(e2CpMsg.Metadata, e2CpMsg.Msg)
+}
+
 func (p *DurablePartitionHandler) startDurablePartitionHandler(partition string) error {
 	topic, err := EdgeToCPNATSPartitionTopic(partition, p.e2cpTopic, true)
 	if err != nil {
 		return err
 	}
 
-	topicLog := log.WithField("topic", topic)
 	sub, err := p.js.PersistentSubscribe(topic, p.consumer, func(msg jetstream.Msg) {
-		e2CpMsg := &corepb.EdgeCPMessage{}
-		err = e2CpMsg.Unmarshal(msg.Data())
+		err = p.handleMessage(topic, msg)
 		if err != nil {
-			topicLog.WithError(err).Error("Failed to unmarshal CPEdgeMessage... Skipping.")
+			err = msg.Nak()
+			if err != nil && !errors.Is(err, jetstream.ErrMsgAlreadyAckd) {
+				log.WithError(err).Fatal("Failed to nack Jetstream message")
+			}
 			return
 		}
 
-		msgType, err := types.AnyMessageName(e2CpMsg.Msg)
-		if err != nil {
-			topicLog.WithError(err).WithField("deviceID", e2CpMsg.Metadata.DeviceID).Error("Failed to get type of any message")
+		err = msg.Ack()
+		if err != nil && !errors.Is(err, jetstream.ErrMsgAlreadyAckd) {
+			log.WithError(err).Fatal("Failed to ack Jetstream message")
 		}
-
-		funcHandler, ok := p.messageHandlers[msgType]
-		if !ok {
-			topicLog.WithField("msgType", msgType).WithField("deviceID", e2CpMsg.Metadata.DeviceID).Error("Message type does not match any expected messages")
-			return
-		}
-
-		funcHandler(e2CpMsg.Metadata, e2CpMsg.Msg, msg)
 	})
 	if err != nil {
 		return err

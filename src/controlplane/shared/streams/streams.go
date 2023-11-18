@@ -154,20 +154,6 @@ func InitializeConsumers(js jetstream.JetStream, serviceName string, streamName 
 		return err
 	}
 
-	// Delete any old, unused consumers.
-	for c, used := range updatedConsumerMap {
-		if used {
-			continue
-		}
-
-		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-		defer cancel()
-		err := js.DeleteConsumer(ctx, streamName, c)
-		if err != nil {
-			return err
-		}
-	}
-
 	return nil
 }
 

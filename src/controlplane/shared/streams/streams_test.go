@@ -117,12 +117,6 @@ func TestJetStream_InitializeConsumers(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	_, err = js.CreateConsumer(ctx, streamName, jetstream.ConsumerConfig{
-		Durable:       "metrics___12__|metricsProcessor",
-		FilterSubject: "metrics.*.12.*",
-	})
-	require.NoError(t, err)
-
 	consumers := []*streams.CPConsumer{
 		// Existing stream.
 		{
