@@ -25,7 +25,7 @@ require (
 	github.com/jarcoal/httpmock v1.3.1
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/lestrrat-go/jwx/v2 v2.0.16
-	github.com/mikefarah/yq/v4 v4.40.1
+	github.com/mikefarah/yq/v4 v4.40.2
 	github.com/nats-io/nats-server/v2 v2.10.5
 	github.com/nats-io/nats.go v1.31.0
 	github.com/ory/dockertest/v3 v3.10.0
@@ -69,7 +69,7 @@ require (
 	github.com/docker/docker v20.10.24+incompatible // indirect
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
-	github.com/elliotchance/orderedmap v1.5.0 // indirect
+	github.com/elliotchance/orderedmap v1.5.1 // indirect
 	github.com/felixge/httpsnoop v1.0.3 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
