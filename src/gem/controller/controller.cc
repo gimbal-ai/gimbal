@@ -31,6 +31,7 @@
 #include "src/gem/controller/controller.h"
 #include "src/gem/controller/grpc_bridge.h"
 #include "src/gem/controller/heartbeat.h"
+#include "src/gem/controller/metrics_handler.h"
 #include "src/gem/controller/model_exec_handler.h"
 #include "src/gem/controller/video_stream_handler.h"
 #include "src/gem/exec/core/control_context.h"
@@ -50,6 +51,7 @@ using gml::internal::controlplane::fleetmgr::v1::RegisterRequest;
 using gml::internal::controlplane::fleetmgr::v1::RegisterResponse;
 
 using internal::api::core::v1::CP_EDGE_TOPIC_EXEC;
+using internal::api::core::v1::CP_EDGE_TOPIC_METRICS;
 using internal::api::core::v1::CP_EDGE_TOPIC_STATUS;
 using internal::api::core::v1::CP_EDGE_TOPIC_VIDEO;
 using internal::api::core::v1::EDGE_CP_TOPIC_EXEC;
@@ -141,10 +143,13 @@ Status Controller::Init() {
       std::make_shared<ModelExecHandler>(dispatcher(), &info_, bridge_.get(), ctrl_exec_ctx_.get());
   auto video_handler = std::make_shared<VideoStreamHandler>(dispatcher(), &info_, bridge_.get(),
                                                             ctrl_exec_ctx_.get());
+  auto metrics_handler =
+      std::make_shared<MetricsHandler>(dispatcher(), &info_, bridge_.get(), ctrl_exec_ctx_.get());
 
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_STATUS, hb_handler));
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_EXEC, exec_handler));
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_VIDEO, video_handler));
+  GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_METRICS, metrics_handler));
 
   GML_RETURN_IF_ERROR(bridge_->Run());
 

@@ -25,10 +25,12 @@
 #include "src/api/corepb/v1/cp_edge.pb.h"
 #include "src/common/base/base.h"
 #include "src/common/event/event.h"
+#include "src/common/metrics/metrics_system.h"
 #include "src/common/uuid/uuid.h"
 #include "src/controlplane/egw/egwpb/v1/egwpb.grpc.pb.h"
 #include "src/controlplane/fleetmgr/fmpb/v1/fmpb.grpc.pb.h"
 #include "src/controlplane/fleetmgr/fmpb/v1/fmpb.pb.h"
+#include "src/gem/controller/controller.h"
 #include "src/gem/controller/grpc_bridge.h"
 #include "src/gem/controller/heartbeat.h"
 #include "src/gem/controller/message_handler.h"
@@ -49,7 +51,12 @@ controller::HeartbeatHandler::HeartbeatHandler(event::Dispatcher* d, GEMInfo* ag
                                                GRPCBridge* bridge)
     : MessageHandler(d, agent_info, bridge),
       time_source_(d->GetTimeSource()),
-      heartbeat_send_timer_(dispatcher()->CreateTimer([this] { SendHeartbeat(); })) {}
+      heartbeat_send_timer_(dispatcher()->CreateTimer([this] { SendHeartbeat(); })) {
+  auto& metrics_system = gml::metrics::MetricsSystem::GetInstance();
+  auto meter = metrics_system.GetMeterProvider()->GetMeter("");
+  heartbeat_latency_hist_ = meter->CreateUInt64Histogram("heartbeat_latency");
+  heartbeat_count_ = meter->CreateUInt64Counter("heartbeat_count");
+}
 
 Status HeartbeatHandler::HandleMessage(const BridgeResponse& msg) {
   EdgeHeartbeatAck ack;
@@ -60,6 +67,10 @@ Status HeartbeatHandler::HandleMessage(const BridgeResponse& msg) {
   }
 
   auto time_delta = time_source_.MonotonicTime() - heartbeat_info_.last_heartbeat_send_time_;
+  heartbeat_latency_hist_->Record(
+      std::chrono::duration_cast<std::chrono::milliseconds>(time_delta).count(), {});
+  heartbeat_count_->Add(1, {});
+
   heartbeat_latency_moving_average_ =
       kHbLatencyDecay * heartbeat_latency_moving_average_ + (1 - kHbLatencyDecay) * time_delta;
   LOG_EVERY_N(INFO, 5) << absl::StrFormat(

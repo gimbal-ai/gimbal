@@ -22,6 +22,7 @@
 #include <sole.hpp>
 
 #include "src/api/corepb/v1/cp_edge.pb.h"
+#include "src/common/metrics/metrics_system.h"
 #include "src/controlplane/egw/egwpb/v1/egwpb.grpc.pb.h"
 #include "src/gem/controller/gem_info.h"
 #include "src/gem/controller/message_handler.h"
@@ -61,6 +62,9 @@ class HeartbeatHandler : public MessageHandler {
 
   gml::event::TimerUPtr heartbeat_send_timer_;
   std::chrono::duration<double> heartbeat_latency_moving_average_{0};
+
+  std::unique_ptr<opentelemetry::metrics::Histogram<uint64_t>> heartbeat_latency_hist_;
+  std::unique_ptr<opentelemetry::metrics::Counter<uint64_t>> heartbeat_count_;
 
   static constexpr double kHbLatencyDecay = 0.25;
 
