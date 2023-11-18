@@ -43,6 +43,7 @@ ENV["PATH"] = "/opt/gml_dev/tools/golang/bin:#{ENV['PATH']}"
 execute "install go binaries" do
   ENV["GOPATH"] = "/opt/gml_dev/gopath"
   command %(go install go.uber.org/mock/mockgen@v0.3.0 && \
+            go install github.com/bazelbuild/buildtools/buildozer@latest && \
             go install github.com/go-bindata/go-bindata/go-bindata@v3.1.2+incompatible && \
             go install github.com/google/go-containerregistry/cmd/crane@v0.16.1 && \
             go install github.com/sigstore/cosign/v2/cmd/cosign@v2.2.0 && \
