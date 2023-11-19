@@ -54,7 +54,7 @@ func minPartID() int {
 	partitionCount := viper.GetInt("partition_count")
 	partitionID := viper.GetInt("partition_id")
 	totalKeys := int(math.Pow(16, KeySpaceSize))
-	return partitionID * (totalKeys / partitionCount)
+	return partitionID * totalKeys / partitionCount
 }
 
 func maxPartID() int {
@@ -62,7 +62,10 @@ func maxPartID() int {
 	partitionID := viper.GetInt("partition_id")
 
 	totalKeys := int(math.Pow(16, KeySpaceSize))
-	return (partitionID + 1) * (totalKeys / partitionCount)
+	if partitionID+1 == partitionCount {
+		return totalKeys
+	}
+	return (partitionID + 1) * totalKeys / partitionCount
 }
 
 // GenerateRange produces values between min/max in hex.

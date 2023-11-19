@@ -70,6 +70,26 @@ func TestGenerateRange(t *testing.T) {
 			pID:      255,
 			expected: []string{"ff0", "ff1", "ff2", "ff3", "ff4", "ff5", "ff6", "ff7", "ff8", "ff9", "ffa", "ffb", "ffc", "ffd", "ffe", "fff"},
 		},
+		{
+			pCount:   2500,
+			pID:      0,
+			expected: []string{"000"},
+		},
+		{
+			pCount:   2500,
+			pID:      1,
+			expected: []string{"001", "002"},
+		},
+		{
+			pCount:   2500,
+			pID:      2,
+			expected: []string{"003"},
+		},
+		{
+			pCount:   2500,
+			pID:      2499,
+			expected: []string{"ffe", "fff"},
+		},
 	}
 
 	for _, test := range tests {
