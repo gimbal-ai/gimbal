@@ -28,6 +28,7 @@ gml_cc_library(
     hdrs = [
         "logger.h",
         "service_descriptor_database.h",
+        "status.h",
         "utils.h",
     ],
     deps = [
@@ -46,6 +47,14 @@ gml_cc_test(
 gml_cc_test(
     name = "service_descriptor_database_test",
     srcs = ["service_descriptor_database_test.cc"],
+    deps = [
+        ":cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "status_test",
+    srcs = ["status_test.cc"],
     deps = [
         ":cc_library",
     ],

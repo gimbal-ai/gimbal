@@ -66,6 +66,12 @@ class GRPCBridge {
   void Reader();
   void Writer();
 
+  Status WriteWithRetries(const BridgeRequest&);
+  Status WriteRequestToBridge(const BridgeRequest&);
+
+  Status HandleReadWriteFailure() ABSL_LOCKS_EXCLUDED(rdwr_lock_);
+  Status Connect() ABSL_EXCLUSIVE_LOCKS_REQUIRED(rdwr_lock_);
+
   std::string controlplane_addr_;
   std::shared_ptr<grpc::Channel> cp_chan_;
   std::string deploy_key_;
@@ -78,9 +84,11 @@ class GRPCBridge {
   std::unique_ptr<std::thread> write_thread_;
 
   std::unique_ptr<gml::internal::controlplane::egw::v1::EGWService::Stub> egwstub_;
-  std::unique_ptr<::grpc::ClientReaderWriter<BridgeRequest, BridgeResponse>> rdwr_;
+  std::unique_ptr<::grpc::ClientReaderWriter<BridgeRequest, BridgeResponse>> rdwr_
+      ABSL_GUARDED_BY(rdwr_lock_) ABSL_PT_GUARDED_BY(rdwr_lock_);
+  absl::Mutex rdwr_lock_;
 
-  grpc::ClientContext ctx;
+  std::unique_ptr<grpc::ClientContext> ctx_;
   std::function<Status(std::unique_ptr<BridgeResponse>)> read_handler_;
 };
 

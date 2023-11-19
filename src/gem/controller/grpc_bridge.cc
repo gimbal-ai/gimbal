@@ -18,6 +18,8 @@
 #include "src/gem/controller/grpc_bridge.h"
 
 #include <memory>
+#include "src/common/base/error.h"
+#include "src/common/grpcutils/status.h"
 
 namespace gml::gem::controller {
 
@@ -30,17 +32,45 @@ GRPCBridge::GRPCBridge(std::shared_ptr<grpc::Channel> cp_chan, std::string_view 
                        const sole::uuid& device_id)
     : cp_chan_(std::move(cp_chan)), deploy_key_(std::string(deploy_key)), device_id_(device_id) {}
 
-Status GRPCBridge::Init() {
-  egwstub_ = std::make_unique<EGWService::Stub>(cp_chan_);
+Status GRPCBridge::Connect() {
+  ctx_ = std::make_unique<grpc::ClientContext>();
 
-  ctx.AddMetadata("x-deploy-key", deploy_key_);
-  ctx.AddMetadata("x-device-id", device_id_.str());
-  rdwr_ = egwstub_->Bridge(&ctx);
+  ctx_->AddMetadata("x-deploy-key", deploy_key_);
+  ctx_->AddMetadata("x-device-id", device_id_.str());
+
+  rdwr_ = egwstub_->Bridge(ctx_.get());
   if (rdwr_ == nullptr) {
     return error::Internal("Failed to connect to controlplane bridge.");
   }
   return Status::OK();
 }
+
+Status GRPCBridge::HandleReadWriteFailure() {
+  absl::WriterMutexLock lock(&rdwr_lock_);
+  rdwr_->WritesDone();
+  auto grpc_status = rdwr_->Finish();
+  // Check if the error is a RST_STREAM.
+  if (grpc_status.ok() || grpc_status.error_code() != grpc::StatusCode::INTERNAL ||
+      !absl::StrContains(grpc_status.error_message(), "RST_STREAM")) {
+    if (grpc_status.ok()) {
+      // Successful Finish call implies the server cancelled the stream without error.
+      return error::Cancelled("GRPCBridge stream cancelled by server");
+    }
+    return StatusAdapter(grpc_status);
+  }
+  // If it is a RST_STREAM restart the stream.
+  LOG(INFO) << "Restarting GRPCBridge due to RST_STREAM";
+  GML_RETURN_IF_ERROR(Connect());
+  return Status::OK();
+}
+
+Status GRPCBridge::Init() {
+  egwstub_ = std::make_unique<EGWService::Stub>(cp_chan_);
+  absl::WriterMutexLock lock(&rdwr_lock_);
+  GML_RETURN_IF_ERROR(Connect());
+  return Status::OK();
+}
+
 Status GRPCBridge::Run() {
   running_ = true;
   // Create  thread to read message.
@@ -55,12 +85,14 @@ Status GRPCBridge::Shutdown() {
   // Stop the writer thread.
   write_q_.emplace(nullptr);
 
-  // Try to close the connection.
-  ctx.TryCancel();
-
-  if (rdwr_) {
-    rdwr_->Finish();
+  {
+    absl::WriterMutexLock lock(&rdwr_lock_);
+    if (rdwr_) {
+      rdwr_->WritesDone();
+      rdwr_->Finish();
+    }
   }
+
   if (read_thread_) {
     read_thread_->join();
   }
@@ -73,16 +105,49 @@ Status GRPCBridge::Shutdown() {
 void GRPCBridge::Reader() {
   while (running_) {
     auto resp = std::make_unique<BridgeResponse>();
-    if (!rdwr_->Read(resp.get())) {
-      LOG(ERROR) << "Failed to read message";
-      // TODO(zasgar): We need to notify of error here.
-      return;
+    bool read_succeeded;
+    {
+      absl::ReaderMutexLock lock(&rdwr_lock_);
+      read_succeeded = rdwr_->Read(resp.get());
+    }
+    if (!read_succeeded) {
+      auto s = HandleReadWriteFailure();
+      if (!s.ok()) {
+        // TODO(zasgar): We need to notify of error here.
+        LOG(FATAL) << absl::Substitute("GRPCBridge read failed with error: $0", s.msg());
+      }
     }
 
-    if (read_handler_) {
+    if (read_succeeded && read_handler_) {
       ECHECK_OK(read_handler_(std::move(resp)));
     }
   }
+}
+
+Status GRPCBridge::WriteRequestToBridge(const BridgeRequest& req) {
+  bool write_suceeded;
+  {
+    absl::ReaderMutexLock lock(&rdwr_lock_);
+    write_suceeded = rdwr_->Write(req);
+  }
+  if (!write_suceeded) {
+    GML_RETURN_IF_ERROR(HandleReadWriteFailure());
+  }
+  return Status::OK();
+}
+
+Status GRPCBridge::WriteWithRetries(const BridgeRequest& req) {
+  constexpr int kWriteRetries = 3;
+
+  Status s;
+  for (int i = 0; i < kWriteRetries; ++i) {
+    s = WriteRequestToBridge(req);
+    if (s.ok()) {
+      return Status::OK();
+    }
+  }
+  return error::Internal("Failed to write request ($0) to bridge after $1 retries, giving up...",
+                         s.msg(), kWriteRetries);
 }
 
 void GRPCBridge::Writer() {
@@ -95,10 +160,10 @@ void GRPCBridge::Writer() {
       // Got the sentinel value saying the thread should be terminated.
       return;
     }
-    if (!rdwr_->Write(*req)) {
-      LOG(ERROR) << "Failed to read message";
+    auto s = WriteWithRetries(*req);
+    if (!s.ok()) {
       // TODO(zasgar): We need to notify of error here.
-      return;
+      LOG(FATAL) << "GRPCBridge Writer failed: " << s.msg();
     }
   }
 }
