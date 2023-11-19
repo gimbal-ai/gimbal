@@ -19,35 +19,75 @@ package victoriametricstest
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
+	"testing"
 	"time"
 
 	"github.com/bazelbuild/rules_go/go/runfiles"
+	"github.com/cenkalti/backoff/v4"
 	"github.com/ory/dockertest/v3"
 	"github.com/ory/dockertest/v3/docker"
 	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
 	"github.com/prometheus/common/model"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+	"github.com/stretchr/testify/require"
 
 	"gimletlabs.ai/gimlet/src/shared/services/victoriametrics"
 )
 
+var (
+	ErrEmptyResult           = errors.New("no such metric available")
+	ErrUnsupportedMetricType = errors.New("metric type is unsupported")
+)
+
 func IsMetricAvailable(ctx context.Context, conn v1.API, query string) error {
-	res, _, err := conn.Query(ctx, query, time.Now())
+	res, _, err := conn.QueryRange(ctx, query, v1.Range{
+		Start: time.Now().Add(-1 * time.Hour),
+		End:   time.Now(),
+		Step:  60 * time.Second,
+	})
 	if err != nil {
 		return err
 	}
+	var l int
 	switch res.Type() {
 	case model.ValVector:
 		items := res.(model.Vector)
-		if items.Len() < 1 {
-			return fmt.Errorf("empty results")
-		}
-		return nil
+		l = items.Len()
+	case model.ValMatrix:
+		items := res.(model.Matrix)
+		l = items.Len()
+	default:
+		return fmt.Errorf("%w: %s", ErrUnsupportedMetricType, res.Type().String())
 	}
-	return fmt.Errorf("metric type %s not yet supported", res.Type().String())
+	if l < 1 {
+		return ErrEmptyResult
+	}
+	return nil
+}
+
+func WaitForMetrics(t *testing.T, conn v1.API, q string) {
+	bo := backoff.NewExponentialBackOff()
+	bo.MaxElapsedTime = 30 * time.Second
+	bo.MaxInterval = 1 * time.Second
+	bo.InitialInterval = 1 * time.Second
+
+	// Victoriametric seems to be caching the result and takes a while to invalidate the cache.
+	// So sleeping here actually speeds up the test by increasing the chance that the metric
+	// is available the first time you query.
+	time.Sleep(3 * time.Second)
+	err := backoff.Retry(func() error {
+		err := IsMetricAvailable(context.Background(), conn, q)
+		if err != nil && !errors.Is(err, ErrEmptyResult) {
+			t.Fatalf("failed to wait for metrics: %v", err)
+		}
+		return err
+	}, bo)
+
+	require.Nil(t, err)
 }
 
 // SetupTestVictoriaMetrics sets up a test instance for victoriametrics.
@@ -122,7 +162,7 @@ func SetupTestVictoriaMetrics() (v1.API, func(), error) {
 		_, _, err := conn.Query(context.Background(), "up", time.Now(), v1.WithTimeout(5*time.Second))
 		return err
 	}); err != nil {
-		return nil, nil, fmt.Errorf("failed to create postgres on docker: %w", err)
+		return nil, nil, fmt.Errorf("failed to create victoriametrics on docker: %w", err)
 	}
 	log.SetLevel(log.InfoLevel)
 
