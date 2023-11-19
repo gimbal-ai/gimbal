@@ -13,6 +13,7 @@
 #
 # SPDX-License-Identifier: Proprietary
 
+load("@rules_oci//oci:defs.bzl", "oci_push")
 load("//bazel:gml_build_system.bzl", "gml_cc_binary", "gml_cc_library")
 load("//bazel:images.bzl", "gml_jetson_image")
 
@@ -54,4 +55,11 @@ gml_jetson_image(
     binary = ":gem",
     include_runfiles = True,
     needs_xvfb = True,
+)
+
+oci_push(
+    name = "push_gem_jetson_image",
+    image = ":gem_jetson_image",
+    remote_tags = ["jetson-dev-latest"],
+    repository = "us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/gem_image",
 )

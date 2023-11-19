@@ -52,9 +52,51 @@ function fatal() {
   exit 1
 }
 
-UNAME_RELEASE="$(uname -r)"
-if [[ "$UNAME_RELEASE" != *"-tegra" ]]; then
-  fatal "NVIDIA Jetson devices are the only supported hardware."
+function device_type() {
+  if [[ "$(uname -r)" != *"-tegra" ]]; then
+    echo "Unknown"
+    return
+  fi
+
+  if [[ ! -f /proc/device-tree/model ]]; then
+    echo "Unknown"
+    return
+  fi
+
+  read -r MODEL </proc/device-tree/model
+  if [[ "$MODEL" == "NVIDIA Orin Nano"* ]]; then
+    echo "NVIDIA Orin Nano"
+    return
+  fi
+
+  echo "Unknown"
+  return
+}
+
+GML_CACHE_DIR=${GML_CACHE_DIR:-"$HOME/.cache/gml"}
+
+common_flags=(
+  -d
+  --rm
+  --network=host
+  -v "$GML_CACHE_DIR:/gml"
+  -v /usr/lib:/host_lib
+)
+extra_flags=()
+
+SERIAL_NUMBER="Unknown"
+
+if [[ $(device_type) == "NVIDIA Orin Nano"* ]]; then
+  read -r SERIAL_NUMBER </sys/firmware/devicetree/base/serial-number
+  extra_flags+=(
+    --privileged
+    --runtime nvidia
+    --gpus all
+    -v /tmp/argus_socket:/tmp/argus_socket
+    -v /usr/local/cuda:/host_cuda
+  )
+else
+  fatal "NVIDIA Orin Nano devices are the only supported hardware."
 fi
 
 emph "Installing Gimlet Edge Module"
@@ -69,9 +111,20 @@ while [[ -z "$DEPLOY_KEY" ]]; do
   prompt_deploy_key
 done
 
-# TODO(vihang): Add GEM download, and docker run with the correct mount paths.
+DEFAULT_CONTROL_PLANE="dev.app.gimletlabs.dev"
+USE_CONTROL_PLANE=${GML_CONTROL_PLANE:-${DEFAULT_CONTROL_PLANE}}
+
+mkdir -p "$GML_CACHE_DIR"
+
+docker run \
+  "${common_flags[@]}" \
+  "${extra_flags[@]}" \
+  us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/gem_image:jetson-dev-latest \
+  --deploy_key="$DEPLOY_KEY" \
+  --controlplane_addr="$USE_CONTROL_PLANE:443" \
+  --device_serial "$SERIAL_NUMBER"
 
 cat <<EOS
 ${tty_bold}${tty_green}Gimlet has been succesfully installed!${tty_reset}
-Please visit ${tty_underline}https://app.gimletlabs.dev${tty_reset} to deploy your first model.
+Please visit ${tty_underline}https://${USE_CONTROL_PLANE}${tty_reset} to deploy your first model.
 EOS
