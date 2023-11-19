@@ -37,10 +37,16 @@ cmake(
     },
     visibility = ["//visibility:public"],
     lib_source = ":all",
-    out_static_libs = [
-        "libtbb.a",
-        "libtbbmalloc.a",
-    ],
+    out_static_libs = select({
+        "@gml//bazel:debug_build": [
+            "libtbb_debug.a",
+            "libtbbmalloc_debug.a",
+        ],
+        "//conditions:default": [
+            "libtbb.a",
+            "libtbbmalloc.a",
+        ],
+    }),
     out_data_dirs = [
         "lib/pkgconfig",
         "lib/cmake",
