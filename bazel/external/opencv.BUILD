@@ -61,7 +61,6 @@ cmake(
         "-l`nproc`",
     ],
     cache_entries = {
-        "CMAKE_BUILD_TYPE": "Release",
         # The module list is always sorted alphabetically so that we do not
         # cause a rebuild when changing the link order.
         "BUILD_LIST": ",".join(sorted(OPENCV_MODULES)),
@@ -104,7 +103,7 @@ cmake(
         # Bypass opencv's cmake search mechanisms for deps we build.
         "HAVE_FFMPEG": "TRUE",
         "FFMPEG_LIBRARIES": ";".join([
-            "$$EXT_BUILD_DEPS/ffmpeg/lib/{lib}".format(lib=lib)
+            "$$EXT_BUILD_DEPS/ffmpeg/lib/{lib}".format(lib = lib)
             for lib in ["libavcodec.so.58", "libavformat.so.58", "libavutil.so.56", "libswresample.so.3", "libswscale.so.5"]
         ]),
         "FFMPEG_LIBRARY_DIRS": "$$EXT_BUILD_DEPS/ffmpeg/lib",
@@ -118,7 +117,7 @@ cmake(
     includes = ["opencv4"],
     lib_source = ":all",
     out_shared_libs = [
-        "libopencv_{module}.so".format(module=module)
+        "libopencv_{module}.so".format(module = module)
         for module in OPENCV_MODULES
     ] if OPENCV_SHARED_LIBS else [],
     out_static_libs = [

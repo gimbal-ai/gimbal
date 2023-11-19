@@ -29,7 +29,6 @@ cmake(
         "-l`nproc`",
     ],
     cache_entries = {
-        "CMAKE_BUILD_TYPE": "Release",
         "BUILD_SHARED_LIBS": "OFF",
         "BUILD_ONNX_PYTHON": "OFF",
         "ONNX_BUILD_TESTS": "OFF",

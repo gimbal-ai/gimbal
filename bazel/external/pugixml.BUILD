@@ -28,9 +28,6 @@ cmake(
         "-j`nproc`",
         "-l`nproc`",
     ],
-    cache_entries = {
-        "CMAKE_BUILD_TYPE": "Release",
-    },
     visibility = ["//visibility:public"],
     lib_name = "libpugixml",
     lib_source = ":all",

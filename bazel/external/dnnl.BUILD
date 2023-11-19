@@ -29,7 +29,6 @@ cmake(
         "-l`nproc`",
     ],
     cache_entries = {
-        "CMAKE_BUILD_TYPE": "Release",
         "BUILD_SHARED_LIBS": "OFF",
         "DNNL_CPU_RUNTIME": "TBB",
         "DNNL_BUILD_TESTS": "OFF",

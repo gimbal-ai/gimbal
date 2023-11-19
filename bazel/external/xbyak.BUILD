@@ -29,9 +29,6 @@ cmake(
         "-l`nproc`",
     ],
     out_headers_only = True,
-    cache_entries = {
-        "CMAKE_BUILD_TYPE": "Release",
-    },
     visibility = ["//visibility:public"],
     lib_source = ":source",
 )
