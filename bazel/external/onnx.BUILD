@@ -43,9 +43,13 @@ cmake(
         "Protobuf_FOUND": "TRUE",
         "Protobuf_PROTOC_EXECUTABLE": "$$EXT_BUILD_ROOT/$(location @com_google_protobuf//:protoc)",
     },
+    out_data_dirs = ["lib/cmake"],
     visibility = ["//visibility:public"],
-    lib_name = "libonnx",
     lib_source = ":source",
+    out_static_libs = [
+        "libonnx.a",
+        "libonnx_proto.a",
+    ],
     build_data = [
         "@com_google_protobuf//:protoc",
     ],

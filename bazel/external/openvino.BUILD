@@ -50,7 +50,7 @@ cmake(
         "ENABLE_PROXY": "OFF",
 
         # Front-ends.
-        "ENABLE_OV_ONNX_FRONTEND": "OFF",
+        "ENABLE_OV_ONNX_FRONTEND": "ON",
         "ENABLE_OV_PADDLE_FRONTEND": "OFF",
         "ENABLE_OV_TF_FRONTEND": "OFF",
         "ENABLE_OV_TF_LITE_FRONTEND": "OFF",
@@ -75,17 +75,22 @@ cmake(
 
         # Dependencies
         "ENABLE_SYSTEM_PUGIXML": "ON",
-        "ENABLE_SYSTEM_PROTOBUF": "OFF",
+        "ENABLE_SYSTEM_PROTOBUF": "ON",
         "ENABLE_SYSTEM_FLATBUFFERS": "OFF",
         "ENABLE_SYSTEM_TBB": "OFF",
         "ENABLE_SYSTEM_OPENCL": "OFF",
         "ENABLE_TBBBIND_2_5": "OFF",
-        "CMAKE_PREFIX_PATH": "$$EXT_BUILD_DEPS/libpugixml",
+        "CMAKE_PREFIX_PATH": "$$EXT_BUILD_DEPS",
         "MLAS_LIBRARY_DIRS": "$$EXT_BUILD_DEPS/libmlas/lib",
         "MLAS_INCLUDE_DIRS": "$$EXT_BUILD_DEPS/libmlas/include",
         "DNNL_LIBRARY_DIRS": "$$EXT_BUILD_DEPS/dnnl/lib",
         "DNNL_INCLUDE_DIRS": "$$EXT_BUILD_DEPS/dnnl/include",
         "TBBROOT": "$$EXT_BUILD_DEPS",
+        "Protobuf_FOUND": "TRUE",
+        "Protobuf_LIBRARY": "$$EXT_BUILD_DEPS/lib/libprotobuf.a",
+        "Protobuf_INCLUDE_DIR": "$$EXT_BUILD_DEPS/include",
+        "PugiXML_ROOT": "$$EXT_BUILD_DEPS/libpugixml/lib/cmake/pugixml",
+        "ONNX_ROOT": "$$EXT_BUILD_DEPS/libonnx/lib/cmake",
     },
     visibility = ["//visibility:public"],
     lib_name = "openvino",
@@ -113,6 +118,13 @@ cmake(
         "libopenvino_snippets.a",
         "libopenvino_template_plugin.a",
         "libopenvino_util.a",
+        "libinterpreter_backend.a",
+        "libopenvino_onnx_common.a",
+        "libopenvino_onnx_frontend.a",
+        # Some interesting libraries that are controlled by build options.
+        #        "libopenvino_gapi_preproc.a",
+        #        "libopenvino_ir_frontend.a",
+        #        "libopenvino_onednn_cpu.a",
     ],
     deps = [
         "@com_google_protobuf//:protobuf",
@@ -121,5 +133,6 @@ cmake(
         "@com_github_oneapi_oneTBB//:tbb",
         "@com_github_openvinotoolkit_mlas//:mlas",
         "@com_github_openvinotoolkit_oneDNN//:dnnl",
+        "@com_github_onnx_onnx//:onnx",
     ],
 )

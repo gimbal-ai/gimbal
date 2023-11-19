@@ -46,6 +46,7 @@ FILTER_REGEX_EXCLUDE: "(app\\/graphql_schema\\.ts|\
                        visspec\\/visspec_schema\\.ts|\
                        tools\\/globals.css.tpl|\
                        .*\\.pb\\.go|\
+                       .*\\.onnx|\
                        ^third_party\\/.*proto$)"
 
 # Linter specific configs

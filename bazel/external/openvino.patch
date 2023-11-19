@@ -1,5 +1,5 @@
 diff --git a/cmake/templates/OpenVINOConfig.cmake.in b/cmake/templates/OpenVINOConfig.cmake.in
-index 9eb1cfdd35..feb10096bf 100644
+index 9eb1cfdd35..834498642e 100644
 --- a/cmake/templates/OpenVINOConfig.cmake.in
 +++ b/cmake/templates/OpenVINOConfig.cmake.in
 @@ -176,7 +176,10 @@ macro(_ov_find_tbb)
@@ -15,7 +15,7 @@ index 9eb1cfdd35..feb10096bf 100644
                  # see https://stackoverflow.com/questions/28070810/cmake-generate-error-on-windows-as-it-uses-as-escape-seq
                  if(DEFINED ENV{TBBROOT})
 diff --git a/src/cmake/ie_parallel.cmake b/src/cmake/ie_parallel.cmake
-index 62e5d2d06f..76bf39cb67 100644
+index 62e5d2d06f..d78c2a9cb2 100644
 --- a/src/cmake/ie_parallel.cmake
 +++ b/src/cmake/ie_parallel.cmake
 @@ -167,7 +167,9 @@ macro(ov_find_package_tbb)
@@ -67,3 +67,16 @@ index 98935a0792..8f40c454ae 100644
 +#ov_add_onednn()
 +include_directories(${DNNL_INCLUDE_DIRS})
 +link_directories(${DNNL_LIBRARY_DIRS})
+diff --git a/thirdparty/dependencies.cmake b/thirdparty/dependencies.cmake
+index 43e0ed671a..3133c281af 100644
+--- a/thirdparty/dependencies.cmake
++++ b/thirdparty/dependencies.cmake
+@@ -569,7 +569,7 @@ endif()
+ #
+ 
+ if(ENABLE_OV_ONNX_FRONTEND)
+-    find_package(ONNX 1.13.1 EXACT QUIET COMPONENTS onnx onnx_proto NO_MODULE)
++    find_package(ONNX QUIET COMPONENTS onnx onnx_proto NO_MODULE)
+ 
+     if(ONNX_FOUND)
+         # conan and vcpkg create imported targets 'onnx' and 'onnx_proto'
