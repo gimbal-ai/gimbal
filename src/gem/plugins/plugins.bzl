@@ -56,6 +56,7 @@ PLUGINS = dict(
         libs = [
             "//src/gem/exec/plugin/openvino:cc_library",
             "//src/gem/build/plugin/openvino:cc_library",
+            "//src/gem/calculators/plugin/openvino:cc_library",
         ],
     ),
 )
