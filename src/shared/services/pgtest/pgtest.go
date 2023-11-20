@@ -39,14 +39,6 @@ type testDB struct {
 	schemaSourceDirectory string
 }
 
-type testDBConfig struct {
-	repository   string
-	tag          string
-	flagPrefix   string
-	mustCreateDB func() *sqlx.DB
-	imageTar     string
-}
-
 // TestDBOpt is an option to the testing DB.
 type TestDBOpt func(*testDB)
 
@@ -59,16 +51,6 @@ func WithSchemaDirectory(dir string) TestDBOpt {
 
 // SetupTestDB sets up a test database instance and applies migrations.
 func SetupTestDB(schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx.DB, func(), error) {
-	return setupTestDB(&testDBConfig{
-		repository:   "postgres",
-		tag:          "15-alpine",
-		flagPrefix:   "postgres",
-		imageTar:     "pg_tarball",
-		mustCreateDB: pg.MustCreateDefaultPostgresDB,
-	}, schemaSource, opts...)
-}
-
-func setupTestDB(config *testDBConfig, schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx.DB, func(), error) {
 	d := &testDB{
 		schemaSourceDirectory: ".",
 	}
@@ -82,7 +64,7 @@ func setupTestDB(config *testDBConfig, schemaSource *embed.FS, opts ...TestDBOpt
 	}
 
 	// Load image.
-	imgPath, err := runfiles.Rlocation(fmt.Sprintf("gml/src/shared/services/pgtest/%s/tarball.tar", config.imageTar))
+	imgPath, err := runfiles.Rlocation("gml/src/shared/services/pgtest/pg_tarball/tarball.tar")
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to find image runfile")
 	}
@@ -100,8 +82,8 @@ func setupTestDB(config *testDBConfig, schemaSource *embed.FS, opts ...TestDBOpt
 	const dbName = "testdb"
 	resource, err := pool.RunWithOptions(
 		&dockertest.RunOptions{
-			Repository: config.repository,
-			Tag:        config.tag,
+			Repository: "postgres",
+			Tag:        "15-alpine",
 			Env:        []string{"POSTGRES_PASSWORD=secret", "POSTGRES_DB=" + dbName},
 		}, func(config *docker.HostConfig) {
 			config.AutoRemove = true
@@ -116,7 +98,7 @@ func setupTestDB(config *testDBConfig, schemaSource *embed.FS, opts ...TestDBOpt
 				},
 			}
 			config.CPUCount = 1
-			config.Memory = 1.5 * 1024 * 1024 * 1024
+			config.Memory = 512 * 1024 * 1024
 			config.MemorySwap = 0
 			config.MemorySwappiness = 0
 		},
@@ -130,21 +112,19 @@ func setupTestDB(config *testDBConfig, schemaSource *embed.FS, opts ...TestDBOpt
 		return nil, nil, err
 	}
 
-	viper.Set(fmt.Sprintf("%s_port", config.flagPrefix), resource.GetPort("5432/tcp"))
-	viper.Set(fmt.Sprintf("%s_hostname", config.flagPrefix), resource.Container.NetworkSettings.Gateway)
-	viper.Set(fmt.Sprintf("%s_db", config.flagPrefix), dbName)
-	viper.Set(fmt.Sprintf("%s_username", config.flagPrefix), "postgres")
-	viper.Set(fmt.Sprintf("%s_password", config.flagPrefix), "secret")
+	viper.Set("postgres_port", resource.GetPort("5432/tcp"))
+	viper.Set("postgres_hostname", resource.Container.NetworkSettings.Gateway)
+	viper.Set("postgres_db", dbName)
+	viper.Set("postgres_username", "postgres")
+	viper.Set("postgres_password", "secret")
 
 	if err = pool.Retry(func() error {
-		log.SetLevel(log.WarnLevel)
 		log.Info("trying to connect")
-		d.db = config.mustCreateDB()
+		d.db = pg.MustCreateDefaultPostgresDB()
 		return d.db.Ping()
 	}); err != nil {
 		return nil, nil, fmt.Errorf("failed to create postgres on docker: %w", err)
 	}
-	log.SetLevel(log.InfoLevel)
 
 	if schemaSource != nil {
 		err := pg.PerformMigrationsWithEmbed(d.db, "test_migrations", schemaSource, d.schemaSourceDirectory)

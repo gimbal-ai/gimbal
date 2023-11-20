@@ -22,7 +22,6 @@ go_library(
         "idempotency.go",
         "migrate.go",
         "pg.go",
-        "tsdb.go",
     ],
     importpath = "gimletlabs.ai/gimlet/src/shared/services/pg",
     visibility = ["//visibility:public"],
@@ -48,7 +47,6 @@ gml_go_test(
     srcs = [
         "idempotency_test.go",
         "pg_test.go",
-        "tsdb_test.go",
         "uuid_test.go",
     ],
     embed = [":pg"],

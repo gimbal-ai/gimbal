@@ -19,13 +19,9 @@ load("@rules_oci//oci:defs.bzl", "oci_tarball")
 
 go_library(
     name = "pgtest",
-    srcs = [
-        "pgtest.go",
-        "tsdbtest.go",
-    ],
+    srcs = ["pgtest.go"],
     data = [
         ":pg_tarball",
-        ":tsdb_tarball",
     ],
     importpath = "gimletlabs.ai/gimlet/src/shared/services/pgtest",
     visibility = ["//visibility:public"],
@@ -42,10 +38,7 @@ go_library(
 
 gml_go_test(
     name = "pgtest_test",
-    srcs = [
-        "pgtest_test.go",
-        "tsdbtest_test.go",
-    ],
+    srcs = ["pgtest_test.go"],
     embedsrcs = [
         "schema/000001_create_test.down.sql",
         "schema/000001_create_test.up.sql",
@@ -61,10 +54,4 @@ oci_tarball(
     name = "pg_tarball",
     image = "@postgres_15",
     repo_tags = ["postgres:15-alpine"],
-)
-
-oci_tarball(
-    name = "tsdb_tarball",
-    image = "@timescale_timescaledb_pg15",
-    repo_tags = ["timescale/timescaledb:2.12.2-pg15"],
 )

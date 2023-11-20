@@ -164,15 +164,6 @@ oci.pull(
     image = "gcr.io/distroless/nodejs20-debian12",
 )
 oci.pull(
-    name = "timescale_timescaledb_pg15",
-    digest = "sha256:6dfd0356c701a5490f417c2f866eabb9d58aad135b0a47024e67198850edf541",  # 2.12.2-pg15 multiarch digest
-    image = "index.docker.io/timescale/timescaledb",
-    platforms = [
-        "linux/amd64",
-        "linux/arm64",
-    ],
-)
-oci.pull(
     name = "postgres_15",
     digest = "sha256:35ce2187f2f7fb75e8e79493e13743596c21eb3789ff41ece145ae04d06e93a5",  # 15-alpine multiarch digest
     image = "index.docker.io/library/postgres",
@@ -190,4 +181,4 @@ oci.pull(
         "linux/arm64",
     ],
 )
-use_repo(oci, "distroless_nodejs", "postgres_15", "timescale_timescaledb_pg15", "victoria_metrics_1_93_6")
+use_repo(oci, "distroless_nodejs", "postgres_15", "victoria_metrics_1_93_6")

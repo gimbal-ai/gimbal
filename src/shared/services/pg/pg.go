@@ -49,19 +49,16 @@ func init() {
 	pflag.Bool("postgres_ssl", false, "Enable ssl for postgres")
 }
 
-// postgresConfig contains all the necessary configurations to connect to a Postgres DB.
-type postgresConfig struct {
-	port       int32
-	hostname   string
-	db         string
-	username   string
-	password   string
-	sslEnabled bool
-}
+// DefaultDBURI returns the URI string for the default postgres instance based on flags/env vars.
+func DefaultDBURI() string {
+	dbPort := viper.GetInt32("postgres_port")
+	dbHostname := viper.GetString("postgres_hostname")
+	dbName := viper.GetString("postgres_db")
+	dbUsername := viper.GetString("postgres_username")
+	dbPassword := viper.GetString("postgres_password")
 
-func dbURI(config *postgresConfig) string {
 	sslMode := "require"
-	if !config.sslEnabled {
+	if !viper.GetBool("postgres_ssl") {
 		sslMode = "disable"
 	}
 
@@ -70,21 +67,22 @@ func dbURI(config *postgresConfig) string {
 
 	u := url.URL{
 		Scheme:   "postgres",
-		Host:     net.JoinHostPort(config.hostname, fmt.Sprintf("%d", config.port)),
-		User:     url.UserPassword(config.username, config.password),
-		Path:     config.db,
+		Host:     net.JoinHostPort(dbHostname, fmt.Sprintf("%d", dbPort)),
+		User:     url.UserPassword(dbUsername, dbPassword),
+		Path:     dbName,
 		RawQuery: v.Encode(),
 	}
 
 	return u.String()
 }
 
-func mustCreatePostgresDB(config *postgresConfig) *sqlx.DB {
-	dbURI := dbURI(config)
-	log.WithField("db_hostname", config.hostname).
-		WithField("db_port", config.port).
-		WithField("db_name", config.db).
-		WithField("db_username", config.username).
+// MustCreateDefaultPostgresDB creates a postgres DB instance.
+func MustCreateDefaultPostgresDB() *sqlx.DB {
+	dbURI := DefaultDBURI()
+	log.WithField("db_hostname", viper.GetString("postgres_hostname")).
+		WithField("db_port", viper.GetInt32("postgres_port")).
+		WithField("db_name", viper.GetString("postgres_db")).
+		WithField("db_username", viper.GetString("postgres_username")).
 		Info("Setting up database")
 
 	db, err := sqlx.Open("pgx", dbURI)
@@ -98,12 +96,14 @@ func mustCreatePostgresDB(config *postgresConfig) *sqlx.DB {
 
 	// It's possible we already registered a prometheus collector with multiple DB connections.
 	_ = prometheus.Register(
-		collectors.NewDBStatsCollector(db.DB, config.db))
+		collectors.NewDBStatsCollector(db.DB, viper.GetString("postgres_db")))
 	return db
 }
 
-func mustConnectPostgresDB(config *postgresConfig) *sqlx.DB {
-	db := mustCreatePostgresDB(config)
+// MustConnectDefaultPostgresDB tries to connect to default postgres database as defined by the environment
+// variables/flags.
+func MustConnectDefaultPostgresDB() *sqlx.DB {
+	db := MustCreateDefaultPostgresDB()
 	var err error
 	for i := retryAttempts; i >= 0; i-- {
 		err = db.Ping()
@@ -121,31 +121,4 @@ func mustConnectPostgresDB(config *postgresConfig) *sqlx.DB {
 		log.WithError(err).Fatalf("failed to initialized database connection")
 	}
 	return db
-}
-
-func defaultDBConfig() *postgresConfig {
-	return &postgresConfig{
-		port:       viper.GetInt32("postgres_port"),
-		hostname:   viper.GetString("postgres_hostname"),
-		db:         viper.GetString("postgres_db"),
-		username:   viper.GetString("postgres_username"),
-		password:   viper.GetString("postgres_password"),
-		sslEnabled: viper.GetBool("postgres_ssl"),
-	}
-}
-
-// DefaultDBURI returns the URI string for the default postgres instance based on flags/env vars.
-func DefaultDBURI() string {
-	return dbURI(defaultDBConfig())
-}
-
-// MustCreateDefaultPostgresDB creates a postgres DB instance.
-func MustCreateDefaultPostgresDB() *sqlx.DB {
-	return mustCreatePostgresDB(defaultDBConfig())
-}
-
-// MustConnectDefaultPostgresDB tries to connect to default postgres database as defined by the environment
-// variables/flags.
-func MustConnectDefaultPostgresDB() *sqlx.DB {
-	return mustConnectPostgresDB(defaultDBConfig())
 }
