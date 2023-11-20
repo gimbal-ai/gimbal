@@ -4,6 +4,7 @@
 package corepb
 
 import (
+	bytes "bytes"
 	fmt "fmt"
 	typespb "gimletlabs.ai/gimlet/src/common/typespb"
 	_ "github.com/gogo/protobuf/gogoproto"
@@ -32,11 +33,12 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 type EdgeCPTopic int32
 
 const (
-	EDGE_CP_TOPIC_UNKNOWN EdgeCPTopic = 0
-	EDGE_CP_TOPIC_STATUS  EdgeCPTopic = 1
-	EDGE_CP_TOPIC_VIDEO   EdgeCPTopic = 2
-	EDGE_CP_TOPIC_EXEC    EdgeCPTopic = 3
-	EDGE_CP_TOPIC_METRICS EdgeCPTopic = 4
+	EDGE_CP_TOPIC_UNKNOWN       EdgeCPTopic = 0
+	EDGE_CP_TOPIC_STATUS        EdgeCPTopic = 1
+	EDGE_CP_TOPIC_VIDEO         EdgeCPTopic = 2
+	EDGE_CP_TOPIC_EXEC          EdgeCPTopic = 3
+	EDGE_CP_TOPIC_METRICS       EdgeCPTopic = 4
+	EDGE_CP_TOPIC_FILE_TRANSFER EdgeCPTopic = 5
 )
 
 var EdgeCPTopic_name = map[int32]string{
@@ -45,14 +47,16 @@ var EdgeCPTopic_name = map[int32]string{
 	2: "EDGE_CP_TOPIC_VIDEO",
 	3: "EDGE_CP_TOPIC_EXEC",
 	4: "EDGE_CP_TOPIC_METRICS",
+	5: "EDGE_CP_TOPIC_FILE_TRANSFER",
 }
 
 var EdgeCPTopic_value = map[string]int32{
-	"EDGE_CP_TOPIC_UNKNOWN": 0,
-	"EDGE_CP_TOPIC_STATUS":  1,
-	"EDGE_CP_TOPIC_VIDEO":   2,
-	"EDGE_CP_TOPIC_EXEC":    3,
-	"EDGE_CP_TOPIC_METRICS": 4,
+	"EDGE_CP_TOPIC_UNKNOWN":       0,
+	"EDGE_CP_TOPIC_STATUS":        1,
+	"EDGE_CP_TOPIC_VIDEO":         2,
+	"EDGE_CP_TOPIC_EXEC":          3,
+	"EDGE_CP_TOPIC_METRICS":       4,
+	"EDGE_CP_TOPIC_FILE_TRANSFER": 5,
 }
 
 func (EdgeCPTopic) EnumDescriptor() ([]byte, []int) {
@@ -62,11 +66,12 @@ func (EdgeCPTopic) EnumDescriptor() ([]byte, []int) {
 type CPEdgeTopic int32
 
 const (
-	CP_EDGE_TOPIC_UNKNOWN CPEdgeTopic = 0
-	CP_EDGE_TOPIC_STATUS  CPEdgeTopic = 1
-	CP_EDGE_TOPIC_VIDEO   CPEdgeTopic = 2
-	CP_EDGE_TOPIC_EXEC    CPEdgeTopic = 3
-	CP_EDGE_TOPIC_METRICS CPEdgeTopic = 4
+	CP_EDGE_TOPIC_UNKNOWN       CPEdgeTopic = 0
+	CP_EDGE_TOPIC_STATUS        CPEdgeTopic = 1
+	CP_EDGE_TOPIC_VIDEO         CPEdgeTopic = 2
+	CP_EDGE_TOPIC_EXEC          CPEdgeTopic = 3
+	CP_EDGE_TOPIC_METRICS       CPEdgeTopic = 4
+	CP_EDGE_TOPIC_FILE_TRANSFER CPEdgeTopic = 5
 )
 
 var CPEdgeTopic_name = map[int32]string{
@@ -75,14 +80,16 @@ var CPEdgeTopic_name = map[int32]string{
 	2: "CP_EDGE_TOPIC_VIDEO",
 	3: "CP_EDGE_TOPIC_EXEC",
 	4: "CP_EDGE_TOPIC_METRICS",
+	5: "CP_EDGE_TOPIC_FILE_TRANSFER",
 }
 
 var CPEdgeTopic_value = map[string]int32{
-	"CP_EDGE_TOPIC_UNKNOWN": 0,
-	"CP_EDGE_TOPIC_STATUS":  1,
-	"CP_EDGE_TOPIC_VIDEO":   2,
-	"CP_EDGE_TOPIC_EXEC":    3,
-	"CP_EDGE_TOPIC_METRICS": 4,
+	"CP_EDGE_TOPIC_UNKNOWN":       0,
+	"CP_EDGE_TOPIC_STATUS":        1,
+	"CP_EDGE_TOPIC_VIDEO":         2,
+	"CP_EDGE_TOPIC_EXEC":          3,
+	"CP_EDGE_TOPIC_METRICS":       4,
+	"CP_EDGE_TOPIC_FILE_TRANSFER": 5,
 }
 
 func (CPEdgeTopic) EnumDescriptor() ([]byte, []int) {
@@ -393,6 +400,167 @@ func (m *EdgeOTelMetrics) GetResourceMetrics() *v1.ResourceMetrics {
 	return nil
 }
 
+type FileTransferRequest struct {
+	FileID          *typespb.UUID `protobuf:"bytes,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	ChunkStartBytes int64         `protobuf:"varint,2,opt,name=chunk_start_bytes,json=chunkStartBytes,proto3" json:"chunk_start_bytes,omitempty"`
+	NumBytes        int64         `protobuf:"varint,3,opt,name=num_bytes,json=numBytes,proto3" json:"num_bytes,omitempty"`
+}
+
+func (m *FileTransferRequest) Reset()      { *m = FileTransferRequest{} }
+func (*FileTransferRequest) ProtoMessage() {}
+func (*FileTransferRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_fdaf1f89158d2cba, []int{8}
+}
+func (m *FileTransferRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *FileTransferRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_FileTransferRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *FileTransferRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FileTransferRequest.Merge(m, src)
+}
+func (m *FileTransferRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *FileTransferRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_FileTransferRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_FileTransferRequest proto.InternalMessageInfo
+
+func (m *FileTransferRequest) GetFileID() *typespb.UUID {
+	if m != nil {
+		return m.FileID
+	}
+	return nil
+}
+
+func (m *FileTransferRequest) GetChunkStartBytes() int64 {
+	if m != nil {
+		return m.ChunkStartBytes
+	}
+	return 0
+}
+
+func (m *FileTransferRequest) GetNumBytes() int64 {
+	if m != nil {
+		return m.NumBytes
+	}
+	return 0
+}
+
+type FileTransferResponse struct {
+	Code  typespb.Code                    `protobuf:"varint,1,opt,name=code,proto3,enum=gml.types.Code" json:"code,omitempty"`
+	Chunk *FileTransferResponse_FileChunk `protobuf:"bytes,2,opt,name=chunk,proto3" json:"chunk,omitempty"`
+}
+
+func (m *FileTransferResponse) Reset()      { *m = FileTransferResponse{} }
+func (*FileTransferResponse) ProtoMessage() {}
+func (*FileTransferResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_fdaf1f89158d2cba, []int{9}
+}
+func (m *FileTransferResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *FileTransferResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_FileTransferResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *FileTransferResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FileTransferResponse.Merge(m, src)
+}
+func (m *FileTransferResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *FileTransferResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_FileTransferResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_FileTransferResponse proto.InternalMessageInfo
+
+func (m *FileTransferResponse) GetCode() typespb.Code {
+	if m != nil {
+		return m.Code
+	}
+	return typespb.CODE_OK
+}
+
+func (m *FileTransferResponse) GetChunk() *FileTransferResponse_FileChunk {
+	if m != nil {
+		return m.Chunk
+	}
+	return nil
+}
+
+type FileTransferResponse_FileChunk struct {
+	StartBytes int64  `protobuf:"varint,1,opt,name=start_bytes,json=startBytes,proto3" json:"start_bytes,omitempty"`
+	Payload    []byte `protobuf:"bytes,2,opt,name=payload,proto3" json:"payload,omitempty"`
+}
+
+func (m *FileTransferResponse_FileChunk) Reset()      { *m = FileTransferResponse_FileChunk{} }
+func (*FileTransferResponse_FileChunk) ProtoMessage() {}
+func (*FileTransferResponse_FileChunk) Descriptor() ([]byte, []int) {
+	return fileDescriptor_fdaf1f89158d2cba, []int{9, 0}
+}
+func (m *FileTransferResponse_FileChunk) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *FileTransferResponse_FileChunk) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_FileTransferResponse_FileChunk.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *FileTransferResponse_FileChunk) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FileTransferResponse_FileChunk.Merge(m, src)
+}
+func (m *FileTransferResponse_FileChunk) XXX_Size() int {
+	return m.Size()
+}
+func (m *FileTransferResponse_FileChunk) XXX_DiscardUnknown() {
+	xxx_messageInfo_FileTransferResponse_FileChunk.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_FileTransferResponse_FileChunk proto.InternalMessageInfo
+
+func (m *FileTransferResponse_FileChunk) GetStartBytes() int64 {
+	if m != nil {
+		return m.StartBytes
+	}
+	return 0
+}
+
+func (m *FileTransferResponse_FileChunk) GetPayload() []byte {
+	if m != nil {
+		return m.Payload
+	}
+	return nil
+}
+
 type EdgeCPMetadata struct {
 	Topic         EdgeCPTopic      `protobuf:"varint,1,opt,name=topic,proto3,enum=gml.internal.api.core.v1.EdgeCPTopic" json:"topic,omitempty"`
 	DeviceID      *typespb.UUID    `protobuf:"bytes,2,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
@@ -402,7 +570,7 @@ type EdgeCPMetadata struct {
 func (m *EdgeCPMetadata) Reset()      { *m = EdgeCPMetadata{} }
 func (*EdgeCPMetadata) ProtoMessage() {}
 func (*EdgeCPMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fdaf1f89158d2cba, []int{8}
+	return fileDescriptor_fdaf1f89158d2cba, []int{10}
 }
 func (m *EdgeCPMetadata) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -460,7 +628,7 @@ type EdgeCPMessage struct {
 func (m *EdgeCPMessage) Reset()      { *m = EdgeCPMessage{} }
 func (*EdgeCPMessage) ProtoMessage() {}
 func (*EdgeCPMessage) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fdaf1f89158d2cba, []int{9}
+	return fileDescriptor_fdaf1f89158d2cba, []int{11}
 }
 func (m *EdgeCPMessage) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -512,7 +680,7 @@ type CPEdgeMetadata struct {
 func (m *CPEdgeMetadata) Reset()      { *m = CPEdgeMetadata{} }
 func (*CPEdgeMetadata) ProtoMessage() {}
 func (*CPEdgeMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fdaf1f89158d2cba, []int{10}
+	return fileDescriptor_fdaf1f89158d2cba, []int{12}
 }
 func (m *CPEdgeMetadata) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -570,7 +738,7 @@ type CPEdgeMessage struct {
 func (m *CPEdgeMessage) Reset()      { *m = CPEdgeMessage{} }
 func (*CPEdgeMessage) ProtoMessage() {}
 func (*CPEdgeMessage) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fdaf1f89158d2cba, []int{11}
+	return fileDescriptor_fdaf1f89158d2cba, []int{13}
 }
 func (m *CPEdgeMessage) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -624,6 +792,9 @@ func init() {
 	proto.RegisterType((*VideoStreamStop)(nil), "gml.internal.api.core.v1.VideoStreamStop")
 	proto.RegisterType((*VideoStreamKeepAlive)(nil), "gml.internal.api.core.v1.VideoStreamKeepAlive")
 	proto.RegisterType((*EdgeOTelMetrics)(nil), "gml.internal.api.core.v1.EdgeOTelMetrics")
+	proto.RegisterType((*FileTransferRequest)(nil), "gml.internal.api.core.v1.FileTransferRequest")
+	proto.RegisterType((*FileTransferResponse)(nil), "gml.internal.api.core.v1.FileTransferResponse")
+	proto.RegisterType((*FileTransferResponse_FileChunk)(nil), "gml.internal.api.core.v1.FileTransferResponse.FileChunk")
 	proto.RegisterType((*EdgeCPMetadata)(nil), "gml.internal.api.core.v1.EdgeCPMetadata")
 	proto.RegisterType((*EdgeCPMessage)(nil), "gml.internal.api.core.v1.EdgeCPMessage")
 	proto.RegisterType((*CPEdgeMetadata)(nil), "gml.internal.api.core.v1.CPEdgeMetadata")
@@ -633,52 +804,65 @@ func init() {
 func init() { proto.RegisterFile("src/api/corepb/v1/cp_edge.proto", fileDescriptor_fdaf1f89158d2cba) }
 
 var fileDescriptor_fdaf1f89158d2cba = []byte{
-	// 712 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x55, 0xcd, 0x6e, 0xd3, 0x4c,
-	0x14, 0x8d, 0x9b, 0xaf, 0xfd, 0xda, 0xe9, 0x4f, 0x8c, 0x09, 0x25, 0xad, 0x84, 0x53, 0x59, 0x42,
-	0x54, 0x08, 0xc6, 0x4a, 0x61, 0x45, 0x57, 0xa9, 0x13, 0x81, 0x55, 0xa5, 0x89, 0x9c, 0xa4, 0xa0,
-	0x6e, 0xac, 0x89, 0x7d, 0xb1, 0xac, 0xda, 0x1e, 0xd7, 0x9e, 0x44, 0xca, 0x06, 0xf1, 0x04, 0x88,
-	0xc7, 0xe0, 0x51, 0x58, 0xb0, 0xe8, 0xb2, 0xab, 0x8a, 0xba, 0x9b, 0x2e, 0xfb, 0x08, 0xc8, 0x3f,
-	0x49, 0x63, 0x0a, 0x02, 0x75, 0xc5, 0x6e, 0xe6, 0x9e, 0x73, 0xee, 0x9c, 0x7b, 0x7c, 0x25, 0xa3,
-	0x6a, 0x18, 0x18, 0x32, 0xf1, 0x6d, 0xd9, 0xa0, 0x01, 0xf8, 0x03, 0x79, 0x54, 0x93, 0x0d, 0x5f,
-	0x07, 0xd3, 0x02, 0xec, 0x07, 0x94, 0x51, 0xa1, 0x62, 0xb9, 0x0e, 0xb6, 0x3d, 0x06, 0x81, 0x47,
-	0x1c, 0x4c, 0x7c, 0x1b, 0xc7, 0x4c, 0x3c, 0xaa, 0x6d, 0x96, 0x2d, 0x6a, 0xd1, 0x84, 0x24, 0xc7,
-	0xa7, 0x94, 0xbf, 0xf9, 0x28, 0x6e, 0x68, 0x50, 0xd7, 0xa5, 0x9e, 0xcc, 0xc6, 0x3e, 0x84, 0xfe,
-	0x40, 0x1e, 0x0e, 0x6d, 0x33, 0x83, 0x37, 0x2c, 0x4a, 0x2d, 0x07, 0xe4, 0xe4, 0x36, 0x18, 0xbe,
-	0x97, 0x89, 0x37, 0xce, 0xa0, 0xea, 0xcf, 0x10, 0xb3, 0x5d, 0x08, 0x19, 0x71, 0xfd, 0x8c, 0xf0,
-	0x8c, 0xfa, 0xe0, 0x31, 0x70, 0xc0, 0x05, 0x16, 0x8c, 0x53, 0x9e, 0x1c, 0x9f, 0x6d, 0x23, 0x8c,
-	0x8d, 0x67, 0xc7, 0x94, 0x2d, 0xd5, 0xd0, 0x6a, 0xd3, 0xb4, 0xe0, 0x0d, 0x90, 0x80, 0x0d, 0x80,
-	0x30, 0x61, 0x0b, 0x2d, 0x84, 0x70, 0xa2, 0xdb, 0x66, 0x85, 0xdb, 0xe2, 0xb6, 0x8b, 0x7b, 0x4b,
-	0xd1, 0x79, 0x75, 0xbe, 0x0b, 0x27, 0x6a, 0x43, 0x9b, 0x0f, 0xe1, 0x44, 0x35, 0xa5, 0x97, 0x88,
-	0xcf, 0x49, 0xea, 0xc6, 0xf1, 0x5f, 0xa8, 0x56, 0x10, 0x52, 0x3a, 0xda, 0xd0, 0x6b, 0x51, 0x13,
-	0x1c, 0xa9, 0x84, 0x56, 0x6f, 0x6e, 0x75, 0xe3, 0x58, 0x12, 0x10, 0x7f, 0x68, 0x9b, 0x40, 0xbb,
-	0x2c, 0x00, 0xe2, 0x76, 0x19, 0x09, 0x98, 0x74, 0x0f, 0x95, 0x72, 0x35, 0xea, 0x4b, 0xeb, 0xa8,
-	0x3c, 0x53, 0xda, 0x07, 0xf0, 0xeb, 0x8e, 0x3d, 0x02, 0xc9, 0x45, 0xa5, 0xd8, 0x53, 0xbb, 0x07,
-	0x4e, 0x2b, 0x9d, 0x4f, 0x38, 0x42, 0x7c, 0x00, 0x21, 0x1d, 0x06, 0x06, 0xe8, 0xd9, 0xcc, 0x89,
-	0xb9, 0xe5, 0x1d, 0x19, 0xe7, 0x22, 0x4a, 0x93, 0xc0, 0x93, 0x5c, 0x46, 0x35, 0xac, 0x65, 0xba,
-	0xac, 0x95, 0x56, 0x0a, 0xf2, 0x05, 0xe9, 0x1b, 0x87, 0xd6, 0xe2, 0xf7, 0x94, 0x4e, 0x0b, 0x18,
-	0x31, 0x09, 0x23, 0xc2, 0x2e, 0x9a, 0x67, 0xd4, 0xb7, 0x8d, 0xe4, 0x8d, 0xb5, 0x9d, 0xc7, 0xf8,
-	0x77, 0x1b, 0x81, 0x53, 0x61, 0x2f, 0x26, 0x6b, 0xa9, 0x46, 0x78, 0x85, 0x96, 0x4c, 0x18, 0xd9,
-	0x06, 0xc4, 0x09, 0xce, 0x25, 0x26, 0x4b, 0x49, 0x83, 0x64, 0x37, 0x70, 0xbf, 0xaf, 0x36, 0xf6,
-	0x56, 0xa2, 0xf3, 0xea, 0x62, 0x23, 0x61, 0xa9, 0x0d, 0x6d, 0x31, 0xe5, 0xab, 0xa6, 0x50, 0x47,
-	0x6b, 0x01, 0x18, 0x23, 0x7d, 0xba, 0x07, 0x95, 0x62, 0xd2, 0x60, 0x13, 0xa7, 0x9b, 0x82, 0x27,
-	0x9b, 0x82, 0x7b, 0x13, 0x86, 0xb6, 0x1a, 0x2b, 0xa6, 0x57, 0xe9, 0x43, 0xba, 0x04, 0xf1, 0x34,
-	0x61, 0x48, 0x2c, 0x10, 0x1a, 0x68, 0xd1, 0xcd, 0x06, 0xcb, 0x32, 0xdb, 0xfe, 0xd3, 0x3c, 0x93,
-	0x20, 0xb4, 0xa9, 0x52, 0x78, 0x82, 0x8a, 0x6e, 0x68, 0x55, 0xae, 0xfe, 0x4f, 0x3a, 0x94, 0x6f,
-	0xf9, 0xa9, 0x7b, 0x63, 0x2d, 0x66, 0x24, 0x71, 0x2a, 0x9d, 0xb8, 0xcf, 0x1d, 0xe2, 0x4c, 0x85,
-	0xff, 0x58, 0x9c, 0x93, 0x69, 0xee, 0x10, 0x67, 0x3e, 0x88, 0x3b, 0xc4, 0xf9, 0xf4, 0x13, 0x87,
-	0x96, 0x67, 0x96, 0x4c, 0xd8, 0x40, 0x0f, 0x9a, 0x8d, 0xd7, 0x4d, 0x5d, 0xe9, 0xe8, 0xbd, 0x76,
-	0x47, 0x55, 0xf4, 0xfe, 0xc1, 0xfe, 0x41, 0xfb, 0xed, 0x01, 0x5f, 0x10, 0x2a, 0xa8, 0x9c, 0x87,
-	0xba, 0xbd, 0x7a, 0xaf, 0xdf, 0xe5, 0x39, 0xe1, 0x21, 0xba, 0x9f, 0x47, 0x0e, 0xd5, 0x46, 0xb3,
-	0xcd, 0xcf, 0x09, 0xeb, 0x48, 0xc8, 0x03, 0xcd, 0x77, 0x4d, 0x85, 0x2f, 0xde, 0x7e, 0xa5, 0xd5,
-	0xec, 0x69, 0xaa, 0xd2, 0xe5, 0xff, 0x4b, 0x0c, 0xcd, 0x7c, 0xa6, 0x98, 0xaa, 0x74, 0xf4, 0x84,
-	0xfd, 0x0b, 0x43, 0x79, 0x68, 0xd6, 0x50, 0x1e, 0x99, 0x31, 0x94, 0x07, 0x6e, 0x0c, 0xe5, 0xeb,
-	0x53, 0x43, 0x7b, 0xc6, 0xe9, 0x85, 0x58, 0x38, 0xbb, 0x10, 0x0b, 0xd7, 0x17, 0x22, 0xf7, 0x31,
-	0x12, 0xb9, 0x2f, 0x91, 0xc8, 0x7d, 0x8d, 0x44, 0xee, 0x34, 0x12, 0xb9, 0xef, 0x91, 0xc8, 0x5d,
-	0x45, 0x62, 0xe1, 0x3a, 0x12, 0xb9, 0xcf, 0x97, 0x62, 0xe1, 0xf4, 0x52, 0x2c, 0x9c, 0x5d, 0x8a,
-	0x85, 0xa3, 0xe7, 0x96, 0xed, 0x3a, 0xc0, 0x1c, 0x32, 0x08, 0x31, 0xb1, 0xe5, 0xf4, 0x26, 0xdf,
-	0xfa, 0x35, 0xec, 0xa6, 0xa7, 0xc1, 0x42, 0xf2, 0x65, 0x5e, 0xfc, 0x08, 0x00, 0x00, 0xff, 0xff,
-	0x5f, 0xcd, 0x7f, 0xc4, 0x3d, 0x06, 0x00, 0x00,
+	// 915 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x55, 0xcd, 0x6e, 0xdb, 0x46,
+	0x17, 0x15, 0xed, 0xf8, 0x6f, 0x64, 0x5b, 0xca, 0xc4, 0x5f, 0x3e, 0xc5, 0x41, 0xa9, 0x80, 0x45,
+	0xd1, 0x20, 0x68, 0x49, 0xd8, 0xcd, 0xa2, 0x68, 0x56, 0x32, 0x25, 0xb7, 0x44, 0x6a, 0x59, 0xa0,
+	0xe4, 0xb4, 0xc8, 0x86, 0x18, 0x91, 0xd7, 0x2c, 0x61, 0x92, 0x43, 0x73, 0x86, 0x02, 0xb4, 0x29,
+	0xfa, 0x08, 0x5d, 0xf4, 0x21, 0xba, 0xeb, 0x6b, 0x74, 0xd1, 0x85, 0x81, 0x6e, 0xb2, 0x32, 0x6a,
+	0x7a, 0x93, 0x65, 0x1e, 0xa1, 0x98, 0x21, 0x65, 0x8b, 0xb1, 0x83, 0x16, 0x5e, 0x75, 0xc7, 0xb9,
+	0xe7, 0x9c, 0x99, 0x73, 0xcf, 0x9d, 0x01, 0x51, 0x9b, 0xa5, 0xae, 0x41, 0x92, 0xc0, 0x70, 0x69,
+	0x0a, 0xc9, 0xd8, 0x98, 0xec, 0x18, 0x6e, 0xe2, 0x80, 0xe7, 0x83, 0x9e, 0xa4, 0x94, 0x53, 0xdc,
+	0xf2, 0xa3, 0x50, 0x0f, 0x62, 0x0e, 0x69, 0x4c, 0x42, 0x9d, 0x24, 0x81, 0x2e, 0x98, 0xfa, 0x64,
+	0x67, 0x7b, 0xcb, 0xa7, 0x3e, 0x95, 0x24, 0x43, 0x7c, 0x15, 0xfc, 0xed, 0x8f, 0xc4, 0x86, 0x2e,
+	0x8d, 0x22, 0x1a, 0x1b, 0x7c, 0x9a, 0x00, 0x4b, 0xc6, 0x46, 0x96, 0x05, 0x5e, 0x09, 0xb7, 0x6f,
+	0x81, 0x19, 0x27, 0x3c, 0x63, 0x25, 0xe1, 0x91, 0x4f, 0xa9, 0x1f, 0x82, 0x21, 0x57, 0xe3, 0xec,
+	0xd8, 0x20, 0xf1, 0x74, 0xa6, 0x7d, 0x1f, 0xe2, 0x41, 0x04, 0x8c, 0x93, 0x28, 0x29, 0x09, 0x9f,
+	0xd1, 0x04, 0x62, 0x0e, 0x21, 0x44, 0xc0, 0xd3, 0x69, 0xc1, 0x33, 0xc4, 0x77, 0xe0, 0x32, 0xd1,
+	0x59, 0xf9, 0x59, 0xb0, 0xb5, 0x1d, 0xb4, 0xd1, 0xf3, 0x7c, 0xf8, 0x06, 0x48, 0xca, 0xc7, 0x40,
+	0x38, 0x7e, 0x82, 0x96, 0x19, 0x9c, 0x3a, 0x81, 0xd7, 0x52, 0x9e, 0x28, 0x4f, 0x17, 0xf7, 0xd6,
+	0xf2, 0xf3, 0xf6, 0xd2, 0x10, 0x4e, 0xad, 0xae, 0xbd, 0xc4, 0xe0, 0xd4, 0xf2, 0xb4, 0xe7, 0xa8,
+	0x59, 0x91, 0x74, 0xdc, 0x93, 0x7f, 0xa1, 0x5a, 0x47, 0xc8, 0x1c, 0xd8, 0x59, 0x7c, 0x40, 0x3d,
+	0x08, 0xb5, 0x06, 0xda, 0xb8, 0x5e, 0x75, 0xdc, 0x13, 0x0d, 0xa3, 0xe6, 0xab, 0xc0, 0x03, 0x3a,
+	0xe4, 0x29, 0x90, 0x68, 0xc8, 0x49, 0xca, 0xb5, 0xfb, 0xa8, 0x51, 0xa9, 0xd1, 0x44, 0x7b, 0x88,
+	0xb6, 0xe6, 0x4a, 0x2f, 0x01, 0x92, 0x4e, 0x18, 0x4c, 0x40, 0x8b, 0x50, 0x43, 0x78, 0x3a, 0x1c,
+	0x41, 0x78, 0x50, 0xf4, 0x87, 0x5f, 0xa3, 0x66, 0x0a, 0x8c, 0x66, 0xa9, 0x0b, 0x4e, 0xd9, 0xb3,
+	0x34, 0x57, 0xdf, 0x35, 0xf4, 0x4a, 0x44, 0x45, 0x12, 0xfa, 0x2c, 0x97, 0xc9, 0x8e, 0x6e, 0x97,
+	0xba, 0x72, 0x2b, 0xbb, 0x91, 0x56, 0x0b, 0xda, 0x2f, 0x0a, 0x7a, 0xb0, 0x1f, 0x84, 0x30, 0x4a,
+	0x49, 0xcc, 0x8e, 0x21, 0xb5, 0xe1, 0x34, 0x03, 0xc6, 0xf1, 0x73, 0xb4, 0x72, 0x1c, 0x84, 0x30,
+	0xcb, 0xa1, 0xbe, 0xdb, 0xd0, 0xc5, 0xcd, 0x91, 0x33, 0xd6, 0x8f, 0x8e, 0xac, 0xee, 0x1e, 0xca,
+	0xcf, 0xdb, 0xcb, 0x42, 0x6a, 0x75, 0xed, 0x65, 0xc1, 0xb5, 0x3c, 0xfc, 0x0c, 0xdd, 0x77, 0x7f,
+	0xc8, 0xe2, 0x13, 0x87, 0x89, 0xb6, 0x9d, 0xf1, 0x94, 0x03, 0x6b, 0x2d, 0x88, 0x1c, 0xed, 0x86,
+	0x04, 0x64, 0x1c, 0x7b, 0xa2, 0x8c, 0x1f, 0xa3, 0xb5, 0x38, 0x8b, 0x4a, 0xce, 0xa2, 0xe4, 0xac,
+	0xc6, 0x59, 0x24, 0x41, 0xed, 0x4f, 0x05, 0x6d, 0x55, 0x6d, 0xb1, 0x84, 0xc6, 0x0c, 0xf0, 0xc7,
+	0xe8, 0x9e, 0x4b, 0x3d, 0x90, 0xa6, 0x36, 0x2b, 0xa6, 0x4c, 0xea, 0x81, 0x2d, 0x41, 0xdc, 0x47,
+	0x4b, 0xf2, 0x34, 0x79, 0x74, 0x7d, 0xf7, 0x4b, 0xfd, 0x43, 0x97, 0x5e, 0xbf, 0xed, 0x0c, 0x59,
+	0x34, 0x85, 0xde, 0x2e, 0xb6, 0xd9, 0xde, 0x47, 0x6b, 0x57, 0x35, 0xdc, 0x46, 0xf5, 0xf9, 0xee,
+	0xe4, 0x2d, 0xb1, 0x11, 0xbb, 0x6e, 0xac, 0x85, 0x56, 0x12, 0x32, 0x0d, 0x29, 0xf1, 0xe4, 0xf9,
+	0xeb, 0xf6, 0x6c, 0xa9, 0xfd, 0xa1, 0xa0, 0x4d, 0x31, 0x5c, 0x73, 0x70, 0x00, 0x9c, 0x78, 0x84,
+	0x13, 0xfc, 0x02, 0x2d, 0x71, 0x9a, 0x04, 0x6e, 0xd9, 0xd0, 0x27, 0x1f, 0xb6, 0x5a, 0x08, 0x47,
+	0x82, 0x6c, 0x17, 0x1a, 0xfc, 0x15, 0x5a, 0xf3, 0x60, 0x12, 0xb8, 0x72, 0x4c, 0x0b, 0xb7, 0x8f,
+	0x69, 0x3d, 0x3f, 0x6f, 0xaf, 0x76, 0x25, 0xcb, 0xea, 0xda, 0xab, 0x05, 0xdf, 0xf2, 0x70, 0x07,
+	0x6d, 0xa6, 0xe0, 0x4e, 0x9c, 0xab, 0x47, 0x27, 0x67, 0x50, 0xdf, 0xdd, 0xd6, 0x8b, 0x67, 0xa9,
+	0xcf, 0x9e, 0xa5, 0x3e, 0x9a, 0x31, 0xec, 0x0d, 0xa1, 0xb8, 0x5a, 0x6a, 0x3f, 0x16, 0x2f, 0x4e,
+	0x74, 0xc3, 0x18, 0xf1, 0x01, 0x77, 0xd1, 0x6a, 0x54, 0x36, 0x56, 0xde, 0x9a, 0xa7, 0xff, 0xd4,
+	0xcf, 0x2c, 0x08, 0xfb, 0x4a, 0x89, 0x3f, 0x45, 0x8b, 0x11, 0xf3, 0x5b, 0x6f, 0x57, 0xe4, 0x0e,
+	0x5b, 0x37, 0xfc, 0x74, 0xe2, 0xa9, 0x2d, 0x18, 0x32, 0x4e, 0x73, 0x20, 0xf6, 0xb9, 0x43, 0x9c,
+	0x85, 0xf0, 0x3f, 0x16, 0xe7, 0xac, 0x9b, 0x3b, 0xc4, 0x59, 0x0d, 0xe2, 0x0e, 0x71, 0x3e, 0xfb,
+	0x4d, 0x41, 0xf5, 0xb9, 0x4b, 0x86, 0x1f, 0xa1, 0xff, 0xf5, 0xba, 0x5f, 0xf7, 0x1c, 0x73, 0xe0,
+	0x8c, 0x0e, 0x07, 0x96, 0xe9, 0x1c, 0xf5, 0x5f, 0xf6, 0x0f, 0xbf, 0xeb, 0x37, 0x6b, 0xb8, 0x85,
+	0xb6, 0xaa, 0xd0, 0x70, 0xd4, 0x19, 0x1d, 0x0d, 0x9b, 0x0a, 0xfe, 0x3f, 0x7a, 0x50, 0x45, 0x5e,
+	0x59, 0xdd, 0xde, 0x61, 0x73, 0x01, 0x3f, 0x44, 0xb8, 0x0a, 0xf4, 0xbe, 0xef, 0x99, 0xcd, 0xc5,
+	0x9b, 0xa7, 0x1c, 0xf4, 0x46, 0xb6, 0x65, 0x0e, 0x9b, 0xf7, 0x70, 0x1b, 0x3d, 0xae, 0x42, 0xfb,
+	0xd6, 0xb7, 0x3d, 0x67, 0x64, 0x77, 0xfa, 0xc3, 0xfd, 0x9e, 0xdd, 0x5c, 0x92, 0x8e, 0xe7, 0xe6,
+	0x28, 0xf6, 0x32, 0x07, 0x8e, 0xd4, 0xdc, 0xe2, 0xb8, 0x0a, 0xcd, 0x3b, 0xae, 0x22, 0x73, 0x8e,
+	0xab, 0xc0, 0xb5, 0xe3, 0x6a, 0xbd, 0xe2, 0xb8, 0x0a, 0xbd, 0xe7, 0x78, 0xcf, 0x3d, 0xbb, 0x50,
+	0x6b, 0x6f, 0x2e, 0xd4, 0xda, 0xbb, 0x0b, 0x55, 0xf9, 0x29, 0x57, 0x95, 0x5f, 0x73, 0x55, 0xf9,
+	0x3d, 0x57, 0x95, 0xb3, 0x5c, 0x55, 0xfe, 0xca, 0x55, 0xe5, 0x6d, 0xae, 0xd6, 0xde, 0xe5, 0xaa,
+	0xf2, 0xf3, 0xa5, 0x5a, 0x3b, 0xbb, 0x54, 0x6b, 0x6f, 0x2e, 0xd5, 0xda, 0xeb, 0xcf, 0xfd, 0x20,
+	0x0a, 0x81, 0x87, 0x64, 0xcc, 0x74, 0x12, 0x18, 0xc5, 0xca, 0xb8, 0xf1, 0xab, 0x7f, 0x51, 0x7c,
+	0x8d, 0x97, 0xe5, 0x6c, 0xbf, 0xf8, 0x3b, 0x00, 0x00, 0xff, 0xff, 0x74, 0xfb, 0xec, 0xdd, 0x0d,
+	0x08, 0x00, 0x00,
 }
 
 func (x EdgeCPTopic) String() string {
@@ -872,6 +1056,90 @@ func (this *EdgeOTelMetrics) Equal(that interface{}) bool {
 	}
 	return true
 }
+func (this *FileTransferRequest) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*FileTransferRequest)
+	if !ok {
+		that2, ok := that.(FileTransferRequest)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.FileID.Equal(that1.FileID) {
+		return false
+	}
+	if this.ChunkStartBytes != that1.ChunkStartBytes {
+		return false
+	}
+	if this.NumBytes != that1.NumBytes {
+		return false
+	}
+	return true
+}
+func (this *FileTransferResponse) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*FileTransferResponse)
+	if !ok {
+		that2, ok := that.(FileTransferResponse)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Code != that1.Code {
+		return false
+	}
+	if !this.Chunk.Equal(that1.Chunk) {
+		return false
+	}
+	return true
+}
+func (this *FileTransferResponse_FileChunk) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*FileTransferResponse_FileChunk)
+	if !ok {
+		that2, ok := that.(FileTransferResponse_FileChunk)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.StartBytes != that1.StartBytes {
+		return false
+	}
+	if !bytes.Equal(this.Payload, that1.Payload) {
+		return false
+	}
+	return true
+}
 func (this *EdgeCPMetadata) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
@@ -1060,6 +1328,44 @@ func (this *EdgeOTelMetrics) GoString() string {
 	if this.ResourceMetrics != nil {
 		s = append(s, "ResourceMetrics: "+fmt.Sprintf("%#v", this.ResourceMetrics)+",\n")
 	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *FileTransferRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 7)
+	s = append(s, "&corepb.FileTransferRequest{")
+	if this.FileID != nil {
+		s = append(s, "FileID: "+fmt.Sprintf("%#v", this.FileID)+",\n")
+	}
+	s = append(s, "ChunkStartBytes: "+fmt.Sprintf("%#v", this.ChunkStartBytes)+",\n")
+	s = append(s, "NumBytes: "+fmt.Sprintf("%#v", this.NumBytes)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *FileTransferResponse) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&corepb.FileTransferResponse{")
+	s = append(s, "Code: "+fmt.Sprintf("%#v", this.Code)+",\n")
+	if this.Chunk != nil {
+		s = append(s, "Chunk: "+fmt.Sprintf("%#v", this.Chunk)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *FileTransferResponse_FileChunk) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&corepb.FileTransferResponse_FileChunk{")
+	s = append(s, "StartBytes: "+fmt.Sprintf("%#v", this.StartBytes)+",\n")
+	s = append(s, "Payload: "+fmt.Sprintf("%#v", this.Payload)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -1335,6 +1641,126 @@ func (m *EdgeOTelMetrics) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		}
 		i--
 		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *FileTransferRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *FileTransferRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *FileTransferRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.NumBytes != 0 {
+		i = encodeVarintCpEdge(dAtA, i, uint64(m.NumBytes))
+		i--
+		dAtA[i] = 0x18
+	}
+	if m.ChunkStartBytes != 0 {
+		i = encodeVarintCpEdge(dAtA, i, uint64(m.ChunkStartBytes))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.FileID != nil {
+		{
+			size, err := m.FileID.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCpEdge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *FileTransferResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *FileTransferResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *FileTransferResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Chunk != nil {
+		{
+			size, err := m.Chunk.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCpEdge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Code != 0 {
+		i = encodeVarintCpEdge(dAtA, i, uint64(m.Code))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *FileTransferResponse_FileChunk) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *FileTransferResponse_FileChunk) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *FileTransferResponse_FileChunk) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Payload) > 0 {
+		i -= len(m.Payload)
+		copy(dAtA[i:], m.Payload)
+		i = encodeVarintCpEdge(dAtA, i, uint64(len(m.Payload)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.StartBytes != 0 {
+		i = encodeVarintCpEdge(dAtA, i, uint64(m.StartBytes))
+		i--
+		dAtA[i] = 0x8
 	}
 	return len(dAtA) - i, nil
 }
@@ -1634,6 +2060,57 @@ func (m *EdgeOTelMetrics) Size() (n int) {
 	return n
 }
 
+func (m *FileTransferRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.FileID != nil {
+		l = m.FileID.Size()
+		n += 1 + l + sovCpEdge(uint64(l))
+	}
+	if m.ChunkStartBytes != 0 {
+		n += 1 + sovCpEdge(uint64(m.ChunkStartBytes))
+	}
+	if m.NumBytes != 0 {
+		n += 1 + sovCpEdge(uint64(m.NumBytes))
+	}
+	return n
+}
+
+func (m *FileTransferResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Code != 0 {
+		n += 1 + sovCpEdge(uint64(m.Code))
+	}
+	if m.Chunk != nil {
+		l = m.Chunk.Size()
+		n += 1 + l + sovCpEdge(uint64(l))
+	}
+	return n
+}
+
+func (m *FileTransferResponse_FileChunk) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.StartBytes != 0 {
+		n += 1 + sovCpEdge(uint64(m.StartBytes))
+	}
+	l = len(m.Payload)
+	if l > 0 {
+		n += 1 + l + sovCpEdge(uint64(l))
+	}
+	return n
+}
+
 func (m *EdgeCPMetadata) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1785,6 +2262,40 @@ func (this *EdgeOTelMetrics) String() string {
 	}
 	s := strings.Join([]string{`&EdgeOTelMetrics{`,
 		`ResourceMetrics:` + strings.Replace(fmt.Sprintf("%v", this.ResourceMetrics), "ResourceMetrics", "v1.ResourceMetrics", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *FileTransferRequest) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&FileTransferRequest{`,
+		`FileID:` + strings.Replace(fmt.Sprintf("%v", this.FileID), "UUID", "typespb.UUID", 1) + `,`,
+		`ChunkStartBytes:` + fmt.Sprintf("%v", this.ChunkStartBytes) + `,`,
+		`NumBytes:` + fmt.Sprintf("%v", this.NumBytes) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *FileTransferResponse) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&FileTransferResponse{`,
+		`Code:` + fmt.Sprintf("%v", this.Code) + `,`,
+		`Chunk:` + strings.Replace(fmt.Sprintf("%v", this.Chunk), "FileTransferResponse_FileChunk", "FileTransferResponse_FileChunk", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *FileTransferResponse_FileChunk) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&FileTransferResponse_FileChunk{`,
+		`StartBytes:` + fmt.Sprintf("%v", this.StartBytes) + `,`,
+		`Payload:` + fmt.Sprintf("%v", this.Payload) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -2294,6 +2805,338 @@ func (m *EdgeOTelMetrics) Unmarshal(dAtA []byte) error {
 			}
 			if err := m.ResourceMetrics.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCpEdge(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *FileTransferRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCpEdge
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: FileTransferRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: FileTransferRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FileID", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.FileID == nil {
+				m.FileID = &typespb.UUID{}
+			}
+			if err := m.FileID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ChunkStartBytes", wireType)
+			}
+			m.ChunkStartBytes = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ChunkStartBytes |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field NumBytes", wireType)
+			}
+			m.NumBytes = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.NumBytes |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCpEdge(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *FileTransferResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCpEdge
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: FileTransferResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: FileTransferResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Code", wireType)
+			}
+			m.Code = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Code |= typespb.Code(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Chunk", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Chunk == nil {
+				m.Chunk = &FileTransferResponse_FileChunk{}
+			}
+			if err := m.Chunk.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCpEdge(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *FileTransferResponse_FileChunk) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCpEdge
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: FileChunk: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: FileChunk: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StartBytes", wireType)
+			}
+			m.StartBytes = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.StartBytes |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Payload", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Payload = append(m.Payload[:0], dAtA[iNdEx:postIndex]...)
+			if m.Payload == nil {
+				m.Payload = []byte{}
 			}
 			iNdEx = postIndex
 		default:

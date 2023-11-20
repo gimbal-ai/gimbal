@@ -23,6 +23,7 @@ option go_package = "gimletlabs.ai/gimlet/src/api/corepb/v1;corepb";
 
 import "gogoproto/gogo.proto";
 import "src/common/typespb/uuid.proto";
+import "src/common/typespb/status.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 import "opentelemetry/proto/metrics/v1/metrics.proto";
@@ -90,6 +91,39 @@ message EdgeOTelMetrics {
 }
 
 /****************************************************************************
+ * Messages that are used to stream files to the edge.
+ * These should be sent on the .FILETRANSFER topic.
+ *****************************************************************************/
+
+// FileTransferRequest is a request from the edge to the controlplane for the file at the given
+// path.
+message FileTransferRequest {
+  // The path of the file to request.
+  gml.types.UUID file_id = 1 [ (gogoproto.customname) = "FileID" ];
+  // The byte at which we should start sending the chunk.
+  int64 chunk_start_bytes = 2;
+  // The number of bytes.
+  int64 num_bytes = 3;
+}
+
+// FileTransferResponse is sent in response to a FileTransferRequest.
+message FileTransferResponse {
+  gml.types.Code code = 1;
+
+  // FileChunk is a chunk of the requested file, sent from the controlplane to the edge.
+  message FileChunk {
+    // The byte at which this chunk begins.
+    int64 start_bytes = 1;
+    // The bytes of the chunk. Note, the length of this may not necessarily equal num_bytes from the
+    // FileTransferRequest if it is the end of the file. We will not send the number of requested
+    // bytes.
+    bytes payload = 2;
+  }
+  // The chunk for this response. If empty, considered EOS.
+  FileChunk chunk = 2;
+}
+
+/****************************************************************************
  * Wrapper messages for each channel on the NATS bus from the edge.
  * They are named EdgeCP[*] for messages originating from the edge.
  * They are named CPEdge[*] for messages originating from the control plane.
@@ -102,6 +136,7 @@ enum EdgeCPTopic {
   EDGE_CP_TOPIC_VIDEO = 2;
   EDGE_CP_TOPIC_EXEC = 3;
   EDGE_CP_TOPIC_METRICS = 4;
+  EDGE_CP_TOPIC_FILE_TRANSFER = 5;
 }
 
 // CPEdgeTopic has the list of topics used between CP and edge.
@@ -111,6 +146,7 @@ enum CPEdgeTopic {
   CP_EDGE_TOPIC_VIDEO = 2;
   CP_EDGE_TOPIC_EXEC = 3;
   CP_EDGE_TOPIC_METRICS = 4;
+  CP_EDGE_TOPIC_FILE_TRANSFER = 5;
 }
 
 // EdgeCPMetadata has basic routing information for shared bus.
