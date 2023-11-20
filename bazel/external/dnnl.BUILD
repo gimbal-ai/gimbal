@@ -47,6 +47,10 @@ cmake(
     out_static_libs = [
         "libdnnl.a",
     ],
+    out_data_dirs = [
+        "lib/pkgconfig",
+        "lib/cmake",
+    ],
     deps = [
         "@com_github_oneapi_oneTBB//:tbb",
     ],

@@ -36,4 +36,8 @@ cmake(
     out_static_libs = [
         "libmlas.a",
     ],
+    out_data_dirs = [
+        "lib/pkgconfig",
+        "lib/cmake",
+    ],
 )

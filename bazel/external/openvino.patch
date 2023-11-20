@@ -14,21 +14,6 @@ index 9eb1cfdd35..834498642e 100644
  
                  # see https://stackoverflow.com/questions/28070810/cmake-generate-error-on-windows-as-it-uses-as-escape-seq
                  if(DEFINED ENV{TBBROOT})
-diff --git a/src/cmake/ie_parallel.cmake b/src/cmake/ie_parallel.cmake
-index 62e5d2d06f..d78c2a9cb2 100644
---- a/src/cmake/ie_parallel.cmake
-+++ b/src/cmake/ie_parallel.cmake
-@@ -167,7 +167,9 @@ macro(ov_find_package_tbb)
- 
-                 # TBB on system is not found, download prebuilt one
-                 # if TBBROOT env variable is not defined
--                ov_download_tbb()
-+
-+                # [GML] Disable download.
-+                # ov_download_tbb()
- 
-                 # fallback variant for TBB 2018 and older where TBB have not had cmake interface
-                 if(DEFINED TBBROOT OR DEFINED ENV{TBBROOT})
 diff --git a/src/plugins/intel_cpu/CMakeLists.txt b/src/plugins/intel_cpu/CMakeLists.txt
 index 3212bdefc7..225ef169f2 100644
 --- a/src/plugins/intel_cpu/CMakeLists.txt
