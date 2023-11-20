@@ -52,6 +52,8 @@ class FilesystemBlobStore : public BlobStore {
  public:
   StatusOr<std::unique_ptr<const MemoryBlob>> MapReadOnly(std::string key) const override;
 
+  StatusOr<std::string> FilePath(std::string key) const override;
+
   static StatusOr<std::unique_ptr<FilesystemBlobStore>> Create(const std::string& directory);
 
  protected:

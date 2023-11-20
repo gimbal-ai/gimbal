@@ -38,6 +38,11 @@ class BlobStore {
   virtual StatusOr<std::unique_ptr<const MemoryBlob>> MapReadOnly(std::string key) const = 0;
 
   /**
+   * FilePath returns the path to a file containing the blob.
+   */
+  virtual StatusOr<std::string> FilePath(std::string key) const = 0;
+
+  /**
    * Upsert stores a new blob with the given key.
    */
   template <typename TData>

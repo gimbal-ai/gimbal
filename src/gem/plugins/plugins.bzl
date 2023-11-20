@@ -55,6 +55,7 @@ PLUGINS = dict(
         enabled_by_default = True,
         libs = [
             "//src/gem/exec/plugin/openvino:cc_library",
+            "//src/gem/build/plugin/openvino:cc_library",
         ],
     ),
 )

@@ -25,6 +25,7 @@
 #include <fstream>
 
 #include "src/common/base/base.h"
+#include "src/common/base/error.h"
 #include "src/common/fs/fs_wrapper.h"
 #include "src/common/system/linux_file_wrapper.h"
 #include "src/gem/storage/blob_store.h"
@@ -76,6 +77,14 @@ StatusOr<std::unique_ptr<const MemoryBlob>> FilesystemBlobStore::MapReadOnly(
   }
 
   return MemoryMappedBlob::CreateReadOnly(path);
+}
+
+StatusOr<std::string> FilesystemBlobStore::FilePath(std::string key) const {
+  auto path = directory_ / std::filesystem::path(key);
+  if (!fs::Exists(path)) {
+    return error::NotFound("Cannot find blob for key: $0", key);
+  }
+  return path.string();
 }
 
 Status FilesystemBlobStore::UpsertImpl(std::string key, const char* data, size_t size) {
