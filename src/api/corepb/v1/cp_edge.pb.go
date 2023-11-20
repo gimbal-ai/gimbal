@@ -30,6 +30,42 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+type ExecutionGraphState int32
+
+const (
+	EXECUTION_GRAPH_STATE_UNKNOWN          ExecutionGraphState = 0
+	EXECUTION_GRAPH_STATE_UPDATE_REQUESTED ExecutionGraphState = 10
+	EXECUTION_GRAPH_STATE_DOWNLOADING      ExecutionGraphState = 20
+	EXECUTION_GRAPH_STATE_COMPILING        ExecutionGraphState = 30
+	EXECUTION_GRAPH_STATE_READY            ExecutionGraphState = 40
+	EXECUTION_GRAPH_STATE_DEPLOYED         ExecutionGraphState = 50
+	EXECUTION_GRAPH_STATE_FAILED           ExecutionGraphState = 100
+)
+
+var ExecutionGraphState_name = map[int32]string{
+	0:   "EXECUTION_GRAPH_STATE_UNKNOWN",
+	10:  "EXECUTION_GRAPH_STATE_UPDATE_REQUESTED",
+	20:  "EXECUTION_GRAPH_STATE_DOWNLOADING",
+	30:  "EXECUTION_GRAPH_STATE_COMPILING",
+	40:  "EXECUTION_GRAPH_STATE_READY",
+	50:  "EXECUTION_GRAPH_STATE_DEPLOYED",
+	100: "EXECUTION_GRAPH_STATE_FAILED",
+}
+
+var ExecutionGraphState_value = map[string]int32{
+	"EXECUTION_GRAPH_STATE_UNKNOWN":          0,
+	"EXECUTION_GRAPH_STATE_UPDATE_REQUESTED": 10,
+	"EXECUTION_GRAPH_STATE_DOWNLOADING":      20,
+	"EXECUTION_GRAPH_STATE_COMPILING":        30,
+	"EXECUTION_GRAPH_STATE_READY":            40,
+	"EXECUTION_GRAPH_STATE_DEPLOYED":         50,
+	"EXECUTION_GRAPH_STATE_FAILED":           100,
+}
+
+func (ExecutionGraphState) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_fdaf1f89158d2cba, []int{0}
+}
+
 type EdgeCPTopic int32
 
 const (
@@ -60,7 +96,7 @@ var EdgeCPTopic_value = map[string]int32{
 }
 
 func (EdgeCPTopic) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_fdaf1f89158d2cba, []int{0}
+	return fileDescriptor_fdaf1f89158d2cba, []int{1}
 }
 
 type CPEdgeTopic int32
@@ -93,7 +129,7 @@ var CPEdgeTopic_value = map[string]int32{
 }
 
 func (CPEdgeTopic) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_fdaf1f89158d2cba, []int{1}
+	return fileDescriptor_fdaf1f89158d2cba, []int{2}
 }
 
 type EdgeHeartbeat struct {
@@ -252,13 +288,276 @@ func (m *CPRunModelAck) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CPRunModelAck proto.InternalMessageInfo
 
+type ExecutionGraphSpec struct {
+	Graph   *ExecutionGraph     `protobuf:"bytes,1,opt,name=graph,proto3" json:"graph,omitempty"`
+	State   ExecutionGraphState `protobuf:"varint,2,opt,name=state,proto3,enum=gml.internal.api.core.v1.ExecutionGraphState" json:"state,omitempty"`
+	Version int64               `protobuf:"varint,3,opt,name=version,proto3" json:"version,omitempty"`
+}
+
+func (m *ExecutionGraphSpec) Reset()      { *m = ExecutionGraphSpec{} }
+func (*ExecutionGraphSpec) ProtoMessage() {}
+func (*ExecutionGraphSpec) Descriptor() ([]byte, []int) {
+	return fileDescriptor_fdaf1f89158d2cba, []int{4}
+}
+func (m *ExecutionGraphSpec) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ExecutionGraphSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ExecutionGraphSpec.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ExecutionGraphSpec) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ExecutionGraphSpec.Merge(m, src)
+}
+func (m *ExecutionGraphSpec) XXX_Size() int {
+	return m.Size()
+}
+func (m *ExecutionGraphSpec) XXX_DiscardUnknown() {
+	xxx_messageInfo_ExecutionGraphSpec.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ExecutionGraphSpec proto.InternalMessageInfo
+
+func (m *ExecutionGraphSpec) GetGraph() *ExecutionGraph {
+	if m != nil {
+		return m.Graph
+	}
+	return nil
+}
+
+func (m *ExecutionGraphSpec) GetState() ExecutionGraphState {
+	if m != nil {
+		return m.State
+	}
+	return EXECUTION_GRAPH_STATE_UNKNOWN
+}
+
+func (m *ExecutionGraphSpec) GetVersion() int64 {
+	if m != nil {
+		return m.Version
+	}
+	return 0
+}
+
+type ExecutionGraphStatus struct {
+	State   ExecutionGraphState `protobuf:"varint,1,opt,name=state,proto3,enum=gml.internal.api.core.v1.ExecutionGraphState" json:"state,omitempty"`
+	Reason  string              `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
+	Version int64               `protobuf:"varint,3,opt,name=version,proto3" json:"version,omitempty"`
+}
+
+func (m *ExecutionGraphStatus) Reset()      { *m = ExecutionGraphStatus{} }
+func (*ExecutionGraphStatus) ProtoMessage() {}
+func (*ExecutionGraphStatus) Descriptor() ([]byte, []int) {
+	return fileDescriptor_fdaf1f89158d2cba, []int{5}
+}
+func (m *ExecutionGraphStatus) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ExecutionGraphStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ExecutionGraphStatus.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ExecutionGraphStatus) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ExecutionGraphStatus.Merge(m, src)
+}
+func (m *ExecutionGraphStatus) XXX_Size() int {
+	return m.Size()
+}
+func (m *ExecutionGraphStatus) XXX_DiscardUnknown() {
+	xxx_messageInfo_ExecutionGraphStatus.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ExecutionGraphStatus proto.InternalMessageInfo
+
+func (m *ExecutionGraphStatus) GetState() ExecutionGraphState {
+	if m != nil {
+		return m.State
+	}
+	return EXECUTION_GRAPH_STATE_UNKNOWN
+}
+
+func (m *ExecutionGraphStatus) GetReason() string {
+	if m != nil {
+		return m.Reason
+	}
+	return ""
+}
+
+func (m *ExecutionGraphStatus) GetVersion() int64 {
+	if m != nil {
+		return m.Version
+	}
+	return 0
+}
+
+type ApplyExecutionGraph struct {
+	PipelineID *typespb.UUID       `protobuf:"bytes,1,opt,name=pipeline_id,json=pipelineId,proto3" json:"pipeline_id,omitempty"`
+	Spec       *ExecutionGraphSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+}
+
+func (m *ApplyExecutionGraph) Reset()      { *m = ApplyExecutionGraph{} }
+func (*ApplyExecutionGraph) ProtoMessage() {}
+func (*ApplyExecutionGraph) Descriptor() ([]byte, []int) {
+	return fileDescriptor_fdaf1f89158d2cba, []int{6}
+}
+func (m *ApplyExecutionGraph) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ApplyExecutionGraph) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ApplyExecutionGraph.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ApplyExecutionGraph) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ApplyExecutionGraph.Merge(m, src)
+}
+func (m *ApplyExecutionGraph) XXX_Size() int {
+	return m.Size()
+}
+func (m *ApplyExecutionGraph) XXX_DiscardUnknown() {
+	xxx_messageInfo_ApplyExecutionGraph.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ApplyExecutionGraph proto.InternalMessageInfo
+
+func (m *ApplyExecutionGraph) GetPipelineID() *typespb.UUID {
+	if m != nil {
+		return m.PipelineID
+	}
+	return nil
+}
+
+func (m *ApplyExecutionGraph) GetSpec() *ExecutionGraphSpec {
+	if m != nil {
+		return m.Spec
+	}
+	return nil
+}
+
+type DeleteExecutionGraph struct {
+	PipelineID *typespb.UUID `protobuf:"bytes,1,opt,name=pipeline_id,json=pipelineId,proto3" json:"pipeline_id,omitempty"`
+}
+
+func (m *DeleteExecutionGraph) Reset()      { *m = DeleteExecutionGraph{} }
+func (*DeleteExecutionGraph) ProtoMessage() {}
+func (*DeleteExecutionGraph) Descriptor() ([]byte, []int) {
+	return fileDescriptor_fdaf1f89158d2cba, []int{7}
+}
+func (m *DeleteExecutionGraph) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *DeleteExecutionGraph) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_DeleteExecutionGraph.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *DeleteExecutionGraph) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteExecutionGraph.Merge(m, src)
+}
+func (m *DeleteExecutionGraph) XXX_Size() int {
+	return m.Size()
+}
+func (m *DeleteExecutionGraph) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteExecutionGraph.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteExecutionGraph proto.InternalMessageInfo
+
+func (m *DeleteExecutionGraph) GetPipelineID() *typespb.UUID {
+	if m != nil {
+		return m.PipelineID
+	}
+	return nil
+}
+
+type ExecutionGraphStatusUpdate struct {
+	PipelineID *typespb.UUID         `protobuf:"bytes,1,opt,name=pipeline_id,json=pipelineId,proto3" json:"pipeline_id,omitempty"`
+	Status     *ExecutionGraphStatus `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
+}
+
+func (m *ExecutionGraphStatusUpdate) Reset()      { *m = ExecutionGraphStatusUpdate{} }
+func (*ExecutionGraphStatusUpdate) ProtoMessage() {}
+func (*ExecutionGraphStatusUpdate) Descriptor() ([]byte, []int) {
+	return fileDescriptor_fdaf1f89158d2cba, []int{8}
+}
+func (m *ExecutionGraphStatusUpdate) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ExecutionGraphStatusUpdate) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ExecutionGraphStatusUpdate.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ExecutionGraphStatusUpdate) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ExecutionGraphStatusUpdate.Merge(m, src)
+}
+func (m *ExecutionGraphStatusUpdate) XXX_Size() int {
+	return m.Size()
+}
+func (m *ExecutionGraphStatusUpdate) XXX_DiscardUnknown() {
+	xxx_messageInfo_ExecutionGraphStatusUpdate.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ExecutionGraphStatusUpdate proto.InternalMessageInfo
+
+func (m *ExecutionGraphStatusUpdate) GetPipelineID() *typespb.UUID {
+	if m != nil {
+		return m.PipelineID
+	}
+	return nil
+}
+
+func (m *ExecutionGraphStatusUpdate) GetStatus() *ExecutionGraphStatus {
+	if m != nil {
+		return m.Status
+	}
+	return nil
+}
+
 type VideoStreamStart struct {
 }
 
 func (m *VideoStreamStart) Reset()      { *m = VideoStreamStart{} }
 func (*VideoStreamStart) ProtoMessage() {}
 func (*VideoStreamStart) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fdaf1f89158d2cba, []int{4}
+	return fileDescriptor_fdaf1f89158d2cba, []int{9}
 }
 func (m *VideoStreamStart) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -293,7 +592,7 @@ type VideoStreamStop struct {
 func (m *VideoStreamStop) Reset()      { *m = VideoStreamStop{} }
 func (*VideoStreamStop) ProtoMessage() {}
 func (*VideoStreamStop) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fdaf1f89158d2cba, []int{5}
+	return fileDescriptor_fdaf1f89158d2cba, []int{10}
 }
 func (m *VideoStreamStop) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -328,7 +627,7 @@ type VideoStreamKeepAlive struct {
 func (m *VideoStreamKeepAlive) Reset()      { *m = VideoStreamKeepAlive{} }
 func (*VideoStreamKeepAlive) ProtoMessage() {}
 func (*VideoStreamKeepAlive) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fdaf1f89158d2cba, []int{6}
+	return fileDescriptor_fdaf1f89158d2cba, []int{11}
 }
 func (m *VideoStreamKeepAlive) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -364,7 +663,7 @@ type EdgeOTelMetrics struct {
 func (m *EdgeOTelMetrics) Reset()      { *m = EdgeOTelMetrics{} }
 func (*EdgeOTelMetrics) ProtoMessage() {}
 func (*EdgeOTelMetrics) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fdaf1f89158d2cba, []int{7}
+	return fileDescriptor_fdaf1f89158d2cba, []int{12}
 }
 func (m *EdgeOTelMetrics) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -409,7 +708,7 @@ type FileTransferRequest struct {
 func (m *FileTransferRequest) Reset()      { *m = FileTransferRequest{} }
 func (*FileTransferRequest) ProtoMessage() {}
 func (*FileTransferRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fdaf1f89158d2cba, []int{8}
+	return fileDescriptor_fdaf1f89158d2cba, []int{13}
 }
 func (m *FileTransferRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -467,7 +766,7 @@ type FileTransferResponse struct {
 func (m *FileTransferResponse) Reset()      { *m = FileTransferResponse{} }
 func (*FileTransferResponse) ProtoMessage() {}
 func (*FileTransferResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fdaf1f89158d2cba, []int{9}
+	return fileDescriptor_fdaf1f89158d2cba, []int{14}
 }
 func (m *FileTransferResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -518,7 +817,7 @@ type FileTransferResponse_FileChunk struct {
 func (m *FileTransferResponse_FileChunk) Reset()      { *m = FileTransferResponse_FileChunk{} }
 func (*FileTransferResponse_FileChunk) ProtoMessage() {}
 func (*FileTransferResponse_FileChunk) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fdaf1f89158d2cba, []int{9, 0}
+	return fileDescriptor_fdaf1f89158d2cba, []int{14, 0}
 }
 func (m *FileTransferResponse_FileChunk) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -570,7 +869,7 @@ type EdgeCPMetadata struct {
 func (m *EdgeCPMetadata) Reset()      { *m = EdgeCPMetadata{} }
 func (*EdgeCPMetadata) ProtoMessage() {}
 func (*EdgeCPMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fdaf1f89158d2cba, []int{10}
+	return fileDescriptor_fdaf1f89158d2cba, []int{15}
 }
 func (m *EdgeCPMetadata) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -628,7 +927,7 @@ type EdgeCPMessage struct {
 func (m *EdgeCPMessage) Reset()      { *m = EdgeCPMessage{} }
 func (*EdgeCPMessage) ProtoMessage() {}
 func (*EdgeCPMessage) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fdaf1f89158d2cba, []int{11}
+	return fileDescriptor_fdaf1f89158d2cba, []int{16}
 }
 func (m *EdgeCPMessage) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -680,7 +979,7 @@ type CPEdgeMetadata struct {
 func (m *CPEdgeMetadata) Reset()      { *m = CPEdgeMetadata{} }
 func (*CPEdgeMetadata) ProtoMessage() {}
 func (*CPEdgeMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fdaf1f89158d2cba, []int{12}
+	return fileDescriptor_fdaf1f89158d2cba, []int{17}
 }
 func (m *CPEdgeMetadata) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -738,7 +1037,7 @@ type CPEdgeMessage struct {
 func (m *CPEdgeMessage) Reset()      { *m = CPEdgeMessage{} }
 func (*CPEdgeMessage) ProtoMessage() {}
 func (*CPEdgeMessage) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fdaf1f89158d2cba, []int{13}
+	return fileDescriptor_fdaf1f89158d2cba, []int{18}
 }
 func (m *CPEdgeMessage) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -782,12 +1081,18 @@ func (m *CPEdgeMessage) GetMsg() *types.Any {
 }
 
 func init() {
+	proto.RegisterEnum("gml.internal.api.core.v1.ExecutionGraphState", ExecutionGraphState_name, ExecutionGraphState_value)
 	proto.RegisterEnum("gml.internal.api.core.v1.EdgeCPTopic", EdgeCPTopic_name, EdgeCPTopic_value)
 	proto.RegisterEnum("gml.internal.api.core.v1.CPEdgeTopic", CPEdgeTopic_name, CPEdgeTopic_value)
 	proto.RegisterType((*EdgeHeartbeat)(nil), "gml.internal.api.core.v1.EdgeHeartbeat")
 	proto.RegisterType((*EdgeHeartbeatAck)(nil), "gml.internal.api.core.v1.EdgeHeartbeatAck")
 	proto.RegisterType((*CPRunModel)(nil), "gml.internal.api.core.v1.CPRunModel")
 	proto.RegisterType((*CPRunModelAck)(nil), "gml.internal.api.core.v1.CPRunModelAck")
+	proto.RegisterType((*ExecutionGraphSpec)(nil), "gml.internal.api.core.v1.ExecutionGraphSpec")
+	proto.RegisterType((*ExecutionGraphStatus)(nil), "gml.internal.api.core.v1.ExecutionGraphStatus")
+	proto.RegisterType((*ApplyExecutionGraph)(nil), "gml.internal.api.core.v1.ApplyExecutionGraph")
+	proto.RegisterType((*DeleteExecutionGraph)(nil), "gml.internal.api.core.v1.DeleteExecutionGraph")
+	proto.RegisterType((*ExecutionGraphStatusUpdate)(nil), "gml.internal.api.core.v1.ExecutionGraphStatusUpdate")
 	proto.RegisterType((*VideoStreamStart)(nil), "gml.internal.api.core.v1.VideoStreamStart")
 	proto.RegisterType((*VideoStreamStop)(nil), "gml.internal.api.core.v1.VideoStreamStop")
 	proto.RegisterType((*VideoStreamKeepAlive)(nil), "gml.internal.api.core.v1.VideoStreamKeepAlive")
@@ -804,67 +1109,94 @@ func init() {
 func init() { proto.RegisterFile("src/api/corepb/v1/cp_edge.proto", fileDescriptor_fdaf1f89158d2cba) }
 
 var fileDescriptor_fdaf1f89158d2cba = []byte{
-	// 915 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x55, 0xcd, 0x6e, 0xdb, 0x46,
-	0x17, 0x15, 0xed, 0xf8, 0x6f, 0x64, 0x5b, 0xca, 0xc4, 0x5f, 0x3e, 0xc5, 0x41, 0xa9, 0x80, 0x45,
-	0xd1, 0x20, 0x68, 0x49, 0xd8, 0xcd, 0xa2, 0x68, 0x56, 0x32, 0x25, 0xb7, 0x44, 0x6a, 0x59, 0xa0,
-	0xe4, 0xb4, 0xc8, 0x86, 0x18, 0x91, 0xd7, 0x2c, 0x61, 0x92, 0x43, 0x73, 0x86, 0x02, 0xb4, 0x29,
-	0xfa, 0x08, 0x5d, 0xf4, 0x21, 0xba, 0xeb, 0x6b, 0x74, 0xd1, 0x85, 0x81, 0x6e, 0xb2, 0x32, 0x6a,
-	0x7a, 0x93, 0x65, 0x1e, 0xa1, 0x98, 0x21, 0x65, 0x8b, 0xb1, 0x83, 0x16, 0x5e, 0x75, 0xc7, 0xb9,
-	0xe7, 0x9c, 0x99, 0x73, 0xcf, 0x9d, 0x01, 0x51, 0x9b, 0xa5, 0xae, 0x41, 0x92, 0xc0, 0x70, 0x69,
-	0x0a, 0xc9, 0xd8, 0x98, 0xec, 0x18, 0x6e, 0xe2, 0x80, 0xe7, 0x83, 0x9e, 0xa4, 0x94, 0x53, 0xdc,
-	0xf2, 0xa3, 0x50, 0x0f, 0x62, 0x0e, 0x69, 0x4c, 0x42, 0x9d, 0x24, 0x81, 0x2e, 0x98, 0xfa, 0x64,
-	0x67, 0x7b, 0xcb, 0xa7, 0x3e, 0x95, 0x24, 0x43, 0x7c, 0x15, 0xfc, 0xed, 0x8f, 0xc4, 0x86, 0x2e,
-	0x8d, 0x22, 0x1a, 0x1b, 0x7c, 0x9a, 0x00, 0x4b, 0xc6, 0x46, 0x96, 0x05, 0x5e, 0x09, 0xb7, 0x6f,
-	0x81, 0x19, 0x27, 0x3c, 0x63, 0x25, 0xe1, 0x91, 0x4f, 0xa9, 0x1f, 0x82, 0x21, 0x57, 0xe3, 0xec,
-	0xd8, 0x20, 0xf1, 0x74, 0xa6, 0x7d, 0x1f, 0xe2, 0x41, 0x04, 0x8c, 0x93, 0x28, 0x29, 0x09, 0x9f,
-	0xd1, 0x04, 0x62, 0x0e, 0x21, 0x44, 0xc0, 0xd3, 0x69, 0xc1, 0x33, 0xc4, 0x77, 0xe0, 0x32, 0xd1,
-	0x59, 0xf9, 0x59, 0xb0, 0xb5, 0x1d, 0xb4, 0xd1, 0xf3, 0x7c, 0xf8, 0x06, 0x48, 0xca, 0xc7, 0x40,
-	0x38, 0x7e, 0x82, 0x96, 0x19, 0x9c, 0x3a, 0x81, 0xd7, 0x52, 0x9e, 0x28, 0x4f, 0x17, 0xf7, 0xd6,
-	0xf2, 0xf3, 0xf6, 0xd2, 0x10, 0x4e, 0xad, 0xae, 0xbd, 0xc4, 0xe0, 0xd4, 0xf2, 0xb4, 0xe7, 0xa8,
-	0x59, 0x91, 0x74, 0xdc, 0x93, 0x7f, 0xa1, 0x5a, 0x47, 0xc8, 0x1c, 0xd8, 0x59, 0x7c, 0x40, 0x3d,
-	0x08, 0xb5, 0x06, 0xda, 0xb8, 0x5e, 0x75, 0xdc, 0x13, 0x0d, 0xa3, 0xe6, 0xab, 0xc0, 0x03, 0x3a,
-	0xe4, 0x29, 0x90, 0x68, 0xc8, 0x49, 0xca, 0xb5, 0xfb, 0xa8, 0x51, 0xa9, 0xd1, 0x44, 0x7b, 0x88,
-	0xb6, 0xe6, 0x4a, 0x2f, 0x01, 0x92, 0x4e, 0x18, 0x4c, 0x40, 0x8b, 0x50, 0x43, 0x78, 0x3a, 0x1c,
-	0x41, 0x78, 0x50, 0xf4, 0x87, 0x5f, 0xa3, 0x66, 0x0a, 0x8c, 0x66, 0xa9, 0x0b, 0x4e, 0xd9, 0xb3,
-	0x34, 0x57, 0xdf, 0x35, 0xf4, 0x4a, 0x44, 0x45, 0x12, 0xfa, 0x2c, 0x97, 0xc9, 0x8e, 0x6e, 0x97,
-	0xba, 0x72, 0x2b, 0xbb, 0x91, 0x56, 0x0b, 0xda, 0x2f, 0x0a, 0x7a, 0xb0, 0x1f, 0x84, 0x30, 0x4a,
-	0x49, 0xcc, 0x8e, 0x21, 0xb5, 0xe1, 0x34, 0x03, 0xc6, 0xf1, 0x73, 0xb4, 0x72, 0x1c, 0x84, 0x30,
-	0xcb, 0xa1, 0xbe, 0xdb, 0xd0, 0xc5, 0xcd, 0x91, 0x33, 0xd6, 0x8f, 0x8e, 0xac, 0xee, 0x1e, 0xca,
-	0xcf, 0xdb, 0xcb, 0x42, 0x6a, 0x75, 0xed, 0x65, 0xc1, 0xb5, 0x3c, 0xfc, 0x0c, 0xdd, 0x77, 0x7f,
-	0xc8, 0xe2, 0x13, 0x87, 0x89, 0xb6, 0x9d, 0xf1, 0x94, 0x03, 0x6b, 0x2d, 0x88, 0x1c, 0xed, 0x86,
-	0x04, 0x64, 0x1c, 0x7b, 0xa2, 0x8c, 0x1f, 0xa3, 0xb5, 0x38, 0x8b, 0x4a, 0xce, 0xa2, 0xe4, 0xac,
-	0xc6, 0x59, 0x24, 0x41, 0xed, 0x4f, 0x05, 0x6d, 0x55, 0x6d, 0xb1, 0x84, 0xc6, 0x0c, 0xf0, 0xc7,
-	0xe8, 0x9e, 0x4b, 0x3d, 0x90, 0xa6, 0x36, 0x2b, 0xa6, 0x4c, 0xea, 0x81, 0x2d, 0x41, 0xdc, 0x47,
-	0x4b, 0xf2, 0x34, 0x79, 0x74, 0x7d, 0xf7, 0x4b, 0xfd, 0x43, 0x97, 0x5e, 0xbf, 0xed, 0x0c, 0x59,
-	0x34, 0x85, 0xde, 0x2e, 0xb6, 0xd9, 0xde, 0x47, 0x6b, 0x57, 0x35, 0xdc, 0x46, 0xf5, 0xf9, 0xee,
-	0xe4, 0x2d, 0xb1, 0x11, 0xbb, 0x6e, 0xac, 0x85, 0x56, 0x12, 0x32, 0x0d, 0x29, 0xf1, 0xe4, 0xf9,
-	0xeb, 0xf6, 0x6c, 0xa9, 0xfd, 0xa1, 0xa0, 0x4d, 0x31, 0x5c, 0x73, 0x70, 0x00, 0x9c, 0x78, 0x84,
-	0x13, 0xfc, 0x02, 0x2d, 0x71, 0x9a, 0x04, 0x6e, 0xd9, 0xd0, 0x27, 0x1f, 0xb6, 0x5a, 0x08, 0x47,
-	0x82, 0x6c, 0x17, 0x1a, 0xfc, 0x15, 0x5a, 0xf3, 0x60, 0x12, 0xb8, 0x72, 0x4c, 0x0b, 0xb7, 0x8f,
-	0x69, 0x3d, 0x3f, 0x6f, 0xaf, 0x76, 0x25, 0xcb, 0xea, 0xda, 0xab, 0x05, 0xdf, 0xf2, 0x70, 0x07,
-	0x6d, 0xa6, 0xe0, 0x4e, 0x9c, 0xab, 0x47, 0x27, 0x67, 0x50, 0xdf, 0xdd, 0xd6, 0x8b, 0x67, 0xa9,
-	0xcf, 0x9e, 0xa5, 0x3e, 0x9a, 0x31, 0xec, 0x0d, 0xa1, 0xb8, 0x5a, 0x6a, 0x3f, 0x16, 0x2f, 0x4e,
-	0x74, 0xc3, 0x18, 0xf1, 0x01, 0x77, 0xd1, 0x6a, 0x54, 0x36, 0x56, 0xde, 0x9a, 0xa7, 0xff, 0xd4,
-	0xcf, 0x2c, 0x08, 0xfb, 0x4a, 0x89, 0x3f, 0x45, 0x8b, 0x11, 0xf3, 0x5b, 0x6f, 0x57, 0xe4, 0x0e,
-	0x5b, 0x37, 0xfc, 0x74, 0xe2, 0xa9, 0x2d, 0x18, 0x32, 0x4e, 0x73, 0x20, 0xf6, 0xb9, 0x43, 0x9c,
-	0x85, 0xf0, 0x3f, 0x16, 0xe7, 0xac, 0x9b, 0x3b, 0xc4, 0x59, 0x0d, 0xe2, 0x0e, 0x71, 0x3e, 0xfb,
-	0x4d, 0x41, 0xf5, 0xb9, 0x4b, 0x86, 0x1f, 0xa1, 0xff, 0xf5, 0xba, 0x5f, 0xf7, 0x1c, 0x73, 0xe0,
-	0x8c, 0x0e, 0x07, 0x96, 0xe9, 0x1c, 0xf5, 0x5f, 0xf6, 0x0f, 0xbf, 0xeb, 0x37, 0x6b, 0xb8, 0x85,
-	0xb6, 0xaa, 0xd0, 0x70, 0xd4, 0x19, 0x1d, 0x0d, 0x9b, 0x0a, 0xfe, 0x3f, 0x7a, 0x50, 0x45, 0x5e,
-	0x59, 0xdd, 0xde, 0x61, 0x73, 0x01, 0x3f, 0x44, 0xb8, 0x0a, 0xf4, 0xbe, 0xef, 0x99, 0xcd, 0xc5,
-	0x9b, 0xa7, 0x1c, 0xf4, 0x46, 0xb6, 0x65, 0x0e, 0x9b, 0xf7, 0x70, 0x1b, 0x3d, 0xae, 0x42, 0xfb,
-	0xd6, 0xb7, 0x3d, 0x67, 0x64, 0x77, 0xfa, 0xc3, 0xfd, 0x9e, 0xdd, 0x5c, 0x92, 0x8e, 0xe7, 0xe6,
-	0x28, 0xf6, 0x32, 0x07, 0x8e, 0xd4, 0xdc, 0xe2, 0xb8, 0x0a, 0xcd, 0x3b, 0xae, 0x22, 0x73, 0x8e,
-	0xab, 0xc0, 0xb5, 0xe3, 0x6a, 0xbd, 0xe2, 0xb8, 0x0a, 0xbd, 0xe7, 0x78, 0xcf, 0x3d, 0xbb, 0x50,
-	0x6b, 0x6f, 0x2e, 0xd4, 0xda, 0xbb, 0x0b, 0x55, 0xf9, 0x29, 0x57, 0x95, 0x5f, 0x73, 0x55, 0xf9,
-	0x3d, 0x57, 0x95, 0xb3, 0x5c, 0x55, 0xfe, 0xca, 0x55, 0xe5, 0x6d, 0xae, 0xd6, 0xde, 0xe5, 0xaa,
-	0xf2, 0xf3, 0xa5, 0x5a, 0x3b, 0xbb, 0x54, 0x6b, 0x6f, 0x2e, 0xd5, 0xda, 0xeb, 0xcf, 0xfd, 0x20,
-	0x0a, 0x81, 0x87, 0x64, 0xcc, 0x74, 0x12, 0x18, 0xc5, 0xca, 0xb8, 0xf1, 0xab, 0x7f, 0x51, 0x7c,
-	0x8d, 0x97, 0xe5, 0x6c, 0xbf, 0xf8, 0x3b, 0x00, 0x00, 0xff, 0xff, 0x74, 0xfb, 0xec, 0xdd, 0x0d,
-	0x08, 0x00, 0x00,
+	// 1233 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x56, 0xcb, 0x6e, 0xdb, 0xd6,
+	0x16, 0x15, 0xed, 0xc8, 0x8f, 0xad, 0xc4, 0x66, 0x8e, 0x75, 0x73, 0x15, 0xe7, 0x86, 0x72, 0x18,
+	0xe4, 0x5e, 0xc3, 0x48, 0x28, 0xd8, 0x37, 0x83, 0xa2, 0x01, 0x8a, 0xc8, 0x22, 0xed, 0x10, 0xb1,
+	0x25, 0xf5, 0x48, 0xca, 0x6b, 0x42, 0x50, 0xe4, 0x8e, 0x42, 0x84, 0x2f, 0x93, 0x94, 0x10, 0x4d,
+	0x8a, 0xfe, 0x40, 0x81, 0x0e, 0x0a, 0x14, 0xfd, 0x81, 0xa2, 0xb3, 0x0e, 0xfa, 0x13, 0x1d, 0x74,
+	0x10, 0xa0, 0x93, 0x8c, 0x8c, 0x46, 0x99, 0x64, 0x98, 0x4f, 0x28, 0x0e, 0x49, 0xd9, 0x62, 0x2c,
+	0x07, 0x6e, 0xd2, 0x41, 0x47, 0xe2, 0x39, 0x7b, 0xad, 0x7d, 0xd6, 0xda, 0xfb, 0x3c, 0x04, 0xe5,
+	0x30, 0x30, 0x2a, 0xba, 0x6f, 0x55, 0x0c, 0x2f, 0x40, 0xbf, 0x5b, 0x19, 0x6c, 0x56, 0x0c, 0x5f,
+	0x43, 0xb3, 0x87, 0x92, 0x1f, 0x78, 0x91, 0x47, 0x4a, 0x3d, 0xc7, 0x96, 0x2c, 0x37, 0xc2, 0xc0,
+	0xd5, 0x6d, 0x49, 0xf7, 0x2d, 0x89, 0x21, 0xa5, 0xc1, 0xe6, 0x6a, 0xb1, 0xe7, 0xf5, 0xbc, 0x18,
+	0x54, 0x61, 0x5f, 0x09, 0x7e, 0xf5, 0x2a, 0x4b, 0x68, 0x78, 0x8e, 0xe3, 0xb9, 0x95, 0x68, 0xe8,
+	0x63, 0xe8, 0x77, 0x2b, 0xfd, 0xbe, 0x65, 0xa6, 0xe1, 0xf2, 0x94, 0x70, 0x18, 0xe9, 0x51, 0x3f,
+	0x4c, 0x01, 0x97, 0x7b, 0x9e, 0xd7, 0xb3, 0xb1, 0x12, 0x8f, 0xba, 0xfd, 0xa7, 0x15, 0xdd, 0x1d,
+	0x8e, 0xb9, 0xef, 0x87, 0x22, 0xcb, 0xc1, 0x30, 0xd2, 0x1d, 0x3f, 0x05, 0xdc, 0xf4, 0x7c, 0x74,
+	0x23, 0xb4, 0xd1, 0xc1, 0x28, 0x18, 0x26, 0xb8, 0x0a, 0xfb, 0xb6, 0x8c, 0x90, 0x39, 0x4b, 0x3f,
+	0x53, 0xb4, 0x78, 0xd2, 0xba, 0xe3, 0x99, 0x68, 0x6b, 0xf8, 0x02, 0x8d, 0x04, 0x23, 0x6e, 0xc2,
+	0x05, 0xc5, 0xec, 0xe1, 0x3d, 0xd4, 0x83, 0xa8, 0x8b, 0x7a, 0x44, 0xd6, 0x60, 0x2e, 0xc4, 0x03,
+	0xcd, 0x32, 0x4b, 0xdc, 0x1a, 0xb7, 0x3e, 0xbb, 0xbd, 0x38, 0x3a, 0x2c, 0xe7, 0x5b, 0x78, 0xa0,
+	0xca, 0x34, 0x1f, 0xe2, 0x81, 0x6a, 0x8a, 0xb7, 0x81, 0xcf, 0x50, 0xaa, 0xc6, 0xf3, 0x33, 0xb0,
+	0xce, 0x03, 0xd4, 0x9a, 0xb4, 0xef, 0xee, 0x33, 0x05, 0xe2, 0x32, 0x5c, 0x38, 0x1e, 0x55, 0x8d,
+	0xe7, 0xe2, 0x2f, 0x1c, 0x10, 0xe5, 0x05, 0x1a, 0xfd, 0xc8, 0xf2, 0xdc, 0xdd, 0x40, 0xf7, 0x9f,
+	0xb5, 0x7c, 0x34, 0xc8, 0x17, 0x90, 0xef, 0xb1, 0x41, 0x9c, 0xb6, 0xb0, 0xb5, 0x2e, 0x9d, 0xd6,
+	0x2c, 0x29, 0x4b, 0xa6, 0x09, 0x8d, 0xd4, 0x20, 0xcf, 0x8a, 0x8f, 0xa5, 0x99, 0x35, 0x6e, 0x7d,
+	0x69, 0xeb, 0xd6, 0x59, 0xf9, 0x2d, 0x46, 0xa2, 0x09, 0x97, 0x94, 0x60, 0x7e, 0x80, 0x41, 0x68,
+	0x79, 0x6e, 0x69, 0x96, 0xb9, 0xa3, 0xe3, 0xa1, 0xf8, 0x0d, 0x07, 0xc5, 0x93, 0xc4, 0x7e, 0x78,
+	0xbc, 0x2e, 0xf7, 0x09, 0xeb, 0x5e, 0x82, 0xb9, 0x00, 0xf5, 0xd0, 0x73, 0x63, 0xf5, 0x8b, 0x34,
+	0x1d, 0x7d, 0x40, 0xcf, 0x0f, 0x1c, 0xac, 0x54, 0x7d, 0xdf, 0x1e, 0x66, 0xb3, 0x92, 0xbb, 0x50,
+	0xf0, 0x2d, 0x1f, 0x6d, 0xcb, 0xc5, 0x71, 0x8f, 0x0a, 0x5b, 0xcb, 0xb1, 0xa8, 0x78, 0x8f, 0x4a,
+	0x9d, 0x8e, 0x2a, 0x6f, 0x2f, 0x8d, 0x0e, 0xcb, 0xd0, 0x4c, 0x71, 0xaa, 0x4c, 0x61, 0xcc, 0x51,
+	0x4d, 0x72, 0x17, 0xce, 0x85, 0x3e, 0x1a, 0xb1, 0x92, 0xc2, 0xd6, 0xcd, 0x33, 0xfb, 0xf1, 0xd1,
+	0xa0, 0x31, 0x53, 0x7c, 0x04, 0x45, 0x19, 0x6d, 0x8c, 0xf0, 0xef, 0xd6, 0x26, 0xfe, 0xc8, 0xc1,
+	0xea, 0xb4, 0x2e, 0x74, 0x7c, 0x93, 0x95, 0xf1, 0xd3, 0xcd, 0xef, 0xc0, 0x5c, 0x72, 0x84, 0x53,
+	0xfb, 0xd2, 0x5f, 0x69, 0x67, 0x3f, 0xa4, 0x29, 0x5b, 0x24, 0xc0, 0x3f, 0xb0, 0x4c, 0xf4, 0x5a,
+	0x51, 0x80, 0xba, 0xd3, 0x8a, 0xf4, 0x20, 0x12, 0x2f, 0xc2, 0x72, 0x66, 0xce, 0xf3, 0xc5, 0x4b,
+	0x50, 0x9c, 0x98, 0xba, 0x8f, 0xe8, 0x57, 0x6d, 0x6b, 0x80, 0xa2, 0x03, 0xcb, 0xec, 0xe0, 0x35,
+	0xda, 0x68, 0xef, 0x27, 0x07, 0x9d, 0x3c, 0x01, 0x3e, 0xc0, 0xd0, 0xeb, 0x07, 0x06, 0x6a, 0xe9,
+	0xe1, 0x4f, 0x0d, 0x56, 0xa4, 0xcc, 0x5d, 0x91, 0x1c, 0x77, 0x69, 0x7c, 0x41, 0x0c, 0x36, 0x25,
+	0x9a, 0xf2, 0xd2, 0x54, 0x74, 0x39, 0xc8, 0x4e, 0x88, 0xdf, 0x71, 0xb0, 0xb2, 0x63, 0xd9, 0xd8,
+	0x0e, 0x74, 0x37, 0x7c, 0x8a, 0x01, 0xc5, 0x83, 0x3e, 0x86, 0x11, 0xb9, 0x0d, 0xf3, 0x4f, 0x2d,
+	0xfb, 0x43, 0xb5, 0x84, 0xd1, 0x61, 0x79, 0x8e, 0x51, 0x55, 0x99, 0xce, 0x31, 0xac, 0x6a, 0x92,
+	0x0d, 0xb8, 0x68, 0x3c, 0xeb, 0xbb, 0xcf, 0xb5, 0x90, 0xd9, 0xd6, 0xba, 0xc3, 0x08, 0x93, 0x72,
+	0xce, 0xd2, 0xe5, 0x38, 0x10, 0x97, 0x63, 0x9b, 0x4d, 0x93, 0x2b, 0xb0, 0xe8, 0xf6, 0x9d, 0x14,
+	0x93, 0x6c, 0xf1, 0x05, 0xb7, 0xef, 0xc4, 0x41, 0xf1, 0x77, 0x0e, 0x8a, 0x59, 0x59, 0xa1, 0xef,
+	0xb9, 0x21, 0x92, 0xeb, 0x70, 0xce, 0xf0, 0xcc, 0xf1, 0x91, 0x9b, 0x14, 0x55, 0xf3, 0x4c, 0xa4,
+	0x71, 0x90, 0xd4, 0x21, 0x1f, 0xaf, 0x96, 0x76, 0xf2, 0xb3, 0xd3, 0x3b, 0x39, 0x6d, 0x8d, 0x78,
+	0xb2, 0xc6, 0xf8, 0x34, 0x49, 0xb3, 0xba, 0x03, 0x8b, 0x47, 0x73, 0xa4, 0x0c, 0x85, 0x49, 0x77,
+	0xf1, 0x55, 0x48, 0x21, 0x3c, 0x36, 0x56, 0x82, 0x79, 0x5f, 0x1f, 0xda, 0x9e, 0x6e, 0xc6, 0xeb,
+	0x9f, 0xa7, 0xe3, 0xa1, 0xf8, 0x1b, 0x07, 0x4b, 0xac, 0xb9, 0xb5, 0xe6, 0x3e, 0x46, 0xba, 0xa9,
+	0x47, 0x3a, 0xb9, 0x03, 0xf9, 0xc8, 0xf3, 0x2d, 0x23, 0x35, 0x74, 0xe3, 0x03, 0x9b, 0x2e, 0x26,
+	0xb6, 0x19, 0x98, 0x26, 0x1c, 0xf2, 0x39, 0x2c, 0x9a, 0x38, 0xb0, 0x8c, 0xb8, 0x4d, 0x33, 0xd3,
+	0xdb, 0x74, 0x7e, 0x74, 0x58, 0x5e, 0x90, 0x63, 0x94, 0x2a, 0xd3, 0x85, 0x04, 0xaf, 0x9a, 0xa4,
+	0x0a, 0x4b, 0x01, 0x1a, 0x03, 0xed, 0xe8, 0xf5, 0x89, 0x7b, 0x50, 0xd8, 0x5a, 0x95, 0x92, 0xf7,
+	0x49, 0x1a, 0xbf, 0x4f, 0x52, 0x7b, 0x8c, 0xa0, 0x17, 0x18, 0xe3, 0x68, 0x28, 0x7e, 0x95, 0x3c,
+	0x2b, 0xcc, 0x4d, 0x18, 0xea, 0x3d, 0x24, 0x32, 0x2c, 0x38, 0xa9, 0xb1, 0x33, 0xdc, 0xe5, 0x99,
+	0x42, 0xd0, 0x23, 0x26, 0xf9, 0x1f, 0xcc, 0x3a, 0x61, 0xaf, 0xf4, 0x76, 0x3e, 0xce, 0x50, 0x3c,
+	0xa1, 0xa7, 0xea, 0x0e, 0x29, 0x43, 0xc4, 0xe5, 0xac, 0x35, 0x59, 0x9e, 0x8f, 0x28, 0x67, 0x42,
+	0xfc, 0x87, 0x95, 0x73, 0xec, 0xe6, 0x23, 0xca, 0x99, 0x2d, 0xc4, 0x47, 0x94, 0x73, 0xe3, 0xfb,
+	0x19, 0x58, 0x99, 0xf2, 0x50, 0x91, 0x6b, 0x70, 0x55, 0x79, 0xa4, 0xd4, 0x3a, 0x6d, 0xb5, 0x51,
+	0xd7, 0x76, 0x69, 0xb5, 0x79, 0x4f, 0x6b, 0xb5, 0xab, 0x6d, 0x45, 0xeb, 0xd4, 0xef, 0xd7, 0x1b,
+	0x0f, 0xeb, 0x7c, 0x8e, 0x6c, 0xc0, 0x7f, 0x4f, 0x81, 0x34, 0x65, 0xf6, 0x43, 0x95, 0x2f, 0x3b,
+	0x4a, 0xab, 0xad, 0xc8, 0x3c, 0x90, 0x1b, 0x70, 0x6d, 0x3a, 0x56, 0x6e, 0x3c, 0xac, 0xef, 0x35,
+	0xaa, 0xb2, 0x5a, 0xdf, 0xe5, 0x8b, 0xe4, 0x3a, 0x94, 0xa7, 0xc3, 0x6a, 0x8d, 0xfd, 0xa6, 0xba,
+	0xc7, 0x40, 0x02, 0x29, 0xc3, 0x95, 0xe9, 0x20, 0xaa, 0x54, 0xe5, 0xc7, 0xfc, 0x3a, 0x11, 0x41,
+	0x38, 0x65, 0x31, 0xa5, 0xb9, 0xd7, 0x78, 0xac, 0xc8, 0xfc, 0x16, 0x59, 0x83, 0xff, 0x4c, 0xc7,
+	0xec, 0x54, 0xd5, 0x3d, 0x45, 0xe6, 0xcd, 0x8d, 0x9f, 0x39, 0x28, 0x4c, 0x1c, 0x3f, 0x72, 0x19,
+	0xfe, 0xa5, 0xc8, 0xbb, 0x8a, 0x56, 0x6b, 0x6a, 0xed, 0x46, 0x53, 0xad, 0x4d, 0x54, 0xa2, 0x04,
+	0xc5, 0x6c, 0x88, 0xa5, 0xea, 0xb4, 0x78, 0x8e, 0xfc, 0x1b, 0x56, 0xb2, 0x91, 0x07, 0xaa, 0xac,
+	0x34, 0xf8, 0x19, 0x72, 0x09, 0x48, 0x36, 0xc0, 0xd4, 0xf0, 0xb3, 0x27, 0x57, 0xd9, 0x57, 0xda,
+	0x54, 0xad, 0xb5, 0xf8, 0x73, 0xb1, 0xef, 0x4c, 0x68, 0x47, 0xdd, 0x53, 0xb4, 0x36, 0xad, 0xd6,
+	0x5b, 0x3b, 0x0a, 0xe5, 0xf3, 0xb1, 0xe2, 0x89, 0x1d, 0xce, 0x72, 0xd5, 0x9a, 0x5a, 0xcc, 0x99,
+	0xa2, 0x38, 0x1b, 0x9a, 0x54, 0x9c, 0x8d, 0x4c, 0x28, 0xce, 0x06, 0x8e, 0x15, 0x67, 0xe7, 0x33,
+	0x8a, 0xb3, 0xa1, 0xf7, 0x14, 0x6f, 0x1b, 0x2f, 0x5f, 0x0b, 0xb9, 0x57, 0xaf, 0x85, 0xdc, 0xbb,
+	0xd7, 0x02, 0xf7, 0xf5, 0x48, 0xe0, 0x7e, 0x1a, 0x09, 0xdc, 0xaf, 0x23, 0x81, 0x7b, 0x39, 0x12,
+	0xb8, 0x3f, 0x46, 0x02, 0xf7, 0x76, 0x24, 0xe4, 0xde, 0x8d, 0x04, 0xee, 0xdb, 0x37, 0x42, 0xee,
+	0xe5, 0x1b, 0x21, 0xf7, 0xea, 0x8d, 0x90, 0x7b, 0x72, 0xab, 0x67, 0x39, 0x36, 0x46, 0xb6, 0xde,
+	0x0d, 0x25, 0xdd, 0xaa, 0x24, 0xa3, 0xca, 0x89, 0xbf, 0xc4, 0x77, 0x92, 0xaf, 0xee, 0x5c, 0xbc,
+	0xeb, 0xff, 0xff, 0x67, 0x00, 0x00, 0x00, 0xff, 0xff, 0x34, 0xe6, 0xf6, 0xb9, 0x30, 0x0c, 0x00,
+	0x00,
 }
 
+func (x ExecutionGraphState) String() string {
+	s, ok := ExecutionGraphState_name[int32(x)]
+	if ok {
+		return s
+	}
+	return strconv.Itoa(int(x))
+}
 func (x EdgeCPTopic) String() string {
 	s, ok := EdgeCPTopic_name[int32(x)]
 	if ok {
@@ -965,6 +1297,144 @@ func (this *CPRunModelAck) Equal(that interface{}) bool {
 	if that1 == nil {
 		return this == nil
 	} else if this == nil {
+		return false
+	}
+	return true
+}
+func (this *ExecutionGraphSpec) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ExecutionGraphSpec)
+	if !ok {
+		that2, ok := that.(ExecutionGraphSpec)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Graph.Equal(that1.Graph) {
+		return false
+	}
+	if this.State != that1.State {
+		return false
+	}
+	if this.Version != that1.Version {
+		return false
+	}
+	return true
+}
+func (this *ExecutionGraphStatus) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ExecutionGraphStatus)
+	if !ok {
+		that2, ok := that.(ExecutionGraphStatus)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.State != that1.State {
+		return false
+	}
+	if this.Reason != that1.Reason {
+		return false
+	}
+	if this.Version != that1.Version {
+		return false
+	}
+	return true
+}
+func (this *ApplyExecutionGraph) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ApplyExecutionGraph)
+	if !ok {
+		that2, ok := that.(ApplyExecutionGraph)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.PipelineID.Equal(that1.PipelineID) {
+		return false
+	}
+	if !this.Spec.Equal(that1.Spec) {
+		return false
+	}
+	return true
+}
+func (this *DeleteExecutionGraph) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*DeleteExecutionGraph)
+	if !ok {
+		that2, ok := that.(DeleteExecutionGraph)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.PipelineID.Equal(that1.PipelineID) {
+		return false
+	}
+	return true
+}
+func (this *ExecutionGraphStatusUpdate) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ExecutionGraphStatusUpdate)
+	if !ok {
+		that2, ok := that.(ExecutionGraphStatusUpdate)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.PipelineID.Equal(that1.PipelineID) {
+		return false
+	}
+	if !this.Status.Equal(that1.Status) {
 		return false
 	}
 	return true
@@ -1292,6 +1762,74 @@ func (this *CPRunModelAck) GoString() string {
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
+func (this *ExecutionGraphSpec) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 7)
+	s = append(s, "&corepb.ExecutionGraphSpec{")
+	if this.Graph != nil {
+		s = append(s, "Graph: "+fmt.Sprintf("%#v", this.Graph)+",\n")
+	}
+	s = append(s, "State: "+fmt.Sprintf("%#v", this.State)+",\n")
+	s = append(s, "Version: "+fmt.Sprintf("%#v", this.Version)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ExecutionGraphStatus) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 7)
+	s = append(s, "&corepb.ExecutionGraphStatus{")
+	s = append(s, "State: "+fmt.Sprintf("%#v", this.State)+",\n")
+	s = append(s, "Reason: "+fmt.Sprintf("%#v", this.Reason)+",\n")
+	s = append(s, "Version: "+fmt.Sprintf("%#v", this.Version)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ApplyExecutionGraph) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&corepb.ApplyExecutionGraph{")
+	if this.PipelineID != nil {
+		s = append(s, "PipelineID: "+fmt.Sprintf("%#v", this.PipelineID)+",\n")
+	}
+	if this.Spec != nil {
+		s = append(s, "Spec: "+fmt.Sprintf("%#v", this.Spec)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *DeleteExecutionGraph) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&corepb.DeleteExecutionGraph{")
+	if this.PipelineID != nil {
+		s = append(s, "PipelineID: "+fmt.Sprintf("%#v", this.PipelineID)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ExecutionGraphStatusUpdate) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&corepb.ExecutionGraphStatusUpdate{")
+	if this.PipelineID != nil {
+		s = append(s, "PipelineID: "+fmt.Sprintf("%#v", this.PipelineID)+",\n")
+	}
+	if this.Status != nil {
+		s = append(s, "Status: "+fmt.Sprintf("%#v", this.Status)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
 func (this *VideoStreamStart) GoString() string {
 	if this == nil {
 		return "nil"
@@ -1538,6 +2076,220 @@ func (m *CPRunModelAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *ExecutionGraphSpec) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ExecutionGraphSpec) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ExecutionGraphSpec) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Version != 0 {
+		i = encodeVarintCpEdge(dAtA, i, uint64(m.Version))
+		i--
+		dAtA[i] = 0x18
+	}
+	if m.State != 0 {
+		i = encodeVarintCpEdge(dAtA, i, uint64(m.State))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.Graph != nil {
+		{
+			size, err := m.Graph.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCpEdge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ExecutionGraphStatus) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ExecutionGraphStatus) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ExecutionGraphStatus) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Version != 0 {
+		i = encodeVarintCpEdge(dAtA, i, uint64(m.Version))
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.Reason) > 0 {
+		i -= len(m.Reason)
+		copy(dAtA[i:], m.Reason)
+		i = encodeVarintCpEdge(dAtA, i, uint64(len(m.Reason)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.State != 0 {
+		i = encodeVarintCpEdge(dAtA, i, uint64(m.State))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ApplyExecutionGraph) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ApplyExecutionGraph) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ApplyExecutionGraph) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Spec != nil {
+		{
+			size, err := m.Spec.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCpEdge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.PipelineID != nil {
+		{
+			size, err := m.PipelineID.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCpEdge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *DeleteExecutionGraph) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *DeleteExecutionGraph) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *DeleteExecutionGraph) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.PipelineID != nil {
+		{
+			size, err := m.PipelineID.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCpEdge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ExecutionGraphStatusUpdate) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ExecutionGraphStatusUpdate) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ExecutionGraphStatusUpdate) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Status != nil {
+		{
+			size, err := m.Status.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCpEdge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.PipelineID != nil {
+		{
+			size, err := m.PipelineID.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCpEdge(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -2020,6 +2772,91 @@ func (m *CPRunModelAck) Size() (n int) {
 	return n
 }
 
+func (m *ExecutionGraphSpec) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Graph != nil {
+		l = m.Graph.Size()
+		n += 1 + l + sovCpEdge(uint64(l))
+	}
+	if m.State != 0 {
+		n += 1 + sovCpEdge(uint64(m.State))
+	}
+	if m.Version != 0 {
+		n += 1 + sovCpEdge(uint64(m.Version))
+	}
+	return n
+}
+
+func (m *ExecutionGraphStatus) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.State != 0 {
+		n += 1 + sovCpEdge(uint64(m.State))
+	}
+	l = len(m.Reason)
+	if l > 0 {
+		n += 1 + l + sovCpEdge(uint64(l))
+	}
+	if m.Version != 0 {
+		n += 1 + sovCpEdge(uint64(m.Version))
+	}
+	return n
+}
+
+func (m *ApplyExecutionGraph) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.PipelineID != nil {
+		l = m.PipelineID.Size()
+		n += 1 + l + sovCpEdge(uint64(l))
+	}
+	if m.Spec != nil {
+		l = m.Spec.Size()
+		n += 1 + l + sovCpEdge(uint64(l))
+	}
+	return n
+}
+
+func (m *DeleteExecutionGraph) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.PipelineID != nil {
+		l = m.PipelineID.Size()
+		n += 1 + l + sovCpEdge(uint64(l))
+	}
+	return n
+}
+
+func (m *ExecutionGraphStatusUpdate) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.PipelineID != nil {
+		l = m.PipelineID.Size()
+		n += 1 + l + sovCpEdge(uint64(l))
+	}
+	if m.Status != nil {
+		l = m.Status.Size()
+		n += 1 + l + sovCpEdge(uint64(l))
+	}
+	return n
+}
+
 func (m *VideoStreamStart) Size() (n int) {
 	if m == nil {
 		return 0
@@ -2225,6 +3062,62 @@ func (this *CPRunModelAck) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&CPRunModelAck{`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ExecutionGraphSpec) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ExecutionGraphSpec{`,
+		`Graph:` + strings.Replace(fmt.Sprintf("%v", this.Graph), "ExecutionGraph", "ExecutionGraph", 1) + `,`,
+		`State:` + fmt.Sprintf("%v", this.State) + `,`,
+		`Version:` + fmt.Sprintf("%v", this.Version) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ExecutionGraphStatus) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ExecutionGraphStatus{`,
+		`State:` + fmt.Sprintf("%v", this.State) + `,`,
+		`Reason:` + fmt.Sprintf("%v", this.Reason) + `,`,
+		`Version:` + fmt.Sprintf("%v", this.Version) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ApplyExecutionGraph) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ApplyExecutionGraph{`,
+		`PipelineID:` + strings.Replace(fmt.Sprintf("%v", this.PipelineID), "UUID", "typespb.UUID", 1) + `,`,
+		`Spec:` + strings.Replace(this.Spec.String(), "ExecutionGraphSpec", "ExecutionGraphSpec", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *DeleteExecutionGraph) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&DeleteExecutionGraph{`,
+		`PipelineID:` + strings.Replace(fmt.Sprintf("%v", this.PipelineID), "UUID", "typespb.UUID", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ExecutionGraphStatusUpdate) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ExecutionGraphStatusUpdate{`,
+		`PipelineID:` + strings.Replace(fmt.Sprintf("%v", this.PipelineID), "UUID", "typespb.UUID", 1) + `,`,
+		`Status:` + strings.Replace(this.Status.String(), "ExecutionGraphStatus", "ExecutionGraphStatus", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -2571,6 +3464,580 @@ func (m *CPRunModelAck) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: CPRunModelAck: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCpEdge(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ExecutionGraphSpec) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCpEdge
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ExecutionGraphSpec: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ExecutionGraphSpec: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Graph", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Graph == nil {
+				m.Graph = &ExecutionGraph{}
+			}
+			if err := m.Graph.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field State", wireType)
+			}
+			m.State = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.State |= ExecutionGraphState(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Version", wireType)
+			}
+			m.Version = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Version |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCpEdge(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ExecutionGraphStatus) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCpEdge
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ExecutionGraphStatus: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ExecutionGraphStatus: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field State", wireType)
+			}
+			m.State = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.State |= ExecutionGraphState(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Reason", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Reason = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Version", wireType)
+			}
+			m.Version = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Version |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCpEdge(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ApplyExecutionGraph) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCpEdge
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ApplyExecutionGraph: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ApplyExecutionGraph: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PipelineID", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.PipelineID == nil {
+				m.PipelineID = &typespb.UUID{}
+			}
+			if err := m.PipelineID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Spec", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Spec == nil {
+				m.Spec = &ExecutionGraphSpec{}
+			}
+			if err := m.Spec.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCpEdge(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *DeleteExecutionGraph) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCpEdge
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: DeleteExecutionGraph: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: DeleteExecutionGraph: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PipelineID", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.PipelineID == nil {
+				m.PipelineID = &typespb.UUID{}
+			}
+			if err := m.PipelineID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCpEdge(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ExecutionGraphStatusUpdate) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCpEdge
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ExecutionGraphStatusUpdate: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ExecutionGraphStatusUpdate: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PipelineID", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.PipelineID == nil {
+				m.PipelineID = &typespb.UUID{}
+			}
+			if err := m.PipelineID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCpEdge
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCpEdge
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Status == nil {
+				m.Status = &ExecutionGraphStatus{}
+			}
+			if err := m.Status.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipCpEdge(dAtA[iNdEx:])

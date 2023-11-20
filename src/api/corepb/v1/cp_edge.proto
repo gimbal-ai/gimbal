@@ -27,6 +27,7 @@ import "src/common/typespb/status.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 import "opentelemetry/proto/metrics/v1/metrics.proto";
+import "src/api/corepb/v1/model_exec.proto";
 
 /**
  * This file contains all the messages that are shared between the control plane and edge.
@@ -62,6 +63,57 @@ message CPRunModel {}
 // CPRunModelAck is a temporary message sent from the edge to the control plane to acknowledge that
 // it received a CPRunModel message.
 message CPRunModelAck {}
+
+enum ExecutionGraphState {
+  EXECUTION_GRAPH_STATE_UNKNOWN = 0;
+  EXECUTION_GRAPH_STATE_UPDATE_REQUESTED = 10;
+  EXECUTION_GRAPH_STATE_DOWNLOADING = 20;
+  EXECUTION_GRAPH_STATE_COMPILING = 30;
+  EXECUTION_GRAPH_STATE_READY = 40;
+  EXECUTION_GRAPH_STATE_DEPLOYED = 50;
+  EXECUTION_GRAPH_STATE_FAILED = 100;
+}
+
+// ExecutionGraphSpec contains the specifications for the execution graph deployment.
+message ExecutionGraphSpec {
+  // The graph to deploy.
+  gml.internal.api.core.v1.ExecutionGraph graph = 1;
+  // The expected state in which we want the execution graph to be in.
+  ExecutionGraphState state = 2;
+  // The version of the exec graph. Should be monotonically increasing.
+  int64 version = 3;
+}
+
+// ExecutionGraphSpec contains the status details for the execution graph deployment.
+message ExecutionGraphStatus {
+  // The expected state in which we want the execution graph to be in.
+  ExecutionGraphState state = 1;
+  // The reason for why the exec graph is in this state.
+  string reason = 2;
+  // The version of the exec graph.
+  int64 version = 3;
+}
+
+// ApplyExecutionGraph is a request to apply the execution graph deployment to the edge device.
+message ApplyExecutionGraph {
+  // The ID of the pipeline which this execution graph is for.
+  gml.types.UUID pipeline_id = 1 [ (gogoproto.customname) = "PipelineID" ];
+  ExecutionGraphSpec spec = 2;
+}
+
+// DeleteExecutionGraph is a request to delete an execution graph deployment from the edge device.
+message DeleteExecutionGraph {
+  // The ID of the pipeline to delete.
+  gml.types.UUID pipeline_id = 1 [ (gogoproto.customname) = "PipelineID" ];
+}
+
+// ExecutionGraphStatusUpdate is a status message from the edge device to the control plane about
+// its exec graph state.
+message ExecutionGraphStatusUpdate {
+  // The ID of the pipeline.
+  gml.types.UUID pipeline_id = 1 [ (gogoproto.customname) = "PipelineID" ];
+  ExecutionGraphStatus status = 2;
+}
 
 /****************************************************************************
  * Messages that are used to stream video from the edge.
