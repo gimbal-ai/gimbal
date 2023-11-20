@@ -24,14 +24,9 @@ option go_package = "gimletlabs.ai/gimlet/src/controlplane/fleetmgr/fmpb/v1;fmpb
 import "gogoproto/gogo.proto";
 import "google/protobuf/timestamp.proto";
 import "src/common/typespb/uuid.proto";
+import "src/api/corepb/v1/model_exec.proto";
 
-// DeviceStatus has all of the possible statuses a device can be in.
-enum DeviceStatus {
-  DEVICE_STATUS_UNKNOWN = 0;
-  DEVICE_STATUS_HEALTHY = 1;
-  DEVICE_STATUS_UNHEALTHY = 2;
-  DEVICE_STATUS_DISCONNECTED = 3;
-}
+// ================== Fleet Manager Service ==================
 
 message FleetInfo {
   // The ID of the fleet. Not filled in for create requests.
@@ -47,6 +42,49 @@ message FleetInfo {
   string description = 5 [ (gogoproto.moretags) = 'db:"description"' ];
   // The timestamp when the fleet was created.
   google.protobuf.Timestamp created_at = 6 [ (gogoproto.moretags) = 'db:"created_at"' ];
+}
+
+message CreateFleetRequest {
+  FleetInfo fleet = 1;
+}
+
+message CreateFleetResponse {
+  FleetInfo fleet = 1;
+}
+
+message GetFleetRequest {
+  // Will use ID if supplied, else will try to lookup by name.
+  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
+  string name = 2;
+}
+
+message GetFleetResponse {
+  FleetInfo fleet = 1;
+}
+
+message ListFleetsRequest {
+  // The orgID of the org to get fleets from.
+  gml.types.UUID org_id = 1 [ (gogoproto.customname) = "OrgID" ];
+}
+
+message ListFleetsResponse {
+  repeated FleetInfo fleets = 1;
+}
+
+message UpdateFleetRequest {
+  FleetInfo fleet = 1;
+}
+
+message UpdateFleetResponse {}
+
+// ================== Fleet Manager Edge Service ==================
+
+// DeviceStatus has all of the possible statuses a device can be in.
+enum DeviceStatus {
+  DEVICE_STATUS_UNKNOWN = 0;
+  DEVICE_STATUS_HEALTHY = 1;
+  DEVICE_STATUS_UNHEALTHY = 2;
+  DEVICE_STATUS_DISCONNECTED = 3;
 }
 
 message DeviceInfo {
@@ -69,14 +107,6 @@ message DeviceInfo {
   repeated string tags = 7 [ (gogoproto.moretags) = 'db:"tags"' ];
 }
 
-message CreateFleetRequest {
-  FleetInfo fleet = 1;
-}
-
-message CreateFleetResponse {
-  FleetInfo fleet = 1;
-}
-
 message RegisterRequest {
   // This is an opaque device serial for the device. It's nominally the MAC-address, GUID, or some
   // other serial number that is deemed to be globally unique. It must be at-least 32 characters. On
@@ -93,31 +123,12 @@ message RegisterResponse {
   // TODO(zasgar): Pass encryption information here.
 }
 
-message GetFleetRequest {
-  // Will use ID if supplied, else will try to lookup by name.
-  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
-  string name = 2;
-}
-
-message GetFleetResponse {
-  FleetInfo fleet = 1;
-}
-
 message UpdateStatusRequest {
   // This is the Gimlet assigned device ID for this device.
   gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
 }
 
 message UpdateStatusResponse {}
-
-message ListFleetsRequest {
-  // The orgID of the org to get fleets from.
-  gml.types.UUID org_id = 1 [ (gogoproto.customname) = "OrgID" ];
-}
-
-message ListFleetsResponse {
-  repeated FleetInfo fleets = 1;
-}
 
 message GetDeviceRequest {
   gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
@@ -144,6 +155,22 @@ message UpdateDeviceRequest {
 }
 
 message UpdateDeviceResponse {}
+
+// ================== Fleet Manager Model Service ==================
+
+message DeployPipelineToFleetRequest {
+  // The ID of the fleet to deploy to.
+  gml.types.UUID fleet_id = 1 [ (gogoproto.customname) = "FleetID" ];
+  // The pipeline to deploy.
+  gml.internal.api.core.v1.Pipeline pipeline = 2;
+}
+
+message DeployPipelineToFleetResponse {
+  // The ID of the deployed pipeline instance.
+  gml.types.UUID deployed_pipeline_id = 1 [ (gogoproto.customname) = "DeployedPipelineID" ];
+}
+
+// ================== Service Definitions ==================
 
 // FleetMgrService is responsible for communciating with the API service about fleets and devices.
 service FleetMgrService {
@@ -172,8 +199,7 @@ service FleetMgrEdgeService {
   rpc ListDevices(ListDevicesRequest) returns (ListDevicesResponse);
 }
 
-message UpdateFleetRequest {
-  FleetInfo fleet = 1;
+// FleetMgrModelService is responsible for deploying models to edge devices.
+service FleetMgrModelService {
+  rpc DeployPipelineToFleet(DeployPipelineToFleetRequest) returns (DeployPipelineToFleetResponse);
 }
-
-message UpdateFleetResponse {}

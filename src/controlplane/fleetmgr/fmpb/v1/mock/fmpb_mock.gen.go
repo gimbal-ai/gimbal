@@ -423,3 +423,84 @@ func (mr *MockFleetMgrEdgeServiceServerMockRecorder) UpdateStatus(arg0, arg1 any
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatus", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).UpdateStatus), arg0, arg1)
 }
+
+// MockFleetMgrModelServiceClient is a mock of FleetMgrModelServiceClient interface.
+type MockFleetMgrModelServiceClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockFleetMgrModelServiceClientMockRecorder
+}
+
+// MockFleetMgrModelServiceClientMockRecorder is the mock recorder for MockFleetMgrModelServiceClient.
+type MockFleetMgrModelServiceClientMockRecorder struct {
+	mock *MockFleetMgrModelServiceClient
+}
+
+// NewMockFleetMgrModelServiceClient creates a new mock instance.
+func NewMockFleetMgrModelServiceClient(ctrl *gomock.Controller) *MockFleetMgrModelServiceClient {
+	mock := &MockFleetMgrModelServiceClient{ctrl: ctrl}
+	mock.recorder = &MockFleetMgrModelServiceClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockFleetMgrModelServiceClient) EXPECT() *MockFleetMgrModelServiceClientMockRecorder {
+	return m.recorder
+}
+
+// DeployPipelineToFleet mocks base method.
+func (m *MockFleetMgrModelServiceClient) DeployPipelineToFleet(ctx context.Context, in *fmpb.DeployPipelineToFleetRequest, opts ...grpc.CallOption) (*fmpb.DeployPipelineToFleetResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeployPipelineToFleet", varargs...)
+	ret0, _ := ret[0].(*fmpb.DeployPipelineToFleetResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeployPipelineToFleet indicates an expected call of DeployPipelineToFleet.
+func (mr *MockFleetMgrModelServiceClientMockRecorder) DeployPipelineToFleet(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeployPipelineToFleet", reflect.TypeOf((*MockFleetMgrModelServiceClient)(nil).DeployPipelineToFleet), varargs...)
+}
+
+// MockFleetMgrModelServiceServer is a mock of FleetMgrModelServiceServer interface.
+type MockFleetMgrModelServiceServer struct {
+	ctrl     *gomock.Controller
+	recorder *MockFleetMgrModelServiceServerMockRecorder
+}
+
+// MockFleetMgrModelServiceServerMockRecorder is the mock recorder for MockFleetMgrModelServiceServer.
+type MockFleetMgrModelServiceServerMockRecorder struct {
+	mock *MockFleetMgrModelServiceServer
+}
+
+// NewMockFleetMgrModelServiceServer creates a new mock instance.
+func NewMockFleetMgrModelServiceServer(ctrl *gomock.Controller) *MockFleetMgrModelServiceServer {
+	mock := &MockFleetMgrModelServiceServer{ctrl: ctrl}
+	mock.recorder = &MockFleetMgrModelServiceServerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockFleetMgrModelServiceServer) EXPECT() *MockFleetMgrModelServiceServerMockRecorder {
+	return m.recorder
+}
+
+// DeployPipelineToFleet mocks base method.
+func (m *MockFleetMgrModelServiceServer) DeployPipelineToFleet(arg0 context.Context, arg1 *fmpb.DeployPipelineToFleetRequest) (*fmpb.DeployPipelineToFleetResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeployPipelineToFleet", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.DeployPipelineToFleetResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeployPipelineToFleet indicates an expected call of DeployPipelineToFleet.
+func (mr *MockFleetMgrModelServiceServerMockRecorder) DeployPipelineToFleet(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeployPipelineToFleet", reflect.TypeOf((*MockFleetMgrModelServiceServer)(nil).DeployPipelineToFleet), arg0, arg1)
+}
