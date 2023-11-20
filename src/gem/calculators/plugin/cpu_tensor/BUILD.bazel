@@ -27,6 +27,8 @@ gem_plugin_cc_library(
         "base.h",
         "bounding_box_tensors_to_detections_calculator.cc",
         "bounding_box_tensors_to_detections_calculator.h",
+        "image_frame_to_cpu_tensor_calculator.cc",
+        "image_frame_to_cpu_tensor_calculator.h",
         "image_shape_cpu_tensor_calculator.cc",
         "image_shape_cpu_tensor_calculator.h",
     ],
