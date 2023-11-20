@@ -51,6 +51,12 @@ PLUGINS = dict(
             "//src/gem/calculators/plugin/opencv_cam:cc_library",
         ],
     ),
+    openvino = struct(
+        enabled_by_default = True,
+        libs = [
+            "//src/gem/exec/plugin/openvino:cc_library",
+        ],
+    ),
 )
 
 def _plugin_enabled(plugin_name):
