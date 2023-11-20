@@ -1,0 +1,12 @@
+diff --git a/openh264.pc.in b/openh264.pc.in
+index f86225c0..fe5c08a1 100644
+--- a/openh264.pc.in
++++ b/openh264.pc.in
+@@ -5,6 +5,6 @@ includedir=${prefix}/include
+ Name: OpenH264
+ Description: OpenH264 is a codec library which supports H.264 encoding and decoding. It is suitable for use in real time applications such as WebRTC.
+ Version: @VERSION@
+-Libs: -L${libdir} -lopenh264 @LIBS@
++Libs: -L${libdir} -l:libopenh264.a @LIBS@
+ Libs.private: @LIBS_PRIVATE@
+ Cflags: -I${includedir}

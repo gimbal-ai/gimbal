@@ -193,7 +193,10 @@ def _cc_deps():
     _bazel_repo(
         "com_github_cisco_openh264",
         build_file = "//bazel/external:openh264.BUILD",
-        patches = ["//bazel/external:openh264.version_gen.patch"],
+        patches = [
+            "//bazel/external:openh264.version_gen.patch",
+            "//bazel/external:openh264.static_lib.patch",
+        ],
         patch_args = ["-p1"],
     )
 
