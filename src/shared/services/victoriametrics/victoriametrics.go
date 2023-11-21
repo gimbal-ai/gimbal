@@ -42,14 +42,19 @@ func init() {
 	pflag.String("victoriametrics_select_port", "8481", "The port for victoriametrics select service")
 }
 
-func MustConnectVictoriaMetricsSelect() v1.API {
-	u := url.URL{
+func GetVictoriaMetricsURL() *url.URL {
+	u := &url.URL{
 		Scheme: viper.GetString("victoriametrics_select_scheme"),
 		Host:   net.JoinHostPort(viper.GetString("victoriametrics_select_host"), viper.GetString("victoriametrics_select_port")),
 	}
-	client, err := api.NewClient(api.Config{
-		Address: u.String(),
-	})
+	return u
+}
+
+func MustConnectVictoriaMetricsSelect() v1.API {
+	client, err := api.NewClient(
+		api.Config{
+			Address: GetVictoriaMetricsURL().String(),
+		})
 	if err != nil {
 		log.WithError(err).Fatalf("failed to connect for victoriametrics select")
 	}
