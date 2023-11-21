@@ -156,20 +156,6 @@ message UpdateDeviceRequest {
 
 message UpdateDeviceResponse {}
 
-// ================== Fleet Manager Model Service ==================
-
-message DeployPipelineToFleetRequest {
-  // The ID of the fleet to deploy to.
-  gml.types.UUID fleet_id = 1 [ (gogoproto.customname) = "FleetID" ];
-  // The pipeline to deploy.
-  gml.internal.api.core.v1.Pipeline pipeline = 2;
-}
-
-message DeployPipelineToFleetResponse {
-  // The ID of the deployed pipeline instance.
-  gml.types.UUID deployed_pipeline_id = 1 [ (gogoproto.customname) = "DeployedPipelineID" ];
-}
-
 // ================== Service Definitions ==================
 
 // FleetMgrService is responsible for communciating with the API service about fleets and devices.
@@ -197,9 +183,4 @@ service FleetMgrEdgeService {
   rpc GetDevice(GetDeviceRequest) returns (GetDeviceResponse);
   // ListDevices lists the edge devices in a fleet.
   rpc ListDevices(ListDevicesRequest) returns (ListDevicesResponse);
-}
-
-// FleetMgrModelService is responsible for deploying models to edge devices.
-service FleetMgrModelService {
-  rpc DeployPipelineToFleet(DeployPipelineToFleetRequest) returns (DeployPipelineToFleetResponse);
 }
