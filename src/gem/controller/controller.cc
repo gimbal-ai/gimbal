@@ -60,6 +60,11 @@ using internal::api::core::v1::EDGE_CP_TOPIC_STATUS;
 DEFINE_string(device_serial, gflags::StringFromEnv("GML_DEVICE_SERIAL", ""),
               "Force set the serial number / ID for the device. Note this needs to be unique "
               "across devices.");
+DEFINE_string(sys_class_net_path,
+              gflags::StringFromEnv("GML_SYS_CLASS_NET_PATH",
+                                    system::NetDeviceReader::kDefaultSysClassNet.string().c_str()),
+              "Set path to /sys/class/net for when the host /sys/class/net is mounted at a "
+              "different path inside the container");
 
 namespace {
 
@@ -81,7 +86,7 @@ StatusOr<std::string> GetDeviceSerial() {
     return FLAGS_device_serial;
   }
 
-  GML_ASSIGN_OR_RETURN(auto dev_reader, system::NetDeviceReader::Create());
+  GML_ASSIGN_OR_RETURN(auto dev_reader, system::NetDeviceReader::Create(FLAGS_sys_class_net_path));
   GML_ASSIGN_OR_RETURN(system::NetDevice dev, dev_reader->SystemMacAddress());
   if (!dev.mac_address().GloballyUnique()) {
     return error::FailedPrecondition("Failed to get unique mac address");

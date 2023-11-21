@@ -104,9 +104,9 @@ class NetDeviceReader {
    */
   StatusOr<NetDevice> SystemMacAddress();
 
- private:
   const static inline std::filesystem::path kDefaultSysClassNet = "/sys/class/net";
 
+ private:
   explicit NetDeviceReader(std::filesystem::path sys_class_net_path)
       : sys_class_net_path_(std::move(sys_class_net_path)) {}
 
