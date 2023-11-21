@@ -339,6 +339,21 @@ REPOSITORY_LOCATIONS = dict(
         strip_prefix = "onnx-1.15.0",
         urls = ["https://github.com/onnx/onnx/archive/refs/tags/v1.15.0.tar.gz"],
     ),
+    com_github_khronosgroup_opencl_headers = dict(
+        sha256 = "0ce992f4167f958f68a37918dec6325be18f848dee29a4521c633aae3304915d",
+        strip_prefix = "OpenCL-Headers-2023.04.17",
+        urls = ["https://github.com/KhronosGroup/OpenCL-Headers/archive/refs/tags/v2023.04.17.tar.gz"],
+    ),
+    com_github_khronosgroup_opencl_icd_loader = dict(
+        sha256 = "173bdc4f321d550b6578ad2aafc2832f25fbb36041f095e6221025f74134b876",
+        strip_prefix = "OpenCL-ICD-Loader-2023.04.17",
+        urls = ["https://github.com/KhronosGroup/OpenCL-ICD-Loader/archive/refs/tags/v2023.04.17.tar.gz"],
+    ),
+    com_github_khronosgroup_opencl_clhpp = dict(
+        sha256 = "179243843c620ef6f78b52937aaaa0a742c6ff415f9aaefe3c20225ee283b357",
+        strip_prefix = "OpenCL-CLHPP-2023.04.17",
+        urls = ["https://github.com/KhronosGroup/OpenCL-CLHPP/archive/refs/tags/v2023.04.17.tar.gz"],
+    ),
 )
 
 # To use a local repo for local development, add the path to point to your local directory below.
