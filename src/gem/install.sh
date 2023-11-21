@@ -53,6 +53,10 @@ function fatal() {
 }
 
 function device_type() {
+  if [[ "$(uname -m)" == "x86_64" ]]; then
+    echo "x86_64 Generic"
+    return
+  fi
   if [[ "$(uname -r)" != *"-tegra" ]]; then
     echo "Unknown"
     return
@@ -75,28 +79,40 @@ function device_type() {
 
 GML_CACHE_DIR=${GML_CACHE_DIR:-"$HOME/.cache/gml"}
 
-common_flags=(
+common_docker_flags=(
   -d
   --rm
   --network=host
   -v "$GML_CACHE_DIR:/gml"
   -v /usr/lib:/host_lib
+  # Mount /sys/class/net so that GEM can use the mac address as the SERIAL_NUMBER.
+  -v /sys:/host/sys
 )
-extra_flags=()
+extra_docker_flags=()
 
-SERIAL_NUMBER="Unknown"
+IMAGE_TAG=""
 
-if [[ $(device_type) == "NVIDIA Orin Nano"* ]]; then
-  read -r SERIAL_NUMBER </sys/firmware/devicetree/base/serial-number
-  extra_flags+=(
+cmdline_opts=(
+  "--blob_store_dir" "/gml"
+  "--sys_class_net_path" "/host/sys/class/net"
+)
+
+if [[ "$(device_type)" == "NVIDIA Orin Nano"* ]]; then
+  extra_docker_flags+=(
     --privileged
     --runtime nvidia
     --gpus all
     -v /tmp/argus_socket:/tmp/argus_socket
     -v /usr/local/cuda:/host_cuda
   )
+  IMAGE_TAG=jetson-dev-latest
+elif [[ "$(device_type)" == "x86_64 Generic" ]]; then
+  IMAGE_TAG=dev-latest
+  for vid in "/dev/video"*; do
+    extra_docker_flags+=("--device" "${vid}")
+  done
 else
-  fatal "NVIDIA Orin Nano devices are the only supported hardware."
+  fatal "Only NVIDIA Orin Nano devices or x86_64 machines are supported."
 fi
 
 emph "Installing Gimlet Edge Module"
@@ -110,19 +126,19 @@ while [[ -z "$DEPLOY_KEY" ]]; do
   printf "Must supply a Deploy Key to continue.\n"
   prompt_deploy_key
 done
+cmdline_opts+=(--deploy_key="$DEPLOY_KEY")
 
 DEFAULT_CONTROL_PLANE="dev.app.gimletlabs.dev"
 USE_CONTROL_PLANE=${GML_CONTROL_PLANE:-${DEFAULT_CONTROL_PLANE}}
+cmdline_opts+=(--controlplane_addr="$USE_CONTROL_PLANE:443")
 
 mkdir -p "$GML_CACHE_DIR"
 
 docker run \
-  "${common_flags[@]}" \
-  "${extra_flags[@]}" \
-  us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/gem_image:jetson-dev-latest \
-  --deploy_key="$DEPLOY_KEY" \
-  --controlplane_addr="$USE_CONTROL_PLANE:443" \
-  --device_serial "$SERIAL_NUMBER"
+  "${common_docker_flags[@]}" \
+  "${extra_docker_flags[@]}" \
+  "us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/gem_image:$IMAGE_TAG" \
+  "${cmdline_opts[@]}"
 
 cat <<EOS
 ${tty_bold}${tty_green}Gimlet has been succesfully installed!${tty_reset}
