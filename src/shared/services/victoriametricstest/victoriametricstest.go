@@ -21,11 +21,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"os"
 	"testing"
 	"time"
 
-	"github.com/bazelbuild/rules_go/go/runfiles"
 	"github.com/cenkalti/backoff/v4"
 	"github.com/ory/dockertest/v3"
 	"github.com/ory/dockertest/v3/docker"
@@ -36,6 +34,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"gimletlabs.ai/gimlet/src/shared/services/victoriametrics"
+	"gimletlabs.ai/gimlet/src/testutils/dockertestutils"
 )
 
 var (
@@ -97,26 +96,17 @@ func SetupTestVictoriaMetrics() (v1.API, func(), error) {
 		return nil, nil, fmt.Errorf("connect to docker failed: %w", err)
 	}
 
-	// Load image.
-	imgPath, err := runfiles.Rlocation("gml/src/shared/services/victoriametricstest/vm_image/tarball.tar")
+	imageRepo := "victoriametrics/victoria-metrics"
+	imageTag := "v1.93.6"
+	err = dockertestutils.LoadOrFetchImage(pool, imageRepo, imageTag)
 	if err != nil {
-		return nil, nil, fmt.Errorf("failed to find image runfile")
-	}
-	f, err := os.Open(imgPath)
-	if err != nil {
-		return nil, nil, fmt.Errorf("failed to read tarball")
-	}
-	err = pool.Client.LoadImage(docker.LoadImageOptions{
-		InputStream: f,
-	})
-	if err != nil {
-		return nil, nil, fmt.Errorf("failed to load image")
+		return nil, nil, err
 	}
 
 	resource, err := pool.RunWithOptions(
 		&dockertest.RunOptions{
-			Repository: "victoriametrics/victoria-metrics",
-			Tag:        "v1.93.6",
+			Repository: imageRepo,
+			Tag:        imageTag,
 			Cmd:        []string{"-search.latencyOffset=0s", "-search.disableCache"},
 		}, func(config *docker.HostConfig) {
 			config.AutoRemove = true

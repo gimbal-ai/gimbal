@@ -13,35 +13,34 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("@gml//bazel:gml_build_system.bzl", "gml_go_test")
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@rules_oci//oci:defs.bzl", "oci_tarball")
 
 go_library(
-    name = "pgtest",
-    srcs = ["pgtest.go"],
-    importpath = "gimletlabs.ai/gimlet/src/shared/services/pgtest",
+    name = "dockertestutils",
+    srcs = ["utils.go"],
+    data = [
+        ":postgres_15_alpine",
+        ":victoria_metrics_v1_93_6",
+    ],
+    importpath = "gimletlabs.ai/gimlet/src/testutils/dockertestutils",
     visibility = ["//visibility:public"],
     deps = [
-        "//src/shared/services/pg",
-        "//src/testutils/dockertestutils",
-        "@com_github_jmoiron_sqlx//:sqlx",
         "@com_github_ory_dockertest_v3//:dockertest",
         "@com_github_ory_dockertest_v3//docker",
         "@com_github_sirupsen_logrus//:logrus",
-        "@com_github_spf13_viper//:viper",
+        "@io_bazel_rules_go//go/runfiles:go_default_library",
     ],
 )
 
-gml_go_test(
-    name = "pgtest_test",
-    srcs = ["pgtest_test.go"],
-    embedsrcs = [
-        "schema/000001_create_test.down.sql",
-        "schema/000001_create_test.up.sql",
-    ],
-    deps = [
-        ":pgtest",
-        "@com_github_stretchr_testify//assert",
-        "@com_github_stretchr_testify//require",
-    ],
+oci_tarball(
+    name = "postgres_15_alpine",
+    image = "@postgres_15_alpine",
+    repo_tags = ["postgres:15-alpine"],
+)
+
+oci_tarball(
+    name = "victoria_metrics_v1_93_6",
+    image = "@victoria_metrics_1_93_6",
+    repo_tags = ["victoriametrics/victoria-metrics:v1.93.6"],
 )

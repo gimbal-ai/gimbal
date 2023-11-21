@@ -22,9 +22,7 @@ package pgtest
 import (
 	"embed"
 	"fmt"
-	"os"
 
-	"github.com/bazelbuild/rules_go/go/runfiles"
 	"github.com/jmoiron/sqlx"
 	"github.com/ory/dockertest/v3"
 	"github.com/ory/dockertest/v3/docker"
@@ -32,6 +30,7 @@ import (
 	"github.com/spf13/viper"
 
 	"gimletlabs.ai/gimlet/src/shared/services/pg"
+	"gimletlabs.ai/gimlet/src/testutils/dockertestutils"
 )
 
 type testDB struct {
@@ -63,27 +62,18 @@ func SetupTestDB(schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx.DB, func(), e
 		return nil, nil, fmt.Errorf("connect to docker failed: %w", err)
 	}
 
-	// Load image.
-	imgPath, err := runfiles.Rlocation("gml/src/shared/services/pgtest/pg_tarball/tarball.tar")
+	imageRepo := "postgres"
+	imageTag := "15-alpine"
+	err = dockertestutils.LoadOrFetchImage(pool, imageRepo, imageTag)
 	if err != nil {
-		return nil, nil, fmt.Errorf("failed to find image runfile")
-	}
-	f, err := os.Open(imgPath)
-	if err != nil {
-		return nil, nil, fmt.Errorf("failed to read tarball")
-	}
-	err = pool.Client.LoadImage(docker.LoadImageOptions{
-		InputStream: f,
-	})
-	if err != nil {
-		return nil, nil, fmt.Errorf("failed to load image")
+		return nil, nil, err
 	}
 
 	const dbName = "testdb"
 	resource, err := pool.RunWithOptions(
 		&dockertest.RunOptions{
-			Repository: "postgres",
-			Tag:        "15-alpine",
+			Repository: imageRepo,
+			Tag:        imageTag,
 			Env:        []string{"POSTGRES_PASSWORD=secret", "POSTGRES_DB=" + dbName},
 		}, func(config *docker.HostConfig) {
 			config.AutoRemove = true

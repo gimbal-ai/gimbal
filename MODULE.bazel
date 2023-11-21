@@ -164,7 +164,7 @@ oci.pull(
     image = "gcr.io/distroless/nodejs20-debian12",
 )
 oci.pull(
-    name = "postgres_15",
+    name = "postgres_15_alpine",
     digest = "sha256:35ce2187f2f7fb75e8e79493e13743596c21eb3789ff41ece145ae04d06e93a5",  # 15-alpine multiarch digest
     image = "index.docker.io/library/postgres",
     platforms = [
@@ -181,4 +181,4 @@ oci.pull(
         "linux/arm64",
     ],
 )
-use_repo(oci, "distroless_nodejs", "postgres_15", "victoria_metrics_1_93_6")
+use_repo(oci, "distroless_nodejs", "postgres_15_alpine", "victoria_metrics_1_93_6")
