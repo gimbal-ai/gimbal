@@ -121,11 +121,15 @@ function prompt_deploy_key() {
   read -r -p "Deploy Key: " DEPLOY_KEY
 }
 
-prompt_deploy_key
-while [[ -z "$DEPLOY_KEY" ]]; do
-  printf "Must supply a Deploy Key to continue.\n"
+if [[ -n "$GML_DEPLOY_KEY" ]]; then
+  DEPLOY_KEY="${GML_DEPLOY_KEY}"
+else
   prompt_deploy_key
-done
+  while [[ -z "$DEPLOY_KEY" ]]; do
+    printf "Must supply a Deploy Key to continue.\n"
+    prompt_deploy_key
+  done
+fi
 cmdline_opts+=(--deploy_key="$DEPLOY_KEY")
 
 DEFAULT_CONTROL_PLANE="dev.app.gimletlabs.dev"
