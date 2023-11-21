@@ -7,6 +7,8 @@ include:
 - libstdc++6
 - zlib1g
 - libunwind8
+- libgles2-mesa
+- libegl1-mesa
 path_excludes:
 - usr/share/
 extra_dirs:

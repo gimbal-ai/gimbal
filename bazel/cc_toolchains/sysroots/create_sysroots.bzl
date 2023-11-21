@@ -23,8 +23,8 @@ def _create_sysroots():
         target_arch = "aarch64",
         variant = "runtime",
         libc_version = "glibc2_36",
-        sha256 = "e5b870e5cdad7a9a441bd9f668d02478bbd83ee870a3cfeca8e325b109808f89",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231115162955/sysroot-aarch64-glibc2_36-runtime.tar.gz"],
+        sha256 = "fdcd47c30a7dfca069cbaa5e9cf07cfc914e1d3ca4c7daf8a96c68bfa02bfc1f",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231120181642/sysroot-aarch64-glibc2_36-runtime.tar.gz"],
         sysroot_features = [],
         disabled_for_features = ["jetson"],
     )
@@ -34,7 +34,7 @@ def _create_sysroots():
         variant = "build",
         libc_version = "glibc2_36",
         sha256 = "cf08dbeaea9726e40373dd93d2d398c333ba9eec938973c2c7871cad7a32c62f",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231115162955/sysroot-aarch64-glibc2_36-build.tar.gz"],
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231120181642/sysroot-aarch64-glibc2_36-build.tar.gz"],
         sysroot_features = [],
         disabled_for_features = ["jetson"],
     )
@@ -44,7 +44,7 @@ def _create_sysroots():
         variant = "test",
         libc_version = "glibc2_36",
         sha256 = "de1a29f5c1e56f54f8f20587ada51a9859b680fbe5770688961101ad91a752c9",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231115162955/sysroot-aarch64-glibc2_36-test.tar.gz"],
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231120181642/sysroot-aarch64-glibc2_36-test.tar.gz"],
         sysroot_features = [],
         disabled_for_features = ["debug", "jetson"],
     )
@@ -54,7 +54,7 @@ def _create_sysroots():
         variant = "test",
         libc_version = "glibc2_36",
         sha256 = "c3393c321a2889e61d21c0e3f20cc441bd32b8bc78224fae9200158f1e2a36fb",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231115162955/sysroot-aarch64-glibc2_36-test-debug.tar.gz"],
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231120181642/sysroot-aarch64-glibc2_36-test-debug.tar.gz"],
         sysroot_features = ["debug"],
         disabled_for_features = ["jetson"],
     )
@@ -63,8 +63,8 @@ def _create_sysroots():
         target_arch = "x86_64",
         variant = "runtime",
         libc_version = "glibc2_36",
-        sha256 = "6eba5bef6d2078079ed2ca0c7d64d122556432e1027867b0104937b4218f9e91",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231115162955/sysroot-x86_64-glibc2_36-runtime.tar.gz"],
+        sha256 = "07f35cbdd6c782e2605a3033a325ca1a9a09aad172aec8e036682b9d4cb9b078",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231120181642/sysroot-x86_64-glibc2_36-runtime.tar.gz"],
         sysroot_features = [],
         disabled_for_features = ["jetson"],
     )
@@ -74,7 +74,7 @@ def _create_sysroots():
         variant = "build",
         libc_version = "glibc2_36",
         sha256 = "63f0f32135e0e6d13bb7281c55aa9bdcfc818c70b805d28cafa85b9a247a3e28",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231115162955/sysroot-x86_64-glibc2_36-build.tar.gz"],
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231120181642/sysroot-x86_64-glibc2_36-build.tar.gz"],
         sysroot_features = [],
         disabled_for_features = ["jetson"],
     )
@@ -84,7 +84,7 @@ def _create_sysroots():
         variant = "test",
         libc_version = "glibc2_36",
         sha256 = "cb737ffd794ce0dc187ab6c8ec432a6bdd7500dec1138fa89036fdcb6d0e49e9",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231115162955/sysroot-x86_64-glibc2_36-test.tar.gz"],
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231120181642/sysroot-x86_64-glibc2_36-test.tar.gz"],
         sysroot_features = [],
         disabled_for_features = ["debug", "jetson"],
     )
@@ -94,7 +94,7 @@ def _create_sysroots():
         variant = "test",
         libc_version = "glibc2_36",
         sha256 = "d79f53655057ea5770c75c2afab3816b7a990693468fdbb34f47f36e6130bae6",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231115162955/sysroot-x86_64-glibc2_36-test-debug.tar.gz"],
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231120181642/sysroot-x86_64-glibc2_36-test-debug.tar.gz"],
         sysroot_features = ["debug"],
         disabled_for_features = ["jetson"],
     )
@@ -104,7 +104,7 @@ def _create_sysroots():
         variant = "runtime",
         libc_version = "glibc2_31",
         sha256 = "b86cf38aba03eea78cc95dd6911b53b7b814af09c0d0d9d6628f46af5359c26d",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231115162955/sysroot-aarch64-glibc2_31-runtime-jetson.tar.gz"],
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231120181642/sysroot-aarch64-glibc2_31-runtime-jetson.tar.gz"],
         sysroot_features = ["jetson"],
         disabled_for_features = [],
     )
@@ -113,8 +113,8 @@ def _create_sysroots():
         target_arch = "aarch64",
         variant = "build",
         libc_version = "glibc2_31",
-        sha256 = "32d81a8465938d91d6eca09a57f1d06efc7c49f1dbef4005e7be77c19cab240a",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231115162955/sysroot-aarch64-glibc2_31-build-jetson.tar.gz"],
+        sha256 = "d872a182e22b36e66cf0da85d64fe8c4fac733983a1a9844ab6b2edbb78c5f90",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231120181642/sysroot-aarch64-glibc2_31-build-jetson.tar.gz"],
         sysroot_features = ["jetson"],
         disabled_for_features = [],
     )
@@ -123,8 +123,8 @@ def _create_sysroots():
         target_arch = "aarch64",
         variant = "test",
         libc_version = "glibc2_31",
-        sha256 = "8c1c4003b3629b59e8bce5d060ac9d19ce8b808674487a253dd16b174890de5b",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231115162955/sysroot-aarch64-glibc2_31-test-jetson.tar.gz"],
+        sha256 = "3752afa488ad7374f999f82404d6cbf518995c626636f1bfa1ee479cb6770a25",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231120181642/sysroot-aarch64-glibc2_31-test-jetson.tar.gz"],
         sysroot_features = ["jetson"],
         disabled_for_features = ["debug"],
     )
