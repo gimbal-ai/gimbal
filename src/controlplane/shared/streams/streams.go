@@ -52,6 +52,10 @@ var EdgeCPTopicToStreamName = map[corepb.EdgeCPTopic]string{
 	corepb.EDGE_CP_TOPIC_METRICS: "metrics",
 }
 
+var CPTopicToStreamName = map[corepb.CPTopic]string{
+	corepb.CP_TOPIC_DEVICE_CONNECTED: "deviceConnected",
+}
+
 // MustConnectCPJetStream creates a new JetStream connection.
 func MustConnectCPJetStream(nc *nats.Conn) jetstream.JetStream {
 	js := msgbus.MustConnectJetStream(nc)
@@ -78,12 +82,23 @@ func getDurableStreams() []jetstream.StreamConfig {
 		log.WithError(err).Fatal("Could not get metrics topic")
 	}
 
+	connectedDevicesTopic, err := edgepartition.CPNATSPartitionTopic("*", "*", corepb.CPTopic(corepb.CP_TOPIC_DEVICE_CONNECTED), true)
+	if err != nil {
+		log.WithError(err).Fatal("Could not get connected devices topic")
+	}
+
 	return []jetstream.StreamConfig{
 		{
 			Name:     EdgeCPTopicToStreamName[corepb.EDGE_CP_TOPIC_METRICS],
 			MaxAge:   15 * time.Minute,
 			Replicas: clusterSize,
 			Subjects: []string{metricsTopic},
+		},
+		{
+			Name:     CPTopicToStreamName[corepb.CP_TOPIC_DEVICE_CONNECTED],
+			MaxAge:   15 * time.Minute,
+			Replicas: clusterSize,
+			Subjects: []string{connectedDevicesTopic},
 		},
 	}
 }

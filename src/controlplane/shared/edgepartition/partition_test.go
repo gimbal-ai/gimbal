@@ -214,3 +214,12 @@ func TestCPToEdgeNATSTopic(t *testing.T) {
 	require.Nil(t, err)
 	assert.Equal(t, expected, actual)
 }
+
+func TestCPNATSPartitionTopic(t *testing.T) {
+	id, _ := uuid.FromString("6ba7b810-9dad-11d1-80b4-00c04fd430c8") // Example UUID
+	actual, err := edgepartition.CPNATSPartitionTopic(edgepartition.EdgeIDToPartition(id), id.String(), corepb.CP_TOPIC_DEVICE_CONNECTED, true)
+	expected := "cp2cp.6ba.6ba7b810-9dad-11d1-80b4-00c04fd430c8.DurabledeviceConnected"
+
+	require.Nil(t, err)
+	assert.Equal(t, expected, actual)
+}

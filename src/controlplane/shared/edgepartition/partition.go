@@ -39,6 +39,7 @@ const (
 	KeySpaceSize   = 3
 	edgeToCPPrefix = "e2cp"
 	cpToEdgePrefix = "cp2e"
+	cpToCpPrefix   = "cp2cp"
 )
 
 func init() {
@@ -133,4 +134,20 @@ func edgeToCPNATSTopic(partition string, edgeID string, topic corepb.EdgeCPTopic
 
 func EdgeToCPNATSPartitionTopic(partition string, topic corepb.EdgeCPTopic, isDurable bool) (string, error) {
 	return edgeToCPNATSTopic(partition, "*", topic, isDurable)
+}
+
+// CPNATSPartitionTopic is for topics published and read in the controlplane, but is still partitioned.
+func CPNATSPartitionTopic(partition string, edgeID string, topic corepb.CPTopic, isDurable bool) (string, error) {
+	gen := func(str string) string {
+		if isDurable {
+			str = "Durable" + str
+		}
+		return fmt.Sprintf("%s.%s.%s.%s", cpToCpPrefix, partition, edgeID, str)
+	}
+	switch topic {
+	case corepb.CP_TOPIC_DEVICE_CONNECTED:
+		return gen("deviceConnected"), nil
+	default:
+		return "", fmt.Errorf("bad topic %s", topic.String())
+	}
 }

@@ -21,6 +21,7 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 proto_library(
     name = "corepb_proto",
     srcs = [
+        "controlplane.proto",
         "cp_edge.proto",
         "mediastream.proto",
         "model_exec.proto",
@@ -39,11 +40,13 @@ proto_library(
 proto_cc_library(
     name = "corepb_cc_library",
     srcs = [
+        "controlplane.pb.cc",
         "cp_edge.pb.cc",
         "mediastream.pb.cc",
         "model_exec.pb.cc",
     ],
     hdrs = [
+        "controlplane.pb.h",
         "cp_edge.pb.h",
         "mediastream.pb.h",
         "model_exec.pb.h",
@@ -67,6 +70,8 @@ proto_compile(
         "mediastream.pb.h",
         "model_exec.pb.cc",
         "model_exec.pb.h",
+        "controlplane.pb.cc",
+        "controlplane.pb.h",
     ],
     plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
     proto = "corepb_proto",
@@ -79,11 +84,13 @@ proto_compile(
         "cp_edge.pb.go=gimletlabs.ai/gimlet/src/api/corepb/v1/cp_edge.pb.go",
         "mediastream.pb.go=gimletlabs.ai/gimlet/src/api/corepb/v1/mediastream.pb.go",
         "model_exec.pb.go=gimletlabs.ai/gimlet/src/api/corepb/v1/model_exec.pb.go",
+        "controlplane.pb.go=gimletlabs.ai/gimlet/src/api/corepb/v1/controlplane.pb.go",
     ],
     outputs = [
         "cp_edge.pb.go",
         "mediastream.pb.go",
         "model_exec.pb.go",
+        "controlplane.pb.go",
     ],
     plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
     proto = "corepb_proto",
@@ -93,6 +100,7 @@ proto_compile(
 proto_go_library(
     name = "corepb_go_proto",
     srcs = [
+        "controlplane.pb.go",
         "cp_edge.pb.go",
         "mediastream.pb.go",
         "model_exec.pb.go",
