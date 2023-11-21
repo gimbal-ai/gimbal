@@ -15,7 +15,7 @@
 
 load("@rules_oci//oci:defs.bzl", "oci_push")
 load("//bazel:gml_build_system.bzl", "gml_cc_binary", "gml_cc_library")
-load("//bazel:images.bzl", "gml_jetson_image")
+load("//bazel:images.bzl", "gml_binary_image", "gml_jetson_image")
 
 package(default_visibility = [
     "//src:__subpackages__",
@@ -48,6 +48,20 @@ gml_cc_binary(
         "//src/shared/version:cc_library",
         "//src/shared/version:version_linkstamp",
     ],
+)
+
+# TODO(james): once the openvino build works on aarch64, we can make this a multiarch image.
+gml_binary_image(
+    name = "gem_image",
+    binary = ":gem",
+    include_runfiles = True,
+)
+
+oci_push(
+    name = "push_gem_image",
+    image = ":gem_image",
+    remote_tags = ["dev-latest"],
+    repository = "us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/gem_image",
 )
 
 gml_jetson_image(
