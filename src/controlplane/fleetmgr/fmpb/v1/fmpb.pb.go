@@ -6,10 +6,10 @@ package fmpb
 import (
 	context "context"
 	fmt "fmt"
-	_ "gimletlabs.ai/gimlet/src/api/corepb/v1"
 	typespb "gimletlabs.ai/gimlet/src/common/typespb"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
+	github_com_gogo_protobuf_sortkeys "github.com/gogo/protobuf/sortkeys"
 	types "github.com/gogo/protobuf/types"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
@@ -487,6 +487,425 @@ func (m *UpdateFleetResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_UpdateFleetResponse proto.InternalMessageInfo
 
+type Tag struct {
+	Key   string `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Value string `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+}
+
+func (m *Tag) Reset()      { *m = Tag{} }
+func (*Tag) ProtoMessage() {}
+func (*Tag) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e8daa588779d869f, []int{9}
+}
+func (m *Tag) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Tag) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Tag.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Tag) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Tag.Merge(m, src)
+}
+func (m *Tag) XXX_Size() int {
+	return m.Size()
+}
+func (m *Tag) XXX_DiscardUnknown() {
+	xxx_messageInfo_Tag.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Tag proto.InternalMessageInfo
+
+func (m *Tag) GetKey() string {
+	if m != nil {
+		return m.Key
+	}
+	return ""
+}
+
+func (m *Tag) GetValue() string {
+	if m != nil {
+		return m.Value
+	}
+	return ""
+}
+
+type TagMetadata struct {
+	IsInherited bool             `protobuf:"varint,1,opt,name=is_inherited,json=isInherited,proto3" json:"is_inherited,omitempty"`
+	UpdatedAt   *types.Timestamp `protobuf:"bytes,2,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty" db:"updated_at"`
+}
+
+func (m *TagMetadata) Reset()      { *m = TagMetadata{} }
+func (*TagMetadata) ProtoMessage() {}
+func (*TagMetadata) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e8daa588779d869f, []int{10}
+}
+func (m *TagMetadata) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *TagMetadata) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_TagMetadata.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *TagMetadata) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TagMetadata.Merge(m, src)
+}
+func (m *TagMetadata) XXX_Size() int {
+	return m.Size()
+}
+func (m *TagMetadata) XXX_DiscardUnknown() {
+	xxx_messageInfo_TagMetadata.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TagMetadata proto.InternalMessageInfo
+
+func (m *TagMetadata) GetIsInherited() bool {
+	if m != nil {
+		return m.IsInherited
+	}
+	return false
+}
+
+func (m *TagMetadata) GetUpdatedAt() *types.Timestamp {
+	if m != nil {
+		return m.UpdatedAt
+	}
+	return nil
+}
+
+type TagWithMetadata struct {
+	Tag      *Tag         `protobuf:"bytes,1,opt,name=tag,proto3" json:"tag,omitempty"`
+	Metadata *TagMetadata `protobuf:"bytes,2,opt,name=metadata,proto3" json:"metadata,omitempty"`
+}
+
+func (m *TagWithMetadata) Reset()      { *m = TagWithMetadata{} }
+func (*TagWithMetadata) ProtoMessage() {}
+func (*TagWithMetadata) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e8daa588779d869f, []int{11}
+}
+func (m *TagWithMetadata) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *TagWithMetadata) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_TagWithMetadata.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *TagWithMetadata) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TagWithMetadata.Merge(m, src)
+}
+func (m *TagWithMetadata) XXX_Size() int {
+	return m.Size()
+}
+func (m *TagWithMetadata) XXX_DiscardUnknown() {
+	xxx_messageInfo_TagWithMetadata.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TagWithMetadata proto.InternalMessageInfo
+
+func (m *TagWithMetadata) GetTag() *Tag {
+	if m != nil {
+		return m.Tag
+	}
+	return nil
+}
+
+func (m *TagWithMetadata) GetMetadata() *TagMetadata {
+	if m != nil {
+		return m.Metadata
+	}
+	return nil
+}
+
+type GetDefaultTagsRequest struct {
+	FleetID *typespb.UUID `protobuf:"bytes,1,opt,name=fleet_id,json=fleetId,proto3" json:"fleet_id,omitempty"`
+}
+
+func (m *GetDefaultTagsRequest) Reset()      { *m = GetDefaultTagsRequest{} }
+func (*GetDefaultTagsRequest) ProtoMessage() {}
+func (*GetDefaultTagsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e8daa588779d869f, []int{12}
+}
+func (m *GetDefaultTagsRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetDefaultTagsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetDefaultTagsRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetDefaultTagsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetDefaultTagsRequest.Merge(m, src)
+}
+func (m *GetDefaultTagsRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetDefaultTagsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetDefaultTagsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetDefaultTagsRequest proto.InternalMessageInfo
+
+func (m *GetDefaultTagsRequest) GetFleetID() *typespb.UUID {
+	if m != nil {
+		return m.FleetID
+	}
+	return nil
+}
+
+type GetDefaultTagsResponse struct {
+	FleetID *typespb.UUID               `protobuf:"bytes,1,opt,name=fleet_id,json=fleetId,proto3" json:"fleet_id,omitempty"`
+	Tags    map[string]*TagWithMetadata `protobuf:"bytes,2,rep,name=tags,proto3" json:"tags,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+}
+
+func (m *GetDefaultTagsResponse) Reset()      { *m = GetDefaultTagsResponse{} }
+func (*GetDefaultTagsResponse) ProtoMessage() {}
+func (*GetDefaultTagsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e8daa588779d869f, []int{13}
+}
+func (m *GetDefaultTagsResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetDefaultTagsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetDefaultTagsResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetDefaultTagsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetDefaultTagsResponse.Merge(m, src)
+}
+func (m *GetDefaultTagsResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetDefaultTagsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetDefaultTagsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetDefaultTagsResponse proto.InternalMessageInfo
+
+func (m *GetDefaultTagsResponse) GetFleetID() *typespb.UUID {
+	if m != nil {
+		return m.FleetID
+	}
+	return nil
+}
+
+func (m *GetDefaultTagsResponse) GetTags() map[string]*TagWithMetadata {
+	if m != nil {
+		return m.Tags
+	}
+	return nil
+}
+
+type UpsertDefaultTagRequest struct {
+	FleetID *typespb.UUID `protobuf:"bytes,1,opt,name=fleet_id,json=fleetId,proto3" json:"fleet_id,omitempty"`
+	Tag     *Tag          `protobuf:"bytes,2,opt,name=tag,proto3" json:"tag,omitempty"`
+}
+
+func (m *UpsertDefaultTagRequest) Reset()      { *m = UpsertDefaultTagRequest{} }
+func (*UpsertDefaultTagRequest) ProtoMessage() {}
+func (*UpsertDefaultTagRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e8daa588779d869f, []int{14}
+}
+func (m *UpsertDefaultTagRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UpsertDefaultTagRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UpsertDefaultTagRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UpsertDefaultTagRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpsertDefaultTagRequest.Merge(m, src)
+}
+func (m *UpsertDefaultTagRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *UpsertDefaultTagRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpsertDefaultTagRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpsertDefaultTagRequest proto.InternalMessageInfo
+
+func (m *UpsertDefaultTagRequest) GetFleetID() *typespb.UUID {
+	if m != nil {
+		return m.FleetID
+	}
+	return nil
+}
+
+func (m *UpsertDefaultTagRequest) GetTag() *Tag {
+	if m != nil {
+		return m.Tag
+	}
+	return nil
+}
+
+type UpsertDefaultTagResponse struct {
+}
+
+func (m *UpsertDefaultTagResponse) Reset()      { *m = UpsertDefaultTagResponse{} }
+func (*UpsertDefaultTagResponse) ProtoMessage() {}
+func (*UpsertDefaultTagResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e8daa588779d869f, []int{15}
+}
+func (m *UpsertDefaultTagResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UpsertDefaultTagResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UpsertDefaultTagResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UpsertDefaultTagResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpsertDefaultTagResponse.Merge(m, src)
+}
+func (m *UpsertDefaultTagResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *UpsertDefaultTagResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpsertDefaultTagResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpsertDefaultTagResponse proto.InternalMessageInfo
+
+type DeleteDefaultTagRequest struct {
+	FleetID *typespb.UUID `protobuf:"bytes,1,opt,name=fleet_id,json=fleetId,proto3" json:"fleet_id,omitempty"`
+	Key     string        `protobuf:"bytes,2,opt,name=key,proto3" json:"key,omitempty"`
+}
+
+func (m *DeleteDefaultTagRequest) Reset()      { *m = DeleteDefaultTagRequest{} }
+func (*DeleteDefaultTagRequest) ProtoMessage() {}
+func (*DeleteDefaultTagRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e8daa588779d869f, []int{16}
+}
+func (m *DeleteDefaultTagRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *DeleteDefaultTagRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_DeleteDefaultTagRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *DeleteDefaultTagRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteDefaultTagRequest.Merge(m, src)
+}
+func (m *DeleteDefaultTagRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *DeleteDefaultTagRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteDefaultTagRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteDefaultTagRequest proto.InternalMessageInfo
+
+func (m *DeleteDefaultTagRequest) GetFleetID() *typespb.UUID {
+	if m != nil {
+		return m.FleetID
+	}
+	return nil
+}
+
+func (m *DeleteDefaultTagRequest) GetKey() string {
+	if m != nil {
+		return m.Key
+	}
+	return ""
+}
+
+type DeleteDefaultTagResponse struct {
+}
+
+func (m *DeleteDefaultTagResponse) Reset()      { *m = DeleteDefaultTagResponse{} }
+func (*DeleteDefaultTagResponse) ProtoMessage() {}
+func (*DeleteDefaultTagResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e8daa588779d869f, []int{17}
+}
+func (m *DeleteDefaultTagResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *DeleteDefaultTagResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_DeleteDefaultTagResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *DeleteDefaultTagResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteDefaultTagResponse.Merge(m, src)
+}
+func (m *DeleteDefaultTagResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *DeleteDefaultTagResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteDefaultTagResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteDefaultTagResponse proto.InternalMessageInfo
+
 type DeviceInfo struct {
 	ID              *typespb.UUID `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" db:"id"`
 	Serial          string        `protobuf:"bytes,2,opt,name=serial,proto3" json:"serial,omitempty"`
@@ -500,7 +919,7 @@ type DeviceInfo struct {
 func (m *DeviceInfo) Reset()      { *m = DeviceInfo{} }
 func (*DeviceInfo) ProtoMessage() {}
 func (*DeviceInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{9}
+	return fileDescriptor_e8daa588779d869f, []int{18}
 }
 func (m *DeviceInfo) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -586,7 +1005,7 @@ type RegisterRequest struct {
 func (m *RegisterRequest) Reset()      { *m = RegisterRequest{} }
 func (*RegisterRequest) ProtoMessage() {}
 func (*RegisterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{10}
+	return fileDescriptor_e8daa588779d869f, []int{19}
 }
 func (m *RegisterRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -636,7 +1055,7 @@ type RegisterResponse struct {
 func (m *RegisterResponse) Reset()      { *m = RegisterResponse{} }
 func (*RegisterResponse) ProtoMessage() {}
 func (*RegisterResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{11}
+	return fileDescriptor_e8daa588779d869f, []int{20}
 }
 func (m *RegisterResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -679,7 +1098,7 @@ type UpdateStatusRequest struct {
 func (m *UpdateStatusRequest) Reset()      { *m = UpdateStatusRequest{} }
 func (*UpdateStatusRequest) ProtoMessage() {}
 func (*UpdateStatusRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{12}
+	return fileDescriptor_e8daa588779d869f, []int{21}
 }
 func (m *UpdateStatusRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -721,7 +1140,7 @@ type UpdateStatusResponse struct {
 func (m *UpdateStatusResponse) Reset()      { *m = UpdateStatusResponse{} }
 func (*UpdateStatusResponse) ProtoMessage() {}
 func (*UpdateStatusResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{13}
+	return fileDescriptor_e8daa588779d869f, []int{22}
 }
 func (m *UpdateStatusResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -757,7 +1176,7 @@ type GetDeviceRequest struct {
 func (m *GetDeviceRequest) Reset()      { *m = GetDeviceRequest{} }
 func (*GetDeviceRequest) ProtoMessage() {}
 func (*GetDeviceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{14}
+	return fileDescriptor_e8daa588779d869f, []int{23}
 }
 func (m *GetDeviceRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -800,7 +1219,7 @@ type GetDeviceResponse struct {
 func (m *GetDeviceResponse) Reset()      { *m = GetDeviceResponse{} }
 func (*GetDeviceResponse) ProtoMessage() {}
 func (*GetDeviceResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{15}
+	return fileDescriptor_e8daa588779d869f, []int{24}
 }
 func (m *GetDeviceResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -843,7 +1262,7 @@ type ListDevicesRequest struct {
 func (m *ListDevicesRequest) Reset()      { *m = ListDevicesRequest{} }
 func (*ListDevicesRequest) ProtoMessage() {}
 func (*ListDevicesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{16}
+	return fileDescriptor_e8daa588779d869f, []int{25}
 }
 func (m *ListDevicesRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -886,7 +1305,7 @@ type ListDevicesResponse struct {
 func (m *ListDevicesResponse) Reset()      { *m = ListDevicesResponse{} }
 func (*ListDevicesResponse) ProtoMessage() {}
 func (*ListDevicesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{17}
+	return fileDescriptor_e8daa588779d869f, []int{26}
 }
 func (m *ListDevicesResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -930,7 +1349,7 @@ type UpdateDeviceRequest struct {
 func (m *UpdateDeviceRequest) Reset()      { *m = UpdateDeviceRequest{} }
 func (*UpdateDeviceRequest) ProtoMessage() {}
 func (*UpdateDeviceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{18}
+	return fileDescriptor_e8daa588779d869f, []int{27}
 }
 func (m *UpdateDeviceRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -979,7 +1398,7 @@ type UpdateDeviceResponse struct {
 func (m *UpdateDeviceResponse) Reset()      { *m = UpdateDeviceResponse{} }
 func (*UpdateDeviceResponse) ProtoMessage() {}
 func (*UpdateDeviceResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e8daa588779d869f, []int{19}
+	return fileDescriptor_e8daa588779d869f, []int{28}
 }
 func (m *UpdateDeviceResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1019,6 +1438,16 @@ func init() {
 	proto.RegisterType((*ListFleetsResponse)(nil), "gml.internal.controlplane.fleetmgr.v1.ListFleetsResponse")
 	proto.RegisterType((*UpdateFleetRequest)(nil), "gml.internal.controlplane.fleetmgr.v1.UpdateFleetRequest")
 	proto.RegisterType((*UpdateFleetResponse)(nil), "gml.internal.controlplane.fleetmgr.v1.UpdateFleetResponse")
+	proto.RegisterType((*Tag)(nil), "gml.internal.controlplane.fleetmgr.v1.Tag")
+	proto.RegisterType((*TagMetadata)(nil), "gml.internal.controlplane.fleetmgr.v1.TagMetadata")
+	proto.RegisterType((*TagWithMetadata)(nil), "gml.internal.controlplane.fleetmgr.v1.TagWithMetadata")
+	proto.RegisterType((*GetDefaultTagsRequest)(nil), "gml.internal.controlplane.fleetmgr.v1.GetDefaultTagsRequest")
+	proto.RegisterType((*GetDefaultTagsResponse)(nil), "gml.internal.controlplane.fleetmgr.v1.GetDefaultTagsResponse")
+	proto.RegisterMapType((map[string]*TagWithMetadata)(nil), "gml.internal.controlplane.fleetmgr.v1.GetDefaultTagsResponse.TagsEntry")
+	proto.RegisterType((*UpsertDefaultTagRequest)(nil), "gml.internal.controlplane.fleetmgr.v1.UpsertDefaultTagRequest")
+	proto.RegisterType((*UpsertDefaultTagResponse)(nil), "gml.internal.controlplane.fleetmgr.v1.UpsertDefaultTagResponse")
+	proto.RegisterType((*DeleteDefaultTagRequest)(nil), "gml.internal.controlplane.fleetmgr.v1.DeleteDefaultTagRequest")
+	proto.RegisterType((*DeleteDefaultTagResponse)(nil), "gml.internal.controlplane.fleetmgr.v1.DeleteDefaultTagResponse")
 	proto.RegisterType((*DeviceInfo)(nil), "gml.internal.controlplane.fleetmgr.v1.DeviceInfo")
 	proto.RegisterType((*RegisterRequest)(nil), "gml.internal.controlplane.fleetmgr.v1.RegisterRequest")
 	proto.RegisterType((*RegisterResponse)(nil), "gml.internal.controlplane.fleetmgr.v1.RegisterResponse")
@@ -1037,81 +1466,99 @@ func init() {
 }
 
 var fileDescriptor_e8daa588779d869f = []byte{
-	// 1169 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x57, 0xcf, 0x6f, 0xe3, 0x44,
-	0x14, 0x8e, 0x93, 0x36, 0x4d, 0x5e, 0xbb, 0x24, 0x9d, 0x76, 0x4b, 0x08, 0xe0, 0x94, 0x41, 0x88,
-	0x15, 0x02, 0x9b, 0x76, 0xa5, 0xfd, 0xd1, 0x5e, 0x68, 0x9b, 0x94, 0x46, 0xed, 0xa6, 0xc2, 0x69,
-	0x41, 0xbb, 0x82, 0x8d, 0x9c, 0x78, 0xea, 0xb5, 0xe4, 0xc4, 0x59, 0x7b, 0x5a, 0x81, 0x56, 0x42,
-	0xac, 0x84, 0x84, 0xb8, 0xf1, 0x3f, 0x70, 0x41, 0xfc, 0x25, 0xdc, 0xe8, 0x71, 0x4f, 0x11, 0x75,
-	0x2f, 0x1c, 0x57, 0xfd, 0x0b, 0x90, 0x67, 0xc6, 0x89, 0xdd, 0xb4, 0x90, 0x64, 0x97, 0x53, 0x32,
-	0x99, 0xf7, 0x7d, 0xf3, 0xcd, 0x7b, 0xdf, 0xbc, 0xa7, 0xc0, 0xc7, 0x9e, 0xdb, 0x52, 0x5b, 0x4e,
-	0x87, 0xba, 0x8e, 0xdd, 0xb5, 0xf5, 0x0e, 0x51, 0x8f, 0x6c, 0x42, 0x68, 0xdb, 0x74, 0xd5, 0xa3,
-	0x76, 0xb7, 0xa9, 0x9e, 0xac, 0xb0, 0x4f, 0xa5, 0xeb, 0x3a, 0xd4, 0x41, 0x1f, 0x98, 0x6d, 0x5b,
-	0xb1, 0x3a, 0x94, 0xb8, 0x1d, 0xdd, 0x56, 0xa2, 0x30, 0x25, 0x84, 0x29, 0x27, 0x2b, 0xc5, 0x45,
-	0xd3, 0x31, 0x1d, 0x86, 0x50, 0x83, 0x6f, 0x1c, 0x5c, 0x2c, 0x99, 0x8e, 0x63, 0xda, 0x44, 0x65,
-	0xab, 0xe6, 0xf1, 0x91, 0x4a, 0xad, 0x36, 0xf1, 0xa8, 0xde, 0xee, 0x8a, 0x80, 0x77, 0xb9, 0x96,
-	0x76, 0xdb, 0xe9, 0xa8, 0xf4, 0xbb, 0x2e, 0xf1, 0xba, 0x4d, 0xf5, 0xf8, 0xd8, 0x32, 0xc4, 0x36,
-	0x0e, 0xb6, 0xf5, 0xae, 0xa5, 0xb6, 0x1c, 0x97, 0x70, 0x69, 0x6d, 0xc7, 0x20, 0x76, 0x83, 0x7c,
-	0x4b, 0x5a, 0x3c, 0x06, 0xff, 0x99, 0x84, 0xec, 0x76, 0xa0, 0xa4, 0xda, 0x39, 0x72, 0xd0, 0x2a,
-	0x24, 0x2d, 0xa3, 0x20, 0x2d, 0x4b, 0xb7, 0x66, 0x57, 0x73, 0x4a, 0xa0, 0x9d, 0xd1, 0x2a, 0x87,
-	0x87, 0xd5, 0xf2, 0xe6, 0xbc, 0xdf, 0x2b, 0x25, 0xab, 0xe5, 0x8b, 0x5e, 0x69, 0xc6, 0x68, 0xae,
-	0x61, 0xcb, 0xc0, 0x5a, 0xd2, 0x32, 0xd0, 0x67, 0x90, 0x76, 0x5c, 0xb3, 0x61, 0x19, 0x85, 0xe4,
-	0xd5, 0xb8, 0x82, 0xdf, 0x2b, 0x4d, 0xef, 0xbb, 0x26, 0x83, 0xce, 0x06, 0x50, 0x1e, 0x8f, 0xb5,
-	0x69, 0xc7, 0x35, 0xab, 0x06, 0x7a, 0x0f, 0xa6, 0x3a, 0x7a, 0x9b, 0x14, 0x52, 0xcb, 0xd2, 0xad,
-	0xec, 0xe6, 0x8d, 0x8b, 0x5e, 0x29, 0x1b, 0x44, 0x05, 0xbf, 0x61, 0x8d, 0x6d, 0x05, 0x21, 0x54,
-	0x37, 0xbd, 0xc2, 0xd4, 0x72, 0x2a, 0x1a, 0x12, 0xfc, 0x86, 0x35, 0xb6, 0x85, 0xee, 0xc0, 0xac,
-	0x41, 0xbc, 0x96, 0x6b, 0x75, 0xa9, 0xe5, 0x74, 0x0a, 0xd3, 0x8c, 0x6c, 0xf1, 0xa2, 0x57, 0xca,
-	0x07, 0x91, 0x91, 0x2d, 0xac, 0x45, 0x03, 0x51, 0x0d, 0xa0, 0xe5, 0x12, 0x9d, 0x12, 0xa3, 0xa1,
-	0xd3, 0x42, 0x9a, 0xdd, 0xa1, 0xa8, 0xf0, 0xd4, 0x2b, 0x61, 0xea, 0x95, 0x83, 0x30, 0xf5, 0x9b,
-	0x0b, 0x17, 0xbd, 0x52, 0x2e, 0xa0, 0x1c, 0xa0, 0xb0, 0x96, 0x15, 0x8b, 0x0d, 0x8a, 0xbf, 0x06,
-	0xb4, 0xc5, 0x16, 0x2c, 0xad, 0x1a, 0x79, 0x7a, 0x4c, 0x3c, 0x8a, 0xb6, 0x61, 0x9a, 0x15, 0x5c,
-	0x24, 0xf7, 0x53, 0x65, 0x24, 0x63, 0x28, 0xfd, 0xd2, 0x68, 0x1c, 0x8e, 0xbf, 0x81, 0x85, 0x18,
-	0xbb, 0xd7, 0x75, 0x3a, 0x1e, 0x79, 0x6d, 0xf4, 0x35, 0xc8, 0x7d, 0x4e, 0x68, 0x4c, 0xf9, 0x87,
-	0xff, 0xe6, 0x89, 0x34, 0xf7, 0x04, 0x33, 0x02, 0x12, 0x65, 0x0c, 0x6c, 0x90, 0xe5, 0x75, 0xc3,
-	0x8f, 0x20, 0x3f, 0xe0, 0x7b, 0xcd, 0x5a, 0xb7, 0x61, 0x7e, 0xcf, 0xf2, 0x38, 0xb9, 0x17, 0xaa,
-	0x5d, 0xe9, 0xbb, 0xf1, 0x1a, 0xc5, 0xd9, 0xbe, 0x1b, 0x85, 0xfd, 0xf0, 0x63, 0x40, 0x51, 0x1e,
-	0xa1, 0x72, 0x07, 0xd2, 0xec, 0x18, 0xaf, 0x20, 0x2d, 0xa7, 0x26, 0x92, 0x29, 0xf0, 0x81, 0x21,
-	0x0e, 0xbb, 0xc6, 0xff, 0x65, 0x88, 0x9b, 0xb0, 0x10, 0x63, 0xe7, 0xf2, 0xf1, 0xcf, 0x29, 0x80,
-	0x32, 0x39, 0xb1, 0x5a, 0x64, 0xe2, 0x87, 0xbd, 0x04, 0x69, 0x8f, 0xb8, 0x96, 0x6e, 0x8b, 0x8a,
-	0x8a, 0x15, 0x2a, 0x42, 0xe6, 0x89, 0xe3, 0xd1, 0xc1, 0x93, 0xd5, 0xfa, 0x6b, 0xb4, 0x03, 0x19,
-	0x26, 0x2b, 0x28, 0xc0, 0xd4, 0xd5, 0xa7, 0xbd, 0xe3, 0xf7, 0x4a, 0x33, 0xfc, 0x1a, 0xc1, 0x91,
-	0x37, 0x82, 0x23, 0x43, 0x0c, 0xd6, 0x66, 0xd8, 0xd7, 0xaa, 0x81, 0x1e, 0xc2, 0xbc, 0xad, 0x7b,
-	0xb4, 0xf1, 0x84, 0xe8, 0x2e, 0x6d, 0x12, 0x9d, 0x36, 0x3a, 0x1e, 0x7b, 0xd4, 0xa9, 0xcd, 0x4f,
-	0xfc, 0x5e, 0x29, 0xb7, 0xa7, 0x7b, 0x74, 0x27, 0xdc, 0xab, 0xd5, 0x2f, 0x7a, 0xa5, 0xa5, 0x80,
-	0x69, 0x08, 0x83, 0xb5, 0x9c, 0x1d, 0x0b, 0xf5, 0xd0, 0x2e, 0xa4, 0x3d, 0xaa, 0xd3, 0x63, 0x8f,
-	0xbd, 0xf6, 0x37, 0x56, 0x6f, 0x8f, 0x98, 0x7b, 0x9e, 0xcf, 0x3a, 0x83, 0x6a, 0x82, 0xa2, 0xdf,
-	0x99, 0x66, 0xae, 0xed, 0x4c, 0x58, 0x83, 0x9c, 0x46, 0x4c, 0xcb, 0xa3, 0xc4, 0x0d, 0xab, 0xff,
-	0x3e, 0xdc, 0x30, 0x18, 0x5b, 0x43, 0xa4, 0x58, 0x62, 0x89, 0x9c, 0xe3, 0x3f, 0xd6, 0x87, 0x13,
-	0x9d, 0x8c, 0x27, 0x1a, 0xd7, 0x20, 0x3f, 0xe0, 0x14, 0x96, 0x5d, 0x83, 0xac, 0x20, 0xbd, 0xbe,
-	0xd6, 0x73, 0x7e, 0xaf, 0x94, 0x11, 0xc6, 0x28, 0x6b, 0x19, 0x1e, 0x5f, 0x35, 0xf0, 0x17, 0xa1,
-	0x8d, 0xc4, 0xf5, 0x84, 0xce, 0x57, 0xa1, 0x5c, 0x82, 0xc5, 0x38, 0xa5, 0xb0, 0xe6, 0x3a, 0xeb,
-	0x09, 0x1c, 0x30, 0x6e, 0x93, 0xc1, 0x8f, 0x61, 0x3e, 0x02, 0x16, 0x17, 0xaf, 0x42, 0x9a, 0x9f,
-	0x2a, 0x18, 0x56, 0xc6, 0x2a, 0x28, 0x7f, 0xac, 0x9c, 0x00, 0x3f, 0xe0, 0xcd, 0x80, 0xef, 0xf4,
-	0xd3, 0x70, 0x37, 0x62, 0xeb, 0x6b, 0x44, 0xce, 0x46, 0x6c, 0xdd, 0x77, 0x31, 0x6e, 0xc2, 0x42,
-	0x8c, 0x4e, 0x08, 0xde, 0x85, 0x19, 0x7e, 0x5e, 0xd8, 0x5d, 0x26, 0x50, 0x1c, 0x32, 0x60, 0x12,
-	0x96, 0x2e, 0x9e, 0xd2, 0x57, 0x28, 0x5d, 0xd0, 0xca, 0x99, 0xa9, 0x93, 0x81, 0xa9, 0x85, 0x8b,
-	0xfb, 0xe5, 0x8c, 0x27, 0xff, 0xa3, 0xe7, 0x12, 0xcc, 0x45, 0x5f, 0x06, 0x7a, 0x0b, 0x6e, 0x96,
-	0x2b, 0x5f, 0x56, 0xb7, 0x2a, 0x8d, 0xfa, 0xc1, 0xc6, 0xc1, 0x61, 0xbd, 0x71, 0x58, 0xdb, 0xad,
-	0xed, 0x7f, 0x55, 0xcb, 0x27, 0x86, 0xb7, 0x76, 0x2a, 0x1b, 0x7b, 0x07, 0x3b, 0x0f, 0xf3, 0x12,
-	0x7a, 0x1b, 0xde, 0xbc, 0x8c, 0x0a, 0x37, 0x93, 0x48, 0x86, 0x62, 0x7c, 0xb3, 0x5c, 0xad, 0x6f,
-	0xed, 0xd7, 0x6a, 0x95, 0xad, 0x83, 0x4a, 0x39, 0x9f, 0x5a, 0xfd, 0x7d, 0x1a, 0x72, 0x2c, 0xf7,
-	0x0f, 0x4c, 0xb7, 0x4e, 0xdc, 0x40, 0x0c, 0xfa, 0x51, 0x82, 0xd9, 0xc8, 0xa8, 0x44, 0xf7, 0x47,
-	0x4c, 0xf1, 0xf0, 0xf0, 0x2e, 0xae, 0x4d, 0x02, 0x15, 0xa5, 0x7e, 0x06, 0x99, 0x70, 0x02, 0xa2,
-	0x3b, 0x23, 0xf2, 0x5c, 0x1a, 0xc1, 0xc5, 0xbb, 0x63, 0xe3, 0xc4, 0xe1, 0xcf, 0x25, 0x80, 0xc1,
-	0x6c, 0x43, 0xf7, 0x46, 0xe4, 0x19, 0x1a, 0xab, 0xc5, 0xfb, 0x13, 0x20, 0x85, 0x86, 0x9f, 0x24,
-	0x98, 0x8b, 0x1a, 0x07, 0x8d, 0x9a, 0xcd, 0x2b, 0x4c, 0x5d, 0x5c, 0x9f, 0x08, 0x2b, 0x94, 0x04,
-	0x8e, 0x88, 0xcc, 0xca, 0x91, 0x1d, 0x31, 0x3c, 0xbd, 0x8b, 0x6b, 0x93, 0x40, 0xb9, 0x8c, 0xd5,
-	0x5f, 0xa7, 0x60, 0x21, 0x34, 0x6b, 0xc5, 0x30, 0x49, 0x68, 0xd8, 0x67, 0x90, 0x09, 0x5b, 0xfa,
-	0xc8, 0x4e, 0xb9, 0x34, 0x57, 0x46, 0x76, 0xca, 0xd0, 0xec, 0x18, 0x54, 0x49, 0xbc, 0xe2, 0xf1,
-	0x6e, 0x18, 0x9b, 0x1a, 0x63, 0x56, 0x29, 0x3e, 0x1e, 0xd0, 0xf7, 0x90, 0xed, 0x77, 0x78, 0x34,
-	0x86, 0xf3, 0xe3, 0x46, 0xb9, 0x37, 0x3e, 0x30, 0xe2, 0x92, 0x48, 0xcf, 0x46, 0xe3, 0x58, 0x3f,
-	0x3e, 0x36, 0x46, 0x76, 0xc9, 0x15, 0x23, 0x62, 0xf3, 0xe9, 0xe9, 0x99, 0x9c, 0x78, 0x71, 0x26,
-	0x27, 0x5e, 0x9e, 0xc9, 0xd2, 0x0f, 0xbe, 0x2c, 0xfd, 0xe6, 0xcb, 0xd2, 0x1f, 0xbe, 0x2c, 0x9d,
-	0xfa, 0xb2, 0xf4, 0x97, 0x2f, 0x4b, 0x7f, 0xfb, 0x72, 0xe2, 0xa5, 0x2f, 0x4b, 0xbf, 0x9c, 0xcb,
-	0x89, 0xd3, 0x73, 0x39, 0xf1, 0xe2, 0x5c, 0x4e, 0x3c, 0x5a, 0x37, 0xad, 0xb6, 0x4d, 0xa8, 0xad,
-	0x37, 0x3d, 0x45, 0xb7, 0x54, 0xbe, 0x52, 0xff, 0xf3, 0x2f, 0xeb, 0x7a, 0xf0, 0xd9, 0x4c, 0xb3,
-	0x7f, 0x3b, 0xb7, 0xff, 0x09, 0x00, 0x00, 0xff, 0xff, 0x7f, 0x14, 0xc7, 0x93, 0xe3, 0x0e, 0x00,
-	0x00,
+	// 1460 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x58, 0x5f, 0x6f, 0x1b, 0xc5,
+	0x17, 0xcd, 0xda, 0x89, 0x63, 0x5f, 0xa7, 0xb5, 0x33, 0x49, 0x53, 0xff, 0xfc, 0x83, 0x75, 0x18,
+	0x84, 0xa8, 0x2a, 0x6a, 0x13, 0x57, 0xea, 0x9f, 0xa4, 0xfc, 0x49, 0xe2, 0xb4, 0xb1, 0x9a, 0xba,
+	0xb0, 0x71, 0xa8, 0x5a, 0xa0, 0xd6, 0x3a, 0x3b, 0xd9, 0xac, 0x58, 0x7b, 0xdd, 0xdd, 0x71, 0xa4,
+	0xaa, 0x12, 0xa2, 0x12, 0x12, 0xe2, 0x01, 0xa9, 0x88, 0x0f, 0xd0, 0x07, 0x5e, 0xf8, 0x28, 0xbc,
+	0xd1, 0xc7, 0x3e, 0x59, 0xd4, 0x95, 0x10, 0x8f, 0x55, 0x3e, 0x01, 0xda, 0x99, 0x59, 0x7b, 0x37,
+	0x76, 0xca, 0xda, 0x29, 0x4f, 0xf1, 0xec, 0xcc, 0x39, 0x73, 0xe6, 0xde, 0x33, 0x73, 0x6f, 0x0b,
+	0x1f, 0x38, 0xf6, 0x6e, 0x61, 0xd7, 0x6a, 0x52, 0xdb, 0x32, 0x5b, 0xa6, 0xda, 0x24, 0x85, 0x3d,
+	0x93, 0x10, 0xda, 0xd0, 0xed, 0xc2, 0x5e, 0xa3, 0x55, 0x2f, 0x1c, 0x2c, 0xb1, 0xbf, 0xf9, 0x96,
+	0x6d, 0x51, 0x0b, 0xbd, 0xa7, 0x37, 0xcc, 0xbc, 0xd1, 0xa4, 0xc4, 0x6e, 0xaa, 0x66, 0xde, 0x0f,
+	0xcb, 0x7b, 0xb0, 0xfc, 0xc1, 0x52, 0x76, 0x5e, 0xb7, 0x74, 0x8b, 0x21, 0x0a, 0xee, 0x2f, 0x0e,
+	0xce, 0xe6, 0x74, 0xcb, 0xd2, 0x4d, 0x52, 0x60, 0xa3, 0x7a, 0x7b, 0xaf, 0x40, 0x8d, 0x06, 0x71,
+	0xa8, 0xda, 0x68, 0x89, 0x05, 0x6f, 0x73, 0x2d, 0x8d, 0x86, 0xd5, 0x2c, 0xd0, 0x87, 0x2d, 0xe2,
+	0xb4, 0xea, 0x85, 0x76, 0xdb, 0xd0, 0xf8, 0x34, 0xfe, 0x23, 0x02, 0x89, 0xeb, 0xee, 0x2e, 0xe5,
+	0xe6, 0x9e, 0x85, 0x8a, 0x10, 0x31, 0xb4, 0x8c, 0xb4, 0x28, 0x9d, 0x4b, 0x16, 0x53, 0x79, 0x57,
+	0x17, 0x83, 0xe4, 0x77, 0x76, 0xca, 0xa5, 0xb5, 0xd9, 0x6e, 0x27, 0x17, 0x29, 0x97, 0x0e, 0x3b,
+	0xb9, 0x69, 0xad, 0xbe, 0x8c, 0x0d, 0x0d, 0x2b, 0x11, 0x43, 0x43, 0x9f, 0x42, 0xcc, 0xb2, 0xf5,
+	0x9a, 0xa1, 0x65, 0x22, 0xc3, 0x71, 0x99, 0x6e, 0x27, 0x37, 0x75, 0xdb, 0xd6, 0x19, 0x34, 0xe9,
+	0x42, 0xf9, 0x7a, 0xac, 0x4c, 0x59, 0xb6, 0x5e, 0xd6, 0xd0, 0x3b, 0x30, 0xd9, 0x54, 0x1b, 0x24,
+	0x13, 0x5d, 0x94, 0xce, 0x25, 0xd6, 0x4e, 0x1d, 0x76, 0x72, 0x09, 0x77, 0x95, 0xfb, 0x0d, 0x2b,
+	0x6c, 0xca, 0x5d, 0x42, 0x55, 0xdd, 0xc9, 0x4c, 0x2e, 0x46, 0xfd, 0x4b, 0xdc, 0x6f, 0x58, 0x61,
+	0x53, 0xe8, 0x12, 0x24, 0x35, 0xe2, 0xec, 0xda, 0x46, 0x8b, 0x1a, 0x56, 0x33, 0x33, 0xc5, 0xc8,
+	0xe6, 0x0f, 0x3b, 0xb9, 0xb4, 0xbb, 0xd2, 0x37, 0x85, 0x15, 0xff, 0x42, 0x54, 0x01, 0xd8, 0xb5,
+	0x89, 0x4a, 0x89, 0x56, 0x53, 0x69, 0x26, 0xc6, 0xce, 0x90, 0xcd, 0xf3, 0xb0, 0xe6, 0xbd, 0xb0,
+	0xe6, 0xab, 0x5e, 0x58, 0xd7, 0xe6, 0x0e, 0x3b, 0xb9, 0x94, 0x4b, 0xd9, 0x47, 0x61, 0x25, 0x21,
+	0x06, 0xab, 0x14, 0x7f, 0x05, 0x68, 0x9d, 0x0d, 0x58, 0x58, 0x15, 0xf2, 0xa0, 0x4d, 0x1c, 0x8a,
+	0xae, 0xc3, 0x14, 0x4b, 0xa6, 0x08, 0xee, 0x87, 0xf9, 0x50, 0x49, 0xcf, 0xf7, 0x52, 0xa3, 0x70,
+	0x38, 0xfe, 0x1a, 0xe6, 0x02, 0xec, 0x4e, 0xcb, 0x6a, 0x3a, 0xe4, 0x8d, 0xd1, 0x57, 0x20, 0x75,
+	0x83, 0xd0, 0x80, 0xf2, 0xf7, 0x5f, 0xe7, 0x89, 0x18, 0xf7, 0x04, 0x33, 0x02, 0x12, 0x69, 0x74,
+	0x6d, 0x90, 0xe0, 0x79, 0xc3, 0xf7, 0x20, 0xdd, 0xe7, 0x7b, 0xc3, 0x5a, 0xaf, 0xc3, 0xec, 0x96,
+	0xe1, 0x70, 0x72, 0xc7, 0x53, 0xbb, 0xd4, 0x73, 0xe3, 0x31, 0x8a, 0x13, 0x3d, 0x37, 0x0a, 0xfb,
+	0xe1, 0xfb, 0x80, 0xfc, 0x3c, 0x42, 0xe5, 0x26, 0xc4, 0xd8, 0x36, 0x4e, 0x46, 0x5a, 0x8c, 0x8e,
+	0x25, 0x53, 0xe0, 0x5d, 0x43, 0xec, 0xb4, 0xb4, 0xff, 0xca, 0x10, 0x67, 0x60, 0x2e, 0xc0, 0xce,
+	0xe5, 0xe3, 0x0b, 0x10, 0xad, 0xaa, 0x3a, 0x4a, 0x43, 0xf4, 0x1b, 0xf2, 0x90, 0xed, 0x91, 0x50,
+	0xdc, 0x9f, 0x68, 0x1e, 0xa6, 0x0e, 0x54, 0xb3, 0xed, 0xa5, 0x89, 0x0f, 0xf0, 0xcf, 0x12, 0x24,
+	0xab, 0xaa, 0x7e, 0x8b, 0x50, 0x55, 0x53, 0xa9, 0x8a, 0x8a, 0x30, 0x63, 0x38, 0x35, 0xa3, 0xb9,
+	0x4f, 0x6c, 0x83, 0x12, 0x1e, 0xcc, 0xf8, 0x5a, 0xaa, 0xdb, 0xc9, 0x25, 0xcb, 0x4e, 0xd9, 0xfb,
+	0xac, 0x24, 0x8d, 0xfe, 0xc0, 0xbd, 0x48, 0x6d, 0xa6, 0x84, 0x5d, 0xa4, 0x48, 0xf8, 0x8b, 0xd4,
+	0x47, 0x61, 0x25, 0x21, 0x06, 0xab, 0x14, 0x3f, 0x95, 0x20, 0x55, 0x55, 0xf5, 0x3b, 0x06, 0xdd,
+	0xef, 0xe9, 0xba, 0x06, 0x51, 0xaa, 0xea, 0x22, 0x66, 0xe7, 0x43, 0xc6, 0xac, 0xaa, 0xea, 0x8a,
+	0x0b, 0x43, 0x15, 0x88, 0x37, 0x04, 0x93, 0xd0, 0x57, 0x0c, 0x4f, 0xe1, 0x69, 0x50, 0x7a, 0x1c,
+	0xf8, 0x33, 0x38, 0x73, 0x83, 0xd0, 0x12, 0xd9, 0x53, 0xdb, 0x26, 0xad, 0xaa, 0x7a, 0xcf, 0x85,
+	0x97, 0x21, 0xce, 0xd0, 0xaf, 0xf1, 0x61, 0xb2, 0xdb, 0xc9, 0x4d, 0xf3, 0x6c, 0x96, 0x94, 0x69,
+	0xb6, 0xba, 0xac, 0xe1, 0xa7, 0x11, 0x58, 0x38, 0x4a, 0x29, 0x0c, 0x39, 0x2e, 0x27, 0xfa, 0x52,
+	0xbc, 0x9d, 0x11, 0xe6, 0xe3, 0x1b, 0x21, 0x4f, 0x3c, 0x5c, 0x85, 0x1b, 0x08, 0x67, 0xa3, 0x49,
+	0xed, 0x87, 0xfc, 0xd5, 0xcd, 0x5a, 0x90, 0xe8, 0x7d, 0x1a, 0xe2, 0xb6, 0x2d, 0xbf, 0xdb, 0x92,
+	0xc5, 0x4b, 0xe1, 0xc3, 0xed, 0x4f, 0xbb, 0x70, 0xe9, 0x72, 0xe4, 0x8a, 0x84, 0x9f, 0x48, 0x70,
+	0x76, 0xa7, 0xe5, 0x10, 0xdb, 0x27, 0xef, 0xa4, 0x61, 0xf7, 0x6c, 0x15, 0x19, 0xcb, 0x56, 0x38,
+	0x0b, 0x99, 0x41, 0x45, 0xe2, 0x1e, 0x6a, 0x70, 0xb6, 0x44, 0x4c, 0x42, 0xc9, 0x1b, 0x54, 0x2b,
+	0xc2, 0x1c, 0xe9, 0x85, 0xd9, 0x55, 0x30, 0xb8, 0x8b, 0x50, 0xf0, 0x63, 0x14, 0xa0, 0x44, 0x0e,
+	0x8c, 0x5d, 0x32, 0x76, 0x89, 0x5f, 0x80, 0x98, 0x43, 0x6c, 0x43, 0x35, 0xc5, 0x9e, 0x62, 0x84,
+	0xb2, 0x10, 0xdf, 0xb7, 0x1c, 0xda, 0x2f, 0xde, 0x4a, 0x6f, 0x8c, 0x36, 0x7d, 0xa7, 0x9b, 0x1c,
+	0xbe, 0xdb, 0x5b, 0xbe, 0xd3, 0x1d, 0x76, 0x72, 0xa7, 0xdc, 0x2d, 0x3d, 0x0c, 0xee, 0x1f, 0xf7,
+	0x2e, 0xcc, 0x9a, 0xaa, 0x43, 0x6b, 0xfb, 0x44, 0xb5, 0x69, 0x9d, 0xa8, 0xb4, 0xd6, 0x74, 0x58,
+	0x79, 0x8f, 0xae, 0x5d, 0xe8, 0x76, 0x72, 0xa9, 0x2d, 0xd5, 0xa1, 0x9b, 0xde, 0x5c, 0x65, 0xfb,
+	0xb0, 0x93, 0x5b, 0x70, 0x99, 0x06, 0x30, 0x58, 0x49, 0x99, 0x81, 0xa5, 0x0e, 0xba, 0x09, 0x31,
+	0x87, 0xaa, 0xb4, 0xed, 0xb0, 0xba, 0x7f, 0xba, 0x78, 0x31, 0x64, 0xea, 0x79, 0x3c, 0xb7, 0x19,
+	0x54, 0x11, 0x14, 0xbd, 0x1e, 0x65, 0xfa, 0xd8, 0x1e, 0x05, 0x2b, 0x90, 0x52, 0x88, 0x6e, 0x38,
+	0x94, 0xd8, 0x9e, 0x0b, 0xde, 0x85, 0x53, 0x1a, 0x63, 0xab, 0x89, 0x10, 0xf3, 0xdb, 0x33, 0xc3,
+	0x3f, 0x6e, 0x0f, 0x06, 0x3a, 0x12, 0x0c, 0x34, 0xae, 0x40, 0xba, 0xcf, 0x29, 0xde, 0x8a, 0x65,
+	0x48, 0x08, 0xd2, 0xe3, 0x73, 0x3d, 0xd3, 0xed, 0xe4, 0xe2, 0xc2, 0x18, 0x25, 0x25, 0xce, 0xd7,
+	0x97, 0x35, 0xfc, 0xb9, 0x57, 0x50, 0xc4, 0xf1, 0x84, 0xce, 0x93, 0x50, 0x2e, 0xc0, 0x7c, 0x90,
+	0x52, 0x58, 0x73, 0x85, 0x75, 0x07, 0x1c, 0x30, 0x6a, 0xbb, 0x81, 0xef, 0xc3, 0xac, 0x0f, 0x2c,
+	0x0e, 0x5e, 0x86, 0x18, 0xdf, 0x55, 0x30, 0x2c, 0x8d, 0x94, 0x50, 0x5e, 0xb6, 0x39, 0x01, 0xbe,
+	0xc5, 0xdb, 0x02, 0x3e, 0x73, 0xf2, 0x97, 0xbd, 0x0e, 0x73, 0x01, 0x3a, 0x21, 0xf8, 0x26, 0x4c,
+	0xf3, 0xfd, 0xbc, 0x3e, 0x63, 0x0c, 0xc5, 0x1e, 0x03, 0x26, 0x5e, 0xea, 0x82, 0x21, 0x3d, 0x41,
+	0xea, 0xdc, 0xa6, 0xae, 0x57, 0x3c, 0x12, 0xc2, 0xc5, 0xbd, 0x74, 0x06, 0x83, 0x7f, 0xfe, 0xb1,
+	0x04, 0x33, 0xfe, 0x9b, 0x81, 0xfe, 0x07, 0x67, 0x4a, 0x1b, 0x5f, 0x94, 0xd7, 0x37, 0x6a, 0xdb,
+	0xd5, 0xd5, 0xea, 0xce, 0x76, 0x6d, 0xa7, 0x72, 0xb3, 0x72, 0xfb, 0x4e, 0x25, 0x3d, 0x31, 0x38,
+	0xb5, 0xb9, 0xb1, 0xba, 0x55, 0xdd, 0xbc, 0x9b, 0x96, 0xd0, 0xff, 0xe1, 0xec, 0x51, 0x94, 0x37,
+	0x19, 0x41, 0x32, 0x64, 0x83, 0x93, 0xa5, 0xf2, 0xf6, 0xfa, 0xed, 0x4a, 0x65, 0x63, 0xbd, 0xba,
+	0x51, 0x4a, 0x47, 0x8b, 0x7f, 0xc5, 0x21, 0xc5, 0x62, 0x7f, 0x4b, 0xb7, 0xb7, 0x89, 0xed, 0x8a,
+	0x41, 0xdf, 0x4b, 0x90, 0xf4, 0x35, 0xcd, 0xe8, 0x6a, 0xc8, 0x10, 0x0f, 0xb6, 0xf1, 0xd9, 0xe5,
+	0x71, 0xa0, 0x22, 0xd5, 0x8f, 0x20, 0xee, 0xf5, 0xc2, 0xe8, 0x52, 0xf8, 0x2a, 0x1c, 0xd8, 0xff,
+	0xf2, 0xc8, 0x38, 0xb1, 0xf9, 0x63, 0x09, 0xa0, 0xdf, 0xe5, 0xa2, 0x2b, 0x21, 0x79, 0x06, 0x1a,
+	0xec, 0xec, 0xd5, 0x31, 0x90, 0x42, 0xc3, 0x0f, 0x12, 0xcc, 0xf8, 0x8d, 0x83, 0xc2, 0x46, 0x73,
+	0x88, 0xa9, 0xb3, 0x2b, 0x63, 0x61, 0x85, 0x12, 0xd7, 0x11, 0xbe, 0xae, 0x39, 0xb4, 0x23, 0x06,
+	0xfb, 0xf8, 0xec, 0xf2, 0x38, 0x50, 0x21, 0xe3, 0x27, 0x09, 0x4e, 0x07, 0xfb, 0x2c, 0x74, 0x6d,
+	0xcc, 0xf6, 0x8c, 0x8b, 0xf9, 0xe8, 0x44, 0xcd, 0x1d, 0xfa, 0x45, 0x82, 0xf4, 0xd1, 0x4e, 0x06,
+	0x7d, 0x1c, 0xfa, 0x80, 0x43, 0x9b, 0xb2, 0xec, 0x27, 0x63, 0xe3, 0x7d, 0xaa, 0x8e, 0x76, 0x37,
+	0xa1, 0x55, 0x1d, 0xd3, 0x7c, 0x85, 0x56, 0x75, 0x5c, 0x5b, 0x55, 0xfc, 0x75, 0x12, 0xe6, 0xbc,
+	0x87, 0x66, 0x43, 0xd3, 0x89, 0xf7, 0xd8, 0x3c, 0x82, 0xb8, 0x57, 0x8e, 0x43, 0xdf, 0xf2, 0x23,
+	0x3d, 0x41, 0xe8, 0x5b, 0x3e, 0x50, 0xf7, 0xfb, 0x37, 0x4c, 0xbc, 0xc0, 0xa3, 0xb9, 0x33, 0x50,
+	0xf1, 0x47, 0xbc, 0x61, 0xc1, 0xd2, 0x8e, 0xbe, 0x85, 0x44, 0xaf, 0x3a, 0xa3, 0xcb, 0xa3, 0xd8,
+	0xd2, 0x7f, 0xc9, 0xaf, 0x8c, 0x0e, 0xf4, 0xdd, 0x70, 0x5f, 0xbd, 0x45, 0xa3, 0x3c, 0x5b, 0xc1,
+	0x92, 0x1f, 0xfa, 0x86, 0x0f, 0x29, 0xef, 0x6b, 0x0f, 0x9e, 0xbd, 0x90, 0x27, 0x9e, 0xbf, 0x90,
+	0x27, 0x5e, 0xbd, 0x90, 0xa5, 0xef, 0xba, 0xb2, 0xf4, 0x5b, 0x57, 0x96, 0x7e, 0xef, 0xca, 0xd2,
+	0xb3, 0xae, 0x2c, 0xfd, 0xd9, 0x95, 0xa5, 0xbf, 0xbb, 0xf2, 0xc4, 0xab, 0xae, 0x2c, 0x3d, 0x79,
+	0x29, 0x4f, 0x3c, 0x7b, 0x29, 0x4f, 0x3c, 0x7f, 0x29, 0x4f, 0xdc, 0x5b, 0xd1, 0x8d, 0x86, 0x49,
+	0xa8, 0xa9, 0xd6, 0x9d, 0xbc, 0x6a, 0x14, 0xf8, 0xa8, 0xf0, 0xaf, 0xff, 0xa9, 0xb8, 0xe2, 0xfe,
+	0xad, 0xc7, 0xd8, 0x3f, 0xb5, 0x2f, 0xfe, 0x13, 0x00, 0x00, 0xff, 0xff, 0xb7, 0xa1, 0xfc, 0xac,
+	0x85, 0x14, 0x00, 0x00,
 }
 
 func (x DeviceStatus) String() string {
@@ -1349,6 +1796,239 @@ func (this *UpdateFleetResponse) Equal(that interface{}) bool {
 	that1, ok := that.(*UpdateFleetResponse)
 	if !ok {
 		that2, ok := that.(UpdateFleetResponse)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	return true
+}
+func (this *Tag) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Tag)
+	if !ok {
+		that2, ok := that.(Tag)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Key != that1.Key {
+		return false
+	}
+	if this.Value != that1.Value {
+		return false
+	}
+	return true
+}
+func (this *TagMetadata) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*TagMetadata)
+	if !ok {
+		that2, ok := that.(TagMetadata)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.IsInherited != that1.IsInherited {
+		return false
+	}
+	if !this.UpdatedAt.Equal(that1.UpdatedAt) {
+		return false
+	}
+	return true
+}
+func (this *TagWithMetadata) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*TagWithMetadata)
+	if !ok {
+		that2, ok := that.(TagWithMetadata)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Tag.Equal(that1.Tag) {
+		return false
+	}
+	if !this.Metadata.Equal(that1.Metadata) {
+		return false
+	}
+	return true
+}
+func (this *GetDefaultTagsRequest) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*GetDefaultTagsRequest)
+	if !ok {
+		that2, ok := that.(GetDefaultTagsRequest)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.FleetID.Equal(that1.FleetID) {
+		return false
+	}
+	return true
+}
+func (this *GetDefaultTagsResponse) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*GetDefaultTagsResponse)
+	if !ok {
+		that2, ok := that.(GetDefaultTagsResponse)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.FleetID.Equal(that1.FleetID) {
+		return false
+	}
+	if len(this.Tags) != len(that1.Tags) {
+		return false
+	}
+	for i := range this.Tags {
+		if !this.Tags[i].Equal(that1.Tags[i]) {
+			return false
+		}
+	}
+	return true
+}
+func (this *UpsertDefaultTagRequest) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*UpsertDefaultTagRequest)
+	if !ok {
+		that2, ok := that.(UpsertDefaultTagRequest)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.FleetID.Equal(that1.FleetID) {
+		return false
+	}
+	if !this.Tag.Equal(that1.Tag) {
+		return false
+	}
+	return true
+}
+func (this *UpsertDefaultTagResponse) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*UpsertDefaultTagResponse)
+	if !ok {
+		that2, ok := that.(UpsertDefaultTagResponse)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	return true
+}
+func (this *DeleteDefaultTagRequest) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*DeleteDefaultTagRequest)
+	if !ok {
+		that2, ok := that.(DeleteDefaultTagRequest)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.FleetID.Equal(that1.FleetID) {
+		return false
+	}
+	if this.Key != that1.Key {
+		return false
+	}
+	return true
+}
+func (this *DeleteDefaultTagResponse) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*DeleteDefaultTagResponse)
+	if !ok {
+		that2, ok := that.(DeleteDefaultTagResponse)
 		if ok {
 			that1 = &that2
 		} else {
@@ -1774,6 +2454,128 @@ func (this *UpdateFleetResponse) GoString() string {
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
+func (this *Tag) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&fmpb.Tag{")
+	s = append(s, "Key: "+fmt.Sprintf("%#v", this.Key)+",\n")
+	s = append(s, "Value: "+fmt.Sprintf("%#v", this.Value)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *TagMetadata) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&fmpb.TagMetadata{")
+	s = append(s, "IsInherited: "+fmt.Sprintf("%#v", this.IsInherited)+",\n")
+	if this.UpdatedAt != nil {
+		s = append(s, "UpdatedAt: "+fmt.Sprintf("%#v", this.UpdatedAt)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *TagWithMetadata) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&fmpb.TagWithMetadata{")
+	if this.Tag != nil {
+		s = append(s, "Tag: "+fmt.Sprintf("%#v", this.Tag)+",\n")
+	}
+	if this.Metadata != nil {
+		s = append(s, "Metadata: "+fmt.Sprintf("%#v", this.Metadata)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *GetDefaultTagsRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&fmpb.GetDefaultTagsRequest{")
+	if this.FleetID != nil {
+		s = append(s, "FleetID: "+fmt.Sprintf("%#v", this.FleetID)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *GetDefaultTagsResponse) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&fmpb.GetDefaultTagsResponse{")
+	if this.FleetID != nil {
+		s = append(s, "FleetID: "+fmt.Sprintf("%#v", this.FleetID)+",\n")
+	}
+	keysForTags := make([]string, 0, len(this.Tags))
+	for k, _ := range this.Tags {
+		keysForTags = append(keysForTags, k)
+	}
+	github_com_gogo_protobuf_sortkeys.Strings(keysForTags)
+	mapStringForTags := "map[string]*TagWithMetadata{"
+	for _, k := range keysForTags {
+		mapStringForTags += fmt.Sprintf("%#v: %#v,", k, this.Tags[k])
+	}
+	mapStringForTags += "}"
+	if this.Tags != nil {
+		s = append(s, "Tags: "+mapStringForTags+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *UpsertDefaultTagRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&fmpb.UpsertDefaultTagRequest{")
+	if this.FleetID != nil {
+		s = append(s, "FleetID: "+fmt.Sprintf("%#v", this.FleetID)+",\n")
+	}
+	if this.Tag != nil {
+		s = append(s, "Tag: "+fmt.Sprintf("%#v", this.Tag)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *UpsertDefaultTagResponse) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 4)
+	s = append(s, "&fmpb.UpsertDefaultTagResponse{")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *DeleteDefaultTagRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&fmpb.DeleteDefaultTagRequest{")
+	if this.FleetID != nil {
+		s = append(s, "FleetID: "+fmt.Sprintf("%#v", this.FleetID)+",\n")
+	}
+	s = append(s, "Key: "+fmt.Sprintf("%#v", this.Key)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *DeleteDefaultTagResponse) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 4)
+	s = append(s, "&fmpb.DeleteDefaultTagResponse{")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
 func (this *DeviceInfo) GoString() string {
 	if this == nil {
 		return "nil"
@@ -1934,6 +2736,9 @@ type FleetMgrServiceClient interface {
 	ListFleets(ctx context.Context, in *ListFleetsRequest, opts ...grpc.CallOption) (*ListFleetsResponse, error)
 	UpdateDevice(ctx context.Context, in *UpdateDeviceRequest, opts ...grpc.CallOption) (*UpdateDeviceResponse, error)
 	UpdateFleet(ctx context.Context, in *UpdateFleetRequest, opts ...grpc.CallOption) (*UpdateFleetResponse, error)
+	GetDefaultTags(ctx context.Context, in *GetDefaultTagsRequest, opts ...grpc.CallOption) (*GetDefaultTagsResponse, error)
+	UpsertDefaultTag(ctx context.Context, in *UpsertDefaultTagRequest, opts ...grpc.CallOption) (*UpsertDefaultTagResponse, error)
+	DeleteDefaultTag(ctx context.Context, in *DeleteDefaultTagRequest, opts ...grpc.CallOption) (*DeleteDefaultTagResponse, error)
 }
 
 type fleetMgrServiceClient struct {
@@ -1989,6 +2794,33 @@ func (c *fleetMgrServiceClient) UpdateFleet(ctx context.Context, in *UpdateFleet
 	return out, nil
 }
 
+func (c *fleetMgrServiceClient) GetDefaultTags(ctx context.Context, in *GetDefaultTagsRequest, opts ...grpc.CallOption) (*GetDefaultTagsResponse, error) {
+	out := new(GetDefaultTagsResponse)
+	err := c.cc.Invoke(ctx, "/gml.internal.controlplane.fleetmgr.v1.FleetMgrService/GetDefaultTags", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *fleetMgrServiceClient) UpsertDefaultTag(ctx context.Context, in *UpsertDefaultTagRequest, opts ...grpc.CallOption) (*UpsertDefaultTagResponse, error) {
+	out := new(UpsertDefaultTagResponse)
+	err := c.cc.Invoke(ctx, "/gml.internal.controlplane.fleetmgr.v1.FleetMgrService/UpsertDefaultTag", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *fleetMgrServiceClient) DeleteDefaultTag(ctx context.Context, in *DeleteDefaultTagRequest, opts ...grpc.CallOption) (*DeleteDefaultTagResponse, error) {
+	out := new(DeleteDefaultTagResponse)
+	err := c.cc.Invoke(ctx, "/gml.internal.controlplane.fleetmgr.v1.FleetMgrService/DeleteDefaultTag", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FleetMgrServiceServer is the server API for FleetMgrService service.
 type FleetMgrServiceServer interface {
 	CreateFleet(context.Context, *CreateFleetRequest) (*CreateFleetResponse, error)
@@ -1996,6 +2828,9 @@ type FleetMgrServiceServer interface {
 	ListFleets(context.Context, *ListFleetsRequest) (*ListFleetsResponse, error)
 	UpdateDevice(context.Context, *UpdateDeviceRequest) (*UpdateDeviceResponse, error)
 	UpdateFleet(context.Context, *UpdateFleetRequest) (*UpdateFleetResponse, error)
+	GetDefaultTags(context.Context, *GetDefaultTagsRequest) (*GetDefaultTagsResponse, error)
+	UpsertDefaultTag(context.Context, *UpsertDefaultTagRequest) (*UpsertDefaultTagResponse, error)
+	DeleteDefaultTag(context.Context, *DeleteDefaultTagRequest) (*DeleteDefaultTagResponse, error)
 }
 
 // UnimplementedFleetMgrServiceServer can be embedded to have forward compatible implementations.
@@ -2016,6 +2851,15 @@ func (*UnimplementedFleetMgrServiceServer) UpdateDevice(ctx context.Context, req
 }
 func (*UnimplementedFleetMgrServiceServer) UpdateFleet(ctx context.Context, req *UpdateFleetRequest) (*UpdateFleetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateFleet not implemented")
+}
+func (*UnimplementedFleetMgrServiceServer) GetDefaultTags(ctx context.Context, req *GetDefaultTagsRequest) (*GetDefaultTagsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDefaultTags not implemented")
+}
+func (*UnimplementedFleetMgrServiceServer) UpsertDefaultTag(ctx context.Context, req *UpsertDefaultTagRequest) (*UpsertDefaultTagResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpsertDefaultTag not implemented")
+}
+func (*UnimplementedFleetMgrServiceServer) DeleteDefaultTag(ctx context.Context, req *DeleteDefaultTagRequest) (*DeleteDefaultTagResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteDefaultTag not implemented")
 }
 
 func RegisterFleetMgrServiceServer(s *grpc.Server, srv FleetMgrServiceServer) {
@@ -2112,6 +2956,60 @@ func _FleetMgrService_UpdateFleet_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FleetMgrService_GetDefaultTags_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDefaultTagsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FleetMgrServiceServer).GetDefaultTags(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gml.internal.controlplane.fleetmgr.v1.FleetMgrService/GetDefaultTags",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FleetMgrServiceServer).GetDefaultTags(ctx, req.(*GetDefaultTagsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FleetMgrService_UpsertDefaultTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpsertDefaultTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FleetMgrServiceServer).UpsertDefaultTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gml.internal.controlplane.fleetmgr.v1.FleetMgrService/UpsertDefaultTag",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FleetMgrServiceServer).UpsertDefaultTag(ctx, req.(*UpsertDefaultTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FleetMgrService_DeleteDefaultTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteDefaultTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FleetMgrServiceServer).DeleteDefaultTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gml.internal.controlplane.fleetmgr.v1.FleetMgrService/DeleteDefaultTag",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FleetMgrServiceServer).DeleteDefaultTag(ctx, req.(*DeleteDefaultTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _FleetMgrService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "gml.internal.controlplane.fleetmgr.v1.FleetMgrService",
 	HandlerType: (*FleetMgrServiceServer)(nil),
@@ -2135,6 +3033,18 @@ var _FleetMgrService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateFleet",
 			Handler:    _FleetMgrService_UpdateFleet_Handler,
+		},
+		{
+			MethodName: "GetDefaultTags",
+			Handler:    _FleetMgrService_GetDefaultTags_Handler,
+		},
+		{
+			MethodName: "UpsertDefaultTag",
+			Handler:    _FleetMgrService_UpsertDefaultTag_Handler,
+		},
+		{
+			MethodName: "DeleteDefaultTag",
+			Handler:    _FleetMgrService_DeleteDefaultTag_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -2673,6 +3583,366 @@ func (m *UpdateFleetResponse) MarshalTo(dAtA []byte) (int, error) {
 }
 
 func (m *UpdateFleetResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *Tag) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Tag) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Tag) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Value) > 0 {
+		i -= len(m.Value)
+		copy(dAtA[i:], m.Value)
+		i = encodeVarintFmpb(dAtA, i, uint64(len(m.Value)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Key) > 0 {
+		i -= len(m.Key)
+		copy(dAtA[i:], m.Key)
+		i = encodeVarintFmpb(dAtA, i, uint64(len(m.Key)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TagMetadata) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TagMetadata) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TagMetadata) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.UpdatedAt != nil {
+		{
+			size, err := m.UpdatedAt.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintFmpb(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.IsInherited {
+		i--
+		if m.IsInherited {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TagWithMetadata) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TagWithMetadata) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TagWithMetadata) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Metadata != nil {
+		{
+			size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintFmpb(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Tag != nil {
+		{
+			size, err := m.Tag.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintFmpb(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GetDefaultTagsRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetDefaultTagsRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetDefaultTagsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.FleetID != nil {
+		{
+			size, err := m.FleetID.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintFmpb(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GetDefaultTagsResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetDefaultTagsResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetDefaultTagsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Tags) > 0 {
+		for k := range m.Tags {
+			v := m.Tags[k]
+			baseI := i
+			if v != nil {
+				{
+					size, err := v.MarshalToSizedBuffer(dAtA[:i])
+					if err != nil {
+						return 0, err
+					}
+					i -= size
+					i = encodeVarintFmpb(dAtA, i, uint64(size))
+				}
+				i--
+				dAtA[i] = 0x12
+			}
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintFmpb(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintFmpb(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x12
+		}
+	}
+	if m.FleetID != nil {
+		{
+			size, err := m.FleetID.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintFmpb(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *UpsertDefaultTagRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UpsertDefaultTagRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UpsertDefaultTagRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Tag != nil {
+		{
+			size, err := m.Tag.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintFmpb(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.FleetID != nil {
+		{
+			size, err := m.FleetID.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintFmpb(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *UpsertDefaultTagResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UpsertDefaultTagResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UpsertDefaultTagResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *DeleteDefaultTagRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *DeleteDefaultTagRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *DeleteDefaultTagRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Key) > 0 {
+		i -= len(m.Key)
+		copy(dAtA[i:], m.Key)
+		i = encodeVarintFmpb(dAtA, i, uint64(len(m.Key)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.FleetID != nil {
+		{
+			size, err := m.FleetID.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintFmpb(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *DeleteDefaultTagResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *DeleteDefaultTagResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *DeleteDefaultTagResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3251,6 +4521,147 @@ func (m *UpdateFleetResponse) Size() (n int) {
 	return n
 }
 
+func (m *Tag) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Key)
+	if l > 0 {
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	l = len(m.Value)
+	if l > 0 {
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	return n
+}
+
+func (m *TagMetadata) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.IsInherited {
+		n += 2
+	}
+	if m.UpdatedAt != nil {
+		l = m.UpdatedAt.Size()
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	return n
+}
+
+func (m *TagWithMetadata) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Tag != nil {
+		l = m.Tag.Size()
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	if m.Metadata != nil {
+		l = m.Metadata.Size()
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	return n
+}
+
+func (m *GetDefaultTagsRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.FleetID != nil {
+		l = m.FleetID.Size()
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	return n
+}
+
+func (m *GetDefaultTagsResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.FleetID != nil {
+		l = m.FleetID.Size()
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	if len(m.Tags) > 0 {
+		for k, v := range m.Tags {
+			_ = k
+			_ = v
+			l = 0
+			if v != nil {
+				l = v.Size()
+				l += 1 + sovFmpb(uint64(l))
+			}
+			mapEntrySize := 1 + len(k) + sovFmpb(uint64(len(k))) + l
+			n += mapEntrySize + 1 + sovFmpb(uint64(mapEntrySize))
+		}
+	}
+	return n
+}
+
+func (m *UpsertDefaultTagRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.FleetID != nil {
+		l = m.FleetID.Size()
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	if m.Tag != nil {
+		l = m.Tag.Size()
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	return n
+}
+
+func (m *UpsertDefaultTagResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *DeleteDefaultTagRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.FleetID != nil {
+		l = m.FleetID.Size()
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	l = len(m.Key)
+	if l > 0 {
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	return n
+}
+
+func (m *DeleteDefaultTagResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
 func (m *DeviceInfo) Size() (n int) {
 	if m == nil {
 		return 0
@@ -3524,6 +4935,110 @@ func (this *UpdateFleetResponse) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&UpdateFleetResponse{`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *Tag) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&Tag{`,
+		`Key:` + fmt.Sprintf("%v", this.Key) + `,`,
+		`Value:` + fmt.Sprintf("%v", this.Value) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *TagMetadata) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&TagMetadata{`,
+		`IsInherited:` + fmt.Sprintf("%v", this.IsInherited) + `,`,
+		`UpdatedAt:` + strings.Replace(fmt.Sprintf("%v", this.UpdatedAt), "Timestamp", "types.Timestamp", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *TagWithMetadata) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&TagWithMetadata{`,
+		`Tag:` + strings.Replace(this.Tag.String(), "Tag", "Tag", 1) + `,`,
+		`Metadata:` + strings.Replace(this.Metadata.String(), "TagMetadata", "TagMetadata", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *GetDefaultTagsRequest) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&GetDefaultTagsRequest{`,
+		`FleetID:` + strings.Replace(fmt.Sprintf("%v", this.FleetID), "UUID", "typespb.UUID", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *GetDefaultTagsResponse) String() string {
+	if this == nil {
+		return "nil"
+	}
+	keysForTags := make([]string, 0, len(this.Tags))
+	for k, _ := range this.Tags {
+		keysForTags = append(keysForTags, k)
+	}
+	github_com_gogo_protobuf_sortkeys.Strings(keysForTags)
+	mapStringForTags := "map[string]*TagWithMetadata{"
+	for _, k := range keysForTags {
+		mapStringForTags += fmt.Sprintf("%v: %v,", k, this.Tags[k])
+	}
+	mapStringForTags += "}"
+	s := strings.Join([]string{`&GetDefaultTagsResponse{`,
+		`FleetID:` + strings.Replace(fmt.Sprintf("%v", this.FleetID), "UUID", "typespb.UUID", 1) + `,`,
+		`Tags:` + mapStringForTags + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *UpsertDefaultTagRequest) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&UpsertDefaultTagRequest{`,
+		`FleetID:` + strings.Replace(fmt.Sprintf("%v", this.FleetID), "UUID", "typespb.UUID", 1) + `,`,
+		`Tag:` + strings.Replace(this.Tag.String(), "Tag", "Tag", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *UpsertDefaultTagResponse) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&UpsertDefaultTagResponse{`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *DeleteDefaultTagRequest) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&DeleteDefaultTagRequest{`,
+		`FleetID:` + strings.Replace(fmt.Sprintf("%v", this.FleetID), "UUID", "typespb.UUID", 1) + `,`,
+		`Key:` + fmt.Sprintf("%v", this.Key) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *DeleteDefaultTagResponse) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&DeleteDefaultTagResponse{`,
 		`}`,
 	}, "")
 	return s
@@ -4570,6 +6085,989 @@ func (m *UpdateFleetResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: UpdateFleetResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipFmpb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Tag) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowFmpb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Tag: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Tag: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Key", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Key = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Value", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Value = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipFmpb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *TagMetadata) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowFmpb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: TagMetadata: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: TagMetadata: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsInherited", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsInherited = bool(v != 0)
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field UpdatedAt", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.UpdatedAt == nil {
+				m.UpdatedAt = &types.Timestamp{}
+			}
+			if err := m.UpdatedAt.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipFmpb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *TagWithMetadata) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowFmpb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: TagWithMetadata: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: TagWithMetadata: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Tag", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Tag == nil {
+				m.Tag = &Tag{}
+			}
+			if err := m.Tag.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Metadata", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Metadata == nil {
+				m.Metadata = &TagMetadata{}
+			}
+			if err := m.Metadata.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipFmpb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetDefaultTagsRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowFmpb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetDefaultTagsRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetDefaultTagsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FleetID", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.FleetID == nil {
+				m.FleetID = &typespb.UUID{}
+			}
+			if err := m.FleetID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipFmpb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetDefaultTagsResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowFmpb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetDefaultTagsResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetDefaultTagsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FleetID", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.FleetID == nil {
+				m.FleetID = &typespb.UUID{}
+			}
+			if err := m.FleetID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Tags", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Tags == nil {
+				m.Tags = make(map[string]*TagWithMetadata)
+			}
+			var mapkey string
+			var mapvalue *TagWithMetadata
+			for iNdEx < postIndex {
+				entryPreIndex := iNdEx
+				var wire uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowFmpb
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					wire |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					var stringLenmapkey uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowFmpb
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapkey |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapkey := int(stringLenmapkey)
+					if intStringLenmapkey < 0 {
+						return ErrInvalidLengthFmpb
+					}
+					postStringIndexmapkey := iNdEx + intStringLenmapkey
+					if postStringIndexmapkey < 0 {
+						return ErrInvalidLengthFmpb
+					}
+					if postStringIndexmapkey > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					iNdEx = postStringIndexmapkey
+				} else if fieldNum == 2 {
+					var mapmsglen int
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowFmpb
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						mapmsglen |= int(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					if mapmsglen < 0 {
+						return ErrInvalidLengthFmpb
+					}
+					postmsgIndex := iNdEx + mapmsglen
+					if postmsgIndex < 0 {
+						return ErrInvalidLengthFmpb
+					}
+					if postmsgIndex > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = &TagWithMetadata{}
+					if err := mapvalue.Unmarshal(dAtA[iNdEx:postmsgIndex]); err != nil {
+						return err
+					}
+					iNdEx = postmsgIndex
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipFmpb(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
+						return ErrInvalidLengthFmpb
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
+				}
+			}
+			m.Tags[mapkey] = mapvalue
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipFmpb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UpsertDefaultTagRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowFmpb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: UpsertDefaultTagRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: UpsertDefaultTagRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FleetID", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.FleetID == nil {
+				m.FleetID = &typespb.UUID{}
+			}
+			if err := m.FleetID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Tag", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Tag == nil {
+				m.Tag = &Tag{}
+			}
+			if err := m.Tag.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipFmpb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UpsertDefaultTagResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowFmpb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: UpsertDefaultTagResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: UpsertDefaultTagResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipFmpb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *DeleteDefaultTagRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowFmpb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: DeleteDefaultTagRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: DeleteDefaultTagRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FleetID", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.FleetID == nil {
+				m.FleetID = &typespb.UUID{}
+			}
+			if err := m.FleetID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Key", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Key = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipFmpb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *DeleteDefaultTagResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowFmpb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: DeleteDefaultTagResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: DeleteDefaultTagResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

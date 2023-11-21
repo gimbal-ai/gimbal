@@ -24,7 +24,6 @@ option go_package = "gimletlabs.ai/gimlet/src/controlplane/fleetmgr/fmpb/v1;fmpb
 import "gogoproto/gogo.proto";
 import "google/protobuf/timestamp.proto";
 import "src/common/typespb/uuid.proto";
-import "src/api/corepb/v1/model_exec.proto";
 
 // ================== Fleet Manager Service ==================
 
@@ -76,6 +75,57 @@ message UpdateFleetRequest {
 }
 
 message UpdateFleetResponse {}
+
+message Tag {
+  // The key part of the tag.
+  string key = 1;
+  // The value part of the tag.
+  string value = 2;
+}
+
+message TagMetadata {
+  // Whether or not the tag is a default tag (inherited).
+  bool is_inherited = 1 [ (gogoproto.customname) = "IsInherited" ];
+  // The timestamp when the tag was last updated.
+  google.protobuf.Timestamp updated_at = 2 [ (gogoproto.moretags) = 'db:"updated_at"' ];
+}
+
+message TagWithMetadata {
+  // The tag.
+  Tag tag = 1;
+  // The metadata associated with the tag.
+  TagMetadata metadata = 2;
+}
+
+message GetDefaultTagsRequest {
+  // The fleetID of the fleet to fetch the tags from.
+  gml.types.UUID fleet_id = 1 [ (gogoproto.customname) = "FleetID" ];
+}
+
+message GetDefaultTagsResponse {
+  // The fleetID of the fleet.
+  gml.types.UUID fleet_id = 1 [ (gogoproto.customname) = "FleetID" ];
+  // A map of the default tags associated with the fleet in the <key, TagWithMetadata> format.
+  map<string, TagWithMetadata> tags = 2;
+}
+
+message UpsertDefaultTagRequest {
+  // The fleetID of the fleet.
+  gml.types.UUID fleet_id = 1 [ (gogoproto.customname) = "FleetID" ];
+  // The tag to upsert.
+  Tag tag = 2;
+}
+
+message UpsertDefaultTagResponse {}
+
+message DeleteDefaultTagRequest {
+  // The fleetID of the fleet.
+  gml.types.UUID fleet_id = 1 [ (gogoproto.customname) = "FleetID" ];
+  // The key of the Tag to be deleted.
+  string key = 2;
+}
+
+message DeleteDefaultTagResponse {}
 
 // ================== Fleet Manager Edge Service ==================
 
@@ -170,6 +220,12 @@ service FleetMgrService {
   rpc UpdateDevice(UpdateDeviceRequest) returns (UpdateDeviceResponse);
   // UpdateFleet updates information about a fleet, such as its name, description and tags.
   rpc UpdateFleet(UpdateFleetRequest) returns (UpdateFleetResponse);
+  // GetDefaultTags gets the default tags for a fleet.
+  rpc GetDefaultTags(GetDefaultTagsRequest) returns (GetDefaultTagsResponse);
+  // UpsertDefaultTag creates or updates a tag for a fleet.
+  rpc UpsertDefaultTag(UpsertDefaultTagRequest) returns (UpsertDefaultTagResponse);
+  // DeleteDefaultTag deletes a tag from a fleet.
+  rpc DeleteDefaultTag(DeleteDefaultTagRequest) returns (DeleteDefaultTagResponse);
 }
 
 // FleetMgrEdgeService is responsible for communicating with the devices about their state.

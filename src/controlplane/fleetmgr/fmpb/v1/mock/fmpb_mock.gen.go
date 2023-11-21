@@ -60,6 +60,46 @@ func (mr *MockFleetMgrServiceClientMockRecorder) CreateFleet(ctx, in any, opts .
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateFleet", reflect.TypeOf((*MockFleetMgrServiceClient)(nil).CreateFleet), varargs...)
 }
 
+// DeleteDefaultTag mocks base method.
+func (m *MockFleetMgrServiceClient) DeleteDefaultTag(ctx context.Context, in *fmpb.DeleteDefaultTagRequest, opts ...grpc.CallOption) (*fmpb.DeleteDefaultTagResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteDefaultTag", varargs...)
+	ret0, _ := ret[0].(*fmpb.DeleteDefaultTagResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteDefaultTag indicates an expected call of DeleteDefaultTag.
+func (mr *MockFleetMgrServiceClientMockRecorder) DeleteDefaultTag(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDefaultTag", reflect.TypeOf((*MockFleetMgrServiceClient)(nil).DeleteDefaultTag), varargs...)
+}
+
+// GetDefaultTags mocks base method.
+func (m *MockFleetMgrServiceClient) GetDefaultTags(ctx context.Context, in *fmpb.GetDefaultTagsRequest, opts ...grpc.CallOption) (*fmpb.GetDefaultTagsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetDefaultTags", varargs...)
+	ret0, _ := ret[0].(*fmpb.GetDefaultTagsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDefaultTags indicates an expected call of GetDefaultTags.
+func (mr *MockFleetMgrServiceClientMockRecorder) GetDefaultTags(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDefaultTags", reflect.TypeOf((*MockFleetMgrServiceClient)(nil).GetDefaultTags), varargs...)
+}
+
 // GetFleet mocks base method.
 func (m *MockFleetMgrServiceClient) GetFleet(ctx context.Context, in *fmpb.GetFleetRequest, opts ...grpc.CallOption) (*fmpb.GetFleetResponse, error) {
 	m.ctrl.T.Helper()
@@ -140,6 +180,26 @@ func (mr *MockFleetMgrServiceClientMockRecorder) UpdateFleet(ctx, in any, opts .
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateFleet", reflect.TypeOf((*MockFleetMgrServiceClient)(nil).UpdateFleet), varargs...)
 }
 
+// UpsertDefaultTag mocks base method.
+func (m *MockFleetMgrServiceClient) UpsertDefaultTag(ctx context.Context, in *fmpb.UpsertDefaultTagRequest, opts ...grpc.CallOption) (*fmpb.UpsertDefaultTagResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertDefaultTag", varargs...)
+	ret0, _ := ret[0].(*fmpb.UpsertDefaultTagResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpsertDefaultTag indicates an expected call of UpsertDefaultTag.
+func (mr *MockFleetMgrServiceClientMockRecorder) UpsertDefaultTag(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertDefaultTag", reflect.TypeOf((*MockFleetMgrServiceClient)(nil).UpsertDefaultTag), varargs...)
+}
+
 // MockFleetMgrServiceServer is a mock of FleetMgrServiceServer interface.
 type MockFleetMgrServiceServer struct {
 	ctrl     *gomock.Controller
@@ -176,6 +236,36 @@ func (m *MockFleetMgrServiceServer) CreateFleet(arg0 context.Context, arg1 *fmpb
 func (mr *MockFleetMgrServiceServerMockRecorder) CreateFleet(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateFleet", reflect.TypeOf((*MockFleetMgrServiceServer)(nil).CreateFleet), arg0, arg1)
+}
+
+// DeleteDefaultTag mocks base method.
+func (m *MockFleetMgrServiceServer) DeleteDefaultTag(arg0 context.Context, arg1 *fmpb.DeleteDefaultTagRequest) (*fmpb.DeleteDefaultTagResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteDefaultTag", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.DeleteDefaultTagResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteDefaultTag indicates an expected call of DeleteDefaultTag.
+func (mr *MockFleetMgrServiceServerMockRecorder) DeleteDefaultTag(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDefaultTag", reflect.TypeOf((*MockFleetMgrServiceServer)(nil).DeleteDefaultTag), arg0, arg1)
+}
+
+// GetDefaultTags mocks base method.
+func (m *MockFleetMgrServiceServer) GetDefaultTags(arg0 context.Context, arg1 *fmpb.GetDefaultTagsRequest) (*fmpb.GetDefaultTagsResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDefaultTags", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.GetDefaultTagsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDefaultTags indicates an expected call of GetDefaultTags.
+func (mr *MockFleetMgrServiceServerMockRecorder) GetDefaultTags(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDefaultTags", reflect.TypeOf((*MockFleetMgrServiceServer)(nil).GetDefaultTags), arg0, arg1)
 }
 
 // GetFleet mocks base method.
@@ -236,6 +326,21 @@ func (m *MockFleetMgrServiceServer) UpdateFleet(arg0 context.Context, arg1 *fmpb
 func (mr *MockFleetMgrServiceServerMockRecorder) UpdateFleet(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateFleet", reflect.TypeOf((*MockFleetMgrServiceServer)(nil).UpdateFleet), arg0, arg1)
+}
+
+// UpsertDefaultTag mocks base method.
+func (m *MockFleetMgrServiceServer) UpsertDefaultTag(arg0 context.Context, arg1 *fmpb.UpsertDefaultTagRequest) (*fmpb.UpsertDefaultTagResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpsertDefaultTag", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.UpsertDefaultTagResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpsertDefaultTag indicates an expected call of UpsertDefaultTag.
+func (mr *MockFleetMgrServiceServerMockRecorder) UpsertDefaultTag(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertDefaultTag", reflect.TypeOf((*MockFleetMgrServiceServer)(nil).UpsertDefaultTag), arg0, arg1)
 }
 
 // MockFleetMgrEdgeServiceClient is a mock of FleetMgrEdgeServiceClient interface.
