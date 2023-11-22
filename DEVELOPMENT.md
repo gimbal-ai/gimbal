@@ -14,6 +14,7 @@
     - [Accessing the UI in the browser](#accessing-the-ui-in-the-browser)
   - [Building the UI locally](#building-the-ui-locally)
     - [Submitting a change for your UI](#submitting-a-change-for-your-ui)
+    - [Accessing the development postgres DB](#accessing-the-development-postgres-db)
 
 <!-- /TOC -->
 ## Running the Control Plane
@@ -119,28 +120,25 @@ And from there you can git commit and push your changes.
 
 ### Accessing the development postgres DB
 
-You can access the development postgres DB via your namespace like so: After [running the control plane setup](#running-the-control-plane), you should have a pod called `db-reader-writer-<id>` pod in your `<YOUR_USERNAME>` namespace.
-SSH into that pod ( _ie with k9s_) and run the following command to access the DB:
+You can access the development postgres DB using the `access_dev_db.sh` helper script.
 
-```sh
-# password is gml
-psql -U gml -h localhost  -d <YOUR_USERNAME>
-```
-
+  ```sh
+  ./scripts/access_dev_db.sh
+  ```
 
 Then you can run queries like so:
 
-```sql
-SELECT * from fleets;
-```
+  ```sql
+  SELECT * from fleets;
+  ```
 
 You should use transactions if you want to make changes to the DB:
 
-```sql
-BEGIN;
-INSERT INTO fleets (name, org_id, created_at, updated_at) VALUES ('test', '09b4690d-5e92-437b-9401-41ee8edb3bdb', now(), now());
+  ```sql
+  BEGIN;
+  INSERT INTO fleets (name, org_id, created_at, updated_at) VALUES ('test', '09b4690d-5e92-437b-9401-41ee8edb3bdb', now(), now());
 
--- If you want to rollback your changes, run:
--- ROLLBACK;
-COMMIT;
-```
+  -- If you want to rollback your changes, run:
+  -- ROLLBACK;
+  COMMIT;
+  ```
