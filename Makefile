@@ -36,24 +36,23 @@ gazelle: go-mod-tidy update-python-manifest ## Run gazelle.
 update-python-manifest:
 	$(BAZEL) run //:gazelle_python_manifest.update
 
-.PHONY: pnpm-install
-pnpm-install:
+src/ui/node_modules: src/ui/package.json src/ui/pnpm-lock.yaml
 	cd src/ui && pnpm install
 
 .PHONY: jest
-jest: pnpm-install
+jest: src/ui/node_modules
 	cd src/ui && pnpm jest
 
 .PHONY: jestu
-jestu: pnpm-install
+jestu: src/ui/node_modules
 	cd src/ui && pnpm jest -u
 
 .PHONY: devui
-devui: pnpm-install
+devui: src/ui/node_modules
 	cd src/ui && pnpm dev
 
 .PHONY: storybook
-storybook: pnpm-install
+storybook: src/ui/node_modules
 	cd src/ui && pnpm storybook
 
 .PHONY: genfiles
@@ -66,9 +65,20 @@ genfiles:
 	go generate ./...
 
 .PHONY: lint
-lint: pnpm-install
+lint: src/ui/node_modules
 	$(MEGALINTER) \
 		--fix \
+		--env VALIDATE_ALL_CODEBASE=false \
+		--env NODE_PATH="/tmp/lint/src/ui/node_modules" \
+		--env REPORT_OUTPUT_FOLDER=none \
+		--env GITHUB_TOKEN="${GITHUB_TOKEN}" \
+		--image=us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/megalinter-gml-custom:20231119125637
+
+.PHONY: lint-all
+lint-all: src/ui/node_modules
+	$(MEGALINTER) \
+		--fix \
+		--env VALIDATE_ALL_CODEBASE=true \
 		--env NODE_PATH="/tmp/lint/src/ui/node_modules" \
 		--env REPORT_OUTPUT_FOLDER=none \
 		--env GITHUB_TOKEN="${GITHUB_TOKEN}" \
