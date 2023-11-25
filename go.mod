@@ -25,7 +25,7 @@ require (
 	github.com/jarcoal/httpmock v1.3.1
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/lestrrat-go/jwx/v2 v2.0.17
-	github.com/mikefarah/yq/v4 v4.40.2
+	github.com/mikefarah/yq/v4 v4.40.3
 	github.com/nats-io/nats-server/v2 v2.10.5
 	github.com/nats-io/nats.go v1.31.0
 	github.com/ory/dockertest/v3 v3.10.0
