@@ -54,6 +54,12 @@ We currently only support running control plane in GKE (support for Minikube com
     skaffold run -f skaffold/skaffold_controlplane.yaml -n <YOUR_USERNAME> -p dev
     ```
 
+1. (optional) Setup your kubectl config to only look at your namespace:
+
+    ```sh
+    kubectl config set-context --current --namespace=<YOUR_USERNAME>
+    ```
+
 ### Accessing the UI in the browser
 
 We have ingress and LetsEncrypt signed certs automatically setup for the dev cluster. As long as you are on
