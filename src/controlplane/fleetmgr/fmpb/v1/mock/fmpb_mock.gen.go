@@ -366,6 +366,26 @@ func (m *MockFleetMgrEdgeServiceClient) EXPECT() *MockFleetMgrEdgeServiceClientM
 	return m.recorder
 }
 
+// DeleteTag mocks base method.
+func (m *MockFleetMgrEdgeServiceClient) DeleteTag(ctx context.Context, in *fmpb.DeleteTagRequest, opts ...grpc.CallOption) (*fmpb.DeleteTagResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteTag", varargs...)
+	ret0, _ := ret[0].(*fmpb.DeleteTagResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteTag indicates an expected call of DeleteTag.
+func (mr *MockFleetMgrEdgeServiceClientMockRecorder) DeleteTag(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTag", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).DeleteTag), varargs...)
+}
+
 // GetDevice mocks base method.
 func (m *MockFleetMgrEdgeServiceClient) GetDevice(ctx context.Context, in *fmpb.GetDeviceRequest, opts ...grpc.CallOption) (*fmpb.GetDeviceResponse, error) {
 	m.ctrl.T.Helper()
@@ -384,6 +404,26 @@ func (mr *MockFleetMgrEdgeServiceClientMockRecorder) GetDevice(ctx, in any, opts
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDevice", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).GetDevice), varargs...)
+}
+
+// GetTags mocks base method.
+func (m *MockFleetMgrEdgeServiceClient) GetTags(ctx context.Context, in *fmpb.GetTagsRequest, opts ...grpc.CallOption) (*fmpb.GetTagsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetTags", varargs...)
+	ret0, _ := ret[0].(*fmpb.GetTagsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTags indicates an expected call of GetTags.
+func (mr *MockFleetMgrEdgeServiceClientMockRecorder) GetTags(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTags", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).GetTags), varargs...)
 }
 
 // ListDevices mocks base method.
@@ -446,6 +486,26 @@ func (mr *MockFleetMgrEdgeServiceClientMockRecorder) UpdateStatus(ctx, in any, o
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatus", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).UpdateStatus), varargs...)
 }
 
+// UpsertTag mocks base method.
+func (m *MockFleetMgrEdgeServiceClient) UpsertTag(ctx context.Context, in *fmpb.UpsertTagRequest, opts ...grpc.CallOption) (*fmpb.UpsertTagResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertTag", varargs...)
+	ret0, _ := ret[0].(*fmpb.UpsertTagResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpsertTag indicates an expected call of UpsertTag.
+func (mr *MockFleetMgrEdgeServiceClientMockRecorder) UpsertTag(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertTag", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).UpsertTag), varargs...)
+}
+
 // MockFleetMgrEdgeServiceServer is a mock of FleetMgrEdgeServiceServer interface.
 type MockFleetMgrEdgeServiceServer struct {
 	ctrl     *gomock.Controller
@@ -469,6 +529,21 @@ func (m *MockFleetMgrEdgeServiceServer) EXPECT() *MockFleetMgrEdgeServiceServerM
 	return m.recorder
 }
 
+// DeleteTag mocks base method.
+func (m *MockFleetMgrEdgeServiceServer) DeleteTag(arg0 context.Context, arg1 *fmpb.DeleteTagRequest) (*fmpb.DeleteTagResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteTag", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.DeleteTagResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteTag indicates an expected call of DeleteTag.
+func (mr *MockFleetMgrEdgeServiceServerMockRecorder) DeleteTag(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTag", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).DeleteTag), arg0, arg1)
+}
+
 // GetDevice mocks base method.
 func (m *MockFleetMgrEdgeServiceServer) GetDevice(arg0 context.Context, arg1 *fmpb.GetDeviceRequest) (*fmpb.GetDeviceResponse, error) {
 	m.ctrl.T.Helper()
@@ -482,6 +557,21 @@ func (m *MockFleetMgrEdgeServiceServer) GetDevice(arg0 context.Context, arg1 *fm
 func (mr *MockFleetMgrEdgeServiceServerMockRecorder) GetDevice(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDevice", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).GetDevice), arg0, arg1)
+}
+
+// GetTags mocks base method.
+func (m *MockFleetMgrEdgeServiceServer) GetTags(arg0 context.Context, arg1 *fmpb.GetTagsRequest) (*fmpb.GetTagsResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTags", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.GetTagsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTags indicates an expected call of GetTags.
+func (mr *MockFleetMgrEdgeServiceServerMockRecorder) GetTags(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTags", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).GetTags), arg0, arg1)
 }
 
 // ListDevices mocks base method.
@@ -527,4 +617,19 @@ func (m *MockFleetMgrEdgeServiceServer) UpdateStatus(arg0 context.Context, arg1 
 func (mr *MockFleetMgrEdgeServiceServerMockRecorder) UpdateStatus(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatus", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).UpdateStatus), arg0, arg1)
+}
+
+// UpsertTag mocks base method.
+func (m *MockFleetMgrEdgeServiceServer) UpsertTag(arg0 context.Context, arg1 *fmpb.UpsertTagRequest) (*fmpb.UpsertTagResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpsertTag", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.UpsertTagResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpsertTag indicates an expected call of UpsertTag.
+func (mr *MockFleetMgrEdgeServiceServerMockRecorder) UpsertTag(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertTag", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).UpsertTag), arg0, arg1)
 }

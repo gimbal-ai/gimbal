@@ -204,6 +204,34 @@ message UpdateDeviceRequest {
 
 message UpdateDeviceResponse {}
 
+message GetTagsRequest {
+  // The deviceID of the device to fetch the tags from.
+  gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
+}
+
+message GetTagsResponse {
+  // A map of the tags associated with the device in the <key, TagWithMetadata> format.
+  map<string, TagWithMetadata> tags = 1;
+}
+
+message UpsertTagRequest {
+  // The deviceID of the device.
+  gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
+  // The tag to upsert.
+  Tag tag = 2;
+}
+
+message UpsertTagResponse {}
+
+message DeleteTagRequest {
+  // The deviceID of the device.
+  gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
+  // The key of the Tag to be deleted.
+  string key = 2;
+}
+
+message DeleteTagResponse {}
+
 // ================== Service Definitions ==================
 
 // FleetMgrService is responsible for communciating with the API service about fleets and devices.
@@ -237,4 +265,10 @@ service FleetMgrEdgeService {
   rpc GetDevice(GetDeviceRequest) returns (GetDeviceResponse);
   // ListDevices lists the edge devices in a fleet.
   rpc ListDevices(ListDevicesRequest) returns (ListDevicesResponse);
+  // GetTags gets the tags for a device.
+  rpc GetTags(GetTagsRequest) returns (GetTagsResponse);
+  // UpsertTag creates or updates a tag for a device.
+  rpc UpsertTag(UpsertTagRequest) returns (UpsertTagResponse);
+  // DeleteTag deletes a tag from a device.
+  rpc DeleteTag(DeleteTagRequest) returns (DeleteTagResponse);
 }

@@ -1419,6 +1419,264 @@ func (m *UpdateDeviceResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_UpdateDeviceResponse proto.InternalMessageInfo
 
+type GetTagsRequest struct {
+	DeviceID *typespb.UUID `protobuf:"bytes,1,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
+}
+
+func (m *GetTagsRequest) Reset()      { *m = GetTagsRequest{} }
+func (*GetTagsRequest) ProtoMessage() {}
+func (*GetTagsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e8daa588779d869f, []int{29}
+}
+func (m *GetTagsRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetTagsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetTagsRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetTagsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetTagsRequest.Merge(m, src)
+}
+func (m *GetTagsRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetTagsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetTagsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetTagsRequest proto.InternalMessageInfo
+
+func (m *GetTagsRequest) GetDeviceID() *typespb.UUID {
+	if m != nil {
+		return m.DeviceID
+	}
+	return nil
+}
+
+type GetTagsResponse struct {
+	Tags map[string]*TagWithMetadata `protobuf:"bytes,1,rep,name=tags,proto3" json:"tags,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+}
+
+func (m *GetTagsResponse) Reset()      { *m = GetTagsResponse{} }
+func (*GetTagsResponse) ProtoMessage() {}
+func (*GetTagsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e8daa588779d869f, []int{30}
+}
+func (m *GetTagsResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetTagsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetTagsResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetTagsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetTagsResponse.Merge(m, src)
+}
+func (m *GetTagsResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetTagsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetTagsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetTagsResponse proto.InternalMessageInfo
+
+func (m *GetTagsResponse) GetTags() map[string]*TagWithMetadata {
+	if m != nil {
+		return m.Tags
+	}
+	return nil
+}
+
+type UpsertTagRequest struct {
+	DeviceID *typespb.UUID `protobuf:"bytes,1,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
+	Tag      *Tag          `protobuf:"bytes,2,opt,name=tag,proto3" json:"tag,omitempty"`
+}
+
+func (m *UpsertTagRequest) Reset()      { *m = UpsertTagRequest{} }
+func (*UpsertTagRequest) ProtoMessage() {}
+func (*UpsertTagRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e8daa588779d869f, []int{31}
+}
+func (m *UpsertTagRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UpsertTagRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UpsertTagRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UpsertTagRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpsertTagRequest.Merge(m, src)
+}
+func (m *UpsertTagRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *UpsertTagRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpsertTagRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpsertTagRequest proto.InternalMessageInfo
+
+func (m *UpsertTagRequest) GetDeviceID() *typespb.UUID {
+	if m != nil {
+		return m.DeviceID
+	}
+	return nil
+}
+
+func (m *UpsertTagRequest) GetTag() *Tag {
+	if m != nil {
+		return m.Tag
+	}
+	return nil
+}
+
+type UpsertTagResponse struct {
+}
+
+func (m *UpsertTagResponse) Reset()      { *m = UpsertTagResponse{} }
+func (*UpsertTagResponse) ProtoMessage() {}
+func (*UpsertTagResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e8daa588779d869f, []int{32}
+}
+func (m *UpsertTagResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UpsertTagResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UpsertTagResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UpsertTagResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpsertTagResponse.Merge(m, src)
+}
+func (m *UpsertTagResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *UpsertTagResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpsertTagResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpsertTagResponse proto.InternalMessageInfo
+
+type DeleteTagRequest struct {
+	DeviceID *typespb.UUID `protobuf:"bytes,1,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
+	Key      string        `protobuf:"bytes,2,opt,name=key,proto3" json:"key,omitempty"`
+}
+
+func (m *DeleteTagRequest) Reset()      { *m = DeleteTagRequest{} }
+func (*DeleteTagRequest) ProtoMessage() {}
+func (*DeleteTagRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e8daa588779d869f, []int{33}
+}
+func (m *DeleteTagRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *DeleteTagRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_DeleteTagRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *DeleteTagRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteTagRequest.Merge(m, src)
+}
+func (m *DeleteTagRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *DeleteTagRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteTagRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteTagRequest proto.InternalMessageInfo
+
+func (m *DeleteTagRequest) GetDeviceID() *typespb.UUID {
+	if m != nil {
+		return m.DeviceID
+	}
+	return nil
+}
+
+func (m *DeleteTagRequest) GetKey() string {
+	if m != nil {
+		return m.Key
+	}
+	return ""
+}
+
+type DeleteTagResponse struct {
+}
+
+func (m *DeleteTagResponse) Reset()      { *m = DeleteTagResponse{} }
+func (*DeleteTagResponse) ProtoMessage() {}
+func (*DeleteTagResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e8daa588779d869f, []int{34}
+}
+func (m *DeleteTagResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *DeleteTagResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_DeleteTagResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *DeleteTagResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteTagResponse.Merge(m, src)
+}
+func (m *DeleteTagResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *DeleteTagResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteTagResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteTagResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterEnum("gml.internal.controlplane.fleetmgr.v1.DeviceStatus", DeviceStatus_name, DeviceStatus_value)
 	proto.RegisterType((*FleetInfo)(nil), "gml.internal.controlplane.fleetmgr.v1.FleetInfo")
@@ -1451,6 +1709,13 @@ func init() {
 	proto.RegisterType((*ListDevicesResponse)(nil), "gml.internal.controlplane.fleetmgr.v1.ListDevicesResponse")
 	proto.RegisterType((*UpdateDeviceRequest)(nil), "gml.internal.controlplane.fleetmgr.v1.UpdateDeviceRequest")
 	proto.RegisterType((*UpdateDeviceResponse)(nil), "gml.internal.controlplane.fleetmgr.v1.UpdateDeviceResponse")
+	proto.RegisterType((*GetTagsRequest)(nil), "gml.internal.controlplane.fleetmgr.v1.GetTagsRequest")
+	proto.RegisterType((*GetTagsResponse)(nil), "gml.internal.controlplane.fleetmgr.v1.GetTagsResponse")
+	proto.RegisterMapType((map[string]*TagWithMetadata)(nil), "gml.internal.controlplane.fleetmgr.v1.GetTagsResponse.TagsEntry")
+	proto.RegisterType((*UpsertTagRequest)(nil), "gml.internal.controlplane.fleetmgr.v1.UpsertTagRequest")
+	proto.RegisterType((*UpsertTagResponse)(nil), "gml.internal.controlplane.fleetmgr.v1.UpsertTagResponse")
+	proto.RegisterType((*DeleteTagRequest)(nil), "gml.internal.controlplane.fleetmgr.v1.DeleteTagRequest")
+	proto.RegisterType((*DeleteTagResponse)(nil), "gml.internal.controlplane.fleetmgr.v1.DeleteTagResponse")
 }
 
 func init() {
@@ -1458,99 +1723,106 @@ func init() {
 }
 
 var fileDescriptor_e8daa588779d869f = []byte{
-	// 1457 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x58, 0x5f, 0x6f, 0x1b, 0xc5,
-	0x17, 0xcd, 0xda, 0x89, 0x63, 0x5f, 0xa7, 0xb5, 0x33, 0x49, 0x53, 0xff, 0xfc, 0x83, 0x75, 0x18,
-	0x84, 0xa8, 0x2a, 0x6a, 0x13, 0x57, 0xea, 0x9f, 0xa4, 0xfc, 0x49, 0xe2, 0xb4, 0xb1, 0x9a, 0xba,
-	0xb0, 0x71, 0xa8, 0x5a, 0xa0, 0xd6, 0x3a, 0x3b, 0xd9, 0xac, 0x58, 0x7b, 0xdd, 0xdd, 0x71, 0xa4,
-	0xaa, 0x12, 0xa2, 0x12, 0x12, 0xe2, 0x01, 0xa9, 0x88, 0x0f, 0xc0, 0x03, 0x2f, 0x7c, 0x14, 0xde,
-	0xe8, 0x63, 0x9f, 0x2c, 0xea, 0x4a, 0x15, 0x8f, 0x55, 0x3e, 0x01, 0xda, 0x99, 0x59, 0x7b, 0x37,
-	0x76, 0xca, 0xda, 0x29, 0x4f, 0xf1, 0xec, 0xcc, 0x39, 0x73, 0xe6, 0xde, 0x33, 0x73, 0x6f, 0x0b,
-	0x1f, 0x38, 0xf6, 0x6e, 0x61, 0xd7, 0x6a, 0x52, 0xdb, 0x32, 0x5b, 0xa6, 0xda, 0x24, 0x85, 0x3d,
-	0x93, 0x10, 0xda, 0xd0, 0xed, 0xc2, 0x5e, 0xa3, 0x55, 0x2f, 0x1c, 0x2c, 0xb1, 0xbf, 0xf9, 0x96,
-	0x6d, 0x51, 0x0b, 0xbd, 0xa7, 0x37, 0xcc, 0xbc, 0xd1, 0xa4, 0xc4, 0x6e, 0xaa, 0x66, 0xde, 0x0f,
-	0xcb, 0x7b, 0xb0, 0xfc, 0xc1, 0x52, 0x76, 0x5e, 0xb7, 0x74, 0x8b, 0x21, 0x0a, 0xee, 0x2f, 0x0e,
-	0xce, 0xe6, 0x74, 0xcb, 0xd2, 0x4d, 0x52, 0x60, 0xa3, 0x7a, 0x7b, 0xaf, 0x40, 0x8d, 0x06, 0x71,
-	0xa8, 0xda, 0x68, 0x89, 0x05, 0x6f, 0x73, 0x2d, 0x8d, 0x86, 0xd5, 0x2c, 0xd0, 0x87, 0x2d, 0xe2,
-	0xb4, 0xea, 0x85, 0x76, 0xdb, 0xd0, 0xf8, 0x34, 0xfe, 0x33, 0x02, 0x89, 0xeb, 0xee, 0x2e, 0xe5,
-	0xe6, 0x9e, 0x85, 0x8a, 0x10, 0x31, 0xb4, 0x8c, 0xb4, 0x28, 0x9d, 0x4b, 0x16, 0x53, 0x79, 0x57,
-	0x17, 0x83, 0xe4, 0x77, 0x76, 0xca, 0xa5, 0xb5, 0xd9, 0x6e, 0x27, 0x17, 0x29, 0x97, 0x0e, 0x3b,
-	0xb9, 0x69, 0xad, 0xbe, 0x8c, 0x0d, 0x0d, 0x2b, 0x11, 0x43, 0x43, 0x9f, 0x42, 0xcc, 0xb2, 0xf5,
-	0x9a, 0xa1, 0x65, 0x22, 0xc3, 0x71, 0x99, 0x6e, 0x27, 0x37, 0x75, 0xdb, 0xd6, 0x19, 0x34, 0xe9,
-	0x42, 0xf9, 0x7a, 0xac, 0x4c, 0x59, 0xb6, 0x5e, 0xd6, 0xd0, 0x3b, 0x30, 0xd9, 0x54, 0x1b, 0x24,
-	0x13, 0x5d, 0x94, 0xce, 0x25, 0xd6, 0x4e, 0x1d, 0x76, 0x72, 0x09, 0x77, 0x95, 0xfb, 0x0d, 0x2b,
-	0x6c, 0xca, 0x5d, 0x42, 0x55, 0xdd, 0xc9, 0x4c, 0x2e, 0x46, 0xfd, 0x4b, 0xdc, 0x6f, 0x58, 0x61,
-	0x53, 0xe8, 0x12, 0x24, 0x35, 0xe2, 0xec, 0xda, 0x46, 0x8b, 0x1a, 0x56, 0x33, 0x33, 0xc5, 0xc8,
-	0xe6, 0x0f, 0x3b, 0xb9, 0xb4, 0xbb, 0xd2, 0x37, 0x85, 0x15, 0xff, 0x42, 0x54, 0x01, 0xd8, 0xb5,
-	0x89, 0x4a, 0x89, 0x56, 0x53, 0x69, 0x26, 0xc6, 0xce, 0x90, 0xcd, 0xf3, 0xb0, 0xe6, 0xbd, 0xb0,
-	0xe6, 0xab, 0x5e, 0x58, 0xd7, 0xe6, 0x0e, 0x3b, 0xb9, 0x94, 0x4b, 0xd9, 0x47, 0x61, 0x25, 0x21,
-	0x06, 0xab, 0x14, 0x7f, 0x05, 0x68, 0x9d, 0x0d, 0x58, 0x58, 0x15, 0xf2, 0xa0, 0x4d, 0x1c, 0x8a,
-	0xae, 0xc3, 0x14, 0x4b, 0xa6, 0x08, 0xee, 0x87, 0xf9, 0x50, 0x49, 0xcf, 0xf7, 0x52, 0xa3, 0x70,
-	0x38, 0xfe, 0x1a, 0xe6, 0x02, 0xec, 0x4e, 0xcb, 0x6a, 0x3a, 0xe4, 0x8d, 0xd1, 0x57, 0x20, 0x75,
-	0x83, 0xd0, 0x80, 0xf2, 0xf7, 0x5f, 0xe7, 0x89, 0x18, 0xf7, 0x04, 0x33, 0x02, 0x12, 0x69, 0x74,
-	0x6d, 0x90, 0xe0, 0x79, 0xc3, 0xf7, 0x20, 0xdd, 0xe7, 0x7b, 0xc3, 0x5a, 0xaf, 0xc3, 0xec, 0x96,
-	0xe1, 0x70, 0x72, 0xc7, 0x53, 0xbb, 0xd4, 0x73, 0xe3, 0x31, 0x8a, 0x13, 0x3d, 0x37, 0x0a, 0xfb,
-	0xe1, 0xfb, 0x80, 0xfc, 0x3c, 0x42, 0xe5, 0x26, 0xc4, 0xd8, 0x36, 0x4e, 0x46, 0x5a, 0x8c, 0x8e,
-	0x25, 0x53, 0xe0, 0x5d, 0x43, 0xec, 0xb4, 0xb4, 0xff, 0xca, 0x10, 0x67, 0x60, 0x2e, 0xc0, 0xce,
-	0xe5, 0xe3, 0x0b, 0x10, 0xad, 0xaa, 0x3a, 0x4a, 0x43, 0xf4, 0x1b, 0xf2, 0x90, 0xed, 0x91, 0x50,
-	0xdc, 0x9f, 0x68, 0x1e, 0xa6, 0x0e, 0x54, 0xb3, 0xed, 0xa5, 0x89, 0x0f, 0xf0, 0xcf, 0x12, 0x24,
-	0xab, 0xaa, 0x7e, 0x8b, 0x50, 0x55, 0x53, 0xa9, 0x8a, 0x8a, 0x30, 0x63, 0x38, 0x35, 0xa3, 0xb9,
-	0x4f, 0x6c, 0x83, 0x12, 0x1e, 0xcc, 0xf8, 0x5a, 0xaa, 0xdb, 0xc9, 0x25, 0xcb, 0x4e, 0xd9, 0xfb,
-	0xac, 0x24, 0x8d, 0xfe, 0xc0, 0xbd, 0x48, 0x6d, 0xa6, 0x84, 0x5d, 0xa4, 0x48, 0xf8, 0x8b, 0xd4,
-	0x47, 0x61, 0x25, 0x21, 0x06, 0xab, 0x14, 0xff, 0x2a, 0x41, 0xaa, 0xaa, 0xea, 0x77, 0x0c, 0xba,
-	0xdf, 0xd3, 0x75, 0x0d, 0xa2, 0x54, 0xd5, 0x45, 0xcc, 0xce, 0x87, 0x8c, 0x59, 0x55, 0xd5, 0x15,
-	0x17, 0x86, 0x2a, 0x10, 0x6f, 0x08, 0x26, 0xa1, 0xaf, 0x18, 0x9e, 0xc2, 0xd3, 0xa0, 0xf4, 0x38,
-	0xf0, 0x67, 0x70, 0xe6, 0x06, 0xa1, 0x25, 0xb2, 0xa7, 0xb6, 0x4d, 0x5a, 0x55, 0xf5, 0x9e, 0x0b,
-	0x2f, 0x43, 0x9c, 0xa1, 0x5f, 0xe3, 0xc3, 0x64, 0xb7, 0x93, 0x9b, 0xe6, 0xd9, 0x2c, 0x29, 0xd3,
-	0x6c, 0x75, 0x59, 0xc3, 0x2f, 0x25, 0x58, 0x38, 0x4a, 0x29, 0x0c, 0xf9, 0xa5, 0x78, 0x02, 0xb9,
-	0x1d, 0x6f, 0x84, 0x14, 0x3e, 0x9c, 0xcc, 0x3d, 0x8f, 0xb3, 0xd1, 0xa4, 0xf6, 0x43, 0xfe, 0x78,
-	0x66, 0x2d, 0x48, 0xf4, 0x3e, 0x0d, 0x31, 0xcd, 0x96, 0xdf, 0x34, 0xc9, 0xe2, 0xa5, 0xf0, 0x51,
-	0xf3, 0x67, 0x4f, 0x98, 0x6d, 0x39, 0x72, 0x45, 0xc2, 0x4f, 0x24, 0x38, 0xbb, 0xd3, 0x72, 0x88,
-	0xed, 0x93, 0x77, 0xd2, 0xe8, 0x79, 0xee, 0x88, 0x8c, 0xe5, 0x0e, 0x9c, 0x85, 0xcc, 0xa0, 0x22,
-	0x71, 0x9d, 0x34, 0x38, 0x5b, 0x22, 0x26, 0xa1, 0xe4, 0x0d, 0xaa, 0x15, 0x61, 0x8e, 0xf4, 0xc2,
-	0xec, 0x2a, 0x18, 0xdc, 0x45, 0x28, 0xf8, 0x31, 0x0a, 0x50, 0x22, 0x07, 0xc6, 0x2e, 0x19, 0xbb,
-	0x52, 0x2f, 0x40, 0xcc, 0x21, 0xb6, 0xa1, 0x9a, 0x62, 0x4f, 0x31, 0x42, 0x59, 0x88, 0xef, 0x5b,
-	0x0e, 0xed, 0xd7, 0x60, 0xa5, 0x37, 0x46, 0x9b, 0xbe, 0xd3, 0x4d, 0x0e, 0xdf, 0xed, 0x2d, 0xdf,
-	0xe9, 0x0e, 0x3b, 0xb9, 0x53, 0xee, 0x96, 0x1e, 0x06, 0xf7, 0x8f, 0x7b, 0x17, 0x66, 0x4d, 0xd5,
-	0xa1, 0xb5, 0x7d, 0xa2, 0xda, 0xb4, 0x4e, 0x54, 0x5a, 0x6b, 0x3a, 0xac, 0x4a, 0x47, 0xd7, 0x2e,
-	0x74, 0x3b, 0xb9, 0xd4, 0x96, 0xea, 0xd0, 0x4d, 0x6f, 0xae, 0xb2, 0x7d, 0xd8, 0xc9, 0x2d, 0xb8,
-	0x4c, 0x03, 0x18, 0xac, 0xa4, 0xcc, 0xc0, 0x52, 0x07, 0xdd, 0x84, 0x98, 0x43, 0x55, 0xda, 0x76,
-	0x58, 0xf9, 0x3e, 0x5d, 0xbc, 0x18, 0x32, 0xf5, 0x3c, 0x9e, 0xdb, 0x0c, 0xaa, 0x08, 0x8a, 0x5e,
-	0xab, 0x31, 0x7d, 0x6c, 0xab, 0x81, 0x15, 0x48, 0x29, 0x44, 0x37, 0x1c, 0x4a, 0x6c, 0xcf, 0x05,
-	0xef, 0xc2, 0x29, 0x8d, 0xb1, 0xd5, 0x44, 0x88, 0xf9, 0xed, 0x99, 0xe1, 0x1f, 0xb7, 0x07, 0x03,
-	0x1d, 0x09, 0x06, 0x1a, 0x57, 0x20, 0xdd, 0xe7, 0x14, 0x57, 0x7e, 0x19, 0x12, 0x82, 0xf4, 0xf8,
-	0x5c, 0xcf, 0x74, 0x3b, 0xb9, 0xb8, 0x30, 0x46, 0x49, 0x89, 0xf3, 0xf5, 0x65, 0x0d, 0x7f, 0xee,
-	0xd5, 0x05, 0x71, 0x3c, 0xa1, 0xf3, 0x24, 0x94, 0x0b, 0x30, 0x1f, 0xa4, 0x14, 0xd6, 0x5c, 0x61,
-	0x45, 0x9e, 0x03, 0x46, 0xed, 0x1a, 0xf0, 0x7d, 0x98, 0xf5, 0x81, 0xc5, 0xc1, 0xcb, 0x10, 0xe3,
-	0xbb, 0x0a, 0x86, 0xa5, 0x91, 0x12, 0xca, 0xab, 0x2f, 0x27, 0xc0, 0xb7, 0x78, 0x75, 0xe7, 0x33,
-	0x27, 0x7f, 0xa0, 0xeb, 0x30, 0x17, 0xa0, 0x13, 0x82, 0x6f, 0xc2, 0x34, 0xdf, 0xcf, 0x7b, 0x9f,
-	0xc7, 0x50, 0xec, 0x31, 0x60, 0xe2, 0xa5, 0x2e, 0x18, 0xd2, 0x13, 0xa4, 0xce, 0xed, 0xcd, 0x98,
-	0xa9, 0x23, 0xae, 0xa9, 0x85, 0x8b, 0x7b, 0xe9, 0x0c, 0x06, 0xff, 0xfc, 0x63, 0x09, 0x66, 0xfc,
-	0x37, 0x03, 0xfd, 0x0f, 0xce, 0x94, 0x36, 0xbe, 0x28, 0xaf, 0x6f, 0xd4, 0xb6, 0xab, 0xab, 0xd5,
-	0x9d, 0xed, 0xda, 0x4e, 0xe5, 0x66, 0xe5, 0xf6, 0x9d, 0x4a, 0x7a, 0x62, 0x70, 0x6a, 0x73, 0x63,
-	0x75, 0xab, 0xba, 0x79, 0x37, 0x2d, 0xa1, 0xff, 0xc3, 0xd9, 0xa3, 0x28, 0x6f, 0x32, 0x82, 0x64,
-	0xc8, 0x06, 0x27, 0x4b, 0xe5, 0xed, 0xf5, 0xdb, 0x95, 0xca, 0xc6, 0x7a, 0x75, 0xa3, 0x94, 0x8e,
-	0x16, 0x5f, 0xc6, 0x21, 0xc5, 0x62, 0x7f, 0x4b, 0xb7, 0xb7, 0x89, 0xed, 0x8a, 0x41, 0xdf, 0x4b,
-	0x90, 0xf4, 0xf5, 0xbe, 0xe8, 0x6a, 0xc8, 0x10, 0x0f, 0x76, 0xe3, 0xd9, 0xe5, 0x71, 0xa0, 0x22,
-	0xd5, 0x8f, 0x20, 0xee, 0xb5, 0xb4, 0xe8, 0x52, 0xf8, 0x2a, 0x1c, 0xd8, 0xff, 0xf2, 0xc8, 0x38,
-	0xb1, 0xf9, 0x63, 0x09, 0xa0, 0xdf, 0xac, 0xa2, 0x2b, 0x21, 0x79, 0x06, 0xfa, 0xe4, 0xec, 0xd5,
-	0x31, 0x90, 0x42, 0xc3, 0x0f, 0x12, 0xcc, 0xf8, 0x8d, 0x83, 0xc2, 0x46, 0x73, 0x88, 0xa9, 0xb3,
-	0x2b, 0x63, 0x61, 0x85, 0x12, 0xd7, 0x11, 0xbe, 0xe6, 0x37, 0xb4, 0x23, 0x06, 0xdb, 0xf1, 0xec,
-	0xf2, 0x38, 0x50, 0x21, 0xe3, 0x27, 0x09, 0x4e, 0x07, 0xfb, 0x2c, 0x74, 0x6d, 0xcc, 0xf6, 0x8c,
-	0x8b, 0xf9, 0xe8, 0x44, 0xcd, 0x1d, 0xfa, 0x45, 0x82, 0xf4, 0xd1, 0x4e, 0x06, 0x7d, 0x1c, 0xfa,
-	0x80, 0x43, 0x9b, 0xb2, 0xec, 0x27, 0x63, 0xe3, 0x7d, 0xaa, 0x8e, 0x76, 0x37, 0xa1, 0x55, 0x1d,
-	0xd3, 0x7c, 0x85, 0x56, 0x75, 0x5c, 0x5b, 0x55, 0xfc, 0x6d, 0x12, 0xe6, 0xbc, 0x87, 0x66, 0x43,
-	0xd3, 0x89, 0xf7, 0xd8, 0x3c, 0x82, 0xb8, 0x57, 0x8e, 0x43, 0xdf, 0xf2, 0x23, 0x3d, 0x41, 0xe8,
-	0x5b, 0x3e, 0x50, 0xf7, 0xfb, 0x37, 0x4c, 0xbc, 0xc0, 0xa3, 0xb9, 0x33, 0x50, 0xf1, 0x47, 0xbc,
-	0x61, 0xc1, 0xd2, 0x8e, 0xbe, 0x85, 0x44, 0xaf, 0x3a, 0xa3, 0xcb, 0xa3, 0xd8, 0xd2, 0x7f, 0xc9,
-	0xaf, 0x8c, 0x0e, 0xf4, 0xdd, 0x70, 0x5f, 0xbd, 0x45, 0xa3, 0x3c, 0x5b, 0xc1, 0x92, 0x1f, 0xfa,
-	0x86, 0x0f, 0x29, 0xef, 0x6b, 0x0f, 0x9e, 0x3e, 0x97, 0x27, 0x9e, 0x3d, 0x97, 0x27, 0x5e, 0x3d,
-	0x97, 0xa5, 0xef, 0xba, 0xb2, 0xf4, 0x7b, 0x57, 0x96, 0xfe, 0xe8, 0xca, 0xd2, 0xd3, 0xae, 0x2c,
-	0xfd, 0xd5, 0x95, 0xa5, 0xbf, 0xbb, 0xf2, 0xc4, 0xab, 0xae, 0x2c, 0x3d, 0x79, 0x21, 0x4f, 0x3c,
-	0x7d, 0x21, 0x4f, 0x3c, 0x7b, 0x21, 0x4f, 0xdc, 0x5b, 0xd1, 0x8d, 0x86, 0x49, 0xa8, 0xa9, 0xd6,
-	0x9d, 0xbc, 0x6a, 0x14, 0xf8, 0xa8, 0xf0, 0xaf, 0xff, 0x37, 0xb8, 0xe2, 0xfe, 0xad, 0xc7, 0xd8,
-	0xbf, 0x98, 0x2f, 0xfe, 0x13, 0x00, 0x00, 0xff, 0xff, 0x6f, 0xbb, 0xf7, 0x98, 0x4c, 0x14, 0x00,
-	0x00,
+	// 1574 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x58, 0x51, 0x6f, 0x1b, 0xc5,
+	0x16, 0xce, 0xda, 0x8d, 0x63, 0x1f, 0xa7, 0xb5, 0x33, 0x49, 0x53, 0x5f, 0xdf, 0x7b, 0xed, 0xdc,
+	0xb9, 0x42, 0x54, 0x15, 0xb5, 0x89, 0x2b, 0xd2, 0x36, 0x29, 0xd0, 0x24, 0x4e, 0x13, 0xab, 0xa9,
+	0x0b, 0x1b, 0x87, 0xaa, 0x05, 0x6a, 0xd6, 0xd9, 0xc9, 0x66, 0x85, 0xed, 0x75, 0x77, 0xc7, 0x11,
+	0x55, 0x25, 0x44, 0x25, 0x24, 0x84, 0x04, 0x52, 0x11, 0xcf, 0x88, 0x57, 0x7e, 0x0a, 0x6f, 0xf4,
+	0xb1, 0x4f, 0x16, 0x75, 0xa5, 0x8a, 0xc7, 0x2a, 0xbf, 0x00, 0xed, 0xcc, 0xec, 0x7a, 0x37, 0x4e,
+	0xca, 0xda, 0x0e, 0x12, 0x4f, 0xc9, 0xec, 0xcc, 0x39, 0xe7, 0x9b, 0x73, 0xbe, 0x99, 0xf3, 0x8d,
+	0xe1, 0x2d, 0xcb, 0xdc, 0xc9, 0xef, 0x18, 0x4d, 0x6a, 0x1a, 0xf5, 0x56, 0x5d, 0x69, 0x92, 0xfc,
+	0x6e, 0x9d, 0x10, 0xda, 0xd0, 0xcc, 0xfc, 0x6e, 0xa3, 0x55, 0xcb, 0xef, 0xcf, 0xb3, 0xbf, 0xb9,
+	0x96, 0x69, 0x50, 0x03, 0xbd, 0xa1, 0x35, 0xea, 0x39, 0xbd, 0x49, 0x89, 0xd9, 0x54, 0xea, 0x39,
+	0xaf, 0x59, 0xce, 0x31, 0xcb, 0xed, 0xcf, 0xa7, 0x67, 0x34, 0x43, 0x33, 0x98, 0x45, 0xde, 0xfe,
+	0x8f, 0x1b, 0xa7, 0xb3, 0x9a, 0x61, 0x68, 0x75, 0x92, 0x67, 0xa3, 0x5a, 0x7b, 0x37, 0x4f, 0xf5,
+	0x06, 0xb1, 0xa8, 0xd2, 0x68, 0x89, 0x05, 0xff, 0xe5, 0x58, 0x1a, 0x0d, 0xa3, 0x99, 0xa7, 0x0f,
+	0x5b, 0xc4, 0x6a, 0xd5, 0xf2, 0xed, 0xb6, 0xae, 0xf2, 0x69, 0xfc, 0x5b, 0x08, 0x62, 0x37, 0xec,
+	0x28, 0xa5, 0xe6, 0xae, 0x81, 0x0a, 0x10, 0xd2, 0xd5, 0x94, 0x34, 0x27, 0x9d, 0x8f, 0x17, 0x12,
+	0x39, 0x1b, 0x17, 0x33, 0xc9, 0x6d, 0x6f, 0x97, 0x8a, 0x2b, 0x53, 0xdd, 0x4e, 0x36, 0x54, 0x2a,
+	0x1e, 0x74, 0xb2, 0x13, 0x6a, 0x6d, 0x11, 0xeb, 0x2a, 0x96, 0x43, 0xba, 0x8a, 0xae, 0x43, 0xc4,
+	0x30, 0xb5, 0xaa, 0xae, 0xa6, 0x42, 0x47, 0xdb, 0xa5, 0xba, 0x9d, 0xec, 0xf8, 0x6d, 0x53, 0x63,
+	0xa6, 0x71, 0xdb, 0x94, 0xaf, 0xc7, 0xf2, 0xb8, 0x61, 0x6a, 0x25, 0x15, 0xfd, 0x0f, 0x4e, 0x35,
+	0x95, 0x06, 0x49, 0x85, 0xe7, 0xa4, 0xf3, 0xb1, 0x95, 0xd3, 0x07, 0x9d, 0x6c, 0xcc, 0x5e, 0x65,
+	0x7f, 0xc3, 0x32, 0x9b, 0xb2, 0x97, 0x50, 0x45, 0xb3, 0x52, 0xa7, 0xe6, 0xc2, 0xde, 0x25, 0xf6,
+	0x37, 0x2c, 0xb3, 0x29, 0xb4, 0x00, 0x71, 0x95, 0x58, 0x3b, 0xa6, 0xde, 0xa2, 0xba, 0xd1, 0x4c,
+	0x8d, 0x33, 0x67, 0x33, 0x07, 0x9d, 0x6c, 0xd2, 0x5e, 0xe9, 0x99, 0xc2, 0xb2, 0x77, 0x21, 0x2a,
+	0x03, 0xec, 0x98, 0x44, 0xa1, 0x44, 0xad, 0x2a, 0x34, 0x15, 0x61, 0x7b, 0x48, 0xe7, 0x78, 0x5a,
+	0x73, 0x4e, 0x5a, 0x73, 0x15, 0x27, 0xad, 0x2b, 0xd3, 0x07, 0x9d, 0x6c, 0xc2, 0x76, 0xd9, 0xb3,
+	0xc2, 0x72, 0x4c, 0x0c, 0x96, 0x29, 0xfe, 0x04, 0xd0, 0x2a, 0x1b, 0xb0, 0xb4, 0xca, 0xe4, 0x41,
+	0x9b, 0x58, 0x14, 0xdd, 0x80, 0x71, 0x56, 0x4c, 0x91, 0xdc, 0xb7, 0x73, 0x81, 0x8a, 0x9e, 0x73,
+	0x4b, 0x23, 0x73, 0x73, 0xfc, 0x29, 0x4c, 0xfb, 0xbc, 0x5b, 0x2d, 0xa3, 0x69, 0x91, 0x13, 0x73,
+	0x5f, 0x86, 0xc4, 0x3a, 0xa1, 0x3e, 0xe4, 0x6f, 0xbe, 0x8e, 0x13, 0x11, 0xce, 0x09, 0x46, 0x04,
+	0x24, 0xca, 0x68, 0xd3, 0x20, 0xc6, 0xeb, 0x86, 0xef, 0x41, 0xb2, 0xe7, 0xef, 0x84, 0xb1, 0xde,
+	0x80, 0xa9, 0x4d, 0xdd, 0xe2, 0xce, 0x2d, 0x07, 0xed, 0xbc, 0xcb, 0xc6, 0x63, 0x10, 0xc7, 0x5c,
+	0x36, 0x0a, 0xfa, 0xe1, 0xfb, 0x80, 0xbc, 0x7e, 0x04, 0xca, 0x0d, 0x88, 0xb0, 0x30, 0x56, 0x4a,
+	0x9a, 0x0b, 0x0f, 0x05, 0x53, 0xd8, 0xdb, 0x84, 0xd8, 0x6e, 0xa9, 0x7f, 0x17, 0x21, 0xce, 0xc2,
+	0xb4, 0xcf, 0x3b, 0x87, 0x8f, 0x2f, 0x42, 0xb8, 0xa2, 0x68, 0x28, 0x09, 0xe1, 0xcf, 0xc9, 0x43,
+	0x16, 0x23, 0x26, 0xdb, 0xff, 0xa2, 0x19, 0x18, 0xdf, 0x57, 0xea, 0x6d, 0xa7, 0x4c, 0x7c, 0x80,
+	0x7f, 0x90, 0x20, 0x5e, 0x51, 0xb4, 0x5b, 0x84, 0x2a, 0xaa, 0x42, 0x15, 0x54, 0x80, 0x49, 0xdd,
+	0xaa, 0xea, 0xcd, 0x3d, 0x62, 0xea, 0x94, 0xf0, 0x64, 0x46, 0x57, 0x12, 0xdd, 0x4e, 0x36, 0x5e,
+	0xb2, 0x4a, 0xce, 0x67, 0x39, 0xae, 0xf7, 0x06, 0xf6, 0x41, 0x6a, 0x33, 0x24, 0xec, 0x20, 0x85,
+	0x82, 0x1f, 0xa4, 0x9e, 0x15, 0x96, 0x63, 0x62, 0xb0, 0x4c, 0xf1, 0xcf, 0x12, 0x24, 0x2a, 0x8a,
+	0x76, 0x47, 0xa7, 0x7b, 0x2e, 0xae, 0x6b, 0x10, 0xa6, 0x8a, 0x26, 0x72, 0x76, 0x21, 0x60, 0xce,
+	0x2a, 0x8a, 0x26, 0xdb, 0x66, 0xa8, 0x0c, 0xd1, 0x86, 0xf0, 0x24, 0xf0, 0x15, 0x82, 0xbb, 0x70,
+	0x30, 0xc8, 0xae, 0x0f, 0xfc, 0x01, 0x9c, 0x5d, 0x27, 0xb4, 0x48, 0x76, 0x95, 0x76, 0x9d, 0x56,
+	0x14, 0xcd, 0x65, 0xe1, 0x65, 0x88, 0x32, 0xeb, 0xd7, 0xf0, 0x30, 0xde, 0xed, 0x64, 0x27, 0x78,
+	0x35, 0x8b, 0xf2, 0x04, 0x5b, 0x5d, 0x52, 0xf1, 0x4b, 0x09, 0x66, 0x0f, 0xbb, 0x14, 0x84, 0xfc,
+	0x58, 0x5c, 0x81, 0x9c, 0x8e, 0xeb, 0x01, 0x81, 0x1f, 0xed, 0xcc, 0xde, 0x8f, 0xb5, 0xd6, 0xa4,
+	0xe6, 0x43, 0x7e, 0x79, 0xa6, 0x0d, 0x88, 0xb9, 0x9f, 0x8e, 0x20, 0xcd, 0xa6, 0x97, 0x34, 0xf1,
+	0xc2, 0x42, 0xf0, 0xac, 0x79, 0xab, 0x27, 0xc8, 0xb6, 0x18, 0xba, 0x22, 0xe1, 0x27, 0x12, 0x9c,
+	0xdb, 0x6e, 0x59, 0xc4, 0xf4, 0xc0, 0x1b, 0x35, 0x7b, 0x0e, 0x3b, 0x42, 0x43, 0xb1, 0x03, 0xa7,
+	0x21, 0xd5, 0x8f, 0x48, 0x1c, 0x27, 0x15, 0xce, 0x15, 0x49, 0x9d, 0x50, 0x72, 0x82, 0x68, 0x45,
+	0x9a, 0x43, 0x6e, 0x9a, 0x6d, 0x04, 0xfd, 0x51, 0x04, 0x82, 0x6f, 0xc3, 0x00, 0x45, 0xb2, 0xaf,
+	0xef, 0x90, 0xa1, 0x3b, 0xf5, 0x2c, 0x44, 0x2c, 0x62, 0xea, 0x4a, 0x5d, 0xc4, 0x14, 0x23, 0x94,
+	0x86, 0xe8, 0x9e, 0x61, 0xd1, 0x5e, 0x0f, 0x96, 0xdd, 0x31, 0xda, 0xf0, 0xec, 0xee, 0xd4, 0xd1,
+	0xd1, 0xfe, 0xe3, 0xd9, 0xdd, 0x41, 0x27, 0x7b, 0xda, 0x0e, 0xe9, 0xd8, 0xe0, 0xde, 0x76, 0xef,
+	0xc2, 0x54, 0x5d, 0xb1, 0x68, 0x75, 0x8f, 0x28, 0x26, 0xad, 0x11, 0x85, 0x56, 0x9b, 0x16, 0xeb,
+	0xd2, 0xe1, 0x95, 0x8b, 0xdd, 0x4e, 0x36, 0xb1, 0xa9, 0x58, 0x74, 0xc3, 0x99, 0x2b, 0x6f, 0x1d,
+	0x74, 0xb2, 0xb3, 0xb6, 0xa7, 0x3e, 0x1b, 0x2c, 0x27, 0xea, 0xbe, 0xa5, 0x16, 0xba, 0x09, 0x11,
+	0x8b, 0x2a, 0xb4, 0x6d, 0xb1, 0xf6, 0x7d, 0xa6, 0x70, 0x29, 0x60, 0xe9, 0x79, 0x3e, 0xb7, 0x98,
+	0xa9, 0x2c, 0x5c, 0xb8, 0x52, 0x63, 0xe2, 0x58, 0xa9, 0x81, 0x65, 0x48, 0xc8, 0x44, 0xd3, 0x2d,
+	0x4a, 0x4c, 0x87, 0x05, 0xff, 0x87, 0xd3, 0x2a, 0xf3, 0x56, 0x15, 0x29, 0xe6, 0xa7, 0x67, 0x92,
+	0x7f, 0xdc, 0xea, 0x4f, 0x74, 0xc8, 0x9f, 0x68, 0x5c, 0x86, 0x64, 0xcf, 0xa7, 0x38, 0xf2, 0x8b,
+	0x10, 0x13, 0x4e, 0x8f, 0xaf, 0xf5, 0x64, 0xb7, 0x93, 0x8d, 0x0a, 0x62, 0x14, 0xe5, 0x28, 0x5f,
+	0x5f, 0x52, 0xf1, 0x87, 0x4e, 0x5f, 0x10, 0xdb, 0x13, 0x38, 0x47, 0x71, 0x39, 0x0b, 0x33, 0x7e,
+	0x97, 0x82, 0x9a, 0x4b, 0xac, 0xc9, 0x73, 0x83, 0x41, 0x55, 0x03, 0xbe, 0x0f, 0x53, 0x1e, 0x63,
+	0xb1, 0xf1, 0x12, 0x44, 0x78, 0x54, 0xe1, 0x61, 0x7e, 0xa0, 0x82, 0xf2, 0xee, 0xcb, 0x1d, 0xe0,
+	0x5b, 0xbc, 0xbb, 0xf3, 0x99, 0xd1, 0x2f, 0xe8, 0x1a, 0x4c, 0xfb, 0xdc, 0x09, 0xc0, 0x37, 0x61,
+	0x82, 0xc7, 0x73, 0xee, 0xe7, 0x21, 0x10, 0x3b, 0x1e, 0x30, 0x71, 0x4a, 0xe7, 0x4f, 0xe9, 0x08,
+	0xa5, 0xb3, 0xb5, 0x19, 0x23, 0x75, 0xc8, 0x26, 0xb5, 0x60, 0xb1, 0x5b, 0x4e, 0x7f, 0xf2, 0xf1,
+	0x26, 0x9c, 0x59, 0x27, 0xbe, 0x76, 0x36, 0x0a, 0x69, 0x9e, 0x49, 0x4c, 0x52, 0xfa, 0x5a, 0x59,
+	0xc5, 0xd7, 0xca, 0xae, 0x07, 0x6f, 0x65, 0xff, 0xac, 0x1e, 0xf6, 0x9d, 0x04, 0x49, 0xde, 0x31,
+	0x3c, 0xed, 0x60, 0x94, 0x2a, 0x8d, 0xd6, 0xbf, 0xa6, 0x61, 0xca, 0x83, 0x46, 0x14, 0xf3, 0x33,
+	0x48, 0xf2, 0x96, 0x72, 0x42, 0x10, 0xfb, 0x9b, 0xd6, 0x34, 0x4c, 0x79, 0x22, 0xf0, 0xb0, 0x17,
+	0x1e, 0x4b, 0x30, 0xe9, 0xbd, 0x5d, 0xd1, 0xbf, 0xe0, 0x6c, 0x71, 0xed, 0xa3, 0xd2, 0xea, 0x5a,
+	0x75, 0xab, 0xb2, 0x5c, 0xd9, 0xde, 0xaa, 0x6e, 0x97, 0x6f, 0x96, 0x6f, 0xdf, 0x29, 0x27, 0xc7,
+	0xfa, 0xa7, 0x36, 0xd6, 0x96, 0x37, 0x2b, 0x1b, 0x77, 0x93, 0x12, 0xfa, 0x37, 0x9c, 0x3b, 0x6c,
+	0xe5, 0x4c, 0x86, 0x50, 0x06, 0xd2, 0xfe, 0xc9, 0x62, 0x69, 0x6b, 0xf5, 0x76, 0xb9, 0xbc, 0xb6,
+	0x5a, 0x59, 0x2b, 0x26, 0xc3, 0x85, 0x97, 0x51, 0x48, 0xb0, 0xf3, 0x7b, 0x4b, 0x33, 0xb7, 0x88,
+	0x69, 0x83, 0x41, 0x5f, 0x4b, 0x10, 0xf7, 0xbc, 0x9f, 0xd0, 0xd5, 0x80, 0x49, 0xee, 0x7f, 0xd1,
+	0xa5, 0x17, 0x87, 0x31, 0x15, 0x07, 0xe0, 0x11, 0x44, 0x9d, 0x67, 0x11, 0x5a, 0x08, 0x4e, 0x7f,
+	0x5f, 0xfc, 0xcb, 0x03, 0xdb, 0x89, 0xe0, 0x8f, 0x25, 0x80, 0xde, 0x83, 0x07, 0x5d, 0x09, 0xe8,
+	0xa7, 0xef, 0xad, 0x95, 0xbe, 0x3a, 0x84, 0xa5, 0xc0, 0xf0, 0x8d, 0x04, 0x93, 0xde, 0xcb, 0x07,
+	0x05, 0xcd, 0xe6, 0x11, 0x17, 0x63, 0x7a, 0x69, 0x28, 0x5b, 0x81, 0xc4, 0x66, 0x84, 0xe7, 0x01,
+	0x15, 0x98, 0x11, 0xfd, 0x4f, 0xba, 0xf4, 0xe2, 0x30, 0xa6, 0x02, 0xc6, 0xf7, 0x12, 0xbb, 0x75,
+	0x3d, 0x5a, 0x1d, 0x5d, 0x1b, 0x52, 0xe2, 0x73, 0x30, 0xef, 0x8e, 0xf4, 0x40, 0x40, 0x3f, 0xba,
+	0x77, 0x5b, 0x6f, 0x16, 0xbd, 0x17, 0x78, 0x83, 0x47, 0x0a, 0xfb, 0xf4, 0xfb, 0x43, 0xdb, 0x7b,
+	0x50, 0x1d, 0x56, 0xc8, 0x81, 0x51, 0x1d, 0x23, 0xe0, 0x03, 0xa3, 0x3a, 0x4e, 0x9a, 0x17, 0x7e,
+	0x9a, 0x80, 0x69, 0xe7, 0xa2, 0x59, 0x53, 0x35, 0xe2, 0x5c, 0x36, 0x8f, 0x20, 0xea, 0x48, 0xba,
+	0xc0, 0xa7, 0xfc, 0x90, 0xae, 0x0c, 0x7c, 0xca, 0xfb, 0xb4, 0x63, 0xef, 0x84, 0x89, 0x1b, 0x78,
+	0x30, 0x76, 0xfa, 0x54, 0xe3, 0x80, 0x27, 0xcc, 0x2f, 0x0f, 0xd1, 0x97, 0x10, 0x73, 0x15, 0x1e,
+	0xba, 0x3c, 0x08, 0x2d, 0xbd, 0x87, 0xfc, 0xca, 0xe0, 0x86, 0x9e, 0x13, 0xee, 0xd1, 0x6c, 0x68,
+	0x90, 0x6b, 0xcb, 0x2f, 0x1b, 0x03, 0x9f, 0xf0, 0xa3, 0x24, 0xe2, 0x17, 0x30, 0x21, 0x14, 0x0c,
+	0x7a, 0x67, 0x50, 0xc5, 0xc3, 0xa3, 0x2f, 0x0c, 0x27, 0x94, 0xec, 0x02, 0xb8, 0xc2, 0x20, 0x70,
+	0x01, 0x0e, 0x0b, 0x9b, 0xc0, 0x05, 0xe8, 0xd3, 0x20, 0x76, 0x7c, 0x57, 0x21, 0x04, 0x8e, 0x7f,
+	0x58, 0xb5, 0x04, 0x8e, 0xdf, 0x27, 0x46, 0x56, 0x1e, 0x3c, 0x7d, 0x9e, 0x19, 0x7b, 0xf6, 0x3c,
+	0x33, 0xf6, 0xea, 0x79, 0x46, 0xfa, 0xaa, 0x9b, 0x91, 0x7e, 0xe9, 0x66, 0xa4, 0x5f, 0xbb, 0x19,
+	0xe9, 0x69, 0x37, 0x23, 0xfd, 0xde, 0xcd, 0x48, 0x7f, 0x74, 0x33, 0x63, 0xaf, 0xba, 0x19, 0xe9,
+	0xc9, 0x8b, 0xcc, 0xd8, 0xd3, 0x17, 0x99, 0xb1, 0x67, 0x2f, 0x32, 0x63, 0xf7, 0x96, 0x34, 0xbd,
+	0x51, 0x27, 0xb4, 0xae, 0xd4, 0xac, 0x9c, 0xa2, 0xe7, 0xf9, 0x28, 0xff, 0x97, 0xbf, 0xec, 0x2f,
+	0xd9, 0x7f, 0x6b, 0x11, 0xf6, 0x7b, 0xd7, 0xa5, 0x3f, 0x03, 0x00, 0x00, 0xff, 0xff, 0x27, 0x04,
+	0xa4, 0x26, 0x0a, 0x18, 0x00, 0x00,
 }
 
 func (x DeviceStatus) String() string {
@@ -2328,6 +2600,155 @@ func (this *UpdateDeviceResponse) Equal(that interface{}) bool {
 	}
 	return true
 }
+func (this *GetTagsRequest) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*GetTagsRequest)
+	if !ok {
+		that2, ok := that.(GetTagsRequest)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.DeviceID.Equal(that1.DeviceID) {
+		return false
+	}
+	return true
+}
+func (this *GetTagsResponse) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*GetTagsResponse)
+	if !ok {
+		that2, ok := that.(GetTagsResponse)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if len(this.Tags) != len(that1.Tags) {
+		return false
+	}
+	for i := range this.Tags {
+		if !this.Tags[i].Equal(that1.Tags[i]) {
+			return false
+		}
+	}
+	return true
+}
+func (this *UpsertTagRequest) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*UpsertTagRequest)
+	if !ok {
+		that2, ok := that.(UpsertTagRequest)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.DeviceID.Equal(that1.DeviceID) {
+		return false
+	}
+	if !this.Tag.Equal(that1.Tag) {
+		return false
+	}
+	return true
+}
+func (this *UpsertTagResponse) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*UpsertTagResponse)
+	if !ok {
+		that2, ok := that.(UpsertTagResponse)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	return true
+}
+func (this *DeleteTagRequest) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*DeleteTagRequest)
+	if !ok {
+		that2, ok := that.(DeleteTagRequest)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.DeviceID.Equal(that1.DeviceID) {
+		return false
+	}
+	if this.Key != that1.Key {
+		return false
+	}
+	return true
+}
+func (this *DeleteTagResponse) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*DeleteTagResponse)
+	if !ok {
+		that2, ok := that.(DeleteTagResponse)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	return true
+}
 func (this *FleetInfo) GoString() string {
 	if this == nil {
 		return "nil"
@@ -2696,6 +3117,86 @@ func (this *UpdateDeviceResponse) GoString() string {
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
+func (this *GetTagsRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&fmpb.GetTagsRequest{")
+	if this.DeviceID != nil {
+		s = append(s, "DeviceID: "+fmt.Sprintf("%#v", this.DeviceID)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *GetTagsResponse) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&fmpb.GetTagsResponse{")
+	keysForTags := make([]string, 0, len(this.Tags))
+	for k, _ := range this.Tags {
+		keysForTags = append(keysForTags, k)
+	}
+	github_com_gogo_protobuf_sortkeys.Strings(keysForTags)
+	mapStringForTags := "map[string]*TagWithMetadata{"
+	for _, k := range keysForTags {
+		mapStringForTags += fmt.Sprintf("%#v: %#v,", k, this.Tags[k])
+	}
+	mapStringForTags += "}"
+	if this.Tags != nil {
+		s = append(s, "Tags: "+mapStringForTags+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *UpsertTagRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&fmpb.UpsertTagRequest{")
+	if this.DeviceID != nil {
+		s = append(s, "DeviceID: "+fmt.Sprintf("%#v", this.DeviceID)+",\n")
+	}
+	if this.Tag != nil {
+		s = append(s, "Tag: "+fmt.Sprintf("%#v", this.Tag)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *UpsertTagResponse) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 4)
+	s = append(s, "&fmpb.UpsertTagResponse{")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *DeleteTagRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&fmpb.DeleteTagRequest{")
+	if this.DeviceID != nil {
+		s = append(s, "DeviceID: "+fmt.Sprintf("%#v", this.DeviceID)+",\n")
+	}
+	s = append(s, "Key: "+fmt.Sprintf("%#v", this.Key)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *DeleteTagResponse) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 4)
+	s = append(s, "&fmpb.DeleteTagResponse{")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
 func valueToGoStringFmpb(v interface{}, typ string) string {
 	rv := reflect.ValueOf(v)
 	if rv.IsNil() {
@@ -3045,6 +3546,9 @@ type FleetMgrEdgeServiceClient interface {
 	UpdateStatus(ctx context.Context, in *UpdateStatusRequest, opts ...grpc.CallOption) (*UpdateStatusResponse, error)
 	GetDevice(ctx context.Context, in *GetDeviceRequest, opts ...grpc.CallOption) (*GetDeviceResponse, error)
 	ListDevices(ctx context.Context, in *ListDevicesRequest, opts ...grpc.CallOption) (*ListDevicesResponse, error)
+	GetTags(ctx context.Context, in *GetTagsRequest, opts ...grpc.CallOption) (*GetTagsResponse, error)
+	UpsertTag(ctx context.Context, in *UpsertTagRequest, opts ...grpc.CallOption) (*UpsertTagResponse, error)
+	DeleteTag(ctx context.Context, in *DeleteTagRequest, opts ...grpc.CallOption) (*DeleteTagResponse, error)
 }
 
 type fleetMgrEdgeServiceClient struct {
@@ -3091,12 +3595,42 @@ func (c *fleetMgrEdgeServiceClient) ListDevices(ctx context.Context, in *ListDev
 	return out, nil
 }
 
+func (c *fleetMgrEdgeServiceClient) GetTags(ctx context.Context, in *GetTagsRequest, opts ...grpc.CallOption) (*GetTagsResponse, error) {
+	out := new(GetTagsResponse)
+	err := c.cc.Invoke(ctx, "/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/GetTags", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *fleetMgrEdgeServiceClient) UpsertTag(ctx context.Context, in *UpsertTagRequest, opts ...grpc.CallOption) (*UpsertTagResponse, error) {
+	out := new(UpsertTagResponse)
+	err := c.cc.Invoke(ctx, "/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/UpsertTag", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *fleetMgrEdgeServiceClient) DeleteTag(ctx context.Context, in *DeleteTagRequest, opts ...grpc.CallOption) (*DeleteTagResponse, error) {
+	out := new(DeleteTagResponse)
+	err := c.cc.Invoke(ctx, "/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/DeleteTag", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FleetMgrEdgeServiceServer is the server API for FleetMgrEdgeService service.
 type FleetMgrEdgeServiceServer interface {
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	UpdateStatus(context.Context, *UpdateStatusRequest) (*UpdateStatusResponse, error)
 	GetDevice(context.Context, *GetDeviceRequest) (*GetDeviceResponse, error)
 	ListDevices(context.Context, *ListDevicesRequest) (*ListDevicesResponse, error)
+	GetTags(context.Context, *GetTagsRequest) (*GetTagsResponse, error)
+	UpsertTag(context.Context, *UpsertTagRequest) (*UpsertTagResponse, error)
+	DeleteTag(context.Context, *DeleteTagRequest) (*DeleteTagResponse, error)
 }
 
 // UnimplementedFleetMgrEdgeServiceServer can be embedded to have forward compatible implementations.
@@ -3114,6 +3648,15 @@ func (*UnimplementedFleetMgrEdgeServiceServer) GetDevice(ctx context.Context, re
 }
 func (*UnimplementedFleetMgrEdgeServiceServer) ListDevices(ctx context.Context, req *ListDevicesRequest) (*ListDevicesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListDevices not implemented")
+}
+func (*UnimplementedFleetMgrEdgeServiceServer) GetTags(ctx context.Context, req *GetTagsRequest) (*GetTagsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTags not implemented")
+}
+func (*UnimplementedFleetMgrEdgeServiceServer) UpsertTag(ctx context.Context, req *UpsertTagRequest) (*UpsertTagResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpsertTag not implemented")
+}
+func (*UnimplementedFleetMgrEdgeServiceServer) DeleteTag(ctx context.Context, req *DeleteTagRequest) (*DeleteTagResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteTag not implemented")
 }
 
 func RegisterFleetMgrEdgeServiceServer(s *grpc.Server, srv FleetMgrEdgeServiceServer) {
@@ -3192,6 +3735,60 @@ func _FleetMgrEdgeService_ListDevices_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FleetMgrEdgeService_GetTags_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTagsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FleetMgrEdgeServiceServer).GetTags(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/GetTags",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FleetMgrEdgeServiceServer).GetTags(ctx, req.(*GetTagsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FleetMgrEdgeService_UpsertTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpsertTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FleetMgrEdgeServiceServer).UpsertTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/UpsertTag",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FleetMgrEdgeServiceServer).UpsertTag(ctx, req.(*UpsertTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FleetMgrEdgeService_DeleteTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FleetMgrEdgeServiceServer).DeleteTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/DeleteTag",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FleetMgrEdgeServiceServer).DeleteTag(ctx, req.(*DeleteTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _FleetMgrEdgeService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService",
 	HandlerType: (*FleetMgrEdgeServiceServer)(nil),
@@ -3211,6 +3808,18 @@ var _FleetMgrEdgeService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListDevices",
 			Handler:    _FleetMgrEdgeService_ListDevices_Handler,
+		},
+		{
+			MethodName: "GetTags",
+			Handler:    _FleetMgrEdgeService_GetTags_Handler,
+		},
+		{
+			MethodName: "UpsertTag",
+			Handler:    _FleetMgrEdgeService_UpsertTag_Handler,
+		},
+		{
+			MethodName: "DeleteTag",
+			Handler:    _FleetMgrEdgeService_DeleteTag_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -4343,6 +4952,225 @@ func (m *UpdateDeviceResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *GetTagsRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetTagsRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetTagsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.DeviceID != nil {
+		{
+			size, err := m.DeviceID.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintFmpb(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GetTagsResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetTagsResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetTagsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Tags) > 0 {
+		for k := range m.Tags {
+			v := m.Tags[k]
+			baseI := i
+			if v != nil {
+				{
+					size, err := v.MarshalToSizedBuffer(dAtA[:i])
+					if err != nil {
+						return 0, err
+					}
+					i -= size
+					i = encodeVarintFmpb(dAtA, i, uint64(size))
+				}
+				i--
+				dAtA[i] = 0x12
+			}
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintFmpb(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintFmpb(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *UpsertTagRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UpsertTagRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UpsertTagRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Tag != nil {
+		{
+			size, err := m.Tag.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintFmpb(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.DeviceID != nil {
+		{
+			size, err := m.DeviceID.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintFmpb(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *UpsertTagResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UpsertTagResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UpsertTagResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *DeleteTagRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *DeleteTagRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *DeleteTagRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Key) > 0 {
+		i -= len(m.Key)
+		copy(dAtA[i:], m.Key)
+		i = encodeVarintFmpb(dAtA, i, uint64(len(m.Key)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.DeviceID != nil {
+		{
+			size, err := m.DeviceID.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintFmpb(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *DeleteTagResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *DeleteTagResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *DeleteTagResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintFmpb(dAtA []byte, offset int, v uint64) int {
 	offset -= sovFmpb(v)
 	base := offset
@@ -4803,6 +5631,93 @@ func (m *UpdateDeviceResponse) Size() (n int) {
 	return n
 }
 
+func (m *GetTagsRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.DeviceID != nil {
+		l = m.DeviceID.Size()
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	return n
+}
+
+func (m *GetTagsResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Tags) > 0 {
+		for k, v := range m.Tags {
+			_ = k
+			_ = v
+			l = 0
+			if v != nil {
+				l = v.Size()
+				l += 1 + sovFmpb(uint64(l))
+			}
+			mapEntrySize := 1 + len(k) + sovFmpb(uint64(len(k))) + l
+			n += mapEntrySize + 1 + sovFmpb(uint64(mapEntrySize))
+		}
+	}
+	return n
+}
+
+func (m *UpsertTagRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.DeviceID != nil {
+		l = m.DeviceID.Size()
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	if m.Tag != nil {
+		l = m.Tag.Size()
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	return n
+}
+
+func (m *UpsertTagResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *DeleteTagRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.DeviceID != nil {
+		l = m.DeviceID.Size()
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	l = len(m.Key)
+	if l > 0 {
+		n += 1 + l + sovFmpb(uint64(l))
+	}
+	return n
+}
+
+func (m *DeleteTagResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
 func sovFmpb(x uint64) (n int) {
 	return (math_bits.Len64(x|1) + 6) / 7
 }
@@ -5129,6 +6044,76 @@ func (this *UpdateDeviceResponse) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&UpdateDeviceResponse{`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *GetTagsRequest) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&GetTagsRequest{`,
+		`DeviceID:` + strings.Replace(fmt.Sprintf("%v", this.DeviceID), "UUID", "typespb.UUID", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *GetTagsResponse) String() string {
+	if this == nil {
+		return "nil"
+	}
+	keysForTags := make([]string, 0, len(this.Tags))
+	for k, _ := range this.Tags {
+		keysForTags = append(keysForTags, k)
+	}
+	github_com_gogo_protobuf_sortkeys.Strings(keysForTags)
+	mapStringForTags := "map[string]*TagWithMetadata{"
+	for _, k := range keysForTags {
+		mapStringForTags += fmt.Sprintf("%v: %v,", k, this.Tags[k])
+	}
+	mapStringForTags += "}"
+	s := strings.Join([]string{`&GetTagsResponse{`,
+		`Tags:` + mapStringForTags + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *UpsertTagRequest) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&UpsertTagRequest{`,
+		`DeviceID:` + strings.Replace(fmt.Sprintf("%v", this.DeviceID), "UUID", "typespb.UUID", 1) + `,`,
+		`Tag:` + strings.Replace(this.Tag.String(), "Tag", "Tag", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *UpsertTagResponse) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&UpsertTagResponse{`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *DeleteTagRequest) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&DeleteTagRequest{`,
+		`DeviceID:` + strings.Replace(fmt.Sprintf("%v", this.DeviceID), "UUID", "typespb.UUID", 1) + `,`,
+		`Key:` + fmt.Sprintf("%v", this.Key) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *DeleteTagResponse) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&DeleteTagResponse{`,
 		`}`,
 	}, "")
 	return s
@@ -8103,6 +9088,611 @@ func (m *UpdateDeviceResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: UpdateDeviceResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipFmpb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetTagsRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowFmpb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetTagsRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetTagsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DeviceID", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.DeviceID == nil {
+				m.DeviceID = &typespb.UUID{}
+			}
+			if err := m.DeviceID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipFmpb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetTagsResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowFmpb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetTagsResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetTagsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Tags", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Tags == nil {
+				m.Tags = make(map[string]*TagWithMetadata)
+			}
+			var mapkey string
+			var mapvalue *TagWithMetadata
+			for iNdEx < postIndex {
+				entryPreIndex := iNdEx
+				var wire uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowFmpb
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					wire |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					var stringLenmapkey uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowFmpb
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapkey |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapkey := int(stringLenmapkey)
+					if intStringLenmapkey < 0 {
+						return ErrInvalidLengthFmpb
+					}
+					postStringIndexmapkey := iNdEx + intStringLenmapkey
+					if postStringIndexmapkey < 0 {
+						return ErrInvalidLengthFmpb
+					}
+					if postStringIndexmapkey > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					iNdEx = postStringIndexmapkey
+				} else if fieldNum == 2 {
+					var mapmsglen int
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowFmpb
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						mapmsglen |= int(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					if mapmsglen < 0 {
+						return ErrInvalidLengthFmpb
+					}
+					postmsgIndex := iNdEx + mapmsglen
+					if postmsgIndex < 0 {
+						return ErrInvalidLengthFmpb
+					}
+					if postmsgIndex > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = &TagWithMetadata{}
+					if err := mapvalue.Unmarshal(dAtA[iNdEx:postmsgIndex]); err != nil {
+						return err
+					}
+					iNdEx = postmsgIndex
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipFmpb(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
+						return ErrInvalidLengthFmpb
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
+				}
+			}
+			m.Tags[mapkey] = mapvalue
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipFmpb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UpsertTagRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowFmpb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: UpsertTagRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: UpsertTagRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DeviceID", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.DeviceID == nil {
+				m.DeviceID = &typespb.UUID{}
+			}
+			if err := m.DeviceID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Tag", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Tag == nil {
+				m.Tag = &Tag{}
+			}
+			if err := m.Tag.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipFmpb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UpsertTagResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowFmpb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: UpsertTagResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: UpsertTagResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipFmpb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *DeleteTagRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowFmpb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: DeleteTagRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: DeleteTagRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DeviceID", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.DeviceID == nil {
+				m.DeviceID = &typespb.UUID{}
+			}
+			if err := m.DeviceID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Key", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowFmpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Key = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipFmpb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthFmpb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *DeleteTagResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowFmpb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: DeleteTagResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: DeleteTagResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
