@@ -160,7 +160,7 @@ message FileTransferRequest {
 
 // FileTransferResponse is sent in response to a FileTransferRequest.
 message FileTransferResponse {
-  gml.types.Code code = 1;
+  gml.types.Status status = 1;
 
   // FileChunk is a chunk of the requested file, sent from the controlplane to the edge.
   message FileChunk {
