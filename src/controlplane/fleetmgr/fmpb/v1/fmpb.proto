@@ -103,10 +103,8 @@ message GetDefaultTagsRequest {
 }
 
 message GetDefaultTagsResponse {
-  // The fleetID of the fleet.
-  gml.types.UUID fleet_id = 1 [ (gogoproto.customname) = "FleetID" ];
   // A map of the default tags associated with the fleet in the <key, TagWithMetadata> format.
-  map<string, TagWithMetadata> tags = 2;
+  map<string, TagWithMetadata> tags = 1;
 }
 
 message UpsertDefaultTagRequest {
