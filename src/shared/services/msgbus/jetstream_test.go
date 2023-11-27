@@ -58,14 +58,14 @@ func receiveExpectedUpdates(c <-chan jetstream.Msg, data [][]byte) error {
 		select {
 		case m := <-c:
 			if curr >= len(data) {
-				err = fmt.Errorf("Unexpected message: %s", string(m.Data()))
+				err = fmt.Errorf("unexpected message: %s", string(m.Data()))
 			} else if !bytes.Equal(data[curr], m.Data()) {
-				err = fmt.Errorf("Data doesn't match on update %d", curr)
+				err = fmt.Errorf("data doesn't match on update %d", curr)
 			}
 			curr++
 		case <-time.After(timeout):
 			if curr < len(data) {
-				return errors.New("Timed out waiting for messages on subscription")
+				return errors.New("timed out waiting for messages on subscription")
 			}
 			return err
 		}

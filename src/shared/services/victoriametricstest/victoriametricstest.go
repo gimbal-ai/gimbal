@@ -127,7 +127,7 @@ func SetupTestVictoriaMetrics() (v1.API, func(), error) {
 		},
 	)
 	if err != nil {
-		return nil, nil, fmt.Errorf("Failed to run docker pool: %w", err)
+		return nil, nil, fmt.Errorf("failed to run docker pool: %w", err)
 	}
 	// Set a 5 minute expiration on resources.
 	err = resource.Expire(300)

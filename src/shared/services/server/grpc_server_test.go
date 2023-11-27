@@ -69,7 +69,7 @@ func (s *testserver) PingClientStream(srv ping.PingService_PingClientStreamServe
 		return err
 	}
 	if msg == nil {
-		return fmt.Errorf("Got a nil message")
+		return fmt.Errorf("got a nil message")
 	}
 	err = srv.SendAndClose(&ping.PingClientStreamResponse{Reply: "test reply"})
 	if err != nil {

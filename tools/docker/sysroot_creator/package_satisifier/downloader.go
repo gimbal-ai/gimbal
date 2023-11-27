@@ -59,7 +59,7 @@ func (d *downloader) downloadTo(url string, outPath string) error {
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("Received non-OK HTTP status: %s", resp.Status)
+		return fmt.Errorf("received non-OK HTTP status: %s", resp.Status)
 	}
 	contents, err := io.ReadAll(resp.Body)
 	if err != nil {

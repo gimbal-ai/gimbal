@@ -35,7 +35,7 @@ func startNATS() (*server.Server, *nats.Conn, error) {
 	var err error
 	defer func() {
 		if r := recover(); r != nil {
-			err = errors.New("Could not run NATS server")
+			err = errors.New("could not run NATS server")
 		}
 	}()
 	// Find available port.
@@ -56,7 +56,7 @@ func startNATS() (*server.Server, *nats.Conn, error) {
 
 	gnatsd := test.RunServer(&opts)
 	if gnatsd == nil {
-		return nil, nil, errors.New("Could not run NATS server")
+		return nil, nil, errors.New("could not run NATS server")
 	}
 
 	url := fmt.Sprintf("nats://%s:%d", opts.Host, opts.Port)
@@ -77,7 +77,7 @@ func MustStartTestNATS(t *testing.T) (*nats.Conn, func()) {
 		var err error
 		gnatsd, conn, err = startNATS()
 		if gnatsd == nil && conn == nil { // Handle case where startNATS has a recover.
-			err = errors.New("Failed to connect to NATS")
+			err = errors.New("failed to connect to NATS")
 		}
 		if err != nil {
 			return err

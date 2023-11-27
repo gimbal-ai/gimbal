@@ -52,6 +52,7 @@ linters-settings:
   nakedret:
     max-func-lines: 0
   revive:
+    confidence: 0.1
     ignore-generated-header: true
     rules:
     - name: atomic
