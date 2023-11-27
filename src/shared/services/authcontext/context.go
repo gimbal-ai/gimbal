@@ -19,12 +19,12 @@ package authcontext
 
 import (
 	"context"
-	"errors"
 	"time"
 
 	"github.com/lestrrat-go/jwx/v2/jwa"
 	"github.com/lestrrat-go/jwx/v2/jwk"
 	"github.com/lestrrat-go/jwx/v2/jwt"
+	log "github.com/sirupsen/logrus"
 
 	"gimletlabs.ai/gimlet/src/common/typespb"
 	"gimletlabs.ai/gimlet/src/shared/services/utils"
@@ -99,11 +99,11 @@ func NewContext(ctx context.Context, s *AuthContext) context.Context {
 	return context.WithValue(ctx, authContextKey{}, s)
 }
 
-// FromContext returns a session context from the passed in Context.
-func FromContext(ctx context.Context) (*AuthContext, error) {
+// MustFromContext returns a session context from the passed in Context or fatals.
+func MustFromContext(ctx context.Context) *AuthContext {
 	s, ok := ctx.Value(authContextKey{}).(*AuthContext)
 	if !ok {
-		return nil, errors.New("failed to get auth info from context")
+		log.Fatal("failed to get auth info from context")
 	}
-	return s, nil
+	return s
 }

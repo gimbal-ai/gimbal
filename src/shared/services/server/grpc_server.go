@@ -103,11 +103,7 @@ func createGRPCAuthFunc(env env.Env, opts *GRPCServerOptions) func(context.Conte
 		var err error
 		var token string
 
-		sCtx, err := authcontext.FromContext(ctx)
-		if err != nil {
-			return nil, status.Errorf(codes.Internal, "missing session context: %v", err)
-		}
-
+		sCtx := authcontext.MustFromContext(ctx)
 		if _, ok := opts.DisableAuth[sCtx.Path]; ok {
 			return ctx, nil
 		}

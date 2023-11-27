@@ -27,6 +27,7 @@ go_library(
         "@com_github_lestrrat_go_jwx_v2//jwa",
         "@com_github_lestrrat_go_jwx_v2//jwk",
         "@com_github_lestrrat_go_jwx_v2//jwt",
+        "@com_github_sirupsen_logrus//:logrus",
     ],
 )
 
