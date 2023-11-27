@@ -151,6 +151,8 @@ func CPNATSPartitionTopic(partition string, edgeID string, topic corepb.CPTopic,
 	switch topic {
 	case corepb.CP_TOPIC_DEVICE_CONNECTED:
 		return gen("deviceConnected"), nil
+	case corepb.CP_TOPIC_PIPELINE_RECONCILIATION:
+		return gen("pipelineReconciliation"), nil
 	default:
 		return "", fmt.Errorf("bad topic %s", topic.String())
 	}

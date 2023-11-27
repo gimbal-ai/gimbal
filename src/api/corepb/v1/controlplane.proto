@@ -28,9 +28,15 @@ import "src/common/typespb/uuid.proto";
 enum CPTopic {
   CP_TOPIC_UNKNOWN = 0;
   CP_TOPIC_DEVICE_CONNECTED = 1;
+  CP_TOPIC_PIPELINE_RECONCILIATION = 2;
 }
 
 // DeviceConnected is sent whenever a device connects.
 message DeviceConnected {
   gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
+}
+
+message PipelineReconciliation {
+  gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
+  gml.types.UUID pipeline_id = 2 [ (gogoproto.customname) = "PipelineID" ];
 }
