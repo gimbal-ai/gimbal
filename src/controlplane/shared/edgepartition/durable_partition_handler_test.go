@@ -99,7 +99,7 @@ func TestDurablePartitionHandler_MessageHandler(t *testing.T) {
 
 	handlers := make(map[string]edgepartition.DurableMessageHandler)
 	handlers[proto.MessageName(&corepb.EdgeHeartbeat{})] = handler
-	ph := edgepartition.NewDurablePartitionHandler(s, corepb.EDGE_CP_TOPIC_STATUS, "testsvc", handlers)
+	ph := edgepartition.NewDurablePartitionHandler(s, "testsvc", handlers).WithEdgeToCPTopic(corepb.EDGE_CP_TOPIC_STATUS)
 	err = ph.Start()
 	require.NoError(t, err)
 

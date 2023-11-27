@@ -33,10 +33,12 @@ var ErrInvalidMessage = errors.New("message format invalid or unexpected")
 
 type DurableMessageHandler func(*corepb.EdgeCPMetadata, *types.Any) error
 
+type partitionTopic func(partition string) (string, error)
+
 // DurablePartitionHandler handles any incoming Jetstream messages from an edge device.
 type DurablePartitionHandler struct {
 	js              *msgbus.JetStreamStreamer
-	e2cpTopic       corepb.EdgeCPTopic
+	partitionTopic  partitionTopic
 	consumer        string
 	messageHandlers map[string]DurableMessageHandler
 
@@ -46,10 +48,9 @@ type DurablePartitionHandler struct {
 }
 
 // NewDurablePartitionHandler creates a new partition handler for the given topic.
-func NewDurablePartitionHandler(js *msgbus.JetStreamStreamer, e2cpTopic corepb.EdgeCPTopic, consumer string, messageHandlers map[string]DurableMessageHandler) *DurablePartitionHandler {
+func NewDurablePartitionHandler(js *msgbus.JetStreamStreamer, consumer string, messageHandlers map[string]DurableMessageHandler) *DurablePartitionHandler {
 	return &DurablePartitionHandler{
 		js:              js,
-		e2cpTopic:       e2cpTopic,
 		consumer:        consumer,
 		messageHandlers: messageHandlers,
 	}
@@ -68,6 +69,22 @@ func (p *DurablePartitionHandler) Start() error {
 	}
 
 	return nil
+}
+
+func (p *DurablePartitionHandler) WithEdgeToCPTopic(topic corepb.EdgeCPTopic) *DurablePartitionHandler {
+	p.partitionTopic = func(p string) (string, error) {
+		return EdgeToCPNATSPartitionTopic(p, topic, true)
+	}
+
+	return p
+}
+
+func (p *DurablePartitionHandler) WithCPTopic(topic corepb.CPTopic) *DurablePartitionHandler {
+	p.partitionTopic = func(p string) (string, error) {
+		return CPNATSPartitionTopic(p, topic, true)
+	}
+
+	return p
 }
 
 func (p *DurablePartitionHandler) handleMessage(topic string, msg jetstream.Msg) error {
@@ -95,7 +112,7 @@ func (p *DurablePartitionHandler) handleMessage(topic string, msg jetstream.Msg)
 }
 
 func (p *DurablePartitionHandler) startDurablePartitionHandler(partition string) error {
-	topic, err := EdgeToCPNATSPartitionTopic(partition, p.e2cpTopic, true)
+	topic, err := p.partitionTopic(partition)
 	if err != nil {
 		return err
 	}
