@@ -89,6 +89,8 @@ func (s *AuthContext) ValidClaims() bool {
 			return false
 		}
 		return true
+	case utils.DeviceClaimType:
+		return true
 	default:
 	}
 	return false
