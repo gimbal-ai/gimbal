@@ -29,14 +29,16 @@ enum FileStatus {
   FILE_STATUS_UNKNOWN = 0;
   FILE_STATUS_CREATED = 10;
   FILE_STATUS_READY = 20;
+  FILE_STATUS_DELETED = 30;
 }
 
 message FileInfo {
-  gml.types.UUID file_id = 1 [ (gogoproto.customname) = "FileID" ];
+  gml.types.UUID file_id = 1
+      [ (gogoproto.customname) = "FileID", (gogoproto.moretags) = 'db:"id"' ];
   FileStatus status = 2;
-  string name = 3;
-  uint64 size_bytes = 4;
-  string sha256sum = 5;
+  string name = 3 [ (gogoproto.moretags) = 'db:"name"' ];
+  uint64 size_bytes = 4 [ (gogoproto.moretags) = 'db:"size_bytes"' ];
+  string sha256sum = 5 [ (gogoproto.moretags) = 'db:"sha256sum"' ];
 }
 
 message CreateFileInfoRequest {
@@ -81,6 +83,8 @@ message DownloadFileResponse {
 
 message DeleteFileRequest {
   gml.types.UUID file_id = 1 [ (gogoproto.customname) = "FileID" ];
+  // Actually delete the files instead of just marking them as deleted. This might break things.
+  bool purge = 2;
 }
 
 message DeleteFileResponse {}
