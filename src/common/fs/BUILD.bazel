@@ -23,9 +23,11 @@ gml_cc_library_internal(
     name = "cc_library",
     srcs = [
         "fs_wrapper.cc",
+        "temp_dir.cc",
     ],
     hdrs = [
         "fs_wrapper.h",
+        "temp_dir.h",
         "temp_file.h",
     ],
     deps = ["//src/common/base:cc_library"],
@@ -40,5 +42,11 @@ gml_cc_test(
 gml_cc_test(
     name = "temp_file_test",
     srcs = ["temp_file_test.cc"],
+    deps = [":cc_library"],
+)
+
+gml_cc_test(
+    name = "temp_dir_test",
+    srcs = ["temp_dir_test.cc"],
     deps = [":cc_library"],
 )
