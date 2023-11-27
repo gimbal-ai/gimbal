@@ -82,7 +82,7 @@ func getDurableStreams() []jetstream.StreamConfig {
 		log.WithError(err).Fatal("Could not get metrics topic")
 	}
 
-	connectedDevicesTopic, err := edgepartition.CPNATSPartitionTopic("*", "*", corepb.CPTopic(corepb.CP_TOPIC_DEVICE_CONNECTED), true)
+	connectedDevicesTopic, err := edgepartition.CPNATSPartitionTopic("*", corepb.CPTopic(corepb.CP_TOPIC_DEVICE_CONNECTED), true)
 	if err != nil {
 		log.WithError(err).Fatal("Could not get connected devices topic")
 	}

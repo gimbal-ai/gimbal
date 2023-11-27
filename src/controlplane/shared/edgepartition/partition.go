@@ -92,8 +92,12 @@ func CPToEdgeNATSTopicBase(edgeID uuid.UUID) (string, error) {
 	return fmt.Sprintf("%s.%s.%s", cpToEdgePrefix, EdgeIDToPartition(edgeID), edgeID.String()), nil
 }
 
-func CPToEdgeNATSTopic(edgeID uuid.UUID, topic corepb.CPEdgeTopic) (string, error) {
+func CPToEdgeNATSTopic(edgeID uuid.UUID, topic corepb.CPEdgeTopic, isDurable bool) (string, error) {
 	gen := func(str string) string {
+		if isDurable {
+			str = "Durable" + str
+		}
+
 		base, _ := CPToEdgeNATSTopicBase(edgeID)
 		return fmt.Sprintf("%s.%s", base, str)
 	}
@@ -140,8 +144,8 @@ func EdgeToCPNATSPartitionTopic(partition string, topic corepb.EdgeCPTopic, isDu
 	return edgeToCPNATSTopic(partition, "*", topic, isDurable)
 }
 
-// CPNATSPartitionTopic is for topics published and read in the controlplane, but is still partitioned.
-func CPNATSPartitionTopic(partition string, edgeID string, topic corepb.CPTopic, isDurable bool) (string, error) {
+// CPNATSTopic is for topics published and read in the controlplane, but is still partitioned.
+func CPNATSTopic(partition string, edgeID string, topic corepb.CPTopic, isDurable bool) (string, error) {
 	gen := func(str string) string {
 		if isDurable {
 			str = "Durable" + str
@@ -156,4 +160,8 @@ func CPNATSPartitionTopic(partition string, edgeID string, topic corepb.CPTopic,
 	default:
 		return "", fmt.Errorf("bad topic %s", topic.String())
 	}
+}
+
+func CPNATSPartitionTopic(partition string, topic corepb.CPTopic, isDurable bool) (string, error) {
+	return CPNATSTopic(partition, "*", topic, isDurable)
 }
