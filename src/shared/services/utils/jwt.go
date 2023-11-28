@@ -117,19 +117,19 @@ func userTokenToProto(token jwt.Token) *typespb.JWTClaims_UserClaims {
 	userID := ""
 	cUserID, ok := claims["UserID"]
 	if ok {
-		userID = cUserID.(string)
+		userID, _ = cUserID.(string)
 	}
 
 	email := ""
 	cEmail, ok := claims["Email"]
 	if ok {
-		email = cEmail.(string)
+		email, _ = cEmail.(string)
 	}
 
 	authorizations := []*typespb.UserJWTClaims_AuthorizationDetails{}
 	cAuth, ok := claims["Authorizations"]
 	if ok {
-		castedAuth := cAuth.(string)
+		castedAuth, _ := cAuth.(string)
 		err := json.Unmarshal([]byte(castedAuth), &authorizations)
 		if err != nil {
 			log.WithError(err).Error("Failed to unmarshal authorizations")
@@ -151,7 +151,7 @@ func serviceTokenToProto(token jwt.Token) *typespb.JWTClaims_ServiceClaims {
 	serviceID := ""
 	cServiceID, ok := claims["ServiceID"]
 	if ok {
-		serviceID = cServiceID.(string)
+		serviceID, _ = cServiceID.(string)
 	}
 
 	return &typespb.JWTClaims_ServiceClaims{
@@ -167,13 +167,13 @@ func deviceTokenToProto(token jwt.Token) *typespb.JWTClaims_DeviceClaims {
 	deviceID := ""
 	cDeviceID, ok := claims["DeviceID"]
 	if ok {
-		deviceID = cDeviceID.(string)
+		deviceID, _ = cDeviceID.(string)
 	}
 
 	fleetID := ""
 	cFleetID, ok := claims["FleetID"]
 	if ok {
-		fleetID = cFleetID.(string)
+		fleetID, _ = cFleetID.(string)
 	}
 
 	return &typespb.JWTClaims_DeviceClaims{

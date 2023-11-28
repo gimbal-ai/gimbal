@@ -54,10 +54,10 @@ func IsMetricAvailable(ctx context.Context, conn promv1.API, query string) error
 	var l int
 	switch res.Type() {
 	case model.ValVector:
-		items := res.(model.Vector)
+		items, _ := res.(model.Vector)
 		l = items.Len()
 	case model.ValMatrix:
-		items := res.(model.Matrix)
+		items, _ := res.(model.Matrix)
 		l = items.Len()
 	default:
 		return fmt.Errorf("%w: %s", ErrUnsupportedMetricType, res.Type().String())

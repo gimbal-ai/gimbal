@@ -107,6 +107,10 @@ linters-settings:
       disabled: false
     - name: time-naming
       disabled: false
+    - name: unchecked-type-assertion
+      disabled: false
+      arguments:
+      - acceptIgnoredAssertionResult: true
     - name: unexported-return
       disabled: false
     - name: unreachable-code
