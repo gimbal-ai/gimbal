@@ -22,15 +22,13 @@ package gml.internal.api.core.v1;
 option go_package = "gimletlabs.ai/gimlet/src/api/corepb/v1;corepb";
 
 import "mediapipe/framework/calculator.proto";
-import "src/common/typespb/dag.proto";
 import "src/common/typespb/uuid.proto";
 
 // Pipeline is a high-level representation of an execution graph.
 message Pipeline {
-  // The DAG which stores the connection information.
-  gml.types.DAG dag = 1;
-
-  // List of nodes referenced by the DAG.
+  // List of nodes in the pipeline.
+  // Each node defines its input and output ports.
+  // To connect nodes, the same net name should set for the relevant ports.
   repeated PipelineNode nodes = 2;
 }
 
@@ -38,19 +36,19 @@ message Pipeline {
 message PipelineNode {
   // A unique ID used to reference this node.
   uint64 id = 1;
-
-  oneof node {
-    PipelineSource source = 100;
-    PipelineSink sink = 101;
-    PipelineModel model = 102;
-  }
+  string type = 2;
+  repeated Port inputs = 3;
+  repeated Port outputs = 4;
 }
 
-message PipelineSink {}
-
-message PipelineSource {}
-
-message PipelineModel {}
+// A port has a name, and a net.
+// The port is a logical name for the input or output.
+// The net defines how the port is connected to other ports of other nodes (common net names on
+// ports throughout the graph are connected).
+message Port {
+  string name = 1;
+  string net = 2;
+}
 
 // ExecutionGraph represents a pipeline deployment that the GEM should execute.
 message ExecutionGraph {

@@ -21,7 +21,6 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 proto_library(
     name = "typespb_proto",
     srcs = [
-        "dag.proto",
         "jwt.proto",
         "status.proto",
         "uuid.proto",
@@ -36,13 +35,11 @@ proto_library(
 proto_cc_library(
     name = "typespb_cc_library",
     srcs = [
-        "dag.pb.cc",
         "jwt.pb.cc",
         "status.pb.cc",
         "uuid.pb.cc",
     ],
     hdrs = [
-        "dag.pb.h",
         "jwt.pb.h",
         "status.pb.h",
         "uuid.pb.h",
@@ -63,8 +60,6 @@ proto_compile(
         "uuid.pb.h",
         "jwt.pb.cc",
         "jwt.pb.h",
-        "dag.pb.cc",
-        "dag.pb.h",
     ],
     plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
     proto = "typespb_proto",
@@ -77,13 +72,11 @@ proto_compile(
         "status.pb.go=gimletlabs.ai/gimlet/src/common/typespb/status.pb.go",
         "uuid.pb.go=gimletlabs.ai/gimlet/src/common/typespb/uuid.pb.go",
         "jwt.pb.go=gimletlabs.ai/gimlet/src/common/typespb/jwt.pb.go",
-        "dag.pb.go=gimletlabs.ai/gimlet/src/common/typespb/dag.pb.go",
     ],
     outputs = [
         "status.pb.go",
         "uuid.pb.go",
         "jwt.pb.go",
-        "dag.pb.go",
     ],
     plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
     proto = "typespb_proto",
@@ -93,7 +86,6 @@ proto_compile(
 proto_go_library(
     name = "typespb_go_proto",
     srcs = [
-        "dag.pb.go",
         "jwt.pb.go",
         "status.pb.go",
         "uuid.pb.go",
