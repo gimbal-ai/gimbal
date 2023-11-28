@@ -290,9 +290,9 @@ REPOSITORY_LOCATIONS = dict(
         ],
     ),
     com_github_google_mediapipe = dict(
-        sha256 = "0746834dc40600ee75fcc6b18181b612094c25badafeeba7c53ca2f3f0813d46",
-        strip_prefix = "mediapipe-ce4f6d5e71538a7610ce7b181ace904f4986fd96",
-        urls = ["https://github.com/gimletlabs/mediapipe/archive/ce4f6d5e71538a7610ce7b181ace904f4986fd96.tar.gz"],
+        sha256 = "79261f294085c5a5d86f1a2eba09219e3bbb2429d648e4fffd8e66e1051e843d",
+        strip_prefix = "mediapipe-19261a6fbd2cdd4b5df79eeff3d26f544a013c0e",
+        urls = ["https://github.com/gimletlabs/mediapipe/archive/19261a6fbd2cdd4b5df79eeff3d26f544a013c0e.tar.gz"],
     ),
     com_github_cisco_openh264 = dict(
         sha256 = "453afa66dacb560bc5fd0468aabee90c483741571bca820a39a1c07f0362dc32",

@@ -18,9 +18,9 @@
 #pragma once
 
 #include <mediapipe/framework/calculator_framework.h>
+#include <mediapipe/framework/formats/image_format.pb.h>
 #include <opencv4/opencv2/opencv.hpp>
 
-#include "mediapipe/framework/formats/image_format.pb.h"
 #include "src/gem/calculators/plugin/opencv_cam/optionspb/opencv_cam_calculator_options.pb.h"
 
 namespace gml::gem::calculators::opencv {

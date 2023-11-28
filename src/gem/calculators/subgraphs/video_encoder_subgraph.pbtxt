@@ -1,0 +1,17 @@
+type: "VideoEncoderSubgraph"
+input_stream: "sampled_frames"
+output_stream: "encoded_av_packets"
+
+
+node {
+  calculator: "ImageFrameToYUVPlanarImage"
+  input_stream: "IMAGE_FRAME:sampled_frames"
+  output_stream: "YUV_IMAGE:planar_image"
+}
+
+node {
+  calculator: "FFmpegVideoEncoderCalculator"
+  input_stream: "PLANAR_IMAGE:planar_image"
+  input_side_packet: "FRAME_RATE:frame_rate"
+  output_stream: "AV_PACKETS:encoded_av_packets"
+}

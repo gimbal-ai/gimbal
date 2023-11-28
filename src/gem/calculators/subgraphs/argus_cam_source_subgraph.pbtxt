@@ -1,0 +1,39 @@
+type: "ArgusCamSourceSubgraph"
+output_stream: "sampled_frames"
+input_stream: "FINISHED:detections"
+output_stream: "ALLOW:frame_allowed"
+
+node {
+  calculator: "ArgusCamSourceCalculator"
+  output_stream: "nv_buf"
+  node_options {
+    [type.googleapis.com/gml.gem.calculators.argus.optionspb.ArgusCamSourceCalculatorOptions] {
+      target_frame_rate: 18
+    }
+  }
+}
+
+node {
+  calculator: "NvBufSurfToImageFrameCalculator"
+  input_stream: "nv_buf"
+  output_stream: "video_frames"
+}
+
+node {
+  calculator: "FlowLimiterCalculator"
+  input_stream: "video_frames"
+  input_stream: "FINISHED:detections"
+  input_stream_info {
+    tag_index: "FINISHED"
+    back_edge: true
+  }
+  output_stream: "sampled_frames"
+  output_stream: "ALLOW:frame_allowed"
+  node_options: {
+    [type.googleapis.com/mediapipe.FlowLimiterCalculatorOptions] {
+      max_in_flight: 1
+      max_in_queue: 1
+      in_flight_timeout: 0
+    }
+  }
+}

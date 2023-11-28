@@ -150,4 +150,29 @@ TEST(Runner, CollectStats) {
   EXPECT_EQ(profiles[0].process_runtime().count_size(), kNumHistIntervals);
 }
 
+TEST(Runner, Subgraph) {
+  static constexpr char kExecSpecUsingSubgraphPbTxt[] = R"pbtxt(
+    graph {
+      output_stream: "frame_out"
+      input_stream: "FINISHED:frame_processed"
+      output_stream: "ALLOW:frame_allowed"
+
+      node {
+        calculator: "OpenCVCamSourceSubgraph"
+        output_stream: "FRAMES:frame_out"
+        input_stream: "FINISHED:frame_processed"
+        output_stream: "ALLOW:frame_allowed"
+      }
+    }
+  )pbtxt";
+
+  ExecutionSpec spec;
+  ASSERT_TRUE(google::protobuf::TextFormat::ParseFromString(kExecSpecUsingSubgraphPbTxt, &spec));
+
+  Runner runner(spec);
+
+  // Only check that we init(), which means the subgraph and its node_options are loaded properly.
+  ASSERT_OK(runner.Init({}));
+}
+
 }  // namespace gml::gem::exec::core

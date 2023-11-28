@@ -1,0 +1,33 @@
+type: "OpenCVCamSourceSubgraph"
+output_stream: "FRAMES:sampled_frames"
+input_stream: "FINISHED:frame_processed"
+output_stream: "ALLOW:frame_allowed"
+
+node {
+  calculator: "OpenCVCamSourceCalculator"
+  output_stream: "image_frames"
+  node_options {
+    [type.googleapis.com/gml.gem.calculators.opencv_cam.optionspb.OpenCVCamSourceCalculatorOptions] {
+      device_num: 0
+    }
+  }
+}
+
+node {
+  calculator: "FlowLimiterCalculator"
+  input_stream: "image_frames"
+  input_stream: "FINISHED:frame_processed"
+  input_stream_info {
+    tag_index: "FINISHED"
+    back_edge: true
+  }
+  output_stream: "sampled_frames"
+  output_stream: "ALLOW:frame_allowed"
+  node_options: {
+    [type.googleapis.com/mediapipe.FlowLimiterCalculatorOptions] {
+      max_in_flight: 1
+      max_in_queue: 1
+      in_flight_timeout: 0
+    }
+  }
+}
