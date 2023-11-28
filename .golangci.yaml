@@ -54,82 +54,43 @@ linters-settings:
   revive:
     confidence: 0.1
     ignore-generated-header: true
+    enable-all-rules: true
+    severity: error
     rules:
-    - name: atomic
-      disabled: false
-    - name: blank-imports
-      disabled: false
+    - name: add-constant
+      disabled: true
+    - name: argument-limit
+      disabled: true
+    - name: banned-characters
+      disabled: true
+    - name: cognitive-complexity
+      disabled: true
     - name: comment-spacings
-      disabled: false
-    - name: context-as-argument
-      disabled: false
-    - name: context-keys-type
-      disabled: false
-    - name: dot-imports
-      disabled: false
-    - name: duplicated-imports
-      disabled: false
-    - name: early-return
-      disabled: false
-    - name: empty-block
-      disabled: false
-    - name: error-naming
-      disabled: false
-    - name: error-return
-      disabled: false
-    - name: error-strings
-      disabled: false
-    - name: errorf
-      disabled: false
-    - name: exported
-      disabled: false
-    - name: if-return
-      disabled: false
-    - name: import-alias-naming
-      disabled: false
-    - name: import-shadowing
-      disabled: false
-    - name: increment-decrement
-      disabled: false
-    - name: indent-error-flow
-      disabled: false
-    - name: modifies-parameter
-      disabled: false
-    - name: package-comments
-      disabled: false
-    - name: range
-      disabled: false
-    - name: range-val-address
-      disabled: false
-    - name: range-val-in-closure
-      disabled: false
-    - name: receiver-naming
-      disabled: false
-    - name: redefines-builtin-id
-      disabled: false
-    - name: redundant-import-alias
-      disabled: false
-    - name: superfluous-else
-      disabled: false
-    - name: time-naming
-      disabled: false
-    - name: unchecked-type-assertion
-      disabled: false
       arguments:
-      - acceptIgnoredAssertionResult: true
-    - name: unexported-return
-      disabled: false
-    - name: unreachable-code
-      disabled: false
-    - name: unused-parameter
-      disabled: false
-    - name: unused-receiver
-      disabled: false
-    - name: use-any
-      disabled: false
-    - name: useless-break
-      disabled: false
-    - name: var-declaration
-      disabled: false
-    - name: var-naming
-      disabled: false
+      - exhaustive
+    - name: confusing-naming
+      disabled: true
+    - name: confusing-results
+      disabled: true
+    - name: cyclomatic
+      disabled: true
+    - name: deep-exit
+      disabled: true
+    - name: defer
+      disabled: true
+    - name: file-header
+      disabled: true
+    - name: flag-parameter
+      disabled: true
+    - name: function-length
+      disabled: true
+    - name: function-result-limit
+      disabled: true
+    - name: line-length-limit
+      disabled: true
+    - name: max-public-structs
+      disabled: true
+    - name: nested-structs
+      disabled: true
+    - name: optimize-operands-order
+      disabled: true
