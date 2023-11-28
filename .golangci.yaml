@@ -69,6 +69,8 @@ linters-settings:
       disabled: false
     - name: duplicated-imports
       disabled: false
+    - name: early-return
+      disabled: false
     - name: empty-block
       disabled: false
     - name: error-naming
