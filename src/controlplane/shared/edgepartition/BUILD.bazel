@@ -27,6 +27,7 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//src/api/corepb/v1:corepb_go_proto",
+        "//src/common/typespb:typespb_go_proto",
         "//src/shared/services/msgbus",
         "@com_github_gofrs_uuid_v5//:uuid",
         "@com_github_gogo_protobuf//types",

@@ -26,12 +26,18 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"gimletlabs.ai/gimlet/src/api/corepb/v1"
+	"gimletlabs.ai/gimlet/src/common/typespb"
 	"gimletlabs.ai/gimlet/src/shared/services/msgbus"
 )
 
 var ErrInvalidMessage = errors.New("message format invalid or unexpected")
 
-type DurableMessageHandler func(*corepb.EdgeCPMetadata, *types.Any) error
+type MsgMetadata struct {
+	*corepb.EdgeCPMetadata
+	*corepb.CPMetadata
+}
+
+type DurableMessageHandler func(*MsgMetadata, *types.Any) error
 
 type partitionTopic func(partition string) (string, error)
 
@@ -41,6 +47,7 @@ type DurablePartitionHandler struct {
 	partitionTopic  partitionTopic
 	consumer        string
 	messageHandlers map[string]DurableMessageHandler
+	isCPTopic       bool
 
 	// Signal used to quit.
 	done chan struct{}
@@ -83,6 +90,7 @@ func (p *DurablePartitionHandler) WithCPTopic(topic corepb.CPTopic) *DurablePart
 	p.partitionTopic = func(p string) (string, error) {
 		return CPNATSPartitionTopic(p, topic, true)
 	}
+	p.isCPTopic = true
 
 	return p
 }
@@ -90,25 +98,42 @@ func (p *DurablePartitionHandler) WithCPTopic(topic corepb.CPTopic) *DurablePart
 func (p *DurablePartitionHandler) handleMessage(topic string, msg jetstream.Msg) error {
 	topicLog := log.WithField("topic", topic)
 
-	e2CpMsg := &corepb.EdgeCPMessage{}
-	err := e2CpMsg.Unmarshal(msg.Data())
-	if err != nil {
-		return err
+	var anyMsg *types.Any
+	var deviceID *typespb.UUID
+	md := &MsgMetadata{}
+	if p.isCPTopic {
+		cpMsg := &corepb.CPMessage{}
+		err := cpMsg.Unmarshal(msg.Data())
+		if err != nil {
+			return err
+		}
+		anyMsg = cpMsg.Msg
+		deviceID = cpMsg.Metadata.DeviceID
+		md.CPMetadata = cpMsg.Metadata
+	} else {
+		e2CpMsg := &corepb.EdgeCPMessage{}
+		err := e2CpMsg.Unmarshal(msg.Data())
+		if err != nil {
+			return err
+		}
+		anyMsg = e2CpMsg.Msg
+		deviceID = e2CpMsg.Metadata.DeviceID
+		md.EdgeCPMetadata = e2CpMsg.Metadata
 	}
 
-	msgType, err := types.AnyMessageName(e2CpMsg.Msg)
+	msgType, err := types.AnyMessageName(anyMsg)
 	if err != nil {
-		topicLog.WithError(err).WithField("deviceID", e2CpMsg.Metadata.DeviceID).Error("Failed to get type of any message")
+		topicLog.WithError(err).WithField("deviceID", deviceID).Error("Failed to get type of any message")
 		return ErrInvalidMessage
 	}
 
 	funcHandler, ok := p.messageHandlers[msgType]
 	if !ok {
-		topicLog.WithField("msgType", msgType).WithField("deviceID", e2CpMsg.Metadata.DeviceID).Error("Message type does not match any expected messages")
+		topicLog.WithField("msgType", msgType).WithField("deviceID", deviceID).Error("Message type does not match any expected messages")
 		return ErrInvalidMessage
 	}
 
-	return funcHandler(e2CpMsg.Metadata, e2CpMsg.Msg)
+	return funcHandler(md, anyMsg)
 }
 
 func (p *DurablePartitionHandler) startDurablePartitionHandler(partition string) error {

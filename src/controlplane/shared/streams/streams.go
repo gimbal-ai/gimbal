@@ -169,7 +169,8 @@ func InitializeConsumers(js jetstream.JetStream, serviceName string, streamName 
 	return createGroup.Wait()
 }
 
-func InitializeConsumersForPartition(consumerName string, js jetstream.JetStream, topic corepb.EdgeCPTopic, config *jetstream.ConsumerConfig) error {
+// InitializeConsumersForEdgeToCPPartition to initialize jetstream consumers for an edge to controlplane partition.
+func InitializeConsumersForEdgeToCPPartition(consumerName string, js jetstream.JetStream, topic corepb.EdgeCPTopic, config *jetstream.ConsumerConfig) error {
 	consumers := make([]*CPConsumer, 0)
 	partitions := edgepartition.GenerateRange()
 	for _, p := range partitions {
@@ -185,6 +186,30 @@ func InitializeConsumersForPartition(consumerName string, js jetstream.JetStream
 	}
 
 	err := InitializeConsumers(js, consumerName, EdgeCPTopicToStreamName[topic], consumers)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// InitializeConsumersForCPPartition to initialize jetstream consumers for a controlplane partition.
+func InitializeConsumersForCPPartition(consumerName string, js jetstream.JetStream, topic corepb.CPTopic, config *jetstream.ConsumerConfig) error {
+	consumers := make([]*CPConsumer, 0)
+	partitions := edgepartition.GenerateRange()
+	for _, p := range partitions {
+		sub, err := edgepartition.CPNATSPartitionTopic(p, topic, true)
+		if err != nil {
+			return err
+		}
+
+		consumers = append(consumers, &CPConsumer{
+			Subject: sub,
+			Config:  config,
+		})
+	}
+
+	err := InitializeConsumers(js, consumerName, CPTopicToStreamName[topic], consumers)
 	if err != nil {
 		return err
 	}
