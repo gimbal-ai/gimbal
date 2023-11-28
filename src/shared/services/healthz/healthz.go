@@ -17,7 +17,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/**
+/*
 package healthz defines health checkers and interfaces.
 	By default it will install the ping checker at the /ping endpoint and
 	passed in checkers at the /health/<checker_name> endpoint. Running /health will
