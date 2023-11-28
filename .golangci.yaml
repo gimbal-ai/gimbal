@@ -113,6 +113,8 @@ linters-settings:
       disabled: false
     - name: unused-receiver
       disabled: false
+    - name: useless-break
+      disabled: false
     - name: var-declaration
       disabled: false
     - name: var-naming
