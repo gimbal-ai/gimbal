@@ -34,9 +34,21 @@ StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobSt
   ov::Core core;
 
   try {
-    auto compiled_model = core.compile_model(onnx_path, "AUTO");
+    auto model = core.read_model(onnx_path);
+    std::map<size_t, ov::PartialShape> input_idx_to_shape;
+    for (const auto& [idx, shape] : Enumerate(spec.openvino_spec().input_shape())) {
+      ov::PartialShape ov_shape;
+      for (const auto& dim : shape.dim()) {
+        ov_shape.push_back(dim);
+      }
+      input_idx_to_shape.emplace(idx, ov_shape);
+    }
+    if (!input_idx_to_shape.empty()) {
+      model->reshape(input_idx_to_shape);
+    }
+    auto compiled_model = core.compile_model(model, "AUTO");
     return std::unique_ptr<exec::core::Model>{new Model(std::move(compiled_model))};
-  } catch (std::exception e) {
+  } catch (const std::exception& e) {
     return error::Internal("Failed to compile openvino model: $0", e.what());
   }
 }

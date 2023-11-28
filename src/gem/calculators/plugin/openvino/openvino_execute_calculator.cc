@@ -41,14 +41,6 @@ absl::Status OpenVinoExecuteCalculator::GetContract(mediapipe::CalculatorContrac
   for (int i = 0; i < cc->Outputs().NumEntries(); ++i) {
     cc->Outputs().Index(i).Set<CPUTensorPtr>();
   }
-  auto options = cc->Options<optionspb::OpenVinoExecuteCalculatorOptions>();
-  if (options.input_tensor_shape_size() != cc->Inputs().NumEntries()) {
-    return {
-        absl::StatusCode::kInvalidArgument,
-        absl::Substitute("OpenVinoExecuteCalculator received $0 inputs, but $1 tensor shapes are "
-                         "specified in the calculator options",
-                         cc->Inputs().NumEntries(), options.input_tensor_shape_size())};
-  }
   return absl::OkStatus();
 }
 
@@ -69,12 +61,8 @@ absl::Status OpenVinoExecuteCalculator::Process(mediapipe::CalculatorContext* cc
     const auto& packet = cc->Inputs().Index(i).Value();
     auto cpu_tensor = packet.Get<CPUTensorPtr>();
     auto input_port = model.input(i);
-    auto tensor_shape = options_.input_tensor_shape(i);
-    ov::Shape ov_shape;
-    for (const auto& dim : tensor_shape.dim()) {
-      ov_shape.push_back(dim);
-    }
-    input_tensors.emplace_back(input_port.get_element_type(), ov_shape, cpu_tensor->data());
+    input_tensors.emplace_back(input_port.get_element_type(), input_port.get_shape(),
+                               cpu_tensor->data());
   }
   auto req = model.create_infer_request();
   for (const auto& [i, tensor] : Enumerate(input_tensors)) {

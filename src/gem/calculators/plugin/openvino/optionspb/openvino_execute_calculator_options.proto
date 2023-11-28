@@ -21,11 +21,4 @@ package gml.gem.calculators.openvino.optionspb;
 
 option go_package = "gimletlabs.ai/gimlet/src/gem/calculators/plugin/openvino/optionspb;optionspb";
 
-message OpenVinoExecuteCalculatorOptions {
-  // For now we don't handle dynamic shapes so each tensor's shape needs to be explicity specified.
-  repeated TensorShape input_tensor_shape = 1;
-}
-
-message TensorShape {
-  repeated int32 dim = 1;
-}
+message OpenVinoExecuteCalculatorOptions {}

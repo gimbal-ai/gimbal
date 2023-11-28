@@ -82,6 +82,8 @@ message ModelSpec {
   // Plugin specs.
   // TensorRT specific specifications.
   TensorRTModelSpec tensorrt_spec = 100;
+  // OpenVino specific specifications.
+  OpenVinoModelSpec openvino_spec = 101;
 }
 
 // TensorRTModelSpec defines TensorRT specific parameters for building a TensorRT engine.
@@ -106,4 +108,11 @@ message TensorRTTensorShapeRange {
   // For now we explicitly set the tensor shape instead of specifying a min/opt/max range.
   string tensor_name = 1;
   repeated int32 dim = 2;
+}
+
+message OpenVinoModelSpec {
+  message TensorShape {
+    repeated int32 dim = 1;
+  }
+  repeated TensorShape input_shape = 1;
 }

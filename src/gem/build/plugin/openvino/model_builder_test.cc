@@ -35,6 +35,12 @@ TEST(ModelBuilder, BuildsWithoutError) {
 
   ModelSpec spec;
   spec.set_onnx_blob_key(onnx_path.filename());
+  auto* ov_spec = spec.mutable_openvino_spec();
+  auto* input_shape = ov_spec->add_input_shape();
+  input_shape->add_dim(1);
+  input_shape->add_dim(1);
+  input_shape->add_dim(1);
+  input_shape->add_dim(1);
 
   ModelBuilder builder;
 
