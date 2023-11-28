@@ -153,9 +153,7 @@ Status GRPCBridge::WriteWithRetries(const BridgeRequest& req) {
 void GRPCBridge::Writer() {
   while (running_) {
     std::unique_ptr<BridgeRequest> req;
-    if (!write_q_.try_pop(req)) {
-      continue;
-    }
+    write_q_.pop(req);
     if (req == nullptr) {
       // Got the sentinel value saying the thread should be terminated.
       return;
