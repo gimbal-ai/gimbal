@@ -65,8 +65,5 @@ func (d *downloader) downloadTo(url string, outPath string) error {
 	if err != nil {
 		return err
 	}
-	if err := os.WriteFile(outPath, contents, 0o655); err != nil {
-		return err
-	}
-	return nil
+	return os.WriteFile(outPath, contents, 0o655)
 }

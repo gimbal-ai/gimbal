@@ -165,11 +165,7 @@ func InitializeConsumers(js jetstream.JetStream, serviceName string, streamName 
 		})
 	}
 
-	if err := createGroup.Wait(); err != nil {
-		return err
-	}
-
-	return nil
+	return createGroup.Wait()
 }
 
 func InitializeConsumersForPartition(consumerName string, js jetstream.JetStream, topic corepb.EdgeCPTopic, config *jetstream.ConsumerConfig) error {
