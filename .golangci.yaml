@@ -94,3 +94,8 @@ linters-settings:
       disabled: true
     - name: optimize-operands-order
       disabled: true
+    - name: unchecked-type-assertion
+      arguments:
+      - acceptIgnoredAssertionResult: true
+    - name: unhandled-error
+      disabled: true
