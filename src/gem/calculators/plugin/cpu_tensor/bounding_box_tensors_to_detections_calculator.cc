@@ -135,23 +135,28 @@ absl::Status BoundingBoxTensorsToDetections::Process(mediapipe::CalculatorContex
 
   const auto* orig_shape_data = original_shape->TypedData<DataType::FLOAT32>();
 
-  std::vector<Detection> detections(indices->Shape()[0]);
+  std::vector<Detection> detections;
 
   for (int index_idx = 0; index_idx < indices->Shape()[0]; ++index_idx) {
-    auto* d = &detections[index_idx];
-
     const auto* index_triple = &indices_data[static_cast<ptrdiff_t>(index_idx * index_step)];
     const auto batch_idx = index_triple[0];
     const auto class_idx = index_triple[1];
     const auto box_idx = index_triple[2];
 
+    if (batch_idx < 0 || class_idx < 0 || box_idx < 0) {
+      // Openvino's GPU implementation of NonMaxSuppression outputs 1600 "selected" indices where
+      // almost all of them are -1.
+      continue;
+    }
+    auto& d = detections.emplace_back();
+
     const auto score = score_data[score_batch_step * batch_idx + score_step * class_idx + box_idx];
-    auto* label = d->add_label();
+    auto* label = d.add_label();
     label->set_score(score);
     label->set_label(options_.index_to_label(class_idx));
 
     const auto* box_coords = &box_data[box_batch_step * batch_idx + box_step * box_idx];
-    bounding_box_converter_(box_coords, orig_shape_data, d->mutable_bounding_box());
+    bounding_box_converter_(box_coords, orig_shape_data, d.mutable_bounding_box());
   }
 
   auto packet = mediapipe::MakePacket<std::vector<Detection>>(std::move(detections));

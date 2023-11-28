@@ -235,6 +235,48 @@ INSTANTIATE_TEST_SUITE_P(
                     0.8,
                 },
 
+        },
+        BoundingBoxTestCase{
+            .coordinate_format =
+                optionspb::BoundingBoxToDetectionsOptions::COORDINATE_FORMAT_CENTER_ANCHORED,
+            .width = 100,
+            .height = 400,
+            .candidates =
+                {
+                    {10, 10, 20, 20},
+                    {0, 50, 100, 100},
+                    {50, 50, 50, 100},
+                    {80, 0, 10, 10},
+                    {0, 0, 10, 50},
+                },
+            .scores =
+                {
+                    {0.1, 0.1, 0.1, 0.5, 0.1},
+                    {0.9, 0.1, 0.0, 0.2, 0.1},
+                    {0.0, 0.0, 0.8, 0.01, 0.1},
+                },
+            .indices =
+                {
+                    {0, 0, 3},
+                    {0, 1, 0},
+                    {0, -1, 0},
+                },
+            .expected_rects =
+                {
+                    {0.8, 0.0, 0.1, 0.025},
+                    {0.1, 0.025, 0.2, 0.05},
+                },
+            .expected_labels =
+                {
+                    "person",
+                    "cat",
+                },
+            .expected_scores =
+                {
+                    0.5,
+                    0.9,
+                },
+
         }));
 
 }  // namespace gml::gem::calculators::cpu_tensor
