@@ -26,7 +26,7 @@ import (
 
 	"gimletlabs.ai/gimlet/src/common/typespb"
 	"gimletlabs.ai/gimlet/src/controlplane/shared/permissions"
-	testutils "gimletlabs.ai/gimlet/src/shared/testing/testutils"
+	"gimletlabs.ai/gimlet/src/shared/testing/testutils"
 )
 
 func TestHasOrgAccess(t *testing.T) {

@@ -24,7 +24,7 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid/v5"
-	proto "github.com/gogo/protobuf/proto"
+	"github.com/gogo/protobuf/proto"
 	"github.com/gogo/protobuf/types"
 	"github.com/nats-io/nats.go/jetstream"
 	"github.com/spf13/viper"

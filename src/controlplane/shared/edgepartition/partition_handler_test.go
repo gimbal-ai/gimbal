@@ -22,7 +22,7 @@ import (
 	"testing"
 
 	"github.com/gofrs/uuid/v5"
-	proto "github.com/gogo/protobuf/proto"
+	"github.com/gogo/protobuf/proto"
 	"github.com/gogo/protobuf/types"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
