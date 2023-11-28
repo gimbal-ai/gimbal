@@ -40,7 +40,7 @@ var (
 
 type placeholderClient struct{}
 
-func (d *placeholderClient) Enqueue(msg analytics.Message) error {
+func (*placeholderClient) Enqueue(msg analytics.Message) error {
 	if err := msg.Validate(); err != nil {
 		return err
 	}
@@ -49,7 +49,7 @@ func (d *placeholderClient) Enqueue(msg analytics.Message) error {
 	return nil
 }
 
-func (d *placeholderClient) Close() error {
+func (*placeholderClient) Close() error {
 	return nil
 }
 

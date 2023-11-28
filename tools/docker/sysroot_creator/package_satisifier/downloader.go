@@ -52,7 +52,7 @@ func (d *downloader) cachePath(url string) string {
 	return path.Join(d.dir, fmt.Sprintf("%x", sha))
 }
 
-func (d *downloader) downloadTo(url string, outPath string) error {
+func (*downloader) downloadTo(url string, outPath string) error {
 	resp, err := http.Get(url)
 	if err != nil {
 		return err

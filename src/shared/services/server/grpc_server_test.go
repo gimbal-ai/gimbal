@@ -51,11 +51,11 @@ func init() {
 
 type testserver struct{}
 
-func (s *testserver) Ping(_ context.Context, _ *ping.PingRequest) (*ping.PingResponse, error) {
+func (*testserver) Ping(_ context.Context, _ *ping.PingRequest) (*ping.PingResponse, error) {
 	return &ping.PingResponse{Reply: "test reply"}, nil
 }
 
-func (s *testserver) PingServerStream(_ *ping.PingServerStreamRequest, srv ping.PingService_PingServerStreamServer) error {
+func (*testserver) PingServerStream(_ *ping.PingServerStreamRequest, srv ping.PingService_PingServerStreamServer) error {
 	err := srv.Send(&ping.PingServerStreamResponse{Reply: "test reply"})
 	if err != nil {
 		return err
@@ -63,7 +63,7 @@ func (s *testserver) PingServerStream(_ *ping.PingServerStreamRequest, srv ping.
 	return nil
 }
 
-func (s *testserver) PingClientStream(srv ping.PingService_PingClientStreamServer) error {
+func (*testserver) PingClientStream(srv ping.PingService_PingClientStreamServer) error {
 	msg, err := srv.Recv()
 	if err != nil {
 		return err
