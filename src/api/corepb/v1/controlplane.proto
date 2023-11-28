@@ -23,6 +23,27 @@ option go_package = "gimletlabs.ai/gimlet/src/api/corepb/v1;corepb";
 
 import "gogoproto/gogo.proto";
 import "src/common/typespb/uuid.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+
+// CPEdgeMetadata has basic routing information for messages on the controlplane.
+message CPMetadata {
+  // The topic of this message.
+  CPTopic topic = 1;
+  // The device ID where the message is going.
+  gml.types.UUID device_id = 2 [ (gogoproto.customname) = "DeviceID" ];
+  // The timestamp when the message was generated.
+  google.protobuf.Timestamp recv_timestamp = 3;
+}
+
+// CPMessage wraps the message sent across the control plane.
+message CPMessage {
+  // Associated metadata.
+  CPMetadata metadata = 1;
+
+  // The actual message.
+  google.protobuf.Any msg = 1000;
+}
 
 // CPTopic has the list of topics used between services in the CP.
 enum CPTopic {
