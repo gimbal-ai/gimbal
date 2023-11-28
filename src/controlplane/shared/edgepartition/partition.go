@@ -25,6 +25,7 @@ package edgepartition
 
 import (
 	"fmt"
+	"log"
 	"math"
 
 	"github.com/gofrs/uuid/v5"
@@ -43,7 +44,7 @@ const (
 )
 
 func init() {
-	pflag.Int("partition_count", 2, "The total number of partition. The keyspace is evenly divided by the partition_count.")
+	pflag.Int("partition_count", -1, "The total number of partition. The keyspace is evenly divided by the partition_count.")
 	pflag.Int("partition_id", 0, "The ID Of the partition. This subscribes to the segment of the partition defined by the ID.")
 }
 
@@ -71,6 +72,10 @@ func maxPartID() int {
 
 // GenerateRange produces values between min/max in hex.
 func GenerateRange() []string {
+	pc := viper.GetInt("partition_count")
+	if pc < 0 {
+		log.Fatal("Must set a positive partition count for partitioned services.")
+	}
 	mn := minPartID()
 	mx := maxPartID()
 	r := make([]string, mx-mn)

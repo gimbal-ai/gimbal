@@ -52,9 +52,11 @@ func NewPartitionHandler(nc *nats.Conn, e2cpTopic corepb.EdgeCPTopic, messageHan
 
 // Start starts the listening and handling for messages from any edge devices.
 func (p *PartitionHandler) Start() error {
-	// Subscribe to NATS channel for partition.
-	log.Info("Subscribing to NATS channels")
 	partitions := GenerateRange()
+	log.WithFields(log.Fields{
+		"min_partition_id": partitions[0],
+		"max_partition_id": partitions[len(partitions)-1],
+	}).Info("Subscribing to NATS")
 	for _, pr := range partitions {
 		subCh := make(chan *nats.Msg, channelSize)
 		err := p.startPartitionHandler(pr, subCh)
