@@ -67,6 +67,8 @@ linters-settings:
       disabled: false
     - name: dot-imports
       disabled: false
+    - name: duplicated-imports
+      disabled: false
     - name: empty-block
       disabled: false
     - name: error-naming
