@@ -180,14 +180,17 @@ Status Controller::Stop(std::chrono::milliseconds timeout) {
 Status Controller::HandleMessage(std::unique_ptr<BridgeResponse> msg) {
   VLOG(1) << "Handling message" << msg->DebugString();
 
-  auto topic = msg->topic();
-  auto it = message_handlers_.find(topic);
-  if (it == message_handlers_.end()) {
-    LOG(ERROR) << "Unhandled message topic: " << topic << " Message: " << msg->DebugString();
-    return error::Unimplemented(absl::Substitute("no message handler for topic: $0", topic));
-  }
-  ECHECK_OK(it->second->HandleMessage(*msg)) << "message handler failed... for topic: " << topic
-                                             << " ignoring. Message: " << msg->DebugString();
+  auto post_cb = [this, msg = std::move(msg)]() mutable {
+    auto topic = msg->topic();
+    auto it = message_handlers_.find(topic);
+    if (it == message_handlers_.end()) {
+      LOG(ERROR) << "Unhandled message topic: " << topic << " Message: " << msg->DebugString();
+    }
+    ECHECK_OK(it->second->HandleMessage(*msg)) << "message handler failed... for topic: " << topic
+                                               << " ignoring. Message: " << msg->DebugString();
+  };
+  dispatcher()->Post(event::PostCB(std::move(post_cb)));
+
   return Status::OK();
 }
 
