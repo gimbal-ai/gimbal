@@ -14,6 +14,7 @@ linters:
   - godot
   - gofumpt
   - gosimple
+  - govet
   - importas
   - ineffassign
   - loggercheck
@@ -30,11 +31,6 @@ linters:
   - unused
   - wastedassign
   - whitespace
-  diasble:
-  # Run separately since govet needs to be run at the project or package level
-  # but megalinter provides list of files
-  - govet
-  disable-all: false
 linters-settings:
   errcheck:
     ignore: database/sql:Rollback,nhooyr.io/websocket:CloseNow
