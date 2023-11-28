@@ -48,7 +48,7 @@ type Hook struct {
 	hub       *sentry.Hub
 	levels    []log.Level
 	tags      map[string]string
-	extra     map[string]interface{}
+	extra     map[string]any
 	converter Converter
 }
 
