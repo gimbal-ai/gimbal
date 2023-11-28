@@ -78,14 +78,14 @@ func (*testserver) PingClientStream(srv ping.PingService_PingClientStreamServer)
 	return nil
 }
 
-func startTestGRPCServer(opts *server.GRPCServerOptions) (*bufconn.Listener, func(t *testing.T)) {
+func startTestGRPCServer(o *server.GRPCServerOptions) (*bufconn.Listener, func(t *testing.T)) {
+	opts := o
 	viper.Set("jwt_signing_key", "abc")
-	var s *grpc.Server
 	if opts == nil {
 		opts = &server.GRPCServerOptions{}
 	}
 
-	s = server.CreateGRPCServer(env.New("gml.ai", "test-service"), opts)
+	s := server.CreateGRPCServer(env.New("gml.ai", "test-service"), opts)
 
 	ping.RegisterPingServiceServer(s, &testserver{})
 	lis := bufconn.Listen(bufSize)

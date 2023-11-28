@@ -134,7 +134,7 @@ func ContextWithServiceClaims(ctx context.Context, serviceID string) (context.Co
 		return ctx, err
 	}
 
-	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", fmt.Sprintf("bearer %s", serviceToken))
+	sCtx := metadata.AppendToOutgoingContext(ctx, "authorization", fmt.Sprintf("bearer %s", serviceToken))
 
-	return ctx, nil
+	return sCtx, nil
 }

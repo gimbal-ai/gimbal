@@ -93,6 +93,8 @@ linters-settings:
       disabled: false
     - name: indent-error-flow
       disabled: false
+    - name: modifies-parameter
+      disabled: false
     - name: package-comments
       disabled: false
     - name: range

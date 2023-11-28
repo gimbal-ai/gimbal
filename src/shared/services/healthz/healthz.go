@@ -82,7 +82,8 @@ func NamedCheck(name string, check func() error) Checker {
 
 // InstallPathHandler registers the healtz checks under path.
 // This function can only be called once per mux/path combo.
-func InstallPathHandler(mux mux, path string, checks ...Checker) {
+func InstallPathHandler(mux mux, path string, c ...Checker) {
+	checks := c
 	if len(checks) == 0 {
 		log.Debug("No default health checks specified. Installing the ping handler.")
 		checks = []Checker{PingHealthz}

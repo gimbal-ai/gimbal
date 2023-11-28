@@ -69,8 +69,8 @@ func New(e env.Env, f func(w http.ResponseWriter, r *http.Request) error) *Handl
 
 // ServeHTTP allows our Handler type to satisfy http.Handler.
 func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	r = r.WithContext(env.NewContext(r.Context(), h.env))
-	err := h.H(w, r)
+	rc := r.WithContext(env.NewContext(r.Context(), h.env))
+	err := h.H(w, rc)
 	if err != nil {
 		var e Error
 		switch {

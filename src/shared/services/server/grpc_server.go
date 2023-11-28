@@ -21,7 +21,6 @@ package server
 
 import (
 	"context"
-	"fmt"
 
 	grpcmw "github.com/grpc-ecosystem/go-grpc-middleware/v2"
 	grpcauth "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/auth"
@@ -29,8 +28,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
-	// Enables gzip encoding for GRPC.
-	_ "google.golang.org/grpc/encoding/gzip"
+	_ "google.golang.org/grpc/encoding/gzip" // Enables gzip encoding for GRPC.
 	"google.golang.org/grpc/status"
 
 	"gimletlabs.ai/gimlet/src/shared/services/authcontext"
@@ -43,6 +41,20 @@ func init() {
 	logrusEntry = log.NewEntry(log.StandardLogger())
 }
 
+func interceptorToLogrusLevel(l logging.Level) log.Level {
+	switch l {
+	case logging.LevelDebug:
+		return log.DebugLevel
+	case logging.LevelInfo:
+		return log.InfoLevel
+	case logging.LevelWarn:
+		return log.WarnLevel
+	case logging.LevelError:
+		return log.TraceLevel
+	}
+	return log.FatalLevel
+}
+
 // InterceptorLogger adapts logrus logger to interceptor logger.
 // This code is simple enough to be copied and not imported.
 func InterceptorLogger(l log.FieldLogger) logging.Logger {
@@ -53,20 +65,7 @@ func InterceptorLogger(l log.FieldLogger) logging.Logger {
 			k, v := i.At()
 			f[k] = v
 		}
-		l := l.WithFields(f)
-
-		switch lvl {
-		case logging.LevelDebug:
-			l.Debug(msg)
-		case logging.LevelInfo:
-			l.Info(msg)
-		case logging.LevelWarn:
-			l.Warn(msg)
-		case logging.LevelError:
-			l.Error(msg)
-		default:
-			panic(fmt.Sprintf("unknown level %v", lvl))
-		}
+		l.WithFields(f).Log(interceptorToLogrusLevel(lvl), msg)
 	})
 }
 
