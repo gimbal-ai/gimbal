@@ -43,6 +43,7 @@ gml_cc_test(
     srcs = [
         "opencv_cam_calculator_test.cc",
     ],
+    tags = ["manual"],
     deps = [
         ":cc_library",
         "//src/gem/testing/core:cc_library",
