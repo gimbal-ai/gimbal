@@ -50,6 +50,7 @@ var DurableStreamTopics = []corepb.EdgeCPTopic{
 
 var EdgeCPTopicToStreamName = map[corepb.EdgeCPTopic]string{
 	corepb.EDGE_CP_TOPIC_METRICS: "metrics",
+	corepb.EDGE_CP_TOPIC_EXEC:    "exec",
 }
 
 var CPTopicToStreamName = map[corepb.CPTopic]string{
