@@ -85,6 +85,8 @@ linters-settings:
       disabled: false
     - name: if-return
       disabled: false
+    - name: import-shadowing
+      disabled: false
     - name: increment-decrement
       disabled: false
     - name: indent-error-flow

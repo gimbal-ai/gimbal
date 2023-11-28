@@ -78,27 +78,27 @@ type GRPCServerOptions struct {
 	DisableMiddleware bool
 }
 
-func grpcUnaryInjectSession(env env.Env) grpc.UnaryServerInterceptor {
+func grpcUnaryInjectSession(e env.Env) grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
 		sCtx := authcontext.New()
 		sCtx.Path = info.FullMethod
-		sCtx.ServiceID = env.ServiceName()
+		sCtx.ServiceID = e.ServiceName()
 		return handler(authcontext.NewContext(ctx, sCtx), req)
 	}
 }
 
-func grpcStreamInjectSession(env env.Env) grpc.StreamServerInterceptor {
+func grpcStreamInjectSession(e env.Env) grpc.StreamServerInterceptor {
 	return func(srv any, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
 		sCtx := authcontext.New()
 		sCtx.Path = info.FullMethod
-		sCtx.ServiceID = env.ServiceName()
+		sCtx.ServiceID = e.ServiceName()
 		wrapped := grpcmw.WrapServerStream(stream)
 		wrapped.WrappedContext = authcontext.NewContext(stream.Context(), sCtx)
 		return handler(srv, wrapped)
 	}
 }
 
-func createGRPCAuthFunc(env env.Env, opts *GRPCServerOptions) func(context.Context) (context.Context, error) {
+func createGRPCAuthFunc(e env.Env, opts *GRPCServerOptions) func(context.Context) (context.Context, error) {
 	return func(ctx context.Context) (context.Context, error) {
 		var err error
 		var token string
@@ -109,7 +109,7 @@ func createGRPCAuthFunc(env env.Env, opts *GRPCServerOptions) func(context.Conte
 		}
 
 		if opts.AuthMiddleware != nil {
-			token, err = opts.AuthMiddleware(ctx, env)
+			token, err = opts.AuthMiddleware(ctx, e)
 			if err != nil {
 				return nil, status.Errorf(codes.Internal, "Auth middleware failed: %v", err)
 			}
@@ -120,7 +120,7 @@ func createGRPCAuthFunc(env env.Env, opts *GRPCServerOptions) func(context.Conte
 			}
 		}
 
-		err = sCtx.UseJWTAuth(env.JWTSigningKey(), token, env.Audience())
+		err = sCtx.UseJWTAuth(e.JWTSigningKey(), token, e.Audience())
 		if err != nil {
 			return nil, status.Errorf(codes.Unauthenticated, "invalid auth token: %v", err)
 		}
@@ -129,7 +129,7 @@ func createGRPCAuthFunc(env env.Env, opts *GRPCServerOptions) func(context.Conte
 }
 
 // CreateGRPCServer creates a GRPC server with default middleware for our services.
-func CreateGRPCServer(env env.Env, serverOpts *GRPCServerOptions) *grpc.Server {
+func CreateGRPCServer(e env.Env, serverOpts *GRPCServerOptions) *grpc.Server {
 	logrusOpts := []logging.Option{
 		logging.WithLogOnEvents(logging.StartCall, logging.FinishCall),
 	}
@@ -138,14 +138,14 @@ func CreateGRPCServer(env env.Env, serverOpts *GRPCServerOptions) *grpc.Server {
 	if !serverOpts.DisableMiddleware {
 		opts = append(opts,
 			grpc.ChainUnaryInterceptor(
-				grpcUnaryInjectSession(env),
+				grpcUnaryInjectSession(e),
 				logging.UnaryServerInterceptor(InterceptorLogger(logrusEntry), logrusOpts...),
-				grpcauth.UnaryServerInterceptor(createGRPCAuthFunc(env, serverOpts)),
+				grpcauth.UnaryServerInterceptor(createGRPCAuthFunc(e, serverOpts)),
 			),
 			grpc.ChainStreamInterceptor(
-				grpcStreamInjectSession(env),
+				grpcStreamInjectSession(e),
 				logging.StreamServerInterceptor(InterceptorLogger(logrusEntry), logrusOpts...),
-				grpcauth.StreamServerInterceptor(createGRPCAuthFunc(env, serverOpts)),
+				grpcauth.StreamServerInterceptor(createGRPCAuthFunc(e, serverOpts)),
 			),
 		)
 	}

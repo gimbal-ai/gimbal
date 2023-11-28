@@ -58,14 +58,14 @@ type GMLServer struct {
 }
 
 // NewGMLServer creates a new GMLServer.
-func NewGMLServer(env env.Env, httpHandler http.Handler, grpcServerOpts ...grpc.ServerOption) *GMLServer {
+func NewGMLServer(e env.Env, httpHandler http.Handler, grpcServerOpts ...grpc.ServerOption) *GMLServer {
 	opts := &GRPCServerOptions{GRPCServerOpts: grpcServerOpts}
-	return NewGMLServerWithOptions(env, httpHandler, opts)
+	return NewGMLServerWithOptions(e, httpHandler, opts)
 }
 
 // NewGMLServerWithOptions creates a new GMLServer.
-func NewGMLServerWithOptions(env env.Env, httpHandler http.Handler, opts *GRPCServerOptions) *GMLServer {
-	grpcServer := CreateGRPCServer(env, opts)
+func NewGMLServerWithOptions(e env.Env, httpHandler http.Handler, opts *GRPCServerOptions) *GMLServer {
+	grpcServer := CreateGRPCServer(e, opts)
 	// If it's a GRPC request we use the GRPC handler, otherwise forward to the regular HTTP(/2) handler.
 	muxHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if isGRPCRequest(r) {

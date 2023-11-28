@@ -30,9 +30,9 @@ func TestEnv_New(t *testing.T) {
 	viper.Set("jwt_signing_key", "the-jwt-key")
 	viper.Set("pod_name", "thepod")
 
-	env := env.New("aud", "svc")
-	assert.Equal(t, "the-jwt-key", env.JWTSigningKey())
-	assert.Equal(t, "aud", env.Audience())
-	assert.Equal(t, "svc", env.ServiceName())
-	assert.Equal(t, "thepod", env.PodName())
+	e := env.New("aud", "svc")
+	assert.Equal(t, "the-jwt-key", e.JWTSigningKey())
+	assert.Equal(t, "aud", e.Audience())
+	assert.Equal(t, "svc", e.ServiceName())
+	assert.Equal(t, "thepod", e.PodName())
 }

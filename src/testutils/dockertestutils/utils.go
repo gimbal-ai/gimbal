@@ -45,8 +45,8 @@ func LoadOrFetchImage(pool *dockertest.Pool, imageRepo string, imageTag string) 
 	if imageTarget == "" {
 		return ErrUnknownImage
 	}
-	runfiles := os.Getenv("BAZEL_RUNFILES")
-	if runfiles != "" {
+	runfilesEnv := os.Getenv("BAZEL_RUNFILES")
+	if runfilesEnv != "" {
 		return loadImageFromRunfiles(pool, imageTarget)
 	}
 	return fetchImage(pool, imageRepo, imageTag)
