@@ -101,6 +101,8 @@ linters-settings:
       disabled: false
     - name: redefines-builtin-id
       disabled: false
+    - name: redundant-import-alias
+      disabled: false
     - name: superfluous-else
       disabled: false
     - name: time-naming
@@ -113,9 +115,9 @@ linters-settings:
       disabled: false
     - name: unused-receiver
       disabled: false
-    - name: useless-break
-      disabled: false
     - name: use-any
+      disabled: false
+    - name: useless-break
       disabled: false
     - name: var-declaration
       disabled: false

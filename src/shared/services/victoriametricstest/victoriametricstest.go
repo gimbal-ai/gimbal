@@ -27,7 +27,7 @@ import (
 	"github.com/cenkalti/backoff/v4"
 	"github.com/ory/dockertest/v3"
 	"github.com/ory/dockertest/v3/docker"
-	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
+	promv1 "github.com/prometheus/client_golang/api/prometheus/v1"
 	"github.com/prometheus/common/model"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -42,8 +42,8 @@ var (
 	ErrUnsupportedMetricType = errors.New("metric type is unsupported")
 )
 
-func IsMetricAvailable(ctx context.Context, conn v1.API, query string) error {
-	res, _, err := conn.QueryRange(ctx, query, v1.Range{
+func IsMetricAvailable(ctx context.Context, conn promv1.API, query string) error {
+	res, _, err := conn.QueryRange(ctx, query, promv1.Range{
 		Start: time.Now().Add(-1 * time.Hour),
 		End:   time.Now(),
 		Step:  60 * time.Second,
@@ -68,7 +68,7 @@ func IsMetricAvailable(ctx context.Context, conn v1.API, query string) error {
 	return nil
 }
 
-func WaitForMetrics(t *testing.T, conn v1.API, q string) {
+func WaitForMetrics(t *testing.T, conn promv1.API, q string) {
 	bo := backoff.NewExponentialBackOff()
 	bo.MaxElapsedTime = 30 * time.Second
 	bo.MaxInterval = 1 * time.Second
@@ -90,7 +90,7 @@ func WaitForMetrics(t *testing.T, conn v1.API, q string) {
 }
 
 // SetupTestVictoriaMetrics sets up a test instance for victoriametrics.
-func SetupTestVictoriaMetrics() (v1.API, func(), error) {
+func SetupTestVictoriaMetrics() (promv1.API, func(), error) {
 	pool, err := dockertest.NewPool("")
 	if err != nil {
 		return nil, nil, fmt.Errorf("connect to docker failed: %w", err)
@@ -144,12 +144,12 @@ func SetupTestVictoriaMetrics() (v1.API, func(), error) {
 	viper.Set("victoriametrics_select_host", resource.Container.NetworkSettings.Gateway)
 	viper.Set("victoriametrics_select_port", resource.GetPort("8428/tcp"))
 
-	var conn v1.API
+	var conn promv1.API
 	if err = pool.Retry(func() error {
 		log.SetLevel(log.WarnLevel)
 		log.Info("trying to connect")
 		conn = victoriametrics.MustConnectVictoriaMetricsSelect()
-		_, _, err := conn.Query(context.Background(), "up", time.Now(), v1.WithTimeout(5*time.Second))
+		_, _, err := conn.Query(context.Background(), "up", time.Now(), promv1.WithTimeout(5*time.Second))
 		return err
 	}); err != nil {
 		return nil, nil, fmt.Errorf("failed to create victoriametrics on docker: %w", err)

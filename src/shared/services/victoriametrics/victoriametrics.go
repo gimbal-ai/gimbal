@@ -24,7 +24,7 @@ import (
 	"strings"
 
 	"github.com/prometheus/client_golang/api"
-	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
+	promv1 "github.com/prometheus/client_golang/api/prometheus/v1"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -50,7 +50,7 @@ func GetVictoriaMetricsURL() *url.URL {
 	return u
 }
 
-func MustConnectVictoriaMetricsSelect() v1.API {
+func MustConnectVictoriaMetricsSelect() promv1.API {
 	client, err := api.NewClient(
 		api.Config{
 			Address: GetVictoriaMetricsURL().String(),
@@ -59,7 +59,7 @@ func MustConnectVictoriaMetricsSelect() v1.API {
 		log.WithError(err).Fatalf("failed to connect for victoriametrics select")
 	}
 
-	return v1.NewAPI(client)
+	return promv1.NewAPI(client)
 }
 
 func InsertPrometheusMetrics(data string) error {
