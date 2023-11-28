@@ -40,12 +40,14 @@ func init() {
 	pflag.String("victoriametrics_select_scheme", "http", "The scheme for victoriametrics select service")
 	pflag.String("victoriametrics_select_host", "localhost", "The hostname for victoriametrics select service")
 	pflag.String("victoriametrics_select_port", "8481", "The port for victoriametrics select service")
+	pflag.String("victoriametrics_select_path_prefix", "", "The path prefix for the victoriametrics select service, needed for clustered mode")
 }
 
 func GetVictoriaMetricsURL() *url.URL {
 	u := &url.URL{
 		Scheme: viper.GetString("victoriametrics_select_scheme"),
 		Host:   net.JoinHostPort(viper.GetString("victoriametrics_select_host"), viper.GetString("victoriametrics_select_port")),
+		Path:   viper.GetString("victoriametrics_select_path_prefix"),
 	}
 	return u
 }
