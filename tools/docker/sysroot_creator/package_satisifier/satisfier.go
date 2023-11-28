@@ -23,7 +23,7 @@ import (
 	"fmt"
 	"sort"
 
-	debVersion "pault.ag/go/debian/version"
+	debversion "pault.ag/go/debian/version"
 )
 
 type depSatisfier struct {
@@ -48,28 +48,28 @@ func newDepSatisfier(db *database, spec *spec) *depSatisfier {
 	return ds
 }
 
-func (vd *versionedDependency) selectVersion(versions []debVersion.Version) (*debVersion.Version, error) {
-	sort.Sort(debVersion.Slice(versions))
+func (vd *versionedDependency) selectVersion(versions []debversion.Version) (*debversion.Version, error) {
+	sort.Sort(debversion.Slice(versions))
 	if vd.version == nil {
 		return &versions[len(versions)-1], nil
 	}
 	if vd.versionCmp == greaterThan {
 		ver := versions[len(versions)-1]
-		if debVersion.Compare(ver, *vd.version) > 0 {
+		if debversion.Compare(ver, *vd.version) > 0 {
 			return &ver, nil
 		}
 		return nil, fmt.Errorf("no versions >> %s for %s, closest %s, %v", vd.version, vd.name, ver, versions)
 	}
 	if vd.versionCmp == greaterThanEq {
 		ver := versions[len(versions)-1]
-		if debVersion.Compare(ver, *vd.version) >= 0 {
+		if debversion.Compare(ver, *vd.version) >= 0 {
 			return &ver, nil
 		}
 		return nil, fmt.Errorf("no versions >= %s for %s, closest %s, all %v", vd.version, vd.name, ver, versions)
 	}
 	if vd.versionCmp == lessThan {
 		firstGreaterEq := sort.Search(len(versions), func(i int) bool {
-			return debVersion.Compare(versions[i], *vd.version) >= 0
+			return debversion.Compare(versions[i], *vd.version) >= 0
 		})
 		if firstGreaterEq == 0 {
 			return nil, fmt.Errorf("no version << %s for %s, closest %s, all %v", vd.version, vd.name, versions[firstGreaterEq], versions)
@@ -78,7 +78,7 @@ func (vd *versionedDependency) selectVersion(versions []debVersion.Version) (*de
 	}
 	if vd.versionCmp == lessThanEq {
 		firstGreater := sort.Search(len(versions), func(i int) bool {
-			return debVersion.Compare(versions[i], *vd.version) > 0
+			return debversion.Compare(versions[i], *vd.version) > 0
 		})
 		if firstGreater == 0 {
 			return nil, fmt.Errorf("no version << %s for %s, closest %s, all %v", vd.version, vd.name, versions[firstGreater], versions)
@@ -87,9 +87,9 @@ func (vd *versionedDependency) selectVersion(versions []debVersion.Version) (*de
 	}
 	if vd.versionCmp == eq {
 		index := sort.Search(len(versions), func(i int) bool {
-			return debVersion.Compare(versions[i], *vd.version) >= 0
+			return debversion.Compare(versions[i], *vd.version) >= 0
 		})
-		if index == len(versions) || debVersion.Compare(versions[index], *vd.version) != 0 {
+		if index == len(versions) || debversion.Compare(versions[index], *vd.version) != 0 {
 			return nil, fmt.Errorf("no version == %s for %s, all %v", vd.version, vd.name, versions)
 		}
 		return &versions[index], nil
@@ -102,7 +102,7 @@ func (ds *depSatisfier) getPackage(dep *versionedDependency) (*pkg, error) {
 	if !ok {
 		return nil, nil
 	}
-	versions := make([]debVersion.Version, 0, len(versionToPkg))
+	versions := make([]debversion.Version, 0, len(versionToPkg))
 	for _, pkg := range versionToPkg {
 		versions = append(versions, pkg.version)
 	}
@@ -230,10 +230,10 @@ func (ds *depSatisfier) findProvider(dep *versionedDependency) (*versionedDepend
 		return nil, fmt.Errorf("cannot find provider for virtual package '%s'", dep.name)
 	}
 
-	versions := make([]debVersion.Version, 0, len(vp))
+	versions := make([]debversion.Version, 0, len(vp))
 	for verStr := range vp {
 		if verStr != "" {
-			ver, err := debVersion.Parse(verStr)
+			ver, err := debversion.Parse(verStr)
 			if err != nil {
 				return nil, err
 			}

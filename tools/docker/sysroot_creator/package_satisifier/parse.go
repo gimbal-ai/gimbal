@@ -26,7 +26,7 @@ import (
 	"regexp"
 	"strings"
 
-	debVersion "pault.ag/go/debian/version"
+	debversion "pault.ag/go/debian/version"
 )
 
 var singleDepRegex *regexp.Regexp
@@ -48,7 +48,7 @@ const (
 
 type versionedDependency struct {
 	name       string
-	version    *debVersion.Version
+	version    *debversion.Version
 	versionCmp versionCompareType
 }
 
@@ -78,7 +78,7 @@ func (d *dependency) String() string {
 
 type pkg struct {
 	name     string
-	version  debVersion.Version
+	version  debversion.Version
 	filename string
 	depends  []*dependency
 	// list of virtual packages provided by this package.
@@ -158,7 +158,7 @@ func parseVersionedDep(depStr string) (*versionedDependency, error) {
 		dep.versionCmp = versionCompareType(result["version_op"])
 	}
 	if result["version"] != "" {
-		ver, err := debVersion.Parse(result["version"])
+		ver, err := debversion.Parse(result["version"])
 		if err != nil {
 			return nil, err
 		}
@@ -241,7 +241,7 @@ func (db *database) parsePackageDatabase(r io.Reader, downloadPrefix string) err
 			curPkg = newPkg(strings.TrimPrefix(line, "Package: "), downloadPrefix)
 		}
 		if strings.HasPrefix(line, "Version: ") {
-			ver, err := debVersion.Parse(strings.TrimPrefix(line, "Version: "))
+			ver, err := debversion.Parse(strings.TrimPrefix(line, "Version: "))
 			if err != nil {
 				return err
 			}
