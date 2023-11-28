@@ -21,6 +21,7 @@
 
 #include <chrono>
 #include <functional>
+#include <future>
 #include <memory>
 
 #include "src/common/event/deferred_delete.h"
@@ -33,9 +34,9 @@ namespace gml::event {
 /**
  * Callback invoked when a dispatcher post() runs.
  */
-using PostCB = std::function<void()>;
-using PoolExecFunc = std::function<void()>;
-using PoolExecCompletionCB = std::function<void()>;
+using PostCB = std::packaged_task<void()>;
+using PoolExecFunc = std::packaged_task<void()>;
+using PoolExecCompletionCB = std::packaged_task<void()>;
 
 /**
  * Dispatcher is the high level class for manging event dispatching (time sources, fs reads, etc.).
@@ -71,7 +72,7 @@ class Dispatcher {
    * Posts a functor to the dispatcher. This is safe cross thread. The functor runs in the context
    * of the dispatcher event loop which may be on a different thread than the caller.
    */
-  virtual void Post(PostCB callback) = 0;
+  virtual void Post(PostCB&& callback) = 0;
 
   /**
    * Will delete the passed in pointer in a future event loop.

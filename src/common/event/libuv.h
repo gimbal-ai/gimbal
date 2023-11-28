@@ -85,7 +85,7 @@ class LibuvDispatcher : public Dispatcher {
   const TimeSource& GetTimeSource() const override;
   void Stop() override;
   void Exit() override;
-  void Post(PostCB callback) override;
+  void Post(PostCB&& callback) override;
   void DeferredDelete(DeferredDeletableUPtr&& to_delete) override;
   void Run(RunType type) override;
   RunnableAsyncTaskUPtr CreateAsyncTask(std::unique_ptr<AsyncTask> task) override;

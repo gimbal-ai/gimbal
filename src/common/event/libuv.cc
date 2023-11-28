@@ -179,12 +179,12 @@ std::string LibuvScheduler::LogEntry(std::string_view entry) {
 
 void LibuvDispatcher::Exit() { base_scheduler_.LoopExit(); }
 
-void LibuvDispatcher::Post(PostCB cb) {
+void LibuvDispatcher::Post(PostCB&& cb) {
   bool activate = false;
   {
     absl::MutexLock lock(&post_lock_);
     activate = post_callbacks_.empty();
-    post_callbacks_.emplace_back(cb);
+    post_callbacks_.emplace_back(std::move(cb));
   }
 
   if (activate) {
@@ -249,7 +249,7 @@ void LibuvDispatcher::RunPostCallbacks() {
       if (post_callbacks_.empty()) {
         return;
       }
-      cb = post_callbacks_.front();
+      cb = std::move(post_callbacks_.front());
       post_callbacks_.pop_front();
     }
     cb();
