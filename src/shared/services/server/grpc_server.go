@@ -23,8 +23,8 @@ import (
 	"context"
 	"fmt"
 
-	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware/v2"
-	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/auth"
+	grpcmw "github.com/grpc-ecosystem/go-grpc-middleware/v2"
+	grpcauth "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/auth"
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
@@ -92,7 +92,7 @@ func grpcStreamInjectSession(env env.Env) grpc.StreamServerInterceptor {
 		sCtx := authcontext.New()
 		sCtx.Path = info.FullMethod
 		sCtx.ServiceID = env.ServiceName()
-		wrapped := grpc_middleware.WrapServerStream(stream)
+		wrapped := grpcmw.WrapServerStream(stream)
 		wrapped.WrappedContext = authcontext.NewContext(stream.Context(), sCtx)
 		return handler(srv, wrapped)
 	}
@@ -114,7 +114,7 @@ func createGRPCAuthFunc(env env.Env, opts *GRPCServerOptions) func(context.Conte
 				return nil, status.Errorf(codes.Internal, "Auth middleware failed: %v", err)
 			}
 		} else {
-			token, err = grpc_auth.AuthFromMD(ctx, "bearer")
+			token, err = grpcauth.AuthFromMD(ctx, "bearer")
 			if err != nil {
 				return nil, err
 			}
@@ -134,18 +134,18 @@ func CreateGRPCServer(env env.Env, serverOpts *GRPCServerOptions) *grpc.Server {
 		logging.WithLogOnEvents(logging.StartCall, logging.FinishCall),
 	}
 
-	opts := []grpc.ServerOption{}
+	var opts []grpc.ServerOption
 	if !serverOpts.DisableMiddleware {
 		opts = append(opts,
 			grpc.ChainUnaryInterceptor(
 				grpcUnaryInjectSession(env),
 				logging.UnaryServerInterceptor(InterceptorLogger(logrusEntry), logrusOpts...),
-				grpc_auth.UnaryServerInterceptor(createGRPCAuthFunc(env, serverOpts)),
+				grpcauth.UnaryServerInterceptor(createGRPCAuthFunc(env, serverOpts)),
 			),
 			grpc.ChainStreamInterceptor(
 				grpcStreamInjectSession(env),
 				logging.StreamServerInterceptor(InterceptorLogger(logrusEntry), logrusOpts...),
-				grpc_auth.StreamServerInterceptor(createGRPCAuthFunc(env, serverOpts)),
+				grpcauth.StreamServerInterceptor(createGRPCAuthFunc(env, serverOpts)),
 			),
 		)
 	}
