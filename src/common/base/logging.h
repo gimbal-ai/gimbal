@@ -77,7 +77,7 @@ GML_SUPPRESS_WARNINGS_END()
 
 namespace gml {
 
-// Indent provides a consitent indent base on level.
+// Indent provides a consistent indent base on level.
 inline std::string Indent(int level) {
   // NOLINTBEGIN(modernize-return-braced-init-list): std::string isn't smart enough to pick the
   // right constructor if we use a braced initializer list.

@@ -81,7 +81,7 @@ void Status::ToProto(gml::types::Status* status_pb) const {
   status_pb->set_err_code(state_->code);
   if (state_->context != nullptr) {
     auto context_pb = status_pb->mutable_context();
-    // Note: this is an explicity copy, otherwise you get nested Any messages.
+    // Note: this is an explicitly copy, otherwise you get nested Any messages.
     context_pb->set_type_url(state_->context->type_url());
     *(context_pb->mutable_value()) = state_->context->value();
   }

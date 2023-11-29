@@ -47,7 +47,7 @@ TEST(FFmpegVideoEncoderCalculator, RunsWithoutError) {
                        exec::core::PlanarImageFor<mediapipe::YUVImage>::Create(
                            std::move(yuv_image), exec::core::ImageFormat::YUV_I420));
 
-  // This test currently only asserts that theres no error running a single frame through the
+  // This test currently only asserts that there's no error running a single frame through the
   // encoder.
   tester.ForInputSidePacket("FRAME_RATE", 30)
       .ForInput("PLANAR_IMAGE", std::move(planar_image), 0)

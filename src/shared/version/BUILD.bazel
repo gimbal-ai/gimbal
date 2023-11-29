@@ -89,7 +89,7 @@ gml_cc_library_internal(
     }),
     # Usage of this library has serious implications for caching. The use should
     # be restricted to binaries.
-    # TODO(zasgar): Refactor dependent code so we can more precisely apply the visbility rules.
+    # TODO(zasgar): Refactor dependent code so we can more precisely apply the visibility rules.
     visibility = [
         "//src/experimental:__subpackages__",
         "//src/gem:__pkg__",

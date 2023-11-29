@@ -280,7 +280,7 @@ TEST(UtilsTest, MemCpy) {
     EXPECT_EQ(val, 0x04030201);
     val = MemCpy<int>(kCharArr);
     EXPECT_EQ(val, 0x04030201);
-    // Wont trigger ubsan error of accessing unaligned address.
+    // Won't trigger ubsan error of accessing unaligned address.
     val = MemCpy<int>(kCharArr + 1);
     EXPECT_EQ(val, 0x05040302);
   }

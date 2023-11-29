@@ -39,7 +39,7 @@ using PoolExecFunc = std::packaged_task<void()>;
 using PoolExecCompletionCB = std::packaged_task<void()>;
 
 /**
- * Dispatcher is the high level class for manging event dispatching (time sources, fs reads, etc.).
+ * Dispatcher is the high level class for managing event dispatching (time sources, fs reads, etc.).
  */
 class Dispatcher {
  public:

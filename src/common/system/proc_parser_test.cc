@@ -71,7 +71,7 @@ TEST_F(ProcParserTest, ParseNetworkStat) {
   ProcParser::NetworkStats stats;
   GML_CHECK_OK(parser_->ParseProcPIDNetDev(123, &stats));
 
-  // The expeted values are from the test file above.
+  // The expected values are from the test file above.
   EXPECT_EQ(54504114, stats.rx_bytes);
   EXPECT_EQ(65296, stats.rx_packets);
   EXPECT_EQ(0, stats.rx_drops);
@@ -88,7 +88,7 @@ TEST_F(ProcParserTest, ParseStatIO) {
   ProcParser::ProcessStats stats;
   GML_CHECK_OK(parser_->ParseProcPIDStatIO(123, &stats));
 
-  // The expeted values are from the test file above.
+  // The expected values are from the test file above.
   EXPECT_EQ(5405203, stats.rchar_bytes);
   EXPECT_EQ(1239158, stats.wchar_bytes);
   EXPECT_EQ(17838080, stats.read_bytes);
@@ -100,7 +100,7 @@ TEST_F(ProcParserTest, ParsePidStat) {
   ProcParser::ProcessStats stats;
   GML_CHECK_OK(parser_->ParseProcPIDStat(123, bytes_per_page_, kernel_tick_time_ns_, &stats));
 
-  // The expeted values are from the test file above.
+  // The expected values are from the test file above.
   EXPECT_EQ("npm (start)", stats.process_name);
 
   EXPECT_EQ(800, stats.utime_ns);
@@ -120,7 +120,7 @@ TEST_F(ProcParserTest, ParsePidStatLargePageSize) {
   ProcParser::ProcessStats stats;
   GML_CHECK_OK(parser_->ParseProcPIDStat(123, large_page_size, kernel_tick_time_ns_, &stats));
 
-  // The expeted values are from the test file above.
+  // The expected values are from the test file above.
   EXPECT_EQ("npm (start)", stats.process_name);
 
   EXPECT_EQ(800, stats.utime_ns);

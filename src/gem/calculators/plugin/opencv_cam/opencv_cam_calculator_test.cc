@@ -38,7 +38,7 @@ static constexpr char kGraph[] = R"pb(
 // This test runs the graph to take a single capture from the camera.
 // While there are some basic checks, the real validation is that the frame is correct.
 // Note however, that the image check is not done in this test, since the camera
-// output will be different everytime.
+// output will be different every time.
 // TODO(oazizi): Investigate a loopback device to make the test deterministic.
 TEST(OpenCVCamSourceCalculator, CaptureImage) {
   mediapipe::CalculatorRunner runner(kGraph);

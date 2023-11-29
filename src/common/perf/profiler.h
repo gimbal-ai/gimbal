@@ -52,7 +52,7 @@ class CPU {
 
 /**
  * A memory utilization profiler.
- * Can be configured with enviornment variables to dump heap profiles at different times.
+ * Can be configured with environment variables to dump heap profiles at different times.
  * See: https://gperftools.github.io/gperftools/heapprofile.html
  */
 class Heap {

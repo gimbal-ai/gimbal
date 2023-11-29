@@ -97,9 +97,9 @@ constexpr TIntType IntRoundUpToPow2(TIntType x) {
 /**
  * Interpolate the y value at x=`value` along the line defined by the points (`x_a`, `y_a`) (`x_b`,
  * `y_b`). If `value` falls outside [`x_a`, `x_b`] this function will extrapolate. If `x_a` equals
- * `x_b` the behaviour is undefined, so we arbtrarily choose to return `y_a` in this case. Note that
- * `x_a` need not be less than `x_b`, the interpolation is symmetrical around a swap of point a and
- * point b.
+ * `x_b` the behaviour is undefined, so we arbitrarily choose to return `y_a` in this case. Note
+ * that `x_a` need not be less than `x_b`, the interpolation is symmetrical around a swap of point a
+ * and point b.
  * @tparam TXIntType Integer Type for the x-values.
  * @tparam TYIntType Integer Type for the y-values. Note that TYIntType must be a signed integer
  * type. An unsigned integer type will lead to undefined behaviour.

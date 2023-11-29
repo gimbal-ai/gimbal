@@ -150,6 +150,6 @@ docker run \
   "${cmdline_opts[@]}"
 
 cat <<EOS
-${tty_bold}${tty_green}Gimlet has been succesfully installed!${tty_reset}
+${tty_bold}${tty_green}Gimlet has been successfully installed!${tty_reset}
 Please visit ${tty_underline}https://${USE_CONTROL_PLANE}${tty_reset} to deploy your first model.
 EOS

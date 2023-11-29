@@ -43,7 +43,7 @@ TEST(SubProcessTest, StopBeforeExecAndResume) {
   EXPECT_EQ(WEXITSTATUS(status), 123);
 }
 
-// Tests that kill multiple times the child process wont cause abnormal crash in the parent.
+// Tests that kill multiple times the child process won't cause abnormal crash in the parent.
 TEST(SubProcessTest, KillMultipleTimes) {
   SubProcess subprocess;
   ASSERT_OK(subprocess.Start(

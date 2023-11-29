@@ -32,7 +32,7 @@ namespace gml::gem::exec::core {
 using ::gml::internal::api::core::v1::ExecutionSpec;
 
 /**
- * OutputTextSidePacketCalculator outputs the string it's given as side packet STR, everytime an
+ * OutputTextSidePacketCalculator outputs the string it's given as side packet STR, every time an
  * input is received on the TICK input.
  */
 class OutputTextSidePacketCalculator : public mediapipe::CalculatorBase {

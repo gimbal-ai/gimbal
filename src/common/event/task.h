@@ -40,8 +40,8 @@ class AsyncTask {
    */
   virtual void Work() = 0;
   /**
-   * Done is called on the event thread after exection of Work() is complete.
-   * This function should not preform any blocking or compute intensive
+   * Done is called on the event thread after execution of Work() is complete.
+   * This function should not perform any blocking or compute intensive
    * operations.
    */
   virtual void Done() = 0;
@@ -50,7 +50,7 @@ using AsyncTaskUPtr = std::unique_ptr<AsyncTask>;
 
 /**
  * RunnableAsyncTask is a wrapper around an AsyncTask.
- * The lifetime of the contained task must execeed the lifetime of this class.
+ * The lifetime of the contained task must exceed the lifetime of this class.
  * TODO(zasgar): Explore using packaged tasks.
  */
 class RunnableAsyncTask : public DeferredDeletable {
