@@ -269,7 +269,7 @@ service FleetMgrEdgeService {
   // Register adds a device as part of the fleet. If the device has already been registered it
   // simply returns with the existing config.
   rpc Register(RegisterRequest) returns (RegisterResponse);
-  // UpdateStatus is used to update a devices's status, such as its last hearbeat.
+  // UpdateStatus is used to update a device's status, such as its last heartbeat.
   rpc UpdateStatus(UpdateStatusRequest) returns (UpdateStatusResponse);
   // GetDevice gets the information about a particular device.
   rpc GetDevice(GetDeviceRequest) returns (GetDeviceResponse);
