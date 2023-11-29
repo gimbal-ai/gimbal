@@ -6,6 +6,7 @@ package corepb
 import (
 	fmt "fmt"
 	typespb "gimletlabs.ai/gimlet/src/common/typespb"
+	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
 	framework "github.com/google/mediapipe/mediapipe/framework"
 	io "io"
@@ -187,24 +188,23 @@ func (m *Port) GetNet() string {
 	return ""
 }
 
-type ExecutionGraph struct {
-	ExecutionSpec *ExecutionSpec                  `protobuf:"bytes,1,opt,name=execution_spec,json=executionSpec,proto3" json:"execution_spec,omitempty"`
-	ModelSpecs    []*ModelSpec                    `protobuf:"bytes,2,rep,name=model_specs,json=modelSpecs,proto3" json:"model_specs,omitempty"`
-	ModelMetadata []*ExecutionGraph_ModelMetadata `protobuf:"bytes,3,rep,name=model_metadata,json=modelMetadata,proto3" json:"model_metadata,omitempty"`
-	Runtime       string                          `protobuf:"bytes,4,opt,name=runtime,proto3" json:"runtime,omitempty"`
+type FileResource struct {
+	FileId     *typespb.UUID `protobuf:"bytes,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	SizeBytes  uint64        `protobuf:"varint,2,opt,name=size_bytes,json=sizeBytes,proto3" json:"size_bytes,omitempty"`
+	Sha256Hash string        `protobuf:"bytes,3,opt,name=sha256_hash,json=sha256Hash,proto3" json:"sha256_hash,omitempty"`
 }
 
-func (m *ExecutionGraph) Reset()      { *m = ExecutionGraph{} }
-func (*ExecutionGraph) ProtoMessage() {}
-func (*ExecutionGraph) Descriptor() ([]byte, []int) {
+func (m *FileResource) Reset()      { *m = FileResource{} }
+func (*FileResource) ProtoMessage() {}
+func (*FileResource) Descriptor() ([]byte, []int) {
 	return fileDescriptor_2eacf87cbdc6b8b6, []int{3}
 }
-func (m *ExecutionGraph) XXX_Unmarshal(b []byte) error {
+func (m *FileResource) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ExecutionGraph) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *FileResource) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ExecutionGraph.Marshal(b, m, deterministic)
+		return xxx_messageInfo_FileResource.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -214,99 +214,33 @@ func (m *ExecutionGraph) XXX_Marshal(b []byte, deterministic bool) ([]byte, erro
 		return b[:n], nil
 	}
 }
-func (m *ExecutionGraph) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ExecutionGraph.Merge(m, src)
+func (m *FileResource) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FileResource.Merge(m, src)
 }
-func (m *ExecutionGraph) XXX_Size() int {
+func (m *FileResource) XXX_Size() int {
 	return m.Size()
 }
-func (m *ExecutionGraph) XXX_DiscardUnknown() {
-	xxx_messageInfo_ExecutionGraph.DiscardUnknown(m)
+func (m *FileResource) XXX_DiscardUnknown() {
+	xxx_messageInfo_FileResource.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ExecutionGraph proto.InternalMessageInfo
+var xxx_messageInfo_FileResource proto.InternalMessageInfo
 
-func (m *ExecutionGraph) GetExecutionSpec() *ExecutionSpec {
+func (m *FileResource) GetFileId() *typespb.UUID {
 	if m != nil {
-		return m.ExecutionSpec
+		return m.FileId
 	}
 	return nil
 }
 
-func (m *ExecutionGraph) GetModelSpecs() []*ModelSpec {
-	if m != nil {
-		return m.ModelSpecs
-	}
-	return nil
-}
-
-func (m *ExecutionGraph) GetModelMetadata() []*ExecutionGraph_ModelMetadata {
-	if m != nil {
-		return m.ModelMetadata
-	}
-	return nil
-}
-
-func (m *ExecutionGraph) GetRuntime() string {
-	if m != nil {
-		return m.Runtime
-	}
-	return ""
-}
-
-type ExecutionGraph_ModelMetadata struct {
-	ModelFileId *typespb.UUID `protobuf:"bytes,1,opt,name=model_file_id,json=modelFileId,proto3" json:"model_file_id,omitempty"`
-	SizeBytes   uint64        `protobuf:"varint,2,opt,name=size_bytes,json=sizeBytes,proto3" json:"size_bytes,omitempty"`
-	Sha256Hash  string        `protobuf:"bytes,3,opt,name=sha256_hash,json=sha256Hash,proto3" json:"sha256_hash,omitempty"`
-}
-
-func (m *ExecutionGraph_ModelMetadata) Reset()      { *m = ExecutionGraph_ModelMetadata{} }
-func (*ExecutionGraph_ModelMetadata) ProtoMessage() {}
-func (*ExecutionGraph_ModelMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_2eacf87cbdc6b8b6, []int{3, 0}
-}
-func (m *ExecutionGraph_ModelMetadata) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *ExecutionGraph_ModelMetadata) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_ExecutionGraph_ModelMetadata.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *ExecutionGraph_ModelMetadata) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ExecutionGraph_ModelMetadata.Merge(m, src)
-}
-func (m *ExecutionGraph_ModelMetadata) XXX_Size() int {
-	return m.Size()
-}
-func (m *ExecutionGraph_ModelMetadata) XXX_DiscardUnknown() {
-	xxx_messageInfo_ExecutionGraph_ModelMetadata.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_ExecutionGraph_ModelMetadata proto.InternalMessageInfo
-
-func (m *ExecutionGraph_ModelMetadata) GetModelFileId() *typespb.UUID {
-	if m != nil {
-		return m.ModelFileId
-	}
-	return nil
-}
-
-func (m *ExecutionGraph_ModelMetadata) GetSizeBytes() uint64 {
+func (m *FileResource) GetSizeBytes() uint64 {
 	if m != nil {
 		return m.SizeBytes
 	}
 	return 0
 }
 
-func (m *ExecutionGraph_ModelMetadata) GetSha256Hash() string {
+func (m *FileResource) GetSha256Hash() string {
 	if m != nil {
 		return m.Sha256Hash
 	}
@@ -314,7 +248,8 @@ func (m *ExecutionGraph_ModelMetadata) GetSha256Hash() string {
 }
 
 type ExecutionSpec struct {
-	Graph *framework.CalculatorGraphConfig `protobuf:"bytes,1,opt,name=graph,proto3" json:"graph,omitempty"`
+	Graph     *framework.CalculatorGraphConfig `protobuf:"bytes,1,opt,name=graph,proto3" json:"graph,omitempty"`
+	ModelSpec []*ModelSpec                     `protobuf:"bytes,2,rep,name=model_spec,json=modelSpec,proto3" json:"model_spec,omitempty"`
 }
 
 func (m *ExecutionSpec) Reset()      { *m = ExecutionSpec{} }
@@ -356,10 +291,19 @@ func (m *ExecutionSpec) GetGraph() *framework.CalculatorGraphConfig {
 	return nil
 }
 
+func (m *ExecutionSpec) GetModelSpec() []*ModelSpec {
+	if m != nil {
+		return m.ModelSpec
+	}
+	return nil
+}
+
 type ModelSpec struct {
-	OnnxBlobKey  string             `protobuf:"bytes,1,opt,name=onnx_blob_key,json=onnxBlobKey,proto3" json:"onnx_blob_key,omitempty"`
-	TensorrtSpec *TensorRTModelSpec `protobuf:"bytes,100,opt,name=tensorrt_spec,json=tensorrtSpec,proto3" json:"tensorrt_spec,omitempty"`
-	OpenvinoSpec *OpenVinoModelSpec `protobuf:"bytes,101,opt,name=openvino_spec,json=openvinoSpec,proto3" json:"openvino_spec,omitempty"`
+	ONNXBlobKey  string             `protobuf:"bytes,1,opt,name=onnx_blob_key,json=onnxBlobKey,proto3" json:"onnx_blob_key,omitempty"`
+	ONNXFile     *FileResource      `protobuf:"bytes,2,opt,name=onnx_file,json=onnxFile,proto3" json:"onnx_file,omitempty"`
+	Runtime      string             `protobuf:"bytes,50,opt,name=runtime,proto3" json:"runtime,omitempty"`
+	TensorRTSpec *TensorRTModelSpec `protobuf:"bytes,100,opt,name=tensorrt_spec,json=tensorrtSpec,proto3" json:"tensorrt_spec,omitempty"`
+	OpenVINOSpec *OpenVINOModelSpec `protobuf:"bytes,101,opt,name=openvino_spec,json=openvinoSpec,proto3" json:"openvino_spec,omitempty"`
 }
 
 func (m *ModelSpec) Reset()      { *m = ModelSpec{} }
@@ -394,23 +338,37 @@ func (m *ModelSpec) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ModelSpec proto.InternalMessageInfo
 
-func (m *ModelSpec) GetOnnxBlobKey() string {
+func (m *ModelSpec) GetONNXBlobKey() string {
 	if m != nil {
-		return m.OnnxBlobKey
+		return m.ONNXBlobKey
 	}
 	return ""
 }
 
-func (m *ModelSpec) GetTensorrtSpec() *TensorRTModelSpec {
+func (m *ModelSpec) GetONNXFile() *FileResource {
 	if m != nil {
-		return m.TensorrtSpec
+		return m.ONNXFile
 	}
 	return nil
 }
 
-func (m *ModelSpec) GetOpenvinoSpec() *OpenVinoModelSpec {
+func (m *ModelSpec) GetRuntime() string {
 	if m != nil {
-		return m.OpenvinoSpec
+		return m.Runtime
+	}
+	return ""
+}
+
+func (m *ModelSpec) GetTensorRTSpec() *TensorRTModelSpec {
+	if m != nil {
+		return m.TensorRTSpec
+	}
+	return nil
+}
+
+func (m *ModelSpec) GetOpenVINOSpec() *OpenVINOModelSpec {
+	if m != nil {
+		return m.OpenVINOSpec
 	}
 	return nil
 }
@@ -560,21 +518,21 @@ func (m *TensorRTTensorShapeRange) GetDim() []int32 {
 	return nil
 }
 
-type OpenVinoModelSpec struct {
-	InputShape []*OpenVinoModelSpec_TensorShape `protobuf:"bytes,1,rep,name=input_shape,json=inputShape,proto3" json:"input_shape,omitempty"`
+type OpenVINOModelSpec struct {
+	InputShape []*OpenVINOModelSpec_TensorShape `protobuf:"bytes,1,rep,name=input_shape,json=inputShape,proto3" json:"input_shape,omitempty"`
 }
 
-func (m *OpenVinoModelSpec) Reset()      { *m = OpenVinoModelSpec{} }
-func (*OpenVinoModelSpec) ProtoMessage() {}
-func (*OpenVinoModelSpec) Descriptor() ([]byte, []int) {
+func (m *OpenVINOModelSpec) Reset()      { *m = OpenVINOModelSpec{} }
+func (*OpenVINOModelSpec) ProtoMessage() {}
+func (*OpenVINOModelSpec) Descriptor() ([]byte, []int) {
 	return fileDescriptor_2eacf87cbdc6b8b6, []int{9}
 }
-func (m *OpenVinoModelSpec) XXX_Unmarshal(b []byte) error {
+func (m *OpenVINOModelSpec) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *OpenVinoModelSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *OpenVINOModelSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_OpenVinoModelSpec.Marshal(b, m, deterministic)
+		return xxx_messageInfo_OpenVINOModelSpec.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -584,40 +542,40 @@ func (m *OpenVinoModelSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (m *OpenVinoModelSpec) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_OpenVinoModelSpec.Merge(m, src)
+func (m *OpenVINOModelSpec) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_OpenVINOModelSpec.Merge(m, src)
 }
-func (m *OpenVinoModelSpec) XXX_Size() int {
+func (m *OpenVINOModelSpec) XXX_Size() int {
 	return m.Size()
 }
-func (m *OpenVinoModelSpec) XXX_DiscardUnknown() {
-	xxx_messageInfo_OpenVinoModelSpec.DiscardUnknown(m)
+func (m *OpenVINOModelSpec) XXX_DiscardUnknown() {
+	xxx_messageInfo_OpenVINOModelSpec.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_OpenVinoModelSpec proto.InternalMessageInfo
+var xxx_messageInfo_OpenVINOModelSpec proto.InternalMessageInfo
 
-func (m *OpenVinoModelSpec) GetInputShape() []*OpenVinoModelSpec_TensorShape {
+func (m *OpenVINOModelSpec) GetInputShape() []*OpenVINOModelSpec_TensorShape {
 	if m != nil {
 		return m.InputShape
 	}
 	return nil
 }
 
-type OpenVinoModelSpec_TensorShape struct {
+type OpenVINOModelSpec_TensorShape struct {
 	Dim []int32 `protobuf:"varint,1,rep,packed,name=dim,proto3" json:"dim,omitempty"`
 }
 
-func (m *OpenVinoModelSpec_TensorShape) Reset()      { *m = OpenVinoModelSpec_TensorShape{} }
-func (*OpenVinoModelSpec_TensorShape) ProtoMessage() {}
-func (*OpenVinoModelSpec_TensorShape) Descriptor() ([]byte, []int) {
+func (m *OpenVINOModelSpec_TensorShape) Reset()      { *m = OpenVINOModelSpec_TensorShape{} }
+func (*OpenVINOModelSpec_TensorShape) ProtoMessage() {}
+func (*OpenVINOModelSpec_TensorShape) Descriptor() ([]byte, []int) {
 	return fileDescriptor_2eacf87cbdc6b8b6, []int{9, 0}
 }
-func (m *OpenVinoModelSpec_TensorShape) XXX_Unmarshal(b []byte) error {
+func (m *OpenVINOModelSpec_TensorShape) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *OpenVinoModelSpec_TensorShape) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *OpenVINOModelSpec_TensorShape) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_OpenVinoModelSpec_TensorShape.Marshal(b, m, deterministic)
+		return xxx_messageInfo_OpenVINOModelSpec_TensorShape.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -627,19 +585,19 @@ func (m *OpenVinoModelSpec_TensorShape) XXX_Marshal(b []byte, deterministic bool
 		return b[:n], nil
 	}
 }
-func (m *OpenVinoModelSpec_TensorShape) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_OpenVinoModelSpec_TensorShape.Merge(m, src)
+func (m *OpenVINOModelSpec_TensorShape) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_OpenVINOModelSpec_TensorShape.Merge(m, src)
 }
-func (m *OpenVinoModelSpec_TensorShape) XXX_Size() int {
+func (m *OpenVINOModelSpec_TensorShape) XXX_Size() int {
 	return m.Size()
 }
-func (m *OpenVinoModelSpec_TensorShape) XXX_DiscardUnknown() {
-	xxx_messageInfo_OpenVinoModelSpec_TensorShape.DiscardUnknown(m)
+func (m *OpenVINOModelSpec_TensorShape) XXX_DiscardUnknown() {
+	xxx_messageInfo_OpenVINOModelSpec_TensorShape.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_OpenVinoModelSpec_TensorShape proto.InternalMessageInfo
+var xxx_messageInfo_OpenVINOModelSpec_TensorShape proto.InternalMessageInfo
 
-func (m *OpenVinoModelSpec_TensorShape) GetDim() []int32 {
+func (m *OpenVINOModelSpec_TensorShape) GetDim() []int32 {
 	if m != nil {
 		return m.Dim
 	}
@@ -650,15 +608,14 @@ func init() {
 	proto.RegisterType((*Pipeline)(nil), "gml.internal.api.core.v1.Pipeline")
 	proto.RegisterType((*PipelineNode)(nil), "gml.internal.api.core.v1.PipelineNode")
 	proto.RegisterType((*Port)(nil), "gml.internal.api.core.v1.Port")
-	proto.RegisterType((*ExecutionGraph)(nil), "gml.internal.api.core.v1.ExecutionGraph")
-	proto.RegisterType((*ExecutionGraph_ModelMetadata)(nil), "gml.internal.api.core.v1.ExecutionGraph.ModelMetadata")
+	proto.RegisterType((*FileResource)(nil), "gml.internal.api.core.v1.FileResource")
 	proto.RegisterType((*ExecutionSpec)(nil), "gml.internal.api.core.v1.ExecutionSpec")
 	proto.RegisterType((*ModelSpec)(nil), "gml.internal.api.core.v1.ModelSpec")
 	proto.RegisterType((*TensorRTModelSpec)(nil), "gml.internal.api.core.v1.TensorRTModelSpec")
 	proto.RegisterType((*TensorRTOptimizationProfile)(nil), "gml.internal.api.core.v1.TensorRTOptimizationProfile")
 	proto.RegisterType((*TensorRTTensorShapeRange)(nil), "gml.internal.api.core.v1.TensorRTTensorShapeRange")
-	proto.RegisterType((*OpenVinoModelSpec)(nil), "gml.internal.api.core.v1.OpenVinoModelSpec")
-	proto.RegisterType((*OpenVinoModelSpec_TensorShape)(nil), "gml.internal.api.core.v1.OpenVinoModelSpec.TensorShape")
+	proto.RegisterType((*OpenVINOModelSpec)(nil), "gml.internal.api.core.v1.OpenVINOModelSpec")
+	proto.RegisterType((*OpenVINOModelSpec_TensorShape)(nil), "gml.internal.api.core.v1.OpenVINOModelSpec.TensorShape")
 }
 
 func init() {
@@ -666,59 +623,60 @@ func init() {
 }
 
 var fileDescriptor_2eacf87cbdc6b8b6 = []byte{
-	// 831 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x55, 0x41, 0x6f, 0xdc, 0x44,
-	0x14, 0xde, 0xc9, 0x6e, 0x5a, 0xf2, 0xb6, 0x9b, 0xb6, 0x03, 0x07, 0x2b, 0xa8, 0x6e, 0x64, 0x50,
-	0x89, 0x04, 0xd8, 0xea, 0x56, 0x0d, 0x48, 0x70, 0x4a, 0x0b, 0x6d, 0x85, 0x92, 0x46, 0x6e, 0x8b,
-	0x10, 0x12, 0x32, 0xb3, 0xf6, 0xcb, 0xee, 0xa8, 0xf6, 0xcc, 0xc8, 0x9e, 0x0d, 0x49, 0x2f, 0x70,
-	0xe0, 0x8c, 0xf8, 0x11, 0x80, 0xf8, 0x29, 0x1c, 0x23, 0x71, 0xe9, 0x91, 0x6c, 0x2e, 0x1c, 0xfb,
-	0x13, 0xd0, 0xcc, 0xd8, 0x5b, 0x97, 0x68, 0x9b, 0xf4, 0xb4, 0x6f, 0xbe, 0x7d, 0xdf, 0xf7, 0xbe,
-	0x79, 0xf3, 0x66, 0x0c, 0x41, 0x55, 0xa6, 0x11, 0x53, 0x3c, 0x4a, 0x65, 0x89, 0x6a, 0x14, 0xed,
-	0xdf, 0x8c, 0x0a, 0x99, 0x61, 0x9e, 0xe0, 0x01, 0xa6, 0xa1, 0x2a, 0xa5, 0x96, 0xd4, 0x1b, 0x17,
-	0x79, 0xc8, 0x85, 0xc6, 0x52, 0xb0, 0x3c, 0x64, 0x8a, 0x87, 0x26, 0x39, 0xdc, 0xbf, 0xb9, 0xf6,
-	0x7e, 0x81, 0x19, 0x67, 0x8a, 0x2b, 0x8c, 0xf6, 0x4a, 0x56, 0xe0, 0x0f, 0xb2, 0x7c, 0x1a, 0xa5,
-	0x2c, 0x4f, 0xa7, 0x39, 0xd3, 0xb2, 0x74, 0xfc, 0xb5, 0x6b, 0xa6, 0x46, 0x2a, 0x8b, 0x42, 0x8a,
-	0x48, 0x1f, 0x2a, 0xac, 0xd4, 0x28, 0x9a, 0x4e, 0x79, 0xe6, 0xfe, 0x0e, 0xee, 0xc3, 0x5b, 0xbb,
-	0x5c, 0x61, 0xce, 0x05, 0xd2, 0xcf, 0x61, 0x59, 0xc8, 0x0c, 0x2b, 0x6f, 0x69, 0xbd, 0xbb, 0xd1,
-	0x1f, 0xde, 0x08, 0x17, 0x95, 0x0e, 0x1b, 0xca, 0x8e, 0xcc, 0x30, 0x76, 0xa4, 0xe0, 0x37, 0x02,
-	0x97, 0xda, 0x38, 0x5d, 0x85, 0x25, 0x9e, 0x79, 0x64, 0x9d, 0x6c, 0xf4, 0xe2, 0x25, 0x9e, 0x51,
-	0x0a, 0x3d, 0x63, 0xc0, 0x5b, 0x5a, 0x27, 0x1b, 0x2b, 0xb1, 0x8d, 0xe9, 0x26, 0x5c, 0xe0, 0x42,
-	0x4d, 0x75, 0xe5, 0x75, 0x6d, 0x4d, 0xff, 0x35, 0x35, 0x65, 0xa9, 0xe3, 0x3a, 0x9b, 0x7e, 0x0a,
-	0x17, 0xe5, 0x54, 0x5b, 0x62, 0xef, 0x5c, 0xc4, 0x26, 0x3d, 0xf8, 0x08, 0x7a, 0x06, 0x30, 0x6e,
-	0x04, 0x2b, 0xd0, 0xfa, 0x5b, 0x89, 0x6d, 0x4c, 0xaf, 0x40, 0x57, 0xa0, 0xae, 0x0d, 0x9a, 0x30,
-	0xf8, 0xa3, 0x0b, 0xab, 0x5f, 0x1c, 0x60, 0x3a, 0xd5, 0x5c, 0x8a, 0x7b, 0x25, 0x53, 0x13, 0xba,
-	0x03, 0xab, 0xd8, 0x20, 0x49, 0xa5, 0x30, 0xb5, 0x12, 0xfd, 0xe1, 0x07, 0x8b, 0x1d, 0xcc, 0x15,
-	0x1e, 0x29, 0x4c, 0xe3, 0x01, 0xb6, 0x97, 0xf4, 0x2e, 0xf4, 0xdd, 0xa1, 0x1b, 0xad, 0xa6, 0xf7,
-	0xef, 0x2d, 0x16, 0xdb, 0x36, 0xc9, 0x56, 0x08, 0x8a, 0x26, 0xac, 0xe8, 0x77, 0xb0, 0xea, 0x54,
-	0x0a, 0xd4, 0x2c, 0x63, 0x9a, 0xd5, 0x0d, 0xdd, 0x3c, 0x87, 0x2b, 0xbb, 0x2f, 0xa7, 0xbb, 0x5d,
-	0xb3, 0xe3, 0x41, 0xd1, 0x5e, 0x52, 0x0f, 0x2e, 0x96, 0x53, 0xa1, 0x79, 0x81, 0x5e, 0xcf, 0x76,
-	0xa7, 0x59, 0xae, 0xfd, 0x4c, 0x60, 0xf0, 0x0a, 0x95, 0xde, 0x02, 0x47, 0x4e, 0xf6, 0x78, 0x8e,
-	0x49, 0x3d, 0x02, 0xfd, 0xe1, 0x65, 0xeb, 0xc4, 0x8e, 0x60, 0xf8, 0xe4, 0xc9, 0x83, 0xbb, 0xb1,
-	0xdb, 0xf6, 0x97, 0x3c, 0xc7, 0x07, 0x19, 0xbd, 0x06, 0x50, 0xf1, 0x67, 0x98, 0x8c, 0x0e, 0xb5,
-	0x1d, 0x40, 0x33, 0x34, 0x2b, 0x06, 0xd9, 0x32, 0x00, 0xbd, 0x0e, 0xfd, 0x6a, 0xc2, 0x86, 0xb7,
-	0x37, 0x93, 0x09, 0xab, 0x26, 0x5e, 0xd7, 0x7a, 0x00, 0x07, 0xdd, 0x67, 0xd5, 0x24, 0xb8, 0x07,
-	0x83, 0x57, 0xba, 0x4c, 0x37, 0x61, 0x79, 0x6c, 0xf6, 0x55, 0x57, 0x5f, 0x0f, 0xe7, 0xb7, 0x25,
-	0xbc, 0x33, 0xbf, 0x23, 0x76, 0xe7, 0x77, 0xa4, 0xd8, 0xe3, 0xe3, 0xd8, 0xa5, 0x07, 0x7f, 0x13,
-	0x58, 0x99, 0xb7, 0x98, 0x06, 0x30, 0x90, 0x42, 0x1c, 0x24, 0xa3, 0x5c, 0x8e, 0x92, 0xa7, 0x78,
-	0x58, 0x8f, 0x4b, 0xdf, 0x80, 0x5b, 0xb9, 0x1c, 0x7d, 0x85, 0x87, 0x74, 0x17, 0x06, 0x1a, 0x45,
-	0x25, 0xcb, 0x52, 0xbb, 0x79, 0xc8, 0x6c, 0xc5, 0x0f, 0x17, 0x77, 0xfe, 0xb1, 0x4d, 0x8f, 0x1f,
-	0xbf, 0x3c, 0xca, 0x4b, 0x8d, 0x82, 0xad, 0xba, 0x0b, 0x03, 0xa9, 0x50, 0xec, 0x73, 0x21, 0x9d,
-	0x22, 0x9e, 0xa5, 0xf8, 0x50, 0xa1, 0xf8, 0x9a, 0x0b, 0xd9, 0x52, 0x6c, 0x14, 0xcc, 0x2a, 0xf8,
-	0x9d, 0xc0, 0xd5, 0x53, 0x55, 0xe9, 0x04, 0xde, 0x91, 0x4a, 0xf3, 0x82, 0x3f, 0x63, 0x76, 0x9a,
-	0x55, 0x29, 0xcd, 0x99, 0x79, 0xc4, 0x8e, 0xce, 0xed, 0xb3, 0x37, 0xf0, 0xb0, 0xc5, 0xde, 0x75,
-	0xe4, 0xf8, 0x6d, 0x79, 0x1a, 0xa4, 0x37, 0xe0, 0x32, 0x8a, 0x31, 0x17, 0xf8, 0xb2, 0x93, 0xee,
-	0x96, 0x0d, 0x1c, 0x5c, 0xf7, 0x32, 0xf8, 0x11, 0xde, 0x7d, 0x8d, 0x36, 0xfd, 0x1e, 0xa8, 0x6b,
-	0x54, 0x52, 0x4d, 0x98, 0xc2, 0xa4, 0x64, 0x62, 0xdc, 0xd8, 0x1d, 0x9e, 0x6d, 0xd7, 0xfd, 0x3e,
-	0x32, 0xd4, 0xd8, 0x30, 0xe3, 0x2b, 0xfa, 0x7f, 0x48, 0xb0, 0x0d, 0xde, 0xa2, 0x6c, 0x33, 0x84,
-	0x75, 0xf5, 0xd6, 0xcb, 0x01, 0x0e, 0xda, 0xa9, 0xdf, 0x8f, 0x8c, 0x17, 0xf6, 0x0a, 0x2f, 0xc7,
-	0x26, 0x0c, 0x7e, 0x21, 0x70, 0xf5, 0xd4, 0xd9, 0xd0, 0x6f, 0xa0, 0x6f, 0xdf, 0x31, 0xb7, 0x8b,
-	0xda, 0xff, 0x27, 0x6f, 0x70, 0xba, 0x61, 0xdb, 0x1b, 0x58, 0x2d, 0x1b, 0xaf, 0x5d, 0x87, 0x7e,
-	0xeb, 0xaf, 0xc6, 0x10, 0x99, 0x1b, 0xda, 0x4a, 0x8f, 0x8e, 0xfd, 0xce, 0xf3, 0x63, 0xbf, 0xf3,
-	0xe2, 0xd8, 0x27, 0x3f, 0xcd, 0x7c, 0xf2, 0xe7, 0xcc, 0x27, 0x7f, 0xcd, 0x7c, 0x72, 0x34, 0xf3,
-	0xc9, 0x3f, 0x33, 0x9f, 0xfc, 0x3b, 0xf3, 0x3b, 0x2f, 0x66, 0x3e, 0xf9, 0xf5, 0xc4, 0xef, 0x1c,
-	0x9d, 0xf8, 0x9d, 0xe7, 0x27, 0x7e, 0xe7, 0xdb, 0x8f, 0xc7, 0xbc, 0xc8, 0x51, 0xe7, 0x6c, 0x54,
-	0x85, 0x8c, 0x47, 0x6e, 0x15, 0x9d, 0xfa, 0x7a, 0x7d, 0xe6, 0xa2, 0xd1, 0x05, 0xfb, 0x6d, 0xb9,
-	0xf5, 0x5f, 0x00, 0x00, 0x00, 0xff, 0xff, 0xee, 0x20, 0xce, 0x29, 0xe0, 0x06, 0x00, 0x00,
+	// 834 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x55, 0xcf, 0x6f, 0xdc, 0x44,
+	0x14, 0x5e, 0x6f, 0x7e, 0xee, 0xdb, 0x5d, 0x92, 0x0e, 0x3d, 0x58, 0x41, 0xf5, 0x46, 0x06, 0x55,
+	0x91, 0x00, 0x5b, 0xdd, 0xaa, 0x01, 0x09, 0x4e, 0x5b, 0x7e, 0x34, 0x42, 0xdd, 0x14, 0xb7, 0x45,
+	0x15, 0x17, 0x33, 0xb6, 0x5f, 0x76, 0x47, 0xb5, 0x67, 0x46, 0xb6, 0x37, 0x24, 0xbd, 0xc0, 0x1d,
+	0x09, 0xf1, 0x47, 0x80, 0xc4, 0x9f, 0xc2, 0x31, 0xc7, 0x9e, 0x22, 0xe2, 0x5c, 0x38, 0xf6, 0xc2,
+	0x1d, 0xcd, 0x8c, 0xbd, 0xac, 0x12, 0x25, 0x81, 0xd3, 0x3e, 0x7f, 0xf3, 0xbd, 0xf9, 0xbe, 0xf9,
+	0x9e, 0x67, 0x0d, 0x6e, 0x91, 0xc7, 0x3e, 0x95, 0xcc, 0x8f, 0x45, 0x8e, 0x32, 0xf2, 0x0f, 0xef,
+	0xf9, 0x99, 0x48, 0x30, 0x0d, 0xf1, 0x08, 0x63, 0x4f, 0xe6, 0xa2, 0x14, 0xc4, 0x9e, 0x64, 0xa9,
+	0xc7, 0x78, 0x89, 0x39, 0xa7, 0xa9, 0x47, 0x25, 0xf3, 0x14, 0xd9, 0x3b, 0xbc, 0xb7, 0x75, 0x7b,
+	0x22, 0x26, 0x42, 0x93, 0x7c, 0x55, 0x19, 0xfe, 0xd6, 0x7b, 0x19, 0x26, 0x8c, 0x4a, 0x26, 0xd1,
+	0x3f, 0xc8, 0x69, 0x86, 0xdf, 0x8b, 0xfc, 0xa5, 0x1f, 0xd3, 0x34, 0x9e, 0xa5, 0xb4, 0x14, 0x79,
+	0xcd, 0xba, 0xa3, 0x94, 0x63, 0x91, 0x65, 0x82, 0xfb, 0xe5, 0xb1, 0xc4, 0x42, 0x46, 0xfe, 0x6c,
+	0xc6, 0x12, 0xb3, 0xec, 0x3e, 0x82, 0xf5, 0x27, 0x4c, 0x62, 0xca, 0x38, 0x92, 0x4f, 0x61, 0x85,
+	0x8b, 0x04, 0x0b, 0xbb, 0xbd, 0xbd, 0xb4, 0xd3, 0x1d, 0xde, 0xf5, 0xae, 0x32, 0xe4, 0x35, 0x2d,
+	0x63, 0x91, 0x60, 0x60, 0x9a, 0xdc, 0x5f, 0x2d, 0xe8, 0x2d, 0xe2, 0xe4, 0x2d, 0x68, 0xb3, 0xc4,
+	0xb6, 0xb6, 0xad, 0x9d, 0xe5, 0xa0, 0xcd, 0x12, 0x42, 0x60, 0x59, 0x19, 0xb0, 0xdb, 0xdb, 0xd6,
+	0x4e, 0x27, 0xd0, 0x35, 0xd9, 0x85, 0x55, 0xc6, 0xe5, 0xac, 0x2c, 0xec, 0x25, 0xad, 0xe9, 0x5c,
+	0xa3, 0x29, 0xf2, 0x32, 0xa8, 0xd9, 0xe4, 0x63, 0x58, 0x13, 0xb3, 0x52, 0x37, 0x2e, 0xff, 0xa7,
+	0xc6, 0x86, 0xee, 0x7e, 0x00, 0xcb, 0x0a, 0x50, 0x6e, 0x38, 0xcd, 0x50, 0xfb, 0xeb, 0x04, 0xba,
+	0x26, 0x9b, 0xb0, 0xc4, 0xb1, 0xac, 0x0d, 0xaa, 0xd2, 0x3d, 0x82, 0xde, 0x17, 0x2c, 0xc5, 0x00,
+	0x0b, 0x31, 0xcb, 0x63, 0x24, 0x3b, 0xb0, 0x76, 0xc0, 0x52, 0x0c, 0xeb, 0x83, 0x75, 0x87, 0x1b,
+	0x5a, 0x57, 0x07, 0xeb, 0x3d, 0x7f, 0xbe, 0xf7, 0x59, 0xb0, 0xaa, 0xd6, 0xf7, 0x12, 0x72, 0x07,
+	0xa0, 0x60, 0xaf, 0x30, 0x8c, 0x8e, 0x4b, 0x9d, 0xa8, 0x4a, 0xa1, 0xa3, 0x90, 0x91, 0x02, 0xc8,
+	0x00, 0xba, 0xc5, 0x94, 0x0e, 0x1f, 0xec, 0x86, 0x53, 0x5a, 0x4c, 0xed, 0x25, 0x2d, 0x09, 0x06,
+	0x7a, 0x44, 0x8b, 0xa9, 0xfb, 0x93, 0x05, 0xfd, 0xcf, 0x8f, 0x30, 0x9e, 0x95, 0x4c, 0xf0, 0xa7,
+	0x12, 0x63, 0xb2, 0x0b, 0x2b, 0x93, 0x9c, 0xca, 0x69, 0xad, 0xbc, 0xed, 0xcd, 0xe7, 0xef, 0x3d,
+	0x9c, 0x4f, 0xfd, 0x4b, 0xc5, 0x78, 0x28, 0xf8, 0x01, 0x9b, 0x04, 0x86, 0x4e, 0x46, 0x00, 0xe6,
+	0x5d, 0x2b, 0x24, 0xc6, 0xf5, 0x6c, 0xdf, 0xbd, 0x3a, 0xae, 0xc7, 0x8a, 0xab, 0x04, 0x83, 0x4e,
+	0xd6, 0x94, 0xee, 0xdf, 0x6d, 0xe8, 0xcc, 0x17, 0xc8, 0x7d, 0xe8, 0x0b, 0xce, 0x8f, 0xc2, 0x28,
+	0x15, 0x51, 0xf8, 0x12, 0x8f, 0x4d, 0x88, 0xa3, 0x8d, 0xea, 0x74, 0xd0, 0xdd, 0x1f, 0x8f, 0x5f,
+	0x8c, 0x52, 0x11, 0x7d, 0x85, 0xc7, 0x41, 0x57, 0xb1, 0xea, 0x07, 0xf2, 0x35, 0x74, 0x74, 0x93,
+	0xca, 0x47, 0xe7, 0x71, 0xed, 0x1b, 0xb6, 0x98, 0xfa, 0xa8, 0x57, 0x9d, 0x0e, 0xd6, 0xd5, 0xc6,
+	0x1a, 0x5d, 0x57, 0xdb, 0xa8, 0x8a, 0xd8, 0xb0, 0x96, 0xcf, 0x78, 0xc9, 0x32, 0xb4, 0x87, 0x3a,
+	0xc0, 0xe6, 0x91, 0x44, 0xd0, 0x2f, 0x91, 0x17, 0x22, 0xcf, 0x4b, 0x73, 0xec, 0x44, 0x0b, 0xbe,
+	0x7f, 0xb5, 0xe0, 0x33, 0x4d, 0x0f, 0x9e, 0xcd, 0x4f, 0x39, 0xda, 0xac, 0x4e, 0x07, 0xbd, 0x06,
+	0xd6, 0x81, 0xf4, 0x9a, 0x3d, 0x75, 0x0a, 0x11, 0xf4, 0x85, 0x44, 0x7e, 0xc8, 0xb8, 0x30, 0x1a,
+	0x78, 0x93, 0xc6, 0xbe, 0x44, 0xfe, 0xcd, 0xde, 0x78, 0xff, 0x82, 0x46, 0x03, 0x1b, 0x8d, 0x66,
+	0x4f, 0x9d, 0xfb, 0x6f, 0x16, 0xdc, 0xba, 0xe4, 0x8c, 0x4c, 0xe1, 0xb6, 0x90, 0x25, 0xcb, 0xd8,
+	0x2b, 0xaa, 0xde, 0x8e, 0x50, 0xe6, 0x42, 0xa7, 0x6a, 0xe9, 0xd9, 0x3e, 0xb8, 0xf9, 0x90, 0xfb,
+	0x0b, 0xdd, 0x4f, 0x4c, 0x73, 0xf0, 0xb6, 0xb8, 0x0c, 0x92, 0xbb, 0xb0, 0x81, 0x7c, 0xc2, 0x38,
+	0xfe, 0x3b, 0x6b, 0x73, 0x3b, 0xfa, 0x06, 0xae, 0x87, 0xeb, 0xfe, 0x00, 0xef, 0x5c, 0xb3, 0x37,
+	0xf9, 0x0e, 0x88, 0x89, 0x2e, 0x2c, 0xa6, 0x54, 0x62, 0x98, 0x53, 0x3e, 0x69, 0xec, 0x0e, 0x6f,
+	0xb6, 0x6b, 0x7e, 0x9f, 0xaa, 0xd6, 0x40, 0x75, 0x06, 0x9b, 0xe5, 0x05, 0xc4, 0x7d, 0x0c, 0xf6,
+	0x55, 0x6c, 0x75, 0xd7, 0x6a, 0xf5, 0x85, 0x1b, 0x0f, 0x06, 0x1a, 0xd7, 0xf7, 0x3e, 0x61, 0x99,
+	0xbe, 0x1a, 0x2b, 0x81, 0x2a, 0xdd, 0x9f, 0x2d, 0xb8, 0x75, 0x69, 0x5a, 0xe4, 0x05, 0x74, 0xf5,
+	0xff, 0x8f, 0x39, 0x45, 0xed, 0xff, 0xa3, 0xff, 0x31, 0x6f, 0x6f, 0xd1, 0x1b, 0xe8, 0xbd, 0x74,
+	0xbd, 0x35, 0x80, 0xee, 0xc2, 0x52, 0x63, 0xc8, 0x9a, 0x1b, 0x1a, 0xc5, 0x27, 0x67, 0x4e, 0xeb,
+	0xf5, 0x99, 0xd3, 0x7a, 0x73, 0xe6, 0x58, 0x3f, 0x56, 0x8e, 0xf5, 0x7b, 0xe5, 0x58, 0x7f, 0x54,
+	0x8e, 0x75, 0x52, 0x39, 0xd6, 0x9f, 0x95, 0x63, 0xfd, 0x55, 0x39, 0xad, 0x37, 0x95, 0x63, 0xfd,
+	0x72, 0xee, 0xb4, 0x4e, 0xce, 0x9d, 0xd6, 0xeb, 0x73, 0xa7, 0xf5, 0xed, 0x87, 0x13, 0x96, 0xa5,
+	0x58, 0xa6, 0x34, 0x2a, 0x3c, 0xca, 0x7c, 0xf3, 0xe4, 0x5f, 0xfa, 0x16, 0x7d, 0x62, 0xaa, 0x68,
+	0x55, 0x7f, 0x13, 0xee, 0xff, 0x13, 0x00, 0x00, 0xff, 0xff, 0x48, 0xef, 0x80, 0x7d, 0xae, 0x06,
+	0x00, 0x00,
 }
 
 func (this *Pipeline) Equal(that interface{}) bool {
@@ -820,14 +778,14 @@ func (this *Port) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *ExecutionGraph) Equal(that interface{}) bool {
+func (this *FileResource) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*ExecutionGraph)
+	that1, ok := that.(*FileResource)
 	if !ok {
-		that2, ok := that.(ExecutionGraph)
+		that2, ok := that.(FileResource)
 		if ok {
 			that1 = &that2
 		} else {
@@ -839,50 +797,7 @@ func (this *ExecutionGraph) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if !this.ExecutionSpec.Equal(that1.ExecutionSpec) {
-		return false
-	}
-	if len(this.ModelSpecs) != len(that1.ModelSpecs) {
-		return false
-	}
-	for i := range this.ModelSpecs {
-		if !this.ModelSpecs[i].Equal(that1.ModelSpecs[i]) {
-			return false
-		}
-	}
-	if len(this.ModelMetadata) != len(that1.ModelMetadata) {
-		return false
-	}
-	for i := range this.ModelMetadata {
-		if !this.ModelMetadata[i].Equal(that1.ModelMetadata[i]) {
-			return false
-		}
-	}
-	if this.Runtime != that1.Runtime {
-		return false
-	}
-	return true
-}
-func (this *ExecutionGraph_ModelMetadata) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*ExecutionGraph_ModelMetadata)
-	if !ok {
-		that2, ok := that.(ExecutionGraph_ModelMetadata)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if !this.ModelFileId.Equal(that1.ModelFileId) {
+	if !this.FileId.Equal(that1.FileId) {
 		return false
 	}
 	if this.SizeBytes != that1.SizeBytes {
@@ -915,6 +830,14 @@ func (this *ExecutionSpec) Equal(that interface{}) bool {
 	if !this.Graph.Equal(that1.Graph) {
 		return false
 	}
+	if len(this.ModelSpec) != len(that1.ModelSpec) {
+		return false
+	}
+	for i := range this.ModelSpec {
+		if !this.ModelSpec[i].Equal(that1.ModelSpec[i]) {
+			return false
+		}
+	}
 	return true
 }
 func (this *ModelSpec) Equal(that interface{}) bool {
@@ -936,13 +859,19 @@ func (this *ModelSpec) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if this.OnnxBlobKey != that1.OnnxBlobKey {
+	if this.ONNXBlobKey != that1.ONNXBlobKey {
 		return false
 	}
-	if !this.TensorrtSpec.Equal(that1.TensorrtSpec) {
+	if !this.ONNXFile.Equal(that1.ONNXFile) {
 		return false
 	}
-	if !this.OpenvinoSpec.Equal(that1.OpenvinoSpec) {
+	if this.Runtime != that1.Runtime {
+		return false
+	}
+	if !this.TensorRTSpec.Equal(that1.TensorRTSpec) {
+		return false
+	}
+	if !this.OpenVINOSpec.Equal(that1.OpenVINOSpec) {
 		return false
 	}
 	return true
@@ -1040,14 +969,14 @@ func (this *TensorRTTensorShapeRange) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *OpenVinoModelSpec) Equal(that interface{}) bool {
+func (this *OpenVINOModelSpec) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*OpenVinoModelSpec)
+	that1, ok := that.(*OpenVINOModelSpec)
 	if !ok {
-		that2, ok := that.(OpenVinoModelSpec)
+		that2, ok := that.(OpenVINOModelSpec)
 		if ok {
 			that1 = &that2
 		} else {
@@ -1069,14 +998,14 @@ func (this *OpenVinoModelSpec) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *OpenVinoModelSpec_TensorShape) Equal(that interface{}) bool {
+func (this *OpenVINOModelSpec_TensorShape) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*OpenVinoModelSpec_TensorShape)
+	that1, ok := that.(*OpenVINOModelSpec_TensorShape)
 	if !ok {
-		that2, ok := that.(OpenVinoModelSpec_TensorShape)
+		that2, ok := that.(OpenVINOModelSpec_TensorShape)
 		if ok {
 			that1 = &that2
 		} else {
@@ -1138,33 +1067,14 @@ func (this *Port) GoString() string {
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *ExecutionGraph) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := make([]string, 0, 8)
-	s = append(s, "&corepb.ExecutionGraph{")
-	if this.ExecutionSpec != nil {
-		s = append(s, "ExecutionSpec: "+fmt.Sprintf("%#v", this.ExecutionSpec)+",\n")
-	}
-	if this.ModelSpecs != nil {
-		s = append(s, "ModelSpecs: "+fmt.Sprintf("%#v", this.ModelSpecs)+",\n")
-	}
-	if this.ModelMetadata != nil {
-		s = append(s, "ModelMetadata: "+fmt.Sprintf("%#v", this.ModelMetadata)+",\n")
-	}
-	s = append(s, "Runtime: "+fmt.Sprintf("%#v", this.Runtime)+",\n")
-	s = append(s, "}")
-	return strings.Join(s, "")
-}
-func (this *ExecutionGraph_ModelMetadata) GoString() string {
+func (this *FileResource) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 7)
-	s = append(s, "&corepb.ExecutionGraph_ModelMetadata{")
-	if this.ModelFileId != nil {
-		s = append(s, "ModelFileId: "+fmt.Sprintf("%#v", this.ModelFileId)+",\n")
+	s = append(s, "&corepb.FileResource{")
+	if this.FileId != nil {
+		s = append(s, "FileId: "+fmt.Sprintf("%#v", this.FileId)+",\n")
 	}
 	s = append(s, "SizeBytes: "+fmt.Sprintf("%#v", this.SizeBytes)+",\n")
 	s = append(s, "Sha256Hash: "+fmt.Sprintf("%#v", this.Sha256Hash)+",\n")
@@ -1175,10 +1085,13 @@ func (this *ExecutionSpec) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 5)
+	s := make([]string, 0, 6)
 	s = append(s, "&corepb.ExecutionSpec{")
 	if this.Graph != nil {
 		s = append(s, "Graph: "+fmt.Sprintf("%#v", this.Graph)+",\n")
+	}
+	if this.ModelSpec != nil {
+		s = append(s, "ModelSpec: "+fmt.Sprintf("%#v", this.ModelSpec)+",\n")
 	}
 	s = append(s, "}")
 	return strings.Join(s, "")
@@ -1187,14 +1100,18 @@ func (this *ModelSpec) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 7)
+	s := make([]string, 0, 9)
 	s = append(s, "&corepb.ModelSpec{")
-	s = append(s, "OnnxBlobKey: "+fmt.Sprintf("%#v", this.OnnxBlobKey)+",\n")
-	if this.TensorrtSpec != nil {
-		s = append(s, "TensorrtSpec: "+fmt.Sprintf("%#v", this.TensorrtSpec)+",\n")
+	s = append(s, "ONNXBlobKey: "+fmt.Sprintf("%#v", this.ONNXBlobKey)+",\n")
+	if this.ONNXFile != nil {
+		s = append(s, "ONNXFile: "+fmt.Sprintf("%#v", this.ONNXFile)+",\n")
 	}
-	if this.OpenvinoSpec != nil {
-		s = append(s, "OpenvinoSpec: "+fmt.Sprintf("%#v", this.OpenvinoSpec)+",\n")
+	s = append(s, "Runtime: "+fmt.Sprintf("%#v", this.Runtime)+",\n")
+	if this.TensorRTSpec != nil {
+		s = append(s, "TensorRTSpec: "+fmt.Sprintf("%#v", this.TensorRTSpec)+",\n")
+	}
+	if this.OpenVINOSpec != nil {
+		s = append(s, "OpenVINOSpec: "+fmt.Sprintf("%#v", this.OpenVINOSpec)+",\n")
 	}
 	s = append(s, "}")
 	return strings.Join(s, "")
@@ -1235,24 +1152,24 @@ func (this *TensorRTTensorShapeRange) GoString() string {
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *OpenVinoModelSpec) GoString() string {
+func (this *OpenVINOModelSpec) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 5)
-	s = append(s, "&corepb.OpenVinoModelSpec{")
+	s = append(s, "&corepb.OpenVINOModelSpec{")
 	if this.InputShape != nil {
 		s = append(s, "InputShape: "+fmt.Sprintf("%#v", this.InputShape)+",\n")
 	}
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *OpenVinoModelSpec_TensorShape) GoString() string {
+func (this *OpenVINOModelSpec_TensorShape) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 5)
-	s = append(s, "&corepb.OpenVinoModelSpec_TensorShape{")
+	s = append(s, "&corepb.OpenVINOModelSpec_TensorShape{")
 	s = append(s, "Dim: "+fmt.Sprintf("%#v", this.Dim)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
@@ -1402,7 +1319,7 @@ func (m *Port) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *ExecutionGraph) Marshal() (dAtA []byte, err error) {
+func (m *FileResource) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1412,82 +1329,12 @@ func (m *ExecutionGraph) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ExecutionGraph) MarshalTo(dAtA []byte) (int, error) {
+func (m *FileResource) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *ExecutionGraph) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Runtime) > 0 {
-		i -= len(m.Runtime)
-		copy(dAtA[i:], m.Runtime)
-		i = encodeVarintModelExec(dAtA, i, uint64(len(m.Runtime)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.ModelMetadata) > 0 {
-		for iNdEx := len(m.ModelMetadata) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.ModelMetadata[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintModelExec(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x1a
-		}
-	}
-	if len(m.ModelSpecs) > 0 {
-		for iNdEx := len(m.ModelSpecs) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.ModelSpecs[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintModelExec(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x12
-		}
-	}
-	if m.ExecutionSpec != nil {
-		{
-			size, err := m.ExecutionSpec.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintModelExec(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *ExecutionGraph_ModelMetadata) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *ExecutionGraph_ModelMetadata) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ExecutionGraph_ModelMetadata) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *FileResource) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1504,9 +1351,9 @@ func (m *ExecutionGraph_ModelMetadata) MarshalToSizedBuffer(dAtA []byte) (int, e
 		i--
 		dAtA[i] = 0x10
 	}
-	if m.ModelFileId != nil {
+	if m.FileId != nil {
 		{
-			size, err := m.ModelFileId.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.FileId.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1539,6 +1386,20 @@ func (m *ExecutionSpec) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.ModelSpec) > 0 {
+		for iNdEx := len(m.ModelSpec) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.ModelSpec[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintModelExec(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+		}
+	}
 	if m.Graph != nil {
 		{
 			size, err := m.Graph.MarshalToSizedBuffer(dAtA[:i])
@@ -1574,9 +1435,9 @@ func (m *ModelSpec) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.OpenvinoSpec != nil {
+	if m.OpenVINOSpec != nil {
 		{
-			size, err := m.OpenvinoSpec.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.OpenVINOSpec.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1588,9 +1449,9 @@ func (m *ModelSpec) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0xaa
 	}
-	if m.TensorrtSpec != nil {
+	if m.TensorRTSpec != nil {
 		{
-			size, err := m.TensorrtSpec.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.TensorRTSpec.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1602,10 +1463,31 @@ func (m *ModelSpec) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0xa2
 	}
-	if len(m.OnnxBlobKey) > 0 {
-		i -= len(m.OnnxBlobKey)
-		copy(dAtA[i:], m.OnnxBlobKey)
-		i = encodeVarintModelExec(dAtA, i, uint64(len(m.OnnxBlobKey)))
+	if len(m.Runtime) > 0 {
+		i -= len(m.Runtime)
+		copy(dAtA[i:], m.Runtime)
+		i = encodeVarintModelExec(dAtA, i, uint64(len(m.Runtime)))
+		i--
+		dAtA[i] = 0x3
+		i--
+		dAtA[i] = 0x92
+	}
+	if m.ONNXFile != nil {
+		{
+			size, err := m.ONNXFile.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintModelExec(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.ONNXBlobKey) > 0 {
+		i -= len(m.ONNXBlobKey)
+		copy(dAtA[i:], m.ONNXBlobKey)
+		i = encodeVarintModelExec(dAtA, i, uint64(len(m.ONNXBlobKey)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -1742,7 +1624,7 @@ func (m *TensorRTTensorShapeRange) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *OpenVinoModelSpec) Marshal() (dAtA []byte, err error) {
+func (m *OpenVINOModelSpec) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1752,12 +1634,12 @@ func (m *OpenVinoModelSpec) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *OpenVinoModelSpec) MarshalTo(dAtA []byte) (int, error) {
+func (m *OpenVINOModelSpec) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *OpenVinoModelSpec) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *OpenVINOModelSpec) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1779,7 +1661,7 @@ func (m *OpenVinoModelSpec) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *OpenVinoModelSpec_TensorShape) Marshal() (dAtA []byte, err error) {
+func (m *OpenVINOModelSpec_TensorShape) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1789,12 +1671,12 @@ func (m *OpenVinoModelSpec_TensorShape) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *OpenVinoModelSpec_TensorShape) MarshalTo(dAtA []byte) (int, error) {
+func (m *OpenVINOModelSpec_TensorShape) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *OpenVinoModelSpec_TensorShape) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *OpenVINOModelSpec_TensorShape) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1892,43 +1774,14 @@ func (m *Port) Size() (n int) {
 	return n
 }
 
-func (m *ExecutionGraph) Size() (n int) {
+func (m *FileResource) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.ExecutionSpec != nil {
-		l = m.ExecutionSpec.Size()
-		n += 1 + l + sovModelExec(uint64(l))
-	}
-	if len(m.ModelSpecs) > 0 {
-		for _, e := range m.ModelSpecs {
-			l = e.Size()
-			n += 1 + l + sovModelExec(uint64(l))
-		}
-	}
-	if len(m.ModelMetadata) > 0 {
-		for _, e := range m.ModelMetadata {
-			l = e.Size()
-			n += 1 + l + sovModelExec(uint64(l))
-		}
-	}
-	l = len(m.Runtime)
-	if l > 0 {
-		n += 1 + l + sovModelExec(uint64(l))
-	}
-	return n
-}
-
-func (m *ExecutionGraph_ModelMetadata) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.ModelFileId != nil {
-		l = m.ModelFileId.Size()
+	if m.FileId != nil {
+		l = m.FileId.Size()
 		n += 1 + l + sovModelExec(uint64(l))
 	}
 	if m.SizeBytes != 0 {
@@ -1951,6 +1804,12 @@ func (m *ExecutionSpec) Size() (n int) {
 		l = m.Graph.Size()
 		n += 1 + l + sovModelExec(uint64(l))
 	}
+	if len(m.ModelSpec) > 0 {
+		for _, e := range m.ModelSpec {
+			l = e.Size()
+			n += 1 + l + sovModelExec(uint64(l))
+		}
+	}
 	return n
 }
 
@@ -1960,16 +1819,24 @@ func (m *ModelSpec) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.OnnxBlobKey)
+	l = len(m.ONNXBlobKey)
 	if l > 0 {
 		n += 1 + l + sovModelExec(uint64(l))
 	}
-	if m.TensorrtSpec != nil {
-		l = m.TensorrtSpec.Size()
+	if m.ONNXFile != nil {
+		l = m.ONNXFile.Size()
+		n += 1 + l + sovModelExec(uint64(l))
+	}
+	l = len(m.Runtime)
+	if l > 0 {
 		n += 2 + l + sovModelExec(uint64(l))
 	}
-	if m.OpenvinoSpec != nil {
-		l = m.OpenvinoSpec.Size()
+	if m.TensorRTSpec != nil {
+		l = m.TensorRTSpec.Size()
+		n += 2 + l + sovModelExec(uint64(l))
+	}
+	if m.OpenVINOSpec != nil {
+		l = m.OpenVINOSpec.Size()
 		n += 2 + l + sovModelExec(uint64(l))
 	}
 	return n
@@ -2029,7 +1896,7 @@ func (m *TensorRTTensorShapeRange) Size() (n int) {
 	return n
 }
 
-func (m *OpenVinoModelSpec) Size() (n int) {
+func (m *OpenVINOModelSpec) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2044,7 +1911,7 @@ func (m *OpenVinoModelSpec) Size() (n int) {
 	return n
 }
 
-func (m *OpenVinoModelSpec_TensorShape) Size() (n int) {
+func (m *OpenVINOModelSpec_TensorShape) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2115,35 +1982,12 @@ func (this *Port) String() string {
 	}, "")
 	return s
 }
-func (this *ExecutionGraph) String() string {
+func (this *FileResource) String() string {
 	if this == nil {
 		return "nil"
 	}
-	repeatedStringForModelSpecs := "[]*ModelSpec{"
-	for _, f := range this.ModelSpecs {
-		repeatedStringForModelSpecs += strings.Replace(f.String(), "ModelSpec", "ModelSpec", 1) + ","
-	}
-	repeatedStringForModelSpecs += "}"
-	repeatedStringForModelMetadata := "[]*ExecutionGraph_ModelMetadata{"
-	for _, f := range this.ModelMetadata {
-		repeatedStringForModelMetadata += strings.Replace(fmt.Sprintf("%v", f), "ExecutionGraph_ModelMetadata", "ExecutionGraph_ModelMetadata", 1) + ","
-	}
-	repeatedStringForModelMetadata += "}"
-	s := strings.Join([]string{`&ExecutionGraph{`,
-		`ExecutionSpec:` + strings.Replace(this.ExecutionSpec.String(), "ExecutionSpec", "ExecutionSpec", 1) + `,`,
-		`ModelSpecs:` + repeatedStringForModelSpecs + `,`,
-		`ModelMetadata:` + repeatedStringForModelMetadata + `,`,
-		`Runtime:` + fmt.Sprintf("%v", this.Runtime) + `,`,
-		`}`,
-	}, "")
-	return s
-}
-func (this *ExecutionGraph_ModelMetadata) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&ExecutionGraph_ModelMetadata{`,
-		`ModelFileId:` + strings.Replace(fmt.Sprintf("%v", this.ModelFileId), "UUID", "typespb.UUID", 1) + `,`,
+	s := strings.Join([]string{`&FileResource{`,
+		`FileId:` + strings.Replace(fmt.Sprintf("%v", this.FileId), "UUID", "typespb.UUID", 1) + `,`,
 		`SizeBytes:` + fmt.Sprintf("%v", this.SizeBytes) + `,`,
 		`Sha256Hash:` + fmt.Sprintf("%v", this.Sha256Hash) + `,`,
 		`}`,
@@ -2154,8 +1998,14 @@ func (this *ExecutionSpec) String() string {
 	if this == nil {
 		return "nil"
 	}
+	repeatedStringForModelSpec := "[]*ModelSpec{"
+	for _, f := range this.ModelSpec {
+		repeatedStringForModelSpec += strings.Replace(f.String(), "ModelSpec", "ModelSpec", 1) + ","
+	}
+	repeatedStringForModelSpec += "}"
 	s := strings.Join([]string{`&ExecutionSpec{`,
 		`Graph:` + strings.Replace(fmt.Sprintf("%v", this.Graph), "CalculatorGraphConfig", "framework.CalculatorGraphConfig", 1) + `,`,
+		`ModelSpec:` + repeatedStringForModelSpec + `,`,
 		`}`,
 	}, "")
 	return s
@@ -2165,9 +2015,11 @@ func (this *ModelSpec) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&ModelSpec{`,
-		`OnnxBlobKey:` + fmt.Sprintf("%v", this.OnnxBlobKey) + `,`,
-		`TensorrtSpec:` + strings.Replace(this.TensorrtSpec.String(), "TensorRTModelSpec", "TensorRTModelSpec", 1) + `,`,
-		`OpenvinoSpec:` + strings.Replace(this.OpenvinoSpec.String(), "OpenVinoModelSpec", "OpenVinoModelSpec", 1) + `,`,
+		`ONNXBlobKey:` + fmt.Sprintf("%v", this.ONNXBlobKey) + `,`,
+		`ONNXFile:` + strings.Replace(this.ONNXFile.String(), "FileResource", "FileResource", 1) + `,`,
+		`Runtime:` + fmt.Sprintf("%v", this.Runtime) + `,`,
+		`TensorRTSpec:` + strings.Replace(this.TensorRTSpec.String(), "TensorRTModelSpec", "TensorRTModelSpec", 1) + `,`,
+		`OpenVINOSpec:` + strings.Replace(this.OpenVINOSpec.String(), "OpenVINOModelSpec", "OpenVINOModelSpec", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -2214,26 +2066,26 @@ func (this *TensorRTTensorShapeRange) String() string {
 	}, "")
 	return s
 }
-func (this *OpenVinoModelSpec) String() string {
+func (this *OpenVINOModelSpec) String() string {
 	if this == nil {
 		return "nil"
 	}
-	repeatedStringForInputShape := "[]*OpenVinoModelSpec_TensorShape{"
+	repeatedStringForInputShape := "[]*OpenVINOModelSpec_TensorShape{"
 	for _, f := range this.InputShape {
-		repeatedStringForInputShape += strings.Replace(fmt.Sprintf("%v", f), "OpenVinoModelSpec_TensorShape", "OpenVinoModelSpec_TensorShape", 1) + ","
+		repeatedStringForInputShape += strings.Replace(fmt.Sprintf("%v", f), "OpenVINOModelSpec_TensorShape", "OpenVINOModelSpec_TensorShape", 1) + ","
 	}
 	repeatedStringForInputShape += "}"
-	s := strings.Join([]string{`&OpenVinoModelSpec{`,
+	s := strings.Join([]string{`&OpenVINOModelSpec{`,
 		`InputShape:` + repeatedStringForInputShape + `,`,
 		`}`,
 	}, "")
 	return s
 }
-func (this *OpenVinoModelSpec_TensorShape) String() string {
+func (this *OpenVINOModelSpec_TensorShape) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&OpenVinoModelSpec_TensorShape{`,
+	s := strings.Join([]string{`&OpenVINOModelSpec_TensorShape{`,
 		`Dim:` + fmt.Sprintf("%v", this.Dim) + `,`,
 		`}`,
 	}, "")
@@ -2614,7 +2466,7 @@ func (m *Port) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *ExecutionGraph) Unmarshal(dAtA []byte) error {
+func (m *FileResource) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2637,15 +2489,15 @@ func (m *ExecutionGraph) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ExecutionGraph: wiretype end group for non-group")
+			return fmt.Errorf("proto: FileResource: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ExecutionGraph: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: FileResource: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ExecutionSpec", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field FileId", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -2672,196 +2524,10 @@ func (m *ExecutionGraph) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.ExecutionSpec == nil {
-				m.ExecutionSpec = &ExecutionSpec{}
+			if m.FileId == nil {
+				m.FileId = &typespb.UUID{}
 			}
-			if err := m.ExecutionSpec.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ModelSpecs", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowModelExec
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ModelSpecs = append(m.ModelSpecs, &ModelSpec{})
-			if err := m.ModelSpecs[len(m.ModelSpecs)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ModelMetadata", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowModelExec
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ModelMetadata = append(m.ModelMetadata, &ExecutionGraph_ModelMetadata{})
-			if err := m.ModelMetadata[len(m.ModelMetadata)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Runtime", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowModelExec
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Runtime = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipModelExec(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *ExecutionGraph_ModelMetadata) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowModelExec
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: ModelMetadata: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ModelMetadata: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ModelFileId", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowModelExec
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.ModelFileId == nil {
-				m.ModelFileId = &typespb.UUID{}
-			}
-			if err := m.ModelFileId.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.FileId.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -3002,6 +2668,40 @@ func (m *ExecutionSpec) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ModelSpec", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowModelExec
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ModelSpec = append(m.ModelSpec, &ModelSpec{})
+			if err := m.ModelSpec[len(m.ModelSpec)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipModelExec(dAtA[iNdEx:])
@@ -3054,7 +2754,7 @@ func (m *ModelSpec) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field OnnxBlobKey", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ONNXBlobKey", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -3082,11 +2782,11 @@ func (m *ModelSpec) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.OnnxBlobKey = string(dAtA[iNdEx:postIndex])
+			m.ONNXBlobKey = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 100:
+		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TensorrtSpec", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ONNXFile", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -3113,16 +2813,84 @@ func (m *ModelSpec) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.TensorrtSpec == nil {
-				m.TensorrtSpec = &TensorRTModelSpec{}
+			if m.ONNXFile == nil {
+				m.ONNXFile = &FileResource{}
 			}
-			if err := m.TensorrtSpec.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.ONNXFile.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 50:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Runtime", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowModelExec
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Runtime = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 100:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TensorRTSpec", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowModelExec
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.TensorRTSpec == nil {
+				m.TensorRTSpec = &TensorRTModelSpec{}
+			}
+			if err := m.TensorRTSpec.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 101:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field OpenvinoSpec", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field OpenVINOSpec", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -3149,10 +2917,10 @@ func (m *ModelSpec) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.OpenvinoSpec == nil {
-				m.OpenvinoSpec = &OpenVinoModelSpec{}
+			if m.OpenVINOSpec == nil {
+				m.OpenVINOSpec = &OpenVINOModelSpec{}
 			}
-			if err := m.OpenvinoSpec.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.OpenVINOSpec.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -3535,7 +3303,7 @@ func (m *TensorRTTensorShapeRange) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *OpenVinoModelSpec) Unmarshal(dAtA []byte) error {
+func (m *OpenVINOModelSpec) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3558,10 +3326,10 @@ func (m *OpenVinoModelSpec) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: OpenVinoModelSpec: wiretype end group for non-group")
+			return fmt.Errorf("proto: OpenVINOModelSpec: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: OpenVinoModelSpec: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: OpenVINOModelSpec: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3593,7 +3361,7 @@ func (m *OpenVinoModelSpec) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.InputShape = append(m.InputShape, &OpenVinoModelSpec_TensorShape{})
+			m.InputShape = append(m.InputShape, &OpenVINOModelSpec_TensorShape{})
 			if err := m.InputShape[len(m.InputShape)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -3619,7 +3387,7 @@ func (m *OpenVinoModelSpec) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *OpenVinoModelSpec_TensorShape) Unmarshal(dAtA []byte) error {
+func (m *OpenVINOModelSpec_TensorShape) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {

@@ -21,6 +21,7 @@ package gml.internal.api.core.v1;
 
 option go_package = "gimletlabs.ai/gimlet/src/api/corepb/v1;corepb";
 
+import "gogoproto/gogo.proto";
 import "mediapipe/framework/calculator.proto";
 import "src/common/typespb/uuid.proto";
 
@@ -50,40 +51,39 @@ message Port {
   string net = 2;
 }
 
-// ExecutionGraph represents a pipeline deployment that the GEM should execute.
-message ExecutionGraph {
-  ExecutionSpec execution_spec = 1;
-  repeated ModelSpec model_specs = 2;
-  message ModelMetadata {
-    // The ID of the model file to fetch.
-    gml.types.UUID model_file_id = 1;
-    // The size of the model, in bytes.
-    uint64 size_bytes = 2;
-    // The sha256hash of the model file.
-    string sha256_hash = 3;
-  }
-  repeated ModelMetadata model_metadata = 3;
-  // The preferred runtime for the execution.
-  string runtime = 4;
+// Should this be defined in a different proto file?
+message FileResource {
+  // The ID of the file to fetch.
+  gml.types.UUID file_id = 1;
+  // The size of the model, in bytes.
+  uint64 size_bytes = 2;
+  // The sha256hash of the model file.
+  string sha256_hash = 3;
 }
 
-// ExecutionSpec defines what models/processing GEM should run, where to send the output, etc. The
-// current spec definitions are temporary and subject to change significantly.
+// ExecutionSpec represents a deployment that the GEM should execute.
 message ExecutionSpec {
-  // Mediapipe graph to run.
   mediapipe.CalculatorGraphConfig graph = 1;
+
+  // Any models referenced by any nodes in the graph above need to have a model spec.
+  repeated ModelSpec model_spec = 2;
 }
 
-// ModelSpec defines how to prepare the model. The current spec definitions are temporary and
-// subject to change significantly.
+// ModelSpec defines how to prepare the model.
+// The current spec definitions are temporary and subject to change significantly.
 message ModelSpec {
-  string onnx_blob_key = 1;
+  // TODO(oazizi): onnx_blob_key is deprecated and to be replaced by onnx_file.
+  string onnx_blob_key = 1 [ (gogoproto.customname) = "ONNXBlobKey" ];
+  FileResource onnx_file = 2 [ (gogoproto.customname) = "ONNXFile" ];
+
+  // The preferred runtime for the execution.
+  string runtime = 50;
 
   // Plugin specs.
   // TensorRT specific specifications.
-  TensorRTModelSpec tensorrt_spec = 100;
-  // OpenVino specific specifications.
-  OpenVinoModelSpec openvino_spec = 101;
+  TensorRTModelSpec tensorrt_spec = 100 [ (gogoproto.customname) = "TensorRTSpec" ];
+  // OpenVINO specific specifications.
+  OpenVINOModelSpec openvino_spec = 101 [ (gogoproto.customname) = "OpenVINOSpec" ];
 }
 
 // TensorRTModelSpec defines TensorRT specific parameters for building a TensorRT engine.
@@ -110,7 +110,7 @@ message TensorRTTensorShapeRange {
   repeated int32 dim = 2;
 }
 
-message OpenVinoModelSpec {
+message OpenVINOModelSpec {
   message TensorShape {
     repeated int32 dim = 1;
   }

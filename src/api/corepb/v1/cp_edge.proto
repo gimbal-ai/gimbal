@@ -78,7 +78,7 @@ enum ExecutionGraphState {
 // ExecutionGraphSpec contains the specifications for the execution graph deployment.
 message ExecutionGraphSpec {
   // The graph to deploy.
-  gml.internal.api.core.v1.ExecutionGraph graph = 1;
+  gml.internal.api.core.v1.ExecutionSpec graph = 1;
   // The expected state in which we want the execution graph to be in.
   ExecutionGraphState state = 2;
   // The version of the exec graph. Should be monotonically increasing.
