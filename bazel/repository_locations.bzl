@@ -361,11 +361,10 @@ REPOSITORY_LOCATIONS = dict(
     ),
 )
 
-# To use a local repo for local development, add the path to point to your local directory below.
-#   ex: path = "/home/user/path/to/repo"
-# then replace `_bazel_repo(repo, ...)` with `_local_repo(repo, ...)` in `repositories.bzl`.
-LOCAL_REPOSITORY_LOCATIONS = dict(
-    com_example_repo = dict(
-        path = "/home/user/path/to_repo",
-    ),
-)
+# To use a local repo for local development, simply add a `local_path` key to the relevant
+# repository location in `REPOSITORY_LOCATIONS`.
+#     e.g. local_path = "/home/user/path/to/repo
+# The local repo will take precedence over the URL location.
+#
+# Note: Patches in the corresponding _bazel_repo in `repositories.bzl` are not supported,
+#       so those should be removed to avoid errors.

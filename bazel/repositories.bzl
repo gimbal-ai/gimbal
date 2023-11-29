@@ -18,7 +18,7 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("//bazel:deb_archive.bzl", "deb_archive")
 load("//bazel/cc_toolchains:deps.bzl", "cc_toolchain_config_repo")
-load(":repository_locations.bzl", "LOCAL_REPOSITORY_LOCATIONS", "REPOSITORY_LOCATIONS")
+load(":repository_locations.bzl", "REPOSITORY_LOCATIONS")
 
 # Make all contents of an external repository accessible under a filegroup.
 # Used for external HTTP archives, e.g. cares.
@@ -48,7 +48,10 @@ def _http_archive_repo_impl(name, **kwargs):
 
 # For bazel repos do not require customization.
 def _bazel_repo(name, **kwargs):
-    _http_archive_repo_impl(name, **kwargs)
+    if "local_path" in REPOSITORY_LOCATIONS[name]:
+        _local_repo(name, **kwargs)
+    else:
+        _http_archive_repo_impl(name, **kwargs)
 
 # With a predefined "include all files" BUILD file for a non-Bazel repo.
 def _include_all_repo(name, **kwargs):
@@ -74,6 +77,7 @@ def _deb_repo(name, **kwargs):
         **kwargs
     )
 
+# _local_repo looks for a `local_path` in the relevant repository location in `REPOSITORY_LOCATIONS`
 def _local_repo(name, **kwargs):  # buildifier: disable=unused-variable
     # `existing_rule_keys` contains the names of repositories that have already
     # been defined in the Bazel workspace. By skipping repos with existing keys,
@@ -85,11 +89,11 @@ def _local_repo(name, **kwargs):  # buildifier: disable=unused-variable
         # wants to override the version. Do nothing.
         return
 
-    location = LOCAL_REPOSITORY_LOCATIONS[name]
+    location = REPOSITORY_LOCATIONS[name]
 
     native.new_local_repository(
         name = name,
-        path = location["path"],
+        path = location["local_path"],
         **kwargs
     )
 
