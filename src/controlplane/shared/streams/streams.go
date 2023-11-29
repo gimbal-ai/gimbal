@@ -72,7 +72,7 @@ func MustConnectCPJetStream(nc *nats.Conn) jetstream.JetStream {
 			log.WithError(err).Fatal("Could not start up durable streams")
 		}
 	}
-
+	log.Info("Finished setting up all durable streams")
 	return js
 }
 
@@ -84,9 +84,19 @@ func getDurableStreams() []jetstream.StreamConfig {
 		log.WithError(err).Fatal("Could not get metrics topic")
 	}
 
+	execTopic, err := edgepartition.EdgeToCPNATSPartitionTopic("*", corepb.EDGE_CP_TOPIC_EXEC, true)
+	if err != nil {
+		log.WithError(err).Fatal("Could not get exec topic")
+	}
+
 	connectedDevicesTopic, err := edgepartition.CPNATSPartitionTopic("*", corepb.CPTopic(corepb.CP_TOPIC_DEVICE_CONNECTED), true)
 	if err != nil {
 		log.WithError(err).Fatal("Could not get connected devices topic")
+	}
+
+	pipelineReconciliationTopic, err := edgepartition.CPNATSPartitionTopic("*", corepb.CPTopic(corepb.CP_TOPIC_PIPELINE_RECONCILIATION), true)
+	if err != nil {
+		log.WithError(err).Fatal("Could not get pipeline reconciliation topic")
 	}
 
 	return []jetstream.StreamConfig{
@@ -97,10 +107,22 @@ func getDurableStreams() []jetstream.StreamConfig {
 			Subjects: []string{metricsTopic},
 		},
 		{
+			Name:     EdgeCPTopicToStreamName[corepb.EDGE_CP_TOPIC_EXEC],
+			MaxAge:   15 * time.Minute,
+			Replicas: clusterSize,
+			Subjects: []string{execTopic},
+		},
+		{
 			Name:     CPTopicToStreamName[corepb.CP_TOPIC_DEVICE_CONNECTED],
 			MaxAge:   15 * time.Minute,
 			Replicas: clusterSize,
 			Subjects: []string{connectedDevicesTopic},
+		},
+		{
+			Name:     CPTopicToStreamName[corepb.CP_TOPIC_PIPELINE_RECONCILIATION],
+			MaxAge:   15 * time.Minute,
+			Replicas: clusterSize,
+			Subjects: []string{pipelineReconciliationTopic},
 		},
 	}
 }

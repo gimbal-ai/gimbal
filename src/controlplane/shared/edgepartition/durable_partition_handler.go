@@ -74,7 +74,7 @@ func (p *DurablePartitionHandler) Start() error {
 			return err
 		}
 	}
-
+	log.Info("Finished subscribing to JetStream channels")
 	return nil
 }
 
