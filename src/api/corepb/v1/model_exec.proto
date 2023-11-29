@@ -54,7 +54,7 @@ message Port {
 // Should this be defined in a different proto file?
 message FileResource {
   // The ID of the file to fetch.
-  gml.types.UUID file_id = 1;
+  gml.types.UUID file_id = 1 [ (gogoproto.customname) = "FileID" ];
   // The size of the model, in bytes.
   uint64 size_bytes = 2;
   // The sha256hash of the model file.
