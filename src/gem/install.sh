@@ -90,7 +90,7 @@ common_docker_flags=(
 )
 extra_docker_flags=()
 
-IMAGE_TAG=""
+DEFAULT_IMAGE_TAG=""
 
 cmdline_opts=(
   "--blob_store_dir" "/gml"
@@ -105,9 +105,9 @@ if [[ "$(device_type)" == "NVIDIA Orin Nano"* ]]; then
     -v /tmp/argus_socket:/tmp/argus_socket
     -v /usr/local/cuda:/host_cuda
   )
-  IMAGE_TAG=jetson-dev-latest
+  DEFAULT_IMAGE_TAG=jetson-dev-latest
 elif [[ "$(device_type)" == "x86_64 Generic" ]]; then
-  IMAGE_TAG=dev-latest
+  DEFAULT_IMAGE_TAG=dev-latest
   for vid in "/dev/video"*; do
     extra_docker_flags+=("--device" "${vid}")
   done
@@ -132,16 +132,21 @@ done
 
 cmdline_opts+=(--deploy_key="$DEPLOY_KEY")
 
+DEFAULT_IMAGE_REPO="us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/gem_image"
 DEFAULT_CONTROL_PLANE="dev.app.gimletlabs.dev"
 USE_CONTROL_PLANE=${GML_CONTROL_PLANE:-${DEFAULT_CONTROL_PLANE}}
 cmdline_opts+=(--controlplane_addr="$USE_CONTROL_PLANE:443")
 
 mkdir -p "$GML_CACHE_DIR"
 
+IMAGE_TAG=${GML_IMAGE_TAG:-${DEFAULT_IMAGE_TAG}}
+IMAGE_REPO=${GML_IMAGE_REPO:-${DEFAULT_IMAGE_REPO}}
+echo "Running container: $IMAGE_REPO:$IMAGE_TAG"
+
 docker run \
   "${common_docker_flags[@]}" \
   "${extra_docker_flags[@]}" \
-  "us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/gem_image:$IMAGE_TAG" \
+  "$IMAGE_REPO:$IMAGE_TAG" \
   "${cmdline_opts[@]}"
 
 cat <<EOS
