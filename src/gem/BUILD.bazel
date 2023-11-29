@@ -35,9 +35,6 @@ gml_cc_library(
 
 gml_cc_binary(
     name = "gem",
-    data = [
-        "yolo_exec_spec.pbtxt",
-    ],
     linkopts = [
         # Ensure that our shared libs are picked up before LD_LIBRARY_PATH libs.
         "-Wl,--disable-new-dtags",

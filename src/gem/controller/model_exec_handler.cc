@@ -38,25 +38,13 @@
 #include "src/gem/storage/fs_blob_store.h"
 
 DEFINE_string(blob_store_dir, "/build/cache/", "Path to store blobs with the FilesystemBlobStore");
-DEFINE_string(exec_spec_pbtxt, "/app/gem.runfiles/_main/src/gem/yolo_exec_spec.pbtxt",
-              "Path to execution spec in pbtxt format");
 DEFINE_int32(frame_rate, 18, "Frame rate for encoding the video");
 
 namespace gml::gem::controller {
 
 using ::gml::gem::exec::core::ExecutionContext;
-
-namespace {
-Status LoadPbtxt(const std::string& path, google::protobuf::Message* msg) {
-  std::ifstream f(path);
-  std::stringstream buf;
-  buf << f.rdbuf();
-  if (!google::protobuf::TextFormat::ParseFromString(buf.str(), msg)) {
-    return error::InvalidArgument("Failed to parse spec from pbtxt");
-  }
-  return Status::OK();
-}
-}  // namespace
+using ::gml::internal::api::core::v1::ApplyExecutionGraph;
+using ::gml::internal::api::core::v1::ExecutionSpec;
 
 ModelExecHandler::ModelExecHandler(gml::event::Dispatcher* dispatcher, GEMInfo* info,
                                    GRPCBridge* bridge,
@@ -65,8 +53,9 @@ ModelExecHandler::ModelExecHandler(gml::event::Dispatcher* dispatcher, GEMInfo* 
 
 class ModelExecHandler::RunModelTask : public event::AsyncTask {
  public:
-  RunModelTask(ModelExecHandler* parent, exec::core::ControlExecutionContext* ctrl_exec_ctx)
-      : parent_(parent), ctrl_exec_ctx_(ctrl_exec_ctx) {}
+  RunModelTask(ModelExecHandler* parent, ExecutionSpec exec_spec,
+               exec::core::ControlExecutionContext* ctrl_exec_ctx)
+      : parent_(parent), exec_spec_(std::move(exec_spec)), ctrl_exec_ctx_(ctrl_exec_ctx) {}
 
   Status Run() {
     auto& plugin_registry = plugins::Registry::GetInstance();
@@ -74,13 +63,12 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
     GML_ASSIGN_OR_RETURN(auto store, storage::FilesystemBlobStore::Create(FLAGS_blob_store_dir));
 
     // TODO(oazizi): Support more than one model.
-    if (parent_->exec_spec_.model_spec_size() != 1) {
+    if (exec_spec_.model_spec_size() != 1) {
       return error::Unimplemented("Currently only support a single model");
     }
 
-    GML_ASSIGN_OR_RETURN(
-        auto model,
-        plugin_registry.BuildModel("tensorrt", store.get(), parent_->exec_spec_.model_spec()[0]));
+    GML_ASSIGN_OR_RETURN(auto model, plugin_registry.BuildModel("tensorrt", store.get(),
+                                                                exec_spec_.model_spec()[0]));
 
     GML_ASSIGN_OR_RETURN(auto cpu_exec_ctx,
                          plugin_registry.BuildExecutionContext("cpu_tensor", nullptr));
@@ -88,7 +76,7 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
     GML_ASSIGN_OR_RETURN(auto tensorrt_exec_ctx,
                          plugin_registry.BuildExecutionContext("tensorrt", model.get()));
 
-    exec::core::Runner runner(parent_->exec_spec_);
+    exec::core::Runner runner(exec_spec_);
 
     std::map<std::string, mediapipe::Packet> side_packets;
     side_packets.emplace("tensorrt_exec_ctx",
@@ -141,21 +129,32 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
 
  private:
   ModelExecHandler* parent_;
+  ExecutionSpec exec_spec_;
   exec::core::ControlExecutionContext* ctrl_exec_ctx_;
 };
 
 Status ModelExecHandler::HandleMessage(const BridgeResponse& msg) {
-  GML_UNUSED(msg);
+  ApplyExecutionGraph eg;
+  if (!msg.msg().UnpackTo(&eg)) {
+    LOG(ERROR) << "Failed to unpack apply execution graph message. Received message of type: "
+               << msg.msg().type_url() << " . Ignoring...";
+    return Status::OK();
+  }
+
   if (running_task_ != nullptr) {
     LOG(INFO) << "Model already running skipping RunModel Request";
     return Status::OK();
   }
 
   LOG(INFO) << "Starting model execution";
+  if (!eg.has_spec()) {
+    LOG(ERROR) << "Missing spec in ApplyExecutionGraph msg";
+    return Status::OK();
+  }
 
   stop_signal_.store(false);
 
-  auto task = std::make_unique<RunModelTask>(this, ctrl_exec_ctx_);
+  auto task = std::make_unique<RunModelTask>(this, eg.spec().graph(), ctrl_exec_ctx_);
 
   running_task_ = dispatcher()->CreateAsyncTask(std::move(task));
   running_task_->Run();
@@ -163,10 +162,7 @@ Status ModelExecHandler::HandleMessage(const BridgeResponse& msg) {
   return Status::OK();
 }
 
-Status ModelExecHandler::Init() {
-  GML_RETURN_IF_ERROR(LoadPbtxt(FLAGS_exec_spec_pbtxt, &exec_spec_));
-  return Status::OK();
-}
+Status ModelExecHandler::Init() { return Status::OK(); }
 
 Status ModelExecHandler::Finish() {
   if (running_task_ != nullptr) {

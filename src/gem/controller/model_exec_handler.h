@@ -31,7 +31,6 @@
 
 namespace gml::gem::controller {
 
-using ::gml::internal::api::core::v1::ExecutionSpec;
 using ::gml::internal::api::core::v1::ModelSpec;
 using ::gml::internal::controlplane::egw::v1::BridgeRequest;
 using ::gml::internal::controlplane::egw::v1::BridgeResponse;
@@ -56,7 +55,6 @@ class ModelExecHandler : public MessageHandler {
   exec::core::ControlExecutionContext* ctrl_exec_ctx_;
   event::RunnableAsyncTaskUPtr running_task_ = nullptr;
   std::atomic<bool> stop_signal_ = false;
-  ExecutionSpec exec_spec_;
 };
 
 }  // namespace gml::gem::controller
