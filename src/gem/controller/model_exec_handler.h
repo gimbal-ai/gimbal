@@ -57,7 +57,6 @@ class ModelExecHandler : public MessageHandler {
   event::RunnableAsyncTaskUPtr running_task_ = nullptr;
   std::atomic<bool> stop_signal_ = false;
   ExecutionSpec exec_spec_;
-  ModelSpec model_spec_;
 };
 
 }  // namespace gml::gem::controller

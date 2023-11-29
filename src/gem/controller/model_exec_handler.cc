@@ -40,8 +40,6 @@
 DEFINE_string(blob_store_dir, "/build/cache/", "Path to store blobs with the FilesystemBlobStore");
 DEFINE_string(exec_spec_pbtxt, "/app/gem.runfiles/_main/src/gem/yolo_exec_spec.pbtxt",
               "Path to execution spec in pbtxt format");
-DEFINE_string(model_spec_pbtxt, "/app/gem.runfiles/_main/src/gem/yolo_model_spec.pbtxt",
-              "Path to execution spec in pbtxt format");
 DEFINE_int32(frame_rate, 18, "Frame rate for encoding the video");
 
 namespace gml::gem::controller {
@@ -75,14 +73,20 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
 
     GML_ASSIGN_OR_RETURN(auto store, storage::FilesystemBlobStore::Create(FLAGS_blob_store_dir));
 
-    GML_ASSIGN_OR_RETURN(auto yolo,
-                         plugin_registry.BuildModel("tensorrt", store.get(), parent_->model_spec_));
+    // TODO(oazizi): Support more than one model.
+    if (parent_->exec_spec_.model_spec_size() != 1) {
+      return error::Unimplemented("Currently only support a single model");
+    }
+
+    GML_ASSIGN_OR_RETURN(
+        auto model,
+        plugin_registry.BuildModel("tensorrt", store.get(), parent_->exec_spec_.model_spec()[0]));
 
     GML_ASSIGN_OR_RETURN(auto cpu_exec_ctx,
                          plugin_registry.BuildExecutionContext("cpu_tensor", nullptr));
 
     GML_ASSIGN_OR_RETURN(auto tensorrt_exec_ctx,
-                         plugin_registry.BuildExecutionContext("tensorrt", yolo.get()));
+                         plugin_registry.BuildExecutionContext("tensorrt", model.get()));
 
     exec::core::Runner runner(parent_->exec_spec_);
 
@@ -161,7 +165,6 @@ Status ModelExecHandler::HandleMessage(const BridgeResponse& msg) {
 
 Status ModelExecHandler::Init() {
   GML_RETURN_IF_ERROR(LoadPbtxt(FLAGS_exec_spec_pbtxt, &exec_spec_));
-  GML_RETURN_IF_ERROR(LoadPbtxt(FLAGS_model_spec_pbtxt, &model_spec_));
   return Status::OK();
 }
 
