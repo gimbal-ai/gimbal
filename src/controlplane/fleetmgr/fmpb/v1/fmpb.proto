@@ -61,6 +61,17 @@ message GetFleetResponse {
   FleetInfo fleet = 1;
 }
 
+message GetFleetByNameRequest {
+  string name = 1;
+  // Fleet names are only unique across orgs, so we need to specify the org
+  // which this fleet is in.
+  gml.types.UUID org_id = 2 [ (gogoproto.customname) = "OrgID" ];
+}
+
+message GetFleetByNameResponse {
+  FleetInfo fleet = 1;
+}
+
 message ListFleetsRequest {
   // The orgID of the org to get fleets from.
   gml.types.UUID org_id = 1 [ (gogoproto.customname) = "OrgID" ];
@@ -240,6 +251,8 @@ service FleetMgrService {
   rpc CreateFleet(CreateFleetRequest) returns (CreateFleetResponse);
   // Gets info about the fleet with the given ID.
   rpc GetFleet(GetFleetRequest) returns (GetFleetResponse);
+  // Gets info about the fleet with the given name and org.
+  rpc GetFleetByName(GetFleetByNameRequest) returns (GetFleetByNameResponse);
   // List all fleets in the org.
   rpc ListFleets(ListFleetsRequest) returns (ListFleetsResponse);
   // UpdateDevice updates information about a device, such as its tags.
