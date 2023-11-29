@@ -174,6 +174,8 @@ message FileTransferResponse {
   }
   // The chunk for this response. If empty, considered EOS.
   FileChunk chunk = 2;
+  // The file that this chunk is from.
+  gml.types.UUID file_id = 3 [ (gogoproto.customname) = "FileID" ];
 }
 
 /****************************************************************************
