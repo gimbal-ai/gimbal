@@ -86,7 +86,7 @@ func TestDurablePartitionHandler_MessageHandler(t *testing.T) {
 	var wg sync.WaitGroup
 
 	wg.Add(1)
-	handler := func(md *edgepartition.MsgMetadata, anyMsg *types.Any) error {
+	handler := func(_ context.Context, md *edgepartition.MsgMetadata, anyMsg *types.Any) error {
 		assert.Equal(t, corepb.EDGE_CP_TOPIC_STATUS, md.EdgeCPMetadata.Topic)
 		assert.Equal(t, utils.ProtoFromUUID(deviceID), md.EdgeCPMetadata.DeviceID)
 		hbMsg := &corepb.EdgeHeartbeat{}

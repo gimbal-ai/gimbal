@@ -18,6 +18,7 @@
 package edgepartition
 
 import (
+	"context"
 	"errors"
 	"sync"
 
@@ -37,7 +38,7 @@ type MsgMetadata struct {
 	*corepb.CPMetadata
 }
 
-type DurableMessageHandler func(*MsgMetadata, *types.Any) error
+type DurableMessageHandler func(context.Context, *MsgMetadata, *types.Any) error
 
 type partitionTopic func(partition string) (string, error)
 
@@ -48,6 +49,8 @@ type DurablePartitionHandler struct {
 	consumer        string
 	messageHandlers map[string]DurableMessageHandler
 	isCPTopic       bool
+	ctx             context.Context
+	ctxCancel       func()
 
 	// Signal used to quit.
 	done chan struct{}
@@ -56,10 +59,13 @@ type DurablePartitionHandler struct {
 
 // NewDurablePartitionHandler creates a new partition handler for the given topic.
 func NewDurablePartitionHandler(js *msgbus.JetStreamStreamer, consumer string, messageHandlers map[string]DurableMessageHandler) *DurablePartitionHandler {
+	ctx, cancel := context.WithCancel(context.Background())
 	return &DurablePartitionHandler{
 		js:              js,
 		consumer:        consumer,
 		messageHandlers: messageHandlers,
+		ctx:             ctx,
+		ctxCancel:       cancel,
 	}
 }
 
@@ -133,7 +139,7 @@ func (p *DurablePartitionHandler) handleMessage(topic string, msg jetstream.Msg)
 		return ErrInvalidMessage
 	}
 
-	return funcHandler(md, anyMsg)
+	return funcHandler(p.ctx, md, anyMsg)
 }
 
 func (p *DurablePartitionHandler) startDurablePartitionHandler(partition string) error {
@@ -172,6 +178,7 @@ func (p *DurablePartitionHandler) startDurablePartitionHandler(partition string)
 // Stop performs any necessary cleanup before shutdown.
 func (p *DurablePartitionHandler) Stop() {
 	p.once.Do(func() {
+		p.ctxCancel()
 		close(p.done)
 	})
 }
