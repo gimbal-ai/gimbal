@@ -57,6 +57,14 @@ message GetFileInfoResponse {
   FileInfo info = 1;
 }
 
+message GetFileInfoByNameRequest {
+  string name = 1;
+}
+
+message GetFileInfoByNameResponse {
+  FileInfo info = 1;
+}
+
 message UploadFileRequest {
   // file_id should be in at least the first UploadRequestMessage.
   gml.types.UUID file_id = 1 [ (gogoproto.customname) = "FileID" ];
@@ -93,6 +101,7 @@ message DeleteFileResponse {}
 service FileTransferService {
   rpc CreateFileInfo(CreateFileInfoRequest) returns (CreateFileInfoResponse);
   rpc GetFileInfo(GetFileInfoRequest) returns (GetFileInfoResponse);
+  rpc GetFileInfoByName(GetFileInfoByNameRequest) returns (GetFileInfoByNameResponse);
 
   rpc UploadFile(stream UploadFileRequest) returns (UploadFileResponse);
   rpc DownloadFile(DownloadFileRequest) returns (stream DownloadFileResponse);
