@@ -50,6 +50,7 @@ StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(storage::B
     parser->parse(onnx_blob->Data<char>(), onnx_blob->SizeForType<char>());
   }
   std::vector<std::string> errors;
+  errors.reserve(parser->getNbErrors());
   for (int32_t i = 0; i < parser->getNbErrors(); ++i) {
     errors.emplace_back(parser->getError(i)->desc());
   }
@@ -77,6 +78,10 @@ StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(storage::B
     }
 
     config->addOptimizationProfile(opt_profile);
+  }
+  if (spec.tensorrt_spec().mem_pool_limits().workspace() > 0) {
+    config->setMemoryPoolLimit(nvinfer1::MemoryPoolType::kWORKSPACE,
+                               spec.tensorrt_spec().mem_pool_limits().workspace());
   }
 
   auto serialized_model =
