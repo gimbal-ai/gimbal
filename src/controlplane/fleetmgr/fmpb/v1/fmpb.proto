@@ -94,6 +94,8 @@ message Tag {
   string key = 1;
   // The value part of the tag.
   string value = 2;
+  // The metadata associated with the tag.
+  TagMetadata metadata = 3;
 }
 
 message TagMetadata {
@@ -103,21 +105,14 @@ message TagMetadata {
   google.protobuf.Timestamp updated_at = 2 [ (gogoproto.moretags) = 'db:"updated_at"' ];
 }
 
-message TagWithMetadata {
-  // The tag.
-  Tag tag = 1;
-  // The metadata associated with the tag.
-  TagMetadata metadata = 2;
-}
-
 message GetDefaultTagsRequest {
   // The fleetID of the fleet to fetch the tags from.
   gml.types.UUID fleet_id = 1 [ (gogoproto.customname) = "FleetID" ];
 }
 
 message GetDefaultTagsResponse {
-  // A map of the default tags associated with the fleet in the <key, TagWithMetadata> format.
-  map<string, TagWithMetadata> tags = 1;
+  // A map of the default tags associated with the fleet in the <key, Tag> format.
+  map<string, Tag> tags = 1;
 }
 
 message UpsertDefaultTagRequest {
@@ -223,8 +218,8 @@ message GetTagsRequest {
 }
 
 message GetTagsResponse {
-  // A map of the tags associated with the device in the <key, TagWithMetadata> format.
-  map<string, TagWithMetadata> tags = 1;
+  // A map of the tags associated with the device in the <key, Tag> format.
+  map<string, Tag> tags = 1;
 }
 
 message UpsertTagRequest {
