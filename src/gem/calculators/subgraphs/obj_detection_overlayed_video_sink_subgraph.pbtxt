@@ -1,6 +1,7 @@
 type: "ObjDetectionOverlayedVideoSinkSubgraph"
 input_stream: "AV_PACKETS:encoded_av_packets"
 input_stream: "DETECTIONS:detections"
+input_side_packet: "EXEC_CTX:ctrl_exec_ctx"
 
 node {
   calculator: "OverlayedFFmpegVideoSinkCalculator"

@@ -1,6 +1,9 @@
 type: "YoloModelTensorRTSubgraph"
+input_side_packet: "CPU_EXEC_CTX:cpu_exec_ctx"
+input_side_packet: "TENSORRT_EXEC_CTX:tensorrt_exec_ctx"
 input_stream: "sampled_frames"
 output_stream: "detections"
+
 
 node {
   calculator: "ImageTransformationCalculator"
