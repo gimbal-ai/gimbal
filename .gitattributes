@@ -3,4 +3,6 @@
 *_pb.js -diff linguist-generated=true
 *_pb.d.ts -diff linguist-generated=true
 src/ui/pnpm-lock.yaml -diff linguist-generated=true
+src/ui/app/graphql_schema.ts -diff linguist-generated=true
+src/ui/visspec/visspec_schema.ts -diff linguist-generated=true
 *.BUILD linguist-language=Starlark
