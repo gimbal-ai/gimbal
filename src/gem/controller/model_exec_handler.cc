@@ -46,6 +46,7 @@ using ::gml::gem::exec::core::ExecutionContext;
 using ::gml::gem::exec::core::Model;
 using ::gml::internal::api::core::v1::ApplyExecutionGraph;
 using ::gml::internal::api::core::v1::ExecutionSpec;
+using ::gml::internal::controlplane::egw::v1::BridgeResponse;
 
 ModelExecHandler::ModelExecHandler(gml::event::Dispatcher* dispatcher, GEMInfo* info,
                                    GRPCBridge* bridge,

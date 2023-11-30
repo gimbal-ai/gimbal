@@ -21,8 +21,6 @@
 
 namespace gml::gem::calculators::cpu_tensor {
 
-using ::gml::gem::exec::cpu_tensor::ExecutionContext;
-
 /**
  * ImageShapeCPUTensorCalculator Graph API:
  *
@@ -36,6 +34,8 @@ using ::gml::gem::exec::cpu_tensor::ExecutionContext;
  */
 class ImageShapeCPUTensorCalculator : public ExecutionContextBaseCalculator {
  public:
+  using ExecutionContext = ::gml::gem::exec::cpu_tensor::ExecutionContext;
+
   static absl::Status GetContract(mediapipe::CalculatorContract* cc);
   Status OpenImpl(mediapipe::CalculatorContext* cc, ExecutionContext* exec_ctx) override;
   Status ProcessImpl(mediapipe::CalculatorContext* cc, ExecutionContext* exec_ctx) override;

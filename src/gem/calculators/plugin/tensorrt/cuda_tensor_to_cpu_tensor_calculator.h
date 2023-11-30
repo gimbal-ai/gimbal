@@ -37,13 +37,12 @@ namespace gml::gem::calculators::tensorrt {
 class CUDATensorToCPUTensorCalculator
     : public core::ExecutionContextCalculator<exec::cpu_tensor::ExecutionContext> {
  public:
+  using ExecutionContext = ::gml::gem::exec::cpu_tensor::ExecutionContext;
+
   static absl::Status GetContract(mediapipe::CalculatorContract* cc);
-  Status OpenImpl(mediapipe::CalculatorContext* cc,
-                  exec::cpu_tensor::ExecutionContext* exec_ctx) override;
-  Status ProcessImpl(mediapipe::CalculatorContext* cc,
-                     exec::cpu_tensor::ExecutionContext* exec_ctx) override;
-  Status CloseImpl(mediapipe::CalculatorContext* cc,
-                   exec::cpu_tensor::ExecutionContext* exec_ctx) override;
+  Status OpenImpl(mediapipe::CalculatorContext* cc, ExecutionContext* exec_ctx) override;
+  Status ProcessImpl(mediapipe::CalculatorContext* cc, ExecutionContext* exec_ctx) override;
+  Status CloseImpl(mediapipe::CalculatorContext* cc, ExecutionContext* exec_ctx) override;
 };
 
 }  // namespace gml::gem::calculators::tensorrt

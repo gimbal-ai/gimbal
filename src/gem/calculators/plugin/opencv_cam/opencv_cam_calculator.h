@@ -23,9 +23,7 @@
 
 #include "src/gem/calculators/plugin/opencv_cam/optionspb/opencv_cam_calculator_options.pb.h"
 
-namespace gml::gem::calculators::opencv {
-
-using ::gml::gem::calculators::opencv_cam::optionspb::OpenCVCamSourceCalculatorOptions;
+namespace gml::gem::calculators::opencv_cam {
 
 class OpenCVCamSourceCalculator : public mediapipe::CalculatorBase {
  public:
@@ -37,7 +35,7 @@ class OpenCVCamSourceCalculator : public mediapipe::CalculatorBase {
  private:
   cv::Mat CaptureFrame();
 
-  OpenCVCamSourceCalculatorOptions options_;
+  optionspb::OpenCVCamSourceCalculatorOptions options_;
   std::unique_ptr<cv::VideoCapture> cap_;
   int64_t timestamp_;
 
@@ -47,4 +45,4 @@ class OpenCVCamSourceCalculator : public mediapipe::CalculatorBase {
   int32_t height_;
 };
 
-}  // namespace gml::gem::calculators::opencv
+}  // namespace gml::gem::calculators::opencv_cam

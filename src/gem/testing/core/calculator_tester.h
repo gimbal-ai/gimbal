@@ -29,8 +29,6 @@
 
 namespace gml::gem::testing {
 
-using ::gml::gem::exec::core::ExecutionContext;
-
 class CalculatorTester : public mediapipe::CalculatorRunner {
  public:
   explicit CalculatorTester(const std::string& node_config)
@@ -58,6 +56,7 @@ class CalculatorTester : public mediapipe::CalculatorRunner {
 
   template <typename TExecutionContext>
   CalculatorTester& WithExecutionContext(TExecutionContext* exec_ctx) {
+    using ::gml::gem::exec::core::ExecutionContext;
     return ForInputSidePacket("EXEC_CTX", static_cast<ExecutionContext*>(exec_ctx));
   }
 

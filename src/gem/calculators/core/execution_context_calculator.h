@@ -24,8 +24,6 @@
 
 namespace gml::gem::calculators::core {
 
-using ::gml::gem::exec::core::ExecutionContext;
-
 static constexpr std::string_view kExecutionContextTag = "EXEC_CTX";
 
 /**
@@ -55,13 +53,13 @@ class ExecutionContextCalculator : public mediapipe::CalculatorBase {
 
  public:
   static absl::Status UpdateContract(mediapipe::CalculatorContract* cc) {
-    cc->InputSidePackets().Tag(kExecutionContextTag).Set<ExecutionContext*>();
+    cc->InputSidePackets().Tag(kExecutionContextTag).Set<exec::core::ExecutionContext*>();
     return absl::OkStatus();
   }
 
   absl::Status Open(mediapipe::CalculatorContext* cc) override {
     exec_ctx_ = static_cast<TExecutionContext*>(
-        cc->InputSidePackets().Tag(kExecutionContextTag).Get<ExecutionContext*>());
+        cc->InputSidePackets().Tag(kExecutionContextTag).Get<exec::core::ExecutionContext*>());
     if (exec_ctx_ == nullptr) {
       return {absl::StatusCode::kInvalidArgument, "EXEC_CTX is null"};
     }

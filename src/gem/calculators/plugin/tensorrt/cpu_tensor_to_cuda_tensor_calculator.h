@@ -23,8 +23,6 @@
 
 namespace gml::gem::calculators::tensorrt {
 
-using ::gml::gem::exec::tensorrt::CUDATensorPtr;
-
 /**
  * CPUTensorToCUDATensorCalculator Graph API:
  *
@@ -38,6 +36,8 @@ using ::gml::gem::exec::tensorrt::CUDATensorPtr;
  */
 class CPUTensorToCUDATensorCalculator : public ExecutionContextBaseCalculator {
  public:
+  using ExecutionContext = ::gml::gem::exec::tensorrt::ExecutionContext;
+
   static absl::Status GetContract(mediapipe::CalculatorContract* cc);
   Status OpenImpl(mediapipe::CalculatorContext* cc, ExecutionContext* exec_ctx) override;
   Status ProcessImpl(mediapipe::CalculatorContext* cc, ExecutionContext* exec_ctx) override;

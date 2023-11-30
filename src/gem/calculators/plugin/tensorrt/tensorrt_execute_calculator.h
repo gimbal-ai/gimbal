@@ -25,10 +25,6 @@
 
 namespace gml::gem::calculators::tensorrt {
 
-using ::gml::gem::exec::core::DataType;
-using ::gml::gem::exec::tensorrt::CUDATensorPool;
-using ::gml::gem::exec::tensorrt::CUDATensorPtr;
-
 namespace internal {
 /**
  * CUDATensorPoolOutputAllocator implements TensorRT's IOutputAllocator to dynamically allocate
@@ -37,21 +33,21 @@ namespace internal {
 class CUDATensorPoolOutputAllocator : public nvinfer1::IOutputAllocator {
  public:
   virtual ~CUDATensorPoolOutputAllocator() = default;
-  explicit CUDATensorPoolOutputAllocator(CUDATensorPool* pool) : pool_(pool) {}
+  explicit CUDATensorPoolOutputAllocator(exec::tensorrt::CUDATensorPool* pool) : pool_(pool) {}
 
   void notifyShape(const char*, const nvinfer1::Dims&) noexcept override;
 
   void* reallocateOutput(const char* tensor_name, void* current_memory, uint64_t size,
                          uint64_t alignment) noexcept override;
 
-  StatusOr<CUDATensorPtr> AcquireOutput(const std::string& name);
-  const std::map<std::string, CUDATensorPtr>& Outputs() { return outputs_; }
-  void SetDataType(const std::string& name, DataType);
+  StatusOr<exec::tensorrt::CUDATensorPtr> AcquireOutput(const std::string& name);
+  const std::map<std::string, exec::tensorrt::CUDATensorPtr>& Outputs() { return outputs_; }
+  void SetDataType(const std::string& name, exec::core::DataType data_type);
 
  private:
-  CUDATensorPool* pool_;
-  std::map<std::string, CUDATensorPtr> outputs_;
-  std::map<std::string, DataType> output_data_types_;
+  exec::tensorrt::CUDATensorPool* pool_;
+  std::map<std::string, exec::tensorrt::CUDATensorPtr> outputs_;
+  std::map<std::string, exec::core::DataType> output_data_types_;
 };
 
 }  // namespace internal
@@ -61,12 +57,14 @@ class CUDATensorPoolOutputAllocator : public nvinfer1::IOutputAllocator {
  *  Input Side Packets:
  *   ExecutionContext tagged with EXEC_CTX
  *  Inputs:
- *   Each input must be a CUDATensorPtr
+ *   Each input must be a exec::tensorrt::CUDATensorPtr
  *  Outputs:
- *   Each output will be a CUDATensorPtr
+ *   Each output will be a exec::tensorrt::CUDATensorPtr
  **/
 class TensorRTExecuteCalculator : public ExecutionContextBaseCalculator {
  public:
+  using ExecutionContext = ::gml::gem::exec::tensorrt::ExecutionContext;
+
   static absl::Status GetContract(mediapipe::CalculatorContract* cc);
   Status OpenImpl(mediapipe::CalculatorContext* cc, tensorrt::ExecutionContext* exec_ctx) override;
   Status ProcessImpl(mediapipe::CalculatorContext* cc,

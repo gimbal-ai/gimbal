@@ -24,8 +24,6 @@
 
 namespace gml::gem::calculators::argus {
 
-using ::gml::gem::calculators::argus::optionspb::ArgusCamSourceCalculatorOptions;
-
 class ArgusCamSourceCalculator : public mediapipe::CalculatorBase {
  public:
   static absl::Status GetContract(mediapipe::CalculatorContract* cc);
@@ -34,7 +32,7 @@ class ArgusCamSourceCalculator : public mediapipe::CalculatorBase {
   absl::Status Close(mediapipe::CalculatorContext* cc) override;
 
  private:
-  ArgusCamSourceCalculatorOptions options_;
+  optionspb::ArgusCamSourceCalculatorOptions options_;
   std::unique_ptr<::gml::gem::devices::argus::ArgusCam> argus_cam_;
   int64_t timestamp_;
 };

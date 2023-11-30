@@ -29,8 +29,6 @@
 
 namespace gml::gem::plugins {
 
-using ::gml::internal::api::core::v1::ModelSpec;
-
 /**
  * BuilderRegistry is a template for creating a registry for an arbitrary Builder type.
  *
@@ -82,9 +80,9 @@ class Registry {
     return exec_ctx_builders_.Build(name, model);
   }
 
-  StatusOr<std::unique_ptr<exec::core::Model>> BuildModel(std::string_view name,
-                                                          storage::BlobStore* store,
-                                                          const ModelSpec& spec) {
+  StatusOr<std::unique_ptr<exec::core::Model>> BuildModel(
+      std::string_view name, storage::BlobStore* store,
+      const ::gml::internal::api::core::v1::ModelSpec& spec) {
     return model_builders_.Build(name, store, spec);
   }
 
@@ -93,7 +91,7 @@ class Registry {
                   exec::core::Model*>
       exec_ctx_builders_;
   BuilderRegistry<build::core::ModelBuilder, exec::core::Model, storage::BlobStore*,
-                  const ModelSpec&>
+                  const ::gml::internal::api::core::v1::ModelSpec&>
       model_builders_;
 };
 

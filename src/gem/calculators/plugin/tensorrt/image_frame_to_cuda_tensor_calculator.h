@@ -35,11 +35,12 @@ namespace gml::gem::calculators::tensorrt {
  **/
 class ImageFrameToCUDATensorCalculator : public ExecutionContextBaseCalculator {
  public:
+  using ExecutionContext = ::gml::gem::exec::tensorrt::ExecutionContext;
+
   static absl::Status GetContract(mediapipe::CalculatorContract* cc);
-  Status OpenImpl(mediapipe::CalculatorContext* cc, tensorrt::ExecutionContext* exec_ctx) override;
-  Status ProcessImpl(mediapipe::CalculatorContext* cc,
-                     tensorrt::ExecutionContext* exec_ctx) override;
-  Status CloseImpl(mediapipe::CalculatorContext* cc, tensorrt::ExecutionContext* exec_ctx) override;
+  Status OpenImpl(mediapipe::CalculatorContext* cc, ExecutionContext* exec_ctx) override;
+  Status ProcessImpl(mediapipe::CalculatorContext* cc, ExecutionContext* exec_ctx) override;
+  Status CloseImpl(mediapipe::CalculatorContext* cc, ExecutionContext* exec_ctx) override;
 };
 
 }  // namespace gml::gem::calculators::tensorrt

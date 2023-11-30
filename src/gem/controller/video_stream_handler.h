@@ -31,9 +31,6 @@
 
 namespace gml::gem::controller {
 
-using ::gml::internal::api::core::v1::H264Chunk;
-using ::gml::internal::api::core::v1::ImageOverlayChunk;
-
 class VideoStreamHandler : public MessageHandler {
  public:
   VideoStreamHandler() = delete;
@@ -48,6 +45,9 @@ class VideoStreamHandler : public MessageHandler {
   Status Finish() override;
 
  private:
+  using H264Chunk = ::gml::internal::api::core::v1::H264Chunk;
+  using ImageOverlayChunk = ::gml::internal::api::core::v1::ImageOverlayChunk;
+
   Status VideoWithOverlaysCallback(const std::vector<ImageOverlayChunk>&,
                                    const std::vector<H264Chunk>&);
   exec::core::ControlExecutionContext* ctrl_exec_ctx_;

@@ -21,8 +21,7 @@
 
 namespace gml::gem::calculators::tensorrt {
 
-using ::gml::gem::exec::tensorrt::ExecutionContext;
-
-using ExecutionContextBaseCalculator = core::ExecutionContextCalculator<ExecutionContext>;
+using ExecutionContextBaseCalculator =
+    core::ExecutionContextCalculator<::gml::gem::exec::tensorrt::ExecutionContext>;
 
 }  // namespace gml::gem::calculators::tensorrt

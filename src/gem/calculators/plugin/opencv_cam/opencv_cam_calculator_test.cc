@@ -23,7 +23,7 @@
 #include "src/common/testing/testing.h"
 #include "src/gem/calculators/plugin/opencv_cam/opencv_cam_calculator.h"
 
-namespace gml::gem::calculators::opencv {
+namespace gml::gem::calculators::opencv_cam {
 
 static constexpr char kGraph[] = R"pb(
   calculator: "OpenCVCamSourceCalculator"
@@ -62,4 +62,4 @@ TEST(OpenCVCamSourceCalculator, CaptureImage) {
   cv::imwrite(kOutFile, mediapipe::formats::MatView(&output_frame));
 }
 
-}  // namespace gml::gem::calculators::opencv
+}  // namespace gml::gem::calculators::opencv_cam

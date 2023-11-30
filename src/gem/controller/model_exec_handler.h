@@ -31,10 +31,6 @@
 
 namespace gml::gem::controller {
 
-using ::gml::internal::api::core::v1::ModelSpec;
-using ::gml::internal::controlplane::egw::v1::BridgeRequest;
-using ::gml::internal::controlplane::egw::v1::BridgeResponse;
-
 class ModelExecHandler : public MessageHandler {
  public:
   ModelExecHandler() = delete;
@@ -43,7 +39,7 @@ class ModelExecHandler : public MessageHandler {
 
   ~ModelExecHandler() override = default;
 
-  Status HandleMessage(const BridgeResponse& msg) override;
+  Status HandleMessage(const ::gml::internal::controlplane::egw::v1::BridgeResponse& msg) override;
 
   Status Init() override;
   Status Finish() override;

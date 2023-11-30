@@ -25,16 +25,14 @@
 
 namespace gml::gem::exec::core {
 
-using ::gml::internal::api::core::v1::H264Chunk;
-using ::gml::internal::api::core::v1::ImageOverlayChunk;
-
 /**
  * ControlExecutionContext allows calculators to interface with GEM's controller.
  * */
 class ControlExecutionContext : public ExecutionContext {
  public:
   using VideoWithOverlaysCallback =
-      std::function<Status(const std::vector<ImageOverlayChunk>&, const std::vector<H264Chunk>&)>;
+      std::function<Status(const std::vector<::gml::internal::api::core::v1::ImageOverlayChunk>&,
+                           const std::vector<::gml::internal::api::core::v1::H264Chunk>&)>;
 
   void RegisterVideoWithOverlaysCallback(VideoWithOverlaysCallback cb) {
     absl::base_internal::SpinLockHolder lock(&lock_);

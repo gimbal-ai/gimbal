@@ -23,14 +23,14 @@
 
 namespace gml::gem::build::core {
 
-using ::gml::gem::exec::core::ExecutionContext;
-using ::gml::gem::exec::core::Model;
-
 /**
  * ExecutionContextBuilder is the base class for plugin ExecutionContextBuilders.
  */
 class ExecutionContextBuilder {
  public:
+  using ExecutionContext = ::gml::gem::exec::core::ExecutionContext;
+  using Model = ::gml::gem::exec::core::Model;
+
   virtual ~ExecutionContextBuilder() = default;
   virtual StatusOr<std::unique_ptr<ExecutionContext>> Build(Model* model) = 0;
 };
@@ -66,7 +66,7 @@ class DefaultExecutionContextBuilder : public ExecutionContextBuilder {
   StatusOr<std::unique_ptr<ExecutionContext>> BuildInternal(Model*) {
     static_assert(sizeof(Q) == 0,
                   "ExecutionContext must have default constructor or constructor with args "
-                  "(core::Model*) in order to use core::DefaultExecutionContextBuilder");
+                  "(Model*) in order to use core::DefaultExecutionContextBuilder");
     return Status();
   }
 };

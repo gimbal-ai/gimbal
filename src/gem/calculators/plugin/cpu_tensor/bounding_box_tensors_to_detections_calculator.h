@@ -25,9 +25,6 @@
 
 namespace gml::gem::calculators::cpu_tensor {
 
-using ::gml::gem::exec::core::DataType;
-using ::gml::gem::exec::core::TensorShape;
-
 /**
  *  BoundingBoxTensorsToDetections Graph API:
  *
@@ -54,8 +51,9 @@ class BoundingBoxTensorsToDetections : public mediapipe::CalculatorBase {
   absl::Status Close(mediapipe::CalculatorContext* cc) override;
 
  protected:
-  Status CheckShapes(const TensorShape& boxes, const TensorShape& scores,
-                     const TensorShape& indices, const TensorShape& original_shape);
+  Status CheckShapes(const exec::core::TensorShape& boxes, const exec::core::TensorShape& scores,
+                     const exec::core::TensorShape& indices,
+                     const exec::core::TensorShape& original_shape);
 
  private:
   bool shapes_checked_ = false;

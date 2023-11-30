@@ -21,8 +21,7 @@
 
 namespace gml::gem::calculators::cpu_tensor {
 
-using ::gml::gem::exec::cpu_tensor::ExecutionContext;
-
-using ExecutionContextBaseCalculator = core::ExecutionContextCalculator<ExecutionContext>;
+using ExecutionContextBaseCalculator =
+    core::ExecutionContextCalculator<::gml::gem::exec::cpu_tensor::ExecutionContext>;
 
 }  // namespace gml::gem::calculators::cpu_tensor

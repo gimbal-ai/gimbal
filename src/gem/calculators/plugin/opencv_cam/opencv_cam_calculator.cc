@@ -25,7 +25,7 @@
 #include <mediapipe/framework/formats/image_frame.h>
 #include <mediapipe/framework/formats/image_frame_opencv.h>
 
-namespace gml::gem::calculators::opencv {
+namespace gml::gem::calculators::opencv_cam {
 
 using ::gml::gem::calculators::opencv_cam::optionspb::OpenCVCamSourceCalculatorOptions;
 
@@ -137,4 +137,4 @@ absl::Status OpenCVCamSourceCalculator::Close(mediapipe::CalculatorContext* /* c
 
 REGISTER_CALCULATOR(OpenCVCamSourceCalculator);
 
-}  // namespace gml::gem::calculators::opencv
+}  // namespace gml::gem::calculators::opencv_cam

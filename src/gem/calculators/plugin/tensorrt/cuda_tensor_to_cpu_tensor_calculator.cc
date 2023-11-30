@@ -29,8 +29,7 @@ namespace gml::gem::calculators::tensorrt {
 using ::gml::gem::exec::tensorrt::CUDATensorPtr;
 
 absl::Status CUDATensorToCPUTensorCalculator::GetContract(mediapipe::CalculatorContract* cc) {
-  GML_ABSL_RETURN_IF_ERROR(
-      core::ExecutionContextCalculator<exec::cpu_tensor::ExecutionContext>::UpdateContract(cc));
+  GML_ABSL_RETURN_IF_ERROR(core::ExecutionContextCalculator<ExecutionContext>::UpdateContract(cc));
 
   for (int i = 0; i < cc->Inputs().NumEntries(); ++i) {
     cc->Inputs().Index(i).Set<CUDATensorPtr>();
@@ -41,13 +40,12 @@ absl::Status CUDATensorToCPUTensorCalculator::GetContract(mediapipe::CalculatorC
   return absl::OkStatus();
 }
 
-Status CUDATensorToCPUTensorCalculator::OpenImpl(mediapipe::CalculatorContext*,
-                                                 exec::cpu_tensor::ExecutionContext*) {
+Status CUDATensorToCPUTensorCalculator::OpenImpl(mediapipe::CalculatorContext*, ExecutionContext*) {
   return Status::OK();
 }
 
 Status CUDATensorToCPUTensorCalculator::ProcessImpl(mediapipe::CalculatorContext* cc,
-                                                    exec::cpu_tensor::ExecutionContext* exec_ctx) {
+                                                    ExecutionContext* exec_ctx) {
   for (int i = 0; i < cc->Inputs().NumEntries(); ++i) {
     auto cuda_tensor = cc->Inputs().Index(i).Get<CUDATensorPtr>();
 
@@ -69,7 +67,7 @@ Status CUDATensorToCPUTensorCalculator::ProcessImpl(mediapipe::CalculatorContext
 }
 
 Status CUDATensorToCPUTensorCalculator::CloseImpl(mediapipe::CalculatorContext*,
-                                                  exec::cpu_tensor::ExecutionContext*) {
+                                                  ExecutionContext*) {
   return Status::OK();
 }
 

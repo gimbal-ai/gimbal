@@ -18,6 +18,7 @@
 #include <mediapipe/framework/formats/image_frame.h>
 
 #include "src/common/testing/testing.h"
+#include "src/gem/calculators/plugin/cpu_tensor/image_shape_cpu_tensor_calculator.h"
 #include "src/gem/exec/plugin/cpu_tensor/context.h"
 #include "src/gem/testing/core/calculator_tester.h"
 #include "src/gem/testing/plugin/cpu_tensor/operators.h"
@@ -25,7 +26,6 @@
 namespace gml::gem::calculators::cpu_tensor {
 
 using ::gml::gem::exec::cpu_tensor::CPUTensorPtr;
-using ::gml::gem::exec::cpu_tensor::ExecutionContext;
 using ::gml::gem::testing::CalculatorTester;
 
 constexpr char kImageShapeNode[] = R"pbtxt(
@@ -36,7 +36,7 @@ output_stream: "IMAGE_SHAPE:image_shape"
 )pbtxt";
 
 TEST(ImageShapeCPUTensorCalculator, CorrectImageShape) {
-  auto cpu_exec_ctx = std::make_unique<ExecutionContext>();
+  auto cpu_exec_ctx = std::make_unique<ImageShapeCPUTensorCalculator::ExecutionContext>();
 
   CalculatorTester tester(kImageShapeNode);
 

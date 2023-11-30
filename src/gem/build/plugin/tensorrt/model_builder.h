@@ -25,12 +25,10 @@
 
 namespace gml::gem::build::tensorrt {
 
-using ::gml::internal::api::core::v1::ModelSpec;
-
 class ModelBuilder : public core::ModelBuilder {
  public:
-  StatusOr<std::unique_ptr<exec::core::Model>> Build(storage::BlobStore* store,
-                                                     const ModelSpec& spec) override;
+  StatusOr<std::unique_ptr<exec::core::Model>> Build(
+      storage::BlobStore* store, const ::gml::internal::api::core::v1::ModelSpec& spec) override;
 };
 
 }  // namespace gml::gem::build::tensorrt

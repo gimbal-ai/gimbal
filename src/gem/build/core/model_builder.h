@@ -24,17 +24,14 @@
 
 namespace gml::gem::build::core {
 
-using ::gml::gem::exec::core::Model;
-using ::gml::internal::api::core::v1::ModelSpec;
-
 /**
  * ModelBuilder is the base class for plugin ModelBuilders.
  */
 class ModelBuilder {
  public:
   virtual ~ModelBuilder() = default;
-  virtual StatusOr<std::unique_ptr<Model>> Build(storage::BlobStore* store,
-                                                 const ModelSpec& spec) = 0;
+  virtual StatusOr<std::unique_ptr<::gml::gem::exec::core::Model>> Build(
+      storage::BlobStore* store, const ::gml::internal::api::core::v1::ModelSpec& spec) = 0;
 };
 
 }  // namespace gml::gem::build::core
