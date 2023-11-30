@@ -47,7 +47,7 @@ class BuilderRegistry {
   }
 
   StatusOr<std::unique_ptr<TBuilt>> Build(std::string_view name, Args... args) {
-    if (builders_.count(name) == 0) {
+    if (!builders_.contains(name)) {
       return Status(gml::types::CODE_INVALID_ARGUMENT,
                     absl::Substitute("'$0' Builder not registered", name));
     }

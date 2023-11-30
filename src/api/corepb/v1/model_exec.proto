@@ -72,9 +72,11 @@ message ExecutionSpec {
 // ModelSpec defines how to prepare the model.
 // The current spec definitions are temporary and subject to change significantly.
 message ModelSpec {
+  string name = 1;
+
   // TODO(oazizi): onnx_blob_key is deprecated and to be replaced by onnx_file.
-  string onnx_blob_key = 1 [ (gogoproto.customname) = "ONNXBlobKey" ];
-  FileResource onnx_file = 2 [ (gogoproto.customname) = "ONNXFile" ];
+  string onnx_blob_key = 2 [ (gogoproto.customname) = "ONNXBlobKey" ];
+  FileResource onnx_file = 3 [ (gogoproto.customname) = "ONNXFile" ];
 
   // The preferred runtime for the execution.
   string runtime = 50;

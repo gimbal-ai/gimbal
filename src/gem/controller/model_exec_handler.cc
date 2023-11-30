@@ -43,6 +43,7 @@ DEFINE_int32(frame_rate, 18, "Frame rate for encoding the video");
 namespace gml::gem::controller {
 
 using ::gml::gem::exec::core::ExecutionContext;
+using ::gml::gem::exec::core::Model;
 using ::gml::internal::api::core::v1::ApplyExecutionGraph;
 using ::gml::internal::api::core::v1::ExecutionSpec;
 
@@ -62,30 +63,41 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
 
     GML_ASSIGN_OR_RETURN(auto store, storage::FilesystemBlobStore::Create(FLAGS_blob_store_dir));
 
-    // TODO(oazizi): Support more than one model.
-    if (exec_spec_.model_spec_size() != 1) {
-      return error::Unimplemented("Currently only support a single model");
-    }
+    std::map<std::string, mediapipe::Packet> side_packets;
 
-    GML_ASSIGN_OR_RETURN(auto model, plugin_registry.BuildModel("tensorrt", store.get(),
-                                                                exec_spec_.model_spec()[0]));
-
+    // We use a shared CPU context for all nodes in the mediapipe execution graph.
     GML_ASSIGN_OR_RETURN(auto cpu_exec_ctx,
                          plugin_registry.BuildExecutionContext("cpu_tensor", nullptr));
 
-    GML_ASSIGN_OR_RETURN(auto tensorrt_exec_ctx,
-                         plugin_registry.BuildExecutionContext("tensorrt", model.get()));
-
-    exec::core::Runner runner(exec_spec_);
-
-    std::map<std::string, mediapipe::Packet> side_packets;
-    side_packets.emplace("tensorrt_exec_ctx",
-                         mediapipe::MakePacket<ExecutionContext*>(tensorrt_exec_ctx.get()));
     side_packets.emplace("cpu_exec_ctx",
                          mediapipe::MakePacket<ExecutionContext*>(cpu_exec_ctx.get()));
+
+    // Each model needs its own an execution context.
+    int num_models = exec_spec_.model_spec_size();
+
+    // In the loop below, don't allow data structures fall out of scope,
+    // because they need to be valid during lifetime of runner.
+    std::vector<std::unique_ptr<Model>> models(num_models);
+    std::vector<std::unique_ptr<ExecutionContext>> model_exec_ctxs(num_models);
+
+    for (const auto& [i, model_spec] : Enumerate(exec_spec_.model_spec())) {
+      // TODO(oazizi): Support different plugins, based on information from the model spec.
+      constexpr std::string_view kPlugin = "tensorrt";
+
+      GML_ASSIGN_OR_RETURN(models[i], plugin_registry.BuildModel(kPlugin, store.get(), model_spec));
+
+      GML_ASSIGN_OR_RETURN(model_exec_ctxs[i],
+                           plugin_registry.BuildExecutionContext(kPlugin, models[i].get()));
+
+      std::string context_name = absl::StrCat(model_spec.name(), "_tensorrt_exec_ctx");
+      side_packets.emplace(context_name,
+                           mediapipe::MakePacket<ExecutionContext*>(model_exec_ctxs[i].get()));
+    }
+
     side_packets.emplace("ctrl_exec_ctx", mediapipe::MakePacket<ExecutionContext*>(ctrl_exec_ctx_));
     side_packets.emplace("frame_rate", mediapipe::MakePacket<int>(FLAGS_frame_rate));
 
+    exec::core::Runner runner(exec_spec_);
     GML_RETURN_IF_ERROR(runner.Init(side_packets));
 
     std::atomic_size_t num_frames = 0;
