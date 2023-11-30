@@ -47,6 +47,10 @@ function emph() {
   printf "${tty_bold}${tty_cyan}%s${tty_reset}\n" "$1"
 }
 
+function warn() {
+  printf "${tty_bold}${tty_red}%s${tty_reset}\n" "$1"
+}
+
 function fatal() {
   printf "${tty_bold}${tty_red}%s${tty_reset}\n" "$1"
   exit 1
@@ -80,7 +84,6 @@ function device_type() {
 GML_CACHE_DIR=${GML_CACHE_DIR:-"$HOME/.cache/gml"}
 
 common_docker_flags=(
-  -d
   --rm
   --network=host
   -v "$GML_CACHE_DIR:/gml"
@@ -89,6 +92,20 @@ common_docker_flags=(
   -v /sys:/host/sys
 )
 extra_docker_flags=()
+DEV_MODE=${GML_DEV_MODE:-"false"}
+
+if [[ "$DEV_MODE" == "true" ]]; then
+  warn "DEV MODE: ENABLED"
+  extra_docker_flags+=(
+    # Pull the latest image every time
+    --pull always
+    # Run the container interactively so that users can see the logs
+    -it
+  )
+else
+  # In production mode, we want to run the container in a detached state.
+  extra_docker_flags+=(-d)
+fi
 
 DEFAULT_IMAGE_TAG=""
 
