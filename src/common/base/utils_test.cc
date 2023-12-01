@@ -17,6 +17,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+#include <absl/container/flat_hash_map.h>
 #include <map>
 #include <vector>
 
@@ -26,6 +27,30 @@
 namespace gml {
 
 using ::testing::StrEq;
+
+TEST(EmplaceNewKey, StdMap) {
+  std::map<int, std::string> map;
+
+  EXPECT_OK(EmplaceNewKey(&map, 0, std::string("a")));
+  EXPECT_OK(EmplaceNewKey(&map, 1, std::string("b")));
+  EXPECT_NOT_OK(EmplaceNewKey(&map, 0, std::string("b")));
+}
+
+TEST(EmplaceNewKey, StdUnorderedMap) {
+  std::unordered_map<int, std::string> map;
+
+  EXPECT_OK(EmplaceNewKey(&map, 0, std::string("a")));
+  EXPECT_OK(EmplaceNewKey(&map, 1, std::string("b")));
+  EXPECT_NOT_OK(EmplaceNewKey(&map, 0, std::string("b")));
+}
+
+TEST(EmplaceNewKey, AbslFlatHashMap) {
+  absl::flat_hash_map<int, std::string> map;
+
+  EXPECT_OK(EmplaceNewKey(&map, 0, std::string("a")));
+  EXPECT_OK(EmplaceNewKey(&map, 1, std::string("b")));
+  EXPECT_NOT_OK(EmplaceNewKey(&map, 0, std::string("b")));
+}
 
 TEST(BytesToStringTest, Hex) {
   EXPECT_THAT(BytesToString<bytes_format::Hex>("\x03\x74\x32\xaa"), StrEq(R"(\x03\x74\x32\xAA)"));

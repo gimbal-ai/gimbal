@@ -70,8 +70,9 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
     GML_ASSIGN_OR_RETURN(auto cpu_exec_ctx,
                          plugin_registry.BuildExecutionContext("cpu_tensor", nullptr));
 
-    side_packets.emplace("cpu_exec_ctx",
-                         mediapipe::MakePacket<ExecutionContext*>(cpu_exec_ctx.get()));
+    GML_RETURN_IF_ERROR(
+        EmplaceNewKey(&side_packets, std::string("cpu_exec_ctx"),
+                      mediapipe::MakePacket<ExecutionContext*>(cpu_exec_ctx.get())));
 
     // Each model needs its own an execution context.
     int num_models = exec_spec_.model_spec_size();
@@ -91,12 +92,15 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
                            plugin_registry.BuildExecutionContext(kPlugin, models[i].get()));
 
       std::string context_name = absl::StrCat(model_spec.name(), "_tensorrt_exec_ctx");
-      side_packets.emplace(context_name,
-                           mediapipe::MakePacket<ExecutionContext*>(model_exec_ctxs[i].get()));
+      GML_RETURN_IF_ERROR(
+          EmplaceNewKey(&side_packets, context_name,
+                        mediapipe::MakePacket<ExecutionContext*>(model_exec_ctxs[i].get())));
     }
 
-    side_packets.emplace("ctrl_exec_ctx", mediapipe::MakePacket<ExecutionContext*>(ctrl_exec_ctx_));
-    side_packets.emplace("frame_rate", mediapipe::MakePacket<int>(FLAGS_frame_rate));
+    GML_RETURN_IF_ERROR(EmplaceNewKey(&side_packets, std::string("ctrl_exec_ctx"),
+                                      mediapipe::MakePacket<ExecutionContext*>(ctrl_exec_ctx_)));
+    GML_RETURN_IF_ERROR(EmplaceNewKey(&side_packets, std::string("frame_rate"),
+                                      mediapipe::MakePacket<int>(FLAGS_frame_rate)));
 
     exec::core::Runner runner(exec_spec_);
     GML_RETURN_IF_ERROR(runner.Init(side_packets));

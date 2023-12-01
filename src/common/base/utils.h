@@ -62,6 +62,18 @@ constexpr auto Enumerate(T&& iterable) {
   return iterable_wrapper{std::forward<T>(iterable)};
 }
 
+// A simple wrapper around TContainer::emplace that returns an error if the key exists.
+template <typename TMapType>
+Status EmplaceNewKey(TMapType* map, const typename TMapType::key_type& k,
+                     typename TMapType::mapped_type&& v) {
+  auto [_, inserted] = map->emplace(k, std::move(v));
+  if (!inserted) {
+    return error::AlreadyExists("Key $0 already exists", k);
+  }
+
+  return Status::OK();
+}
+
 /**
  * An integer division that rounds up if there is any fractional portion.
  * This is in contrast to normal integer division (x/y) that removes the fractional part.
