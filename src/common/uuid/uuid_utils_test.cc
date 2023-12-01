@@ -27,7 +27,7 @@ TEST(ParseUUID, BasicTest) {
   gml::types::UUID uuid_pb;
   uuid_pb.set_high_bits(0xea8aa095697f49f1);
   uuid_pb.set_low_bits(0xb127d50e5b6e2645);
-  ASSERT_OK_AND_ASSIGN(auto parsed, ParseUUID(uuid_pb));
+  auto parsed = ParseUUID(uuid_pb);
   EXPECT_EQ(parsed.str(), "ea8aa095-697f-49f1-b127-d50e5b6e2645");
 }
 
@@ -44,7 +44,7 @@ TEST(UUIDUtils, RegressionTest) {
     auto uuid = sole::uuid4();
     gml::types::UUID uuid_proto;
     ToProto(uuid, &uuid_proto);
-    ASSERT_OK_AND_ASSIGN(auto res, ParseUUID(uuid_proto));
+    auto res = ParseUUID(uuid_proto);
     EXPECT_EQ(res.str(), uuid.str());
   }
 }

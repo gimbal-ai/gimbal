@@ -30,7 +30,7 @@ namespace gml {
  * @param uuid_proto
  * @return proto message
  */
-inline StatusOr<sole::uuid> ParseUUID(const gml::types::UUID& uuid_proto) {
+inline sole::uuid ParseUUID(const gml::types::UUID& uuid_proto) {
   return sole::rebuild(uuid_proto.high_bits(), uuid_proto.low_bits());
 }
 

@@ -130,7 +130,7 @@ Status Controller::Init() {
     return error::Internal(s.error_message());
   }
 
-  GML_ASSIGN_OR_RETURN(info_.id, ParseUUID(resp.device_id()));
+  info_.id = ParseUUID(resp.device_id());
   LOG(INFO) << "Device ID: " << info_.id;
   LOG(INFO) << "Starting GRPC Bridge";
 
