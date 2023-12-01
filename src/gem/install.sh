@@ -19,6 +19,7 @@
 # Gimlet Installer
 ################################################################
 set -u
+set -e
 
 # Trap ctrl-c and call ctrl_c() to reset terminal.
 trap ctrl_c INT
