@@ -55,8 +55,8 @@ var EdgeCPTopicToStreamName = map[corepb.EdgeCPTopic]string{
 }
 
 var CPTopicToStreamName = map[corepb.CPTopic]string{
-	corepb.CP_TOPIC_DEVICE_CONNECTED:        "deviceConnected",
-	corepb.CP_TOPIC_PIPELINE_RECONCILIATION: "pipelineReconciliation",
+	corepb.CP_TOPIC_DEVICE_CONNECTED:                 "deviceConnected",
+	corepb.CP_TOPIC_PHYSICAL_PIPELINE_RECONCILIATION: "pipelineReconciliation",
 }
 
 // MustConnectCPJetStream creates a new JetStream connection.
@@ -95,9 +95,9 @@ func getDurableStreams() []jetstream.StreamConfig {
 		log.WithError(err).Fatal("Could not get connected devices topic")
 	}
 
-	pipelineReconciliationTopic, err := edgepartition.CPNATSPartitionTopic("*", corepb.CPTopic(corepb.CP_TOPIC_PIPELINE_RECONCILIATION), true)
+	pipelineReconciliationTopic, err := edgepartition.CPNATSPartitionTopic("*", corepb.CPTopic(corepb.CP_TOPIC_PHYSICAL_PIPELINE_RECONCILIATION), true)
 	if err != nil {
-		log.WithError(err).Fatal("Could not get pipeline reconciliation topic")
+		log.WithError(err).Fatal("Could not get physical pipeline reconciliation topic")
 	}
 
 	return []jetstream.StreamConfig{
@@ -120,7 +120,7 @@ func getDurableStreams() []jetstream.StreamConfig {
 			Subjects: []string{connectedDevicesTopic},
 		},
 		{
-			Name:     CPTopicToStreamName[corepb.CP_TOPIC_PIPELINE_RECONCILIATION],
+			Name:     CPTopicToStreamName[corepb.CP_TOPIC_PHYSICAL_PIPELINE_RECONCILIATION],
 			MaxAge:   15 * time.Minute,
 			Replicas: clusterSize,
 			Subjects: []string{pipelineReconciliationTopic},

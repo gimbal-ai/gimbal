@@ -97,22 +97,22 @@ message ExecutionGraphStatus {
 
 // ApplyExecutionGraph is a request to apply the execution graph deployment to the edge device.
 message ApplyExecutionGraph {
-  // The ID of the pipeline which this execution graph is for.
-  gml.types.UUID pipeline_id = 1 [ (gogoproto.customname) = "PipelineID" ];
+  // The ID of the physical pipeline which this execution graph is for.
+  gml.types.UUID physical_pipeline_id = 1 [ (gogoproto.customname) = "PhysicalPipelineID" ];
   ExecutionGraphSpec spec = 2;
 }
 
 // DeleteExecutionGraph is a request to delete an execution graph deployment from the edge device.
 message DeleteExecutionGraph {
-  // The ID of the pipeline to delete.
-  gml.types.UUID pipeline_id = 1 [ (gogoproto.customname) = "PipelineID" ];
+  // The ID of the physical pipeline to delete.
+  gml.types.UUID physical_pipeline_id = 1 [ (gogoproto.customname) = "PhysicalPipelineID" ];
 }
 
 // ExecutionGraphStatusUpdate is a status message from the edge device to the control plane about
 // its exec graph state.
 message ExecutionGraphStatusUpdate {
-  // The ID of the pipeline.
-  gml.types.UUID pipeline_id = 1 [ (gogoproto.customname) = "PipelineID" ];
+  // The ID of the physical pipeline.
+  gml.types.UUID physical_pipeline_id = 1 [ (gogoproto.customname) = "PhysicalPipelineID" ];
   ExecutionGraphStatus status = 2;
 }
 
