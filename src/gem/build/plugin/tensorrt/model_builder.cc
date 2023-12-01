@@ -30,9 +30,9 @@ namespace gml::gem::build::tensorrt {
 using ::gml::gem::exec::tensorrt::Model;
 using ::gml::gem::exec::tensorrt::TensorRTLogger;
 
-StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(storage::BlobStore* store,
-                                                                      const ModelSpec& spec,
-                                                                      TensorRTLogger logger) {
+StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(
+    storage::BlobStore* store, const ::gml::internal::api::core::v1::ModelSpec& spec,
+    TensorRTLogger logger) {
   auto builder = std::unique_ptr<nvinfer1::IBuilder>(nvinfer1::createInferBuilder(logger));
   uint32_t flag =
       1U << static_cast<uint32_t>(nvinfer1::NetworkDefinitionCreationFlag::kEXPLICIT_BATCH);
@@ -89,8 +89,8 @@ StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(storage::B
   return serialized_model;
 }
 
-StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobStore* store,
-                                                                 const ModelSpec& spec) {
+StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(
+    storage::BlobStore* store, const ::gml::internal::api::core::v1::ModelSpec& spec) {
   ElapsedTimer timer;
   timer.Start();
   TensorRTLogger logger;
