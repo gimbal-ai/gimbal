@@ -59,46 +59,51 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
                exec::core::ControlExecutionContext* ctrl_exec_ctx)
       : parent_(parent), exec_spec_(std::move(exec_spec)), ctrl_exec_ctx_(ctrl_exec_ctx) {}
 
-  Status Run() {
+  Status PreparePluginExecutionContexts() {
     auto& plugin_registry = plugins::Registry::GetInstance();
-
     GML_ASSIGN_OR_RETURN(auto store, storage::FilesystemBlobStore::Create(FLAGS_blob_store_dir));
 
-    std::map<std::string, mediapipe::Packet> side_packets;
-
     // We use a shared CPU context for all nodes in the mediapipe execution graph.
-    GML_ASSIGN_OR_RETURN(auto cpu_exec_ctx,
+    GML_ASSIGN_OR_RETURN(cpu_exec_ctx_,
                          plugin_registry.BuildExecutionContext("cpu_tensor", nullptr));
 
-    GML_RETURN_IF_ERROR(
-        EmplaceNewKey(&side_packets, std::string("cpu_exec_ctx"),
-                      mediapipe::MakePacket<ExecutionContext*>(cpu_exec_ctx.get())));
-
-    // Each model needs its own an execution context.
-    int num_models = exec_spec_.model_spec_size();
-
-    // In the loop below, don't allow data structures fall out of scope,
-    // because they need to be valid during lifetime of runner.
-    std::vector<std::unique_ptr<Model>> models(num_models);
-    std::vector<std::unique_ptr<ExecutionContext>> model_exec_ctxs(num_models);
-
+    // Each model needs its own model execution context.
     for (const auto& [i, model_spec] : Enumerate(exec_spec_.model_spec())) {
       // TODO(oazizi): Support different plugins, based on information from the model spec.
       constexpr std::string_view kPlugin = "tensorrt";
-
-      GML_ASSIGN_OR_RETURN(models[i], plugin_registry.BuildModel(kPlugin, store.get(), model_spec));
-
-      GML_ASSIGN_OR_RETURN(model_exec_ctxs[i],
-                           plugin_registry.BuildExecutionContext(kPlugin, models[i].get()));
-
       std::string context_name = absl::StrCat(model_spec.name(), "_tensorrt_exec_ctx");
+
+      GML_ASSIGN_OR_RETURN(auto model,
+                           plugin_registry.BuildModel(kPlugin, store.get(), model_spec));
+      models_.emplace_back(std::move(model));
+
+      GML_ASSIGN_OR_RETURN(auto model_exec_ctx,
+                           plugin_registry.BuildExecutionContext(kPlugin, models_[i].get()));
+      GML_RETURN_IF_ERROR(
+          EmplaceNewKey(&model_exec_ctxs_, context_name, std::move(model_exec_ctx)));
+    }
+
+    return Status::OK();
+  }
+
+  Status Run() {
+    GML_RETURN_IF_ERROR(PreparePluginExecutionContexts());
+
+    std::map<std::string, mediapipe::Packet> side_packets;
+
+    GML_RETURN_IF_ERROR(
+        EmplaceNewKey(&side_packets, std::string("cpu_exec_ctx"),
+                      mediapipe::MakePacket<ExecutionContext*>(cpu_exec_ctx_.get())));
+
+    for (const auto& [context_name, model_exec_ctx] : model_exec_ctxs_) {
       GML_RETURN_IF_ERROR(
           EmplaceNewKey(&side_packets, context_name,
-                        mediapipe::MakePacket<ExecutionContext*>(model_exec_ctxs[i].get())));
+                        mediapipe::MakePacket<ExecutionContext*>(model_exec_ctx.get())));
     }
 
     GML_RETURN_IF_ERROR(EmplaceNewKey(&side_packets, std::string("ctrl_exec_ctx"),
                                       mediapipe::MakePacket<ExecutionContext*>(ctrl_exec_ctx_)));
+
     GML_RETURN_IF_ERROR(EmplaceNewKey(&side_packets, std::string("frame_rate"),
                                       mediapipe::MakePacket<int>(FLAGS_frame_rate)));
 
@@ -147,7 +152,11 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
  private:
   ModelExecHandler* parent_;
   ExecutionSpec exec_spec_;
+
   exec::core::ControlExecutionContext* ctrl_exec_ctx_;
+  std::unique_ptr<ExecutionContext> cpu_exec_ctx_;
+  std::vector<std::unique_ptr<Model>> models_;
+  absl::flat_hash_map<std::string, std::unique_ptr<ExecutionContext>> model_exec_ctxs_;
 };
 
 Status ModelExecHandler::HandleMessage(const BridgeResponse& msg) {
