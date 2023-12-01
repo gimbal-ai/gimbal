@@ -69,16 +69,14 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
 
     // Each model needs its own model execution context.
     for (const auto& [i, model_spec] : Enumerate(exec_spec_.model_spec())) {
-      // TODO(oazizi): Support different plugins, based on information from the model spec.
-      constexpr std::string_view kPlugin = "tensorrt";
-      std::string context_name = absl::StrCat(model_spec.name(), "_tensorrt_exec_ctx");
+      std::string plugin = model_spec.runtime();
+      std::string context_name = absl::StrCat(model_spec.name(), "_", plugin, "_exec_ctx");
 
-      GML_ASSIGN_OR_RETURN(auto model,
-                           plugin_registry.BuildModel(kPlugin, store.get(), model_spec));
+      GML_ASSIGN_OR_RETURN(auto model, plugin_registry.BuildModel(plugin, store.get(), model_spec));
       models_.emplace_back(std::move(model));
 
       GML_ASSIGN_OR_RETURN(auto model_exec_ctx,
-                           plugin_registry.BuildExecutionContext(kPlugin, models_[i].get()));
+                           plugin_registry.BuildExecutionContext(plugin, models_[i].get()));
       GML_RETURN_IF_ERROR(
           EmplaceNewKey(&model_exec_ctxs_, context_name, std::move(model_exec_ctx)));
     }
