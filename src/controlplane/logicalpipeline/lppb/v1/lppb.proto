@@ -1,0 +1,52 @@
+/*
+ * Copyright © 2023- Gimlet Labs, Inc.
+ * All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Gimlet Labs, Inc. and its suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Gimlet Labs, Inc. and its suppliers and
+ * may be covered by U.S. and Foreign Patents, patents in process,
+ * and are protected by trade secret or copyright law. Dissemination
+ * of this information or reproduction of this material is strictly
+ * forbidden unless prior written permission is obtained from
+ * Gimlet Labs, Inc.
+ *
+ * SPDX-License-Identifier: Proprietary
+ */
+
+syntax = "proto3";
+
+package gml.internal.controlplane.logicalpipeline.v1;
+
+option go_package = "gimletlabs.ai/gimlet/src/controlplane/logicalpipeline/lppb/v1;lppb";
+
+import "gogoproto/gogo.proto";
+import "src/common/typespb/uuid.proto";
+import "src/api/corepb/v1/model_exec.proto";
+
+message LogicalPipelineInfo {
+  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID", (gogoproto.moretags) = 'db:"id"' ];
+  string name = 2 [ (gogoproto.moretags) = 'db:"name"' ];
+}
+
+message ListLogicalPipelinesRequest {}
+
+message ListLogicalPipelinesResponse {
+  repeated LogicalPipelineInfo pipelines = 1;
+}
+
+message GetLogicalPipelineRequest {
+  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
+}
+
+message GetLogicalPipelineResponse {
+  gml.internal.api.core.v1.Pipeline pipeline = 1;
+  LogicalPipelineInfo pipeline_info = 2;
+}
+
+// LogicalPipelineService manages the registry of pipelines available to deploy.
+service LogicalPipelineService {
+  rpc ListLogicalPipelines(ListLogicalPipelinesRequest) returns (ListLogicalPipelinesResponse);
+  rpc GetLogicalPipeline(GetLogicalPipelineRequest) returns (GetLogicalPipelineResponse);
+}
