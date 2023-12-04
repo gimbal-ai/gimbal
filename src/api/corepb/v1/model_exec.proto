@@ -51,13 +51,12 @@ message Port {
   string net = 2;
 }
 
-// Should this be defined in a different proto file?
 message FileResource {
   // The ID of the file to fetch.
   gml.types.UUID file_id = 1 [ (gogoproto.customname) = "FileID" ];
-  // The size of the model, in bytes.
+  // The size of the file, in bytes.
   uint64 size_bytes = 2;
-  // The sha256hash of the model file.
+  // The sha256hash of the file.
   string sha256_hash = 3;
 }
 
@@ -74,7 +73,7 @@ message ExecutionSpec {
 message ModelSpec {
   string name = 1;
 
-  // TODO(oazizi): onnx_blob_key is deprecated and to be replaced by onnx_file.
+  // TODO(oazizi): Remove onnx_blob_key once file download work is complete; using name instead.
   string onnx_blob_key = 2 [ (gogoproto.customname) = "ONNXBlobKey" ];
   FileResource onnx_file = 3 [ (gogoproto.customname) = "ONNXFile" ];
 
