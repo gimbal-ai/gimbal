@@ -23,6 +23,7 @@
 #include <chrono>
 #include <fstream>
 #include <sstream>
+#include <utility>
 
 #include "src/common/base/base.h"
 #include "src/common/base/error.h"
@@ -37,21 +38,23 @@
 #include "src/gem/plugins/registry.h"
 #include "src/gem/storage/fs_blob_store.h"
 
-DEFINE_string(blob_store_dir, "/build/cache/", "Path to store blobs with the FilesystemBlobStore");
 DEFINE_int32(frame_rate, 18, "Frame rate for encoding the video");
 
 namespace gml::gem::controller {
 
 using ::gml::gem::exec::core::ExecutionContext;
 using ::gml::gem::exec::core::Model;
+using ::gml::gem::storage::BlobStore;
 using ::gml::internal::api::core::v1::ApplyExecutionGraph;
 using ::gml::internal::api::core::v1::ExecutionSpec;
 using ::gml::internal::controlplane::egw::v1::BridgeResponse;
 
 ModelExecHandler::ModelExecHandler(gml::event::Dispatcher* dispatcher, GEMInfo* info,
-                                   GRPCBridge* bridge,
+                                   GRPCBridge* bridge, BlobStore* blob_store,
                                    exec::core::ControlExecutionContext* ctrl_exec_ctx)
-    : MessageHandler(dispatcher, info, bridge), ctrl_exec_ctx_(ctrl_exec_ctx) {}
+    : MessageHandler(dispatcher, info, bridge),
+      blob_store_(blob_store),
+      ctrl_exec_ctx_(ctrl_exec_ctx) {}
 
 class ModelExecHandler::RunModelTask : public event::AsyncTask {
  public:
@@ -61,7 +64,6 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
 
   Status PreparePluginExecutionContexts() {
     auto& plugin_registry = plugins::Registry::GetInstance();
-    GML_ASSIGN_OR_RETURN(auto store, storage::FilesystemBlobStore::Create(FLAGS_blob_store_dir));
 
     // We use a shared CPU context for all nodes in the mediapipe execution graph.
     GML_ASSIGN_OR_RETURN(cpu_exec_ctx_,
@@ -72,7 +74,8 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
       std::string plugin = model_spec.runtime();
       std::string context_name = absl::StrCat(model_spec.name(), "_", plugin, "_exec_ctx");
 
-      GML_ASSIGN_OR_RETURN(auto model, plugin_registry.BuildModel(plugin, store.get(), model_spec));
+      GML_ASSIGN_OR_RETURN(auto model,
+                           plugin_registry.BuildModel(plugin, parent_->blob_store_, model_spec));
       models_.emplace_back(std::move(model));
 
       GML_ASSIGN_OR_RETURN(auto model_exec_ctx,

@@ -32,6 +32,7 @@
 #include "src/controlplane/fleetmgr/fmpb/v1/fmpb.grpc.pb.h"
 #include "src/gem/controller/message_handler.h"
 #include "src/gem/exec/core/control_context.h"
+#include "src/gem/storage/blob_store.h"
 
 namespace gml::gem::controller {
 
@@ -71,6 +72,7 @@ class Controller : public gml::NotCopyable {
 
   gml::event::DispatcherUPtr dispatcher_ = nullptr;
   std::unique_ptr<GRPCBridge> bridge_;
+  std::unique_ptr<storage::BlobStore> blob_store_;
 
   std::shared_ptr<grpc::Channel> cp_chan_;
   std::unique_ptr<gml::internal::controlplane::fleetmgr::v1::FleetMgrEdgeService::Stub> fmstub_;
