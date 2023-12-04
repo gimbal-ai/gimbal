@@ -35,10 +35,9 @@ func TestIntIDToHex(t *testing.T) {
 		input    int
 		expected string
 	}{
-		{0, "000"},
-		{10, "00a"},
-		{255, "0ff"},
-		{4095, "fff"},
+		{0, "00"},
+		{10, "0a"},
+		{255, "ff"},
 	}
 
 	for _, test := range tests {
@@ -56,39 +55,39 @@ func TestGenerateRange(t *testing.T) {
 		expected []string
 	}{
 		{
-			pCount:   256,
+			pCount:   16,
 			pID:      0,
-			expected: []string{"000", "001", "002", "003", "004", "005", "006", "007", "008", "009", "00a", "00b", "00c", "00d", "00e", "00f"},
+			expected: []string{"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "0a", "0b", "0c", "0d", "0e", "0f"},
 		},
 		{
-			pCount:   256,
+			pCount:   16,
 			pID:      1,
-			expected: []string{"010", "011", "012", "013", "014", "015", "016", "017", "018", "019", "01a", "01b", "01c", "01d", "01e", "01f"},
+			expected: []string{"10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "1a", "1b", "1c", "1d", "1e", "1f"},
 		},
 		{
-			pCount:   256,
-			pID:      255,
-			expected: []string{"ff0", "ff1", "ff2", "ff3", "ff4", "ff5", "ff6", "ff7", "ff8", "ff9", "ffa", "ffb", "ffc", "ffd", "ffe", "fff"},
+			pCount:   16,
+			pID:      15,
+			expected: []string{"f0", "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f9", "fa", "fb", "fc", "fd", "fe", "ff"},
 		},
 		{
-			pCount:   2500,
+			pCount:   155,
 			pID:      0,
-			expected: []string{"000"},
+			expected: []string{"00"},
 		},
 		{
-			pCount:   2500,
+			pCount:   155,
 			pID:      1,
-			expected: []string{"001", "002"},
+			expected: []string{"01", "02"},
 		},
 		{
-			pCount:   2500,
+			pCount:   155,
 			pID:      2,
-			expected: []string{"003"},
+			expected: []string{"03"},
 		},
 		{
-			pCount:   2500,
-			pID:      2499,
-			expected: []string{"ffe", "fff"},
+			pCount:   155,
+			pID:      154,
+			expected: []string{"fe", "ff"},
 		},
 	}
 
@@ -105,7 +104,7 @@ func TestGenerateRange(t *testing.T) {
 
 func TestEdgeIDToPartition(t *testing.T) {
 	id, _ := uuid.FromString("6ba7b810-9dad-11d1-80b4-00c04fd430c8") // Example UUID
-	expected := "6ba"
+	expected := "6b"
 
 	actual := edgepartition.EdgeIDToPartition(id)
 	assert.Equal(t, expected, actual)
@@ -122,25 +121,25 @@ func TestEdgeToCPNATSTopic(t *testing.T) {
 	}{
 		{
 			name:     "status",
-			expected: "e2cp.6ba.6ba7b810-9dad-11d1-80b4-00c04fd430c8.status",
+			expected: "e2cp.6b.6ba7b810-9dad-11d1-80b4-00c04fd430c8.status",
 			topic:    corepb.EDGE_CP_TOPIC_STATUS,
 			durable:  false,
 		},
 		{
 			name:     "Durablestatus",
-			expected: "e2cp.6ba.6ba7b810-9dad-11d1-80b4-00c04fd430c8.Durablestatus",
+			expected: "e2cp.6b.6ba7b810-9dad-11d1-80b4-00c04fd430c8.Durablestatus",
 			topic:    corepb.EDGE_CP_TOPIC_STATUS,
 			durable:  true,
 		},
 		{
 			name:     "video",
-			expected: "e2cp.6ba.6ba7b810-9dad-11d1-80b4-00c04fd430c8.video",
+			expected: "e2cp.6b.6ba7b810-9dad-11d1-80b4-00c04fd430c8.video",
 			topic:    corepb.EDGE_CP_TOPIC_VIDEO,
 			durable:  false,
 		},
 		{
 			name:     "Durablevideo",
-			expected: "e2cp.6ba.6ba7b810-9dad-11d1-80b4-00c04fd430c8.Durablevideo",
+			expected: "e2cp.6b.6ba7b810-9dad-11d1-80b4-00c04fd430c8.Durablevideo",
 			topic:    corepb.EDGE_CP_TOPIC_VIDEO,
 			durable:  true,
 		},
@@ -155,7 +154,7 @@ func TestEdgeToCPNATSTopic(t *testing.T) {
 }
 
 func TestEdgeToCPNATSPartitionTopic(t *testing.T) {
-	partition := "6ba"
+	partition := "6b"
 
 	tests := []struct {
 		name     string
@@ -165,25 +164,25 @@ func TestEdgeToCPNATSPartitionTopic(t *testing.T) {
 	}{
 		{
 			name:     "status",
-			expected: "e2cp.6ba.*.status",
+			expected: "e2cp.6b.*.status",
 			topic:    corepb.EDGE_CP_TOPIC_STATUS,
 			durable:  false,
 		},
 		{
 			name:     "Durablestatus",
-			expected: "e2cp.6ba.*.Durablestatus",
+			expected: "e2cp.6b.*.Durablestatus",
 			topic:    corepb.EDGE_CP_TOPIC_STATUS,
 			durable:  true,
 		},
 		{
 			name:     "video",
-			expected: "e2cp.6ba.*.video",
+			expected: "e2cp.6b.*.video",
 			topic:    corepb.EDGE_CP_TOPIC_VIDEO,
 			durable:  false,
 		},
 		{
 			name:     "Durablevideo",
-			expected: "e2cp.6ba.*.Durablevideo",
+			expected: "e2cp.6b.*.Durablevideo",
 			topic:    corepb.EDGE_CP_TOPIC_VIDEO,
 			durable:  true,
 		},
@@ -200,7 +199,7 @@ func TestEdgeToCPNATSPartitionTopic(t *testing.T) {
 func TestCPToEdgeNATSTopicBase(t *testing.T) {
 	id, _ := uuid.FromString("6ba7b810-9dad-11d1-80b4-00c04fd430c8") // Example UUID
 	actual, err := edgepartition.CPToEdgeNATSTopicBase(id)
-	expected := "cp2e.6ba.6ba7b810-9dad-11d1-80b4-00c04fd430c8"
+	expected := "cp2e.6b.6ba7b810-9dad-11d1-80b4-00c04fd430c8"
 
 	require.Nil(t, err)
 	assert.Equal(t, expected, actual)
@@ -209,7 +208,7 @@ func TestCPToEdgeNATSTopicBase(t *testing.T) {
 func TestCPToEdgeNATSTopic(t *testing.T) {
 	id, _ := uuid.FromString("6ba7b810-9dad-11d1-80b4-00c04fd430c8") // Example UUID
 	actual, err := edgepartition.CPToEdgeNATSTopic(id, corepb.CP_EDGE_TOPIC_STATUS, false)
-	expected := "cp2e.6ba.6ba7b810-9dad-11d1-80b4-00c04fd430c8.status"
+	expected := "cp2e.6b.6ba7b810-9dad-11d1-80b4-00c04fd430c8.status"
 
 	require.Nil(t, err)
 	assert.Equal(t, expected, actual)
@@ -218,7 +217,7 @@ func TestCPToEdgeNATSTopic(t *testing.T) {
 func TestCPNATSTopic(t *testing.T) {
 	id, _ := uuid.FromString("6ba7b810-9dad-11d1-80b4-00c04fd430c8") // Example UUID
 	actual, err := edgepartition.CPNATSTopic(edgepartition.EdgeIDToPartition(id), id.String(), corepb.CP_TOPIC_DEVICE_CONNECTED, true)
-	expected := "cp2cp.6ba.6ba7b810-9dad-11d1-80b4-00c04fd430c8.DurabledeviceConnected"
+	expected := "cp2cp.6b.6ba7b810-9dad-11d1-80b4-00c04fd430c8.DurabledeviceConnected"
 
 	require.Nil(t, err)
 	assert.Equal(t, expected, actual)

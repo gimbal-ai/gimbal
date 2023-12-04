@@ -42,7 +42,6 @@ var defaultConsumerConfig = jetstream.ConsumerConfig{
 	AckWait:       30 * time.Second,
 	AckPolicy:     jetstream.AckExplicitPolicy,
 	MaxAckPending: 50,
-	Replicas:      1,
 }
 
 var DurableStreamTopics = []corepb.EdgeCPTopic{

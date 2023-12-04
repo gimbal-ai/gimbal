@@ -19,8 +19,8 @@
 // Our edge devices are partition as follows:
 // (edge2cp|cp2edge).<org_id>.<fleet_partition_id>.<fleet_id>.<device_id>.<channel_name>
 // Each of org_if, fleet_id, device_id are all UUIDs.
-// The fleet_partition_id is the first 4 hex characters of the fleet_id. This allows us to have at most
-// 4096 partitions.
+// The fleet_partition_id is the first 2 hex characters of the fleet_id. This allows us to have at most
+// 256 partitions.
 package edgepartition
 
 import (
@@ -37,7 +37,7 @@ import (
 
 const (
 	// KeySpaceSize is the number of hex characters to use for the keyspace size.
-	KeySpaceSize   = 3
+	KeySpaceSize   = 2
 	edgeToCPPrefix = "e2cp"
 	cpToEdgePrefix = "cp2e"
 	cpToCpPrefix   = "cp2cp"
