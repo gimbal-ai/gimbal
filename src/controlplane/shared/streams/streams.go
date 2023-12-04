@@ -47,6 +47,7 @@ var defaultConsumerConfig = jetstream.ConsumerConfig{
 
 var DurableStreamTopics = []corepb.EdgeCPTopic{
 	corepb.EDGE_CP_TOPIC_METRICS,
+	corepb.EDGE_CP_TOPIC_EXEC,
 }
 
 var EdgeCPTopicToStreamName = map[corepb.EdgeCPTopic]string{
