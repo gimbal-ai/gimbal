@@ -259,12 +259,16 @@ StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> ArgusCam::ConsumeFrame() {
 void ArgusCam::Stop() {
   Argus::ICaptureSession* capture_session =
       Argus::interface_cast<Argus::ICaptureSession>(capture_session_obj_);
-  if (capture_session == nullptr) {
-    return;
+  if (capture_session != nullptr) {
+    capture_session->stopRepeat();
+    capture_session->waitForIdle();
   }
 
-  capture_session->stopRepeat();
-  capture_session->waitForIdle();
+  Argus::IEGLOutputStream* output_stream =
+      Argus::interface_cast<Argus::IEGLOutputStream>(output_stream_obj_);
+  if (output_stream != nullptr) {
+    output_stream->disconnect();
+  }
 }
 
 }  // namespace gml::gem::devices::argus

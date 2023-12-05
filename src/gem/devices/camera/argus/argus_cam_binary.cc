@@ -16,6 +16,7 @@
  */
 
 #include <chrono>
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -24,15 +25,7 @@
 
 #include <nvbufsurface.h>
 
-// This define does not work in our current build system
-// because of v4l header conflicts.
-// #define NV_EGL_RENDERER
-
-#ifdef NV_EGL_RENDERER
-#include <NvEglRenderer.h>
-#else
 #include <opencv4/opencv2/opencv.hpp>
-#endif
 
 #include "argus_cam.h"
 
@@ -42,59 +35,62 @@ constexpr int kDeviceNum = 0;
 int main(int argc, char** argv) {
   gml::EnvironmentGuard env_guard(&argc, argv);
 
+  // Unset the DISPLAY environment variable, which appears to affect libEGL, causing failures.
+  unsetenv("DISPLAY");
+
   using gml::gem::devices::argus::ArgusCam;
   using gml::gem::devices::argus::NvBufSurfaceWrapper;
 
   ArgusCam argus_cam;
-  GML_EXIT_IF_ERROR(argus_cam.Init(kDeviceNum));
+  if (!argus_cam.Init(kDeviceNum).ok()) {
+    argus_cam.Stop();
+    return 1;
+  }
 
   std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 
-#ifdef NV_EGL_RENDERER
-  auto renderer =
-      std::unique_ptr<NvEglRenderer>(NvEglRenderer::createEglRenderer("renderer0", 640, 480, 0, 0));
-#endif
-
   for (int i = 0; i < kNumFrames; ++i) {
     LOG(INFO) << absl::Substitute("--- $0", i);
-    GML_ASSIGN_OR_EXIT(std::unique_ptr<NvBufSurfaceWrapper> nvbuf_surf, argus_cam.ConsumeFrame());
+    GML_ASSIGN_OR(std::unique_ptr<NvBufSurfaceWrapper> nvbuf_surf, argus_cam.ConsumeFrame(), {
+      argus_cam.Stop();
+      return 1;
+    });
 
-#ifdef NV_EGL_RENDERER
-    int buf_fd = nvbuf_surf->fd();
-    CHECK(buf_fd > 0) << "FD not valid.";
-    renderer->render(buf_fd);
-#endif
-
-    GML_EXIT_IF_ERROR(nvbuf_surf->MapForCpu());
+    if (!nvbuf_surf->MapForCpu().ok()) {
+      argus_cam.Stop();
+      return 1;
+    }
 
     const NvBufSurfaceParams& surf_params = nvbuf_surf->surface();
     nvbuf_surf->DumpInfo();
 
     const auto& h = surf_params.height;
     const auto& w = surf_params.width;
+
     CHECK_EQ(surf_params.planeParams.num_planes, 3);
+    CHECK_EQ(surf_params.planeParams.height[0], h);
+    CHECK_EQ(surf_params.planeParams.width[0], w);
+    CHECK_EQ(surf_params.planeParams.height[1], h / 2);
+    CHECK_EQ(surf_params.planeParams.width[1], w / 2);
+    CHECK_EQ(surf_params.planeParams.height[2], h / 2);
+    CHECK_EQ(surf_params.planeParams.width[2], w / 2);
 
-    // TODO(oazizi): This is actually wrong, because the mapped addresses have a pitch
-    //               that is different than the width. cv::Mat thus has the wrong data.
-    cv::Mat y_plane(h, w, CV_8UC1, surf_params.mappedAddr.addr[0]);
-    cv::Mat u_plane(h / 2, w / 2, CV_8UC1, surf_params.mappedAddr.addr[1]);
-    cv::Mat v_plane(h / 2, w / 2, CV_8UC1, surf_params.mappedAddr.addr[2]);
+    cv::Mat y_plane(surf_params.planeParams.height[0], surf_params.planeParams.width[0], CV_8UC1,
+                    surf_params.mappedAddr.addr[0], surf_params.planeParams.pitch[0]);
+    cv::Mat u_plane(surf_params.planeParams.height[1], surf_params.planeParams.width[1], CV_8UC1,
+                    surf_params.mappedAddr.addr[1], surf_params.planeParams.pitch[1]);
+    cv::Mat v_plane(surf_params.planeParams.height[2], surf_params.planeParams.width[2], CV_8UC1,
+                    surf_params.mappedAddr.addr[1], surf_params.planeParams.pitch[2]);
 
-    cv::Mat u_resized, v_resized;
-    cv::Size size(w, h);
-    cv::resize(u_plane, u_resized, size, 0, 0, cv::INTER_NEAREST);
-    cv::resize(v_plane, v_resized, size, 0, 0, cv::INTER_NEAREST);
-
-    VLOG(1) << absl::Substitute("$0x$1 $2x$3 $4x$5", y_plane.rows, y_plane.cols, u_resized.rows,
-                                u_resized.cols, v_resized.rows, v_resized.cols);
-
-    cv::Mat yuv;
-    cv::merge(std::vector<cv::Mat>{y_plane, u_resized, v_resized}, yuv);
+    cv::Mat uv_plane;
+    cv::Mat yuv_plane;
+    cv::hconcat(u_plane, v_plane, uv_plane);
+    cv::vconcat(y_plane, uv_plane, yuv_plane);
 
     cv::Mat bgr;
-    cv::cvtColor(yuv, bgr, cv::COLOR_YUV2BGR);
+    cv::cvtColor(yuv_plane, bgr, cv::COLOR_YUV2BGR_IYUV);
 
-    cv::imwrite(absl::StrFormat("/tmp/img%03d.jpg", i), yuv);
+    cv::imwrite(absl::StrFormat("/tmp/img%03d.jpg", i), bgr);
 
     // If you prefer to show this on screen, uncomment the following lines.
     // NOTE: our version of build of OpenCV doesn't currently support cv::imshow().

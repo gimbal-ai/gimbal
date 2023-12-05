@@ -34,6 +34,9 @@ class ArgusCam {
  public:
   explicit ArgusCam(uint64_t target_frame_rate = kDefaultTargetFrameRate)
       : target_frame_rate_(target_frame_rate) {}
+
+  ~ArgusCam() { Stop(); }
+
   /**
    * Initialize the capture device. By default uses the first camera, but can choose other devices
    * as well.

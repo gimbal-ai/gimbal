@@ -42,11 +42,6 @@ gem_plugin_cc_library(
 gml_cc_binary(
     name = "argus_cam_binary",
     srcs = ["argus_cam_binary.cc"],
-    linkopts = [
-        "-lX11",
-        "-ldl",
-        "-lunwind",
-    ],
     deps = [
         ":cc_library",
         "@com_github_opencv_opencv//:opencv",
