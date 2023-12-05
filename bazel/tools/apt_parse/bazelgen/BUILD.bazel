@@ -1,0 +1,40 @@
+# Copyright © 2023- Gimlet Labs, Inc.
+# All Rights Reserved.
+#
+# NOTICE:  All information contained herein is, and remains
+# the property of Gimlet Labs, Inc. and its suppliers,
+# if any.  The intellectual and technical concepts contained
+# herein are proprietary to Gimlet Labs, Inc. and its suppliers and
+# may be covered by U.S. and Foreign Patents, patents in process,
+# and are protected by trade secret or copyright law. Dissemination
+# of this information or reproduction of this material is strictly
+# forbidden unless prior written permission is obtained from
+# Gimlet Labs, Inc.
+#
+# SPDX-License-Identifier: Proprietary
+
+load("@gml//bazel:gml_build_system.bzl", "gml_go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "bazelgen",
+    srcs = ["bazelgen.go"],
+    importpath = "gimletlabs.ai/gimlet/bazel/tools/apt_parse/bazelgen",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//bazel/tools/apt_parse/spec",
+        "@bazel_gazelle//rule:go_default_library",
+        "@com_github_bazelbuild_buildtools//build",
+    ],
+)
+
+gml_go_test(
+    name = "bazelgen_test",
+    srcs = ["bazelgen_test.go"],
+    deps = [
+        ":bazelgen",
+        "//bazel/tools/apt_parse/spec/testutils",
+        "@com_github_stretchr_testify//assert",
+        "@com_github_stretchr_testify//require",
+    ],
+)

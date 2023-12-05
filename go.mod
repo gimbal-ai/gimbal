@@ -4,6 +4,7 @@ go 1.21
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.1
+	github.com/bazelbuild/bazel-gazelle v0.34.0
 	github.com/bazelbuild/buildtools v0.0.0-20231017121127-23aa65d4e117
 	github.com/bazelbuild/rules_go v0.43.0
 	github.com/blang/semver/v4 v4.0.0
@@ -71,7 +72,7 @@ require (
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/elliotchance/orderedmap v1.5.1 // indirect
 	github.com/felixge/httpsnoop v1.0.3 // indirect
-	github.com/fsnotify/fsnotify v1.6.0 // indirect
+	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/goccy/go-yaml v1.11.2 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
