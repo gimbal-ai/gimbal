@@ -18,13 +18,17 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "index",
-    srcs = ["debian_index.go"],
+    srcs = [
+        "debian_index.go",
+        "downloader.go",
+    ],
     importpath = "gimletlabs.ai/gimlet/bazel/tools/apt_parse/index",
     visibility = ["//visibility:public"],
     deps = [
         "//bazel/tools/apt_parse/spec",
         "@ag_pault_go_debian//control",
         "@ag_pault_go_debian//dependency",
+        "@com_github_ulikunitz_xz//:xz",
     ],
 )
 
