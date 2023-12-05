@@ -18,16 +18,31 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "resolve",
-    srcs = ["dfs.go"],
+    srcs = [
+        "dfs.go",
+        "resolve.go",
+    ],
     importpath = "gimletlabs.ai/gimlet/bazel/tools/apt_parse/resolve",
     visibility = ["//visibility:public"],
+    deps = [
+        "//bazel/tools/apt_parse/index",
+        "//bazel/tools/apt_parse/spec",
+        "@ag_pault_go_debian//dependency",
+        "@ag_pault_go_debian//version",
+    ],
 )
 
 gml_go_test(
     name = "resolve_test",
-    srcs = ["dfs_test.go"],
+    srcs = [
+        "dfs_test.go",
+        "resolve_test.go",
+    ],
     deps = [
         ":resolve",
+        "//bazel/tools/apt_parse/index",
+        "//bazel/tools/apt_parse/spec",
+        "//bazel/tools/apt_parse/spec/testutils",
         "@com_github_stretchr_testify//assert",
         "@com_github_stretchr_testify//require",
     ],
