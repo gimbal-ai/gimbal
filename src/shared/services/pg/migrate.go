@@ -18,6 +18,7 @@
 package pg
 
 import (
+	"context"
 	"embed"
 	"fmt"
 
@@ -29,7 +30,15 @@ import (
 
 // PerformMigrationsWithEmbed uses the passed in embed to perform postgres DB migrations.
 func PerformMigrationsWithEmbed(db *sqlx.DB, migrationTable string, assetSource *embed.FS, sourceDir string) error {
-	driver, err := postgres.WithInstance(db.DB, &postgres.Config{
+	ctx := context.Background()
+
+	conn, err := db.DB.Conn(ctx)
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+
+	driver, err := postgres.WithConnection(ctx, conn, &postgres.Config{
 		MigrationsTable: migrationTable,
 	})
 	if err != nil {

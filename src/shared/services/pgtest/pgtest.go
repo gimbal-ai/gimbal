@@ -109,6 +109,12 @@ func SetupTestDB(t testing.TB, schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx
 	viper.Set("postgres_username", "postgres")
 	viper.Set("postgres_password", "secret")
 
+	// Intentionally restrict the number of DB conns. This is to ensure that
+	// there are no funcs that consume more than one conn simultaneously since
+	// that causes deadlocks.
+	viper.Set("postgres_max_idle_conns", 1)
+	viper.Set("postgres_max_open_conns", 1)
+
 	if err = pool.Retry(func() error {
 		log.Info("trying to connect")
 		d.db = pg.MustCreateDefaultPostgresDB()

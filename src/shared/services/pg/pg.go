@@ -47,6 +47,9 @@ func init() {
 	pflag.String("postgres_username", "gml", "The username in the postgres database")
 	pflag.String("postgres_password", "gml", "The password in the postgres database")
 	pflag.Bool("postgres_ssl", false, "Enable ssl for postgres")
+
+	pflag.Int("postgres_max_idle_conns", 5, "Max idle connections to the postgres database")
+	pflag.Int("postgres_max_open_conns", 10, "Max open connections to the postgres database")
 }
 
 // DefaultDBURI returns the URI string for the default postgres instance based on flags/env vars.
@@ -90,9 +93,9 @@ func MustCreateDefaultPostgresDB() *sqlx.DB {
 		log.WithError(err).Fatalf("failed to setup database connection")
 	}
 
-	db.SetMaxIdleConns(5)
+	db.SetMaxIdleConns(viper.GetInt("postgres_max_idle_conns"))
 	db.SetConnMaxLifetime(30 * time.Minute)
-	db.SetMaxOpenConns(10)
+	db.SetMaxOpenConns(viper.GetInt("postgres_max_open_conns"))
 
 	// It's possible we already registered a prometheus collector with multiple DB connections.
 	_ = prometheus.Register(

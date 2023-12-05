@@ -73,6 +73,8 @@ func TestCreateIdempotentTx(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, "hello", testKey)
 
+	rows1.Close()
+
 	rows2, err := db.Queryx("SELECT count(*) FROM test_idempotency_keys")
 	assert.NoError(t, err)
 	defer rows2.Close()
@@ -81,6 +83,8 @@ func TestCreateIdempotentTx(t *testing.T) {
 	err = rows2.Scan(&count)
 	require.NoError(t, err)
 	assert.Equal(t, 2, count)
+
+	rows2.Close()
 
 	tx3, err := pg.CreateIdempotentTx(context.Background(), db, "test")
 	require.ErrorIs(t, err, pg.ErrIdempotencyKeyMissing)
