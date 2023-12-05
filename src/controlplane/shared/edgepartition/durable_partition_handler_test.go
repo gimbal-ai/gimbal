@@ -21,12 +21,10 @@ import (
 	"context"
 	"sync"
 	"testing"
-	"time"
 
 	"github.com/gofrs/uuid/v5"
 	"github.com/gogo/protobuf/proto"
 	"github.com/gogo/protobuf/types"
-	"github.com/nats-io/nats.go/jetstream"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -34,8 +32,10 @@ import (
 
 	"gimletlabs.ai/gimlet/src/api/corepb/v1"
 	"gimletlabs.ai/gimlet/src/controlplane/shared/edgepartition"
+	"gimletlabs.ai/gimlet/src/controlplane/shared/streams"
 	"gimletlabs.ai/gimlet/src/shared/services/msgbus"
 	"gimletlabs.ai/gimlet/src/shared/services/natstest"
+	"gimletlabs.ai/gimlet/src/shared/testing/testutils"
 	utils "gimletlabs.ai/gimlet/src/shared/uuidutils"
 )
 
@@ -53,34 +53,13 @@ func TestDurablePartitionHandler_MessageHandler(t *testing.T) {
 
 	js := msgbus.MustConnectJetStream(nc)
 
-	subject, err := edgepartition.EdgeToCPNATSPartitionTopic("*", corepb.EDGE_CP_TOPIC_STATUS, true)
-	require.NoError(t, err)
-	_, err = js.CreateStream(context.Background(), jetstream.StreamConfig{
-		Name:     "status",
-		Subjects: []string{subject},
-		MaxAge:   2 * time.Minute,
-		Replicas: 1,
-		Storage:  jetstream.MemoryStorage,
-	})
+	err := testutils.InitializeEdgeToCPStream(js, corepb.EDGE_CP_TOPIC_STATUS, true)
 	require.NoError(t, err)
 
-	ctx := context.Background()
-	partitions := edgepartition.GenerateRange()
-	for _, p := range partitions {
-		sub, err := edgepartition.EdgeToCPNATSPartitionTopic(p, corepb.EDGE_CP_TOPIC_STATUS, true)
-		require.NoError(t, err)
-		_, err = js.CreateOrUpdateConsumer(ctx, "status", jetstream.ConsumerConfig{
-			Durable:       msgbus.FormatConsumerName(sub, "testsvc"),
-			FilterSubject: sub,
-			DeliverPolicy: jetstream.DeliverAllPolicy,
-			AckWait:       30 * time.Second,
-			AckPolicy:     jetstream.AckExplicitPolicy,
-			MaxAckPending: 50,
-		})
-		require.NoError(t, err)
-	}
+	err = testutils.InitializeConsumersForEdgeToCPPartition("testsvc", js, corepb.EDGE_CP_TOPIC_STATUS, nil)
+	require.NoError(t, err)
 
-	s, err := msgbus.NewJetStreamStreamer(js, "status")
+	s, err := msgbus.NewJetStreamStreamer(js, streams.EdgeCPTopicToStreamName[corepb.EDGE_CP_TOPIC_STATUS])
 	require.NoError(t, err)
 
 	var wg sync.WaitGroup

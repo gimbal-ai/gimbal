@@ -17,11 +17,21 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "testutils",
-    srcs = ["jwt.go"],
+    srcs = [
+        "jwt.go",
+        "streams.go",
+    ],
     importpath = "gimletlabs.ai/gimlet/src/shared/testing/testutils",
     visibility = ["//visibility:public"],
     deps = [
+        "//src/api/corepb/v1:corepb_go_proto",
         "//src/common/typespb:typespb_go_proto",
+        "//src/controlplane/shared/edgepartition",
+        "//src/controlplane/shared/streams",
+        "//src/shared/services/msgbus",
         "//src/shared/services/utils",
+        "@com_github_nats_io_nats_go//jetstream",
+        "@com_github_sirupsen_logrus//:logrus",
+        "@org_golang_x_sync//errgroup",
     ],
 )
