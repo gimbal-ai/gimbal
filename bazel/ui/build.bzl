@@ -35,6 +35,12 @@ def _jest_test(name = "", srcs = [], deps = [], data = [], **kwargs):
     node_modules = kwargs.pop("node_modules", "//src/ui:node_modules")
     tags = kwargs.pop("tags", ["jest"])
 
+    ts_project(
+        name = "%s_js" % name,
+        srcs = srcs,
+        deps = deps,
+    )
+
     seen = {
         "//src/ui:cp_setup_jest": True,
         "//src/ui:cp_tsconfig": True,
