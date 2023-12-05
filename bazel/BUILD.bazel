@@ -48,6 +48,25 @@ config_setting(
 )
 
 bool_flag(
+    name = "disable_pie",
+    build_setting_default = False,
+)
+
+config_setting(
+    name = "pie",
+    flag_values = {
+        "//bazel:disable_pie": "False",
+    },
+)
+
+config_setting(
+    name = "no_pie",
+    flag_values = {
+        "//bazel:disable_pie": "True",
+    },
+)
+
+bool_flag(
     name = "enable_libcpp",
     build_setting_default = False,
 )

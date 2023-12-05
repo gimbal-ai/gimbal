@@ -157,14 +157,10 @@ build:tsan --features=tsan
 test:tsan --test_timeout=180,600,1800,3600
 
 # bazel build --config go_race
-build:go_race --config=clang-libc++
-build:go_race --define tcmalloc=disabled
-build:go_race --@io_bazel_rules_go//go/config:race
-test:go_race --define tcmalloc=disabled
-test:go_race --@io_bazel_rules_go//go/config:race
-run:go_race --define tcmalloc=disabled
-run:go_race --@io_bazel_rules_go//go/config:race
-
+build:go_race --config=no_sysroot
+common:go_race --define tcmalloc=disabled
+common:go_race --//bazel:disable_pie
+common:go_race --@io_bazel_rules_go//go/config:race
 
 coverage --config=gcc
 coverage --cxxopt -fprofile-arcs

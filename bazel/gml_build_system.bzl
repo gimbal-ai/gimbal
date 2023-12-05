@@ -349,7 +349,10 @@ def _no_sysroot():
     })
 
 def gml_go_test(**kwargs):
-    default_arg(kwargs, "linkmode", "pie")
+    default_arg(kwargs, "linkmode", select({
+        "@gml//bazel:no_pie": "auto",
+        "//conditions:default": "pie",
+    }))
     _add_test_runner(kwargs)
     go_test(**kwargs)
 

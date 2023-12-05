@@ -91,6 +91,7 @@ func InitializeConsumers(js jetstream.JetStream, serviceName string, streamName 
 		updatedConsumerMap[config.Durable] = true
 
 		createGroup.Go(func() error {
+			var err error
 			_, err = js.CreateOrUpdateConsumer(ctx, streamName, config)
 			if err != nil {
 				return err
