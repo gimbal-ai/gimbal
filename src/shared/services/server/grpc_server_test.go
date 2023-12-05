@@ -78,7 +78,7 @@ func (*testserver) PingClientStream(srv ping.PingService_PingClientStreamServer)
 	return nil
 }
 
-func startTestGRPCServer(o *server.GRPCServerOptions) (*bufconn.Listener, func(t *testing.T)) {
+func startTestGRPCServer(t *testing.T, o *server.GRPCServerOptions) *bufconn.Listener {
 	opts := o
 	viper.Set("jwt_signing_key", "abc")
 	if opts == nil {
@@ -93,15 +93,15 @@ func startTestGRPCServer(o *server.GRPCServerOptions) (*bufconn.Listener, func(t
 	eg := errgroup.Group{}
 	eg.Go(func() error { return s.Serve(lis) })
 
-	cleanupFunc := func(t *testing.T) {
+	t.Cleanup(func() {
 		s.GracefulStop()
 
 		err := eg.Wait()
 		if err != nil {
 			t.Fatalf("failed to start server: %v", err)
 		}
-	}
-	return lis, cleanupFunc
+	})
+	return lis
 }
 
 func createDialer(lis *bufconn.Listener) func(ctx context.Context, url string) (net.Conn, error) {
@@ -244,8 +244,7 @@ func TestGrpcServerUnary(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			lis, cleanup := startTestGRPCServer(test.serverOpts)
-			defer cleanup(t)
+			lis := startTestGRPCServer(t, test.serverOpts)
 
 			var ctx context.Context
 			if test.token != "" {

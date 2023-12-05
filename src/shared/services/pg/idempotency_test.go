@@ -30,11 +30,9 @@ import (
 )
 
 func TestCreateIdempotentTx(t *testing.T) {
-	db, teardown, err := pgtest.SetupTestDB(nil)
+	db, err := pgtest.SetupTestDB(t, nil)
 	require.NoError(t, err)
 	require.NotNil(t, db)
-	require.NotNil(t, teardown)
-	defer teardown()
 
 	// Add idempotency table. In general, we expect this table to be created by the service creator in the migrations.
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS test_idempotency_keys (idempotency_key text UNIQUE, created_at timestamp NOT NULL DEFAULT NOW())")

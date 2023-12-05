@@ -32,21 +32,17 @@ import (
 )
 
 func TestSetupTestVictoriaMetrics(t *testing.T) {
-	conn, teardown, err := victoriametricstest.SetupTestVictoriaMetrics()
-	defer teardown()
+	conn, err := victoriametricstest.SetupTestVictoriaMetrics(t)
 
 	assert.NoError(t, err)
 	assert.NotNil(t, conn)
-	assert.NotNil(t, teardown)
 }
 
-func TestSetupTestVictoriaMetrics_SimpleImportExport(t *testing.T) {
-	conn, teardown, err := victoriametricstest.SetupTestVictoriaMetrics()
-	defer teardown()
+func TestSetupTestVictoriaMetrics_tSimpleImportExport(t *testing.T) {
+	conn, err := victoriametricstest.SetupTestVictoriaMetrics(t)
 
 	require.NoError(t, err)
 	require.NotNil(t, conn)
-	require.NotNil(t, teardown)
 
 	err = victoriametrics.InsertPrometheusMetrics(`foo{bar="baz"} 123`)
 	require.NoError(t, err)

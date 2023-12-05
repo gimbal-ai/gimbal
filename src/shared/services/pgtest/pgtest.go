@@ -22,6 +22,7 @@ package pgtest
 import (
 	"embed"
 	"fmt"
+	"testing"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/ory/dockertest/v3"
@@ -49,7 +50,7 @@ func WithSchemaDirectory(dir string) TestDBOpt {
 }
 
 // SetupTestDB sets up a test database instance and applies migrations.
-func SetupTestDB(schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx.DB, func(), error) {
+func SetupTestDB(t testing.TB, schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx.DB, error) {
 	d := &testDB{
 		schemaSourceDirectory: ".",
 	}
@@ -59,14 +60,14 @@ func SetupTestDB(schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx.DB, func(), e
 
 	pool, err := dockertest.NewPool("")
 	if err != nil {
-		return nil, nil, fmt.Errorf("connect to docker failed: %w", err)
+		return nil, fmt.Errorf("connect to docker failed: %w", err)
 	}
 
 	imageRepo := "postgres"
 	imageTag := "15-alpine"
 	err = dockertestutils.LoadOrFetchImage(pool, imageRepo, imageTag)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	const dbName = "testdb"
@@ -94,12 +95,12 @@ func SetupTestDB(schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx.DB, func(), e
 		},
 	)
 	if err != nil {
-		return nil, nil, fmt.Errorf("failed to run docker pool: %w", err)
+		return nil, fmt.Errorf("failed to run docker pool: %w", err)
 	}
 	// Set a 5 minute expiration on resources.
 	err = resource.Expire(300)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	viper.Set("postgres_port", resource.GetPort("5432/tcp"))
@@ -113,17 +114,17 @@ func SetupTestDB(schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx.DB, func(), e
 		d.db = pg.MustCreateDefaultPostgresDB()
 		return d.db.Ping()
 	}); err != nil {
-		return nil, nil, fmt.Errorf("failed to create postgres on docker: %w", err)
+		return nil, fmt.Errorf("failed to create postgres on docker: %w", err)
 	}
 
 	if schemaSource != nil {
 		err := pg.PerformMigrationsWithEmbed(d.db, "test_migrations", schemaSource, d.schemaSourceDirectory)
 		if err != nil {
-			return nil, nil, fmt.Errorf("migrations failed: %w", err)
+			return nil, fmt.Errorf("migrations failed: %w", err)
 		}
 	}
 
-	return d.db, func() {
+	t.Cleanup(func() {
 		if d.db != nil {
 			d.db.Close()
 		}
@@ -131,5 +132,7 @@ func SetupTestDB(schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx.DB, func(), e
 		if err := pool.Purge(resource); err != nil {
 			log.WithError(err).Error("could not purge docker resource")
 		}
-	}, nil
+	})
+
+	return d.db, nil
 }

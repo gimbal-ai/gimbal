@@ -69,7 +69,7 @@ func startNATS() (*server.Server, *nats.Conn, error) {
 }
 
 // MustStartTestNATS starts up a NATS server at an open port.
-func MustStartTestNATS(t *testing.T) (*nats.Conn, func()) {
+func MustStartTestNATS(t *testing.T) *nats.Conn {
 	var gnatsd *server.Server
 	var conn *nats.Conn
 
@@ -94,12 +94,12 @@ func MustStartTestNATS(t *testing.T) (*nats.Conn, func()) {
 		t.Fatal("Could not connect to NATS")
 	}
 
-	cleanup := func() {
+	t.Cleanup(func() {
 		dir := gnatsd.StoreDir()
 		gnatsd.Shutdown()
 		os.RemoveAll(dir)
 		conn.Close()
-	}
+	})
 
-	return conn, cleanup
+	return conn
 }

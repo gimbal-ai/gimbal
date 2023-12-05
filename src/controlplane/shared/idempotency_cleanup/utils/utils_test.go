@@ -29,11 +29,9 @@ import (
 )
 
 func TestExpireKeys(t *testing.T) {
-	db, teardown, err := pgtest.SetupTestDB(nil)
+	db, err := pgtest.SetupTestDB(t, nil)
 	require.NoError(t, err)
 	require.NotNil(t, db)
-	require.NotNil(t, teardown)
-	defer teardown()
 
 	now := time.Now()
 	// 5 days ago.

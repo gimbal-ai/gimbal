@@ -90,17 +90,17 @@ func WaitForMetrics(t *testing.T, conn promv1.API, q string) {
 }
 
 // SetupTestVictoriaMetrics sets up a test instance for victoriametrics.
-func SetupTestVictoriaMetrics() (promv1.API, func(), error) {
+func SetupTestVictoriaMetrics(t *testing.T) (promv1.API, error) {
 	pool, err := dockertest.NewPool("")
 	if err != nil {
-		return nil, nil, fmt.Errorf("connect to docker failed: %w", err)
+		return nil, fmt.Errorf("connect to docker failed: %w", err)
 	}
 
 	imageRepo := "victoriametrics/victoria-metrics"
 	imageTag := "v1.93.6"
 	err = dockertestutils.LoadOrFetchImage(pool, imageRepo, imageTag)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	resource, err := pool.RunWithOptions(
@@ -127,12 +127,12 @@ func SetupTestVictoriaMetrics() (promv1.API, func(), error) {
 		},
 	)
 	if err != nil {
-		return nil, nil, fmt.Errorf("failed to run docker pool: %w", err)
+		return nil, fmt.Errorf("failed to run docker pool: %w", err)
 	}
 	// Set a 5 minute expiration on resources.
 	err = resource.Expire(300)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	// Single node mode uses the same host/port for inserts as well as selects.
@@ -152,13 +152,15 @@ func SetupTestVictoriaMetrics() (promv1.API, func(), error) {
 		_, _, err := conn.Query(context.Background(), "up", time.Now(), promv1.WithTimeout(5*time.Second))
 		return err
 	}); err != nil {
-		return nil, nil, fmt.Errorf("failed to create victoriametrics on docker: %w", err)
+		return nil, fmt.Errorf("failed to create victoriametrics on docker: %w", err)
 	}
 	log.SetLevel(log.InfoLevel)
 
-	return conn, func() {
+	t.Cleanup(func() {
 		if err := pool.Purge(resource); err != nil {
 			log.WithError(err).Error("could not purge docker resource")
 		}
-	}, nil
+	})
+
+	return conn, nil
 }

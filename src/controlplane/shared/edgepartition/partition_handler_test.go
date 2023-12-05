@@ -40,10 +40,9 @@ func TestPartitionHandler_MessageHandler(t *testing.T) {
 	viper.Set("partition_count", 1)
 
 	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
+	t.Cleanup(ctrl.Finish)
 
-	nc, natsCleanup := natstest.MustStartTestNATS(t)
-	defer natsCleanup()
+	nc := natstest.MustStartTestNATS(t)
 
 	deviceID := uuid.Must(uuid.NewV4())
 

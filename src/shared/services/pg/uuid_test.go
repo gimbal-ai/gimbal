@@ -43,11 +43,9 @@ func init() {
 }
 
 func TestUUIDStrings(t *testing.T) {
-	db, teardown, err := pgtest.SetupTestDB(nil)
+	db, err := pgtest.SetupTestDB(t, nil)
 	require.NoError(t, err)
 	require.NotNil(t, db)
-	require.NotNil(t, teardown)
-	defer teardown()
 
 	// Create fake test table.
 	_, err = db.Exec(createTableStmt)
@@ -80,11 +78,9 @@ func TestUUIDStrings(t *testing.T) {
 }
 
 func BenchmarkInserts_UUID(b *testing.B) {
-	db, teardown, err := pgtest.SetupTestDB(nil)
+	db, err := pgtest.SetupTestDB(b, nil)
 	require.NoError(b, err)
 	require.NotNil(b, db)
-	require.NotNil(b, teardown)
-	defer teardown()
 	// Stop timer before we start teardown.
 	defer b.StopTimer()
 
@@ -99,11 +95,9 @@ func BenchmarkInserts_UUID(b *testing.B) {
 }
 
 func BenchmarkInserts_String(b *testing.B) {
-	db, teardown, err := pgtest.SetupTestDB(nil)
+	db, err := pgtest.SetupTestDB(b, nil)
 	require.NoError(b, err)
 	require.NotNil(b, db)
-	require.NotNil(b, teardown)
-	defer teardown()
 	// Stop timer before we start teardown.
 	defer b.StopTimer()
 
@@ -118,11 +112,9 @@ func BenchmarkInserts_String(b *testing.B) {
 }
 
 func BenchmarkReads_UUID(b *testing.B) {
-	db, teardown, err := pgtest.SetupTestDB(nil)
+	db, err := pgtest.SetupTestDB(b, nil)
 	require.NoError(b, err)
 	require.NotNil(b, db)
-	require.NotNil(b, teardown)
-	defer teardown()
 	// Stop timer before we start teardown.
 	defer b.StopTimer()
 
@@ -141,11 +133,9 @@ func BenchmarkReads_UUID(b *testing.B) {
 }
 
 func BenchmarkReads_String(b *testing.B) {
-	db, teardown, err := pgtest.SetupTestDB(nil)
+	db, err := pgtest.SetupTestDB(b, nil)
 	require.NoError(b, err)
 	require.NotNil(b, db)
-	require.NotNil(b, teardown)
-	defer teardown()
 	// Stop timer before we start teardown.
 	defer b.StopTimer()
 

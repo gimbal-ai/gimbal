@@ -76,8 +76,7 @@ func TestJetStream_PersistentSubscribeInterfaceAccuracy(t *testing.T) {
 	sub := testStreamCfg.Name
 	data := [][]byte{[]byte("123"), []byte("abc"), []byte("asdf")}
 
-	nc, cleanup := natstest.MustStartTestNATS(t)
-	defer cleanup()
+	nc := natstest.MustStartTestNATS(t)
 
 	js := msgbus.MustConnectJetStream(nc)
 
@@ -152,8 +151,7 @@ func TestJetStream_PersistentSubscribeMultiConsumer(t *testing.T) {
 	sub := testStreamCfg.Name
 	data := [][]byte{[]byte("123"), []byte("abc"), []byte("asdf")}
 
-	nc, cleanup := natstest.MustStartTestNATS(t)
-	defer cleanup()
+	nc := natstest.MustStartTestNATS(t)
 	js := msgbus.MustConnectJetStream(nc)
 
 	_, err := js.CreateStream(context.Background(), testStreamCfg)
@@ -227,8 +225,7 @@ func TestJetStream_PublishAfterSubscribe(t *testing.T) {
 	sub := testStreamCfg.Name
 	data := [][]byte{[]byte("123"), []byte("abc"), []byte("asdf")}
 
-	nc, cleanup := natstest.MustStartTestNATS(t)
-	defer cleanup()
+	nc := natstest.MustStartTestNATS(t)
 	js := msgbus.MustConnectJetStream(nc)
 
 	_, err := js.CreateStream(context.Background(), testStreamCfg)
@@ -271,8 +268,7 @@ func TestJetStream_PersistentSubscribeReattemptAck(t *testing.T) {
 	data := [][]byte{[]byte("123"), []byte("abc"), []byte("asdf")}
 
 	// Test to make sure that not-acking a message will make sure that it comes back.
-	nc, cleanup := natstest.MustStartTestNATS(t)
-	defer cleanup()
+	nc := natstest.MustStartTestNATS(t)
 	js := msgbus.MustConnectJetStream(nc)
 
 	_, err := js.CreateStream(context.Background(), testStreamCfg)
@@ -321,8 +317,7 @@ func TestJetStream_PersistentSubscribeReattemptAck(t *testing.T) {
 
 func TestJetStream_MultiSubjectStream(t *testing.T) {
 	sub := "abc"
-	nc, cleanup := natstest.MustStartTestNATS(t)
-	defer cleanup()
+	nc := natstest.MustStartTestNATS(t)
 	js := msgbus.MustConnectJetStream(nc)
 
 	_, err := js.CreateStream(context.Background(), jetstream.StreamConfig{
