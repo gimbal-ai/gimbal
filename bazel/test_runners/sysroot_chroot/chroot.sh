@@ -28,18 +28,17 @@ pwd_resolved="$(readlink -f "${PWD}")"
 # This approach is somewhat fragile, since if someone creates a directory called execroot, it will break.
 execroot="${pwd_resolved%/"${pwd_resolved##*/execroot/}"}"
 output_base="$(realpath "${execroot}/..")"
+exec_pwd="${execroot}/_main"
+sysroot_path="${exec_pwd}/%sysroot%"
 
 top_of_repo=""
-for dir in "${output_base}"/execroot/_main/*/; do
+for dir in "${exec_pwd}"/*/; do
   if [ -L "${dir%/}" ]; then
     resolved_dir=$(readlink -f "${dir%/}")
     top_of_repo="$(dirname "${resolved_dir}")"
     break
   fi
 done
-
-# Bazel sets up symlinks only on the files themselves, so find the real sysroot directory using files we know will exist.
-sysroot_path="$(realpath "$(dirname "$(readlink -f "${PWD}/%sysroot%/usr/include/stdio.h")")/../..")"
 
 chroot_dir="$TEST_TMPDIR/chroot"
 
