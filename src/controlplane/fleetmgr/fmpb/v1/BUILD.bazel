@@ -24,6 +24,7 @@ proto_library(
     srcs = ["fmpb.proto"],
     visibility = ["//visibility:public"],
     deps = [
+        "//src/api/corepb/v1:corepb_proto",
         "//src/common/typespb:typespb_proto",
         "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_proto",
         "@com_google_protobuf//:timestamp_proto",
@@ -48,6 +49,7 @@ proto_cc_library(
     hdrs = ["fmpb.pb.h"],
     visibility = ["//visibility:public"],
     deps = [
+        "//src/api/corepb/v1:corepb_cc_library",
         "//src/common/typespb:typespb_cc_library",
         "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_cc_library",
         "@com_google_protobuf//:protobuf",
@@ -86,6 +88,7 @@ proto_go_library(
     importpath = "gimletlabs.ai/gimlet/src/controlplane/fleetmgr/fmpb/v1",
     visibility = ["//visibility:public"],
     deps = [
+        "//src/api/corepb/v1:corepb_go_proto",
         "//src/common/typespb:typespb_go_proto",
         "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_go_proto",
         "@com_github_gogo_protobuf//proto",

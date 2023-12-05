@@ -179,6 +179,40 @@ message FileTransferResponse {
 }
 
 /****************************************************************************
+ * Messages that provide info about the device.
+ * These should be sent on the .INFO topic.
+ *****************************************************************************/
+// DeviceCapabilities is a message that contains the capabilities of the device, such
+// as the model runtime, camera driver, etc.
+// Whenever this message is sent, it should be sent with the latest capabilities.
+message DeviceCapabilities {
+  // The possible model runtimes.
+  message ModelRuntimeInfo {
+    enum ModelRuntimeType {
+      MODEL_RUNTIME_TYPE_UNKNOWN = 0;
+      MODEL_RUNTIME_TYPE_TENSORRT = 1;
+      MODEL_RUNTIME_TYPE_OPENVINO = 2;
+    }
+    ModelRuntimeType type = 1;
+  }
+
+  message CameraInfo {
+    enum CameraDriver {
+      CAMERA_DRIVER_UNKNOWN = 0;
+      CAMERA_DRIVER_ARGUS = 1;
+      CAMERA_DRIVER_V4L2 = 2;
+    }
+    CameraDriver driver = 1;
+    int64 camera_id = 2;
+  }
+
+  // ModelRuntimes is the info about all the model runtimes available on the device.
+  repeated ModelRuntimeInfo model_runtimes = 1;
+  // Cameras is the info about all the cameras available on the device.
+  repeated CameraInfo cameras = 2;
+}
+
+/****************************************************************************
  * Wrapper messages for each channel on the NATS bus from the edge.
  * They are named EdgeCP[*] for messages originating from the edge.
  * They are named CPEdge[*] for messages originating from the control plane.
