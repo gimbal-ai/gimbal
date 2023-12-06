@@ -27,7 +27,6 @@ import (
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.uber.org/mock/gomock"
 
 	"gimletlabs.ai/gimlet/src/api/corepb/v1"
 	"gimletlabs.ai/gimlet/src/controlplane/shared/edgepartition"
@@ -38,9 +37,6 @@ import (
 func TestPartitionHandler_MessageHandler(t *testing.T) {
 	viper.Set("partition_id", 0)
 	viper.Set("partition_count", 1)
-
-	ctrl := gomock.NewController(t)
-	t.Cleanup(ctrl.Finish)
 
 	nc := natstest.MustStartTestNATS(t)
 
