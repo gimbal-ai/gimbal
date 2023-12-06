@@ -28,7 +28,7 @@ def _download_repo(rctx, repo_name, output):
         stripPrefix = loc.get("strip_prefix", ""),
     )
 
-def _clang_toolchain_impl(rctx):
+def _clang_impl_repo_impl(rctx):
     # Unfortunately, we have to download any files that the toolchain uses within this rule.
     toolchain_path = "toolchain"
     _download_repo(rctx, rctx.attr.toolchain_repo, toolchain_path)
@@ -50,18 +50,12 @@ def _clang_toolchain_impl(rctx):
     # First combine all of the build file templates into one file.
     rctx.template(
         "BUILD.bazel.tpl",
-        Label("@gml//bazel/cc_toolchains/clang:toolchain.BUILD"),
+        Label("@gml//bazel/cc_toolchains/clang:impl.BUILD"),
         substitutions = {
             "{libcxx_build}": libcxx_build,
             "{toolchain_files_build}": toolchain_files_build,
         },
     )
-
-    target_libc_constraints = ["@gml//bazel/cc_toolchains:libc_version_{libc_version}".format(libc_version = rctx.attr.libc_version)]
-
-    # Allow host toolchains to be selected regardless of target libc version
-    if rctx.attr.use_for_host_tools:
-        target_libc_constraints = []
 
     # Then substitute in parameters into the combined template.
     rctx.template(
@@ -78,15 +72,14 @@ def _clang_toolchain_impl(rctx):
             "{sysroot_include_prefix}": sysroot_include_prefix,
             "{target_abi}": abi(rctx.attr.target_arch, rctx.attr.libc_version),
             "{target_arch}": rctx.attr.target_arch,
-            "{target_libc_constraints}": str(target_libc_constraints),
             "{this_repo}": rctx.attr.name,
             "{toolchain_path}": toolchain_path,
             "{use_for_host_tools}": str(rctx.attr.use_for_host_tools),
         },
     )
 
-_clang_toolchain_repo = repository_rule(
-    _clang_toolchain_impl,
+_clang_impl_repo = repository_rule(
+    _clang_impl_repo_impl,
     attrs = dict(
         toolchain_repo = attr.string(mandatory = True),
         target_arch = attr.string(mandatory = True),
@@ -99,6 +92,37 @@ _clang_toolchain_repo = repository_rule(
     ),
 )
 
+def _clang_toolchain_repo_impl(rctx):
+    target_libc_constraints = ["@gml//bazel/cc_toolchains:libc_version_{libc_version}".format(libc_version = rctx.attr.libc_version)]
+
+    # Allow host toolchains to be selected regardless of target libc version
+    if rctx.attr.use_for_host_tools:
+        target_libc_constraints = []
+
+    rctx.template(
+        "BUILD.bazel",
+        Label("@gml//bazel/cc_toolchains/clang:toolchain.BUILD"),
+        substitutions = {
+            "{extra_target_settings}": str(target_libc_constraints + rctx.attr.target_settings),
+            "{host_arch}": rctx.attr.host_arch,
+            "{impl_repo}": str(rctx.attr.impl_repo),
+            "{target_arch}": rctx.attr.target_arch,
+            "{use_for_host_tools}": str(rctx.attr.use_for_host_tools),
+        },
+    )
+
+_clang_toolchain_repo = repository_rule(
+    _clang_toolchain_repo_impl,
+    attrs = dict(
+        target_arch = attr.string(mandatory = True),
+        host_arch = attr.string(default = "x86_64"),
+        libc_version = attr.string(default = HOST_GLIBC_VERSION),
+        use_for_host_tools = attr.bool(default = False),
+        target_settings = attr.string_list(default = []),
+        impl_repo = attr.string(mandatory = True),
+    ),
+)
+
 def clang_toolchain(
         name,
         toolchain_repo,
@@ -108,16 +132,29 @@ def clang_toolchain(
         host_arch = "x86_64",
         host_libc_version = HOST_GLIBC_VERSION,
         use_for_host_tools = False,
-        use_sysroot = False):
-    _clang_toolchain_repo(
-        name = name,
+        use_sysroot = False,
+        target_settings = []):
+    # Split the toolchain into two repos. One contains the implementation of the toolchain, the other contains the bazel definition for the toolchain.
+    # This makes it so that bazel will not load the implementation repo unless the toolchain repo's toolchain definition resolves during toolchain resolution.
+    _clang_impl_repo(
+        name = name + "_impl",
         toolchain_repo = toolchain_repo,
         target_arch = target_arch,
-        clang_version = clang_version,
         libc_version = libc_version,
         host_arch = host_arch,
         host_libc_version = host_libc_version,
+        clang_version = clang_version,
         use_for_host_tools = use_for_host_tools,
         use_sysroot = use_sysroot,
     )
+    _clang_toolchain_repo(
+        name = name,
+        target_arch = target_arch,
+        host_arch = host_arch,
+        libc_version = libc_version,
+        use_for_host_tools = use_for_host_tools,
+        target_settings = target_settings,
+        impl_repo = name + "_impl",
+    )
+
     native.register_toolchains("@{}//:toolchain".format(name))
