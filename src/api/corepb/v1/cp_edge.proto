@@ -226,6 +226,7 @@ enum EdgeCPTopic {
   EDGE_CP_TOPIC_EXEC = 3;
   EDGE_CP_TOPIC_METRICS = 4;
   EDGE_CP_TOPIC_FILE_TRANSFER = 5;
+  EDGE_CP_TOPIC_INFO = 6;
 }
 
 // CPEdgeTopic has the list of topics used between CP and edge.
@@ -236,6 +237,7 @@ enum CPEdgeTopic {
   CP_EDGE_TOPIC_EXEC = 3;
   CP_EDGE_TOPIC_METRICS = 4;
   CP_EDGE_TOPIC_FILE_TRANSFER = 5;
+  CP_EDGE_TOPIC_INFO = 6;
 }
 
 // EdgeCPMetadata has basic routing information for shared bus.

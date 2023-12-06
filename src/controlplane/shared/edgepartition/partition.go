@@ -117,6 +117,8 @@ func CPToEdgeNATSTopic(edgeID uuid.UUID, topic corepb.CPEdgeTopic, isDurable boo
 		return gen("metrics"), nil
 	case corepb.CP_EDGE_TOPIC_FILE_TRANSFER:
 		return gen("filetransfer"), nil
+	case corepb.CP_EDGE_TOPIC_INFO:
+		return gen("info"), nil
 	default:
 		return "", fmt.Errorf("bad topic %s", topic.String())
 	}
@@ -140,6 +142,8 @@ func edgeToCPNATSTopic(partition string, edgeID string, topic corepb.EdgeCPTopic
 		return gen("metrics"), nil
 	case corepb.EDGE_CP_TOPIC_FILE_TRANSFER:
 		return gen("filetransfer"), nil
+	case corepb.EDGE_CP_TOPIC_INFO:
+		return gen("info"), nil
 	default:
 		return "", fmt.Errorf("bad topic %s", topic.String())
 	}

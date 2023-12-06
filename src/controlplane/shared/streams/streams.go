@@ -33,11 +33,13 @@ func init() {
 var IsEdgeCPTopicDurable = map[corepb.EdgeCPTopic]bool{
 	corepb.EDGE_CP_TOPIC_METRICS: true,
 	corepb.EDGE_CP_TOPIC_EXEC:    true,
+	corepb.EDGE_CP_TOPIC_INFO:    true,
 }
 
 var EdgeCPTopicToStreamName = map[corepb.EdgeCPTopic]string{
 	corepb.EDGE_CP_TOPIC_METRICS: "metrics",
 	corepb.EDGE_CP_TOPIC_EXEC:    "exec",
+	corepb.EDGE_CP_TOPIC_INFO:    "info",
 	corepb.EDGE_CP_TOPIC_STATUS:  "status", // Used for tests.
 }
 
