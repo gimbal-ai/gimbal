@@ -26,6 +26,9 @@ gem_plugin_cc_library(
     hdrs = [
         "capability_lister.h",
     ],
+    linkopts = [
+        "-lnvargus",
+    ],
     plugin_name = "argus",
     deps = [
         "//src/gem/capabilities/core:cc_library",

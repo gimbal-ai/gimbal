@@ -21,8 +21,7 @@ namespace gml::gem::capabilities::openvino {
 
 Status CapabilityLister::Populate(DeviceCapabilities* cap) {
   cap->add_model_runtimes()->set_type(
-      internal::api::core::v1::
-          DeviceCapabilities_ModelRuntimeInfo_ModelRuntimeType_MODEL_RUNTIME_TYPE_OPENVINO);
+      internal::api::core::v1::DeviceCapabilities::ModelRuntimeInfo::MODEL_RUNTIME_TYPE_OPENVINO);
   return Status::OK();
 }
 

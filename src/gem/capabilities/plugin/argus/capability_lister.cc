@@ -15,10 +15,34 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include <Argus/Argus.h>
+
 #include "src/gem/capabilities/plugin/argus/capability_lister.h"
 
 namespace gml::gem::capabilities::argus {
 
-Status CapabilityLister::Populate(DeviceCapabilities*) { return Status::OK(); }
+Status CapabilityLister::Populate(DeviceCapabilities* cap) {
+  auto camera_provider_obj =
+      Argus::UniqueObj<Argus::CameraProvider>(Argus::CameraProvider::create());
+  Argus::ICameraProvider* camera_provider =
+      Argus::interface_cast<Argus::ICameraProvider>(camera_provider_obj);
+  if (camera_provider == nullptr) {
+    return error::Internal("Failed to create CameraProvider.");
+  }
+
+  std::vector<Argus::CameraDevice*> camera_devices;
+  camera_provider->getCameraDevices(&camera_devices);
+
+  for (const auto& [idx, camera_device] : Enumerate(camera_devices)) {
+    // TODO(vihang): Grab other camera info from the device.
+    GML_UNUSED(camera_device);
+    auto mutable_cam = cap->add_cameras();
+    mutable_cam->set_driver(
+        internal::api::core::v1::DeviceCapabilities::CameraInfo::CAMERA_DRIVER_ARGUS);
+    mutable_cam->set_camera_id(idx);
+  }
+
+  return Status::OK();
+}
 
 }  // namespace gml::gem::capabilities::argus

@@ -21,8 +21,7 @@ namespace gml::gem::capabilities::tensorrt {
 
 Status CapabilityLister::Populate(DeviceCapabilities* cap) {
   cap->add_model_runtimes()->set_type(
-      internal::api::core::v1::
-          DeviceCapabilities_ModelRuntimeInfo_ModelRuntimeType_MODEL_RUNTIME_TYPE_TENSORRT);
+      internal::api::core::v1::DeviceCapabilities::ModelRuntimeInfo::MODEL_RUNTIME_TYPE_TENSORRT);
   return Status::OK();
 }
 
