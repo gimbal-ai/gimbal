@@ -31,6 +31,7 @@
 #include "src/controlplane/egw/egwpb/v1/egwpb.grpc.pb.h"
 #include "src/controlplane/fleetmgr/fmpb/v1/fmpb.grpc.pb.h"
 #include "src/gem/controller/message_handler.h"
+#include "src/gem/controller/system_metrics.h"
 #include "src/gem/exec/core/control_context.h"
 #include "src/gem/storage/blob_store.h"
 
@@ -44,7 +45,9 @@ class Controller : public gml::NotCopyable {
         cp_addr_(std::string(cp_addr)),
         time_system_(std::make_unique<gml::event::RealTimeSystem>()),
         api_(std::make_unique<gml::event::APIImpl>(time_system_.get())),
-        dispatcher_(api_->AllocateDispatcher("controller")) {}
+        dispatcher_(api_->AllocateDispatcher("controller")),
+        system_metrics_reader_(
+            std::make_unique<SystemMetricsReader>(&metrics::MetricsSystem::GetInstance())) {}
 
   virtual ~Controller() = default;
 
@@ -81,6 +84,7 @@ class Controller : public gml::NotCopyable {
       message_handlers_;
 
   std::unique_ptr<exec::core::ControlExecutionContext> ctrl_exec_ctx_;
+  std::unique_ptr<SystemMetricsReader> system_metrics_reader_;
 };
 
 }  // namespace gml::gem::controller

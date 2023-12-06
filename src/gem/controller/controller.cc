@@ -33,6 +33,7 @@
 #include "src/gem/controller/heartbeat.h"
 #include "src/gem/controller/metrics_handler.h"
 #include "src/gem/controller/model_exec_handler.h"
+#include "src/gem/controller/system_metrics.h"
 #include "src/gem/controller/video_stream_handler.h"
 #include "src/gem/exec/core/control_context.h"
 #include "src/gem/storage/fs_blob_store.h"

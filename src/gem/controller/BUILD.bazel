@@ -29,6 +29,7 @@ gml_cc_library(
         "lifecycle.cc",
         "metrics_handler.cc",
         "model_exec_handler.cc",
+        "system_metrics.cc",
         "video_stream_handler.cc",
     ],
     hdrs = [
@@ -40,6 +41,7 @@ gml_cc_library(
         "message_handler.h",
         "metrics_handler.h",
         "model_exec_handler.h",
+        "system_metrics.h",
         "video_stream_handler.h",
     ],
     deps = [

@@ -27,6 +27,28 @@
 
 namespace gml::metrics {
 
+class MetricsSystem;
+
+class Scrapeable {
+ public:
+  Scrapeable() = delete;
+  /*
+   * Scrapeable object with metrics_system. The lifetime of metrics_system needs to be outlive the
+   * scrapeable.
+   */
+  explicit Scrapeable(MetricsSystem*);
+  virtual ~Scrapeable();
+
+  /**
+   * Scrapeables need to define a Scrape function that wil be called before new metrics will be
+   * pulled.
+   */
+  virtual void Scrape() = 0;
+
+ protected:
+  MetricsSystem* metrics_system_;
+};
+
 /**
  * MetricsSystem is a wrapper around OTel metrics. It is structured such that it is
  * system-wide, with a single instance for the whole system.
@@ -70,6 +92,28 @@ class MetricsSystem {
    * Returns the reader for custom access to the Collect() call.
    */
   opentelemetry::sdk::metrics::MetricReader* Reader();
+
+  Status RegisterScraper(Scrapeable* s) {
+    absl::base_internal::SpinLockHolder lock(&scrapeables_lock_);
+    // Check and make sure it hasn't already been registered.
+    if (std::find(scrapeables_.begin(), scrapeables_.end(), s) != scrapeables_.end()) {
+      return error::AlreadyExists("scraper has already been registered");
+    }
+    scrapeables_.emplace_back(s);
+    return Status::OK();
+  }
+
+  const std::vector<Scrapeable*>& scrapeables() const { return scrapeables_; };
+
+  Status UnRegisterScraper(Scrapeable* s) {
+    absl::base_internal::SpinLockHolder lock(&scrapeables_lock_);
+    auto it = std::find(scrapeables_.begin(), scrapeables_.end(), s);
+    if (it == scrapeables_.end()) {
+      return error::NotFound("scraper not found");
+    }
+    scrapeables_.erase(it);
+    return Status::OK();
+  }
 
   /**
    * Returns a histogram with the given custom bounds.
@@ -116,6 +160,8 @@ class MetricsSystem {
 
   static void Init();
 
+  absl::base_internal::SpinLock scrapeables_lock_;
+  std::vector<Scrapeable*> scrapeables_ ABSL_GUARDED_BY(scrapeables_lock_);
   std::shared_ptr<opentelemetry::sdk::metrics::MetricReader> reader_;
 };
 

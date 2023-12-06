@@ -30,6 +30,12 @@ namespace {
 std::unique_ptr<MetricsSystem> g_instance;
 }
 
+Scrapeable::Scrapeable(MetricsSystem* metrics_system) : metrics_system_(metrics_system) {
+  GML_CHECK_OK(metrics_system_->RegisterScraper(this));
+}
+
+Scrapeable::~Scrapeable() { GML_CHECK_OK(metrics_system_->UnRegisterScraper(this)); }
+
 /**
  * A basic metric reader. In our pull-based model, we really want access to the Collect() call,
  * which is defined in the base class. But we must still define a MetricReader to initialize Otel.

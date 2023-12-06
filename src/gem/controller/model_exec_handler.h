@@ -14,6 +14,7 @@
  *
  * SPDX-License-Identifier: Proprietary
  */
+#pragma once
 
 #include <grpcpp/grpcpp.h>
 #include <string>
