@@ -20,6 +20,7 @@ package edgepartition
 import (
 	"context"
 	"errors"
+	"fmt"
 	"sync"
 
 	"github.com/gogo/protobuf/types"
@@ -66,6 +67,7 @@ func NewDurablePartitionHandler(js *msgbus.JetStreamStreamer, consumer string, m
 		messageHandlers: messageHandlers,
 		ctx:             ctx,
 		ctxCancel:       cancel,
+		done:            make(chan struct{}),
 	}
 }
 
@@ -150,12 +152,23 @@ func (p *DurablePartitionHandler) startDurablePartitionHandler(partition string)
 
 	sub, err := p.js.PersistentSubscribe(topic, p.consumer, func(msg jetstream.Msg) {
 		err = p.handleMessage(topic, msg)
+		// We still ack the message even if there is an error handling it, that way we don't block up the consumer queue.
 		if err != nil {
-			err = msg.Nak()
-			if err != nil && !errors.Is(err, jetstream.ErrMsgAlreadyAckd) {
-				log.WithError(err).Fatal("Failed to nack Jetstream message")
+			// TODO(philkuz,GML-286): Create a sentry message when this error occurs.
+			consumerSequence := "not retrieved"
+			streamSequence := "not retrieved"
+			if metadata, err := msg.Metadata(); err == nil {
+				consumerSequence = fmt.Sprintf("%d", metadata.Sequence.Consumer)
+				streamSequence = fmt.Sprintf("%d", metadata.Sequence.Stream)
+			} else {
+				log.WithError(err).Error("Failed to retrieve Jetstream message metadata during error handling")
 			}
-			return
+			log.WithError(err).WithFields(log.Fields{
+				"consumerSeq": consumerSequence,
+				"streamSeq":   streamSequence,
+				"subject":     msg.Subject(),
+				"topic":       topic,
+			}).Error("Failed to handle Jetstream message. Dropping message")
 		}
 
 		err = msg.Ack()
