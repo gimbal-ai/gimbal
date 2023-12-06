@@ -68,6 +68,8 @@ def _sysroot_repo_impl(rctx):
         Label("@gml//bazel/cc_toolchains/sysroots/{variant}:sysroot.BUILD".format(variant = rctx.attr.variant)),
         substitutions = {
             "{abi}": abi(rctx.attr.target_arch, rctx.attr.libc_version),
+            "{extra_compile_flags}": str(rctx.attr.extra_compile_flags),
+            "{extra_link_flags}": str(rctx.attr.extra_link_flags),
             "{extra_target_settings}": extra_target_settings,
             "{libc_version}": rctx.attr.libc_version,
             "{path_to_this_repo}": "external/" + rctx.attr.name,
@@ -86,6 +88,8 @@ sysroot_repo = repository_rule(
     implementation = _sysroot_repo_impl,
     attrs = {
         "disabled_for_features": attr.string_list(default = [], doc = "List of feature flags that should cause this sysroot to be disabled"),
+        "extra_compile_flags": attr.string_list(default = []),
+        "extra_link_flags": attr.string_list(default = []),
         "libc_version": attr.string(mandatory = True, doc = "Libc version of the sysroot"),
         "sha256": attr.string(mandatory = True, doc = "sha256 of sysroot tarball"),
         "sysroot_features": attr.string_list(default = [], doc = "List of features flags required to enable this sysroot"),
@@ -94,33 +98,6 @@ sysroot_repo = repository_rule(
         "variant": attr.string(mandatory = True, doc = "Use case variant of the sysroot. One of 'runtime', 'build', or 'test'"),
     },
     environ = SYSROOT_ENV_VARS,
-)
-
-SysrootInfo = provider(
-    doc = "Information about a sysroot.",
-    fields = ["files", "architecture", "path", "tar"],
-)
-
-def _sysroot_toolchain_impl(ctx):
-    return [
-        platform_common.ToolchainInfo(
-            sysroot = SysrootInfo(
-                files = ctx.attr.files.files,
-                architecture = ctx.attr.architecture,
-                path = ctx.attr.path,
-                tar = ctx.attr.tar.files,
-            ),
-        ),
-    ]
-
-sysroot_toolchain = rule(
-    implementation = _sysroot_toolchain_impl,
-    attrs = {
-        "architecture": attr.string(mandatory = True, doc = "CPU architecture targeted by this sysroot"),
-        "files": attr.label(mandatory = True, doc = "All sysroot files"),
-        "path": attr.string(mandatory = True, doc = "Path to sysroot relative to execroot"),
-        "tar": attr.label(mandatory = True, doc = "Sysroot tar, used to avoid repacking the sysroot as a tar for docker images."),
-    },
 )
 
 _sysroot_archs = {

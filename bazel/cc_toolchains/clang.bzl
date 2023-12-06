@@ -18,7 +18,6 @@
 load("//bazel:repository_locations.bzl", "REPOSITORY_LOCATIONS")
 load("//bazel/cc_toolchains:settings.bzl", "HOST_GLIBC_VERSION")
 load("//bazel/cc_toolchains:utils.bzl", "abi")
-load("//bazel/cc_toolchains/sysroots:sysroots.bzl", "SYSROOT_ENV_VARS", "only_register_if_not_enabled", "sysroot_repo_name")
 
 def _download_repo(rctx, repo_name, output):
     loc = REPOSITORY_LOCATIONS[repo_name]
@@ -30,12 +29,6 @@ def _download_repo(rctx, repo_name, output):
     )
 
 def _clang_toolchain_impl(rctx):
-    if not only_register_if_not_enabled(rctx, rctx.attr.sysroot_features):
-        rctx.file("BUILD.bazel")
-
-        # Only download the toolchain if the sysroot's feature flags are enabled.
-        return
-
     # Unfortunately, we have to download any files that the toolchain uses within this rule.
     toolchain_path = "toolchain"
     _download_repo(rctx, rctx.attr.toolchain_repo, toolchain_path)
@@ -50,11 +43,8 @@ def _clang_toolchain_impl(rctx):
     libcxx_build = rctx.read(Label("@gml//bazel/cc_toolchains/clang:libcxx.BUILD"))
     toolchain_files_build = rctx.read(Label("@gml//bazel/cc_toolchains/clang:toolchain_files.BUILD"))
 
-    sysroot_repo = sysroot_repo_name(rctx.attr.target_arch, rctx.attr.libc_version, "build", rctx.attr.sysroot_features)
-    sysroot_path = ""
     sysroot_include_prefix = ""
-    if sysroot_repo:
-        sysroot_path = "external/{repo}".format(repo = sysroot_repo)
+    if rctx.attr.use_sysroot:
         sysroot_include_prefix = "%sysroot%"
 
     # First combine all of the build file templates into one file.
@@ -62,8 +52,6 @@ def _clang_toolchain_impl(rctx):
         "BUILD.bazel.tpl",
         Label("@gml//bazel/cc_toolchains/clang:toolchain.BUILD"),
         substitutions = {
-            "{extra_includes}": str(rctx.attr.extra_includes),
-            "{extra_link_flags}": str(rctx.attr.extra_link_flags),
             "{libcxx_build}": libcxx_build,
             "{toolchain_files_build}": toolchain_files_build,
         },
@@ -88,8 +76,6 @@ def _clang_toolchain_impl(rctx):
             "{libcxx_path}": libcxx_path,
             "{name}": rctx.attr.name,
             "{sysroot_include_prefix}": sysroot_include_prefix,
-            "{sysroot_path}": sysroot_path,
-            "{sysroot_repo}": sysroot_repo,
             "{target_abi}": abi(rctx.attr.target_arch, rctx.attr.libc_version),
             "{target_arch}": rctx.attr.target_arch,
             "{target_libc_constraints}": str(target_libc_constraints),
@@ -99,7 +85,7 @@ def _clang_toolchain_impl(rctx):
         },
     )
 
-clang_toolchain = repository_rule(
+_clang_toolchain_repo = repository_rule(
     _clang_toolchain_impl,
     attrs = dict(
         toolchain_repo = attr.string(mandatory = True),
@@ -109,9 +95,29 @@ clang_toolchain = repository_rule(
         host_libc_version = attr.string(default = HOST_GLIBC_VERSION),
         clang_version = attr.string(mandatory = True),
         use_for_host_tools = attr.bool(default = False),
-        sysroot_features = attr.string_list(default = []),
-        extra_includes = attr.string_list(default = []),
-        extra_link_flags = attr.string_list(default = []),
+        use_sysroot = attr.bool(default = False),
     ),
-    environ = SYSROOT_ENV_VARS,
 )
+
+def clang_toolchain(
+        name,
+        toolchain_repo,
+        target_arch,
+        clang_version,
+        libc_version = HOST_GLIBC_VERSION,
+        host_arch = "x86_64",
+        host_libc_version = HOST_GLIBC_VERSION,
+        use_for_host_tools = False,
+        use_sysroot = False):
+    _clang_toolchain_repo(
+        name = name,
+        toolchain_repo = toolchain_repo,
+        target_arch = target_arch,
+        clang_version = clang_version,
+        libc_version = libc_version,
+        host_arch = host_arch,
+        host_libc_version = host_libc_version,
+        use_for_host_tools = use_for_host_tools,
+        use_sysroot = use_sysroot,
+    )
+    native.register_toolchains("@{}//:toolchain".format(name))

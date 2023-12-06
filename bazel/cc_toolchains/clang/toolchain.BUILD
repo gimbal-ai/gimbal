@@ -15,6 +15,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+load("@gml//bazel/cc_toolchains/sysroots:sysroot_toolchain.bzl", "sysroot_build_files")
 load("@rules_cc//cc:defs.bzl", "cc_toolchain")
 load("@unix_cc_toolchain_config//:cc_toolchain_config.bzl", "cc_toolchain_config")
 
@@ -51,16 +52,10 @@ includes = [
     "{libcxx_path}/include/c++/v1",
 ]
 
-extra_include_flags = [
-    "-isystem{}".format(d)
-    for d in {extra_includes}
-]
-
 cc_toolchain_config(
     name = "toolchain_config",
     abi_libc_version = "{libc_version}",
     abi_version = "clang",
-    builtin_sysroot = "{sysroot_path}",
     compile_flags = [
         "-target",
         "{target_arch}-linux-gnu",
@@ -80,7 +75,7 @@ cc_toolchain_config(
     cxx_flags = [
         "-std=c++17",
         "-fPIC",
-    ] + extra_include_flags,
+    ],
     dbg_compile_flags = ["-g"],
     enable_sanitizers = not {use_for_host_tools},
     host_system_name = "{host_arch}-unknown-linux-{host_abi}",
@@ -95,7 +90,7 @@ cc_toolchain_config(
         "-Wl,-z,relro,-z,now",
         "-Bexternal/{this_repo}/{toolchain_path}/bin",
         "-lm",
-    ] + (["-no-pie"] if {use_for_host_tools} else []) + {extra_link_flags},
+    ] + (["-no-pie"] if {use_for_host_tools} else []),
     opt_compile_flags = [
         "-g0",
         "-O2",
@@ -119,12 +114,15 @@ cc_toolchain_config(
     ],
 )
 
+sysroot_build_files(name = "sysroot_files")
+
 filegroup(
     name = "all_files",
     srcs = [
         ":libcxx_all_files",
         ":toolchain_all_files",
-    ] + (["@{sysroot_repo}//:all_files"] if "{sysroot_path}" else []),
+        ":sysroot_files",
+    ],
 )
 
 filegroup(
@@ -146,7 +144,8 @@ filegroup(
     srcs = [
         ":libcxx_compiler_files",
         ":toolchain_compiler_files",
-    ] + (["@{sysroot_repo}//:compiler_files"] if "{sysroot_path}" else []),
+        ":sysroot_files",
+    ],
 )
 
 filegroup(
@@ -161,7 +160,8 @@ filegroup(
     srcs = [
         ":libcxx_linker_files",
         ":toolchain_linker_files",
-    ] + (["@{sysroot_repo}//:linker_files"] if "{sysroot_path}" else []),
+        ":sysroot_files",
+    ],
 )
 
 filegroup(
@@ -192,6 +192,7 @@ cc_toolchain(
     supports_param_files = 1,
     toolchain_config = "toolchain_config",
     toolchain_identifier = toolchain_identifier,
+    exec_transition_for_inputs = False,
 )
 
 toolchain(

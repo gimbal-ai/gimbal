@@ -81,6 +81,8 @@ def gml_toolchain_post_features(ctx):
 
     features += _external_dep(ctx)
 
+    features += _sysroot_flags(ctx)
+
     if len(ctx.attr.unfiltered_link_flags) > 0:
         features += _unfiltered_link_flags(ctx)
     features += _custom_c_runtime_path_post(ctx)
@@ -394,6 +396,45 @@ def _external_dep(ctx):
                             flags = clang_disable_warnings if ctx.attr.compiler == "clang" else gcc_disable_warnings,
                         ),
                     ],
+                ),
+            ],
+        ),
+    ]
+
+def _sysroot_flags(ctx):
+    sysroot_toolchain = ctx.toolchains["@gml//bazel/cc_toolchains/sysroots/build:toolchain_type"]
+    if not sysroot_toolchain:
+        return []
+
+    sysroot_info = sysroot_toolchain.sysroot
+    sysroot_compile_flags = sysroot_info.extra_compile_flags
+    sysroot_link_flags = sysroot_info.extra_link_flags
+    return [
+        feature(
+            name = "sysroot_compile_flags",
+            enabled = True,
+            flag_sets = [
+                flag_set(
+                    actions = all_compile_actions,
+                    flag_groups = ([
+                        flag_group(
+                            flags = sysroot_compile_flags,
+                        ),
+                    ] if sysroot_compile_flags else []),
+                ),
+            ],
+        ),
+        feature(
+            name = "sysroot_link_flags",
+            enabled = True,
+            flag_sets = [
+                flag_set(
+                    actions = all_link_actions + lto_index_actions,
+                    flag_groups = ([
+                        flag_group(
+                            flags = sysroot_link_flags,
+                        ),
+                    ] if sysroot_link_flags else []),
                 ),
             ],
         ),

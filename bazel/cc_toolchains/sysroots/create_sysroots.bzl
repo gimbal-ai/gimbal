@@ -117,6 +117,14 @@ def _create_sysroots():
         urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/20231120181642/sysroot-aarch64-glibc2_31-build-jetson.tar.gz"],
         sysroot_features = ["jetson"],
         disabled_for_features = [],
+        extra_compile_flags = [
+            "-isystem%sysroot%/usr/src/jetson_multimedia_api/include",
+            "-isystem%sysroot%/usr/local/cuda-11.4/targets/aarch64-linux/include",
+        ],
+        extra_link_flags = [
+            "-L%sysroot%/usr/lib/aarch64-linux-gnu/tegra",
+            "-L%sysroot%/usr/local/cuda-11.4/targets/aarch64-linux/lib",
+        ],
     )
     sysroot_repo(
         name = "sysroot_aarch64_glibc2_31_test_jetson",

@@ -17,7 +17,7 @@
 
 load("//bazel/cc_toolchains:clang.bzl", "clang_toolchain")
 
-def _gml_create_cc_toolchains():
+def _gml_cc_toolchains():
     clang_toolchain(
         name = "clang-15.0-x86_64",
         toolchain_repo = "com_llvm_clang_15",
@@ -31,6 +31,7 @@ def _gml_create_cc_toolchains():
         target_arch = "x86_64",
         clang_version = "15.0.6",
         libc_version = "glibc2_36",
+        use_sysroot = True,
     )
     clang_toolchain(
         name = "clang-15.0-aarch64-glibc2.36-sysroot",
@@ -38,6 +39,7 @@ def _gml_create_cc_toolchains():
         target_arch = "aarch64",
         clang_version = "15.0.6",
         libc_version = "glibc2_36",
+        use_sysroot = True,
     )
     clang_toolchain(
         name = "clang-15.0-aarch64-glibc2.31-jetson-sysroot",
@@ -45,15 +47,7 @@ def _gml_create_cc_toolchains():
         target_arch = "aarch64",
         clang_version = "15.0.6",
         libc_version = "glibc2_31",
-        sysroot_features = ["jetson"],
-        extra_includes = [
-            "{sysroot_path}/usr/src/jetson_multimedia_api/include",
-            "{sysroot_path}/usr/local/cuda-11.4/targets/aarch64-linux/include",
-        ],
-        extra_link_flags = [
-            "-L{sysroot_path}/usr/lib/aarch64-linux-gnu/tegra",
-            "-L{sysroot_path}/usr/local/cuda-11.4/targets/aarch64-linux/lib",
-        ],
+        use_sysroot = True,
     )
     clang_toolchain(
         name = "clang-15.0-exec",
@@ -64,4 +58,4 @@ def _gml_create_cc_toolchains():
         use_for_host_tools = True,
     )
 
-gml_create_cc_toolchains = _gml_create_cc_toolchains
+gml_cc_toolchains = _gml_cc_toolchains

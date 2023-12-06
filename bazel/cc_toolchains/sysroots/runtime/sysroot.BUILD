@@ -15,7 +15,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-load("@gml//bazel/cc_toolchains/sysroots:sysroots.bzl", "sysroot_toolchain")
+load("@gml//bazel/cc_toolchains/sysroots:sysroot_toolchain.bzl", "sysroot_toolchain")
 
 filegroup(
     name = "all_files",
@@ -40,6 +40,8 @@ sysroot_toolchain(
     files = ":all_files",
     path = "{path_to_this_repo}",
     tar = ":tar",
+    extra_compile_flags = {extra_compile_flags},
+    extra_link_flags = {extra_link_flags},
 )
 
 toolchain(

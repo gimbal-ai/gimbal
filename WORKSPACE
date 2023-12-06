@@ -16,13 +16,9 @@ load("//bazel/cc_toolchains/sysroots:register_sysroots.bzl", "register_sysroots"
 
 register_sysroots()
 
-load("//bazel/cc_toolchains:create_toolchains.bzl", "gml_create_cc_toolchains")
+load("//bazel/cc_toolchains:toolchains.bzl", "gml_cc_toolchains")
 
-gml_create_cc_toolchains()
-
-load("//bazel/cc_toolchains:register_toolchains.bzl", "gml_register_cc_toolchains")
-
-gml_register_cc_toolchains()
+gml_cc_toolchains()
 
 gml_deps()
 
