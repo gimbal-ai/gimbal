@@ -17,7 +17,9 @@
 
 #include "src/gem/controller/system_metrics.h"
 #include "src/common/base/utils.h"
+#include "src/common/system/config.h"
 #include "src/common/system/proc_parser.h"
+#include "src/common/system/proc_pid_path.h"
 
 namespace gml::gem::controller {
 
@@ -26,23 +28,64 @@ SystemMetricsReader::SystemMetricsReader(::gml::metrics::MetricsSystem* metrics_
   CHECK(metrics_system != nullptr);
   auto gml_meter = metrics_system_->GetMeterProvider()->GetMeter("gml");
   cpu_stats_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("system.cpu.time"));
+  cpu_num_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("system.cpu.virtual.count"));
+  mem_stats_total_bytes_ =
+      std::move(gml_meter->CreateInt64UpDownCounter("system.memory.total_bytes"));
+  mem_stats_free_bytes_ =
+      std::move(gml_meter->CreateInt64UpDownCounter("system.memory.free_bytes"));
 }
 
 void SystemMetricsReader::Scrape() {
+  // Add CPU metrics for system.
   std::vector<gml::system::ProcParser::CPUStats> stats;
   GML_CHECK_OK(proc_parser_.ParseProcStatAllCPUs(&stats));
 
-  using kv_t = absl::flat_hash_map<std::string, std::string>;
-  kv_t kv;
   for (const auto& [c, stat] : Enumerate(stats)) {
-    kv["cpu"] = std::to_string(c);
-    kv["state"] = "system";
+    auto cpu = std::to_string(c);
     cpu_stats_counter_->Add(stat.cpu_ktime_ns,
-                            opentelemetry::common::KeyValueIterableView<kv_t>(kv));
-    kv["state"] = "user";
+                            {
+                                {"cpu", cpu},
+                                {"state", "system"},
+                            },
+                            {});
     cpu_stats_counter_->Add(stat.cpu_utime_ns,
-                            opentelemetry::common::KeyValueIterableView<kv_t>(kv));
+                            {
+                                {"cpu", cpu},
+                                {"state", "user"},
+                            },
+                            {});
+    cpu_stats_counter_->Add(stat.cpu_idletime_ns,
+                            {
+                                {"cpu", cpu},
+                                {"state", "idle"},
+                            },
+                            {});
+    cpu_stats_counter_->Add(stat.cpu_iowaittime_ns,
+                            {
+                                {"cpu", cpu},
+                                {"state", "wait"},
+                            },
+                            {});
   }
+
+  // Add memory metrics for system.
+  cpu_num_counter_->Add(static_cast<int64_t>(stats.size()),
+                        {
+                            {"state", "system"},
+                        },
+                        {});
+  gml::system::ProcParser::SystemStats system_stats;
+  GML_CHECK_OK(proc_parser_.ParseProcStat(&system_stats));
+  mem_stats_total_bytes_->Add(system_stats.mem_total_bytes,
+                              {
+                                  {"state", "system"},
+                              },
+                              {});
+  mem_stats_free_bytes_->Add(system_stats.mem_free_bytes,
+                             {
+                                 {"state", "system"},
+                             },
+                             {});
 }
 
 }  // namespace gml::gem::controller

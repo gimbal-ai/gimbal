@@ -59,6 +59,8 @@ const std::vector<std::string> kNetIFacePrefix = {
 constexpr int kProcStatCPUNumFields = 11;
 constexpr int KProcStatCPUUTimeField = 1;
 constexpr int KProcStatCPUKTimeField = 3;
+constexpr int KProcStatCPUIdleTimeField = 4;
+constexpr int KProcStatCPUIOWaitTimeField = 5;
 
 /*************************************************
  * Constants for the /proc/<pid>/net/dev file
@@ -318,7 +320,8 @@ Status ProcParser::ParseProcStat(SystemStats* out) const {
 
       ok &= absl::SimpleAtoi(split[KProcStatCPUKTimeField], &out->cpu_ktime_ns);
       ok &= absl::SimpleAtoi(split[KProcStatCPUUTimeField], &out->cpu_utime_ns);
-
+      ok &= absl::SimpleAtoi(split[KProcStatCPUIdleTimeField], &out->cpu_idletime_ns);
+      ok &= absl::SimpleAtoi(split[KProcStatCPUIOWaitTimeField], &out->cpu_iowaittime_ns);
       if (!ok) {
         return error::Unknown("Failed to parse proc/stat cpu info");
       }
@@ -376,6 +379,8 @@ Status ProcParser::ParseProcStatAllCPUs(std::vector<CPUStats>* out) const {
       auto& sysstats_out = out->emplace_back();
       ok &= absl::SimpleAtoi(split[KProcStatCPUKTimeField], &sysstats_out.cpu_ktime_ns);
       ok &= absl::SimpleAtoi(split[KProcStatCPUUTimeField], &sysstats_out.cpu_utime_ns);
+      ok &= absl::SimpleAtoi(split[KProcStatCPUIdleTimeField], &sysstats_out.cpu_idletime_ns);
+      ok &= absl::SimpleAtoi(split[KProcStatCPUIOWaitTimeField], &sysstats_out.cpu_iowaittime_ns);
 
       if (!ok) {
         return error::Unknown("Failed to parse proc/stat cpu info");

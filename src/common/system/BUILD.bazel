@@ -22,6 +22,7 @@ package(default_visibility = ["//src:__subpackages__"])
 gml_cc_library(
     name = "cc_library",
     srcs = [
+        "config.cc",
         "config.h",
         "linux_file_wrapper.cc",
         "linux_file_wrapper.h",

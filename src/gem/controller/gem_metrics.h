@@ -22,18 +22,20 @@
 
 namespace gml::gem::controller {
 
-class SystemMetricsReader : public gml::metrics::Scrapeable {
+class GEMMetricsReader : public gml::metrics::Scrapeable {
  public:
-  SystemMetricsReader() = delete;
-  explicit SystemMetricsReader(::gml::metrics::MetricsSystem* metrics_system);
-  ~SystemMetricsReader() override = default;
+  GEMMetricsReader() = delete;
+  explicit GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system);
+  ~GEMMetricsReader() override = default;
   void Scrape() override;
 
  private:
-  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> cpu_stats_counter_;
-  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> cpu_num_counter_;
-  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> mem_stats_total_bytes_;
-  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> mem_stats_free_bytes_;
+  pid_t pid_;
+  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> cpu_counter_;
+  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> mem_usage_counter_;
+  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> mem_virtual_counter_;
+  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> thread_counter_;
+  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> context_switches_counter_;
 
   gml::system::ProcParser proc_parser_;
 };

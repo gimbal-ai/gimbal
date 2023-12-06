@@ -160,6 +160,8 @@ TEST_F(ProcParserTest, ParseStatAllCPUs) {
   // The expected values are from the test file above.
   EXPECT_EQ(41801, stats[2].cpu_utime_ns);
   EXPECT_EQ(14218, stats[2].cpu_ktime_ns);
+  EXPECT_EQ(2155546, stats[2].cpu_idletime_ns);
+  EXPECT_EQ(1840, stats[2].cpu_iowaittime_ns);
 }
 
 TEST_F(ProcParserTest, ParseMemInfo) {

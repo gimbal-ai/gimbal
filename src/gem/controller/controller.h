@@ -30,6 +30,7 @@
 #include "src/common/system/system.h"
 #include "src/controlplane/egw/egwpb/v1/egwpb.grpc.pb.h"
 #include "src/controlplane/fleetmgr/fmpb/v1/fmpb.grpc.pb.h"
+#include "src/gem/controller/gem_metrics.h"
 #include "src/gem/controller/message_handler.h"
 #include "src/gem/controller/system_metrics.h"
 #include "src/gem/exec/core/control_context.h"
@@ -47,7 +48,9 @@ class Controller : public gml::NotCopyable {
         api_(std::make_unique<gml::event::APIImpl>(time_system_.get())),
         dispatcher_(api_->AllocateDispatcher("controller")),
         system_metrics_reader_(
-            std::make_unique<SystemMetricsReader>(&metrics::MetricsSystem::GetInstance())) {}
+            std::make_unique<SystemMetricsReader>(&metrics::MetricsSystem::GetInstance())),
+        gem_metrics_reader_(
+            std::make_unique<GEMMetricsReader>(&metrics::MetricsSystem::GetInstance())) {}
 
   virtual ~Controller() = default;
 
@@ -85,6 +88,7 @@ class Controller : public gml::NotCopyable {
 
   std::unique_ptr<exec::core::ControlExecutionContext> ctrl_exec_ctx_;
   std::unique_ptr<SystemMetricsReader> system_metrics_reader_;
+  std::unique_ptr<GEMMetricsReader> gem_metrics_reader_;
 };
 
 }  // namespace gml::gem::controller

@@ -97,6 +97,8 @@ class ProcParser {
     // CPU stats.
     int64_t cpu_utime_ns = 0;
     int64_t cpu_ktime_ns = 0;
+    int64_t cpu_idletime_ns = 0;
+    int64_t cpu_iowaittime_ns = 0;
   };
 
   /**
@@ -106,6 +108,8 @@ class ProcParser {
     // CPU stats.
     int64_t cpu_utime_ns = 0;
     int64_t cpu_ktime_ns = 0;
+    int64_t cpu_idletime_ns = 0;
+    int64_t cpu_iowaittime_ns = 0;
 
     // Memory stats.
     int64_t mem_total_bytes = 0;
