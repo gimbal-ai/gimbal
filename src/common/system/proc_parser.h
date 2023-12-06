@@ -91,6 +91,15 @@ class ProcParser {
   };
 
   /**
+   * CPU Stats tracks per CPU stats.
+   */
+  struct CPUStats {
+    // CPU stats.
+    int64_t cpu_utime_ns = 0;
+    int64_t cpu_ktime_ns = 0;
+  };
+
+  /**
    * SystemStats tracks system level stats.
    */
   struct SystemStats {
@@ -233,6 +242,13 @@ class ProcParser {
    * @return status of parsing.
    */
   Status ParseProcStat(SystemStats* out) const;
+
+  /**
+   * Parses /proc/stat and reports a value for each of the physical CPUs.
+   * @param out a valid pointer to an output vector.
+   * @return status of parsing.
+   */
+  Status ParseProcStatAllCPUs(std::vector<CPUStats>* out) const;
 
   /**
    * Parses /proc/meminfo

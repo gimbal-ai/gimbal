@@ -331,6 +331,62 @@ Status ProcParser::ParseProcStat(SystemStats* out) const {
   return error::NotFound("Could not extract system information");
 }
 
+Status ProcParser::ParseProcStatAllCPUs(std::vector<CPUStats>* out) const {
+  /**
+   * Sample file:
+   * cpu  248758 4995 78314 12965346 10040 0 5498 0 0 0
+   * cpu0 43574 817 13011 2159486 994 0 1022 0 0 0
+   * ...
+   */
+  CHECK_NOTNULL(out);
+  const auto fpath = ProcPath("stat");
+  std::ifstream ifs;
+  ifs.open(fpath);
+  if (!ifs) {
+    return error::Internal("Failed to open file $0.", fpath.string());
+  }
+
+  std::string line;
+  bool ok = true;
+  while (std::getline(ifs, line)) {
+    std::vector<std::string_view> split = absl::StrSplit(line, ' ', absl::SkipWhitespace());
+    if (split.empty()) {
+      continue;
+    }
+    if (!absl::StartsWith(split[0], "cpu")) {
+      // We only care about the CPU stats.
+      return Status::OK();
+    }
+    // Only capture cases that have a cpuXX.
+    if (split[0] != "cpu") {
+      if (split.size() < kProcStatCPUNumFields) {
+        return error::Unknown("Incorrect number of fields in proc/stat CPU");
+      }
+      size_t cpu_num = 0;
+      if (absl::StartsWith(split[0], "cpu")) {
+        auto cpu_num_str = absl::StripPrefix(split[0], "cpu");
+        if (!absl::SimpleAtoi(cpu_num_str, &cpu_num)) {
+          return error::Internal("Failed to parse CPU number");
+        }
+        if (cpu_num != out->size()) {
+          return error::Internal("Expected CPUs to be reported in order.");
+        }
+      }
+
+      auto& sysstats_out = out->emplace_back();
+      ok &= absl::SimpleAtoi(split[KProcStatCPUKTimeField], &sysstats_out.cpu_ktime_ns);
+      ok &= absl::SimpleAtoi(split[KProcStatCPUUTimeField], &sysstats_out.cpu_utime_ns);
+
+      if (!ok) {
+        return error::Unknown("Failed to parse proc/stat cpu info");
+      }
+    }
+  }
+
+  // If we get here, we failed to extract system information.
+  return error::NotFound("Could not extract system information");
+}
+
 Status ProcParser::ParseProcMemInfo(SystemStats* out) const {
   /**
    * Sample file:
