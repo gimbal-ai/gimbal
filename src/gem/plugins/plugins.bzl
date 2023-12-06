@@ -22,6 +22,7 @@ PLUGINS = dict(
         libs = [
             "//src/gem/calculators/plugin/argus:cc_library",
             "//src/gem/calculators/subgraphs:argus_cam_source_subgraph",
+            "//src/gem/capabilities/plugin/argus:cc_library",
         ],
     ),
     cpu_tensor = struct(
@@ -47,6 +48,7 @@ PLUGINS = dict(
             "//src/gem/exec/plugin/tensorrt:cc_library",
             "//src/gem/build/plugin/tensorrt:cc_library",
             "//src/gem/calculators/subgraphs:yolo_model_tensorrt_subgraph",
+            "//src/gem/capabilities/plugin/tensorrt:cc_library",
         ],
     ),
     opencv_cam = struct(
@@ -54,6 +56,7 @@ PLUGINS = dict(
         libs = [
             "//src/gem/calculators/plugin/opencv_cam:cc_library",
             "//src/gem/calculators/subgraphs:opencv_cam_source_subgraph",
+            "//src/gem/capabilities/plugin/opencv_cam:cc_library",
         ],
     ),
     openvino = struct(
@@ -63,6 +66,7 @@ PLUGINS = dict(
             "//src/gem/build/plugin/openvino:cc_library",
             "//src/gem/calculators/plugin/openvino:cc_library",
             "//src/gem/calculators/subgraphs:yolo_model_openvino_subgraph",
+            "//src/gem/capabilities/plugin/openvino:cc_library",
         ],
     ),
 )
