@@ -219,6 +219,15 @@ message UpdateDeviceRequest {
 
 message UpdateDeviceResponse {}
 
+message SetDeviceCapabilitiesRequest {
+  // The deviceID of the device.
+  gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
+  // Capabilities of the device, including info like about drivers, model runtimes, etc.
+  gml.internal.api.core.v1.DeviceCapabilities capabilities = 2;
+}
+
+message SetDeviceCapabilitiesResponse {}
+
 message GetTagsRequest {
   // The deviceID of the device to fetch the tags from.
   gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
@@ -282,6 +291,8 @@ service FleetMgrEdgeService {
   rpc GetDevice(GetDeviceRequest) returns (GetDeviceResponse);
   // ListDevices lists the edge devices in a fleet.
   rpc ListDevices(ListDevicesRequest) returns (ListDevicesResponse);
+  // SetDeviceCapabilities sets the capabilities of a device.
+  rpc SetDeviceCapabilities(SetDeviceCapabilitiesRequest) returns (SetDeviceCapabilitiesResponse);
   // GetTags gets the tags for a device.
   rpc GetTags(GetTagsRequest) returns (GetTagsResponse);
   // UpsertTag creates or updates a tag for a device.

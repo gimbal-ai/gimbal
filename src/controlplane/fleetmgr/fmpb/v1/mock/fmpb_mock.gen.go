@@ -501,6 +501,26 @@ func (mr *MockFleetMgrEdgeServiceClientMockRecorder) Register(ctx, in any, opts 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Register", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).Register), varargs...)
 }
 
+// SetDeviceCapabilities mocks base method.
+func (m *MockFleetMgrEdgeServiceClient) SetDeviceCapabilities(ctx context.Context, in *fmpb.SetDeviceCapabilitiesRequest, opts ...grpc.CallOption) (*fmpb.SetDeviceCapabilitiesResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "SetDeviceCapabilities", varargs...)
+	ret0, _ := ret[0].(*fmpb.SetDeviceCapabilitiesResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SetDeviceCapabilities indicates an expected call of SetDeviceCapabilities.
+func (mr *MockFleetMgrEdgeServiceClientMockRecorder) SetDeviceCapabilities(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDeviceCapabilities", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).SetDeviceCapabilities), varargs...)
+}
+
 // UpdateStatus mocks base method.
 func (m *MockFleetMgrEdgeServiceClient) UpdateStatus(ctx context.Context, in *fmpb.UpdateStatusRequest, opts ...grpc.CallOption) (*fmpb.UpdateStatusResponse, error) {
 	m.ctrl.T.Helper()
@@ -637,6 +657,21 @@ func (m *MockFleetMgrEdgeServiceServer) Register(arg0 context.Context, arg1 *fmp
 func (mr *MockFleetMgrEdgeServiceServerMockRecorder) Register(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Register", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).Register), arg0, arg1)
+}
+
+// SetDeviceCapabilities mocks base method.
+func (m *MockFleetMgrEdgeServiceServer) SetDeviceCapabilities(arg0 context.Context, arg1 *fmpb.SetDeviceCapabilitiesRequest) (*fmpb.SetDeviceCapabilitiesResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SetDeviceCapabilities", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.SetDeviceCapabilitiesResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SetDeviceCapabilities indicates an expected call of SetDeviceCapabilities.
+func (mr *MockFleetMgrEdgeServiceServerMockRecorder) SetDeviceCapabilities(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDeviceCapabilities", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).SetDeviceCapabilities), arg0, arg1)
 }
 
 // UpdateStatus mocks base method.
