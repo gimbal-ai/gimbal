@@ -203,7 +203,7 @@ message DeviceCapabilities {
       CAMERA_DRIVER_V4L2 = 2;
     }
     CameraDriver driver = 1;
-    int64 camera_id = 2 [ (gogoproto.customname) = "CameraID" ];
+    string camera_id = 2 [ (gogoproto.customname) = "CameraID" ];
   }
 
   // ModelRuntimes is the info about all the model runtimes available on the device.

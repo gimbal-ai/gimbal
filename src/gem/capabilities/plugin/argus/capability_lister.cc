@@ -39,7 +39,7 @@ Status CapabilityLister::Populate(DeviceCapabilities* cap) {
     auto mutable_cam = cap->add_cameras();
     mutable_cam->set_driver(
         internal::api::core::v1::DeviceCapabilities::CameraInfo::CAMERA_DRIVER_ARGUS);
-    mutable_cam->set_camera_id(idx);
+    mutable_cam->set_camera_id(absl::StrCat(idx));
   }
 
   return Status::OK();
