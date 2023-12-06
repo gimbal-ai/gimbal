@@ -90,9 +90,15 @@ message ListFleetsResponse {
 
 message UpdateFleetRequest {
   FleetInfo fleet = 1;
+  // Default device tags associated with the fleet.
+  repeated Tag tags = 2;
 }
 
-message UpdateFleetResponse {}
+message UpdateFleetResponse {
+  FleetInfo fleet = 1;
+  // A map of the default device tags associated with the fleet in the <key, Tag> format.
+  map<string, Tag> tags = 2;
+}
 
 message Tag {
   // The key part of the tag.
