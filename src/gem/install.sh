@@ -151,9 +151,9 @@ done
 cmdline_opts+=(--deploy_key="$DEPLOY_KEY")
 
 DEFAULT_IMAGE_REPO="us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/gem_image"
-DEFAULT_CONTROL_PLANE="dev.app.gimletlabs.dev"
-USE_CONTROL_PLANE=${GML_CONTROL_PLANE:-${DEFAULT_CONTROL_PLANE}}
-cmdline_opts+=(--controlplane_addr="$USE_CONTROL_PLANE:443")
+DEFAULT_CONTROLPLANE_ADDR="dev.app.gimletlabs.dev"
+USE_CONTROLPLANE_ADDR=${GML_CONTROLPLANE_ADDR:-${DEFAULT_CONTROLPLANE_ADDR}}
+cmdline_opts+=(--controlplane_addr="$USE_CONTROLPLANE_ADDR:443")
 
 mkdir -p "$GML_CACHE_DIR"
 
@@ -169,5 +169,5 @@ docker run \
 
 cat <<EOS
 ${tty_bold}${tty_green}Gimlet has been successfully installed!${tty_reset}
-Please visit ${tty_underline}https://${USE_CONTROL_PLANE}${tty_reset} to deploy your first model.
+Please visit ${tty_underline}https://${USE_CONTROLPLANE_ADDR}${tty_reset} to deploy your first model.
 EOS
