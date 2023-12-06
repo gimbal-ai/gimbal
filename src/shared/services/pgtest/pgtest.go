@@ -116,12 +116,14 @@ func SetupTestDB(t testing.TB, schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx
 	viper.Set("postgres_max_open_conns", 1)
 
 	if err = pool.Retry(func() error {
+		log.SetLevel(log.WarnLevel)
 		log.Info("trying to connect")
 		d.db = pg.MustCreateDefaultPostgresDB()
 		return d.db.Ping()
 	}); err != nil {
 		return nil, fmt.Errorf("failed to create postgres on docker: %w", err)
 	}
+	log.SetLevel(log.InfoLevel)
 
 	if schemaSource != nil {
 		err := pg.PerformMigrationsWithEmbed(d.db, "test_migrations", schemaSource, d.schemaSourceDirectory)
