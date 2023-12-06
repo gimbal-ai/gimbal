@@ -13,37 +13,22 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("//bazel:gml_build_system.bzl", "gml_cc_library", "gml_cc_test")
-load("//src/gem/plugins:plugins.bzl", "plugin_settings")
+load("//src/gem/plugins:plugins.bzl", "gem_plugin_cc_library")
 
-package(default_visibility = [
-    "//src:__subpackages__",
-    "//src/experimental:__subpackages__",
-])
+package(default_visibility = ["//src/gem:__subpackages__"])
 
-plugin_settings()
-
-gml_cc_library(
+gem_plugin_cc_library(
     name = "cc_library",
     srcs = [
-        "registry.cc",
+        "capability_lister.cc",
+        "plugin.cc",
     ],
     hdrs = [
-        "registry.h",
+        "capability_lister.h",
     ],
+    plugin_name = "opencv_cam",
     deps = [
-        "//src/api/corepb/v1:corepb_cc_library",
-        "//src/gem/build/core:cc_library",
         "//src/gem/capabilities/core:cc_library",
-        "//src/gem/exec/core:cc_library",
-        "//src/gem/storage:cc_library",
-    ],
-)
-
-gml_cc_test(
-    name = "registry_test",
-    srcs = ["registry_test.cc"],
-    deps = [
-        ":cc_library",
+        "//src/gem/plugins:cc_library",
     ],
 )

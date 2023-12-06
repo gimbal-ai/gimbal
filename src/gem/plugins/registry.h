@@ -23,6 +23,7 @@
 #include "src/common/base/base.h"
 #include "src/gem/build/core/execution_context_builder.h"
 #include "src/gem/build/core/model_builder.h"
+#include "src/gem/capabilities/core/capability_lister_builder.h"
 #include "src/gem/exec/core/context.h"
 #include "src/gem/exec/core/model.h"
 #include "src/gem/storage/blob_store.h"
@@ -75,6 +76,11 @@ class Registry {
     model_builders_.RegisterOrDie<T>(name);
   }
 
+  template <typename T>
+  void RegisterCapabilityListerOrDie(std::string_view name) {
+    capability_listers_.RegisterOrDie<T>(name);
+  }
+
   StatusOr<std::unique_ptr<exec::core::ExecutionContext>> BuildExecutionContext(
       std::string_view name, exec::core::Model* model) {
     return exec_ctx_builders_.Build(name, model);
@@ -86,6 +92,11 @@ class Registry {
     return model_builders_.Build(name, store, spec);
   }
 
+  StatusOr<std::unique_ptr<capabilities::core::CapabilityLister>> BuildCapabilityLister(
+      std::string_view name) {
+    return capability_listers_.Build(name);
+  }
+
  private:
   BuilderRegistry<build::core::ExecutionContextBuilder, exec::core::ExecutionContext,
                   exec::core::Model*>
@@ -93,6 +104,8 @@ class Registry {
   BuilderRegistry<build::core::ModelBuilder, exec::core::Model, storage::BlobStore*,
                   const ::gml::internal::api::core::v1::ModelSpec&>
       model_builders_;
+  BuilderRegistry<capabilities::core::CapabilityListerBuilder, capabilities::core::CapabilityLister>
+      capability_listers_;
 };
 
 #define GML_REGISTER_PLUGIN(reg_func)                        \
