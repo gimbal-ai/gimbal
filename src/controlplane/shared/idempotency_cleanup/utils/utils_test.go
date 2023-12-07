@@ -18,6 +18,7 @@
 package utils_test
 
 import (
+	"context"
 	"testing"
 	"time"
 
@@ -57,7 +58,7 @@ func TestExpireKeys(t *testing.T) {
 	_, err = db.Exec("INSERT INTO test2_idempotency_keys (idempotency_key, created_at) VALUES ('expired-key', $1)", expired2)
 	require.NoError(t, err)
 
-	err = utils.ExpireKeys(db, 24*time.Hour)
+	err = utils.ExpireKeys(context.Background(), db, 24*time.Hour)
 	require.NoError(t, err)
 
 	rows, err := db.Queryx("SELECT idempotency_key FROM test1_idempotency_keys")

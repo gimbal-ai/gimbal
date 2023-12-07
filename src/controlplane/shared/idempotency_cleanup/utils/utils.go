@@ -18,6 +18,7 @@
 package utils
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -35,9 +36,9 @@ order by table_name,
 	table_schema`
 
 // ExpireKeys will expire any idempotency keys greater than the expiry time.
-func ExpireKeys(db *sqlx.DB, expiry time.Duration) error {
+func ExpireKeys(ctx context.Context, db *sqlx.DB, expiry time.Duration) error {
 	// Find all idempotency tables.
-	rows, err := db.Queryx(tablesQuery)
+	rows, err := db.QueryxContext(ctx, tablesQuery)
 	if err != nil {
 		return err
 	}
@@ -56,7 +57,7 @@ func ExpireKeys(db *sqlx.DB, expiry time.Duration) error {
 	// Clean up keys for each table.
 	for _, table := range tables {
 		expireTime := time.Now().Add(-1 * expiry)
-		_, err := db.Exec(fmt.Sprintf("DELETE FROM %s WHERE created_at < $1", table), expireTime)
+		_, err := db.ExecContext(ctx, fmt.Sprintf("DELETE FROM %s WHERE created_at < $1", table), expireTime)
 		if err != nil {
 			log.WithError(err).Error(fmt.Sprintf("Failed to clean up %s... Continuing.", table))
 		}

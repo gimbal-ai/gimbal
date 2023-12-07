@@ -38,7 +38,7 @@ var (
 
 // CreateIdempotentTx creates a transaction for a query that will only run if the idempotency key does not yet exist.
 func CreateIdempotentTx(ctx context.Context, db *sqlx.DB, svc string) (*sqlx.Tx, error) {
-	tx, err := db.Beginx()
+	tx, err := db.BeginTxx(ctx, nil)
 	if err != nil {
 		return tx, ErrFailedToCreateTx
 	}
@@ -50,7 +50,7 @@ func CreateIdempotentTx(ctx context.Context, db *sqlx.DB, svc string) (*sqlx.Tx,
 	}
 	idempotencyKey := idempotencyKeys[0]
 	// Will fail if unique key already exists.
-	_, err = tx.Exec(fmt.Sprintf("INSERT INTO %s_idempotency_keys (idempotency_key) VALUES ('%s')", svc, idempotencyKey))
+	_, err = tx.ExecContext(ctx, fmt.Sprintf("INSERT INTO %s_idempotency_keys (idempotency_key) VALUES ('%s')", svc, idempotencyKey))
 	if err != nil {
 		return tx, ErrIdempotencyTxFailed
 	}

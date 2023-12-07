@@ -18,6 +18,7 @@
 package main
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -43,7 +44,7 @@ func main() {
 	server.PostFlagSetupAndParse()
 
 	db := pg.MustConnectDefaultPostgresDB()
-	err := utils.ExpireKeys(db, expiryDuration)
+	err := utils.ExpireKeys(context.Background(), db, expiryDuration)
 	if err != nil {
 		log.WithError(err).Fatal("Failed to expire keys")
 	}
