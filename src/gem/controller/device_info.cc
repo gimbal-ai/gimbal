@@ -16,6 +16,7 @@
  */
 
 #include "src/gem/controller/device_info.h"
+
 #include "src/api/corepb/v1/cp_edge.pb.h"
 #include "src/controlplane/egw/egwpb/v1/egwpb.grpc.pb.h"
 #include "src/gem/plugins/registry.h"
@@ -32,15 +33,20 @@ controller::DeviceInfoHandler::DeviceInfoHandler(event::Dispatcher* d, GEMInfo* 
 Status DeviceInfoHandler::SendDeviceInfo() {
   auto caps = capabilities::core::DeviceCapabilities();
 
+  LOG(INFO) << "Collecting device info";
   auto& plugin_registry = plugins::Registry::GetInstance();
   for (auto& name : plugin_registry.RegisteredCapabilityListers()) {
+    LOG(INFO) << "Listing plugin name: " << name;
+
     GML_ASSIGN_OR_RETURN(auto builder, plugin_registry.BuildCapabilityLister(name));
     auto s = builder->Populate(&caps);
 
     if (!s.ok()) {
-      return s;
+      LOG(WARNING) << "Failed to get capabilities for lister: " << name << " err " << s.msg();
+      continue;
     }
   }
+  LOG(INFO) << "Sending device info";
 
   return bridge()->SendMessageToBridge(EDGE_CP_TOPIC_INFO, caps);
 }

@@ -28,8 +28,13 @@ namespace gml::gem::capabilities::opencv_cam {
 
 Status CapabilityLister::Populate(DeviceCapabilities* cap) {
   const std::filesystem::path dev{"/dev"};
+  std::error_code ec;
 
-  for (auto const& dir_entry : std::filesystem::directory_iterator{dev}) {
+  for (auto const& dir_entry : std::filesystem::directory_iterator{dev, ec}) {
+    if (!absl::StartsWith(dir_entry.path().string(), "/dev/video")) {
+      continue;
+    }
+
     auto file_or_s = system::LinuxFile::Open(dir_entry.path(), O_RDONLY);
     if (!file_or_s.ok()) {
       continue;
@@ -55,6 +60,10 @@ Status CapabilityLister::Populate(DeviceCapabilities* cap) {
         internal::api::core::v1::DeviceCapabilities::CameraInfo::CAMERA_DRIVER_V4L2);
 
     mutable_cam->set_camera_id(dir_entry.path());
+  }
+
+  if (ec) {
+    return error::Internal("Error when iterating dir: $0", ec.message());
   }
 
   return Status::OK();
