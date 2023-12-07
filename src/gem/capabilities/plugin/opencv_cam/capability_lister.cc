@@ -15,10 +15,49 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include <fcntl.h>
+#include <linux/videodev2.h>
+#include <sys/ioctl.h>
+#include <filesystem>
+
+#include "src/common/system/linux_file_wrapper.h"
+
 #include "src/gem/capabilities/plugin/opencv_cam/capability_lister.h"
 
 namespace gml::gem::capabilities::opencv_cam {
 
-Status CapabilityLister::Populate(DeviceCapabilities*) { return Status::OK(); }
+Status CapabilityLister::Populate(DeviceCapabilities* cap) {
+  const std::filesystem::path dev{"/dev"};
+
+  for (auto const& dir_entry : std::filesystem::directory_iterator{dev}) {
+    auto file_or_s = system::LinuxFile::Open(dir_entry.path(), O_RDONLY);
+    if (!file_or_s.ok()) {
+      continue;
+    }
+
+    auto file = file_or_s.ConsumeValueOrDie();
+
+    if (file->fd() == -1) {
+      continue;
+    }
+
+    v4l2_capability c;
+    if (ioctl(file->fd(), VIDIOC_QUERYCAP, &c) == -1) {
+      continue;
+    }
+
+    if (!(c.capabilities & V4L2_CAP_VIDEO_CAPTURE)) {
+      continue;
+    }
+
+    auto mutable_cam = cap->add_cameras();
+    mutable_cam->set_driver(
+        internal::api::core::v1::DeviceCapabilities::CameraInfo::CAMERA_DRIVER_V4L2);
+
+    mutable_cam->set_camera_id(dir_entry.path());
+  }
+
+  return Status::OK();
+}
 
 }  // namespace gml::gem::capabilities::opencv_cam
