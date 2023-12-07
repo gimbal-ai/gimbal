@@ -25,18 +25,18 @@
 #include "src/api/corepb/v1/cp_edge.pb.h"
 #include "src/common/event/task.h"
 #include "src/controlplane/egw/egwpb/v1/egwpb.grpc.pb.h"
+#include "src/gem/controller/cached_blob_store.h"
 #include "src/gem/controller/controller.h"
 #include "src/gem/controller/message_handler.h"
 #include "src/gem/exec/core/control_context.h"
 #include "src/gem/exec/core/runner/runner.h"
-#include "src/gem/storage/blob_store.h"
 
 namespace gml::gem::controller {
 
 class ModelExecHandler : public MessageHandler {
  public:
   ModelExecHandler() = delete;
-  ModelExecHandler(gml::event::Dispatcher*, GEMInfo*, GRPCBridge*, storage::BlobStore*,
+  ModelExecHandler(gml::event::Dispatcher*, GEMInfo*, GRPCBridge*, CachedBlobStore*,
                    exec::core::ControlExecutionContext*);
 
   ~ModelExecHandler() override = default;
@@ -50,7 +50,7 @@ class ModelExecHandler : public MessageHandler {
   class RunModelTask;
   void HandleRunModelFinished();
 
-  storage::BlobStore* blob_store_;
+  CachedBlobStore* blob_store_;
 
   exec::core::ControlExecutionContext* ctrl_exec_ctx_;
   event::RunnableAsyncTaskUPtr running_task_ = nullptr;

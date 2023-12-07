@@ -30,6 +30,7 @@
 #include "src/controlplane/fleetmgr/fmpb/v1/fmpb.pb.h"
 #include "src/gem/controller/controller.h"
 #include "src/gem/controller/device_info.h"
+#include "src/gem/controller/file_downloader.h"
 #include "src/gem/controller/grpc_bridge.h"
 #include "src/gem/controller/heartbeat.h"
 #include "src/gem/controller/metrics_handler.h"
@@ -37,7 +38,6 @@
 #include "src/gem/controller/system_metrics.h"
 #include "src/gem/controller/video_stream_handler.h"
 #include "src/gem/exec/core/control_context.h"
-#include "src/gem/storage/fs_blob_store.h"
 
 namespace gml::gem::controller {
 
@@ -54,6 +54,7 @@ using gml::internal::controlplane::fleetmgr::v1::RegisterRequest;
 using gml::internal::controlplane::fleetmgr::v1::RegisterResponse;
 
 using internal::api::core::v1::CP_EDGE_TOPIC_EXEC;
+using internal::api::core::v1::CP_EDGE_TOPIC_FILE_TRANSFER;
 using internal::api::core::v1::CP_EDGE_TOPIC_INFO;
 using internal::api::core::v1::CP_EDGE_TOPIC_METRICS;
 using internal::api::core::v1::CP_EDGE_TOPIC_STATUS;
@@ -145,7 +146,8 @@ Status Controller::Init() {
   bridge_->RegisterOnMessageReadHandler(
       std::bind(&Controller::HandleMessage, this, std::placeholders::_1));
 
-  GML_ASSIGN_OR_RETURN(blob_store_, storage::FilesystemBlobStore::Create(FLAGS_blob_store_dir));
+  auto file_downloader = std::make_shared<FileDownloader>(dispatcher(), &info_, bridge_.get());
+  GML_ASSIGN_OR_RETURN(blob_store_, CachedBlobStore::Create(FLAGS_blob_store_dir, file_downloader));
 
   ctrl_exec_ctx_ = std::make_unique<exec::core::ControlExecutionContext>();
 
@@ -164,6 +166,7 @@ Status Controller::Init() {
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_EXEC, exec_handler));
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_VIDEO, video_handler));
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_METRICS, metrics_handler));
+  GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_FILE_TRANSFER, file_downloader));
 
   GML_RETURN_IF_ERROR(bridge_->Run());
 

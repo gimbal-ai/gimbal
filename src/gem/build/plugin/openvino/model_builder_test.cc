@@ -17,6 +17,7 @@
 
 #include "src/gem/build/plugin/openvino/model_builder.h"
 #include <filesystem>
+#include <fstream>
 
 #include "src/common/testing/test_environment.h"
 #include "src/common/testing/testing.h"
@@ -32,6 +33,12 @@ TEST(ModelBuilder, BuildsWithoutError) {
   auto onnx_path = testing::BazelRunfilePath(std::filesystem::path(kOnnxPath));
   ASSERT_OK_AND_ASSIGN(auto blob_store,
                        storage::FilesystemBlobStore::Create(onnx_path.parent_path()));
+
+  std::ifstream f(onnx_path);
+  std::string str_data((std::istreambuf_iterator<char>(f)), std::istreambuf_iterator<char>());
+
+  ASSERT_OK(blob_store->Upsert("00000000-0000-0000-0000-000000000000", str_data.c_str(),
+                               str_data.size()));
 
   ModelSpec spec;
   spec.set_onnx_blob_key(onnx_path.filename());

@@ -36,7 +36,6 @@
 #include "src/gem/exec/core/control_context.h"
 #include "src/gem/exec/core/runner/runner.h"
 #include "src/gem/plugins/registry.h"
-#include "src/gem/storage/fs_blob_store.h"
 
 DEFINE_int32(frame_rate, 18, "Frame rate for encoding the video");
 
@@ -44,13 +43,12 @@ namespace gml::gem::controller {
 
 using ::gml::gem::exec::core::ExecutionContext;
 using ::gml::gem::exec::core::Model;
-using ::gml::gem::storage::BlobStore;
 using ::gml::internal::api::core::v1::ApplyExecutionGraph;
 using ::gml::internal::api::core::v1::ExecutionSpec;
 using ::gml::internal::controlplane::egw::v1::BridgeResponse;
 
 ModelExecHandler::ModelExecHandler(gml::event::Dispatcher* dispatcher, GEMInfo* info,
-                                   GRPCBridge* bridge, BlobStore* blob_store,
+                                   GRPCBridge* bridge, CachedBlobStore* blob_store,
                                    exec::core::ControlExecutionContext* ctrl_exec_ctx)
     : MessageHandler(dispatcher, info, bridge),
       blob_store_(blob_store),
@@ -73,6 +71,10 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
     for (const auto& [i, model_spec] : Enumerate(exec_spec_.model_spec())) {
       std::string plugin = model_spec.runtime();
       std::string context_name = absl::StrCat(model_spec.name(), "_", plugin, "_exec_ctx");
+
+      GML_CHECK_OK(parent_->blob_store_->EnsureBlobExists(
+          ParseUUID(model_spec.onnx_file().file_id()).str(), model_spec.onnx_file().sha256_hash(),
+          model_spec.onnx_file().size_bytes()));
 
       GML_ASSIGN_OR_RETURN(auto model,
                            plugin_registry.BuildModel(plugin, parent_->blob_store_, model_spec));

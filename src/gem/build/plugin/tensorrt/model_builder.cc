@@ -20,6 +20,7 @@
 #include <chrono>
 #include "src/common/base/base.h"
 #include "src/common/perf/elapsed_timer.h"
+#include "src/common/uuid/uuid.h"
 
 #include "src/gem/build/plugin/tensorrt/model_builder.h"
 #include "src/gem/exec/core/model.h"
@@ -42,10 +43,10 @@ StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(
       std::unique_ptr<nvonnxparser::IParser>(nvonnxparser::createParser(*network, logger));
 
   {
-    GML_ASSIGN_OR_RETURN(auto onnx_blob, store->MapReadOnly(spec.onnx_blob_key()));
+    auto file_id = ParseUUID(spec.onnx_file().file_id()).str();
+    GML_ASSIGN_OR_RETURN(auto onnx_blob, store->MapReadOnly(file_id));
     if (onnx_blob == nullptr) {
-      return error::InvalidArgument("ONNX model not found in BlobStore with key $0",
-                                    spec.onnx_blob_key());
+      return error::InvalidArgument("ONNX model not found in BlobStore with key $0", file_id);
     }
     parser->parse(onnx_blob->Data<char>(), onnx_blob->SizeForType<char>());
   }

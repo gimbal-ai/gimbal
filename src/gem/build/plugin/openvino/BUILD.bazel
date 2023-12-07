@@ -32,6 +32,7 @@ gem_plugin_cc_library(
     ],
     plugin_name = "openvino",
     deps = [
+        "//src/common/uuid:cc_library",
         "//src/gem/build/core:cc_library",
         "//src/gem/exec/core:cc_library",
         "//src/gem/exec/plugin/openvino:cc_library",

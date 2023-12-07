@@ -19,6 +19,7 @@
 #include <exception>
 #include <openvino/openvino.hpp>
 #include "src/common/base/error.h"
+#include "src/common/uuid/uuid.h"
 #include "src/gem/exec/plugin/openvino/model.h"
 #include "src/gem/storage/blob_store.h"
 
@@ -29,7 +30,8 @@ namespace gml::gem::build::openvino {
 
 StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobStore* store,
                                                                  const ModelSpec& spec) {
-  GML_ASSIGN_OR_RETURN(auto onnx_path, store->FilePath(spec.onnx_blob_key()));
+  GML_ASSIGN_OR_RETURN(auto onnx_path,
+                       store->FilePath(ParseUUID(spec.onnx_file().file_id()).str()));
 
   ov::Core core;
 
