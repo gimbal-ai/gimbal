@@ -59,6 +59,10 @@ function fatal() {
 
 function device_type() {
   if [[ "$(uname -m)" == "x86_64" ]]; then
+    if [[ -d "/etc/OpenCL/vendors" ]] && [[ -d "/dev/dri" ]]; then
+      echo "x86_64 Intel GPU"
+      return
+    fi
     echo "x86_64 Generic"
     return
   fi
@@ -124,13 +128,22 @@ if [[ "$(device_type)" == "NVIDIA Orin Nano"* ]]; then
     -v /usr/local/cuda:/host_cuda
   )
   DEFAULT_IMAGE_TAG=jetson-dev-latest
-elif [[ "$(device_type)" == "x86_64 Generic" ]]; then
+elif [[ "$(device_type)" == "x86_64"* ]]; then
   DEFAULT_IMAGE_TAG=dev-latest
   for vid in "/dev/video"*; do
     extra_docker_flags+=("--device" "${vid}")
   done
 else
   fatal "Only NVIDIA Orin Nano devices or x86_64 machines are supported."
+fi
+
+if [[ "$(device_type)" == "x86_64 Intel GPU" ]]; then
+  DEFAULT_IMAGE_TAG=intelgpu-dev-latest
+  extra_docker_flags+=(
+    "--device" "/dev/dri"
+    # We need to add /usr/local/lib to the library search path.
+    "--env" "LD_LIBRARY_PATH=/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/local/lib"
+  )
 fi
 
 emph "Installing Gimlet Edge Module"

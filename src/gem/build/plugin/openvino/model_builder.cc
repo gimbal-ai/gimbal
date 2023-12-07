@@ -36,6 +36,16 @@ StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobSt
   ov::Core core;
 
   try {
+    // For now explicitly select between GPU and CPU based on availability.
+    // TODO(james): investigate why 'AUTO' plugin doesn't pick the GPU when available.
+    auto available_devices = core.get_available_devices();
+    std::string device = "CPU";
+    for (const auto& dev : available_devices) {
+      if (absl::StartsWith(dev, "GPU")) {
+        device = "GPU";
+      }
+    }
+
     auto model = core.read_model(onnx_path);
     std::map<size_t, ov::PartialShape> input_idx_to_shape;
     for (const auto& [idx, shape] : Enumerate(spec.openvino_spec().input_shape())) {
@@ -48,7 +58,7 @@ StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobSt
     if (!input_idx_to_shape.empty()) {
       model->reshape(input_idx_to_shape);
     }
-    auto compiled_model = core.compile_model(model, "AUTO");
+    auto compiled_model = core.compile_model(model, device);
     return std::unique_ptr<exec::core::Model>{new Model(std::move(compiled_model))};
   } catch (const std::exception& e) {
     return error::Internal("Failed to compile openvino model: $0", e.what());

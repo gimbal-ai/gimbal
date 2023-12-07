@@ -90,6 +90,11 @@ build:jetson_sysroot --config=sysroot-base
 build:jetson_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=jetson
 test:jetson_sysroot --test_env=LD_LIBRARY_PATH=/usr/lib/aarch64-linux-gnu/tegra
 
+common:intelgpu_sysroot --config=clang-libc++
+common:intelgpu_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
+common:intelgpu_sysroot --config=sysroot-base
+common:intelgpu_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=intelgpu
+
 # Build for Clang using Libc++.
 build:clang-libc++ --//bazel/cc_toolchains:compiler=clang
 build:clang-libc++ --//bazel:enable_libcpp

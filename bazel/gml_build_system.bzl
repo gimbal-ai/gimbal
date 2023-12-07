@@ -351,6 +351,12 @@ def _no_sysroot():
         "//conditions:default": ["@platforms//:incompatible"],
     })
 
+def _intelgpu_sysroot():
+    return select({
+        "//bazel/cc_toolchains/sysroots:sysroot_type_intelgpu": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    })
+
 def gml_go_test(**kwargs):
     default_arg(kwargs, "linkmode", select({
         "@gml//bazel:no_pie": "auto",
@@ -375,3 +381,4 @@ def gml_sh_test(**kwargs):
 gml_cc_binary = _gml_cc_binary
 gml_cc_test = _gml_cc_test
 no_sysroot = _no_sysroot
+intelgpu_sysroot = _intelgpu_sysroot
