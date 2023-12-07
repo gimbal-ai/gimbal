@@ -22,21 +22,35 @@ package(default_visibility = ["//src:__subpackages__"])
 gml_cc_library_internal(
     name = "cc_library",
     srcs = [
+        "fs_utils.cc",
         "fs_wrapper.cc",
         "temp_dir.cc",
     ],
     hdrs = [
+        "fs_utils.h",
         "fs_wrapper.h",
         "temp_dir.h",
         "temp_file.h",
     ],
-    deps = ["//src/common/base:cc_library"],
+    deps = [
+        "//src/common/base:cc_library",
+        "@com_github_okdshin_picosha//:picosha",
+    ],
 )
 
 gml_cc_test(
     name = "fs_wrapper_test",
     srcs = ["fs_wrapper_test.cc"],
     deps = [":cc_library"],
+)
+
+gml_cc_test(
+    name = "fs_utils_test",
+    srcs = ["fs_utils_test.cc"],
+    data = ["//src/common/fs/testdata"],
+    deps = [
+        ":cc_library",
+    ],
 )
 
 gml_cc_test(
