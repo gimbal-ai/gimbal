@@ -54,6 +54,17 @@ class BuilderRegistry {
     return builder->Build(std::forward<Args>(args)...);
   }
 
+  std::vector<std::string> ListRegistered() {
+    std::vector<std::string> keys;
+
+    keys.reserve(builders_.size());
+    for (const auto& entry : builders_) {
+      keys.push_back(entry.first);
+    }
+
+    return keys;
+  }
+
  private:
   absl::flat_hash_map<std::string, std::unique_ptr<TBuilderBase>> builders_;
 };
@@ -78,7 +89,7 @@ class Registry {
 
   template <typename T>
   void RegisterCapabilityListerOrDie(std::string_view name) {
-    capability_listers_.RegisterOrDie<T>(name);
+    capability_lister_builders_.RegisterOrDie<T>(name);
   }
 
   StatusOr<std::unique_ptr<exec::core::ExecutionContext>> BuildExecutionContext(
@@ -94,7 +105,11 @@ class Registry {
 
   StatusOr<std::unique_ptr<capabilities::core::CapabilityLister>> BuildCapabilityLister(
       std::string_view name) {
-    return capability_listers_.Build(name);
+    return capability_lister_builders_.Build(name);
+  }
+
+  std::vector<std::string> RegisteredCapabilityListers() {
+    return capability_lister_builders_.ListRegistered();
   }
 
  private:
@@ -105,7 +120,7 @@ class Registry {
                   const ::gml::internal::api::core::v1::ModelSpec&>
       model_builders_;
   BuilderRegistry<capabilities::core::CapabilityListerBuilder, capabilities::core::CapabilityLister>
-      capability_listers_;
+      capability_lister_builders_;
 };
 
 #define GML_REGISTER_PLUGIN(reg_func)                        \

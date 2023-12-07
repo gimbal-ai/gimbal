@@ -29,6 +29,7 @@
 #include "src/controlplane/fleetmgr/fmpb/v1/fmpb.grpc.pb.h"
 #include "src/controlplane/fleetmgr/fmpb/v1/fmpb.pb.h"
 #include "src/gem/controller/controller.h"
+#include "src/gem/controller/device_info.h"
 #include "src/gem/controller/grpc_bridge.h"
 #include "src/gem/controller/heartbeat.h"
 #include "src/gem/controller/metrics_handler.h"
@@ -53,6 +54,7 @@ using gml::internal::controlplane::fleetmgr::v1::RegisterRequest;
 using gml::internal::controlplane::fleetmgr::v1::RegisterResponse;
 
 using internal::api::core::v1::CP_EDGE_TOPIC_EXEC;
+using internal::api::core::v1::CP_EDGE_TOPIC_INFO;
 using internal::api::core::v1::CP_EDGE_TOPIC_METRICS;
 using internal::api::core::v1::CP_EDGE_TOPIC_STATUS;
 using internal::api::core::v1::CP_EDGE_TOPIC_VIDEO;
@@ -149,6 +151,7 @@ Status Controller::Init() {
 
   // Register message handlers.
   auto hb_handler = std::make_shared<HeartbeatHandler>(dispatcher(), &info_, bridge_.get());
+  auto info_handler = std::make_shared<DeviceInfoHandler>(dispatcher(), &info_, bridge_.get());
   auto exec_handler = std::make_shared<ModelExecHandler>(dispatcher(), &info_, bridge_.get(),
                                                          blob_store_.get(), ctrl_exec_ctx_.get());
   auto video_handler = std::make_shared<VideoStreamHandler>(dispatcher(), &info_, bridge_.get(),
@@ -157,6 +160,7 @@ Status Controller::Init() {
       std::make_shared<MetricsHandler>(dispatcher(), &info_, bridge_.get(), ctrl_exec_ctx_.get());
 
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_STATUS, hb_handler));
+  GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_INFO, info_handler));
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_EXEC, exec_handler));
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_VIDEO, video_handler));
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_METRICS, metrics_handler));

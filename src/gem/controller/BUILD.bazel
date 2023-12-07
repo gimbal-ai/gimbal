@@ -24,6 +24,7 @@ gml_cc_library(
     name = "cc_library",
     srcs = [
         "controller.cc",
+        "device_info.cc",
         "gem_metrics.cc",
         "grpc_bridge.cc",
         "heartbeat.cc",
@@ -35,6 +36,7 @@ gml_cc_library(
     ],
     hdrs = [
         "controller.h",
+        "device_info.h",
         "gem_info.h",
         "gem_metrics.h",
         "grpc_bridge.h",

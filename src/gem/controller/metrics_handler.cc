@@ -61,7 +61,7 @@ Status MetricsHandler::Init() {
       collect_timer_->EnableTimer(kCollectPeriod);
     }
   });
-  collect_timer_->EnableTimer(kCollectPeriod);
+  collect_timer_->EnableTimer(std::chrono::milliseconds(0));
   return Status::OK();
 }
 
