@@ -1,126 +1,199 @@
-# Copyright 2018- The Pixie Authors.
-# Modifications Copyright 2023- Gimlet Labs, Inc.
+# Copyright © 2023- Gimlet Labs, Inc.
+# All Rights Reserved.
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# NOTICE:  All information contained herein is, and remains
+# the property of Gimlet Labs, Inc. and its suppliers,
+# if any.  The intellectual and technical concepts contained
+# herein are proprietary to Gimlet Labs, Inc. and its suppliers and
+# may be covered by U.S. and Foreign Patents, patents in process,
+# and are protected by trade secret or copyright law. Dissemination
+# of this information or reproduction of this material is strictly
+# forbidden unless prior written permission is obtained from
+# Gimlet Labs, Inc.
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: Proprietary
 
-load("//bazel/cc_toolchains:utils.bzl", "abi")
+load("//bazel/cc_toolchains/sysroots:sysroot_repo.bzl", "sysroot_repo")
 
-_register_toolchain_format = """
-def register_toolchain():
-    {body}
-"""
-
-def only_register_if_not_enabled(rctx, features):
-    """Stubs a register_toolchain call if the sysroot features are not enabled.
-
-    Returns:
-        boolean, whether the sysroot is enabled or not.
-    """
-    all_feats_enabled = True
-    for feat in features:
-        feat_env = "GML_ENABLE_SYSROOT_{feat}".format(feat = feat.upper())
-        if feat_env not in rctx.os.environ:
-            all_feats_enabled = False
-
-    register = "native.register_toolchains(\"@{name}//:toolchain\")".format(name = rctx.attr.name)
-    content = _register_toolchain_format.format(body = register)
-    if not all_feats_enabled:
-        content = _register_toolchain_format.format(body = "return")
-
-    rctx.file("register_toolchain.bzl", content = content)
-
-    return all_feats_enabled
-
-def _sysroot_repo_impl(rctx):
-    if not only_register_if_not_enabled(rctx, rctx.attr.sysroot_features):
-        rctx.file("BUILD.bazel")
-
-        # Only download the sysroot if all the feature flags are enabled in the repo_env.
-        return
-
-    tar_path = "sysroot.tar.gz"
-    rctx.download(
-        url = rctx.attr.urls,
-        output = tar_path,
-        sha256 = rctx.attr.sha256,
-    )
-    rctx.extract(tar_path)
-    extra_target_settings = []
-    for feat in rctx.attr.sysroot_features:
-        extra_target_settings.append("\"@gml//bazel/cc_toolchains/sysroots:sysroot_{feat}_enabled\"".format(feat = feat))
-    for feat in rctx.attr.disabled_for_features:
-        extra_target_settings.append("\"@gml//bazel/cc_toolchains/sysroots:sysroot_{feat}_disabled\"".format(feat = feat))
-    extra_target_settings = "[" + ", ".join(extra_target_settings) + "]"
-    rctx.template(
-        "BUILD.bazel",
-        Label("@gml//bazel/cc_toolchains/sysroots/{variant}:sysroot.BUILD".format(variant = rctx.attr.variant)),
-        substitutions = {
-            "{abi}": abi(rctx.attr.target_arch, rctx.attr.libc_version),
-            "{extra_compile_flags}": str(rctx.attr.extra_compile_flags),
-            "{extra_link_flags}": str(rctx.attr.extra_link_flags),
-            "{extra_target_settings}": extra_target_settings,
-            "{libc_version}": rctx.attr.libc_version,
-            "{path_to_this_repo}": "external/" + rctx.attr.name,
-            "{tar_path}": tar_path,
-            "{target_arch}": rctx.attr.target_arch,
-        },
-    )
-
-SYSROOT_ENV_VARS = [
-    # Make sure to copy all GML_ENABLE_SYSROOT_* flags from .bazelrc here.
-    "GML_ENABLE_SYSROOT_DEBUG",
-    "GML_ENABLE_SYSROOT_JETSON",
+_DEFAULT_BUILD_PATH_PREFIXES = [
+    "usr/local",
+    "usr/include",
+    "usr/lib/gcc",
+    "lib",
+    "lib64",
+    "usr/lib",
 ]
 
-sysroot_repo = repository_rule(
-    implementation = _sysroot_repo_impl,
-    attrs = {
-        "disabled_for_features": attr.string_list(default = [], doc = "List of feature flags that should cause this sysroot to be disabled"),
-        "extra_compile_flags": attr.string_list(default = []),
-        "extra_link_flags": attr.string_list(default = []),
-        "libc_version": attr.string(mandatory = True, doc = "Libc version of the sysroot"),
-        "sha256": attr.string(mandatory = True, doc = "sha256 of sysroot tarball"),
-        "sysroot_features": attr.string_list(default = [], doc = "List of features flags required to enable this sysroot"),
-        "target_arch": attr.string(mandatory = True, doc = "CPU Architecture of the sysroot"),
-        "urls": attr.string_list(mandatory = True, doc = "list of mirrors to download the sysroot tarball from"),
-        "variant": attr.string(mandatory = True, doc = "Use case variant of the sysroot. One of 'runtime', 'build', or 'test'"),
-    },
-    environ = SYSROOT_ENV_VARS,
-)
-
-_sysroot_archs = {
-    "aarch64": True,
-    "x86_64": True,
-}
-_sysroot_libc_versions = {
-    "glibc2_31": True,
-    "glibc2_36": True,
-}
-
-def _sysroot_repo_name(target_arch, libc_version, variant, features):
-    if target_arch not in _sysroot_archs or libc_version not in _sysroot_libc_versions:
-        return ""
-    name = "sysroot_{target_arch}_{libc_version}_{variant}".format(
-        target_arch = target_arch,
-        libc_version = libc_version,
-        variant = variant,
+def _debian12_sysroots():
+    sysroot_type_setting = "@gml//bazel/cc_toolchains/sysroots:sysroot_type_debian12"
+    runtime_pkgs = [
+        "debian12_ca-certificates",
+        "debian12_libtinfo6",
+        "debian12_libc6",
+        "debian12_libelf1",
+        "debian12_libstdc++6",
+        "debian12_zlib1g",
+        "debian12_libunwind8",
+        "debian12_libgles2-mesa",
+        "debian12_libegl1-mesa",
+    ]
+    sysroot_repo(
+        name = "sysroot_debian12_runtime",
+        libc_version = "glibc2_36",
+        supported_archs = ["aarch64", "x86_64"],
+        variant = "runtime",
+        packages = runtime_pkgs,
+        target_settings = [sysroot_type_setting],
     )
-    if len(features) > 0:
-        name = name + "_" + "_".join(features)
-    return name
+    build_pkgs = [
+        "debian12_liblzma-dev",
+        "debian12_libunwind-dev",
+        "debian12_libncurses-dev",
+        "debian12_libc6-dev",
+        "debian12_libegl1-mesa-dev",
+        "debian12_libelf-dev",
+        "debian12_libgcc-12-dev",
+        "debian12_libgles2-mesa-dev",
+        "debian12_libicu-dev",
+        "debian12_libstdc++-12-dev",
+        "debian12_linux-libc-dev",
+        "debian12_mesa-common-dev",
+        "debian12_zlib1g-dev",
+    ]
+    sysroot_repo(
+        name = "sysroot_debian12_build",
+        libc_version = "glibc2_36",
+        supported_archs = ["aarch64", "x86_64"],
+        variant = "build",
+        packages = runtime_pkgs + build_pkgs,
+        target_settings = [sysroot_type_setting],
+        path_prefix_filters = _DEFAULT_BUILD_PATH_PREFIXES,
+    )
+    test_pkgs = [
+        # dash provides /bin/sh. Things like popen will fail with weird errors if /bin/sh doesn't exist.
+        "debian12_dash",
+        # Some of our tests require these shell utilities
+        "debian12_bash",
+        "debian12_grep",
+        "debian12_gawk",
+        "debian12_sed",
+        "debian12_libc-bin",
+        # Deps for podman
+        "debian12_iptables",
+        "debian12_aardvark-dns",
+        "debian12_netavark",
+        "debian12_podman",
+    ]
+    sysroot_repo(
+        name = "sysroot_debian12_test",
+        libc_version = "glibc2_36",
+        supported_archs = ["aarch64", "x86_64"],
+        variant = "test",
+        packages = runtime_pkgs + build_pkgs + test_pkgs,
+        target_settings = [sysroot_type_setting],
+    )
 
-sysroot_repo_name = _sysroot_repo_name
-sysroot_libc_versions = list(_sysroot_libc_versions.keys())
-sysroot_architectures = list(_sysroot_archs.keys())
+def _jetson_sysroots():
+    sysroot_type_setting = "@gml//bazel/cc_toolchains/sysroots:sysroot_type_jetson"
+    runtime_pkgs = [
+        "ubuntu2004_ca-certificates",
+        "ubuntu2004_libtinfo6",
+        "ubuntu2004_libc6",
+        "ubuntu2004_libelf1",
+        "ubuntu2004_libstdc++6",
+        "ubuntu2004_zlib1g",
+        "ubuntu2004_libunwind8",
+        # NVIDIA's container runtime requires that `ldconfig` exist in the container.
+        "ubuntu2004_libc-bin",
+        # `libnvargus` requires an active X11 server, we use `xvfb` to emulate one.
+        "ubuntu2004_xvfb",
+        "ubuntu2004_x11-xkb-utils",
+        # xvfb-run requires a number of script utilities.
+        "ubuntu2004_bash",
+        "ubuntu2004_dash",
+        "ubuntu2004_gawk",
+        "ubuntu2004_util-linux",
+        "ubuntu2004_coreutils",
+    ]
+    sysroot_repo(
+        name = "sysroot_jetson_runtime",
+        libc_version = "glibc2_31",
+        supported_archs = ["aarch64"],
+        variant = "runtime",
+        packages = runtime_pkgs,
+        target_settings = [sysroot_type_setting],
+    )
+    build_pkgs = [
+        "ubuntu2004_liblzma-dev",
+        "ubuntu2004_libunwind-dev",
+        "ubuntu2004_libncurses-dev",
+        "ubuntu2004_libc6-dev",
+        "ubuntu2004_libegl1-mesa-dev",
+        "ubuntu2004_libelf-dev",
+        "ubuntu2004_libgcc-9-dev",
+        "ubuntu2004_libgles2-mesa-dev",
+        "ubuntu2004_libicu-dev",
+        "ubuntu2004_libstdc++-9-dev",
+        "ubuntu2004_linux-libc-dev",
+        "ubuntu2004_mesa-common-dev",
+        "ubuntu2004_zlib1g-dev",
+        "jetson_libnvinfer-dev",
+        "jetson_libnvinfer-plugin8",
+        "jetson_libnvonnxparsers-dev",
+        "jetson_cuda-nvcc-11-4",
+        "jetson_nvidia-l4t-camera",
+        "jetson_nvidia-l4t-core",
+        "jetson_nvidia-l4t-cuda",
+        "jetson_nvidia-l4t-jetson-multimedia-api",
+        "jetson_nvidia-l4t-kernel-headers",
+        "jetson_nvidia-l4t-multimedia",
+        "jetson_nvidia-l4t-multimedia-utils",
+    ]
+    sysroot_repo(
+        name = "sysroot_jetson_build",
+        libc_version = "glibc2_31",
+        supported_archs = ["aarch64"],
+        variant = "build",
+        packages = runtime_pkgs + build_pkgs,
+        target_settings = [sysroot_type_setting],
+        extra_compile_flags = [
+            # Order is important here. Bazel doesn't like the symlink from jetson_multimedia_api/include to ../argus/include,
+            # so we need to make sure the compiler resolves the actual argus includes first.
+            "-isystem%sysroot%/usr/src/jetson_multimedia_api/argus/include",
+            "-isystem%sysroot%/usr/src/jetson_multimedia_api/include",
+            "-isystem%sysroot%/usr/local/cuda-11.4/targets/aarch64-linux/include",
+        ],
+        extra_link_flags = [
+            "-L%sysroot%/usr/lib/aarch64-linux-gnu/tegra",
+            "-L%sysroot%/usr/local/cuda-11.4/targets/aarch64-linux/lib",
+        ],
+        path_prefix_filters = _DEFAULT_BUILD_PATH_PREFIXES + ["usr/src/jetson_multimedia_api"],
+    )
+    test_pkgs = [
+        "ubuntu2004_grep",
+        "ubuntu2004_sed",
+    ]
+    sysroot_repo(
+        name = "sysroot_jetson_test",
+        libc_version = "glibc2_31",
+        supported_archs = ["aarch64"],
+        variant = "test",
+        packages = runtime_pkgs + build_pkgs + test_pkgs,
+        target_settings = [sysroot_type_setting],
+    )
+
+def _gml_sysroots():
+    _debian12_sysroots()
+    _jetson_sysroots()
+
+SYSROOT_LIBC_VERSIONS = [
+    "glibc2_36",
+    "glibc2_31",
+]
+
+SYSROOT_ARCHITECTURES = [
+    "aarch64",
+    "x86_64",
+]
+
+gml_sysroots = _gml_sysroots

@@ -16,12 +16,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
-load("//bazel/cc_toolchains/sysroots:sysroots.bzl", "sysroot_libc_versions")
+load("//bazel/cc_toolchains/sysroots:sysroots.bzl", "SYSROOT_LIBC_VERSIONS")
 
 HOST_GLIBC_VERSION = "glibc_host"
 
 def _settings():
-    libc_versions = sysroot_libc_versions + [
+    libc_versions = SYSROOT_LIBC_VERSIONS + [
         HOST_GLIBC_VERSION,
     ]
     string_flag(

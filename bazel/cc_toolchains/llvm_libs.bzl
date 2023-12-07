@@ -16,12 +16,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 load("@bazel_skylib//lib:selects.bzl", "selects")
-load("//bazel/cc_toolchains/sysroots:sysroots.bzl", "sysroot_architectures", "sysroot_libc_versions")
+load("//bazel/cc_toolchains/sysroots:sysroots.bzl", "SYSROOT_ARCHITECTURES", "SYSROOT_LIBC_VERSIONS")
 
 def _llvm_variants():
     variants = []
-    for arch in sysroot_architectures:
-        libc_versions = sysroot_libc_versions
+    for arch in SYSROOT_ARCHITECTURES:
+        libc_versions = SYSROOT_LIBC_VERSIONS
         if arch == "x86_64":
             libc_versions = libc_versions + ["glibc_host"]
 

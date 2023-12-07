@@ -8,19 +8,11 @@ load("//bazel:repositories.bzl", "gml_cc_toolchain_deps", "gml_deps")
 
 gml_cc_toolchain_deps()
 
-load("//bazel/cc_toolchains/sysroots:create_sysroots.bzl", "create_sysroots")
-
-create_sysroots()
-
-load("//bazel/cc_toolchains/sysroots:register_sysroots.bzl", "register_sysroots")
-
-register_sysroots()
-
 load("//bazel/cc_toolchains/sysroots/packages:all_debs.bzl", "deb_repos")
 
 deb_repos()
 
-load("//bazel/cc_toolchains/sysroots:new_sysroots.bzl", "gml_sysroots")
+load("//bazel/cc_toolchains/sysroots:sysroots.bzl", "gml_sysroots")
 
 gml_sysroots()
 

@@ -86,8 +86,8 @@ build:jetson_sysroot --platforms=//bazel/cc_toolchains:linux-aarch64
 build:jetson_sysroot --//src/gem/plugins:enable_argus
 build:jetson_sysroot --//src/gem/plugins:enable_tensorrt
 build:jetson_sysroot --//src/gem/plugins:enable_openvino=false
-build:jetson_sysroot --config=enable_sysroot_jetson
 build:jetson_sysroot --config=sysroot-base
+build:jetson_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=jetson
 test:jetson_sysroot --test_env=LD_LIBRARY_PATH=/usr/lib/aarch64-linux-gnu/tegra
 
 # Build for Clang using Libc++.
@@ -170,9 +170,6 @@ coverage --define GML_COVERAGE=true
 coverage --copt -DGML_COVERAGE
 coverage --test_tag_filters=-no_coverage,-disabled,-no_gcc
 coverage --action_env=COVERAGE_GCOV_OPTIONS=-b
-
-# sysroot configs
-import %workspace%/bazel/cc_toolchains/sysroots/.bazelrc
 
 try-import %workspace%/bes.bazelrc
 
