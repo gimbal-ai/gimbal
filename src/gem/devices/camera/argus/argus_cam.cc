@@ -48,11 +48,11 @@ Status ArgusCam::SetupCamera(std::string device_uuid) {
   }
 
   Argus::UUID argus_uuid = gem::capabilities::argus::ToArgusUUID(sole::rebuild(device_uuid));
-  for (auto& camera_device : camera_devices) {
+  for (auto& camera : camera_devices) {
     Argus::ICameraProperties* camera_properties =
-        Argus::interface_cast<Argus::ICameraProperties>(camera_device);
+        Argus::interface_cast<Argus::ICameraProperties>(camera);
     if (camera_properties->getUUID() == argus_uuid) {
-      camera_device = camera_device_;
+      camera_device_ = camera;
       break;
     }
   }
