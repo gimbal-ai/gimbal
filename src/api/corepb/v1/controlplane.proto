@@ -57,7 +57,13 @@ message DeviceConnected {
   gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
 }
 
+// PhysicalPipelineReconciliation is triggered whenever there is a change in spec/status of a device
+// or pipeline.
 message PhysicalPipelineReconciliation {
   gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
   gml.types.UUID physical_pipeline_id = 2 [ (gogoproto.customname) = "PhysicalPipelineID" ];
+  // Whether the reconciliation should apply the pipeline, regardless of whether the spec
+  // matches the status. This is used for newly connected devices which need to fetch
+  // all pipelines.
+  bool force_apply = 3;
 }
