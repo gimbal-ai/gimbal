@@ -1,2 +1,0 @@
----
-# Don't need anything extra for testing on jetson yet. But we still want a test sysroot that includes runtime and build.

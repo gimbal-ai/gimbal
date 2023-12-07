@@ -32,15 +32,6 @@ clang_gs_path :=  gs://gimlet-dev-infra-public/clang/$(CLANG_TAG)
 clang_deb_image_tag := "clang_deb_builder_image:$(CLANG_VERSION)"
 CLANG_BUILD_DIR := "$(BUILD_DIR)/clang-$(CLANG_TAG)"
 
-## Sysroot parameters
-SYSROOT_REV := $(shell date +%Y%m%d%H%M%S)
-SYSROOT_BUILD_DIR := $(BUILD_DIR)/sysroots
-SYSROOT_DOWNLOAD_CACHE_DIR := $(BUILD_DIR)/sysroots/.cache
-SYSROOT_ARCHITECTURES := amd64 arm64
-SYSROOT_GS_PATH := gs://gimlet-dev-infra-public/sysroots/$(SYSROOT_REV)
-SYSROOT_DOWNLOAD_URL := https://storage.googleapis.com/gimlet-dev-infra-public/sysroots/$(SYSROOT_REV)
-SYSROOT_CREATOR_IMAGE_TAG := sysroot-creator-$(SYSROOT_REV)
-
 ## Megalinter custom image
 REPOSITORY := us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts
 MEGALINTER_BUILD_DIR := $(BUILD_DIR)/megalinter
@@ -76,22 +67,6 @@ upload_clang_deb: build_clang_deb_image ## Target to build and upload clang deb 
 	gsutil cp $(CLANG_BUILD_DIR)/* $(clang_gs_path)/
 
 	cat $(CLANG_BUILD_DIR)/sha256sums
-
-
-##############################################
-# Sysroots Build
-##############################################
-.PHONY: build_all_sysroots
-build_all_sysroots: sysroot_creator/Dockerfile sysroot_creator/build_all_sysroots.sh
-	@mkdir -p $(SYSROOT_BUILD_DIR)
-	@mkdir -p $(SYSROOT_DOWNLOAD_CACHE_DIR)
-	$(DOCKER) build sysroot_creator -t $(SYSROOT_CREATOR_IMAGE_TAG)
-	./sysroot_creator/build_all_sysroots.sh $(SYSROOT_BUILD_DIR) $(SYSROOT_CREATOR_IMAGE_TAG) $(SYSROOT_DOWNLOAD_URL) $(SYSROOT_DOWNLOAD_CACHE_DIR)
-
-.PHONY: upload_all_sysroots
-upload_all_sysroots: build_all_sysroots
-	gsutil cp $(SYSROOT_BUILD_DIR)/* $(SYSROOT_GS_PATH)
-	sha256sum $(SYSROOT_BUILD_DIR)/*
 
 ##############################################
 # Megalinter Build
