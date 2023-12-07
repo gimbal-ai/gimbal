@@ -109,6 +109,9 @@ def sysroot_repo(
     Creates two separate bazel repos, one containing the implementation of the sysroot toolchain,
     the other containing the definition of the sysroot toolchain."""
 
+    # Make sure every sysroot has /tmp.
+    srcs = srcs + ["@gml//bazel/cc_toolchains/sysroots:tmp_dir"]
+
     for target_arch in supported_archs:
         name_w_arch = "_".join([name, target_arch])
         _sysroot_toolchain_repo(
