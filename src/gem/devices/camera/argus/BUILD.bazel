@@ -37,6 +37,10 @@ gem_plugin_cc_library(
         "-lnvargus",
     ],
     plugin_name = "argus",
+    deps = [
+        "//src/gem/capabilities/plugin/argus:cc_library",
+        "@com_github_rlyeh_sole//:sole",
+    ],
 )
 
 gml_cc_binary(

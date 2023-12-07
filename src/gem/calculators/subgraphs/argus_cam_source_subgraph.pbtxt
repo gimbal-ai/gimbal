@@ -3,14 +3,20 @@ output_stream: "sampled_frames"
 input_stream: "FINISHED:detections"
 output_stream: "ALLOW:frame_allowed"
 
+graph_options: {
+  [type.googleapis.com/gml.gem.calculators.argus.optionspb.ArgusCamSourceSubgraphOptions] {
+    target_frame_rate: 18
+  }
+}
+
 node {
   calculator: "ArgusCamSourceCalculator"
   output_stream: "nv_buf"
-  node_options {
-    [type.googleapis.com/gml.gem.calculators.argus.optionspb.ArgusCamSourceCalculatorOptions] {
-      target_frame_rate: 18
-    }
+  node_options: {
+    [type.googleapis.com/gml.gem.calculators.argus.optionspb.ArgusCamSourceCalculatorOptions] {}
   }
+  option_value: "target_frame_rate:options/target_frame_rate"
+  option_value: "device_uuid:options/device_uuid"
 }
 
 node {

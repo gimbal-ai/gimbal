@@ -30,7 +30,7 @@
 #include "argus_cam.h"
 
 constexpr int kNumFrames = 100;
-constexpr int kDeviceNum = 0;
+const std::string kDeviceUUID = "";
 
 int main(int argc, char** argv) {
   gml::EnvironmentGuard env_guard(&argc, argv);
@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
   using gml::gem::devices::argus::NvBufSurfaceWrapper;
 
   ArgusCam argus_cam;
-  if (!argus_cam.Init(kDeviceNum).ok()) {
+  if (!argus_cam.Init(kDeviceUUID).ok()) {
     argus_cam.Stop();
     return 1;
   }

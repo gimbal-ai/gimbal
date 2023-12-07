@@ -24,12 +24,14 @@
 #include <EGLStream/EGLStream.h>
 #include <EGLStream/NV/ImageNativeBuffer.h>
 #include <nvbufsurface.h>
+#include <sole.hpp>
 
 #include "src/common/base/base.h"
+#include "src/gem/capabilities/plugin/argus/uuid_utils.h"
 
 namespace gml::gem::devices::argus {
 
-Status ArgusCam::SetupCamera(int device_num) {
+Status ArgusCam::SetupCamera(std::string device_uuid) {
   // Create the CameraProvider object and get the core interface.
   camera_provider_obj_ = Argus::UniqueObj<Argus::CameraProvider>(Argus::CameraProvider::create());
   Argus::ICameraProvider* camera_provider =
@@ -39,14 +41,25 @@ Status ArgusCam::SetupCamera(int device_num) {
   }
 
   // Query for camera devices.
-  std::vector<Argus::CameraDevice*> cameraDevices;
-  camera_provider->getCameraDevices(&cameraDevices);
-  if (cameraDevices.size() == 0) {
+  std::vector<Argus::CameraDevice*> camera_devices;
+  camera_provider->getCameraDevices(&camera_devices);
+  if (camera_devices.size() == 0) {
     return error::Internal("No cameras available.");
   }
 
-  // Choose the selected device.
-  camera_device_ = cameraDevices[device_num];
+  Argus::UUID argus_uuid = gem::capabilities::argus::ToArgusUUID(sole::rebuild(device_uuid));
+  for (auto& camera_device : camera_devices) {
+    Argus::ICameraProperties* camera_properties =
+        Argus::interface_cast<Argus::ICameraProperties>(camera_device);
+    if (camera_properties->getUUID() == argus_uuid) {
+      camera_device = camera_device_;
+      break;
+    }
+  }
+
+  if (camera_device_ == nullptr) {
+    return error::Internal("Couldn't find selected camera.");
+  }
 
   // Create the capture session.
   capture_session_obj_ = Argus::UniqueObj<Argus::CaptureSession>(
@@ -169,10 +182,10 @@ Status ArgusCam::StartCapture(Argus::Request* request) {
   return Status::OK();
 }
 
-Status ArgusCam::Init(int device_num) {
+Status ArgusCam::Init(std::string devide_uuid) {
   Status s;
 
-  GML_RETURN_IF_ERROR(SetupCamera(device_num));
+  GML_RETURN_IF_ERROR(SetupCamera(devide_uuid));
   GML_ASSIGN_OR_RETURN(Argus::SensorMode * sensor_mode, SelectSensorMode());
   GML_RETURN_IF_ERROR(CreateOutputStream());
   GML_ASSIGN_OR_RETURN(Argus::UniqueObj<Argus::Request> request,

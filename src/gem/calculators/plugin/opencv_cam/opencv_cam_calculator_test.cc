@@ -30,6 +30,7 @@ static constexpr char kGraph[] = R"pb(
   output_stream: "image_frame"
   node_options {
     [type.googleapis.com/gml.gem.calculators.opencv_cam.optionspb.OpenCVCamSourceCalculatorOptions] {
+      device_filename: /dev/video0
       max_num_frames: 1
     }
   }

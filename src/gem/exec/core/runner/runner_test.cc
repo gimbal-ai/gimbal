@@ -162,6 +162,11 @@ TEST(Runner, Subgraph) {
         output_stream: "FRAMES:frame_out"
         input_stream: "FINISHED:frame_processed"
         output_stream: "ALLOW:frame_allowed"
+        node_options: {
+          [type.googleapis.com/gml.gem.calculators.opencv_cam.optionspb.OpenCVCamSourceSubgraphOptions] {
+            device_filename: "filename0"
+          }
+        }
       }
     }
   )pbtxt";

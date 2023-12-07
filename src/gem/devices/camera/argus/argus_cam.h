@@ -37,11 +37,7 @@ class ArgusCam {
 
   ~ArgusCam() { Stop(); }
 
-  /**
-   * Initialize the capture device. By default uses the first camera, but can choose other devices
-   * as well.
-   */
-  Status Init(int device_num = 0);
+  Status Init(std::string device_uuid);
 
   /**
    * Acquire a frame from the camera.
@@ -52,7 +48,7 @@ class ArgusCam {
   void Stop();
 
  private:
-  Status SetupCamera(int device_num);
+  Status SetupCamera(std::string device_uuid);
   StatusOr<Argus::SensorMode*> SelectSensorMode();
   Status CreateOutputStream();
   StatusOr<Argus::UniqueObj<Argus::Request>> PrepareRequest(Argus::SensorMode* sensor_mode,

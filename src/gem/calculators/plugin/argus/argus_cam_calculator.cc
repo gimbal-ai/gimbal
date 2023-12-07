@@ -20,6 +20,7 @@
 #include "absl/status/status.h"
 
 #include <mediapipe/framework/calculator_framework.h>
+
 #include "src/gem/devices/camera/argus/argus_cam.h"
 
 namespace gml::gem::calculators::argus {
@@ -35,7 +36,7 @@ absl::Status ArgusCamSourceCalculator::GetContract(mediapipe::CalculatorContract
 absl::Status ArgusCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
   options_ = cc->Options<ArgusCamSourceCalculatorOptions>();
   argus_cam_ = std::make_unique<devices::argus::ArgusCam>(options_.target_frame_rate());
-  GML_ABSL_RETURN_IF_ERROR(argus_cam_->Init());
+  GML_ABSL_RETURN_IF_ERROR(argus_cam_->Init(options_.device_uuid()));
   timestamp_ = 0;
   return absl::OkStatus();
 }

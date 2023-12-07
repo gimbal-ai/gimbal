@@ -23,6 +23,7 @@ PLUGINS = dict(
             "//src/gem/calculators/plugin/argus:cc_library",
             "//src/gem/calculators/subgraphs:argus_cam_source_subgraph",
             "//src/gem/capabilities/plugin/argus:cc_library",
+            "//src/gem/calculators/plugin/argus/optionspb:optionspb_options_registry",
         ],
     ),
     cpu_tensor = struct(
@@ -57,6 +58,7 @@ PLUGINS = dict(
             "//src/gem/calculators/plugin/opencv_cam:cc_library",
             "//src/gem/calculators/subgraphs:opencv_cam_source_subgraph",
             "//src/gem/capabilities/plugin/opencv_cam:cc_library",
+            "//src/gem/calculators/plugin/opencv_cam/optionspb:optionspb_options_registry",
         ],
     ),
     openvino = struct(

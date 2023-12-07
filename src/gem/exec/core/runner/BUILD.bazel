@@ -43,6 +43,7 @@ gml_cc_test(
     ],
     deps = [
         ":cc_library",
+        "//src/gem/calculators/plugin/opencv_cam/optionspb:optionspb_options_registry",
         "//src/gem/calculators/subgraphs:opencv_cam_source_subgraph",
         "@com_github_google_mediapipe//mediapipe/calculators/core:counting_source_calculator",
     ],

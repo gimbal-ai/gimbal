@@ -21,6 +21,19 @@ package gml.gem.calculators.argus.optionspb;
 
 option go_package = "gimletlabs.ai/gimlet/src/gem/calculators/plugin/argus/optionspb;optionspb";
 
+import "gogoproto/gogo.proto";
+
+// This seems unused but the mediapipe subgraph options registration relies
+// on mediapipe_options.proto being linked in.
+// buf:lint:ignore IMPORT_USED
+import "mediapipe/framework/mediapipe_options.proto";
+
+message ArgusCamSourceSubgraphOptions {
+  uint64 target_frame_rate = 1;
+  string device_uuid = 2 [ (gogoproto.customname) = "DeviceUUID" ];
+}
+
 message ArgusCamSourceCalculatorOptions {
   uint64 target_frame_rate = 1;
+  string device_uuid = 2;
 }

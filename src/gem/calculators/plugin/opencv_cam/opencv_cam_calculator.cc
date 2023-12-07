@@ -82,7 +82,7 @@ absl::Status OpenCVCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
   options_ = cc->Options<OpenCVCamSourceCalculatorOptions>();
 
   // Setting to use V4L2 only. Could revisit this choice in the future.
-  cap_ = std::make_unique<cv::VideoCapture>(options_.device_num(), cv::CAP_V4L2);
+  cap_ = std::make_unique<cv::VideoCapture>(options_.device_filename(), cv::CAP_V4L2);
 
   if (!cap_->isOpened()) {
     return absl::InternalError("Could not open camera.");

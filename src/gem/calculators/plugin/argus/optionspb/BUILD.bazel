@@ -16,12 +16,17 @@
 load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
 load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_library")
 load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
+load("@com_github_google_mediapipe//mediapipe/framework/tool:mediapipe_graph.bzl", "mediapipe_options_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
 proto_library(
     name = "optionspb_proto",
     srcs = ["argus_cam_calculator_options.proto"],
     visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_proto",
+        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_proto",
+    ],
 )
 
 proto_cc_library(
@@ -29,7 +34,11 @@ proto_cc_library(
     srcs = ["argus_cam_calculator_options.pb.cc"],
     hdrs = ["argus_cam_calculator_options.pb.h"],
     visibility = ["//visibility:public"],
-    deps = ["@com_google_protobuf//:protobuf"],
+    deps = [
+        "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_cc_library",
+        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_cc_library",
+        "@com_google_protobuf//:protobuf",
+    ],
 )
 
 proto_compile(
@@ -58,6 +67,8 @@ proto_go_library(
     importpath = "gimletlabs.ai/gimlet/src/gem/calculators/plugin/argus/optionspb",
     visibility = ["//visibility:public"],
     deps = [
+        "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_go_proto",
+        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_go_proto",
         "@com_github_gogo_protobuf//proto",
         "@com_github_gogo_protobuf//protoc-gen-gogo/descriptor",
         "@com_github_gogo_protobuf//sortkeys",
@@ -66,4 +77,11 @@ proto_go_library(
         "@org_golang_google_grpc//codes",
         "@org_golang_google_grpc//status",
     ],
+)
+
+mediapipe_options_library(
+    name = "argus_cam_calculator_options_proto",
+    proto_lib = "optionspb_proto",
+    visibility = ["//visibility:public"],
+    deps = [":optionspb_cc_library"],
 )
