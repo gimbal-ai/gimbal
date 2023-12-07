@@ -45,7 +45,7 @@ bazel_target="${target_parts[1]}"
 # Strip // from the beginning of the value, if present.
 bazel_target_path="${bazel_target_path##//}"
 
-bazel run --config=jetson --config=enable_sysroot_debug -c dbg "//${bazel_target_path}:${bazel_target}.tar"
+bazel run --config=jetson_sysroot -c dbg "//${bazel_target_path}:${bazel_target}.tar"
 cp "$GML_ROOT/bazel-bin/${bazel_target_path}/${bazel_target}.tar/tarball.tar" "/tmp/${bazel_target}.tar"
 chmod 664 "/tmp/${bazel_target}.tar"
 scp "/tmp/${bazel_target}.tar" "${device_addr}:/tmp/${bazel_target}.tar"

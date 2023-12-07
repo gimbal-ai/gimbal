@@ -232,6 +232,7 @@ def _gml_cc_test(
         coverage = True,
         local = False,
         flaky = False,
+        include_test_runner = True,
         **kwargs):
     test_lib_tags = list(tags)
     if coverage:
@@ -245,6 +246,8 @@ def _gml_cc_test(
         tags = test_lib_tags,
         defines = defines,
     )
+    if include_test_runner:
+        data = data + ["//bazel/test_runners:test_runner_dep"]
     cc_test(
         name = name,
         copts = gml_copts(),
@@ -257,7 +260,7 @@ def _gml_cc_test(
             repository + "//src/shared/version:test_version_linkstamp",
         ] + _default_external_deps(),
         args = args,
-        data = data + ["//bazel/test_runners:test_runner_dep"],
+        data = data,
         tags = tags + ["coverage_test"],
         shard_count = shard_count,
         size = size,

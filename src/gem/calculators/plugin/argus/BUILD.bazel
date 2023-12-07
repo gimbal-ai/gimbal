@@ -52,6 +52,7 @@ gml_cc_test(
         "nvbufsurf_planar_image_test.cc",
     ],
     data = glob(["testdata/**/*"]),
+    include_test_runner = False,
     tags = ["manual"],
     deps = [
         ":cc_library",
@@ -66,6 +67,7 @@ gml_cc_test(
         "nvbuf_to_image_frame_calculator_test.cc",
     ],
     data = glob(["testdata/**/*"]),
+    include_test_runner = False,
     tags = ["manual"],
     deps = [
         ":cc_library",
@@ -81,6 +83,7 @@ gml_cc_test(
         "nvbuf_to_planar_image_calculator_test.cc",
     ],
     data = glob(["testdata/**/*"]),
+    include_test_runner = False,
     tags = ["manual"],
     deps = [
         ":cc_library",
