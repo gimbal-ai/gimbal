@@ -62,7 +62,8 @@ using internal::api::core::v1::CP_EDGE_TOPIC_VIDEO;
 using internal::api::core::v1::EDGE_CP_TOPIC_EXEC;
 using internal::api::core::v1::EDGE_CP_TOPIC_STATUS;
 
-DEFINE_string(blob_store_dir, "/build/cache/", "Path to store blobs with the FilesystemBlobStore");
+DEFINE_string(blob_store_dir, gflags::StringFromEnv("GML_BLOB_STORE_DIR", "/gml/cache/"),
+              "Path to store blobs with the FilesystemBlobStore");
 DEFINE_string(device_serial, gflags::StringFromEnv("GML_DEVICE_SERIAL", ""),
               "Force set the serial number / ID for the device. Note this needs to be unique "
               "across devices.");
