@@ -13,6 +13,7 @@
 #
 # SPDX-License-Identifier: Proprietary
 
+load("//bazel:gml_build_system.bzl", "gml_cc_test")
 load("//src/gem/plugins:plugins.bzl", "gem_plugin_cc_library")
 
 package(default_visibility = ["//src/gem:__subpackages__"])
@@ -25,6 +26,7 @@ gem_plugin_cc_library(
     ],
     hdrs = [
         "capability_lister.h",
+        "uuid_utils.h",
     ],
     linkopts = [
         "-lnvargus",
@@ -33,5 +35,14 @@ gem_plugin_cc_library(
     deps = [
         "//src/gem/capabilities/core:cc_library",
         "//src/gem/plugins:cc_library",
+        "@com_github_rlyeh_sole//:sole",
+    ],
+)
+
+gml_cc_test(
+    name = "uuid_utils_test",
+    srcs = ["uuid_utils_test.cc"],
+    deps = [
+        ":cc_library",
     ],
 )

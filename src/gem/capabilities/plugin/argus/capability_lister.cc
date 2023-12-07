@@ -18,6 +18,7 @@
 #include <Argus/Argus.h>
 
 #include "src/gem/capabilities/plugin/argus/capability_lister.h"
+#include "src/gem/capabilities/plugin/argus/uuid_utils.h"
 
 namespace gml::gem::capabilities::argus {
 
@@ -33,13 +34,17 @@ Status CapabilityLister::Populate(DeviceCapabilities* cap) {
   std::vector<Argus::CameraDevice*> camera_devices;
   camera_provider->getCameraDevices(&camera_devices);
 
-  for (const auto& [idx, camera_device] : Enumerate(camera_devices)) {
+  for (const auto& camera_device : camera_devices) {
     // TODO(vihang): Grab other camera info from the device.
-    GML_UNUSED(camera_device);
+    Argus::ICameraProperties* camera_properties =
+        Argus::interface_cast<Argus::ICameraProperties>(camera_device);
+
     auto mutable_cam = cap->add_cameras();
     mutable_cam->set_driver(
         internal::api::core::v1::DeviceCapabilities::CameraInfo::CAMERA_DRIVER_ARGUS);
-    mutable_cam->set_camera_id(absl::StrCat(idx));
+
+    mutable_cam->set_camera_id(
+        gem::capabilities::argus::ParseUUID(camera_properties->getUUID()).str());
   }
 
   return Status::OK();
