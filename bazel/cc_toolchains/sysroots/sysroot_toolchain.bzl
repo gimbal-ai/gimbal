@@ -32,6 +32,8 @@ SysrootPathInfo = provider(
 
 def _sysroot_toolchain_impl(ctx):
     sysroot_path = ctx.attr.path
+    if ctx.attr.path_info:
+        sysroot_path = ctx.attr.path_info[SysrootPathInfo].path
     extra_compile_flags = [
         flag.replace("%sysroot%", sysroot_path)
         for flag in ctx.attr.extra_compile_flags
@@ -60,7 +62,11 @@ sysroot_toolchain = rule(
         "extra_compile_flags": attr.string_list(doc = "Extra compile_flags to use when building with the sysroot. %sysroot% will be expanded to the path of the sysroot."),
         "extra_link_flags": attr.string_list(doc = "Extra link_flags to use when building with the sysroot. %sysroot% will be expanded to the path of the sysroot."),
         "files": attr.label(mandatory = True, doc = "All sysroot files"),
-        "path": attr.string(mandatory = True, doc = "Path to sysroot"),
+        "path": attr.string(doc = "Path to sysroot"),
+        "path_info": attr.label(
+            doc = "Target providing SysrootPathInfo, used to find path for sysroot",
+            providers = [SysrootPathInfo],
+        ),
         "tar": attr.label(mandatory = True, doc = "Sysroot tar, used to avoid repacking the sysroot as a tar for docker images."),
     },
 )

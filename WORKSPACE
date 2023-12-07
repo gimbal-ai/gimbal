@@ -16,6 +16,14 @@ load("//bazel/cc_toolchains/sysroots:register_sysroots.bzl", "register_sysroots"
 
 register_sysroots()
 
+load("//bazel/cc_toolchains/sysroots/packages:all_debs.bzl", "deb_repos")
+
+deb_repos()
+
+load("//bazel/cc_toolchains/sysroots:new_sysroots.bzl", "gml_sysroots")
+
+gml_sysroots()
+
 load("//bazel/cc_toolchains:toolchains.bzl", "gml_cc_toolchains")
 
 gml_cc_toolchains()

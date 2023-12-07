@@ -1,0 +1,52 @@
+---
+repositories:
+- name: debian12
+  arch: x86_64
+  index_url: http://ftp.debian.org/debian/dists/bookworm/main/binary-amd64/Packages.xz
+  download_prefix: http://ftp.us.debian.org/debian/
+- name: debian12
+  arch: aarch64
+  index_url: http://ftp.debian.org/debian/dists/bookworm/main/binary-arm64/Packages.xz
+  download_prefix: http://ftp.us.debian.org/debian/
+packages:
+- name: ca-certificates
+- name: libtinfo6
+- name: libc6
+- name: libelf1
+- name: libstdc++6
+- name: zlib1g
+- name: libunwind8
+- name: libgles2-mesa
+- name: libegl1-mesa
+- name: liblzma-dev
+- name: libunwind-dev
+- name: libncurses-dev
+- name: libc6-dev
+- name: libegl1-mesa-dev
+- name: libelf-dev
+- name: libgcc-12-dev
+- name: libgles2-mesa-dev
+- name: libicu-dev
+- name: libstdc++-12-dev
+- name: linux-libc-dev
+- name: mesa-common-dev
+- name: zlib1g-dev
+- name: dash
+- name: bash
+- name: grep
+- name: gawk
+- name: sed
+- name: libc-bin
+- name: iptables
+- name: aardvark-dns
+- name: netavark
+- name: podman
+exclude_paths:
+- usr/share/man
+- usr/share/doc
+- usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_Főtanúsítvány.crt
+exclude_packages:
+- dpkg
+# provides NIS(YP) headers which we don't need.
+- libnsl-dev
+- rpcsvc-proto

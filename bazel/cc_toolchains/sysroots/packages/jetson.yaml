@@ -1,0 +1,79 @@
+---
+repositories:
+# The jetson uses ubuntu focal repos and custom nvidia repos.
+- name: jetson
+  arch: aarch64
+  index_url: https://repo.download.nvidia.com/jetson/common/dists/r35.4/main/binary-arm64/Packages.gz
+  download_prefix: https://repo.download.nvidia.com/jetson/common
+- name: jetson
+  arch: aarch64
+  index_url: https://repo.download.nvidia.com/jetson/t234/dists/r35.4/main/binary-arm64/Packages.gz
+  download_prefix: https://repo.download.nvidia.com/jetson/t234
+- name: ubuntu2004
+  arch: aarch64
+  index_url: http://ports.ubuntu.com/ubuntu-ports/dists/focal/main/binary-arm64/Packages.gz
+  download_prefix: http://ports.ubuntu.com/ubuntu-ports
+- name: ubuntu2004
+  arch: aarch64
+  index_url: http://ports.ubuntu.com/ubuntu-ports/dists/focal/universe/binary-arm64/Packages.gz
+  download_prefix: http://ports.ubuntu.com/ubuntu-ports
+packages:
+- name: ca-certificates
+- name: libtinfo6
+- name: libc6
+- name: libelf1
+- name: libstdc++6
+- name: zlib1g
+- name: libunwind8
+- name: liblzma-dev
+- name: libunwind-dev
+- name: libncurses-dev
+- name: libc6-dev
+- name: libegl1-mesa-dev
+- name: libelf-dev
+- name: libgcc-9-dev
+- name: libgles2-mesa-dev
+- name: libicu-dev
+- name: libstdc++-9-dev
+- name: linux-libc-dev
+- name: mesa-common-dev
+- name: zlib1g-dev
+- name: dash
+- name: bash
+- name: grep
+- name: gawk
+- name: sed
+- name: libc-bin
+- name: xvfb
+- name: x11-xkb-utils
+- name: util-linux
+- name: coreutils
+- name: libnvinfer-dev
+  version: 8.5.2-1+cuda11.4
+- name: libnvinfer-plugin8
+  version: 8.5.2-1+cuda11.4
+- name: libnvonnxparsers-dev
+  version: 8.5.2-1+cuda11.4
+- name: cuda-nvcc-11-4
+- name: nvidia-l4t-camera
+- name: nvidia-l4t-core
+- name: nvidia-l4t-cuda
+- name: nvidia-l4t-jetson-multimedia-api
+- name: nvidia-l4t-kernel-headers
+- name: nvidia-l4t-multimedia
+- name: nvidia-l4t-multimedia-utils
+exclude_paths:
+- usr/share/man
+- usr/share/doc
+- usr/share/icons
+- usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_Főtanúsítvány.crt
+- usr/bin/X11
+- lib/systemd/system/system-systemd\x2dcryptsetup.slice
+exclude_packages:
+- dpkg
+- libnsl-dev
+- rpcsvc-proto
+- libgstreamer-plugins-bad1.0-0
+- systemd
+- systemd-sysv
+- libgl1-mesa-dri

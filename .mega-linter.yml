@@ -74,3 +74,4 @@ TYPESCRIPT_PRETTIER_RULES_PATH: src/ui
 # The mega-linter json schema is broken with plugins, so don't check the schema.
 YAML_V8R_FILTER_REGEX_EXCLUDE: (.mega-linter.yml)
 YAML_YAMLLINT_ARGUMENTS: '--strict'
+REPOSITORY_LICENSE_CHECKER_FILTER_REGEX_EXCLUDE: "bazel\\/cc_toolchains\\/sysroots\\/packages\\/all_debs.bzl"
