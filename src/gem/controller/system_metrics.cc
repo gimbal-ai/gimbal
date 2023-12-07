@@ -42,50 +42,18 @@ void SystemMetricsReader::Scrape() {
 
   for (const auto& [c, stat] : Enumerate(stats)) {
     auto cpu = std::to_string(c);
-    cpu_stats_counter_->Add(stat.cpu_ktime_ns,
-                            {
-                                {"cpu", cpu},
-                                {"state", "system"},
-                            },
-                            {});
-    cpu_stats_counter_->Add(stat.cpu_utime_ns,
-                            {
-                                {"cpu", cpu},
-                                {"state", "user"},
-                            },
-                            {});
-    cpu_stats_counter_->Add(stat.cpu_idletime_ns,
-                            {
-                                {"cpu", cpu},
-                                {"state", "idle"},
-                            },
-                            {});
-    cpu_stats_counter_->Add(stat.cpu_iowaittime_ns,
-                            {
-                                {"cpu", cpu},
-                                {"state", "wait"},
-                            },
-                            {});
+    cpu_stats_counter_->Add(stat.cpu_ktime_ns, {{"cpu", cpu}, {"state", "system"}}, {});
+    cpu_stats_counter_->Add(stat.cpu_utime_ns, {{"cpu", cpu}, {"state", "user"}}, {});
+    cpu_stats_counter_->Add(stat.cpu_idletime_ns, {{"cpu", cpu}, {"state", "idle"}}, {});
+    cpu_stats_counter_->Add(stat.cpu_iowaittime_ns, {{"cpu", cpu}, {"state", "wait"}}, {});
   }
 
   // Add memory metrics for system.
-  cpu_num_counter_->Add(static_cast<int64_t>(stats.size()),
-                        {
-                            {"state", "system"},
-                        },
-                        {});
+  cpu_num_counter_->Add(static_cast<int64_t>(stats.size()), {{"state", "system"}}, {});
   gml::system::ProcParser::SystemStats system_stats;
   GML_CHECK_OK(proc_parser_.ParseProcStat(&system_stats));
-  mem_stats_total_bytes_->Add(system_stats.mem_total_bytes,
-                              {
-                                  {"state", "system"},
-                              },
-                              {});
-  mem_stats_free_bytes_->Add(system_stats.mem_free_bytes,
-                             {
-                                 {"state", "system"},
-                             },
-                             {});
+  mem_stats_total_bytes_->Add(system_stats.mem_total_bytes, {{"state", "system"}}, {});
+  mem_stats_free_bytes_->Add(system_stats.mem_free_bytes, {{"state", "system"}}, {});
 }
 
 }  // namespace gml::gem::controller

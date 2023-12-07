@@ -36,6 +36,14 @@ class GEMMetricsReader : public gml::metrics::Scrapeable {
   std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> mem_virtual_counter_;
   std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> thread_counter_;
   std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> context_switches_counter_;
+  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> network_rx_bytes_counter_;
+  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> network_rx_drops_counter_;
+  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> network_tx_bytes_counter_;
+  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> network_tx_drops_counter_;
+  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> disk_rchar_counter_;
+  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> disk_wchar_counter_;
+  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> disk_read_bytes_counter_;
+  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> disk_write_bytes_counter_;
 
   gml::system::ProcParser proc_parser_;
 };

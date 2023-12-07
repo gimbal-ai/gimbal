@@ -37,6 +37,19 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
   thread_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gem.threads"));
   context_switches_counter_ =
       std::move(gml_meter->CreateInt64UpDownCounter("gem.context_switches"));
+  network_rx_bytes_counter_ =
+      std::move(gml_meter->CreateInt64UpDownCounter("gem.network.rx_bytes"));
+  network_rx_drops_counter_ =
+      std::move(gml_meter->CreateInt64UpDownCounter("gem.network.rx_drops"));
+  network_tx_bytes_counter_ =
+      std::move(gml_meter->CreateInt64UpDownCounter("gem.network.tx_bytes"));
+  network_tx_drops_counter_ =
+      std::move(gml_meter->CreateInt64UpDownCounter("gem.network.tx_drops"));
+  disk_rchar_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gem.disk.rchar"));
+  disk_wchar_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gem.disk.wchar"));
+  disk_read_bytes_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gem.disk.read_bytes"));
+  disk_write_bytes_counter_ =
+      std::move(gml_meter->CreateInt64UpDownCounter("gem.disk.write_bytes"));
 }
 
 void GEMMetricsReader::Scrape() {
@@ -64,14 +77,38 @@ void GEMMetricsReader::Scrape() {
     s = proc_parser_.ParseProcPIDStatus(p, &process_status);
     if (!s.ok()) {
       LOG(INFO) << "Failed to read proc status. Skipping...";
-      return;
+      continue;
     }
+
     context_switches_counter_->Add(
         process_status.voluntary_ctxt_switches,
         {{"pid", pid}, {"state", "system"}, {"context_switch_type", "voluntary"}}, {});
     context_switches_counter_->Add(
         process_status.nonvoluntary_ctxt_switches,
         {{"pid", pid}, {"state", "system"}, {"context_switch_type", "involuntary"}}, {});
+
+    gml::system::ProcParser::NetworkStats network_stats;
+    s = proc_parser_.ParseProcPIDNetDev(p, &network_stats);
+    if (!s.ok()) {
+      LOG(INFO) << "Failed to read proc network stats. Skipping...";
+      continue;
+    }
+
+    network_rx_bytes_counter_->Add(network_stats.rx_bytes, {{"pid", pid}}, {});
+    network_rx_drops_counter_->Add(network_stats.rx_drops, {{"pid", pid}}, {});
+    network_tx_bytes_counter_->Add(network_stats.tx_bytes, {{"pid", pid}}, {});
+    network_tx_drops_counter_->Add(network_stats.tx_drops, {{"pid", pid}}, {});
+
+    s = proc_parser_.ParseProcPIDStatIO(p, &process_stats);
+    if (!s.ok()) {
+      LOG(INFO) << "Failed to read proc IO stats. Skipping...";
+      continue;
+    }
+
+    disk_rchar_counter_->Add(process_stats.rchar_bytes, {{"pid", pid}}, {});
+    disk_wchar_counter_->Add(process_stats.wchar_bytes, {{"pid", pid}}, {});
+    disk_read_bytes_counter_->Add(process_stats.read_bytes, {{"pid", pid}}, {});
+    disk_write_bytes_counter_->Add(process_stats.write_bytes, {{"pid", pid}}, {});
   }
 }
 
