@@ -126,7 +126,7 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
 
     GML_RETURN_IF_ERROR(runner.Start());
 
-    while (!parent_->stop_signal_.load()) {
+    while (!parent_->stop_signal_.load() && !runner.HasError()) {
       auto dropped = num_frames_dropped.load();
       auto total = num_frames.load();
       if (total != 0) {
