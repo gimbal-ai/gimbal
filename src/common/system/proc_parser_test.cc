@@ -68,19 +68,21 @@ class ProcParserTest : public ::testing::Test {
 
 TEST_F(ProcParserTest, ParseNetworkStat) {
   GML_SET_FOR_SCOPE(FLAGS_proc_path, GetPathToTestDataFile("testdata/proc"));
-  ProcParser::NetworkStats stats;
+  std::vector<ProcParser::NetworkStats> stats;
   GML_CHECK_OK(parser_->ParseProcPIDNetDev(123, &stats));
 
   // The expected values are from the test file above.
-  EXPECT_EQ(54504114, stats.rx_bytes);
-  EXPECT_EQ(65296, stats.rx_packets);
-  EXPECT_EQ(0, stats.rx_drops);
-  EXPECT_EQ(0, stats.rx_errs);
+  EXPECT_EQ(1, stats.size());
+  EXPECT_EQ("ens33", stats[0].interface);
+  EXPECT_EQ(54504114, stats[0].rx_bytes);
+  EXPECT_EQ(65296, stats[0].rx_packets);
+  EXPECT_EQ(0, stats[0].rx_drops);
+  EXPECT_EQ(0, stats[0].rx_errs);
 
-  EXPECT_EQ(4258632, stats.tx_bytes);
-  EXPECT_EQ(39739, stats.tx_packets);
-  EXPECT_EQ(0, stats.tx_drops);
-  EXPECT_EQ(0, stats.tx_errs);
+  EXPECT_EQ(4258632, stats[0].tx_bytes);
+  EXPECT_EQ(39739, stats[0].tx_packets);
+  EXPECT_EQ(0, stats[0].tx_drops);
+  EXPECT_EQ(0, stats[0].tx_errs);
 }
 
 TEST_F(ProcParserTest, ParseStatIO) {

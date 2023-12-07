@@ -97,37 +97,41 @@ constexpr int kProcStatStartTimeField = 21;
 constexpr int kProcStatVSizeField = 22;
 constexpr int kProcStatRSSField = 23;
 
-Status ProcParser::ParseNetworkStatAccumulateIFaceData(
-    const std::vector<std::string_view>& dev_stat_record, NetworkStats* out) {
+Status ProcParser::ParseNetworkStatIFaceData(const std::vector<std::string_view>& dev_stat_record,
+                                             NetworkStats* out) {
   DCHECK(out != nullptr);
+
+  auto field = dev_stat_record[kProcNetDevIFaceField];
+  absl::ConsumeSuffix(&field, ":");
+  out->interface = field;
 
   int64_t val;
   bool ok = true;
   // Rx Data.
   ok &= absl::SimpleAtoi(dev_stat_record[kProcNetDevRxBytesField], &val);
-  out->rx_bytes += val;
+  out->rx_bytes = val;
 
   ok &= absl::SimpleAtoi(dev_stat_record[kProcNetDevRxPacketsField], &val);
-  out->rx_packets += val;
+  out->rx_packets = val;
 
   ok &= absl::SimpleAtoi(dev_stat_record[kProcNetDevRxDropField], &val);
-  out->rx_drops += val;
+  out->rx_drops = val;
 
   ok &= absl::SimpleAtoi(dev_stat_record[kProcNetDevRxErrsField], &val);
-  out->rx_errs += val;
+  out->rx_errs = val;
 
   // Tx Data.
   ok &= absl::SimpleAtoi(dev_stat_record[kProcNetDevTxBytesField], &val);
-  out->tx_bytes += val;
+  out->tx_bytes = val;
 
   ok &= absl::SimpleAtoi(dev_stat_record[kProcNetDevTxPacketsField], &val);
-  out->tx_packets += val;
+  out->tx_packets = val;
 
   ok &= absl::SimpleAtoi(dev_stat_record[kProcNetDevTxDropField], &val);
-  out->tx_drops += val;
+  out->tx_drops = val;
 
   ok &= absl::SimpleAtoi(dev_stat_record[kProcNetDevTxErrsField], &val);
-  out->tx_errs += val;
+  out->tx_errs = val;
 
   if (!ok) {
     // This should never happen since it requires the file to be ill-formed
@@ -148,7 +152,17 @@ bool ShouldIncludeNetIFace(const std::string_view iface) {
   return false;
 }
 
-Status ProcParser::ParseProcPIDNetDev(int32_t pid, NetworkStats* out) const {
+Status ProcParser::ParseProcPIDNetDev(int32_t pid, std::vector<NetworkStats>* out) const {
+  const auto fpath = ProcPidPath(pid, "net", "dev");
+  return this->ParseNetDev(fpath, out);
+}
+
+Status ProcParser::ParseProcNetDev(std::vector<NetworkStats>* out) const {
+  const auto fpath = ProcPath("net", "dev");
+  return this->ParseNetDev(fpath, out);
+}
+
+Status ProcParser::ParseNetDev(const std::string& fpath, std::vector<NetworkStats>* out) const {
   /**
    * Sample file:
    * Inter-|   Receive                                                | Transmit
@@ -161,11 +175,10 @@ Status ProcParser::ParseProcPIDNetDev(int32_t pid, NetworkStats* out) const {
    */
   DCHECK(out != nullptr);
 
-  const auto fpath = ProcPidPath(pid, "net", "dev");
   std::ifstream ifs;
   ifs.open(fpath);
   if (!ifs) {
-    return error::Internal("Failed to open file: $0.", fpath.string());
+    return error::Internal("Failed to open file: $0.", fpath);
   }
 
   // Ignore the first two lines since they are just headers;
@@ -186,8 +199,9 @@ Status ProcParser::ParseProcPIDNetDev(int32_t pid, NetworkStats* out) const {
       continue;
     }
 
+    auto& network_stats = out->emplace_back();
     // We should track this interface. Accumulate the results.
-    auto s = ParseNetworkStatAccumulateIFaceData(split, out);
+    auto s = ParseNetworkStatIFaceData(split, &network_stats);
     if (!s.ok()) {
       // Empty out the stats so we don't leave intermediate results.
       return s;

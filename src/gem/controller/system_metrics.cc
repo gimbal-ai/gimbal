@@ -33,6 +33,14 @@ SystemMetricsReader::SystemMetricsReader(::gml::metrics::MetricsSystem* metrics_
       std::move(gml_meter->CreateInt64UpDownCounter("system.memory.total_bytes"));
   mem_stats_free_bytes_ =
       std::move(gml_meter->CreateInt64UpDownCounter("system.memory.free_bytes"));
+  network_rx_bytes_counter_ =
+      std::move(gml_meter->CreateInt64UpDownCounter("system.network.rx_bytes"));
+  network_rx_drops_counter_ =
+      std::move(gml_meter->CreateInt64UpDownCounter("system.network.rx_drops"));
+  network_tx_bytes_counter_ =
+      std::move(gml_meter->CreateInt64UpDownCounter("system.network.tx_bytes"));
+  network_tx_drops_counter_ =
+      std::move(gml_meter->CreateInt64UpDownCounter("system.network.tx_drops"));
 }
 
 void SystemMetricsReader::Scrape() {
@@ -54,6 +62,19 @@ void SystemMetricsReader::Scrape() {
   GML_CHECK_OK(proc_parser_.ParseProcStat(&system_stats));
   mem_stats_total_bytes_->Add(system_stats.mem_total_bytes, {{"state", "system"}}, {});
   mem_stats_free_bytes_->Add(system_stats.mem_free_bytes, {{"state", "system"}}, {});
-}
 
+  std::vector<gml::system::ProcParser::NetworkStats> network_stats;
+  auto s = proc_parser_.ParseProcNetDev(&network_stats);
+  if (!s.ok()) {
+    LOG(INFO) << "Failed to read proc network stats. Skipping...";
+    return;
+  }
+
+  for (auto n : network_stats) {
+    network_rx_bytes_counter_->Add(n.rx_bytes, {{"interface", n.interface}}, {});
+    network_rx_drops_counter_->Add(n.rx_drops, {{"interface", n.interface}}, {});
+    network_tx_bytes_counter_->Add(n.tx_bytes, {{"interface", n.interface}}, {});
+    network_tx_drops_counter_->Add(n.tx_drops, {{"interface", n.interface}}, {});
+  }
+}
 }  // namespace gml::gem::controller

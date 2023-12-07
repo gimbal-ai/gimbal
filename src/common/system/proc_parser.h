@@ -43,7 +43,11 @@ class ProcParser {
   /**
    * NetworkStats is a struct used to store aggregated network statistics.
    */
+  // NOLINTBEGIN(bugprone-exception-escape)
+  // There is a clang-tidy bug for structs with a string
+  // https://github.com/llvm/llvm-project/issues/54668.
   struct NetworkStats {
+    std::string interface = "";
     int64_t rx_bytes = 0;
     int64_t rx_packets = 0;
     int64_t rx_errs = 0;
@@ -56,6 +60,7 @@ class ProcParser {
 
     void Clear() { *this = NetworkStats(); }
   };
+  // NOLINTEND(bugprone-exception-escape)
 
   // ProcessStats are basic stats about the process collected from /proc.
   // We store all the cpu/memory/io stats together since they belong to a
@@ -238,7 +243,7 @@ class ProcParser {
    * @param out A valid pointer to an output struct.
    * @return Status of the parsing.
    */
-  Status ParseProcPIDNetDev(int32_t pid, NetworkStats* out) const;
+  Status ParseProcPIDNetDev(int32_t pid, std::vector<NetworkStats>* out) const;
 
   /**
    * Parses /proc/stat
@@ -246,6 +251,13 @@ class ProcParser {
    * @return status of parsing.
    */
   Status ParseProcStat(SystemStats* out) const;
+
+  /**
+   * Parses /proc/net/dev
+   * @param out a valid pointer to an output struct.
+   * @return status of parsing.
+   */
+  Status ParseProcNetDev(std::vector<NetworkStats>* out) const;
 
   /**
    * Parses /proc/stat and reports a value for each of the physical CPUs.
@@ -390,8 +402,8 @@ class ProcParser {
   std::vector<pid_t> ListChildPIDsForPGID(pid_t pid);
 
  private:
-  static Status ParseNetworkStatAccumulateIFaceData(
-      const std::vector<std::string_view>& dev_stat_record, NetworkStats* out);
+  static Status ParseNetworkStatIFaceData(const std::vector<std::string_view>& dev_stat_record,
+                                          NetworkStats* out);
 
   static void ParseFromKeyValueLine(
       const std::string& line,
@@ -404,6 +416,8 @@ class ProcParser {
       uint8_t* out_base);
 
   Status ParseProcMapsFile(int32_t pid, std::string filename, std::vector<ProcessSMaps>* out) const;
+
+  Status ParseNetDev(const std::string& fpath, std::vector<NetworkStats>* out) const;
 };
 
 // TODO(jps): Change to GetPIDStartTimeTicks(const pid_t pid), i.e. remove the version that

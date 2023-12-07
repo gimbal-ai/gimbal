@@ -87,17 +87,19 @@ void GEMMetricsReader::Scrape() {
         process_status.nonvoluntary_ctxt_switches,
         {{"pid", pid}, {"state", "system"}, {"context_switch_type", "involuntary"}}, {});
 
-    gml::system::ProcParser::NetworkStats network_stats;
+    std::vector<gml::system::ProcParser::NetworkStats> network_stats;
     s = proc_parser_.ParseProcPIDNetDev(p, &network_stats);
     if (!s.ok()) {
       LOG(INFO) << "Failed to read proc network stats. Skipping...";
       continue;
     }
 
-    network_rx_bytes_counter_->Add(network_stats.rx_bytes, {{"pid", pid}}, {});
-    network_rx_drops_counter_->Add(network_stats.rx_drops, {{"pid", pid}}, {});
-    network_tx_bytes_counter_->Add(network_stats.tx_bytes, {{"pid", pid}}, {});
-    network_tx_drops_counter_->Add(network_stats.tx_drops, {{"pid", pid}}, {});
+    for (auto n : network_stats) {
+      network_rx_bytes_counter_->Add(n.rx_bytes, {{"interface", n.interface}, {"pid", pid}}, {});
+      network_rx_drops_counter_->Add(n.rx_drops, {{"interface", n.interface}, {"pid", pid}}, {});
+      network_tx_bytes_counter_->Add(n.tx_bytes, {{"interface", n.interface}, {"pid", pid}}, {});
+      network_tx_drops_counter_->Add(n.tx_drops, {{"interface", n.interface}, {"pid", pid}}, {});
+    }
 
     s = proc_parser_.ParseProcPIDStatIO(p, &process_stats);
     if (!s.ok()) {
