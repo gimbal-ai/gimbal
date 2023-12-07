@@ -32,7 +32,8 @@ import (
 
 // Resolver resolves PackageSets into a list of `spec.PinnedPackages` for all transitive dependencies listed in the `PackageSet`.
 type Resolver struct {
-	ps *spec.PackageSet
+	ps         *spec.PackageSet
+	manualPkgs []*spec.PinnedPackage
 
 	indices  []*index.Index
 	resolved map[string]*spec.PinnedPackage
@@ -46,10 +47,11 @@ var ErrNoPackagesForArch = errors.New("package set has no packages for given arc
 // If there are no packages in the package set for the given architecture, it returns ErrNoPackagesForArch.
 func NewResolver(downloader index.Downloader, ps *spec.PackageSet, arch string) (*Resolver, error) {
 	r := &Resolver{
-		ps:       ps,
-		indices:  make([]*index.Index, 0),
-		resolved: make(map[string]*spec.PinnedPackage),
-		excludes: make(map[string]bool),
+		ps:         ps,
+		manualPkgs: make([]*spec.PinnedPackage, 0),
+		indices:    make([]*index.Index, 0),
+		resolved:   make(map[string]*spec.PinnedPackage),
+		excludes:   make(map[string]bool),
 	}
 	for _, repo := range ps.Repositories {
 		if repo.Arch != arch {
@@ -61,7 +63,12 @@ func NewResolver(downloader index.Downloader, ps *spec.PackageSet, arch string) 
 		}
 		r.indices = append(r.indices, ind)
 	}
-	if len(r.indices) == 0 {
+	for _, p := range r.ps.ManualPackages {
+		if p.Arch == arch {
+			r.manualPkgs = append(r.manualPkgs, p)
+		}
+	}
+	if len(r.indices) == 0 && len(r.manualPkgs) == 0 {
 		return nil, ErrNoPackagesForArch
 	}
 	for _, exc := range ps.ExcludePackages {
@@ -110,7 +117,7 @@ func (r *Resolver) Resolve() ([]*spec.PinnedPackage, error) {
 	for _, p := range r.resolved {
 		out = append(out, p)
 	}
-	out = append(out, r.ps.ManualPackages...)
+	out = append(out, r.manualPkgs...)
 	return out, nil
 }
 

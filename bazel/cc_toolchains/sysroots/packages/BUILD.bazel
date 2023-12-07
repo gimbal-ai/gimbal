@@ -24,5 +24,6 @@ apt_parse(
     specs = [
         "debian12.yaml",
         "jetson.yaml",
+        "intel_compute_runtime.yaml",
     ],
 )

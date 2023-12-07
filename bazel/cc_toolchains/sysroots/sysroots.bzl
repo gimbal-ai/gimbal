@@ -24,73 +24,77 @@ _DEFAULT_BUILD_PATH_PREFIXES = [
     "usr/lib",
 ]
 
+# debian12 packages are used as the base for other sysroots that don't provide their own base packages.
+# So we need to specify them globally.
+_DEBIAN12_RUNTIME_PKGS = [
+    "debian12_ca-certificates",
+    "debian12_libtinfo6",
+    "debian12_libc6",
+    "debian12_libelf1",
+    "debian12_libstdc++6",
+    "debian12_zlib1g",
+    "debian12_libunwind8",
+    "debian12_libgles2-mesa",
+    "debian12_libegl1-mesa",
+]
+
+_DEBIAN12_BUILD_PKGS = [
+    "debian12_liblzma-dev",
+    "debian12_libunwind-dev",
+    "debian12_libncurses-dev",
+    "debian12_libc6-dev",
+    "debian12_libegl1-mesa-dev",
+    "debian12_libelf-dev",
+    "debian12_libgcc-12-dev",
+    "debian12_libgles2-mesa-dev",
+    "debian12_libicu-dev",
+    "debian12_libstdc++-12-dev",
+    "debian12_linux-libc-dev",
+    "debian12_mesa-common-dev",
+    "debian12_zlib1g-dev",
+]
+
+_DEBIAN12_TEST_PKGS = [
+    # dash provides /bin/sh. Things like popen will fail with weird errors if /bin/sh doesn't exist.
+    "debian12_dash",
+    # Some of our tests require these shell utilities
+    "debian12_bash",
+    "debian12_grep",
+    "debian12_gawk",
+    "debian12_sed",
+    "debian12_libc-bin",
+    # Deps for podman
+    "debian12_iptables",
+    "debian12_aardvark-dns",
+    "debian12_netavark",
+    "debian12_podman",
+]
+
 def _debian12_sysroots():
-    sysroot_type_setting = "@gml//bazel/cc_toolchains/sysroots:sysroot_type_debian12"
-    runtime_pkgs = [
-        "debian12_ca-certificates",
-        "debian12_libtinfo6",
-        "debian12_libc6",
-        "debian12_libelf1",
-        "debian12_libstdc++6",
-        "debian12_zlib1g",
-        "debian12_libunwind8",
-        "debian12_libgles2-mesa",
-        "debian12_libegl1-mesa",
-    ]
     sysroot_repo(
         name = "sysroot_debian12_runtime",
         libc_version = "glibc2_36",
         supported_archs = ["aarch64", "x86_64"],
         variant = "runtime",
-        packages = runtime_pkgs,
-        target_settings = [sysroot_type_setting],
+        packages = _DEBIAN12_RUNTIME_PKGS,
+        target_settings = ["@gml//bazel/cc_toolchains/sysroots:use_debian12_runtime_sysroot"],
     )
-    build_pkgs = [
-        "debian12_liblzma-dev",
-        "debian12_libunwind-dev",
-        "debian12_libncurses-dev",
-        "debian12_libc6-dev",
-        "debian12_libegl1-mesa-dev",
-        "debian12_libelf-dev",
-        "debian12_libgcc-12-dev",
-        "debian12_libgles2-mesa-dev",
-        "debian12_libicu-dev",
-        "debian12_libstdc++-12-dev",
-        "debian12_linux-libc-dev",
-        "debian12_mesa-common-dev",
-        "debian12_zlib1g-dev",
-    ]
     sysroot_repo(
         name = "sysroot_debian12_build",
         libc_version = "glibc2_36",
         supported_archs = ["aarch64", "x86_64"],
         variant = "build",
-        packages = runtime_pkgs + build_pkgs,
-        target_settings = [sysroot_type_setting],
+        packages = _DEBIAN12_RUNTIME_PKGS + _DEBIAN12_BUILD_PKGS,
+        target_settings = ["@gml//bazel/cc_toolchains/sysroots:use_debian12_build_sysroot"],
         path_prefix_filters = _DEFAULT_BUILD_PATH_PREFIXES,
     )
-    test_pkgs = [
-        # dash provides /bin/sh. Things like popen will fail with weird errors if /bin/sh doesn't exist.
-        "debian12_dash",
-        # Some of our tests require these shell utilities
-        "debian12_bash",
-        "debian12_grep",
-        "debian12_gawk",
-        "debian12_sed",
-        "debian12_libc-bin",
-        # Deps for podman
-        "debian12_iptables",
-        "debian12_aardvark-dns",
-        "debian12_netavark",
-        "debian12_podman",
-    ]
     sysroot_repo(
         name = "sysroot_debian12_test",
         libc_version = "glibc2_36",
         supported_archs = ["aarch64", "x86_64"],
         variant = "test",
-        packages = runtime_pkgs + build_pkgs + test_pkgs,
-        target_settings = [sysroot_type_setting],
+        packages = _DEBIAN12_RUNTIME_PKGS + _DEBIAN12_BUILD_PKGS + _DEBIAN12_TEST_PKGS,
+        target_settings = ["@gml//bazel/cc_toolchains/sysroots:use_debian12_test_sysroot"],
     )
 
 def _jetson_sysroots():
@@ -182,9 +186,26 @@ def _jetson_sysroots():
         target_settings = [sysroot_type_setting],
     )
 
+def _intel_gpu_sysroots():
+    sysroot_repo(
+        name = "sysroot_intelgpu_runtime",
+        libc_version = "glibc2_36",
+        supported_archs = ["x86_64"],
+        variant = "runtime",
+        packages = _DEBIAN12_RUNTIME_PKGS + [
+            "intel-compute-runtime_level-zero-gpu",
+            "intel-compute-runtime_opencl-icd",
+            "intel-compute-runtime_igc-core",
+            "intel-compute-runtime_igc-opencl",
+            "intel-compute-runtime_libigdgmm",
+        ],
+        target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_intelgpu"],
+    )
+
 def _gml_sysroots():
     _debian12_sysroots()
     _jetson_sysroots()
+    _intel_gpu_sysroots()
 
 SYSROOT_LIBC_VERSIONS = [
     "glibc2_36",

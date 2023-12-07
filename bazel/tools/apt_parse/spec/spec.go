@@ -63,14 +63,14 @@ type Repository struct {
 
 // PinnedPackage represents a fully-resolved package with all its dependencies also resolved.
 type PinnedPackage struct {
-	Name               string
-	Version            string
-	Arch               string
-	URL                string
-	SHA256             string
-	RepoName           string
+	Name               string `yaml:"name"`
+	Version            string `yaml:"version"`
+	Arch               string `yaml:"arch"`
+	URL                string `yaml:"url"`
+	SHA256             string `yaml:"sha256"`
+	RepoName           string `yaml:"repo"`
 	DirectDependencies []*PinnedPackage
-	ExcludePaths       []string
+	ExcludePaths       []string `yaml:"exclude_paths"`
 }
 
 // ParsePackageSet parses a yaml file into a PackageSet.

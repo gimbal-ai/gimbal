@@ -13,6 +13,7 @@
 #
 # SPDX-License-Identifier: Proprietary
 
+load("@bazel_skylib//lib:selects.bzl", "selects")
 load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_mkdirs")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
@@ -35,6 +36,7 @@ string_flag(
     values = [
         "debian12",
         "jetson",
+        "intelgpu",
     ],
 )
 
@@ -50,4 +52,38 @@ config_setting(
     flag_values = {
         ":sysroot_type": "jetson",
     },
+)
+
+config_setting(
+    name = "sysroot_type_intelgpu",
+    flag_values = {
+        ":sysroot_type": "intelgpu",
+    },
+)
+
+# Some of the sysroots don't provide all variants (runtime, build, and test). For those sysroots, we default to the debian12 sysroot for that variant.
+selects.config_setting_group(
+    name = "use_debian12_runtime_sysroot",
+    match_any = [
+        ":sysroot_type_debian12",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+selects.config_setting_group(
+    name = "use_debian12_build_sysroot",
+    match_any = [
+        ":sysroot_type_debian12",
+        ":sysroot_type_intelgpu",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+selects.config_setting_group(
+    name = "use_debian12_test_sysroot",
+    match_any = [
+        ":sysroot_type_debian12",
+        ":sysroot_type_intelgpu",
+    ],
+    visibility = ["//visibility:public"],
 )

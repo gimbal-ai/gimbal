@@ -1,0 +1,33 @@
+# yamllint disable rule:line-length
+---
+manual_packages:
+- name: level-zero-gpu
+  version: 23.30.26918.9
+  arch: x86_64
+  url: https://github.com/intel/compute-runtime/releases/download/23.30.26918.9/intel-level-zero-gpu_1.3.26918.9_amd64.deb
+  sha256: 9500b20e703497eceaf923aace5311f0c75ae77ae2012c7e2c2c117896e56955
+  repo: intel-compute-runtime
+- name: opencl-icd
+  version: 23.30.26918.9
+  arch: x86_64
+  url: https://github.com/intel/compute-runtime/releases/download/23.30.26918.9/intel-opencl-icd_23.30.26918.9_amd64.deb
+  sha256: 5de673d74e8d2e2a62fa739e2476f3a1a44be293e7593536da960dc0ed4678af
+  repo: intel-compute-runtime
+- name: igc-core
+  version: 1.0.14828.8
+  arch: x86_64
+  url: https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.14828.8/intel-igc-core_1.0.14828.8_amd64.deb
+  sha256: 0a3497d36d080f7be822eb10ce2611420543444328d7034ba97ebafc637c77a6
+  repo: intel-compute-runtime
+- name: igc-opencl
+  version: 1.0.14828.8
+  arch: x86_64
+  url: https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.14828.8/intel-igc-opencl_1.0.14828.8_amd64.deb
+  sha256: 133e1981121d60d3b83c0cddee72aaa12195cdf8cd576516fefe4db19420fffe
+  repo: intel-compute-runtime
+- name: libigdgmm
+  version: 23.30.26918.9
+  arch: x86_64
+  url: https://github.com/intel/compute-runtime/releases/download/23.30.26918.9/libigdgmm12_22.3.0_amd64.deb
+  sha256: de6ed9333a74506de43993eb14c8e0e0eb23314c42b03af66fe9c3df24a8973d
+  repo: intel-compute-runtime

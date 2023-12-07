@@ -2914,6 +2914,36 @@ def deb_repos():
         deps = [],
     )
     deb_archive_w_pkg_providers(
+        name = "intel-compute-runtime_igc-core_x86_64",
+        sha256 = "0a3497d36d080f7be822eb10ce2611420543444328d7034ba97ebafc637c77a6",
+        urls = ["https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.14828.8/intel-igc-core_1.0.14828.8_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "intel-compute-runtime_igc-opencl_x86_64",
+        sha256 = "133e1981121d60d3b83c0cddee72aaa12195cdf8cd576516fefe4db19420fffe",
+        urls = ["https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.14828.8/intel-igc-opencl_1.0.14828.8_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "intel-compute-runtime_level-zero-gpu_x86_64",
+        sha256 = "9500b20e703497eceaf923aace5311f0c75ae77ae2012c7e2c2c117896e56955",
+        urls = ["https://github.com/intel/compute-runtime/releases/download/23.30.26918.9/intel-level-zero-gpu_1.3.26918.9_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "intel-compute-runtime_libigdgmm_x86_64",
+        sha256 = "de6ed9333a74506de43993eb14c8e0e0eb23314c42b03af66fe9c3df24a8973d",
+        urls = ["https://github.com/intel/compute-runtime/releases/download/23.30.26918.9/libigdgmm12_22.3.0_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "intel-compute-runtime_opencl-icd_x86_64",
+        sha256 = "5de673d74e8d2e2a62fa739e2476f3a1a44be293e7593536da960dc0ed4678af",
+        urls = ["https://github.com/intel/compute-runtime/releases/download/23.30.26918.9/intel-opencl-icd_23.30.26918.9_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
         name = "jetson_cuda-cccl-11-4_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
         sha256 = "1306a4ca4f83024bd3d02f24a2c911f69dd02c2ff6b6ef386a527e5bd717ff01",

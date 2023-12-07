@@ -32,7 +32,7 @@ def _gml_cc_toolchains():
         clang_version = "15.0.6",
         libc_version = "glibc2_36",
         use_sysroot = True,
-        target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_debian12"],
+        target_settings = ["@gml//bazel/cc_toolchains/sysroots:use_debian12_build_sysroot"],
     )
     clang_toolchain(
         name = "clang-15.0-aarch64-glibc2.36-sysroot",
@@ -41,7 +41,7 @@ def _gml_cc_toolchains():
         clang_version = "15.0.6",
         libc_version = "glibc2_36",
         use_sysroot = True,
-        target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_debian12"],
+        target_settings = ["@gml//bazel/cc_toolchains/sysroots:use_debian12_build_sysroot"],
     )
     clang_toolchain(
         name = "clang-15.0-aarch64-glibc2.31-jetson-sysroot",
