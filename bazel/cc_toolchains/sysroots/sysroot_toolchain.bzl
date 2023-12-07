@@ -25,6 +25,11 @@ SysrootInfo = provider(
     ],
 )
 
+SysrootPathInfo = provider(
+    doc = "Path to sysroot",
+    fields = ["path"],
+)
+
 def _sysroot_toolchain_impl(ctx):
     sysroot_path = ctx.attr.path
     extra_compile_flags = [
