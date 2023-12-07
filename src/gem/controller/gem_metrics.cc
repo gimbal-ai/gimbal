@@ -28,7 +28,8 @@ namespace gml::gem::controller {
 GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system)
     : metrics::Scrapeable(metrics_system) {
   CHECK(metrics_system != nullptr);
-  pid_ = getpid();
+  pgid_ = getpgid(getpid());
+
   auto gml_meter = metrics_system_->GetMeterProvider()->GetMeter("gml");
   cpu_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gem.cpu.time"));
   mem_usage_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gem.memory.usage"));
@@ -39,59 +40,39 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
 }
 
 void GEMMetricsReader::Scrape() {
-  gml::system::ProcParser::ProcessStats process_stats;
-  auto s = proc_parser_.ParseProcPIDStat(pid_, gml::system::Config::GetInstance().PageSizeBytes(),
-                                         gml::system::Config::GetInstance().KernelTickTimeNS(),
-                                         &process_stats);
-  if (!s.ok()) {
-    LOG(INFO) << "Failed to read proc stats. Skipping...";
-    return;
-  }
+  // Generate metrics for all child processes in parent.
+  auto pids = proc_parser_.ListChildPIDsForPGID(getpgid(getpid()));
+  for (auto p : pids) {
+    gml::system::ProcParser::ProcessStats process_stats;
+    auto s = proc_parser_.ParseProcPIDStat(p, gml::system::Config::GetInstance().PageSizeBytes(),
+                                           gml::system::Config::GetInstance().KernelTickTimeNS(),
+                                           &process_stats);
+    if (!s.ok()) {
+      LOG(INFO) << "Failed to read proc stats. Skipping...";
+      continue;
+    }
 
-  auto pid = std::to_string(pid_);
+    auto pid = std::to_string(p);
 
-  cpu_counter_->Add(process_stats.ktime_ns,
-                    {
-                        {"pid", pid},
-                        {"state", "user"},
-                    },
-                    {});
-  cpu_counter_->Add(process_stats.utime_ns,
-                    {
-                        {"pid", pid},
-                        {"state", "system"},
-                    },
-                    {});
-  mem_usage_counter_->Add(process_stats.rss_bytes,
-                          {
-                              {"pid", pid},
-                              {"state", "system"},
-                          },
-                          {});
-  mem_virtual_counter_->Add(static_cast<int64_t>(process_stats.vsize_bytes),
-                            {
-                                {"pid", pid},
-                                {"state", "system"},
-                            },
-                            {});
-  thread_counter_->Add(process_stats.num_threads,
-                       {
-                           {"pid", pid},
-                           {"state", "system"},
-                       },
-                       {});
-  gml::system::ProcParser::ProcessStatus process_status;
-  s = proc_parser_.ParseProcPIDStatus(pid_, &process_status);
-  if (!s.ok()) {
-    LOG(INFO) << "Failed to read proc status. Skipping...";
-    return;
+    cpu_counter_->Add(process_stats.ktime_ns, {{"pid", pid}, {"state", "user"}}, {});
+    cpu_counter_->Add(process_stats.utime_ns, {{"pid", pid}, {"state", "system"}}, {});
+    mem_usage_counter_->Add(process_stats.rss_bytes, {{"pid", pid}, {"state", "system"}}, {});
+    mem_virtual_counter_->Add(static_cast<int64_t>(process_stats.vsize_bytes),
+                              {{"pid", pid}, {"state", "system"}}, {});
+    thread_counter_->Add(process_stats.num_threads, {{"pid", pid}, {"state", "system"}}, {});
+    gml::system::ProcParser::ProcessStatus process_status;
+    s = proc_parser_.ParseProcPIDStatus(p, &process_status);
+    if (!s.ok()) {
+      LOG(INFO) << "Failed to read proc status. Skipping...";
+      return;
+    }
+    context_switches_counter_->Add(
+        process_status.voluntary_ctxt_switches,
+        {{"pid", pid}, {"state", "system"}, {"context_switch_type", "voluntary"}}, {});
+    context_switches_counter_->Add(
+        process_status.nonvoluntary_ctxt_switches,
+        {{"pid", pid}, {"state", "system"}, {"context_switch_type", "involuntary"}}, {});
   }
-  context_switches_counter_->Add(
-      process_status.voluntary_ctxt_switches,
-      {{"pid", pid}, {"state", "system"}, {"context_switch_type", "voluntary"}}, {});
-  context_switches_counter_->Add(
-      process_status.nonvoluntary_ctxt_switches,
-      {{"pid", pid}, {"state", "system"}, {"context_switch_type", "involuntary"}}, {});
 }
 
 }  // namespace gml::gem::controller

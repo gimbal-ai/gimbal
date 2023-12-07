@@ -904,4 +904,25 @@ StatusOr<ProcParser::ProcessSMaps> ProcParser::GetExecutableMapEntry(pid_t pid,
   return error::NotFound(absl::Substitute("Could not find maps entry for $0", libpath));
 }
 
+std::vector<pid_t> ProcParser::ListChildPIDsForPGID(pid_t pid) {
+  const auto fpath = ProcPidPath(pid, "task");
+
+  std::vector<pid_t> pids;
+  for (const auto& p : std::filesystem::directory_iterator(fpath)) {
+    uint32_t pid = 0;
+    if (!absl::SimpleAtoi(p.path().filename().string(), &pid)) {
+      continue;
+    }
+    StatusOr<int64_t> pid_start_time = system::GetPIDStartTimeTicks(p.path());
+    if (!pid_start_time.ok()) {
+      VLOG(1) << absl::Substitute("Could not get PID start time for pid $0. Likely already dead.",
+                                  p.path().string());
+      continue;
+    }
+    pids.push_back(static_cast<pid_t>(pid));
+  }
+
+  return pids;
+}
+
 }  // namespace gml::system

@@ -30,7 +30,7 @@ class GEMMetricsReader : public gml::metrics::Scrapeable {
   void Scrape() override;
 
  private:
-  pid_t pid_;
+  pid_t pgid_;
   std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> cpu_counter_;
   std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> mem_usage_counter_;
   std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> mem_virtual_counter_;

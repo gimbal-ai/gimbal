@@ -387,6 +387,8 @@ class ProcParser {
   StatusOr<ProcessSMaps> GetExecutableMapEntry(pid_t pid, const std::string& libpath,
                                                uint64_t vmem_start);
 
+  std::vector<pid_t> ListChildPIDsForPGID(pid_t pid);
+
  private:
   static Status ParseNetworkStatAccumulateIFaceData(
       const std::vector<std::string_view>& dev_stat_record, NetworkStats* out);
