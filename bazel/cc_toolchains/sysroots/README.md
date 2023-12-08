@@ -3,13 +3,14 @@
 ## Add a package to a sysroot
 
 1. Add the package to the relevant packages spec in `bazel/cc_toolchains/sysroots/packages`.
-2. Run `bazel run //bazel/cc_toolchains/sysroots/packages:all_debs.update`
-3. Add the package to the sysroot definition in `bazel/cc_toolchains/sysroots/sysroots.bzl`.
+1. Run `bazel run //bazel/cc_toolchains/sysroots/packages:all_debs.update`
+1. Add the package to the sysroot definition in `bazel/cc_toolchains/sysroots/sysroots.bzl`.
 
 For example, if you wanted to add the package `chromium` (<https://packages.debian.org/bookworm/chromium>) to the default test sysroot, you would do the following:
+
 1. Add the line `- name: chromium` to `bazel/cc_toolchains/sysroots/packages/debian12.yaml` under the key `packages`.
-2. Run `bazel run //bazel/cc_toolchains/sysroots/packages:all_debs.update`.
-3. Add `"debian12_chromium"` to the `test_pkgs` list inside the macro `_debian12_sysroots` in `bazel/cc_toolchains/sysroots/sysroots.bzl`
+1. Run `bazel run //bazel/cc_toolchains/sysroots/packages:all_debs.update`.
+1. Add `"debian12_chromium"` to the `test_pkgs` list inside the macro `_debian12_sysroots` in `bazel/cc_toolchains/sysroots/sysroots.bzl`
 
 ## Add a new sysroot
 
