@@ -48,13 +48,17 @@ class ModelExecHandler : public MessageHandler {
 
  private:
   class RunModelTask;
-  void HandleRunModelFinished();
+  void HandleRunModelFinished(sole::uuid);
+  void HandleModelStatusUpdate(sole::uuid, ::gml::internal::api::core::v1::ExecutionGraphStatus*);
 
   CachedBlobStore* blob_store_;
 
   exec::core::ControlExecutionContext* ctrl_exec_ctx_;
   event::RunnableAsyncTaskUPtr running_task_ = nullptr;
   std::atomic<bool> stop_signal_ = false;
+  absl::Mutex tasks_mu_;
+  absl::flat_hash_map<sole::uuid, event::RunnableAsyncTaskUPtr> model_tasks_
+      ABSL_GUARDED_BY(tasks_mu_);
 };
 
 }  // namespace gml::gem::controller

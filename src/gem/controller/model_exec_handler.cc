@@ -44,6 +44,10 @@ namespace gml::gem::controller {
 using ::gml::gem::exec::core::ExecutionContext;
 using ::gml::gem::exec::core::Model;
 using ::gml::internal::api::core::v1::ApplyExecutionGraph;
+using gml::internal::api::core::v1::EDGE_CP_TOPIC_EXEC;
+using gml::internal::api::core::v1::ExecutionGraphState;
+using gml::internal::api::core::v1::ExecutionGraphStatus;
+using gml::internal::api::core::v1::ExecutionGraphStatusUpdate;
 using ::gml::internal::api::core::v1::ExecutionSpec;
 using ::gml::internal::controlplane::egw::v1::BridgeResponse;
 
@@ -57,10 +61,17 @@ ModelExecHandler::ModelExecHandler(gml::event::Dispatcher* dispatcher, GEMInfo* 
 class ModelExecHandler::RunModelTask : public event::AsyncTask {
  public:
   RunModelTask(ModelExecHandler* parent, ExecutionSpec exec_spec,
-               exec::core::ControlExecutionContext* ctrl_exec_ctx)
-      : parent_(parent), exec_spec_(std::move(exec_spec)), ctrl_exec_ctx_(ctrl_exec_ctx) {}
+               exec::core::ControlExecutionContext* ctrl_exec_ctx, sole::uuid physical_pipeline_id,
+               int64_t version)
+      : parent_(parent),
+        exec_spec_(std::move(exec_spec)),
+        ctrl_exec_ctx_(ctrl_exec_ctx),
+        physical_pipeline_id_(physical_pipeline_id),
+        version_(version) {}
 
   Status PreparePluginExecutionContexts() {
+    SendStatusUpdate(ExecutionGraphState::EXECUTION_GRAPH_STATE_COMPILING, "");
+
     auto& plugin_registry = plugins::Registry::GetInstance();
 
     // We use a shared CPU context for all nodes in the mediapipe execution graph.
@@ -150,7 +161,19 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
     }
   }
 
-  void Done() override { parent_->HandleRunModelFinished(); }
+  void Done() override {
+    SendStatusUpdate(ExecutionGraphState::EXECUTION_GRAPH_STATE_TERMINATING, "");
+
+    parent_->HandleRunModelFinished(physical_pipeline_id_);
+  }
+
+  void SendStatusUpdate(ExecutionGraphState state, std::string reason) {
+    ExecutionGraphStatus status;
+    status.set_state(state);
+    status.set_version(version_);
+    status.set_reason(reason);
+    parent_->HandleModelStatusUpdate(physical_pipeline_id_, &status);
+  }
 
  private:
   ModelExecHandler* parent_;
@@ -160,9 +183,14 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
   std::unique_ptr<ExecutionContext> cpu_exec_ctx_;
   std::vector<std::unique_ptr<Model>> models_;
   absl::flat_hash_map<std::string, std::unique_ptr<ExecutionContext>> model_exec_ctxs_;
+  sole::uuid physical_pipeline_id_;
+  int64_t version_;
 };
 
 Status ModelExecHandler::HandleMessage(const BridgeResponse& msg) {
+  absl::WriterMutexLock lock(&tasks_mu_);
+
+  // TODO(michelle): Handle DeleteExecutionGraph message.
   ApplyExecutionGraph eg;
   if (!msg.msg().UnpackTo(&eg)) {
     LOG(ERROR) << "Failed to unpack apply execution graph message. Received message of type: "
@@ -170,8 +198,12 @@ Status ModelExecHandler::HandleMessage(const BridgeResponse& msg) {
     return Status::OK();
   }
 
-  if (running_task_ != nullptr) {
-    LOG(INFO) << "Model already running skipping RunModel Request";
+  auto id = ParseUUID(eg.physical_pipeline_id());
+
+  auto it = model_tasks_.find(id);
+  if (it != model_tasks_.end()) {
+    // TODO(michelle): Handle updates to existing pipeline.
+    LOG(INFO) << "Pipeline for model already running, skipping request";
     return Status::OK();
   }
 
@@ -183,10 +215,12 @@ Status ModelExecHandler::HandleMessage(const BridgeResponse& msg) {
 
   stop_signal_.store(false);
 
-  auto task = std::make_unique<RunModelTask>(this, eg.spec().graph(), ctrl_exec_ctx_);
+  auto task = std::make_unique<RunModelTask>(this, eg.spec().graph(), ctrl_exec_ctx_, id,
+                                             eg.spec().version());
 
-  running_task_ = dispatcher()->CreateAsyncTask(std::move(task));
-  running_task_->Run();
+  auto running_task = dispatcher()->CreateAsyncTask(std::move(task));
+  running_task->Run();
+  model_tasks_[id] = std::move(running_task);
 
   return Status::OK();
 }
@@ -194,16 +228,40 @@ Status ModelExecHandler::HandleMessage(const BridgeResponse& msg) {
 Status ModelExecHandler::Init() { return Status::OK(); }
 
 Status ModelExecHandler::Finish() {
-  if (running_task_ != nullptr) {
+  absl::ReaderMutexLock lock(&tasks_mu_);
+
+  if (!model_tasks_.empty()) {
     stop_signal_.store(true);
   }
   return Status::OK();
 }
 
-void ModelExecHandler::HandleRunModelFinished() {
-  LOG(INFO) << "Model Execution Finished";
-  dispatcher()->DeferredDelete(std::move(running_task_));
-  running_task_ = nullptr;
+void ModelExecHandler::HandleRunModelFinished(sole::uuid physical_pipeline_id) {
+  absl::WriterMutexLock lock(&tasks_mu_);
+
+  auto it = model_tasks_.find(physical_pipeline_id);
+  if (it == model_tasks_.end()) {
+    LOG(INFO) << "Model execution finished, but not found in map";
+    return;
+  }
+
+  LOG(INFO) << "Model execution finished";
+  dispatcher()->DeferredDelete(std::move(it->second));
+  model_tasks_.erase(it);
+}
+
+void ModelExecHandler::HandleModelStatusUpdate(sole::uuid physical_pipeline_id,
+                                               ExecutionGraphStatus* status) {
+  ExecutionGraphStatusUpdate update;
+
+  auto mutable_id = update.mutable_physical_pipeline_id();
+  ToProto(physical_pipeline_id, mutable_id);
+  (*update.mutable_status()) = *status;
+
+  auto s = bridge()->SendMessageToBridge(EDGE_CP_TOPIC_EXEC, update);
+  if (!s.ok()) {
+    LOG(ERROR) << "Failed to send state update";
+  }
 }
 
 }  // namespace gml::gem::controller
