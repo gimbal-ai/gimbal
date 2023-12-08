@@ -26,7 +26,6 @@ gml_cc_library(
         "blob_store.h",
         "fs_blob_store.cc",
         "fs_blob_store.h",
-        "memory_blob.h",
     ],
     deps = [
         "//src/common/fs:cc_library",

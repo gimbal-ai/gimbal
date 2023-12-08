@@ -25,7 +25,6 @@
 #include "src/gem/controller/file_downloader.h"
 #include "src/gem/controller/grpc_bridge.h"
 #include "src/gem/storage/blob_store.h"
-#include "src/gem/storage/memory_blob.h"
 
 namespace gml::gem::controller {
 
@@ -58,7 +57,6 @@ class CachedBlobStore : public storage::BlobStore {
    */
   Status EnsureBlobExists(const std::string& key, const std::string& sha256sum, size_t size);
 
-  StatusOr<std::unique_ptr<const storage::MemoryBlob>> MapReadOnly(std::string key) const override;
   StatusOr<std::string> FilePath(std::string key) const override;
 
  protected:

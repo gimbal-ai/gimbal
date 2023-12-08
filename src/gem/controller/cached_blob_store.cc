@@ -23,7 +23,6 @@
 #include "src/common/fs/fs_wrapper.h"
 #include "src/gem/controller/cached_blob_store.h"
 #include "src/gem/storage/fs_blob_store.h"
-#include "src/gem/storage/memory_blob.h"
 
 namespace gml::gem::controller {
 
@@ -41,17 +40,6 @@ CachedBlobStore::CachedBlobStore(const std::filesystem::path& directory,
       cas_directory_(directory / "cas"),
       by_key_directory_(directory / "by_key"),
       downloader_(std::move(downloader)) {}
-
-StatusOr<std::unique_ptr<const storage::MemoryBlob>> CachedBlobStore::MapReadOnly(
-    std::string key) const {
-  auto path = directory_ / std::filesystem::path(key);
-
-  if (!fs::Exists(path)) {
-    return std::unique_ptr<const storage::MemoryBlob>(nullptr);
-  }
-
-  return storage::MemoryMappedBlob::CreateReadOnly(path);
-}
 
 Status CachedBlobStore::Init() {
   GML_RETURN_IF_ERROR(fs::CreateDirectories(directory_));

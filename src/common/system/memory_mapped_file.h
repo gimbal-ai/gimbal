@@ -17,28 +17,29 @@
 
 #pragma once
 
-#include <filesystem>
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <memory>
 
-#include "src/common/base/base.h"
-#include "src/gem/storage/blob_store.h"
+#include "src/common/base/statusor.h"
 
-namespace gml::gem::storage {
+namespace gml::system {
 
-/**
- * FilesystemBlobStore stores binary blobs in the given directory on disk.
- */
-class FilesystemBlobStore : public BlobStore {
+class MemoryMappedFile {
  public:
-  StatusOr<std::string> FilePath(std::string key) const override;
+  ~MemoryMappedFile();
 
-  static StatusOr<std::unique_ptr<FilesystemBlobStore>> Create(const std::string& directory);
+  static StatusOr<std::unique_ptr<const MemoryMappedFile>> MapReadOnly(const std::string& path);
+
+  const uint8_t* data() const { return static_cast<uint8_t*>(mmap_addr_); }
+  size_t size() const { return size_; }
 
  protected:
-  Status UpsertImpl(std::string key, const char* data, size_t size) override;
+  explicit MemoryMappedFile(void* mmap_addr, size_t size) : mmap_addr_(mmap_addr), size_(size) {}
 
  private:
-  explicit FilesystemBlobStore(const std::string& directory) : directory_(directory) {}
-  std::filesystem::path directory_;
+  void* mmap_addr_;
+  size_t size_;
 };
 
-}  // namespace gml::gem::storage
+}  // namespace gml::system

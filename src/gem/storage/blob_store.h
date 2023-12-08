@@ -20,7 +20,6 @@
 #include <utility>
 
 #include "src/common/base/base.h"
-#include "src/gem/storage/memory_blob.h"
 
 namespace gml::gem::storage {
 
@@ -30,12 +29,6 @@ namespace gml::gem::storage {
 class BlobStore {
  public:
   virtual ~BlobStore() = default;
-
-  /**
-   * MapReadOnly maps a stored blob into memory for reading only. How the blob is mapped into memory
-   * (mmap, copy, etc) is implementation dependent.
-   */
-  virtual StatusOr<std::unique_ptr<const MemoryBlob>> MapReadOnly(std::string key) const = 0;
 
   /**
    * FilePath returns the path to a file containing the blob.

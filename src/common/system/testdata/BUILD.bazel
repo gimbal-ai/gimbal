@@ -21,3 +21,8 @@ filegroup(
     name = "proc_fs",
     srcs = glob(include = ["proc/**/*"]),
 )
+
+filegroup(
+    name = "nonutf8file",
+    srcs = ["non_utf8_file.txt"],
+)

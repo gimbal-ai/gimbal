@@ -16,6 +16,8 @@
  */
 
 #include "src/gem/storage/fs_blob_store.h"
+#include "src/common/system/linux_file_wrapper.h"
+#include "src/common/system/memory_mapped_file.h"
 #include "src/common/testing/testing.h"
 
 namespace gml::gem::storage {
@@ -27,11 +29,13 @@ TEST(FilesystemBlobStore, SetAndGet) {
   floats.push_back(2.0);
   ASSERT_OK(store->Upsert("myfloats", floats.data(), floats.size()));
 
-  ASSERT_OK_AND_ASSIGN(auto received_blob, store->MapReadOnly("myfloats"));
+  ASSERT_OK_AND_ASSIGN(auto blob_path, store->FilePath("myfloats"));
 
-  EXPECT_EQ(2, received_blob->SizeForType<float>());
-  EXPECT_EQ(1.0, received_blob->Data<float>()[0]);
-  EXPECT_EQ(2.0, received_blob->Data<float>()[1]);
+  ASSERT_OK_AND_ASSIGN(auto mmap, system::MemoryMappedFile::MapReadOnly(blob_path));
+
+  ASSERT_EQ(2 * sizeof(float), mmap->size());
+  EXPECT_EQ(1.0, reinterpret_cast<const float*>(mmap->data())[0]);
+  EXPECT_EQ(2.0, reinterpret_cast<const float*>(mmap->data())[1]);
 }
 
 }  // namespace gml::gem::storage

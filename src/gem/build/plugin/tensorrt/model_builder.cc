@@ -20,6 +20,7 @@
 #include <chrono>
 #include "src/common/base/base.h"
 #include "src/common/perf/elapsed_timer.h"
+#include "src/common/system/memory_mapped_file.h"
 #include "src/common/uuid/uuid.h"
 
 #include "src/gem/build/plugin/tensorrt/model_builder.h"
@@ -44,11 +45,8 @@ StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(
 
   {
     auto file_id = ParseUUID(spec.onnx_file().file_id()).str();
-    GML_ASSIGN_OR_RETURN(auto onnx_blob, store->MapReadOnly(file_id));
-    if (onnx_blob == nullptr) {
-      return error::InvalidArgument("ONNX model not found in BlobStore with key $0", file_id);
-    }
-    parser->parse(onnx_blob->Data<char>(), onnx_blob->SizeForType<char>());
+    GML_ASSIGN_OR_RETURN(auto onnx_file_path, store->FilePath(file_id));
+    parser->parseFromFile(onnx_file_path.c_str(), /*verbosity*/ 0);
   }
   std::vector<std::string> errors;
   errors.reserve(parser->getNbErrors());
@@ -101,10 +99,13 @@ StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(
 
   auto engine_blob_key = spec.tensorrt_spec().engine_blob_key();
   if (engine_blob_key != "") {
-    GML_ASSIGN_OR_RETURN(auto engine_blob, store->MapReadOnly(engine_blob_key));
-    if (engine_blob != nullptr) {
-      cuda_engine = std::unique_ptr<nvinfer1::ICudaEngine>(runtime->deserializeCudaEngine(
-          engine_blob->Data<char>(), engine_blob->SizeForType<char>()));
+    auto engine_path_or_s = store->FilePath(engine_blob_key);
+    if (engine_path_or_s.ok()) {
+      GML_ASSIGN_OR_RETURN(auto engine_mmap,
+                           system::MemoryMappedFile::MapReadOnly(engine_path_or_s.ValueOrDie()));
+      const auto* engine_data = reinterpret_cast<const char*>(engine_mmap->data());
+      cuda_engine = std::unique_ptr<nvinfer1::ICudaEngine>(
+          runtime->deserializeCudaEngine(engine_data, engine_mmap->size()));
     }
   }
   if (cuda_engine == nullptr) {

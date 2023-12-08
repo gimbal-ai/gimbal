@@ -28,6 +28,8 @@ gml_cc_library(
         "linux_file_wrapper.h",
         "mac_address.cc",
         "mac_address.h",
+        "memory_mapped_file.cc",
+        "memory_mapped_file.h",
         "proc_parser.cc",
         "proc_parser.h",
         "proc_pid_path.cc",
@@ -61,6 +63,15 @@ gml_cc_test(
     name = "mac_address_test",
     srcs = ["mac_address_test.cc"],
     tags = ["manual"],
+    deps = [
+        ":cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "memory_mapped_file_test",
+    srcs = ["memory_mapped_file_test.cc"],
+    data = ["//src/common/system/testdata:nonutf8file"],
     deps = [
         ":cc_library",
     ],
