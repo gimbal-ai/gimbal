@@ -88,10 +88,14 @@ Status CachedBlobStore::EnsureBlobExists(const std::string& key, const std::stri
 StatusOr<std::string> CachedBlobStore::FilePath(std::string key) const {
   absl::MutexLock lock(&map_mu_);
   auto it = sha_to_filemd_.find(key);
-  if (it == sha_to_filemd_.end()) {
+  if (it != sha_to_filemd_.end()) {
+    return it->second.path().string();
+  }
+  auto path = by_key_directory_ / key;
+  if (!std::filesystem::exists(path)) {
     return error::NotFound("Cannot find blob for key: $0", key);
   }
-  return it->second.path().string();
+  return path.string();
 }
 
 Status CachedBlobStore::UpsertImpl(std::string key, const char* data, size_t size) {
