@@ -60,6 +60,9 @@ Status GRPCBridge::HandleReadWriteFailure() {
   }
   // If it is a RST_STREAM restart the stream.
   LOG(INFO) << "Restarting GRPCBridge due to RST_STREAM";
+
+  stream_reset_total_->Add(1);
+
   GML_RETURN_IF_ERROR(Connect());
   return Status::OK();
 }
@@ -68,6 +71,26 @@ Status GRPCBridge::Init() {
   egwstub_ = std::make_unique<EGWService::Stub>(cp_chan_);
   absl::WriterMutexLock lock(&rdwr_lock_);
   GML_RETURN_IF_ERROR(Connect());
+
+  auto& metrics_system = gml::metrics::MetricsSystem::GetInstance();
+  auto meter = metrics_system.GetMeterProvider()->GetMeter("gml");
+
+  rx_msg_total_ = meter->CreateUInt64Counter(
+      "gml.gem.bridge.rx_msg_total", "The total number of messages received by the GEM over GRPC");
+  tx_msg_total_ = meter->CreateUInt64Counter(
+      "gml.gem.bridge.tx_msg_total", "The total number of messages sent by the GEM over GRPC");
+  rx_err_total_ = meter->CreateUInt64Counter("gml.gem.bridge.rx_err_total",
+                                             "The total number of read errors on GEM bridge");
+  tx_err_total_ = meter->CreateUInt64Counter("gml.gem.bridge.tx_err_total",
+                                             "The total number of write errors on GEM bridge");
+  rx_msg_bytes_ = meter->CreateUInt64Counter(
+      "gml.gem.bridge.rx_msg_bytes", "The total number of bytes received by the GEM over GRPC");
+  tx_msg_bytes_ = meter->CreateUInt64Counter("gml.gem.bridge.tx_msg_bytes",
+                                             "The total number of bytes sent by the GEM over GRPC");
+
+  stream_reset_total_ = meter->CreateUInt64Counter("gml.gem.bridge.stream_reset_total",
+                                                   "The number of GRPC stream resets");
+
   return Status::OK();
 }
 
@@ -111,12 +134,16 @@ void GRPCBridge::Reader() {
       read_succeeded = rdwr_->Read(resp.get());
     }
     if (!read_succeeded) {
+      rx_err_total_->Add(1);
       auto s = HandleReadWriteFailure();
       if (!s.ok()) {
         // TODO(zasgar): We need to notify of error here.
         LOG(FATAL) << absl::Substitute("GRPCBridge read failed with error: $0", s.msg());
       }
     }
+
+    rx_msg_total_->Add(1);
+    rx_msg_bytes_->Add(resp->ByteSizeLong());
 
     if (read_succeeded && read_handler_) {
       ECHECK_OK(read_handler_(std::move(resp)));
@@ -131,8 +158,13 @@ Status GRPCBridge::WriteRequestToBridge(const BridgeRequest& req) {
     write_suceeded = rdwr_->Write(req);
   }
   if (!write_suceeded) {
+    tx_err_total_->Add(1);
     GML_RETURN_IF_ERROR(HandleReadWriteFailure());
   }
+
+  tx_msg_total_->Add(1);
+  tx_msg_bytes_->Add(req.ByteSizeLong());
+
   return Status::OK();
 }
 

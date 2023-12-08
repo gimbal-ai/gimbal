@@ -18,6 +18,8 @@
 
 #include <grpcpp/grpcpp.h>
 #include <condition_variable>
+#include <cstdint>
+#include <memory>
 #include <string>
 #include <string_view>
 
@@ -26,6 +28,7 @@
 
 #include "src/api/corepb/v1/cp_edge.pb.h"
 #include "src/common/base/base.h"
+#include "src/common/metrics/metrics_system.h"
 #include "src/controlplane/egw/egwpb/v1/egwpb.grpc.pb.h"
 
 namespace gml::gem::controller {
@@ -90,6 +93,15 @@ class GRPCBridge {
 
   std::unique_ptr<grpc::ClientContext> ctx_;
   std::function<Status(std::unique_ptr<BridgeResponse>)> read_handler_;
+
+  std::unique_ptr<opentelemetry::metrics::Counter<uint64_t>> rx_msg_total_;
+  std::unique_ptr<opentelemetry::metrics::Counter<uint64_t>> tx_msg_total_;
+  std::unique_ptr<opentelemetry::metrics::Counter<uint64_t>> rx_err_total_;
+  std::unique_ptr<opentelemetry::metrics::Counter<uint64_t>> tx_err_total_;
+  std::unique_ptr<opentelemetry::metrics::Counter<uint64_t>> rx_msg_bytes_;
+  std::unique_ptr<opentelemetry::metrics::Counter<uint64_t>> tx_msg_bytes_;
+  std::unique_ptr<opentelemetry::metrics::Counter<uint64_t>> stream_reset_total_;
+  ;
 };
 
 }  // namespace gml::gem::controller
