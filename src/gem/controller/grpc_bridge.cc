@@ -17,6 +17,7 @@
 
 #include "src/gem/controller/grpc_bridge.h"
 
+#include <magic_enum.hpp>
 #include <memory>
 #include "src/common/base/error.h"
 #include "src/common/grpcutils/status.h"
@@ -142,8 +143,10 @@ void GRPCBridge::Reader() {
       }
     }
 
-    rx_msg_total_->Add(1);
-    rx_msg_bytes_->Add(resp->ByteSizeLong());
+    std::string topic(magic_enum::enum_name(resp->topic()));
+
+    rx_msg_total_->Add(1, {{"topic", topic}});
+    rx_msg_bytes_->Add(resp->ByteSizeLong(), {{"topic", topic}});
 
     if (read_succeeded && read_handler_) {
       ECHECK_OK(read_handler_(std::move(resp)));
@@ -162,8 +165,9 @@ Status GRPCBridge::WriteRequestToBridge(const BridgeRequest& req) {
     GML_RETURN_IF_ERROR(HandleReadWriteFailure());
   }
 
-  tx_msg_total_->Add(1);
-  tx_msg_bytes_->Add(req.ByteSizeLong());
+  std::string topic(magic_enum::enum_name(req.topic()));
+  tx_msg_total_->Add(1, {{"topic", topic}});
+  tx_msg_bytes_->Add(req.ByteSizeLong(), {{"topic", topic}});
 
   return Status::OK();
 }
