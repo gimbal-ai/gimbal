@@ -19,8 +19,8 @@
 #include <filesystem>
 #include <fstream>
 
+#include "src/common/bazel/runfiles.h"
 #include "src/common/fs/temp_dir.h"
-#include "src/common/testing/test_environment.h"
 #include "src/common/testing/testing.h"
 #include "src/gem/storage/fs_blob_store.h"
 
@@ -31,7 +31,7 @@ using ::gml::internal::api::core::v1::ModelSpec;
 constexpr std::string_view kOnnxPath = "src/gem/build/plugin/openvino/testdata/simple.onnx";
 
 TEST(ModelBuilder, BuildsWithoutError) {
-  auto onnx_path = testing::BazelRunfilePath(std::filesystem::path(kOnnxPath));
+  auto onnx_path = bazel::RunfilePath(std::filesystem::path(kOnnxPath));
   ASSERT_OK_AND_ASSIGN(auto tmp_dir, fs::TempDir::Create());
   ASSERT_OK_AND_ASSIGN(auto blob_store, storage::FilesystemBlobStore::Create(tmp_dir->path()));
 

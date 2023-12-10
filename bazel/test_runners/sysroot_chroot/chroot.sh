@@ -102,8 +102,9 @@ if [[ "${exit_code}" != 0 ]] && [[ "${DEBUG_CHROOT}" != true ]] && [[ "${DEBUG_U
   echo "    (pushd ${PWD}; \\"
   echo "    export TEST_TMPDIR=\`mktemp -d\`; \\"
   echo "    export TEST_SRCDIR=$TEST_SRCDIR; \\"
+  echo "    export RUNFILES_DIR=$RUNFILES_DIR; \\"
   echo "    DEBUG_CHROOT=true  bazel/test_runners/sysroot_chroot/test_runner.sh $*; \\"
-  echo "    popd; rm -rf \"\$TEST_TMPDIR\"; unset TEST_TMPDIR; unset TEST_SRCDIR)"
+  echo "    popd; rm -rf \"\$TEST_TMPDIR\"; unset TEST_TMPDIR; unset TEST_SRCDIR; unset RUNFILES_DIR)"
   echo "---------------------------------------------------------------"
 fi
 

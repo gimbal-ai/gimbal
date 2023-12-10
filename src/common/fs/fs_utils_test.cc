@@ -19,7 +19,7 @@
 
 #include <gtest/gtest.h>
 
-#include "src/common/testing/test_environment.h"
+#include "src/common/bazel/runfiles.h"
 #include "src/common/testing/testing.h"
 
 std::filesystem::path kTestDataBasePath = "src/common/fs/testdata";
@@ -28,7 +28,7 @@ namespace gml::fs {
 
 namespace {
 std::string GetPathToTestDataFile(std::string_view fname) {
-  return testing::BazelRunfilePath(kTestDataBasePath / fname);
+  return bazel::RunfilePath(kTestDataBasePath / fname);
 }
 }  // namespace
 

@@ -27,6 +27,7 @@
 #include <memory>
 #include <sstream>
 
+#include "src/common/bazel/runfiles.h"
 #include "src/common/fs/fs_wrapper.h"
 #include "src/common/testing/test_environment.h"
 #include "src/common/testing/testing.h"
@@ -49,7 +50,7 @@ constexpr char kTestDataBasePath[] = "src/common/system";
 
 namespace {
 std::string GetPathToTestDataFile(std::string_view fname) {
-  return testing::BazelRunfilePath(std::filesystem::path(kTestDataBasePath) / fname);
+  return bazel::RunfilePath(std::filesystem::path(kTestDataBasePath) / fname);
 }
 }  // namespace
 

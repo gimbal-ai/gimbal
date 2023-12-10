@@ -24,14 +24,14 @@
 #include "tools/cpp/runfiles/runfiles.h"
 
 #include "src/common/base/base.h"
-#include "src/common/testing/test_environment.h"
+#include "src/common/bazel/runfiles.h"
 
 namespace gml::gem::testing {
 
 constexpr std::string_view kTestPNGPath = "src/gem/testing/core/testdata/test.jpg";
 
 cv::Mat LoadTestImageAsOpencvMat() {
-  auto test_path = ::gml::testing::BazelRunfilePath(std::filesystem::path(kTestPNGPath));
+  auto test_path = ::gml::bazel::RunfilePath(std::filesystem::path(kTestPNGPath));
   auto mat = cv::imread(test_path.string());
   CHECK(!mat.empty());
   return mat;

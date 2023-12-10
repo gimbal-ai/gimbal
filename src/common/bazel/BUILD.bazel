@@ -15,42 +15,23 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-load("//bazel:gml_build_system.bzl", "gml_cc_library", "gml_cc_test")
+load("//bazel:gml_build_system.bzl", "gml_cc_library_internal")
 
 package(default_visibility = [
+    "//experimental:__subpackages__",
     "//src:__subpackages__",
 ])
 
-gml_cc_library(
+gml_cc_library_internal(
     name = "cc_library",
     srcs = [
-        "line_diff.cc",
-        "line_diff.h",
-        "matchers.h",
-        "protobuf.h",
-        "status.h",
-        "temp_dir.h",
-        "test_environment.h",
+        "runfiles.cc",
     ],
-    hdrs = ["testing.h"],
+    hdrs = [
+        "runfiles.h",
+    ],
     deps = [
-        "//src/common/bazel:cc_library",
         "//src/common/fs:cc_library",
         "@bazel_tools//tools/cpp/runfiles",
-        "@com_google_googletest//:gtest",
     ],
-)
-
-gml_cc_library(
-    name = "test_main",
-    srcs = ["test_main.cc"],
-    deps = [
-        ":cc_library",
-        "@com_google_googletest//:gtest",
-    ],
-)
-
-gml_cc_test(
-    name = "line_diff_test",
-    srcs = ["line_diff_test.cc"],
 )

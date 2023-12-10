@@ -17,14 +17,22 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <gtest/gtest.h>
-#include "src/common/base/base.h"
-#include "src/common/bazel/runfiles.h"
+#pragma once
 
-int main(int argc, char** argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  gml::EnvironmentGuard env_guard(&argc, argv);
-  gml::bazel::SetBazelBinaryName(argv[0]);
-  int retval = RUN_ALL_TESTS();
-  return retval;
-}
+#include <filesystem>
+#include <string>
+
+namespace gml::bazel {
+
+/**
+ * Set the binary name. Used for determining the bazel runfiles path
+ */
+void SetBazelBinaryName(std::string_view name);
+
+/**
+ * Returns the path to a runfile, specified by a path relative to ToT.
+ * Path is valid when run through bazel.
+ */
+std::filesystem::path RunfilePath(const std::filesystem::path& rel_path);
+
+}  // namespace gml::bazel

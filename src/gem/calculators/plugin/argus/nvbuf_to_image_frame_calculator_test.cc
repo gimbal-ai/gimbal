@@ -23,7 +23,7 @@
 #include <mediapipe/framework/formats/image_frame.h>
 
 #include "src/common/base/file.h"
-#include "src/common/testing/test_environment.h"
+#include "src/common/bazel/runfiles.h"
 #include "src/common/testing/testing.h"
 
 #include "src/gem/calculators/plugin/argus/nvbuf_to_image_frame_calculator.h"
@@ -48,11 +48,11 @@ TEST(NvBufSurfToImageFrameCalculator, conversion) {
 
   // Prepare an input image.
   ASSERT_OK_AND_ASSIGN(std::string y_plane_buf,
-                       gml::ReadFileToString(testing::BazelRunfilePath(kBufYFilename)));
+                       gml::ReadFileToString(bazel::RunfilePath(kBufYFilename)));
   ASSERT_OK_AND_ASSIGN(std::string u_plane_buf,
-                       gml::ReadFileToString(testing::BazelRunfilePath(kBufUFilename)));
+                       gml::ReadFileToString(bazel::RunfilePath(kBufUFilename)));
   ASSERT_OK_AND_ASSIGN(std::string v_plane_buf,
-                       gml::ReadFileToString(testing::BazelRunfilePath(kBufVFilename)));
+                       gml::ReadFileToString(bazel::RunfilePath(kBufVFilename)));
 
   NvBufSurface* nvbufsurface;
 

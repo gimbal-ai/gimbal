@@ -16,34 +16,34 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
+#include "src/common/bazel/runfiles.h"
 
 #include <memory>
 
 #include "src/common/base/base.h"
 #include "src/common/fs/fs_wrapper.h"
-#include "src/common/testing/test_environment.h"
 
 #include "tools/cpp/runfiles/runfiles.h"
 
-namespace gml::testing {
+namespace gml::bazel {
 
 namespace {
 std::string g_binary_name;
 }
 
-using bazel::tools::cpp::runfiles::Runfiles;
+using ::bazel::tools::cpp::runfiles::Runfiles;
 
-void SetTestBinaryName(std::string_view name) { g_binary_name = name; }
+void SetBazelBinaryName(std::string_view name) { g_binary_name = name; }
 
-// Tests that support running outside of bazel (i.e. invoked *not* using "bazel run")
-// call this method to find files based on the build manifest created with the test target.
+// Binaries that support running outside of bazel (i.e. invoked *not* using "bazel run")
+// call this method to find files based on the build manifest created with the build target.
 // When invoked using "bazel run" the "runfiles" mechanism used here fails, but, the files
 // are found organically based on their relative path.
-std::filesystem::path BazelRunfilePath(const std::filesystem::path& rel_path) {
+std::filesystem::path RunfilePath(const std::filesystem::path& rel_path) {
   std::string error;
   std::unique_ptr<Runfiles> runfiles(
       Runfiles::Create(g_binary_name, gflags::StringFromEnv("RUNFILES_MANIFEST_FILE", ""),
-                       gflags::StringFromEnv("TEST_SRCDIR", ""), &error));
+                       gflags::StringFromEnv("RUNFILES_DIR", ""), &error));
   if (!error.empty()) {
     if (!::gml::fs::Exists(rel_path)) {
       char const* const errmsg = "Failed to initialize runfiles, cannot find: $0: $1.";
@@ -57,4 +57,4 @@ std::filesystem::path BazelRunfilePath(const std::filesystem::path& rel_path) {
   return path;
 }
 
-}  // namespace gml::testing
+}  // namespace gml::bazel

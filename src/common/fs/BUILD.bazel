@@ -50,6 +50,7 @@ gml_cc_test(
     data = ["//src/common/fs/testdata"],
     deps = [
         ":cc_library",
+        "//src/common/bazel:cc_library",
     ],
 )
 

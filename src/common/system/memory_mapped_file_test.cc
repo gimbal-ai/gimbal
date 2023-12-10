@@ -22,8 +22,8 @@
 #include <fstream>
 
 #include "src/common/base/file.h"
+#include "src/common/bazel/runfiles.h"
 #include "src/common/fs/temp_file.h"
-#include "src/common/testing/test_environment.h"
 #include "src/common/testing/testing.h"
 
 namespace gml::system {
@@ -31,7 +31,7 @@ namespace gml::system {
 const std::array expected_data = {0x00, 0xc2, 0x80, 0xe0, 0xa0, 0x80, 0x0a};
 
 TEST(MemoryMappedFile, DataIsAccessibleFromMMap) {
-  auto path = testing::BazelRunfilePath("src/common/system/testdata/non_utf8_file.txt");
+  auto path = bazel::RunfilePath("src/common/system/testdata/non_utf8_file.txt");
 
   ASSERT_OK_AND_ASSIGN(auto contents, ReadFileToString(path, O_RDONLY));
   ASSERT_OK_AND_ASSIGN(auto mmap_file, MemoryMappedFile::MapReadOnly(path));
