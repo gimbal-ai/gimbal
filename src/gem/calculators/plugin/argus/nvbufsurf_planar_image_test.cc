@@ -20,6 +20,7 @@
 
 #include <nvbufsurface.h>
 
+#include "src/common/bazel/runfiles.h"
 #include "src/common/testing/testing.h"
 #include "src/gem/devices/camera/argus/nvbufsurfwrapper.h"
 #include "src/gem/exec/core/planar_image.h"

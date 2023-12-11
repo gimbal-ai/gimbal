@@ -22,6 +22,7 @@
 #include <mediapipe/framework/calculator_runner.h>
 
 #include "src/common/base/file.h"
+#include "src/common/bazel/runfiles.h"
 #include "src/common/testing/testing.h"
 
 #include "src/gem/calculators/plugin/argus/nvbuf_to_planar_image_calculator.h"
