@@ -9,7 +9,7 @@ build:
   - third_party
 breaking:
   use:
-  - FILE
+  - WIRE
 lint:
   allow_comment_ignores: true
   enum_zero_value_suffix: _UNKNOWN
