@@ -2,12 +2,12 @@
 repositories:
 - name: debian12
   arch: x86_64
-  index_url: http://ftp.debian.org/debian/dists/bookworm/main/binary-amd64/Packages.xz
-  download_prefix: http://ftp.us.debian.org/debian/
+  index_url: https://snapshot.debian.org/archive/debian/20231209T111918Z/dists/bookworm/main/binary-amd64/Packages.gz
+  download_prefix: https://snapshot.debian.org/archive/debian/20231209T111918Z/
 - name: debian12
   arch: aarch64
-  index_url: http://ftp.debian.org/debian/dists/bookworm/main/binary-arm64/Packages.xz
-  download_prefix: http://ftp.us.debian.org/debian/
+  index_url: https://snapshot.debian.org/archive/debian/20231209T111918Z/dists/bookworm/main/binary-arm64/Packages.gz
+  download_prefix: https://snapshot.debian.org/archive/debian/20231209T111918Z/
 packages:
 - name: ca-certificates
 - name: libtinfo6

@@ -11,12 +11,12 @@ repositories:
   download_prefix: https://repo.download.nvidia.com/jetson/t234
 - name: ubuntu2004
   arch: aarch64
-  index_url: http://ports.ubuntu.com/ubuntu-ports/dists/focal/main/binary-arm64/Packages.gz
-  download_prefix: http://ports.ubuntu.com/ubuntu-ports
+  index_url: https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/dists/focal/main/binary-arm64/Packages.gz
+  download_prefix: https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/
 - name: ubuntu2004
   arch: aarch64
-  index_url: http://ports.ubuntu.com/ubuntu-ports/dists/focal/universe/binary-arm64/Packages.gz
-  download_prefix: http://ports.ubuntu.com/ubuntu-ports
+  index_url: https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/dists/focal/universe/binary-arm64/Packages.gz
+  download_prefix: https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/
 packages:
 - name: ca-certificates
 - name: libtinfo6
