@@ -36,12 +36,12 @@ message FleetInfo {
       [ (gogoproto.customname) = "OrgID", (gogoproto.moretags) = 'db:"org_id"' ];
   // The name of the fleet.
   string name = 3 [ (gogoproto.moretags) = 'db:"name"' ];
-  // Tags associated with the fleet.
-  repeated string tags = 4 [ (gogoproto.moretags) = 'db:"tags"' ];
   // The description of the fleet.
   string description = 5 [ (gogoproto.moretags) = 'db:"description"' ];
   // The timestamp when the fleet was created.
   google.protobuf.Timestamp created_at = 6 [ (gogoproto.moretags) = 'db:"created_at"' ];
+
+  reserved 4;
 }
 
 message CreateFleetRequest {
