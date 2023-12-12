@@ -170,10 +170,10 @@ message DeviceInfo {
     (gogoproto.moretags) = 'db:"last_heartbeat_ns"'
   ];
   DeviceStatus status = 6;
-  // Tags associated with the device.
-  repeated string tags = 7 [ (gogoproto.moretags) = 'db:"tags"' ];
   // Capabilities of the device, including info like about drivers, model runtimes, etc.
   gml.internal.api.core.v1.DeviceCapabilities capabilities = 8;
+
+  reserved 7;
 }
 
 message RegisterRequest {
