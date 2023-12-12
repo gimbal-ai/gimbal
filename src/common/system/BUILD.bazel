@@ -80,3 +80,11 @@ gml_cc_test(
         ":cc_library",
     ],
 )
+
+gml_cc_test(
+    name = "cpu_info_reader_test",
+    srcs = ["cpu_info_reader_test.cc"],
+    deps = [
+        ":cc_library",
+    ],
+)

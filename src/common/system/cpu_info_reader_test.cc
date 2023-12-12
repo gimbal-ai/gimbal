@@ -17,30 +17,21 @@
 
 #include <memory>
 
-#include "src/common/base/macros.h"
 #include "src/common/system/cpu_info_reader.h"
+#include "src/common/testing/status.h"
+#include "src/common/testing/testing.h"
 
 namespace gml::system {
 
-/**
- * LinuxCPUInfoReader is a linux specific implementation of the CPUInfoReader interface.
- * */
-class LinuxCPUInfoReader : public CPUInfoReader {
- public:
-  LinuxCPUInfoReader() = default;
-  ~LinuxCPUInfoReader() override = default;
-  Status Init() override;
-  Status ReadCPUFrequencies(std::vector<CPUFrequencyInfo>* cpu_freqs) const override;
-};
+TEST(CPUInfoReader, Basic) {
+  auto reader = CPUInfoReader::Create();
+  ASSERT_OK(reader->Init());
 
-Status LinuxCPUInfoReader::Init() { return Status::OK(); }
+  std::vector<CPUFrequencyInfo> cpu_freqs;
+  ASSERT_OK(reader->ReadCPUFrequencies(&cpu_freqs));
 
-Status LinuxCPUInfoReader::ReadCPUFrequencies(std::vector<CPUFrequencyInfo>* cpu_freqs) const {
-  GML_UNUSED(cpu_freqs);
-  return Status::OK();
+  // TODO(zasgar): Implement this.
+  EXPECT_EQ(0, cpu_freqs.size());
 }
 
-std::unique_ptr<CPUInfoReader> CPUInfoReader::Create() {
-  return std::unique_ptr<CPUInfoReader>(new LinuxCPUInfoReader());
-}
 }  // namespace gml::system

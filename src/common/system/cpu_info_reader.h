@@ -17,9 +17,9 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
-
-#include <absl/container/flat_hash_map.h>
+#include <vector>
 
 #include "src/common/base/base.h"
 
@@ -32,9 +32,19 @@ struct CPUFrequencyInfo {
 
 class CPUInfoReader {
  public:
+  // Creates a new CPU info reader.
+  static std::unique_ptr<CPUInfoReader> Create();
+
+  virtual ~CPUInfoReader() = default;
+
+  // Init must be called before any other functions are called.
+  virtual Status Init() = 0;
+
+  // ReadCPUFrequencies appends the cpu frequencies to the passed in array.
+  virtual Status ReadCPUFrequencies(std::vector<CPUFrequencyInfo>* cpu_freqs) const = 0;
+
+ protected:
   CPUInfoReader() = default;
-  Status Init();
-  Status ReadCPUFrequencies(std::vector<CPUFrequencyInfo>* cpu_freqs) const;
 };
 
 }  // namespace gml::system
