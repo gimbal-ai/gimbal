@@ -88,3 +88,6 @@ bazel_tests_*
 # HelmChart dependencies
 **/charts/*.tgz
 **/charts/**/Chart.lock
+
+# Ignore credentials for our GML NUC cluster setup.
+tools/chef/cookbooks/gml_nuc_cluster/templates/credentials
