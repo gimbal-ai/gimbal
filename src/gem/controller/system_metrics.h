@@ -31,9 +31,9 @@ class SystemMetricsReader : public gml::metrics::Scrapeable {
 
  private:
   std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> cpu_stats_counter_;
-  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> cpu_num_counter_;
-  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> mem_stats_total_bytes_;
-  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> mem_stats_free_bytes_;
+  std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> cpu_num_gauge_;
+  std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> mem_stats_total_bytes_;
+  std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> mem_stats_free_bytes_;
   std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> network_rx_bytes_counter_;
   std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> network_rx_drops_counter_;
   std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> network_tx_bytes_counter_;

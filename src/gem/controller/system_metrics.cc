@@ -27,20 +27,19 @@ SystemMetricsReader::SystemMetricsReader(::gml::metrics::MetricsSystem* metrics_
     : metrics::Scrapeable(metrics_system) {
   CHECK(metrics_system != nullptr);
   auto gml_meter = metrics_system_->GetMeterProvider()->GetMeter("gml");
-  cpu_stats_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("system.cpu.time"));
-  cpu_num_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("system.cpu.virtual.count"));
-  mem_stats_total_bytes_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("system.memory.total_bytes"));
-  mem_stats_free_bytes_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("system.memory.free_bytes"));
+  cpu_stats_counter_ =
+      std::move(gml_meter->CreateInt64UpDownCounter("gml.system.cpu.nanoseconds.total"));
+  cpu_num_gauge_ = std::move(gml_meter->CreateInt64Gauge("gml.system.cpu.virtual"));
+  mem_stats_total_bytes_ = std::move(gml_meter->CreateInt64Gauge("gml.system.memory.total_bytes"));
+  mem_stats_free_bytes_ = std::move(gml_meter->CreateInt64Gauge("gml.system.memory.free_bytes"));
   network_rx_bytes_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("system.network.rx_bytes"));
+      std::move(gml_meter->CreateInt64UpDownCounter("gml.system.network.rx_bytes.total"));
   network_rx_drops_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("system.network.rx_drops"));
+      std::move(gml_meter->CreateInt64UpDownCounter("gml.system.network.rx_drops.total"));
   network_tx_bytes_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("system.network.tx_bytes"));
+      std::move(gml_meter->CreateInt64UpDownCounter("gml.system.network.tx_bytes.total"));
   network_tx_drops_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("system.network.tx_drops"));
+      std::move(gml_meter->CreateInt64UpDownCounter("gml.system.network.tx_drops.total"));
 }
 
 void SystemMetricsReader::Scrape() {
@@ -57,11 +56,11 @@ void SystemMetricsReader::Scrape() {
   }
 
   // Add memory metrics for system.
-  cpu_num_counter_->Add(static_cast<int64_t>(stats.size()), {{"state", "system"}}, {});
+  cpu_num_gauge_->Record(static_cast<int64_t>(stats.size()), {{"state", "system"}}, {});
   gml::system::ProcParser::SystemStats system_stats;
   GML_CHECK_OK(proc_parser_.ParseProcStat(&system_stats));
-  mem_stats_total_bytes_->Add(system_stats.mem_total_bytes, {{"state", "system"}}, {});
-  mem_stats_free_bytes_->Add(system_stats.mem_free_bytes, {{"state", "system"}}, {});
+  mem_stats_total_bytes_->Record(system_stats.mem_total_bytes, {{"state", "system"}}, {});
+  mem_stats_free_bytes_->Record(system_stats.mem_free_bytes, {{"state", "system"}}, {});
 
   std::vector<gml::system::ProcParser::NetworkStats> network_stats;
   auto s = proc_parser_.ParseProcNetDev(&network_stats);

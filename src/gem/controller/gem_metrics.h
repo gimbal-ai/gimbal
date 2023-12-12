@@ -32,9 +32,9 @@ class GEMMetricsReader : public gml::metrics::Scrapeable {
  private:
   pid_t pgid_;
   std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> cpu_counter_;
-  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> mem_usage_counter_;
-  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> mem_virtual_counter_;
-  std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> thread_counter_;
+  std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> mem_usage_gauge_;
+  std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> mem_virtual_gauge_;
+  std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> thread_gauge_;
   std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> context_switches_counter_;
   std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> network_rx_bytes_counter_;
   std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> network_rx_drops_counter_;

@@ -31,25 +31,26 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
   pgid_ = getpgid(getpid());
 
   auto gml_meter = metrics_system_->GetMeterProvider()->GetMeter("gml");
-  cpu_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gem.cpu.time"));
-  mem_usage_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gem.memory.usage"));
-  mem_virtual_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gem.memory.virtual"));
-  thread_counter_ = std::move(gml_meter->CreateInt64Gauge("gem.threads"));
+  cpu_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.cpu.nanoseconds.total"));
+  mem_usage_gauge_ = std::move(gml_meter->CreateInt64Gauge("gml.gem.memory.usage.bytes"));
+  mem_virtual_gauge_ = std::move(gml_meter->CreateInt64Gauge("gml.gem.memory.virtual.bytes"));
+  thread_gauge_ = std::move(gml_meter->CreateInt64Gauge("gml.gem.threads"));
   context_switches_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("gem.context_switches"));
+      std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.context_switches.total"));
   network_rx_bytes_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("gem.network.rx_bytes"));
+      std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.network.rx_bytes.total"));
   network_rx_drops_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("gem.network.rx_drops"));
+      std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.network.rx_drops.total"));
   network_tx_bytes_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("gem.network.tx_bytes"));
+      std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.network.tx_bytes.total"));
   network_tx_drops_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("gem.network.tx_drops"));
-  disk_rchar_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gem.disk.rchar"));
-  disk_wchar_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gem.disk.wchar"));
-  disk_read_bytes_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gem.disk.read_bytes"));
+      std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.network.tx_drops.total"));
+  disk_rchar_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.disk.rchar.total"));
+  disk_wchar_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.disk.wchar.total"));
+  disk_read_bytes_counter_ =
+      std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.disk.read_bytes.total"));
   disk_write_bytes_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("gem.disk.write_bytes"));
+      std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.disk.write_bytes.total"));
 }
 
 void GEMMetricsReader::Scrape() {
@@ -69,10 +70,10 @@ void GEMMetricsReader::Scrape() {
 
     cpu_counter_->Add(process_stats.ktime_ns, {{"pid", pid}, {"state", "user"}}, {});
     cpu_counter_->Add(process_stats.utime_ns, {{"pid", pid}, {"state", "system"}}, {});
-    mem_usage_counter_->Add(process_stats.rss_bytes, {{"pid", pid}, {"state", "system"}}, {});
-    mem_virtual_counter_->Add(static_cast<int64_t>(process_stats.vsize_bytes),
-                              {{"pid", pid}, {"state", "system"}}, {});
-    thread_counter_->Record(process_stats.num_threads, {{"pid", pid}, {"state", "system"}}, {});
+    mem_usage_gauge_->Record(process_stats.rss_bytes, {{"pid", pid}, {"state", "system"}}, {});
+    mem_virtual_gauge_->Record(static_cast<int64_t>(process_stats.vsize_bytes),
+                               {{"pid", pid}, {"state", "system"}}, {});
+    thread_gauge_->Record(process_stats.num_threads, {{"pid", pid}, {"state", "system"}}, {});
     gml::system::ProcParser::ProcessStatus process_status;
     s = proc_parser_.ParseProcPIDStatus(p, &process_status);
     if (!s.ok()) {
