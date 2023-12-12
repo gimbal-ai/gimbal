@@ -51,7 +51,7 @@ Status CapabilityLister::Populate(DeviceCapabilities* cap) {
       continue;
     }
 
-    if (!(c.capabilities & V4L2_CAP_VIDEO_CAPTURE)) {
+    if (!(c.device_caps & V4L2_CAP_VIDEO_CAPTURE)) {
       continue;
     }
 
