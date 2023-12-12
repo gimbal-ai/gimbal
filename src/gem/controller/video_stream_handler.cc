@@ -45,11 +45,6 @@ using gml::internal::api::core::v1::EdgeHeartbeatAck;
 using gml::internal::controlplane::egw::v1::BridgeRequest;
 using gml::internal::controlplane::egw::v1::BridgeResponse;
 
-DEFINE_string(bbox_pbbin, gflags::StringFromEnv("GML_BBOX_PBBIN", ""),
-              "The bbox delimited chunk protos");
-DEFINE_string(h264_pbbin, gflags::StringFromEnv("GML_H264_PBBIN", ""),
-              "The h.264 delimited chunks");
-
 namespace gml::gem::controller {
 
 using ::gml::internal::api::core::v1::H264Chunk;
