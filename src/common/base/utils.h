@@ -19,8 +19,6 @@
 
 #pragma once
 
-#include <unistd.h>
-
 #include <array>
 #include <bitset>
 #include <cstring>
@@ -37,8 +35,6 @@
 #include "src/common/base/statusor.h"
 
 namespace gml {
-
-inline bool IsRoot() { return (geteuid() == 0); }
 
 // Implementation borrowed from: http://reedbeta.com/blog/python-like-enumerate-in-cpp17/
 template <typename T, typename TIter = decltype(std::begin(std::declval<T>())),
