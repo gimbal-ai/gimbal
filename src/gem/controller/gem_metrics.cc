@@ -34,7 +34,7 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
   cpu_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gem.cpu.time"));
   mem_usage_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gem.memory.usage"));
   mem_virtual_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gem.memory.virtual"));
-  thread_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gem.threads"));
+  thread_counter_ = std::move(gml_meter->CreateInt64Gauge("gem.threads"));
   context_switches_counter_ =
       std::move(gml_meter->CreateInt64UpDownCounter("gem.context_switches"));
   network_rx_bytes_counter_ =
@@ -72,7 +72,7 @@ void GEMMetricsReader::Scrape() {
     mem_usage_counter_->Add(process_stats.rss_bytes, {{"pid", pid}, {"state", "system"}}, {});
     mem_virtual_counter_->Add(static_cast<int64_t>(process_stats.vsize_bytes),
                               {{"pid", pid}, {"state", "system"}}, {});
-    thread_counter_->Add(process_stats.num_threads, {{"pid", pid}, {"state", "system"}}, {});
+    thread_counter_->Record(process_stats.num_threads, {{"pid", pid}, {"state", "system"}}, {});
     gml::system::ProcParser::ProcessStatus process_status;
     s = proc_parser_.ParseProcPIDStatus(p, &process_status);
     if (!s.ok()) {
