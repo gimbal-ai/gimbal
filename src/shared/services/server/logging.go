@@ -28,13 +28,19 @@ import (
 	"time"
 
 	log "github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 // SetupServiceLogging sets up a consistent logging env for all services.
 func SetupServiceLogging() {
 	// Setup logging.
 	log.SetOutput(os.Stdout)
-	log.SetLevel(log.InfoLevel)
+	level, err := log.ParseLevel(viper.GetString("log_level"))
+	if err != nil {
+		log.WithError(err).Warn("Couldn't parse log_level, setting level to Info.")
+		level = log.InfoLevel
+	}
+	log.SetLevel(level)
 }
 
 // HTTPLoggingMiddleware is a middleware function used for logging HTTP requests.

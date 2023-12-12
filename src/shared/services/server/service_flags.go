@@ -51,6 +51,7 @@ func setupCommonFlags() {
 	pflag.String("tls_ca_cert", "/certs/ca.crt", "The CA cert.")
 	pflag.String("jwt_signing_key", "", "The signing key used for JWTs")
 	pflag.String("pod_name", "<unknown>", "The pod name")
+	pflag.String("log_level", "info", "Set the logger level, valid options are (trace, debug, info, warning, error, fatal, panic)")
 	pflag.Bool("version", false, "Print the version and quit.")
 }
 
