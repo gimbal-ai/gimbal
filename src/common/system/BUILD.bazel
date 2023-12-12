@@ -24,6 +24,8 @@ gml_cc_library(
     srcs = [
         "config.cc",
         "config.h",
+        "cpu_info_reader.cc",
+        "cpu_info_reader.h",
         "linux_file_wrapper.cc",
         "linux_file_wrapper.h",
         "mac_address.cc",
