@@ -34,6 +34,14 @@ import (
 	utils "gimletlabs.ai/gimlet/src/shared/uuidutils"
 )
 
+type handler struct {
+	handleMsg func(*corepb.EdgeCPMetadata, *types.Any, string)
+}
+
+func (h *handler) HandleMessage(md *corepb.EdgeCPMetadata, msg *types.Any, msgType string) {
+	h.handleMsg(md, msg, msgType)
+}
+
 func TestPartitionHandler_MessageHandler(t *testing.T) {
 	viper.Set("partition_id", 0)
 	viper.Set("partition_count", 1)
@@ -45,20 +53,25 @@ func TestPartitionHandler_MessageHandler(t *testing.T) {
 	var wg sync.WaitGroup
 
 	wg.Add(1)
-	handler := func(md *corepb.EdgeCPMetadata, anyMsg *types.Any) {
-		assert.Equal(t, corepb.EDGE_CP_TOPIC_STATUS, md.Topic)
-		assert.Equal(t, utils.ProtoFromUUID(deviceID), md.DeviceID)
-		hbMsg := &corepb.EdgeHeartbeat{}
-		err := types.UnmarshalAny(anyMsg, hbMsg)
-		require.NoError(t, err)
-		assert.Equal(t, int64(10), hbMsg.SeqID)
-		wg.Done()
+	h := &handler{
+		handleMsg: func(md *corepb.EdgeCPMetadata, msg *types.Any, msgType string) {
+			assert.Equal(t, corepb.EDGE_CP_TOPIC_STATUS, md.Topic)
+			assert.Equal(t, utils.ProtoFromUUID(deviceID), md.DeviceID)
+			assert.Equal(t, proto.MessageName(&corepb.EdgeHeartbeat{}), msgType)
+			hbMsg := &corepb.EdgeHeartbeat{}
+			err := types.UnmarshalAny(msg, hbMsg)
+			require.NoError(t, err)
+			assert.Equal(t, int64(10), hbMsg.SeqID)
+			wg.Done()
+		},
 	}
 
-	handlers := make(map[string]edgepartition.MessageHandler)
-	handlers[proto.MessageName(&corepb.EdgeHeartbeat{})] = handler
-	s := edgepartition.NewPartitionHandler(nc, corepb.EDGE_CP_TOPIC_STATUS, handlers)
-	err := s.Start()
+	s := edgepartition.NewPartitionHandler(nc)
+	err := s.RegisterHandler(corepb.EDGE_CP_TOPIC_STATUS, func() edgepartition.MessageHandler {
+		return h
+	}, &edgepartition.MessageHandlerConfig{
+		NumGoroutines: 1,
+	})
 	require.NoError(t, err)
 
 	anyMsg, err := types.MarshalAny(&corepb.EdgeHeartbeat{SeqID: 10})
