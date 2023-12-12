@@ -30,6 +30,8 @@ gml_cc_library(
         "mac_address.h",
         "memory_mapped_file.cc",
         "memory_mapped_file.h",
+        "parsers.cc",
+        "parsers.h",
         "proc_parser.cc",
         "proc_parser.h",
         "proc_pid_path.cc",

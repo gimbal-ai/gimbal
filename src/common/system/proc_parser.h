@@ -32,7 +32,6 @@
 #include "src/common/base/base.h"
 
 namespace gml::system {
-
 /*
  * ProcParser is use to parse system proc pseudo filesystem.
  */
@@ -404,16 +403,6 @@ class ProcParser {
  private:
   static Status ParseNetworkStatIFaceData(const std::vector<std::string_view>& dev_stat_record,
                                           NetworkStats* out);
-
-  static void ParseFromKeyValueLine(
-      const std::string& line,
-      const absl::flat_hash_map<std::string_view, size_t>& field_name_to_value_map,
-      uint8_t* out_base);
-
-  static Status ParseFromKeyValueFile(
-      const std::string& fpath,
-      const absl::flat_hash_map<std::string_view, size_t>& field_name_to_value_map,
-      uint8_t* out_base);
 
   Status ParseProcMapsFile(int32_t pid, std::string filename, std::vector<ProcessSMaps>* out) const;
 
