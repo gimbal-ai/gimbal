@@ -38,7 +38,12 @@
 
 namespace gml::gem::controller {
 
-class Controller : public gml::NotCopyable {
+class ControllerBase : public gml::NotCopyable {
+ public:
+  virtual Status Stop(std::chrono::milliseconds timeout) = 0;
+};
+
+class Controller : public ControllerBase {
  public:
   Controller() = delete;
   Controller(std::string_view deploy_key, std::string_view cp_addr)
@@ -54,11 +59,12 @@ class Controller : public gml::NotCopyable {
 
   virtual ~Controller() = default;
 
-  Status Init();
+  Status Register();
+  virtual Status Init();
 
   Status Run();
 
-  Status Stop(std::chrono::milliseconds timeout);
+  Status Stop(std::chrono::milliseconds timeout) override;
 
  protected:
   gml::event::Dispatcher* dispatcher() { return dispatcher_.get(); }

@@ -23,7 +23,7 @@
 
 namespace gml::gem::controller {
 
-class Controller;
+class ControllerBase;
 
 class DefaultDeathHandler : public gml::FatalErrorHandlerInterface {
  public:
@@ -46,12 +46,12 @@ class TerminationHandler {
     }
   }
 
-  static void set_controller(Controller* controller) { controller_ = controller; }
+  static void set_controller(ControllerBase* controller) { controller_ = controller; }
 
   static void OnTerminate(int signum);
 
  private:
-  inline static Controller* controller_ = nullptr;
+  inline static ControllerBase* controller_ = nullptr;
 };
 
 }  // namespace gml::gem::controller
