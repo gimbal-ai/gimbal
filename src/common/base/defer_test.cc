@@ -17,10 +17,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <gtest/gtest.h>
+#include "src/common/base/defer.h"
+
 #include <random>
 
-#include "src/common/base/defer.h"
+#include <gtest/gtest.h>
 
 namespace gml {
 

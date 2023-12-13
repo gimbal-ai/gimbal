@@ -23,7 +23,7 @@
 #include <Argus/Argus.h>
 #include <EGLStream/EGLStream.h>
 #include <EGLStream/NV/ImageNativeBuffer.h>
-#include <nvbufsurface.h>
+#include <NvBufSurface.h>
 #include <sole.hpp>
 
 #include "src/common/base/base.h"

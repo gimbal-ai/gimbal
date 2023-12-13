@@ -17,10 +17,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+#include "src/common/base/env.h"
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-
-#include "src/common/base/env.h"
 
 namespace gml {
 

@@ -17,9 +17,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <benchmark/benchmark.h>
-
 #include "src/common/base/base.h"
+#include "src/common/benchmark/benchmark.h"
 
 // This benchmark measures the performance of various ways of converting byte strings into
 // primitive int types of varying lengths..

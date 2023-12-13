@@ -15,6 +15,8 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/calculators/plugin/tensorrt/image_frame_to_cuda_tensor_calculator.h"
+
 #include <cuda_runtime_api.h>
 
 #include <mediapipe/framework/calculator_registry.h>
@@ -24,7 +26,6 @@
 #include <opencv2/imgproc.hpp>
 
 #include "src/common/base/base.h"
-#include "src/gem/calculators/plugin/tensorrt/image_frame_to_cuda_tensor_calculator.h"
 #include "src/gem/exec/plugin/tensorrt/context.h"
 #include "src/gem/exec/plugin/tensorrt/cuda_tensor_pool.h"
 

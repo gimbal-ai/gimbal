@@ -17,11 +17,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <absl/container/flat_hash_map.h>
+#include "src/common/base/utils.h"
+
 #include <map>
 #include <vector>
 
-#include "src/common/base/utils.h"
+#include <absl/container/flat_hash_map.h>
+
 #include "src/common/testing/testing.h"
 
 namespace gml {

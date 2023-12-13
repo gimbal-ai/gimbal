@@ -17,9 +17,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+#include "src/common/base/statusor.h"
+
 #include <memory>
 
-#include "src/common/base/statusor.h"
 #include "src/common/testing/testing.h"
 
 namespace gml {

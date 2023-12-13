@@ -17,9 +17,9 @@
 
 #include "src/common/metrics/metrics_system.h"
 
-#include "opentelemetry/metrics/provider.h"
-#include "opentelemetry/sdk/metrics/meter_provider.h"
-#include "opentelemetry/sdk/metrics/metric_reader.h"
+#include <opentelemetry/metrics/provider.h>
+#include <opentelemetry/sdk/metrics/meter_provider.h>
+#include <opentelemetry/sdk/metrics/metric_reader.h>
 
 using opentelemetry::sdk::metrics::AggregationTemporality;
 using opentelemetry::sdk::metrics::InstrumentType;

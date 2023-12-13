@@ -23,8 +23,8 @@
 
 #ifdef PROFILER_AVAILABLE
 
-#include "gperftools/heap-profiler.h"
-#include "gperftools/profiler.h"
+#include <gperftools/heap-profiler.h>
+#include <gperftools/profiler.h>
 
 namespace gml::profiler {
 

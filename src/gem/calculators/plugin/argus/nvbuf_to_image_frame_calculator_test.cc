@@ -15,6 +15,8 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/calculators/plugin/argus/nvbuf_to_image_frame_calculator.h"
+
 #include <fstream>
 #include <iostream>
 
@@ -25,8 +27,6 @@
 #include "src/common/base/file.h"
 #include "src/common/bazel/runfiles.h"
 #include "src/common/testing/testing.h"
-
-#include "src/gem/calculators/plugin/argus/nvbuf_to_image_frame_calculator.h"
 #include "src/gem/devices/camera/argus/nvbufsurfwrapper.h"
 
 namespace gml::gem::calculators::argus {

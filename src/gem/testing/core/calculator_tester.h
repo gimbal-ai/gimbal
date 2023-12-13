@@ -19,10 +19,10 @@
 
 #include <absl/strings/str_split.h>
 #include <google/protobuf/text_format.h>
+#include <mediapipe/framework/calculator.pb.h>
 #include <mediapipe/framework/calculator_graph.h>
 #include <mediapipe/framework/calculator_runner.h>
 #include <mediapipe/framework/packet.h>
-#include "mediapipe/framework/calculator.pb.h"
 
 #include "src/common/testing/testing.h"
 #include "src/gem/exec/core/context.h"

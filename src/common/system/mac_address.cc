@@ -17,12 +17,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+#include "src/common/system/mac_address.h"
+
 #include <filesystem>
 #include <iostream>
 
 #include "src/common/base/byte_utils.h"
 #include "src/common/base/utils.h"
-#include "src/common/system/mac_address.h"
 
 namespace gml::system {
 

@@ -18,6 +18,7 @@
 #pragma once
 
 #include <openvino/openvino.hpp>
+
 #include "src/gem/exec/core/model.h"
 
 namespace gml::gem::exec::openvino {

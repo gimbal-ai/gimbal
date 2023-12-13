@@ -17,12 +17,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <gtest/gtest.h>
+#include "src/common/perf/scoped_timer.h"
+
 #include <chrono>
 #include <thread>
 
 #include <absl/strings/match.h>
-#include "src/common/perf/scoped_timer.h"
+#include <gtest/gtest.h>
 
 namespace gml {
 

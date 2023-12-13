@@ -17,8 +17,9 @@
 
 #pragma once
 
-#include <NvInfer.h>
 #include <cuda_runtime_api.h>
+
+#include <NvInfer.h>
 
 #include "src/common/base/base.h"
 #include "src/gem/exec/core/context.h"

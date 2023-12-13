@@ -22,6 +22,7 @@
 #include <string>
 
 #include <absl/memory/memory.h>
+
 #include "src/common/base/logging.h"
 
 namespace gml::grpc {

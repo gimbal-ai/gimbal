@@ -19,10 +19,10 @@
 
 #include "src/common/grpcutils/service_descriptor_database.h"
 
+#include <string>
+
 #include <google/protobuf/text_format.h>
 #include <google/protobuf/util/message_differencer.h>
-
-#include <string>
 
 #include "src/common/testing/testing.h"
 

@@ -16,7 +16,9 @@
  */
 
 #include "src/gem/calculators/core/detections_summary_calculator.h"
+
 #include <mediapipe/framework/calculator_registry.h>
+
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/base/base.h"
 #include "src/common/metrics/metrics_system.h"

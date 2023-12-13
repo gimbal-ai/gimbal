@@ -15,16 +15,18 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/testing/core/testdata/test_image.h"
+
 #include <mediapipe/framework/formats/image_frame.h>
 #include <mediapipe/framework/formats/image_frame_opencv.h>
 #include <mediapipe/framework/formats/yuv_image.h>
 #include <mediapipe/util/image_frame_util.h>
 #include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
-#include "tools/cpp/runfiles/runfiles.h"
 
 #include "src/common/base/base.h"
 #include "src/common/bazel/runfiles.h"
+#include "tools/cpp/runfiles/runfiles.h"
 
 namespace gml::gem::testing {
 

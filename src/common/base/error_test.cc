@@ -17,11 +17,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <absl/strings/match.h>
-#include <gtest/gtest.h>
+#include "src/common/base/error.h"
+
 #include <iostream>
 
-#include "src/common/base/error.h"
+#include <absl/strings/match.h>
+#include <gtest/gtest.h>
+
 #include "src/common/typespb/status.pb.h"
 
 namespace gml::error {

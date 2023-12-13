@@ -15,16 +15,16 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/exec/core/runner/utils/mp_to_otel_metrics.h"
+
 #include <fstream>
 #include <iostream>
 
 #include <google/protobuf/text_format.h>
-
 #include <mediapipe/framework/profiler/graph_profiler.h>
 
 #include "src/common/base/file.h"
 #include "src/common/testing/testing.h"
-#include "src/gem/exec/core/runner/utils/mp_to_otel_metrics.h"
 
 namespace gml::gem::utils {
 

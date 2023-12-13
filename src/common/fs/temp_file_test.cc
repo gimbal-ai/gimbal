@@ -17,14 +17,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <gtest/gtest.h>
+#include "src/common/fs/temp_file.h"
 
 #include <fstream>
 #include <string>
 
+#include <gtest/gtest.h>
+
 #include "src/common/base/file.h"
 #include "src/common/base/logging.h"
-#include "src/common/fs/temp_file.h"
 #include "src/common/testing/testing.h"
 
 namespace gml::fs {

@@ -15,11 +15,12 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/calculators/plugin/tensorrt/tensorrt_execute_calculator.h"
+
 #include <absl/strings/substitute.h>
 #include <mediapipe/framework/calculator_registry.h>
 
 #include "src/common/base/base.h"
-#include "src/gem/calculators/plugin/tensorrt/tensorrt_execute_calculator.h"
 #include "src/gem/exec/plugin/tensorrt/context.h"
 #include "src/gem/exec/plugin/tensorrt/cuda_tensor_pool.h"
 

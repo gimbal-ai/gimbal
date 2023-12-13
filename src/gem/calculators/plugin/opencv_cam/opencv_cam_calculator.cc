@@ -17,10 +17,8 @@
 
 #include "src/gem/calculators/plugin/opencv_cam/opencv_cam_calculator.h"
 
+#include <absl/status/status.h>
 #include <magic_enum.hpp>
-
-#include "absl/status/status.h"
-
 #include <mediapipe/framework/calculator_framework.h>
 #include <mediapipe/framework/formats/image_frame.h>
 #include <mediapipe/framework/formats/image_frame_opencv.h>

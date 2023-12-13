@@ -15,10 +15,10 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/calculators/plugin/openvino/openvino_execute_calculator.h"
+
 #include <mediapipe/framework/calculator_registry.h>
 #include <openvino/openvino.hpp>
-
-#include "src/gem/calculators/plugin/openvino/openvino_execute_calculator.h"
 
 #include "src/gem/calculators/plugin/openvino/optionspb/openvino_execute_calculator_options.pb.h"
 #include "src/gem/exec/core/context.h"

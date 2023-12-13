@@ -15,6 +15,8 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/calculators/plugin/argus/nvbuf_to_planar_image_calculator.h"
+
 #include <fstream>
 #include <iostream>
 
@@ -24,8 +26,6 @@
 #include "src/common/base/file.h"
 #include "src/common/bazel/runfiles.h"
 #include "src/common/testing/testing.h"
-
-#include "src/gem/calculators/plugin/argus/nvbuf_to_planar_image_calculator.h"
 #include "src/gem/devices/camera/argus/nvbufsurfwrapper.h"
 #include "src/gem/exec/core/planar_image.h"
 

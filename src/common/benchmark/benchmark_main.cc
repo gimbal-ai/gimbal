@@ -17,8 +17,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "benchmark/benchmark.h"
 #include "src/common/base/base.h"
+#include "src/common/benchmark/benchmark.h"
 
 int main(int argc, char** argv) {
   // Initialize must come before env_guard otherwise the arguments are not declared and env_guard

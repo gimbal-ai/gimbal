@@ -15,9 +15,10 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/common/metrics/metrics_system.h"
+
 #include <google/protobuf/text_format.h>
 
-#include "src/common/metrics/metrics_system.h"
 #include "src/common/testing/testing.h"
 
 using opentelemetry::proto::metrics::v1::ResourceMetrics;

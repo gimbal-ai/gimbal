@@ -17,12 +17,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
+#include "src/common/base/byte_utils.h"
 
 #include <random>
 
-#include "src/common/base/byte_utils.h"
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
 #include "src/common/base/types.h"
 #include "src/common/base/utils.h"
 

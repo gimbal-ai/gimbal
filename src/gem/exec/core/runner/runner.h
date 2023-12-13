@@ -17,9 +17,9 @@
 
 #pragma once
 
-#include <mediapipe/framework/calculator_graph.h>
-
 #include <utility>
+
+#include <mediapipe/framework/calculator_graph.h>
 
 #include "src/api/corepb/v1/model_exec.pb.h"
 #include "src/common/base/base.h"

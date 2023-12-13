@@ -28,9 +28,9 @@
 #include <utility>
 #include <vector>
 
+#include <absl/strings/str_format.h>
 #include <magic_enum.hpp>
 
-#include <absl/strings/str_format.h>
 #include "src/common/base/error.h"
 #include "src/common/base/statusor.h"
 

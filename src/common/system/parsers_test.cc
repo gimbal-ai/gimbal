@@ -15,11 +15,12 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/common/system/parsers.h"
+
 #include <fstream>
 #include <memory>
 
 #include "src/common/fs/temp_file.h"
-#include "src/common/system/parsers.h"
 #include "src/common/testing/status.h"
 #include "src/common/testing/testing.h"
 

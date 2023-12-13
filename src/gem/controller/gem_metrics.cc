@@ -15,13 +15,14 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/controller/gem_metrics.h"
+
 #include <unistd.h>
 
 #include "src/common/base/utils.h"
 #include "src/common/system/config.h"
 #include "src/common/system/proc_parser.h"
 #include "src/common/system/proc_pid_path.h"
-#include "src/gem/controller/gem_metrics.h"
 
 namespace gml::gem::controller {
 

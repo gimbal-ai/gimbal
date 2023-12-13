@@ -15,9 +15,10 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/capabilities/plugin/argus/capability_lister.h"
+
 #include <Argus/Argus.h>
 
-#include "src/gem/capabilities/plugin/argus/capability_lister.h"
 #include "src/gem/capabilities/plugin/argus/uuid_utils.h"
 
 namespace gml::gem::capabilities::argus {

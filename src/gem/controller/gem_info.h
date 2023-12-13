@@ -17,8 +17,9 @@
 
 #pragma once
 
-#include <sole.hpp>
 #include <string>
+
+#include <sole.hpp>
 
 namespace gml::gem::controller {
 

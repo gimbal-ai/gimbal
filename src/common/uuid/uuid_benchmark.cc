@@ -17,11 +17,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <benchmark/benchmark.h>
-
 #include <sole.hpp>
 
 #include "src/common/base/macros.h"
+#include "src/common/benchmark/benchmark.h"
+#include "src/common/uuid/uuid_utils.h"
 
 namespace gml {
 

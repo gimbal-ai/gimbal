@@ -16,15 +16,18 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/controller/video_stream_handler.h"
+
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <chrono>
+
 #include <google/protobuf/any.pb.h>
 #include <google/protobuf/util/delimited_message_util.h>
 #include <grpcpp/grpcpp.h>
-#include <chrono>
 
 #include "src/api/corepb/v1/cp_edge.pb.h"
 #include "src/common/base/base.h"
@@ -35,7 +38,6 @@
 #include "src/controlplane/fleetmgr/fmpb/v1/fmpb.pb.h"
 #include "src/gem/controller/controller.h"
 #include "src/gem/controller/grpc_bridge.h"
-#include "src/gem/controller/video_stream_handler.h"
 #include "src/gem/exec/core/control_context.h"
 
 using gml::internal::api::core::v1::EDGE_CP_TOPIC_VIDEO;

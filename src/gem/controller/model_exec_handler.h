@@ -16,10 +16,10 @@
  */
 #pragma once
 
-#include <grpcpp/grpcpp.h>
 #include <string>
 #include <string_view>
 
+#include <grpcpp/grpcpp.h>
 #include <sole.hpp>
 
 #include "src/api/corepb/v1/cp_edge.pb.h"

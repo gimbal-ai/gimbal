@@ -16,8 +16,11 @@
  */
 
 #include "src/gem/build/plugin/openvino/model_builder.h"
+
 #include <exception>
+
 #include <openvino/openvino.hpp>
+
 #include "src/common/base/error.h"
 #include "src/common/uuid/uuid.h"
 #include "src/gem/exec/plugin/openvino/model.h"

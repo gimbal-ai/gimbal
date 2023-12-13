@@ -19,16 +19,16 @@
 
 #pragma once
 
-#include <gmock/gmock.h>
-#include <google/protobuf/text_format.h>
-#include <google/protobuf/util/message_differencer.h>
-
 #include <iostream>
 #include <memory>
 #include <optional>
 #include <ostream>
 #include <string>
 #include <utility>
+
+#include <gmock/gmock.h>
+#include <google/protobuf/text_format.h>
+#include <google/protobuf/util/message_differencer.h>
 
 #include "src/common/base/logging.h"
 #include "src/common/testing/line_diff.h"

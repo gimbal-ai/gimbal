@@ -18,6 +18,7 @@
  */
 
 #include "src/common/base/logging.h"
+
 #include "src/common/testing/testing.h"
 
 namespace gml {

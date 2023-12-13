@@ -15,10 +15,12 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#include <queue>
+#include "src/gem/controller/file_downloader.h"
 
 #include <fcntl.h>
+
 #include <cerrno>
+#include <queue>
 #include <utility>
 
 #include "src/common/base/base.h"
@@ -30,7 +32,6 @@
 #include "src/common/uuid/uuid_utils.h"
 #include "src/controlplane/egw/egwpb/v1/egwpb.pb.h"
 #include "src/controlplane/filetransfer/ftpb/v1/ftpb.pb.h"
-#include "src/gem/controller/file_downloader.h"
 
 using ::gml::internal::api::core::v1::FileTransferRequest;
 using ::gml::internal::api::core::v1::FileTransferResponse;

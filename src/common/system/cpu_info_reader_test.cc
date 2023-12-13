@@ -15,10 +15,11 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/common/system/cpu_info_reader.h"
+
 #include <memory>
 
 #include "src/common/bazel/runfiles.h"
-#include "src/common/system/cpu_info_reader.h"
 #include "src/common/testing/status.h"
 #include "src/common/testing/testing.h"
 

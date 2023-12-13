@@ -25,8 +25,6 @@
 #include "src/common/event/dispatcher.h"
 #include "src/controlplane/egw/egwpb/v1/egwpb.grpc.pb.h"
 #include "src/gem/controller/controller.h"
-
-#include "src/gem/controller/controller.h"
 #include "src/gem/exec/core/control_context.h"
 
 namespace gml::gem::controller {

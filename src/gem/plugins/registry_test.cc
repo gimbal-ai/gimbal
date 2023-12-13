@@ -16,13 +16,13 @@
  */
 
 #include "src/gem/plugins/registry.h"
+
 #include "src/api/corepb/v1/model_exec.pb.h"
+#include "src/common/testing/testing.h"
 #include "src/gem/build/core/execution_context_builder.h"
 #include "src/gem/build/core/model_builder.h"
 #include "src/gem/exec/core/context.h"
 #include "src/gem/exec/core/model.h"
-
-#include "src/common/testing/testing.h"
 
 namespace gml::gem::plugins {
 

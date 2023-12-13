@@ -17,8 +17,10 @@
 
 #include "src/gem/controller/grpc_bridge.h"
 
-#include <magic_enum.hpp>
 #include <memory>
+
+#include <magic_enum.hpp>
+
 #include "src/common/base/error.h"
 #include "src/common/grpcutils/status.h"
 

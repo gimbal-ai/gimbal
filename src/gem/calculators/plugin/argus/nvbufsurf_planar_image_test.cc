@@ -18,7 +18,7 @@
 #include <fstream>
 #include <iostream>
 
-#include <nvbufsurface.h>
+#include <NvBufSurface.h>
 
 #include "src/common/bazel/runfiles.h"
 #include "src/common/testing/testing.h"

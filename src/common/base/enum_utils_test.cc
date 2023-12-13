@@ -18,6 +18,7 @@
  */
 
 #include "src/common/base/enum_utils.h"
+
 #include "src/common/testing/testing.h"
 
 using ::testing::ElementsAre;

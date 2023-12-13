@@ -16,7 +16,9 @@
  */
 
 #include "src/gem/exec/core/planar_image.h"
+
 #include <mediapipe/framework/formats/yuv_image.h>
+
 #include "src/common/testing/testing.h"
 #include "src/gem/testing/core/testdata/test_image.h"
 

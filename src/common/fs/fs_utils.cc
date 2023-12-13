@@ -15,11 +15,11 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#include <picosha2.h>
-
 #include <filesystem>
 #include <fstream>
 #include <vector>
+
+#include <picosha2.h>
 
 #include "src/common/base/base.h"
 

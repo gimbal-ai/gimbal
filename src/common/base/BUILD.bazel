@@ -144,8 +144,9 @@ gml_cc_test(
 
 gml_cc_binary(
     name = "bytes_to_int_benchmark",
+    testonly = 1,
     srcs = ["bytes_to_int_benchmark.cc"],
     deps = [
-        "@com_google_benchmark//:benchmark_main",
+        "//src/common/benchmark:benchmark_main",
     ],
 )

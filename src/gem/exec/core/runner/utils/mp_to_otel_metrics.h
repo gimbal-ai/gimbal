@@ -17,10 +17,10 @@
 
 #pragma once
 
-#include "src/common/base/base.h"
-
 #include <mediapipe/framework/calculator_framework.h>
-#include "opentelemetry/exporters/otlp/otlp_metric_utils.h"
+#include <opentelemetry/exporters/otlp/otlp_metric_utils.h>
+
+#include "src/common/base/base.h"
 
 namespace gml::gem::utils {
 

@@ -15,15 +15,17 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/calculators/plugin/cpu_tensor/image_frame_to_cpu_tensor_calculator.h"
+
+#include <cstddef>
+
 #include <mediapipe/framework/calculator_registry.h>
 #include <mediapipe/framework/formats/image_frame.h>
 #include <mediapipe/framework/formats/image_frame_opencv.h>
-#include <cstddef>
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
 
 #include "src/common/base/base.h"
-#include "src/gem/calculators/plugin/cpu_tensor/image_frame_to_cpu_tensor_calculator.h"
 #include "src/gem/exec/plugin/cpu_tensor/context.h"
 
 namespace gml::gem::calculators::cpu_tensor {

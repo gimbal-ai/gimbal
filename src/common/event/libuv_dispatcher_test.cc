@@ -17,8 +17,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <gtest/gtest.h>
 #include <thread>
+
+#include <gtest/gtest.h>
+
 #include "src/common/base/base.h"
 #include "src/common/event/api.h"
 #include "src/common/event/event.h"

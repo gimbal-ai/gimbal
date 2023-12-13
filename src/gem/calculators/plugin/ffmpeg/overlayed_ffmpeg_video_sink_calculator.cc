@@ -19,10 +19,10 @@ extern "C" {
 #include <libavcodec/avcodec.h>
 }
 
+#include <memory>
+
 #include <mediapipe/framework/calculator_framework.h>
 #include <mediapipe/framework/calculator_registry.h>
-
-#include <memory>
 
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/base/base.h"

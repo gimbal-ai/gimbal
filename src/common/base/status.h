@@ -18,13 +18,13 @@
  */
 
 #pragma once
-#include <absl/status/status.h>
-#include <google/protobuf/any.h>
-#include <google/protobuf/message.h>
-
 #include <memory>
 #include <string>
 #include <utility>
+
+#include <absl/status/status.h>
+#include <google/protobuf/any.h>
+#include <google/protobuf/message.h>
 
 #include "src/common/base/logging.h"
 #include "src/common/base/macros.h"

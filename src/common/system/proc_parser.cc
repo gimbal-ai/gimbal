@@ -17,6 +17,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+#include "src/common/system/proc_parser.h"
+
 #include <fstream>
 #include <limits>
 #include <string>
@@ -30,7 +32,6 @@
 
 #include "src/common/fs/fs_wrapper.h"
 #include "src/common/system/parsers.h"
-#include "src/common/system/proc_parser.h"
 #include "src/common/system/proc_pid_path.h"
 
 namespace gml::system {

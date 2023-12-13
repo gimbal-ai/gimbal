@@ -18,17 +18,17 @@
  */
 
 #include "src/common/system/proc_parser.h"
-#include "src/common/system/proc_pid_path.h"
-
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
 
 #include <istream>
 #include <memory>
 #include <sstream>
 
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
 #include "src/common/bazel/runfiles.h"
 #include "src/common/fs/fs_wrapper.h"
+#include "src/common/system/proc_pid_path.h"
 #include "src/common/testing/test_environment.h"
 #include "src/common/testing/testing.h"
 

@@ -18,6 +18,7 @@
 #pragma once
 
 #include <mediapipe/framework/calculator_framework.h>
+
 #include "src/api/corepb/v1/mediastream.pb.h"
 
 namespace gml::gem::calculators::core {

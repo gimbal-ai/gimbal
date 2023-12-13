@@ -15,10 +15,11 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/exec/core/planar_image.h"
+
 #include <mediapipe/framework/formats/yuv_image.h>
 
 #include "src/common/base/base.h"
-#include "src/gem/exec/core/planar_image.h"
 
 namespace gml::gem::exec::core {
 

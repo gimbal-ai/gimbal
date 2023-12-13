@@ -19,8 +19,9 @@
 
 #pragma once
 
-#include <absl/strings/str_replace.h>
 #include <string>
+
+#include <absl/strings/str_replace.h>
 
 namespace gml::grpc {
 

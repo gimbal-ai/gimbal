@@ -18,7 +18,6 @@
  */
 
 #include "src/common/exec/subprocess.h"
-#include "src/common/system/proc_pid_path.h"
 
 #include <fcntl.h>
 #include <sys/wait.h>
@@ -28,6 +27,7 @@
 
 #include "src/common/base/error.h"
 #include "src/common/system/proc_parser.h"
+#include "src/common/system/proc_pid_path.h"
 
 namespace gml {
 

@@ -18,6 +18,7 @@
  */
 
 #include <magic_enum.hpp>
+
 #include "src/common/testing/testing.h"
 
 // The following test cases are mostly from MagicEnum docs: https://github.com/Neargye/magic_enum.

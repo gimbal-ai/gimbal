@@ -16,6 +16,7 @@
  */
 
 #include <mediapipe/framework/calculator_framework.h>
+
 #include "src/gem/calculators/plugin/openvino/optionspb/openvino_execute_calculator_options.pb.h"
 #include "src/gem/exec/plugin/cpu_tensor/cpu_tensor.h"
 #include "src/gem/exec/plugin/openvino/context.h"

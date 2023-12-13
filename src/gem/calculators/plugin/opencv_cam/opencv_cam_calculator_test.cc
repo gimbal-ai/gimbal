@@ -15,13 +15,14 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/calculators/plugin/opencv_cam/opencv_cam_calculator.h"
+
 #include <mediapipe/framework/calculator_framework.h>
 #include <mediapipe/framework/calculator_runner.h>
 #include <mediapipe/framework/formats/image_frame.h>
 #include <mediapipe/framework/formats/image_frame_opencv.h>
 
 #include "src/common/testing/testing.h"
-#include "src/gem/calculators/plugin/opencv_cam/opencv_cam_calculator.h"
 
 namespace gml::gem::calculators::opencv_cam {
 

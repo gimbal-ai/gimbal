@@ -18,6 +18,7 @@
 #pragma once
 
 #include <magic_enum.hpp>
+
 #include "src/common/testing/testing.h"
 #include "src/gem/exec/core/planar_image.h"
 

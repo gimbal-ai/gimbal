@@ -19,16 +19,16 @@
 
 #pragma once
 
-#include <google/protobuf/descriptor.pb.h>
-#include <google/protobuf/descriptor_database.h>
-#include <google/protobuf/dynamic_message.h>
-#include <google/protobuf/message.h>
-
 #include <map>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
+
+#include <google/protobuf/descriptor.pb.h>
+#include <google/protobuf/descriptor_database.h>
+#include <google/protobuf/dynamic_message.h>
+#include <google/protobuf/message.h>
 
 #include "src/common/base/base.h"
 

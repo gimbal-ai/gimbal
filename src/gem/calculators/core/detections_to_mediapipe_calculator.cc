@@ -16,8 +16,10 @@
  */
 
 #include "src/gem/calculators/core/detections_to_mediapipe_calculator.h"
+
 #include <mediapipe/framework/calculator_registry.h>
-#include "mediapipe/framework/formats/detection.pb.h"
+#include <mediapipe/framework/formats/detection.pb.h>
+
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/base/base.h"
 

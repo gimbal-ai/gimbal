@@ -15,13 +15,14 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/calculators/core/detections_to_mediapipe_calculator.h"
+
+#include <mediapipe/framework/formats/detection.pb.h>
 #include <mediapipe/framework/formats/image_frame.h>
-#include "mediapipe/framework/formats/detection.pb.h"
 
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/testing/protobuf.h"
 #include "src/common/testing/testing.h"
-#include "src/gem/calculators/core/detections_to_mediapipe_calculator.h"
 #include "src/gem/testing/core/calculator_tester.h"
 
 namespace gml::gem::calculators::core {

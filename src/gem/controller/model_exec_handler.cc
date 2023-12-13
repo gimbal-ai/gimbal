@@ -15,15 +15,18 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/controller/model_exec_handler.h"
+
 #include <unistd.h>
 
-#include <google/protobuf/any.pb.h>
-#include <grpcpp/grpcpp.h>
 #include <atomic>
 #include <chrono>
 #include <fstream>
 #include <sstream>
 #include <utility>
+
+#include <google/protobuf/any.pb.h>
+#include <grpcpp/grpcpp.h>
 
 #include "src/common/base/base.h"
 #include "src/common/base/error.h"
@@ -31,7 +34,6 @@
 #include "src/common/event/task.h"
 #include "src/common/uuid/uuid.h"
 #include "src/gem/controller/controller.h"
-#include "src/gem/controller/model_exec_handler.h"
 #include "src/gem/exec/core/context.h"
 #include "src/gem/exec/core/control_context.h"
 #include "src/gem/exec/core/runner/runner.h"

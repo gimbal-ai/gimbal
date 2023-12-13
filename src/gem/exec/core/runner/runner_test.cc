@@ -15,16 +15,16 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#include <gtest/gtest.h>
+#include "src/gem/exec/core/runner/runner.h"
 
 #include <google/protobuf/text_format.h>
+#include <gtest/gtest.h>
 #include <mediapipe/framework/calculator_base.h>
 #include <mediapipe/framework/calculator_graph.h>
 #include <mediapipe/framework/calculator_registry.h>
 
 #include "src/api/corepb/v1/model_exec.pb.h"
 #include "src/common/testing/testing.h"
-#include "src/gem/exec/core/runner/runner.h"
 #include "src/gem/plugins/registry.h"
 
 namespace gml::gem::exec::core {

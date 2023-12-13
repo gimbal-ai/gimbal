@@ -20,6 +20,7 @@
 #pragma once
 
 #include <sole.hpp>
+
 #include "src/common/base/base.h"
 #include "src/common/typespb/uuid.pb.h"
 

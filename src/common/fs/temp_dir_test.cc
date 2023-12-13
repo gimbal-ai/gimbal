@@ -15,15 +15,16 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#include <gtest/gtest.h>
+#include "src/common/fs/temp_dir.h"
 
 #include <fstream>
 #include <string>
 
+#include <gtest/gtest.h>
+
 #include "src/common/base/file.h"
 #include "src/common/base/logging.h"
 #include "src/common/fs/fs_wrapper.h"
-#include "src/common/fs/temp_dir.h"
 #include "src/common/testing/testing.h"
 
 namespace gml::fs {

@@ -17,9 +17,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <gflags/gflags.h>
-
 #include "src/common/system/proc_pid_path.h"
+
+#include <gflags/gflags.h>
 
 DEFINE_string(proc_path, "/proc", "Path to proc filesystem.");
 

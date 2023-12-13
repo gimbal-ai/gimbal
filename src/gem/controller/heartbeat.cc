@@ -16,11 +16,14 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/controller/heartbeat.h"
+
 #include <unistd.h>
+
+#include <chrono>
 
 #include <google/protobuf/any.pb.h>
 #include <grpcpp/grpcpp.h>
-#include <chrono>
 
 #include "src/api/corepb/v1/cp_edge.pb.h"
 #include "src/common/base/base.h"
@@ -32,7 +35,6 @@
 #include "src/controlplane/fleetmgr/fmpb/v1/fmpb.pb.h"
 #include "src/gem/controller/controller.h"
 #include "src/gem/controller/grpc_bridge.h"
-#include "src/gem/controller/heartbeat.h"
 #include "src/gem/controller/message_handler.h"
 
 namespace gml::gem::controller {

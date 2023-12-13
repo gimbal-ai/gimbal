@@ -17,13 +17,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+#include "src/common/base/file.h"
+
 #include <sys/stat.h>
 
 #include <fstream>
 #include <string>
 
 #include "src/common/base/error.h"
-#include "src/common/base/file.h"
 #include "src/common/base/logging.h"
 
 namespace gml {

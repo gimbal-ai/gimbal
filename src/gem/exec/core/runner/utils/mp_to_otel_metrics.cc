@@ -15,9 +15,9 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#include <vector>
-
 #include "src/gem/exec/core/runner/utils/mp_to_otel_metrics.h"
+
+#include <vector>
 
 #include <mediapipe/framework/calculator_framework.h>
 

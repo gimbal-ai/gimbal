@@ -15,12 +15,13 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/common/system/cpu_info_reader.h"
+
 #include <cstdint>
 #include <memory>
 
 #include "src/common/base/macros.h"
 #include "src/common/system/config.h"
-#include "src/common/system/cpu_info_reader.h"
 #include "src/common/system/parsers.h"
 
 namespace gml::system {

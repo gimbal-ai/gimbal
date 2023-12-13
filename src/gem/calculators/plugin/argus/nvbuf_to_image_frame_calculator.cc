@@ -17,12 +17,10 @@
 
 #include "src/gem/calculators/plugin/argus/nvbuf_to_image_frame_calculator.h"
 
-#include "absl/status/status.h"
-
+#include "libyuv/convert.h"
+#include <absl/status/status.h>
 #include <mediapipe/framework/calculator_framework.h>
 #include <mediapipe/framework/formats/image_frame.h>
-
-#include "include/libyuv/convert.h"
 
 #include "src/gem/devices/camera/argus/nvbufsurfwrapper.h"
 

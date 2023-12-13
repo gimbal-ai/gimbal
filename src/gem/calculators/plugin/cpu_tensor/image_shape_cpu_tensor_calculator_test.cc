@@ -15,10 +15,11 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/calculators/plugin/cpu_tensor/image_shape_cpu_tensor_calculator.h"
+
 #include <mediapipe/framework/formats/image_frame.h>
 
 #include "src/common/testing/testing.h"
-#include "src/gem/calculators/plugin/cpu_tensor/image_shape_cpu_tensor_calculator.h"
 #include "src/gem/exec/plugin/cpu_tensor/context.h"
 #include "src/gem/testing/core/calculator_tester.h"
 #include "src/gem/testing/plugin/cpu_tensor/operators.h"

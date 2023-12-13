@@ -17,9 +17,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <gtest/gtest.h>
-
 #include "src/common/base/types.h"
+
+#include <gtest/gtest.h>
 
 namespace gml::const_types_test {
 

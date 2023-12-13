@@ -16,15 +16,15 @@
  */
 #pragma once
 
-#include <grpcpp/grpcpp.h>
 #include <condition_variable>
 #include <cstdint>
 #include <memory>
 #include <string>
 #include <string_view>
 
-#include <tbb/concurrent_queue.h>
+#include <grpcpp/grpcpp.h>
 #include <sole.hpp>
+#include <tbb/concurrent_queue.h>
 
 #include "src/api/corepb/v1/cp_edge.pb.h"
 #include "src/common/base/base.h"

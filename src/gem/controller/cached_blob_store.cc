@@ -15,13 +15,14 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/controller/cached_blob_store.h"
+
 #include <filesystem>
 #include <fstream>
 
 #include "src/common/base/statusor.h"
 #include "src/common/fs/fs_utils.h"
 #include "src/common/fs/fs_wrapper.h"
-#include "src/gem/controller/cached_blob_store.h"
 #include "src/gem/storage/fs_blob_store.h"
 
 DEFINE_string(blob_store_dir, gflags::StringFromEnv("GML_BLOB_STORE_DIR", "/gml/cache/"),

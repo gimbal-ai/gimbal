@@ -16,6 +16,7 @@
  */
 
 #include "src/gem/build/plugin/openvino/model_builder.h"
+
 #include <filesystem>
 #include <fstream>
 

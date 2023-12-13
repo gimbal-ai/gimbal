@@ -17,9 +17,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+#include "src/common/fs/fs_wrapper.h"
+
 #include <gtest/gtest.h>
 
-#include "src/common/fs/fs_wrapper.h"
 #include "src/common/testing/testing.h"
 
 namespace gml::fs {

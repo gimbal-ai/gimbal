@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include <nvbufsurface.h>
+#include <NvBufSurface.h>
 
 #include "src/common/base/base.h"
 

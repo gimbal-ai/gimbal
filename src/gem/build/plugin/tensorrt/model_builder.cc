@@ -15,15 +15,17 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/build/plugin/tensorrt/model_builder.h"
+
+#include <chrono>
+
 #include <NvInfer.h>
 #include <NvOnnxParser.h>
-#include <chrono>
+
 #include "src/common/base/base.h"
 #include "src/common/perf/elapsed_timer.h"
 #include "src/common/system/memory_mapped_file.h"
 #include "src/common/uuid/uuid.h"
-
-#include "src/gem/build/plugin/tensorrt/model_builder.h"
 #include "src/gem/exec/core/model.h"
 #include "src/gem/exec/plugin/tensorrt/model.h"
 

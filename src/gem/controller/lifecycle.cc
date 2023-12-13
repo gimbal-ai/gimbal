@@ -16,6 +16,7 @@
  */
 
 #include "src/gem/controller/lifecycle.h"
+
 #include "src/gem/controller/controller.h"
 
 namespace gml::gem::controller {

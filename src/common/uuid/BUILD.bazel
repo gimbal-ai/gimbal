@@ -44,7 +44,8 @@ gml_cc_binary(
     testonly = 1,
     srcs = ["uuid_benchmark.cc"],
     deps = [
+        ":cc_library",
+        "//src/common/benchmark:benchmark_main",
         "@com_github_rlyeh_sole//:sole",
-        "@com_google_benchmark//:benchmark_main",
     ],
 )

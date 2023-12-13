@@ -15,9 +15,10 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/common/system/mac_address.h"
+
 #include <absl/strings/str_format.h>
 
-#include "src/common/system/mac_address.h"
 #include "src/common/testing/testing.h"
 
 namespace gml::system {

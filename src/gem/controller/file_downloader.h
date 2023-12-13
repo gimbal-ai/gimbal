@@ -17,10 +17,11 @@
 
 #pragma once
 
-#include <absl/container/flat_hash_map.h>
 #include <filesystem>
-#include <sole.hpp>
 #include <string>
+
+#include <absl/container/flat_hash_map.h>
+#include <sole.hpp>
 
 #include "src/gem/controller/message_handler.h"
 

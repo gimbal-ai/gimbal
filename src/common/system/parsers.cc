@@ -15,10 +15,10 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/common/system/parsers.h"
+
 #include <fstream>
 #include <vector>
-
-#include "src/common/system/parsers.h"
 
 namespace gml::system {
 

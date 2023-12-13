@@ -50,13 +50,24 @@ DisableFormat:   false
 ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: true
 ForEachMacros:   [ foreach, Q_FOREACH, BOOST_FOREACH ]
+IncludeBlocks: Regroup
 IncludeCategories:
-  - Regex:           '^<.*\.h>'
+  - Regex:           '^<(absl|benchmark|gflags|glog|gmock|google|gperftools|grpcpp|gtest)' # third party deps, utils from google
+    Priority:        100
+  - Regex:           '^<(magic_enum|nats|opentelemetry|picosha2|sole|tbb)' # third party deps
+    Priority:        100
+  - Regex:           '^<(mediapipe|opencv2|opencv4|openvino)' # third party deps
+    Priority:        100
+  - Regex:           '^<(Argus|Nv|EGL)' # third party deps for NVIDIA
+    Priority:        100
+  - Regex:           '^<.*\.h>' # system headers
     Priority:        1
-  - Regex:           '^<.*'
-    Priority:        2
-  - Regex:           '.*'
-    Priority:        3
+  - Regex:           '^<[a-zA-Z0-9_]*>$' # stdlib
+    Priority:        10
+  - Regex:           '^"(src|tools|experimental)/.*' # project includes
+    Priority:        1000
+  - Regex:           '.*' # catch all third party deps
+    Priority:        100
 IncludeIsMainRegex: '([-_](test|unittest))?$'
 IndentCaseLabels: true
 IndentWidth:     2

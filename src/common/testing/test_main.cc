@@ -17,8 +17,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <gtest/gtest.h>
 #include <memory>
+
+#include <gtest/gtest.h>
+
 #include "src/common/base/base.h"
 #include "src/common/bazel/runfiles.h"
 #include "src/common/signal/signal_action.h"

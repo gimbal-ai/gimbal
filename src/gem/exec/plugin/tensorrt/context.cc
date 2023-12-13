@@ -15,11 +15,12 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/exec/plugin/tensorrt/context.h"
+
 #include <NvInfer.h>
 #include <NvOnnxParser.h>
-#include "src/common/base/base.h"
 
-#include "src/gem/exec/plugin/tensorrt/context.h"
+#include "src/common/base/base.h"
 
 namespace gml::gem::exec::tensorrt {
 

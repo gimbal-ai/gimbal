@@ -15,7 +15,7 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#include "fs_utils.h"
+#include "src/common/fs/fs_utils.h"
 
 #include <gtest/gtest.h>
 

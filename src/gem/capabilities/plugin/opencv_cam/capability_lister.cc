@@ -15,14 +15,15 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/capabilities/plugin/opencv_cam/capability_lister.h"
+
 #include <fcntl.h>
 #include <linux/videodev2.h>
 #include <sys/ioctl.h>
+
 #include <filesystem>
 
 #include "src/common/system/linux_file_wrapper.h"
-
-#include "src/gem/capabilities/plugin/opencv_cam/capability_lister.h"
 
 namespace gml::gem::capabilities::opencv_cam {
 

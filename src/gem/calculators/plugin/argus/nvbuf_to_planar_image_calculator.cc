@@ -17,8 +17,7 @@
 
 #include "src/gem/calculators/plugin/argus/nvbuf_to_planar_image_calculator.h"
 
-#include "absl/status/status.h"
-
+#include <absl/status/status.h>
 #include <mediapipe/framework/calculator_framework.h>
 #include <mediapipe/framework/formats/image_frame.h>
 

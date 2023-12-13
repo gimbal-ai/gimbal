@@ -15,12 +15,12 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include "src/gem/calculators/plugin/cpu_tensor/bounding_box_tensors_to_detections_calculator.h"
+
 #include <mediapipe/framework/calculator_framework.h>
 
-#include "src/gem/exec/plugin/cpu_tensor/context.h"
-
 #include "src/api/corepb/v1/mediastream.pb.h"
-#include "src/gem/calculators/plugin/cpu_tensor/bounding_box_tensors_to_detections_calculator.h"
+#include "src/gem/exec/plugin/cpu_tensor/context.h"
 
 namespace gml::gem::calculators::cpu_tensor {
 

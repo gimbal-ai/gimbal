@@ -16,6 +16,7 @@
  */
 
 #include "src/gem/calculators/core/image_frame_to_yuv_planar_image.h"
+
 #include <mediapipe/framework/calculator_registry.h>
 #include <mediapipe/framework/formats/image_frame.h>
 #include <mediapipe/framework/formats/yuv_image.h>

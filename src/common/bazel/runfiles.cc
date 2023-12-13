@@ -22,7 +22,6 @@
 
 #include "src/common/base/base.h"
 #include "src/common/fs/fs_wrapper.h"
-
 #include "tools/cpp/runfiles/runfiles.h"
 
 namespace gml::bazel {

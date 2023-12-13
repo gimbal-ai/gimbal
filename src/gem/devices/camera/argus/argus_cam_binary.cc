@@ -21,13 +21,11 @@
 #include <iostream>
 #include <string>
 
+#include <NvBufSurface.h>
 #include <absl/strings/str_format.h>
-
-#include <nvbufsurface.h>
-
 #include <opencv4/opencv2/opencv.hpp>
 
-#include "argus_cam.h"
+#include "src/gem/devices/camera/argus/argus_cam.h"
 
 constexpr int kNumFrames = 100;
 const std::string kDeviceUUID = "";

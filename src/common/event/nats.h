@@ -19,11 +19,12 @@
 
 #pragma once
 
-#include <nats/nats.h>
-#include "src/common/event/libuv.h"
-
 #include <memory>
 #include <string>
+
+#include <nats/nats.h>
+
+#include "src/common/event/libuv.h"
 
 namespace gml::event {
 

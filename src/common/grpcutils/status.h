@@ -19,6 +19,7 @@
 
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/support/status.h>
+
 #include "src/common/base/status.h"
 
 namespace gml {

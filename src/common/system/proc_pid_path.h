@@ -19,10 +19,12 @@
 
 #pragma once
 
-#include <gflags/gflags.h>
 #include <sys/types.h>
+
 #include <filesystem>
 #include <string>
+
+#include <gflags/gflags.h>
 
 DECLARE_string(proc_path);
 
