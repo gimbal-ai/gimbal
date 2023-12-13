@@ -24,12 +24,15 @@
 #include "src/gem/controller/cached_blob_store.h"
 #include "src/gem/storage/fs_blob_store.h"
 
+DEFINE_string(blob_store_dir, gflags::StringFromEnv("GML_BLOB_STORE_DIR", "/gml/cache/"),
+              "Path to store blobs with the FilesystemBlobStore");
+
 namespace gml::gem::controller {
 
 StatusOr<std::unique_ptr<CachedBlobStore>> CachedBlobStore::Create(
-    const std::string& directory, std::shared_ptr<FileDownloader> downloader) {
-  auto blob_store =
-      std::unique_ptr<CachedBlobStore>(new CachedBlobStore(directory, std::move(downloader)));
+    std::shared_ptr<FileDownloader> downloader) {
+  auto blob_store = std::unique_ptr<CachedBlobStore>(
+      new CachedBlobStore(FLAGS_blob_store_dir, std::move(downloader)));
   GML_RETURN_IF_ERROR(blob_store->Init());
   return blob_store;
 }

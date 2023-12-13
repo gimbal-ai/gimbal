@@ -48,7 +48,7 @@ class CachedBlobStore : public storage::BlobStore {
  public:
   CachedBlobStore() = delete;
   static StatusOr<std::unique_ptr<CachedBlobStore>> Create(
-      const std::string& directory, std::shared_ptr<FileDownloader> downloader);
+      std::shared_ptr<FileDownloader> downloader);
 
   Status Init();
   /**

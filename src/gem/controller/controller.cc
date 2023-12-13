@@ -56,8 +56,6 @@ using internal::api::core::v1::CP_EDGE_TOPIC_METRICS;
 using internal::api::core::v1::CP_EDGE_TOPIC_STATUS;
 using internal::api::core::v1::CP_EDGE_TOPIC_VIDEO;
 
-DEFINE_string(blob_store_dir, gflags::StringFromEnv("GML_BLOB_STORE_DIR", "/gml/cache/"),
-              "Path to store blobs with the FilesystemBlobStore");
 DEFINE_string(device_serial, gflags::StringFromEnv("GML_DEVICE_SERIAL", ""),
               "Force set the serial number / ID for the device. Note this needs to be unique "
               "across devices.");
@@ -142,7 +140,7 @@ Status Controller::Init() {
       std::bind(&Controller::HandleMessage, this, std::placeholders::_1));
 
   auto file_downloader = std::make_shared<FileDownloader>(dispatcher(), &info_, bridge_.get());
-  GML_ASSIGN_OR_RETURN(blob_store_, CachedBlobStore::Create(FLAGS_blob_store_dir, file_downloader));
+  GML_ASSIGN_OR_RETURN(blob_store_, CachedBlobStore::Create(file_downloader));
 
   ctrl_exec_ctx_ = std::make_unique<exec::core::ControlExecutionContext>();
 
