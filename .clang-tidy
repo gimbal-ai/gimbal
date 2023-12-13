@@ -19,4 +19,5 @@ Checks: >
   -modernize-avoid-bind,
   -modernize-use-nodiscard,
   -modernize-use-trailing-return-type,
+  -bugprone-easily-swappable-parameters,
 FormatStyle: google
