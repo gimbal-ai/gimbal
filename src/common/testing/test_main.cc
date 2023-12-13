@@ -18,13 +18,16 @@
  */
 
 #include <gtest/gtest.h>
+#include <memory>
 #include "src/common/base/base.h"
 #include "src/common/bazel/runfiles.h"
+#include "src/common/signal/signal_action.h"
 
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);
   gml::EnvironmentGuard env_guard(&argc, argv);
   gml::bazel::SetBazelBinaryName(argv[0]);
+  auto action = std::make_unique<gml::SignalAction>();
   int retval = RUN_ALL_TESTS();
   return retval;
 }

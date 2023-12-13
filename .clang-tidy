@@ -3,6 +3,7 @@
 WarningsAsErrors: >
   *,
   -bugprone-macro-parentheses,
+  -bugprone-exception-escape,
   -bugprone-easily-swappable-parameters,
   -modernize-avoid-c-arrays,
 Checks: >

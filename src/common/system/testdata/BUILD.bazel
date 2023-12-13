@@ -23,6 +23,11 @@ filegroup(
 )
 
 filegroup(
+    name = "sys_fs",
+    srcs = glob(include = ["sysfs/**/*"]),
+)
+
+filegroup(
     name = "nonutf8file",
     srcs = ["non_utf8_file.txt"],
 )

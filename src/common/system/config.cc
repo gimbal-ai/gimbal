@@ -46,10 +46,9 @@ int64_t Config::KernelTickTimeNS() const {
   return static_cast<int64_t>(static_cast<int64_t>(1E9) / KernelTicksPerSecond());
 }
 
-namespace {
-std::unique_ptr<Config> g_instance;
+const Config& Config::GetInstance() {
+  static Config config;
+  return config;
 }
-
-const Config& Config::GetInstance() { return *g_instance; }
 
 }  // namespace gml::system

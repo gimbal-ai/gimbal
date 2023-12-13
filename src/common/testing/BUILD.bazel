@@ -46,6 +46,7 @@ gml_cc_library(
     srcs = ["test_main.cc"],
     deps = [
         ":cc_library",
+        "//src/common/signal:cc_library",
         "@com_google_googletest//:gtest",
     ],
 )

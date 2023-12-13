@@ -84,6 +84,7 @@ gml_cc_test(
 gml_cc_test(
     name = "cpu_info_reader_test",
     srcs = ["cpu_info_reader_test.cc"],
+    data = ["//src/common/system/testdata:sys_fs"],
     deps = [
         ":cc_library",
     ],
