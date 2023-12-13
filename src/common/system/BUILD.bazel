@@ -88,3 +88,12 @@ gml_cc_test(
         ":cc_library",
     ],
 )
+
+gml_cc_test(
+    name = "parsers_test",
+    srcs = ["parsers_test.cc"],
+    deps = [
+        ":cc_library",
+        "//src/common/fs:cc_library",
+    ],
+)

@@ -17,11 +17,13 @@
 
 #pragma once
 
+#include <fstream>
 #include <string>
 
 #include <absl/container/flat_hash_map.h>
 
 #include "src/common/base/base.h"
+#include "src/common/base/error.h"
 
 namespace gml::system {
 
@@ -34,5 +36,14 @@ Status ParseFromKeyValueFile(
     const std::string& fpath,
     const absl::flat_hash_map<std::string_view, size_t>& field_name_to_value_map,
     uint8_t* out_base);
+
+template <typename T>
+inline Status ReadValueFromFile(const std::string& fpath, T* arg) {
+  *arg = T();
+  std::ifstream f(fpath.c_str());
+  if (!f.is_open()) return error::Unknown("failed to open file");
+  f >> *arg;
+  return (f.good() || f.eof()) ? Status::OK() : error::Unknown("failed to read file");
+}
 
 }  // namespace gml::system
