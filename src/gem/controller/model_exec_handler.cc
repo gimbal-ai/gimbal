@@ -97,6 +97,7 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
           EmplaceNewKey(&model_exec_ctxs_, context_name, std::move(model_exec_ctx)));
     }
 
+    SendStatusUpdate(ExecutionGraphState::EXECUTION_GRAPH_STATE_READY, "");
     return Status::OK();
   }
 
@@ -135,6 +136,7 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
           return Status::OK();
         }));
 
+    SendStatusUpdate(ExecutionGraphState::EXECUTION_GRAPH_STATE_DEPLOYED, "");
     GML_RETURN_IF_ERROR(runner.Start());
 
     while (!parent_->stop_signal_.load() && !runner.HasError()) {
@@ -157,6 +159,7 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
   void Work() override {
     auto s = Run();
     if (!s.ok()) {
+      SendStatusUpdate(ExecutionGraphState::EXECUTION_GRAPH_STATE_FAILED, "");
       LOG(ERROR) << "Failed to run model: " << s.msg();
     }
   }
