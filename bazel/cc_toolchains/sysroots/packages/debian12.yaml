@@ -41,6 +41,8 @@ packages:
 - name: aardvark-dns
 - name: netavark
 - name: podman
+- name: coreutils
+- name: tar
 exclude_paths:
 - usr/share/man
 - usr/share/doc

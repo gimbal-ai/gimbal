@@ -86,6 +86,20 @@ def deb_repos():
         deps = ["@debian12_libglib2.0-0_x86_64//:all_files", "@debian12_libsystemd0_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
+        name = "debian12_coreutils_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ec8f090a14c684879dce251254d8d9ed0876d4480f750d5807ef04e5435e1c4d",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/c/coreutils/coreutils_9.1-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_coreutils_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "61038f857e346e8500adf53a2a0a20859f4d3a3b51570cc876b153a2d51a3091",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/c/coreutils/coreutils_9.1-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
         name = "debian12_crun_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "e4a27bf7e75746e9d9500985402e83eb9c9d7742135ff038f0bd729a3cde2c20",
@@ -2813,6 +2827,20 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "11790842108768ec52432ea22e7b4f057232813b7c27ef6dfe1aba776a5cb90e",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/s/sysvinit/sysvinit-utils_3.06-4_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_tar_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "c55a4a377cc4fa52b71d6ce5809a5d14f295ce4feed2e689c02be80725f887c8",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/t/tar/tar_1.34+dfsg-1.2_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_tar_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "36a29db2aa4262bd02c23df42cd91cc709883fe52a517aa8a1b148039305eef0",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/t/tar/tar_1.34+dfsg-1.2_amd64.deb"],
         deps = [],
     )
     deb_archive_w_pkg_providers(

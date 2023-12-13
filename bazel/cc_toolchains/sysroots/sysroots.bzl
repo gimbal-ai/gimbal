@@ -68,6 +68,9 @@ _DEBIAN12_TEST_PKGS = [
     "debian12_aardvark-dns",
     "debian12_netavark",
     "debian12_podman",
+    # Useful for "debug" containers that want to do basic file manipulation
+    "debian12_coreutils",
+    "debian12_tar",
 ]
 
 def _debian12_sysroots():
