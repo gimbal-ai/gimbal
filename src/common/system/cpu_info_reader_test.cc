@@ -24,7 +24,7 @@
 
 namespace gml::system {
 
-DECLARE_string(sysfs_path);
+DECLARE_string(sys_path);
 
 constexpr char kTestDataBasePath[] = "src/common/system";
 
@@ -35,8 +35,11 @@ std::string GetPathToTestDataFile(std::string_view fname) {
 }  // namespace
 
 TEST(CPUInfoReader, Basic) {
-  GML_SET_FOR_SCOPE(FLAGS_sysfs_path, GetPathToTestDataFile("testdata/sysfs"));
-  auto reader = CPUInfoReader::Create();
+  GML_SET_FOR_SCOPE(FLAGS_sys_path, GetPathToTestDataFile("testdata/sys"));
+  StatusOr s = CPUInfoReader::Create();
+  ASSERT_OK(s);
+  auto& reader = s.ValueOrDie();
+
   ASSERT_OK(reader->Init());
 
   std::vector<CPUFrequencyInfo> cpu_freqs;

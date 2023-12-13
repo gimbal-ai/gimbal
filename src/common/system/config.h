@@ -75,13 +75,13 @@ class Config : public NotCopyable {
   std::filesystem::path ToHostPath(const std::filesystem::path& p) const;
 
   const std::filesystem::path& host_path() const { return host_path_; }
-  const std::filesystem::path& sysfs_path() const { return sysfs_path_; }
+  const std::filesystem::path& sys_path() const { return sys_path_; }
 
  private:
   explicit Config();
 
   const std::filesystem::path host_path_;
-  const std::filesystem::path sysfs_path_;
+  const std::filesystem::path sys_path_;
 };
 
 }  // namespace gml::system

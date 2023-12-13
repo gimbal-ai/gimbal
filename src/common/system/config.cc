@@ -28,15 +28,15 @@
 
 namespace gml::system {
 
-DEFINE_string(sysfs_path, gflags::StringFromEnv("GML_SYSFS_PATH", "/sys/fs"),
-              "The path to the sysfs directory.");
+DEFINE_string(sys_path, gflags::StringFromEnv("GML_SYS_PATH", "/sys"),
+              "The path to the sys directory.");
 
 DEFINE_string(host_path, gflags::StringFromEnv("GML_HOST_PATH", ""),
               "The path to the host root directory.");
 
 #include <ctime>
 
-Config::Config() : host_path_(FLAGS_host_path), sysfs_path_(FLAGS_sysfs_path) {}
+Config::Config() : host_path_(FLAGS_host_path), sys_path_(FLAGS_sys_path) {}
 
 int64_t Config::PageSizeBytes() const { return sysconf(_SC_PAGESIZE); }
 

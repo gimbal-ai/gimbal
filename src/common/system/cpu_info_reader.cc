@@ -36,11 +36,11 @@ class LinuxCPUInfoReader : public CPUInfoReader {
   Status ReadCPUFrequencies(std::vector<CPUFrequencyInfo>* cpu_freqs) const override;
 
  private:
-  std::string sysfs_path_;
+  std::string sys_path_;
 };
 
 Status LinuxCPUInfoReader::Init() {
-  sysfs_path_ = ::gml::system::Config::GetInstance().sysfs_path();
+  sys_path_ = ::gml::system::Config::GetInstance().sys_path();
   return Status::OK();
 }
 
@@ -53,7 +53,7 @@ Status LinuxCPUInfoReader::ReadCPUFrequencies(std::vector<CPUFrequencyInfo>* cpu
     finfo.cpu_num = cpu_num;
     auto s =
         ReadValueFromFile(absl::Substitute("$0/devices/system/cpu/cpu$1/cpufreq/scaling_cur_freq",
-                                           sysfs_path_, cpu_num),
+                                           sys_path_, cpu_num),
                           &finfo.cpu_freq_hz);
     if (!s.ok()) {
       if (cpu_num == 0) {
@@ -71,7 +71,9 @@ Status LinuxCPUInfoReader::ReadCPUFrequencies(std::vector<CPUFrequencyInfo>* cpu
   return Status::OK();
 }
 
-std::unique_ptr<CPUInfoReader> CPUInfoReader::Create() {
-  return std::unique_ptr<CPUInfoReader>(new LinuxCPUInfoReader());
+StatusOr<std::unique_ptr<CPUInfoReader>> CPUInfoReader::Create() {
+  auto reader = new LinuxCPUInfoReader();
+  GML_RETURN_IF_ERROR(reader->Init());
+  return std::unique_ptr<CPUInfoReader>(reader);
 }
 }  // namespace gml::system

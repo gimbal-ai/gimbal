@@ -84,7 +84,7 @@ void SystemMetricsReader::Scrape() {
   std::vector<gml::system::CPUFrequencyInfo> freq_stats;
   s = cpu_info_reader_->ReadCPUFrequencies(&freq_stats);
   if (!s.ok()) {
-    LOG(INFO) << "Failed to read frequency stats. Skipping...";
+    LOG(INFO) << "Failed to read frequency stats. Skipping... " << s.msg();
     return;
   }
 

@@ -93,7 +93,7 @@ common_docker_flags=(
   --network=host
   -v "$GML_CACHE_DIR:/gml"
   -v /usr/lib:/host_lib
-  # Mount /sys/class/net so that GEM can use the mac address as the SERIAL_NUMBER.
+  # Mount /sys so that GEM can use the mac address as the SERIAL_NUMBER and also read system metrics.
   -v /sys:/host/sys
 )
 extra_docker_flags=()
@@ -116,6 +116,7 @@ DEFAULT_IMAGE_TAG=""
 
 cmdline_opts=(
   "--blob_store_dir" "/gml"
+  "--sys_path" "/host/sys"
   "--sys_class_net_path" "/host/sys/class/net"
 )
 

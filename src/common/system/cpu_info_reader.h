@@ -33,7 +33,7 @@ struct CPUFrequencyInfo {
 class CPUInfoReader {
  public:
   // Creates a new CPU info reader.
-  static std::unique_ptr<CPUInfoReader> Create();
+  static StatusOr<std::unique_ptr<CPUInfoReader>> Create();
 
   virtual ~CPUInfoReader() = default;
 

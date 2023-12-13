@@ -66,6 +66,10 @@ Status Controller::Init() {
   fmstub_ = std::make_unique<FleetMgrEdgeService::Stub>(cp_chan_);
   egwstub_ = std::make_unique<EGWService::Stub>(cp_chan_);
 
+  GML_ASSIGN_OR_RETURN(auto cpu_info_reader, gml::system::CPUInfoReader::Create());
+  system_metrics_reader_ = std::make_unique<SystemMetricsReader>(
+      &metrics::MetricsSystem::GetInstance(), std::move(cpu_info_reader));
+
   // We need to make an RPC call to register the GEM and get the gem ID in return.
   // To get that we need to know the device serial number. We utilize the MAC address as
   // the serial number for the device.
