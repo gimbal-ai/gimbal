@@ -26,6 +26,8 @@ gml_cc_library(
         "config.h",
         "cpu_info_reader.cc",
         "cpu_info_reader.h",
+        "hostname.cc",
+        "hostname.h",
         "linux_file_wrapper.cc",
         "linux_file_wrapper.h",
         "mac_address.cc",

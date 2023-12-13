@@ -23,6 +23,7 @@
 
 #include "src/api/corepb/v1/cp_edge.pb.h"
 #include "src/common/base/base.h"
+#include "src/common/system/hostname.h"
 #include "src/common/system/mac_address.h"
 #include "src/common/uuid/uuid.h"
 #include "src/controlplane/egw/egwpb/v1/egwpb.grpc.pb.h"
@@ -67,17 +68,6 @@ DEFINE_string(sys_class_net_path,
 
 namespace {
 
-constexpr size_t kMaxHostnameSize = 128;
-// TODO(zasgar): Move to system.
-StatusOr<std::string> GetHostname() {
-  char hostname[kMaxHostnameSize];
-  int err = gethostname(hostname, sizeof(hostname));
-  if (err != 0) {
-    return error::Unknown("Failed to get hostname");
-  }
-  return std::string(hostname);
-}
-
 // The device serial string. We selectively use the passed in flag, or
 // the mac_address. If a unique_id cannot be found, we will currently error out.
 StatusOr<std::string> GetDeviceSerial() {
@@ -96,7 +86,7 @@ StatusOr<std::string> GetDeviceSerial() {
 }  // namespace
 
 Status Controller::Init() {
-  GML_ASSIGN_OR_RETURN(info_.hostname, GetHostname());
+  GML_ASSIGN_OR_RETURN(info_.hostname, system::GetHostname());
   info_.pid = getpid();
 
   auto channel_creds = grpc::SslCredentials(grpc::SslCredentialsOptions());
