@@ -24,7 +24,6 @@
 namespace gml::gem::controller {
 
 using gml::internal::api::core::v1::EDGE_CP_TOPIC_INFO;
-using gml::internal::controlplane::egw::v1::BridgeResponse;
 
 controller::DeviceInfoHandler::DeviceInfoHandler(event::Dispatcher* d, GEMInfo* agent_info,
                                                  GRPCBridge* bridge)

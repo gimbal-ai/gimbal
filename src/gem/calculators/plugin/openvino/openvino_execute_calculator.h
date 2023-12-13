@@ -22,7 +22,6 @@
 
 namespace gml::gem::calculators::openvino {
 
-using exec::openvino::ExecutionContext;
 /**
  * OpenVinoExecuteCalculator Graph API:
  *  Input Side Packets:

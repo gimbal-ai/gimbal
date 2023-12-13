@@ -28,6 +28,7 @@
 
 namespace gml::gem::calculators::openvino {
 using exec::cpu_tensor::CPUTensorPtr;
+using exec::openvino::ExecutionContext;
 
 constexpr std::string_view kOpenVinoContextTag = "OV_EXEC_CTX";
 constexpr std::string_view kCPUContextTag = "CPU_EXEC_CTX";

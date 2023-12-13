@@ -42,11 +42,7 @@
 namespace gml::gem::controller {
 
 using gml::internal::api::core::v1::CPEdgeTopic;
-using gml::internal::api::core::v1::EdgeCPMessage;
-using gml::internal::api::core::v1::EdgeHeartbeat;
-using gml::internal::api::core::v1::EdgeHeartbeatAck;
 
-using gml::internal::controlplane::egw::v1::BridgeRequest;
 using gml::internal::controlplane::egw::v1::BridgeResponse;
 using gml::internal::controlplane::egw::v1::EGWService;
 using gml::internal::controlplane::fleetmgr::v1::FleetMgrEdgeService;
@@ -59,8 +55,6 @@ using internal::api::core::v1::CP_EDGE_TOPIC_INFO;
 using internal::api::core::v1::CP_EDGE_TOPIC_METRICS;
 using internal::api::core::v1::CP_EDGE_TOPIC_STATUS;
 using internal::api::core::v1::CP_EDGE_TOPIC_VIDEO;
-using internal::api::core::v1::EDGE_CP_TOPIC_EXEC;
-using internal::api::core::v1::EDGE_CP_TOPIC_STATUS;
 
 DEFINE_string(blob_store_dir, gflags::StringFromEnv("GML_BLOB_STORE_DIR", "/gml/cache/"),
               "Path to store blobs with the FilesystemBlobStore");

@@ -24,7 +24,6 @@
 
 namespace gml::fs {
 
-using ::gml::testing::status::StatusIs;
 using ::testing::ElementsAre;
 using ::testing::HasSubstr;
 

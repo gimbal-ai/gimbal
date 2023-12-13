@@ -25,7 +25,6 @@
 #include "src/common/event/nats.h"
 
 using gml::event::APIImpl;
-using gml::event::RealTimeSystem;
 
 namespace gml::event {
 

@@ -25,7 +25,6 @@
 namespace gml::gem::calculators::core {
 
 using ::gml::internal::api::core::v1::Detection;
-using ::gml::internal::api::core::v1::NormalizedCenterRect;
 
 static constexpr char kDetectionsSummaryNode[] = R"pbtxt(
 calculator: "DetectionsSummaryCalculator"

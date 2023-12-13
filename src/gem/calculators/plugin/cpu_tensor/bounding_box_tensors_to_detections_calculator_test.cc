@@ -31,7 +31,6 @@ using ::gml::gem::exec::core::DataType;
 using ::gml::gem::exec::core::TensorShape;
 using ::gml::gem::exec::cpu_tensor::CPUTensorPool;
 using ::gml::internal::api::core::v1::Detection;
-using ::gml::internal::api::core::v1::NormalizedCenterRect;
 
 static constexpr char kBoundingBoxToDetectionsNode[] = R"pbtxt(
 calculator: "BoundingBoxTensorsToDetections"

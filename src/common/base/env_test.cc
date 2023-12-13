@@ -24,9 +24,6 @@
 
 namespace gml {
 
-using ::testing::IsEmpty;
-using ::testing::Not;
-
 TEST(GetEnvTest, ResultsAreAsExpected) {
   const std::string rand_string = "abcdefglkljadkfjadkfj";
   EXPECT_EQ(std::nullopt, GetEnv(rand_string));

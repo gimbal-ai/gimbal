@@ -27,13 +27,10 @@
 namespace gml::grpc {
 
 using ::google::protobuf::Descriptor;
-using ::google::protobuf::DescriptorPool;
 using ::google::protobuf::FileDescriptorProto;
 using ::google::protobuf::FileDescriptorSet;
 using ::google::protobuf::Message;
 using ::google::protobuf::MethodDescriptor;
-using ::google::protobuf::ServiceDescriptor;
-using ::google::protobuf::SimpleDescriptorDatabase;
 
 ServiceDescriptorDatabase::ServiceDescriptorDatabase(const FileDescriptorSet& fdset)
     : desc_db_(), desc_pool_(&desc_db_), message_factory_() {

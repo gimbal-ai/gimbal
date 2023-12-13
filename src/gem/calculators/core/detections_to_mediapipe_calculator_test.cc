@@ -27,7 +27,6 @@
 namespace gml::gem::calculators::core {
 
 using ::gml::internal::api::core::v1::Detection;
-using ::gml::internal::api::core::v1::NormalizedCenterRect;
 
 constexpr std::string_view kDetectionsToMediapipeNode = R"pbtxt(
 calculator: "DetectionsToMediapipeCalculator"

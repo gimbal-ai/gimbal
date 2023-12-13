@@ -37,14 +37,10 @@
 
 namespace gml::gem::controller {
 
-using gml::internal::api::core::v1::CP_EDGE_TOPIC_STATUS;
-using gml::internal::api::core::v1::CPEdgeTopic;
 using gml::internal::api::core::v1::EDGE_CP_TOPIC_STATUS;
-using gml::internal::api::core::v1::EdgeCPMessage;
 using gml::internal::api::core::v1::EdgeHeartbeat;
 using gml::internal::api::core::v1::EdgeHeartbeatAck;
 
-using gml::internal::controlplane::egw::v1::BridgeRequest;
 using gml::internal::controlplane::egw::v1::BridgeResponse;
 
 controller::HeartbeatHandler::HeartbeatHandler(event::Dispatcher* d, GEMInfo* agent_info,

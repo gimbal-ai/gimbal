@@ -29,7 +29,6 @@
 
 namespace gml::gem::controller {
 
-using gml::internal::controlplane::egw::v1::BridgeRequest;
 using gml::internal::controlplane::egw::v1::BridgeResponse;
 
 class MetricsHandler : public MessageHandler {

@@ -36,14 +36,8 @@ DECLARE_string(proc_path);
 
 namespace gml::system {
 
-using ::testing::_;
-using ::testing::Contains;
 using ::testing::ElementsAre;
-using ::testing::IsEmpty;
 using ::testing::MatchesRegex;
-using ::testing::Return;
-using ::testing::ReturnArg;
-using ::testing::ReturnRef;
 using ::testing::UnorderedElementsAre;
 
 constexpr char kTestDataBasePath[] = "src/common/system";

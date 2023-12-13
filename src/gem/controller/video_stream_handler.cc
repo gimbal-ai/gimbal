@@ -39,11 +39,6 @@
 #include "src/gem/exec/core/control_context.h"
 
 using gml::internal::api::core::v1::EDGE_CP_TOPIC_VIDEO;
-using gml::internal::api::core::v1::EdgeHeartbeat;
-using gml::internal::api::core::v1::EdgeHeartbeatAck;
-
-using gml::internal::controlplane::egw::v1::BridgeRequest;
-using gml::internal::controlplane::egw::v1::BridgeResponse;
 
 namespace gml::gem::controller {
 
