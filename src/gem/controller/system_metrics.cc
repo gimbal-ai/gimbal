@@ -63,7 +63,7 @@ void SystemMetricsReader::Scrape() {
   // Add memory metrics for system.
   cpu_num_gauge_->Record(static_cast<int64_t>(stats.size()), {{"state", "system"}}, {});
   gml::system::ProcParser::SystemStats system_stats;
-  GML_CHECK_OK(proc_parser_.ParseProcStat(&system_stats));
+  GML_CHECK_OK(proc_parser_.ParseProcMemInfo(&system_stats));
   mem_stats_total_bytes_->Record(system_stats.mem_total_bytes, {{"state", "system"}}, {});
   mem_stats_free_bytes_->Record(system_stats.mem_free_bytes, {{"state", "system"}}, {});
 

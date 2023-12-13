@@ -28,7 +28,7 @@ namespace gml::gem::controller {
 GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system)
     : metrics::Scrapeable(metrics_system) {
   CHECK(metrics_system != nullptr);
-  pgid_ = getpgid(getpid());
+  pid_ = getpid();
 
   auto gml_meter = metrics_system_->GetMeterProvider()->GetMeter("gml");
   cpu_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.cpu.nanoseconds.total"));
@@ -55,7 +55,7 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
 
 void GEMMetricsReader::Scrape() {
   // Generate metrics for all child processes in parent.
-  auto pids = proc_parser_.ListChildPIDsForPGID(getpgid(getpid()));
+  auto pids = proc_parser_.ListChildPIDsForPGID(pid_);
   for (auto p : pids) {
     gml::system::ProcParser::ProcessStats process_stats;
     auto s = proc_parser_.ParseProcPIDStat(p, gml::system::Config::GetInstance().PageSizeBytes(),
