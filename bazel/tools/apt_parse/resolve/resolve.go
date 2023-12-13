@@ -213,7 +213,7 @@ func (n *graphNode) Children() ([]*graphNode, error) {
 		return n.children, nil
 	}
 	children := []*graphNode{}
-	for _, rel := range n.pkg.BinaryIndex.GetDepends().Relations {
+	for _, rel := range append(n.pkg.BinaryIndex.GetDepends().Relations, n.pkg.BinaryIndex.GetPreDepends().Relations...) {
 		p, err := n.r.packageFromRelation(rel)
 		if err != nil {
 			return nil, err
