@@ -23,13 +23,18 @@
 
 namespace gml::gem::controller {
 
-SystemMetricsReader::SystemMetricsReader(::gml::metrics::MetricsSystem* metrics_system)
+SystemMetricsReader::SystemMetricsReader(::gml::metrics::MetricsSystem* metrics_system,
+                                         std::unique_ptr<gml::system::CPUInfoReader> cpu_reader)
     : metrics::Scrapeable(metrics_system) {
   CHECK(metrics_system != nullptr);
+  cpu_info_reader_ = std::move(cpu_reader);
+
   auto gml_meter = metrics_system_->GetMeterProvider()->GetMeter("gml");
   cpu_stats_counter_ =
       std::move(gml_meter->CreateInt64UpDownCounter("gml.system.cpu.nanoseconds.total"));
   cpu_num_gauge_ = std::move(gml_meter->CreateInt64Gauge("gml.system.cpu.virtual"));
+  cpu_frequency_gauge_ =
+      std::move(gml_meter->CreateInt64Gauge("gml.system.cpu.scaling_frequency_hertz"));
   mem_stats_total_bytes_ = std::move(gml_meter->CreateInt64Gauge("gml.system.memory.total_bytes"));
   mem_stats_free_bytes_ = std::move(gml_meter->CreateInt64Gauge("gml.system.memory.free_bytes"));
   network_rx_bytes_counter_ =
@@ -74,6 +79,17 @@ void SystemMetricsReader::Scrape() {
     network_rx_drops_counter_->Add(n.rx_drops, {{"interface", n.interface}}, {});
     network_tx_bytes_counter_->Add(n.tx_bytes, {{"interface", n.interface}}, {});
     network_tx_drops_counter_->Add(n.tx_drops, {{"interface", n.interface}}, {});
+  }
+
+  std::vector<gml::system::CPUFrequencyInfo> freq_stats;
+  s = cpu_info_reader_->ReadCPUFrequencies(&freq_stats);
+  if (!s.ok()) {
+    LOG(INFO) << "Failed to read frequency stats. Skipping...";
+    return;
+  }
+
+  for (auto f : freq_stats) {
+    cpu_frequency_gauge_->Record(f.cpu_freq_hz, {{"cpu", f.cpu_num}}, {});
   }
 }
 }  // namespace gml::gem::controller

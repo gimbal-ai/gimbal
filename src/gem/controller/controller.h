@@ -47,8 +47,8 @@ class Controller : public gml::NotCopyable {
         time_system_(std::make_unique<gml::event::RealTimeSystem>()),
         api_(std::make_unique<gml::event::APIImpl>(time_system_.get())),
         dispatcher_(api_->AllocateDispatcher("controller")),
-        system_metrics_reader_(
-            std::make_unique<SystemMetricsReader>(&metrics::MetricsSystem::GetInstance())),
+        system_metrics_reader_(std::make_unique<SystemMetricsReader>(
+            &metrics::MetricsSystem::GetInstance(), gml::system::CPUInfoReader::Create())),
         gem_metrics_reader_(
             std::make_unique<GEMMetricsReader>(&metrics::MetricsSystem::GetInstance())) {}
 

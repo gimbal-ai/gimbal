@@ -18,6 +18,7 @@
 #include <opentelemetry/metrics/provider.h>
 
 #include "src/common/metrics/metrics_system.h"
+#include "src/common/system/cpu_info_reader.h"
 #include "src/common/system/proc_parser.h"
 
 namespace gml::gem::controller {
@@ -25,13 +26,15 @@ namespace gml::gem::controller {
 class SystemMetricsReader : public gml::metrics::Scrapeable {
  public:
   SystemMetricsReader() = delete;
-  explicit SystemMetricsReader(::gml::metrics::MetricsSystem* metrics_system);
+  explicit SystemMetricsReader(::gml::metrics::MetricsSystem* metrics_system,
+                               std::unique_ptr<gml::system::CPUInfoReader> cpu_reader);
   ~SystemMetricsReader() override = default;
   void Scrape() override;
 
  private:
   std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> cpu_stats_counter_;
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> cpu_num_gauge_;
+  std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> cpu_frequency_gauge_;
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> mem_stats_total_bytes_;
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> mem_stats_free_bytes_;
   std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> network_rx_bytes_counter_;
@@ -40,6 +43,7 @@ class SystemMetricsReader : public gml::metrics::Scrapeable {
   std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> network_tx_drops_counter_;
 
   gml::system::ProcParser proc_parser_;
+  std::unique_ptr<gml::system::CPUInfoReader> cpu_info_reader_;
 };
 
 }  // namespace gml::gem::controller
