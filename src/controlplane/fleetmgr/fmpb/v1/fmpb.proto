@@ -172,6 +172,8 @@ message DeviceInfo {
   DeviceStatus status = 6;
   // Capabilities of the device, including info like about drivers, model runtimes, etc.
   gml.internal.api.core.v1.DeviceCapabilities capabilities = 8;
+  // A map of the tags associated with the device in the <key, Tag> format.
+  map<string, Tag> tags = 9;
 
   reserved 7;
 }
