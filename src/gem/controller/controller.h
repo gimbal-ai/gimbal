@@ -69,6 +69,10 @@ class Controller : public ControllerBase {
   Status RegisterMessageHandler(gml::internal::api::core::v1::CPEdgeTopic,
                                 std::shared_ptr<MessageHandler> handler);
   Status HandleMessage(std::unique_ptr<gml::internal::controlplane::egw::v1::BridgeResponse> msg);
+  GEMInfo* info() { return &info_; }
+  GRPCBridge* bridge() { return bridge_.get(); }
+  std::shared_ptr<FileDownloader> file_downloader() { return file_downloader_; }
+  CachedBlobStore* blob_store() { return blob_store_.get(); }
 
  private:
   // Marks if the controller is still running. Force stopping will cause un-graceful termination.
@@ -83,6 +87,7 @@ class Controller : public ControllerBase {
   gml::event::DispatcherUPtr dispatcher_ = nullptr;
   std::unique_ptr<GRPCBridge> bridge_;
   std::unique_ptr<CachedBlobStore> blob_store_;
+  std::shared_ptr<FileDownloader> file_downloader_;
 
   std::shared_ptr<grpc::Channel> cp_chan_;
   std::unique_ptr<gml::internal::controlplane::fleetmgr::v1::FleetMgrEdgeService::Stub> fmstub_;

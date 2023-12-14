@@ -59,7 +59,7 @@ using internal::api::core::v1::CP_EDGE_TOPIC_METRICS;
 using internal::api::core::v1::CP_EDGE_TOPIC_STATUS;
 using internal::api::core::v1::CP_EDGE_TOPIC_VIDEO;
 
-Status Controller::Init() {
+Status Controller::Register() {
   GML_ASSIGN_OR_RETURN(info_.hostname, system::GetHostname());
   info_.pid = getpid();
 
@@ -107,11 +107,15 @@ Status Controller::Init() {
   bridge_->RegisterOnMessageReadHandler(
       std::bind(&Controller::HandleMessage, this, std::placeholders::_1));
 
-  auto file_downloader = std::make_shared<FileDownloader>(dispatcher(), &info_, bridge_.get());
-  GML_ASSIGN_OR_RETURN(blob_store_, CachedBlobStore::Create(file_downloader));
-
   ctrl_exec_ctx_ = std::make_unique<exec::core::ControlExecutionContext>();
 
+  file_downloader_ = std::make_shared<FileDownloader>(dispatcher(), &info_, bridge_.get());
+  GML_ASSIGN_OR_RETURN(blob_store_, CachedBlobStore::Create(file_downloader_));
+  return Status::OK();
+};
+
+Status Controller::Init() {
+  GML_RETURN_IF_ERROR(Register());
   // Register message handlers.
   auto hb_handler = std::make_shared<HeartbeatHandler>(dispatcher(), &info_, bridge_.get());
   auto info_handler = std::make_shared<DeviceInfoHandler>(dispatcher(), &info_, bridge_.get());
@@ -127,7 +131,7 @@ Status Controller::Init() {
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_EXEC, exec_handler));
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_VIDEO, video_handler));
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_METRICS, metrics_handler));
-  GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_FILE_TRANSFER, file_downloader));
+  GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_FILE_TRANSFER, file_downloader_));
 
   GML_RETURN_IF_ERROR(bridge_->Run());
 
