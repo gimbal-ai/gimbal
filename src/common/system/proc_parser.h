@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <filesystem>
 #include <istream>
 #include <map>
@@ -250,7 +251,7 @@ class ProcParser {
    * @param out a valid pointer to an output struct.
    * @return status of parsing.
    */
-  Status ParseProcStat(SystemStats* out) const;
+  Status ParseProcStat(SystemStats* out, int64_t kernel_tick_time_ns) const;
 
   /**
    * Parses /proc/net/dev
@@ -264,7 +265,7 @@ class ProcParser {
    * @param out a valid pointer to an output vector.
    * @return status of parsing.
    */
-  Status ParseProcStatAllCPUs(std::vector<CPUStats>* out) const;
+  Status ParseProcStatAllCPUs(std::vector<CPUStats>* out, int64_t kernel_tick_time_ns) const;
 
   /**
    * Parses /proc/meminfo

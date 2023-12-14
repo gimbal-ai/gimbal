@@ -19,6 +19,7 @@
 
 #include "src/common/system/proc_parser.h"
 
+#include <cstdint>
 #include <fstream>
 #include <limits>
 #include <string>
@@ -35,7 +36,6 @@
 #include "src/common/system/proc_pid_path.h"
 
 namespace gml::system {
-
 // Separators of the fields in the various files in the proc filesystem.
 constexpr std::string_view kFieldSeparators = "\t ";
 
@@ -309,7 +309,7 @@ Status ProcParser::ParseProcPIDStatIO(int32_t pid, ProcessStats* out) const {
   return ParseFromKeyValueFile(fpath, field_name_to_offset_map, reinterpret_cast<uint8_t*>(out));
 }
 
-Status ProcParser::ParseProcStat(SystemStats* out) const {
+Status ProcParser::ParseProcStat(SystemStats* out, int64_t kernel_tick_time_ns) const {
   /**
    * Sample file:
    * cpu  248758 4995 78314 12965346 10040 0 5498 0 0 0
@@ -341,6 +341,12 @@ Status ProcParser::ParseProcStat(SystemStats* out) const {
       if (!ok) {
         return error::Unknown("Failed to parse proc/stat cpu info");
       }
+
+      // The kernel tracks these times in kernel ticks.
+      out->cpu_ktime_ns *= kernel_tick_time_ns;
+      out->cpu_utime_ns *= kernel_tick_time_ns;
+      out->cpu_idletime_ns *= kernel_tick_time_ns;
+      out->cpu_iowaittime_ns *= kernel_tick_time_ns;
       // We only need cpu. We can exit here.
       return Status::OK();
     }
@@ -350,7 +356,8 @@ Status ProcParser::ParseProcStat(SystemStats* out) const {
   return error::NotFound("Could not extract system information");
 }
 
-Status ProcParser::ParseProcStatAllCPUs(std::vector<CPUStats>* out) const {
+Status ProcParser::ParseProcStatAllCPUs(std::vector<CPUStats>* out,
+                                        int64_t kernel_tick_time_ns) const {
   /**
    * Sample file:
    * cpu  248758 4995 78314 12965346 10040 0 5498 0 0 0
@@ -397,6 +404,12 @@ Status ProcParser::ParseProcStatAllCPUs(std::vector<CPUStats>* out) const {
       ok &= absl::SimpleAtoi(split[KProcStatCPUUTimeField], &sysstats_out.cpu_utime_ns);
       ok &= absl::SimpleAtoi(split[KProcStatCPUIdleTimeField], &sysstats_out.cpu_idletime_ns);
       ok &= absl::SimpleAtoi(split[KProcStatCPUIOWaitTimeField], &sysstats_out.cpu_iowaittime_ns);
+
+      // The kernel tracks these times in kernel ticks.
+      sysstats_out.cpu_ktime_ns *= kernel_tick_time_ns;
+      sysstats_out.cpu_utime_ns *= kernel_tick_time_ns;
+      sysstats_out.cpu_idletime_ns *= kernel_tick_time_ns;
+      sysstats_out.cpu_iowaittime_ns *= kernel_tick_time_ns;
 
       if (!ok) {
         return error::Unknown("Failed to parse proc/stat cpu info");

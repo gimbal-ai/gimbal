@@ -140,25 +140,25 @@ TEST_F(ProcParserTest, ParsePSS) {
 TEST_F(ProcParserTest, ParseStat) {
   GML_SET_FOR_SCOPE(FLAGS_proc_path, GetPathToTestDataFile("testdata/proc"));
   ProcParser::SystemStats stats;
-  GML_CHECK_OK(parser_->ParseProcStat(&stats));
+  GML_CHECK_OK(parser_->ParseProcStat(&stats, 2));
 
   // The expected values are from the test file above.
-  EXPECT_EQ(248758, stats.cpu_utime_ns);
-  EXPECT_EQ(78314, stats.cpu_ktime_ns);
+  EXPECT_EQ(2 * 248758, stats.cpu_utime_ns);
+  EXPECT_EQ(2 * 78314, stats.cpu_ktime_ns);
 }
 
 TEST_F(ProcParserTest, ParseStatAllCPUs) {
   GML_SET_FOR_SCOPE(FLAGS_proc_path, GetPathToTestDataFile("testdata/proc"));
   std::vector<ProcParser::CPUStats> stats;
-  GML_CHECK_OK(parser_->ParseProcStatAllCPUs(&stats));
+  GML_CHECK_OK(parser_->ParseProcStatAllCPUs(&stats, 2));
 
   EXPECT_EQ(6, stats.size());
 
   // The expected values are from the test file above.
-  EXPECT_EQ(41801, stats[2].cpu_utime_ns);
-  EXPECT_EQ(14218, stats[2].cpu_ktime_ns);
-  EXPECT_EQ(2155546, stats[2].cpu_idletime_ns);
-  EXPECT_EQ(1840, stats[2].cpu_iowaittime_ns);
+  EXPECT_EQ(2 * 41801, stats[2].cpu_utime_ns);
+  EXPECT_EQ(2 * 14218, stats[2].cpu_ktime_ns);
+  EXPECT_EQ(2 * 2155546, stats[2].cpu_idletime_ns);
+  EXPECT_EQ(2 * 1840, stats[2].cpu_iowaittime_ns);
 }
 
 TEST_F(ProcParserTest, ParseMemInfo) {

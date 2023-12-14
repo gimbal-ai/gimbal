@@ -51,7 +51,8 @@ SystemMetricsReader::SystemMetricsReader(::gml::metrics::MetricsSystem* metrics_
 void SystemMetricsReader::Scrape() {
   // Add CPU metrics for system.
   std::vector<gml::system::ProcParser::CPUStats> stats;
-  GML_CHECK_OK(proc_parser_.ParseProcStatAllCPUs(&stats));
+  GML_CHECK_OK(proc_parser_.ParseProcStatAllCPUs(
+      &stats, gml::system::Config::GetInstance().KernelTickTimeNS()));
 
   for (const auto& [c, stat] : Enumerate(stats)) {
     auto cpu = std::to_string(c);
