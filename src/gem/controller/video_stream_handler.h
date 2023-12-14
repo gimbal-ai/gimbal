@@ -31,11 +31,15 @@ namespace gml::gem::controller {
 
 class VideoStreamHandler : public MessageHandler {
  public:
+  static constexpr std::chrono::seconds kKeepAliveInterval = std::chrono::seconds{5};
+
   VideoStreamHandler() = delete;
   VideoStreamHandler(gml::event::Dispatcher* d, GEMInfo* info, GRPCBridge* b,
                      exec::core::ControlExecutionContext*);
 
   ~VideoStreamHandler() override = default;
+
+  Status Start();
 
   Status HandleMessage(const internal::controlplane::egw::v1::BridgeResponse& msg) override;
 
@@ -49,6 +53,8 @@ class VideoStreamHandler : public MessageHandler {
   Status VideoWithOverlaysCallback(const std::vector<ImageOverlayChunk>&,
                                    const std::vector<H264Chunk>&);
   exec::core::ControlExecutionContext* ctrl_exec_ctx_;
+
+  event::TimerUPtr keep_alive_timer_ = nullptr;
   bool running_ = false;
 };
 
