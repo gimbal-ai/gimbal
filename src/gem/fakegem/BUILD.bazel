@@ -26,6 +26,8 @@ gml_cc_library(
     srcs = [
         "controller.cc",
         "controller.h",
+        "download_data_task.cc",
+        "download_data_task.h",
         "fakegem.cc",
         "stream_writer.cc",
         "stream_writer.h",

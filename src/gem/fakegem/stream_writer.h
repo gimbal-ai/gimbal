@@ -31,37 +31,9 @@
 #include "src/common/base/base.h"
 #include "src/controlplane/egw/egwpb/v1/egwpb.grpc.pb.h"
 #include "src/gem/controller/cached_blob_store.h"
+#include "src/gem/fakegem/download_data_task.h"
 
 namespace gml::gem::fakegem {
-
-struct StreamData {
-  internal::api::core::v1::EdgeCPTopic topic;
-  std::unique_ptr<google::protobuf::Message> msg;
-  int64_t timestamp_ns;
-  bool is_otel;
-};
-struct AllStreamsData {
-  std::vector<StreamData> model_running_stream;
-};
-
-class DownloadDataTask : public event::AsyncTask {
- public:
-  DownloadDataTask(controller::CachedBlobStore* blob_store, std::string stream_id,
-                   std::function<void(std::unique_ptr<AllStreamsData>)> download_complete)
-      : blob_store_(blob_store),
-        stream_id_(std::move(stream_id)),
-        download_complete_(std::move(download_complete)) {}
-  void Work() override;
-  void Done() override { download_complete_(std::move(data_)); }
-
- private:
-  std::vector<StreamData> data;
-  std::unique_ptr<AllStreamsData> data_ = nullptr;
-  controller::CachedBlobStore* blob_store_;
-  std::string stream_id_;
-  std::function<void(std::unique_ptr<AllStreamsData>)> download_complete_;
-};
-
 class StreamWriter {
  public:
   StreamWriter(controller::GRPCBridge* bridge, controller::CachedBlobStore* blob_store,
