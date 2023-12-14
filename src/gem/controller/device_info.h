@@ -15,6 +15,8 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#pragma once
+
 #include "src/api/corepb/v1/cp_edge.pb.h"
 #include "src/common/event/timer.h"
 #include "src/controlplane/egw/egwpb/v1/egwpb.grpc.pb.h"

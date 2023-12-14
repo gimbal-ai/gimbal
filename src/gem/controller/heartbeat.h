@@ -15,6 +15,8 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#pragma once
+
 #include <string>
 #include <string_view>
 

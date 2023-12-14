@@ -1,0 +1,64 @@
+# Copyright © 2023- Gimlet Labs, Inc.
+# All Rights Reserved.
+#
+# NOTICE:  All information contained herein is, and remains
+# the property of Gimlet Labs, Inc. and its suppliers,
+# if any.  The intellectual and technical concepts contained
+# herein are proprietary to Gimlet Labs, Inc. and its suppliers and
+# may be covered by U.S. and Foreign Patents, patents in process,
+# and are protected by trade secret or copyright law. Dissemination
+# of this information or reproduction of this material is strictly
+# forbidden unless prior written permission is obtained from
+# Gimlet Labs, Inc.
+#
+# SPDX-License-Identifier: Proprietary
+
+load("@rules_oci//oci:defs.bzl", "oci_push")
+load("//bazel:gml_build_system.bzl", "gml_cc_binary", "gml_cc_library")
+load("//bazel:images.bzl", "gml_binary_image")
+
+package(default_visibility = [
+    "//src:__subpackages__",
+])
+
+gml_cc_library(
+    name = "cc_library",
+    srcs = [
+        "controller.cc",
+        "controller.h",
+        "fakegem.cc",
+        "stream_writer.cc",
+        "stream_writer.h",
+    ],
+    deps = [
+        "//src/gem/controller:cc_library",
+        "//src/shared/version:cc_library",
+        "@com_github_rlyeh_sole//:sole",
+    ],
+)
+
+gml_cc_binary(
+    name = "fakegem",
+    linkopts = [
+        # Ensure that our shared libs are picked up before LD_LIBRARY_PATH libs.
+        "-Wl,--disable-new-dtags",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/shared/version:cc_library",
+        "//src/shared/version:version_linkstamp",
+    ],
+)
+
+gml_binary_image(
+    name = "fakegem_image",
+    binary = ":fakegem",
+    include_runfiles = True,
+)
+
+oci_push(
+    name = "push_fakegem_image",
+    image = ":fakegem_image",
+    remote_tags = ["fake-latest"],
+    repository = "us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/fakegem_image",
+)

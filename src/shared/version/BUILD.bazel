@@ -93,6 +93,7 @@ gml_cc_library_internal(
     visibility = [
         "//src/experimental:__subpackages__",
         "//src/gem:__pkg__",
+        "//src/gem/fakegem:__pkg__",
     ],
 )
 
