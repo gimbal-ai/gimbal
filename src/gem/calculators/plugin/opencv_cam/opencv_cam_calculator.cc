@@ -96,7 +96,7 @@ absl::Status OpenCVCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
   height_ = static_cast<int32_t>(cap_->get(cv::CAP_PROP_FRAME_HEIGHT));
   MP_RETURN_IF_ERROR(SetupFormatConversion(frame, &format_, &color_conversion_));
 
-  timestamp_ = 0;
+  frame_count_ = 0;
   return absl::OkStatus();
 }
 
@@ -115,13 +115,12 @@ absl::Status OpenCVCamSourceCalculator::Process(mediapipe::CalculatorContext* cc
       absl::make_unique<mediapipe::ImageFrame>(format_, width_, height_, kAlignmentBoundary);
   cv::cvtColor(frame, mediapipe::formats::MatView(image_frame.get()), color_conversion_);
 
-  auto packet = mediapipe::Adopt(image_frame.release()).At(mediapipe::Timestamp(timestamp_));
+  int64_t ts_us = std::lround(cap_->get(cv::CAP_PROP_POS_MSEC) * 1000);
+
+  auto packet = mediapipe::Adopt(image_frame.release()).At(mediapipe::Timestamp(ts_us));
   cc->Outputs().Index(0).AddPacket(std::move(packet));
 
-  ++timestamp_;
-
-  if (options_.max_num_frames() > 0 &&
-      timestamp_ >= static_cast<int64_t>(options_.max_num_frames())) {
+  if (options_.max_num_frames() > 0 && ++frame_count_ >= options_.max_num_frames()) {
     return mediapipe::tool::StatusStop();
   }
 

@@ -37,7 +37,7 @@ class OpenCVCamSourceCalculator : public mediapipe::CalculatorBase {
 
   optionspb::OpenCVCamSourceCalculatorOptions options_;
   std::unique_ptr<cv::VideoCapture> cap_;
-  int64_t timestamp_;
+  uint64_t frame_count_;
 
   mediapipe::ImageFormat::Format format_;
   cv::ColorConversionCodes color_conversion_;
