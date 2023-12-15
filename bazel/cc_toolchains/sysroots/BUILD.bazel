@@ -34,18 +34,10 @@ string_flag(
     name = "sysroot_type",
     build_setting_default = "debian12",
     values = [
-        "none",
         "debian12",
         "jetson",
         "intelgpu",
     ],
-)
-
-config_setting(
-    name = "sysroot_type_none",
-    flag_values = {
-        ":sysroot_type": "none",
-    },
 )
 
 config_setting(

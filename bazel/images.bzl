@@ -115,7 +115,6 @@ def _gml_oci_push(name, **kwargs):
             "//bazel/cc_toolchains/sysroots:sysroot_type_debian12": ["debian12-" + tag for tag in tags],
             "//bazel/cc_toolchains/sysroots:sysroot_type_intelgpu": ["intelgpu-" + tag for tag in tags],
             "//bazel/cc_toolchains/sysroots:sysroot_type_jetson": ["jetson-" + tag for tag in tags],
-            "//bazel/cc_toolchains/sysroots:sysroot_type_none": ["nosysroot-" + tag for tag in tags],
             "//conditions:default": tags,
         }),
     )
