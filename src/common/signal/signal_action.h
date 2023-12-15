@@ -35,7 +35,9 @@ class SignalAction : public NotCopyable {
  public:
   SignalAction()
       : guard_size_(kPageSizeBytes),
-        altstack_size_(std::max(guard_size_ * 4, static_cast<size_t>(MINSIGSTKSZ))) {
+        altstack_size_(std::max(
+            guard_size_ * 4,
+            (static_cast<size_t>(MINSIGSTKSZ) + guard_size_ - 1) / guard_size_ * guard_size_)) {
     MapAndProtectStackMemory();
     InstallSigHandlers();
   }
