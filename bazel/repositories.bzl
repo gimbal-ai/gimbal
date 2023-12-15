@@ -144,6 +144,8 @@ def _cc_deps():
     _bazel_repo(
         "io_opentelemetry_cpp",
         patches = [
+            # Ensure opentelemetry-cpp uses a specific STL version so that we use the correct version of shared_ptr.
+            "//bazel/external:opentelemetry_cpp.stl_version.patch",
             # Ensure opentelemetry-cpp uses our vendored OTel protos instead of their own bazel definitions.
             "//bazel/external:opentelemetry_cpp.our_proto.patch",
         ],

@@ -1,0 +1,119 @@
+diff --git a/api/BUILD b/api/BUILD
+index e650d5f7..67785d17 100644
+--- a/api/BUILD
++++ b/api/BUILD
+@@ -15,7 +15,7 @@ cc_library(
+     hdrs = glob(["include/**/*.h"]),
+     defines = select({
+         ":with_external_abseil": ["HAVE_ABSEIL"],
+-        "//conditions:default": [],
++        "//conditions:default": ["OPENTELEMETRY_STL_VERSION=2017"],
+     }),
+     strip_include_prefix = "include",
+     tags = ["api"],
+diff --git a/ext/BUILD b/ext/BUILD
+index b19ae921..7bcdb86e 100644
+--- a/ext/BUILD
++++ b/ext/BUILD
+@@ -6,5 +6,6 @@ package(default_visibility = ["//visibility:public"])
+ cc_library(
+     name = "headers",
+     hdrs = glob(["include/**/*.h"]),
++    defines = ["OPENTELEMETRY_STL_VERSION=2017"],
+     strip_include_prefix = "include",
+ )
+diff --git a/sdk/BUILD b/sdk/BUILD
+index b19ae921..7bcdb86e 100644
+--- a/sdk/BUILD
++++ b/sdk/BUILD
+@@ -6,5 +6,6 @@ package(default_visibility = ["//visibility:public"])
+ cc_library(
+     name = "headers",
+     hdrs = glob(["include/**/*.h"]),
++    defines = ["OPENTELEMETRY_STL_VERSION=2017"],
+     strip_include_prefix = "include",
+ )
+diff --git a/sdk/src/common/BUILD b/sdk/src/common/BUILD
+index fe75f08d..c1434a63 100644
+--- a/sdk/src/common/BUILD
++++ b/sdk/src/common/BUILD
+@@ -14,6 +14,7 @@ cc_library(
+         "random.h",
+     ],
+     include_prefix = "src/common",
++    defines = ["OPENTELEMETRY_STL_VERSION=2017"],
+     deps = [
+         "//api",
+         "//sdk:headers",
+@@ -27,6 +28,7 @@ cc_library(
+         "base64.cc",
+     ],
+     include_prefix = "src/common",
++    defines = ["OPENTELEMETRY_STL_VERSION=2017"],
+     deps = [
+         "//api",
+         "//sdk:headers",
+@@ -39,6 +41,7 @@ cc_library(
+     srcs = [
+         "env_variables.cc",
+     ],
++    defines = ["OPENTELEMETRY_STL_VERSION=2017"],
+     deps = [
+         "//api",
+         "//sdk:headers",
+@@ -51,6 +54,7 @@ cc_library(
+     srcs = [
+         "global_log_handler.cc",
+     ],
++    defines = ["OPENTELEMETRY_STL_VERSION=2017"],
+     deps = [
+         "//api",
+         "//sdk:headers",
+diff --git a/sdk/src/logs/BUILD b/sdk/src/logs/BUILD
+index f1a08285..58f47a14 100644
+--- a/sdk/src/logs/BUILD
++++ b/sdk/src/logs/BUILD
+@@ -8,6 +8,7 @@ cc_library(
+     srcs = glob(["**/*.cc"]),
+     hdrs = glob(["**/*.h"]),
+     include_prefix = "src/logs",
++    defines = ["OPENTELEMETRY_STL_VERSION=2017"],
+     deps = [
+         "//api",
+         "//sdk:headers",
+diff --git a/sdk/src/metrics/BUILD b/sdk/src/metrics/BUILD
+index c230f6a6..76d3bc44 100644
+--- a/sdk/src/metrics/BUILD
++++ b/sdk/src/metrics/BUILD
+@@ -8,6 +8,7 @@ cc_library(
+     srcs = glob(["**/*.cc"]),
+     hdrs = glob(["**/*.h"]),
+     include_prefix = "src/metrics",
++    defines = ["OPENTELEMETRY_STL_VERSION=2017"],
+     deps = [
+         "//api",
+         "//sdk:headers",
+diff --git a/sdk/src/resource/BUILD b/sdk/src/resource/BUILD
+index 6cff5272..e89527fb 100644
+--- a/sdk/src/resource/BUILD
++++ b/sdk/src/resource/BUILD
+@@ -8,6 +8,7 @@ cc_library(
+     srcs = glob(["**/*.cc"]),
+     hdrs = glob(["**/*.h"]),
+     include_prefix = "src/resource",
++    defines = ["OPENTELEMETRY_STL_VERSION=2017"],
+     deps = [
+         "//api",
+         "//sdk:headers",
+diff --git a/sdk/src/trace/BUILD b/sdk/src/trace/BUILD
+index df99eb15..5f3c2c53 100644
+--- a/sdk/src/trace/BUILD
++++ b/sdk/src/trace/BUILD
+@@ -8,6 +8,7 @@ cc_library(
+     srcs = glob(["**/*.cc"]),
+     hdrs = glob(["**/*.h"]),
+     include_prefix = "src/trace",
++    defines = ["OPENTELEMETRY_STL_VERSION=2017"],
+     deps = [
+         "//api",
+         "//sdk:headers",

@@ -26,38 +26,142 @@
 
 namespace gml::gem::controller {
 
+template <typename T>
+auto GetObservableResult(opentelemetry::metrics::ObserverResult& observer) {
+  return std::get<std::shared_ptr<opentelemetry::metrics::ObserverResultT<T>>>(observer);
+}
+
 GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system)
     : metrics::Scrapeable(metrics_system) {
   CHECK(metrics_system != nullptr);
   pid_ = getpid();
 
   auto gml_meter = metrics_system_->GetMeterProvider()->GetMeter("gml");
-  cpu_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.cpu.nanoseconds.total"));
-  mem_usage_gauge_ = std::move(gml_meter->CreateInt64Gauge("gml.gem.memory.usage.bytes"));
-  mem_virtual_gauge_ = std::move(gml_meter->CreateInt64Gauge("gml.gem.memory.virtual.bytes"));
-  thread_gauge_ = std::move(gml_meter->CreateInt64Gauge("gml.gem.threads"));
-  context_switches_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.context_switches.total"));
-  network_rx_bytes_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.network.rx_bytes.total"));
-  network_rx_drops_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.network.rx_drops.total"));
-  network_tx_bytes_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.network.tx_bytes.total"));
-  network_tx_drops_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.network.tx_drops.total"));
-  disk_rchar_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.disk.rchar.total"));
-  disk_wchar_counter_ = std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.disk.wchar.total"));
+
+  // Setup process stats counters.
+  cpu_counter_ = gml_meter->CreateDoubleObservableCounter("gml.gem.cpu.seconds.total");
+  cpu_counter_->AddCallback(
+      [](auto observer, void* parent) {
+        auto reader = static_cast<GEMMetricsReader*>(parent);
+        absl::base_internal::SpinLockHolder lock(&reader->pid_stats_lock_);
+        for (auto& p : reader->pid_process_stats_) {
+          GetObservableResult<double>(observer)->Observe(
+              static_cast<double>(p.second.utime_ns) / 1E9, {{"pid", p.first}, {"state", "user"}});
+          GetObservableResult<double>(observer)->Observe(
+              static_cast<double>(p.second.ktime_ns) / 1E9,
+              {{"pid", p.first}, {"state", "system"}});
+        }
+      },
+      this);
+  disk_rchar_counter_ = gml_meter->CreateInt64ObservableCounter("gml.gem.disk.rchar.total");
+  disk_rchar_counter_->AddCallback(
+      [](auto observer, void* parent) {
+        auto reader = static_cast<GEMMetricsReader*>(parent);
+        reader->GetObservableResultFromProcessStats<int64_t>(std::move(observer),
+                                                             [](auto p) { return p.rchar_bytes; });
+      },
+      this);
+  disk_wchar_counter_ = gml_meter->CreateInt64ObservableCounter("gml.gem.disk.wchar.total");
+  disk_wchar_counter_->AddCallback(
+      [](auto observer, void* parent) {
+        auto reader = static_cast<GEMMetricsReader*>(parent);
+        reader->GetObservableResultFromProcessStats<int64_t>(std::move(observer),
+                                                             [](auto p) { return p.wchar_bytes; });
+      },
+      this);
   disk_read_bytes_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.disk.read_bytes.total"));
+      gml_meter->CreateInt64ObservableCounter("gml.gem.disk.read_bytes.total");
+  disk_read_bytes_counter_->AddCallback(
+      [](auto observer, void* parent) {
+        auto reader = static_cast<GEMMetricsReader*>(parent);
+        reader->GetObservableResultFromProcessStats<int64_t>(std::move(observer),
+                                                             [](auto p) { return p.read_bytes; });
+      },
+      this);
   disk_write_bytes_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("gml.gem.disk.write_bytes.total"));
+      gml_meter->CreateInt64ObservableCounter("gml.gem.disk.write_bytes.total");
+  disk_write_bytes_counter_->AddCallback(
+      [](auto observer, void* parent) {
+        auto reader = static_cast<GEMMetricsReader*>(parent);
+        reader->GetObservableResultFromProcessStats<int64_t>(std::move(observer),
+                                                             [](auto p) { return p.write_bytes; });
+      },
+      this);
+
+  mem_usage_gauge_ = gml_meter->CreateInt64Gauge("gml.gem.memory.usage.bytes");
+  mem_virtual_gauge_ = gml_meter->CreateInt64Gauge("gml.gem.memory.virtual.bytes");
+  thread_gauge_ = gml_meter->CreateInt64Gauge("gml.gem.threads");
+
+  // Setup process status counters.
+  context_switches_counter_ =
+      gml_meter->CreateInt64ObservableCounter("gml.gem.context_switches.total");
+  context_switches_counter_->AddCallback(
+      [](auto observer, void* parent) {
+        auto reader = static_cast<GEMMetricsReader*>(parent);
+        absl::base_internal::SpinLockHolder lock(&reader->pid_stats_lock_);
+        for (auto& p : reader->pid_process_status_) {
+          GetObservableResult<int64_t>(observer)->Observe(
+              p.second.voluntary_ctxt_switches,
+              {{"pid", p.first}, {"state", "system"}, {"context_switch_type", "voluntary"}});
+          GetObservableResult<int64_t>(observer)->Observe(
+              p.second.nonvoluntary_ctxt_switches,
+              {{"pid", p.first}, {"state", "system"}, {"context_switch_type", "involuntary"}});
+        }
+      },
+      this);
+
+  // Setup network stats counters.
+  network_rx_bytes_counter_ =
+      gml_meter->CreateInt64ObservableCounter("gml.gem.network.rx_bytes.total");
+  network_rx_bytes_counter_->AddCallback(
+      [](auto observer, void* parent) {
+        auto reader = static_cast<GEMMetricsReader*>(parent);
+        reader->GetObservableResultFromNetworkStats<int64_t>(std::move(observer),
+                                                             [](auto p) { return p.rx_bytes; });
+      },
+      this);
+  network_rx_drops_counter_ =
+      gml_meter->CreateInt64ObservableCounter("gml.gem.network.rx_drops.total");
+  network_rx_drops_counter_->AddCallback(
+      [](auto observer, void* parent) {
+        auto reader = static_cast<GEMMetricsReader*>(parent);
+        reader->GetObservableResultFromNetworkStats<int64_t>(std::move(observer),
+                                                             [](auto p) { return p.rx_drops; });
+      },
+      this);
+  network_tx_bytes_counter_ =
+      gml_meter->CreateInt64ObservableCounter("gml.gem.network.tx_bytes.total");
+  network_tx_bytes_counter_->AddCallback(
+      [](auto observer, void* parent) {
+        auto reader = static_cast<GEMMetricsReader*>(parent);
+        reader->GetObservableResultFromNetworkStats<int64_t>(std::move(observer),
+                                                             [](auto p) { return p.tx_bytes; });
+      },
+      this);
+  network_tx_drops_counter_ =
+      gml_meter->CreateInt64ObservableCounter("gml.gem.network.tx_drops.total");
+  network_tx_drops_counter_->AddCallback(
+      [](auto observer, void* parent) {
+        auto reader = static_cast<GEMMetricsReader*>(parent);
+        reader->GetObservableResultFromNetworkStats<int64_t>(std::move(observer),
+                                                             [](auto p) { return p.tx_drops; });
+      },
+      this);
 }
 
 void GEMMetricsReader::Scrape() {
+  absl::base_internal::SpinLockHolder lock(&pid_stats_lock_);
   // Generate metrics for all child processes in parent.
   auto pids = proc_parser_.ListChildPIDsForPGID(pid_);
+
+  pid_process_stats_.clear();
+  pid_network_stats_.clear();
+  pid_process_status_.clear();
+
   for (auto p : pids) {
+    auto pid = std::to_string(p);
+
+    // Parse process stats.
     gml::system::ProcParser::ProcessStats process_stats;
     auto s = proc_parser_.ParseProcPIDStat(p, gml::system::Config::GetInstance().PageSizeBytes(),
                                            gml::system::Config::GetInstance().KernelTickTimeNS(),
@@ -66,53 +170,62 @@ void GEMMetricsReader::Scrape() {
       LOG(INFO) << "Failed to read proc stats. Skipping...";
       continue;
     }
+    s = proc_parser_.ParseProcPIDStatIO(p, &process_stats);
+    if (!s.ok()) {
+      LOG(INFO) << "Failed to read proc IO stats. Skipping...";
+      continue;
+    }
+    pid_process_stats_[p] = process_stats;
 
-    auto pid = std::to_string(p);
-
-    cpu_counter_->Add(process_stats.ktime_ns, {{"pid", pid}, {"state", "user"}}, {});
-    cpu_counter_->Add(process_stats.utime_ns, {{"pid", pid}, {"state", "system"}}, {});
     mem_usage_gauge_->Record(process_stats.rss_bytes, {{"pid", pid}, {"state", "system"}}, {});
     mem_virtual_gauge_->Record(static_cast<int64_t>(process_stats.vsize_bytes),
                                {{"pid", pid}, {"state", "system"}}, {});
     thread_gauge_->Record(process_stats.num_threads, {{"pid", pid}, {"state", "system"}}, {});
+
+    // Parse process status.
     gml::system::ProcParser::ProcessStatus process_status;
     s = proc_parser_.ParseProcPIDStatus(p, &process_status);
     if (!s.ok()) {
       LOG(INFO) << "Failed to read proc status. Skipping...";
       continue;
     }
+    pid_process_status_[p] = process_status;
 
-    context_switches_counter_->Add(
-        process_status.voluntary_ctxt_switches,
-        {{"pid", pid}, {"state", "system"}, {"context_switch_type", "voluntary"}}, {});
-    context_switches_counter_->Add(
-        process_status.nonvoluntary_ctxt_switches,
-        {{"pid", pid}, {"state", "system"}, {"context_switch_type", "involuntary"}}, {});
-
+    // Parse network stats.
     std::vector<gml::system::ProcParser::NetworkStats> network_stats;
     s = proc_parser_.ParseProcPIDNetDev(p, &network_stats);
     if (!s.ok()) {
       LOG(INFO) << "Failed to read proc network stats. Skipping...";
       continue;
     }
+    pid_network_stats_[p] = network_stats;
+  }
+}
 
-    for (auto n : network_stats) {
-      network_rx_bytes_counter_->Add(n.rx_bytes, {{"interface", n.interface}, {"pid", pid}}, {});
-      network_rx_drops_counter_->Add(n.rx_drops, {{"interface", n.interface}, {"pid", pid}}, {});
-      network_tx_bytes_counter_->Add(n.tx_bytes, {{"interface", n.interface}, {"pid", pid}}, {});
-      network_tx_drops_counter_->Add(n.tx_drops, {{"interface", n.interface}, {"pid", pid}}, {});
+template <typename T>
+void GEMMetricsReader::GetObservableResultFromProcessStats(
+    opentelemetry::metrics::ObserverResult observer,
+    const std::function<int64_t(const gml::system::ProcParser::ProcessStats& process_stats)>&
+        get_stat) {
+  absl::base_internal::SpinLockHolder lock(&pid_stats_lock_);
+  for (auto& p : pid_process_stats_) {
+    auto val = get_stat(p.second);
+    GetObservableResult<T>(observer)->Observe(val, {{"pid", p.first}});
+  }
+}
+
+template <typename T>
+void GEMMetricsReader::GetObservableResultFromNetworkStats(
+    opentelemetry::metrics::ObserverResult observer,
+    const std::function<int64_t(const gml::system::ProcParser::NetworkStats& network_stats)>&
+        get_stat) {
+  absl::base_internal::SpinLockHolder lock(&pid_stats_lock_);
+  for (auto& p : pid_network_stats_) {
+    for (auto n : p.second) {
+      auto val = get_stat(n);
+      GetObservableResult<T>(observer)->Observe(val,
+                                                {{"interface", n.interface}, {"pid", p.first}});
     }
-
-    s = proc_parser_.ParseProcPIDStatIO(p, &process_stats);
-    if (!s.ok()) {
-      LOG(INFO) << "Failed to read proc IO stats. Skipping...";
-      continue;
-    }
-
-    disk_rchar_counter_->Add(process_stats.rchar_bytes, {{"pid", pid}}, {});
-    disk_wchar_counter_->Add(process_stats.wchar_bytes, {{"pid", pid}}, {});
-    disk_read_bytes_counter_->Add(process_stats.read_bytes, {{"pid", pid}}, {});
-    disk_write_bytes_counter_->Add(process_stats.write_bytes, {{"pid", pid}}, {});
   }
 }
 

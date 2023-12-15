@@ -31,19 +31,28 @@ class SystemMetricsReader : public gml::metrics::Scrapeable {
   ~SystemMetricsReader() override = default;
   void Scrape() override;
 
+  template <typename T>
+  void GetObservableResultFromNetworkStats(
+      opentelemetry::metrics::ObserverResult observer,
+      const std::function<int64_t(const gml::system::ProcParser::NetworkStats& network_stats)>&
+          get_stat);
+
  private:
-  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> cpu_stats_counter_;
+  std::shared_ptr<opentelemetry::metrics::ObservableInstrument> cpu_stats_counter_;
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> cpu_num_gauge_;
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> cpu_frequency_gauge_;
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> mem_stats_total_bytes_;
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> mem_stats_free_bytes_;
-  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> network_rx_bytes_counter_;
-  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> network_rx_drops_counter_;
-  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> network_tx_bytes_counter_;
-  std::unique_ptr<opentelemetry::metrics::UpDownCounter<int64_t>> network_tx_drops_counter_;
+  std::shared_ptr<opentelemetry::metrics::ObservableInstrument> network_rx_bytes_counter_;
+  std::shared_ptr<opentelemetry::metrics::ObservableInstrument> network_rx_drops_counter_;
+  std::shared_ptr<opentelemetry::metrics::ObservableInstrument> network_tx_bytes_counter_;
+  std::shared_ptr<opentelemetry::metrics::ObservableInstrument> network_tx_drops_counter_;
 
   gml::system::ProcParser proc_parser_;
   std::unique_ptr<gml::system::CPUInfoReader> cpu_info_reader_;
+
+  std::vector<gml::system::ProcParser::CPUStats> cpu_stats_;
+  std::vector<gml::system::ProcParser::NetworkStats> network_stats_;
 };
 
 }  // namespace gml::gem::controller

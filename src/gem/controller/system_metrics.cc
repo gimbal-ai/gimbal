@@ -24,6 +24,13 @@
 
 namespace gml::gem::controller {
 
+namespace {
+template <typename T>
+auto GetObservableResult(opentelemetry::metrics::ObserverResult& observer) {
+  return std::get<std::shared_ptr<opentelemetry::metrics::ObserverResultT<T>>>(observer);
+}
+}  // namespace
+
 SystemMetricsReader::SystemMetricsReader(::gml::metrics::MetricsSystem* metrics_system,
                                          std::unique_ptr<gml::system::CPUInfoReader> cpu_reader)
     : metrics::Scrapeable(metrics_system) {
@@ -31,21 +38,67 @@ SystemMetricsReader::SystemMetricsReader(::gml::metrics::MetricsSystem* metrics_
   cpu_info_reader_ = std::move(cpu_reader);
 
   auto gml_meter = metrics_system_->GetMeterProvider()->GetMeter("gml");
-  cpu_stats_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("gml.system.cpu.nanoseconds.total"));
-  cpu_num_gauge_ = std::move(gml_meter->CreateInt64Gauge("gml.system.cpu.virtual"));
-  cpu_frequency_gauge_ =
-      std::move(gml_meter->CreateInt64Gauge("gml.system.cpu.scaling_frequency_hertz"));
-  mem_stats_total_bytes_ = std::move(gml_meter->CreateInt64Gauge("gml.system.memory.total_bytes"));
-  mem_stats_free_bytes_ = std::move(gml_meter->CreateInt64Gauge("gml.system.memory.free_bytes"));
+
+  cpu_stats_counter_ = gml_meter->CreateDoubleObservableCounter("gml.system.cpu.seconds.total");
+  cpu_stats_counter_->AddCallback(
+      [](auto observer, void* parent) {
+        auto reader = static_cast<SystemMetricsReader*>(parent);
+        for (const auto& [c, stat] : Enumerate(reader->cpu_stats_)) {
+          auto cpu = std::to_string(c);
+          GetObservableResult<double>(observer)->Observe(
+              static_cast<double>(stat.cpu_ktime_ns) / 1E9, {{"cpu", cpu}, {"state", "system"}});
+          GetObservableResult<double>(observer)->Observe(
+              static_cast<double>(stat.cpu_utime_ns) / 1E9, {{"cpu", cpu}, {"state", "user"}});
+          GetObservableResult<double>(observer)->Observe(
+              static_cast<double>(stat.cpu_idletime_ns) / 1E9, {{"cpu", cpu}, {"state", "idle"}});
+          GetObservableResult<double>(observer)->Observe(
+              static_cast<double>(stat.cpu_iowaittime_ns) / 1E9, {{"cpu", cpu}, {"state", "wait"}});
+        }
+      },
+      this);
+
+  cpu_num_gauge_ = gml_meter->CreateInt64Gauge("gml.system.cpu.virtual");
+  cpu_frequency_gauge_ = gml_meter->CreateInt64Gauge("gml.system.cpu.scaling_frequency_hertz");
+  mem_stats_total_bytes_ = gml_meter->CreateInt64Gauge("gml.system.memory.total_bytes");
+  mem_stats_free_bytes_ = gml_meter->CreateInt64Gauge("gml.system.memory.free_bytes");
+
+  // Setup network counters.
   network_rx_bytes_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("gml.system.network.rx_bytes.total"));
+      gml_meter->CreateInt64ObservableCounter("gml.system.network.rx_bytes.total");
+  network_rx_bytes_counter_->AddCallback(
+      [](auto observer, void* parent) {
+        auto reader = static_cast<SystemMetricsReader*>(parent);
+        reader->GetObservableResultFromNetworkStats<int64_t>(observer,
+                                                             [](auto p) { return p.rx_bytes; });
+      },
+      this);
   network_rx_drops_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("gml.system.network.rx_drops.total"));
+      gml_meter->CreateInt64ObservableCounter("gml.system.network.rx_drops.total");
+  network_rx_drops_counter_->AddCallback(
+      [](auto observer, void* parent) {
+        auto reader = static_cast<SystemMetricsReader*>(parent);
+        reader->GetObservableResultFromNetworkStats<int64_t>(observer,
+                                                             [](auto p) { return p.rx_drops; });
+      },
+      this);
   network_tx_bytes_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("gml.system.network.tx_bytes.total"));
+      gml_meter->CreateInt64ObservableCounter("gml.system.network.tx_bytes.total");
+  network_tx_bytes_counter_->AddCallback(
+      [](auto observer, void* parent) {
+        auto reader = static_cast<SystemMetricsReader*>(parent);
+        reader->GetObservableResultFromNetworkStats<int64_t>(observer,
+                                                             [](auto p) { return p.tx_bytes; });
+      },
+      this);
   network_tx_drops_counter_ =
-      std::move(gml_meter->CreateInt64UpDownCounter("gml.system.network.tx_drops.total"));
+      gml_meter->CreateInt64ObservableCounter("gml.system.network.tx_drops.total");
+  network_tx_drops_counter_->AddCallback(
+      [](auto observer, void* parent) {
+        auto reader = static_cast<SystemMetricsReader*>(parent);
+        reader->GetObservableResultFromNetworkStats<int64_t>(observer,
+                                                             [](auto p) { return p.tx_drops; });
+      },
+      this);
 }
 
 void SystemMetricsReader::Scrape() {
@@ -53,17 +106,10 @@ void SystemMetricsReader::Scrape() {
   std::vector<gml::system::ProcParser::CPUStats> stats;
   GML_CHECK_OK(proc_parser_.ParseProcStatAllCPUs(
       &stats, gml::system::Config::GetInstance().KernelTickTimeNS()));
-
-  for (const auto& [c, stat] : Enumerate(stats)) {
-    auto cpu = std::to_string(c);
-    cpu_stats_counter_->Add(stat.cpu_ktime_ns, {{"cpu", cpu}, {"state", "system"}}, {});
-    cpu_stats_counter_->Add(stat.cpu_utime_ns, {{"cpu", cpu}, {"state", "user"}}, {});
-    cpu_stats_counter_->Add(stat.cpu_idletime_ns, {{"cpu", cpu}, {"state", "idle"}}, {});
-    cpu_stats_counter_->Add(stat.cpu_iowaittime_ns, {{"cpu", cpu}, {"state", "wait"}}, {});
-  }
+  cpu_stats_ = stats;
+  cpu_num_gauge_->Record(static_cast<int64_t>(stats.size()), {{"state", "system"}}, {});
 
   // Add memory metrics for system.
-  cpu_num_gauge_->Record(static_cast<int64_t>(stats.size()), {{"state", "system"}}, {});
   gml::system::ProcParser::SystemStats system_stats;
   GML_CHECK_OK(proc_parser_.ParseProcMemInfo(&system_stats));
   mem_stats_total_bytes_->Record(system_stats.mem_total_bytes, {{"state", "system"}}, {});
@@ -75,13 +121,7 @@ void SystemMetricsReader::Scrape() {
     LOG(INFO) << "Failed to read proc network stats. Skipping...";
     return;
   }
-
-  for (auto n : network_stats) {
-    network_rx_bytes_counter_->Add(n.rx_bytes, {{"interface", n.interface}}, {});
-    network_rx_drops_counter_->Add(n.rx_drops, {{"interface", n.interface}}, {});
-    network_tx_bytes_counter_->Add(n.tx_bytes, {{"interface", n.interface}}, {});
-    network_tx_drops_counter_->Add(n.tx_drops, {{"interface", n.interface}}, {});
-  }
+  network_stats_ = network_stats;
 
   std::vector<gml::system::CPUFrequencyInfo> freq_stats;
   s = cpu_info_reader_->ReadCPUFrequencies(&freq_stats);
@@ -94,4 +134,16 @@ void SystemMetricsReader::Scrape() {
     cpu_frequency_gauge_->Record(f.cpu_freq_hz, {{"cpu", f.cpu_num}}, {});
   }
 }
+
+template <typename T>
+void SystemMetricsReader::GetObservableResultFromNetworkStats(
+    opentelemetry::metrics::ObserverResult observer,
+    const std::function<int64_t(const gml::system::ProcParser::NetworkStats& network_stats)>&
+        get_stat) {
+  for (const auto& [i, n] : Enumerate(network_stats_)) {
+    auto val = get_stat(n);
+    GetObservableResult<T>(observer)->Observe(val, {{"interface", n.interface}});
+  }
+}
+
 }  // namespace gml::gem::controller

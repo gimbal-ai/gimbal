@@ -67,8 +67,6 @@ class ProcParser {
   // We store all the cpu/memory/io stats together since they belong to a
   // single pid and are meant to be consumed together.
   struct ProcessStats {
-    ProcessStats& operator=(const ProcessStats&) = default;
-
     int64_t pid = -1;
     std::string process_name = "";
 
