@@ -17,6 +17,9 @@
 
 #include "src/gem/calculators/core/detections_summary_calculator.h"
 
+#include "gmock/gmock.h"
+#include <absl/container/flat_hash_map.h>
+
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/metrics/metrics_system.h"
 #include "src/common/testing/protobuf.h"
@@ -27,6 +30,8 @@ namespace gml::gem::calculators::core {
 
 using ::gml::internal::api::core::v1::Detection;
 
+using ::opentelemetry::sdk::common::OwnedAttributeValue;
+
 static constexpr char kDetectionsSummaryNode[] = R"pbtxt(
 calculator: "DetectionsSummaryCalculator"
 input_stream: "detection_list"
@@ -35,12 +40,13 @@ input_stream: "detection_list"
 struct ExpectedHist {
   std::vector<double> bucket_bounds;
   std::vector<uint64_t> bucket_counts;
+  absl::flat_hash_map<std::string, OwnedAttributeValue> attributes;
 };
 
 struct DetectionsSummaryTestCase {
   std::vector<std::string> detection_pbtxts;
 
-  std::vector<ExpectedHist> expected_hists;
+  absl::flat_hash_map<std::string, std::vector<ExpectedHist>> expected_hists;
 };
 
 class DetectionsSummaryTest : public ::testing::TestWithParam<DetectionsSummaryTestCase> {};
@@ -64,17 +70,28 @@ TEST_P(DetectionsSummaryTest, CollectsStatsCorrectly) {
                            opentelemetry::sdk::metrics::ResourceMetrics& resource_metrics) {
     const auto& scope_metrics = resource_metrics.scope_metric_data_;
     ASSERT_EQ(1, scope_metrics.size());
+
     const auto& metric_data = scope_metrics[0].metric_data_;
-    ASSERT_EQ(1, metric_data.size());
-    const auto& point_data = metric_data[0].point_data_attr_;
-    ASSERT_EQ(test_case.expected_hists.size(), point_data.size());
-    for (const auto& [i, p] : Enumerate(point_data)) {
-      ASSERT_TRUE(
-          std::holds_alternative<opentelemetry::sdk::metrics::HistogramPointData>(p.point_data));
-      const auto& histogram_point_data =
-          std::get<opentelemetry::sdk::metrics::HistogramPointData>(p.point_data);
-      EXPECT_EQ(test_case.expected_hists[i].bucket_bounds, histogram_point_data.boundaries_);
-      EXPECT_EQ(test_case.expected_hists[i].bucket_counts, histogram_point_data.counts_);
+    ASSERT_EQ(test_case.expected_hists.size(), metric_data.size());
+
+    for (const auto& metric_datum : metric_data) {
+      const auto& name = metric_datum.instrument_descriptor.name_;
+      ASSERT_TRUE(test_case.expected_hists.contains(name));
+      const auto& expected_hists = test_case.expected_hists[name];
+      const auto& point_data = metric_datum.point_data_attr_;
+      ASSERT_EQ(expected_hists.size(), point_data.size());
+      for (const auto& [i, p] : Enumerate(point_data)) {
+        ASSERT_TRUE(
+            std::holds_alternative<opentelemetry::sdk::metrics::HistogramPointData>(p.point_data));
+        const auto& histogram_point_data =
+            std::get<opentelemetry::sdk::metrics::HistogramPointData>(p.point_data);
+        EXPECT_EQ(expected_hists[i].bucket_bounds, histogram_point_data.boundaries_);
+        EXPECT_EQ(expected_hists[i].bucket_counts, histogram_point_data.counts_);
+
+        EXPECT_THAT(p.attributes,
+                    ::testing::UnorderedElementsAreArray(expected_hists[i].attributes.begin(),
+                                                         expected_hists[i].attributes.end()));
+      }
     }
   };
   auto results_cb =
@@ -85,13 +102,14 @@ TEST_P(DetectionsSummaryTest, CollectsStatsCorrectly) {
   metrics_system.Reader()->Collect(results_cb);
 }
 
-INSTANTIATE_TEST_SUITE_P(DetectionsSummaryTestSuite, DetectionsSummaryTest,
-                         ::testing::Values(DetectionsSummaryTestCase{
-                             {
-                                 R"pbtxt(
+INSTANTIATE_TEST_SUITE_P(
+    DetectionsSummaryTestSuite, DetectionsSummaryTest,
+    ::testing::Values(DetectionsSummaryTestCase{
+        {
+            R"pbtxt(
 label {
   label: "bottle"
-  score: 0.9
+  score: 0.89999
 }
 bounding_box {
   xc: 0.5
@@ -100,10 +118,10 @@ bounding_box {
   height: 0.2
 }
 )pbtxt",
-                                 R"pbtxt(
+            R"pbtxt(
 label {
   label: "bottle"
-  score: 0.9
+  score: 0.09999
 }
 bounding_box {
   xc: 0.5
@@ -112,10 +130,10 @@ bounding_box {
   height: 0.2
 }
 )pbtxt",
-                                 R"pbtxt(
+            R"pbtxt(
 label {
   label: "person"
-  score: 0.9
+  score: 0.59999
 }
 bounding_box {
   xc: 0.5
@@ -124,17 +142,39 @@ bounding_box {
   height: 0.2
 }
 )pbtxt",
-                             },
-                             {
-                                 {
-                                     {0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0},
-                                     {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                 },
-                                 {
-                                     {0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0},
-                                     {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                 },
-                             },
-                         }));
+        },
+        {{
+            {
+                "gml_gem_model_detection_classes",
+                {
+                    {
+                        {0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0},
+                        {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {{"class", "bottle"}},
+                    },
+                    {
+                        {0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0},
+                        {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {{"class", "person"}},
+                    },
+                },
+            },
+            {
+                "gml_gem_model_confidence_classes",
+                {
+                    {
+                        {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9},
+                        {0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+                        {{"class", "bottle"}},
+                    },
+                    {
+                        {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9},
+                        {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+                        {{"class", "person"}},
+                    },
+                },
+            },
+        }},
+    }));
 
 }  // namespace gml::gem::calculators::core

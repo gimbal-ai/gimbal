@@ -36,6 +36,8 @@ absl::Status DetectionsSummaryCalculator::Open(mediapipe::CalculatorContext*) {
   // TODO(james): make the bounds configurable in CalculatorOptions.
   detection_hist_ = metrics_system.CreateHistogramWithBounds<uint64_t>(
       "gml_gem_model_detection_classes", {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+  confidence_hist_ = metrics_system.CreateHistogramWithBounds<double>(
+      "gml_gem_model_confidence_classes", {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9});
   return absl::OkStatus();
 }
 
@@ -47,6 +49,7 @@ absl::Status DetectionsSummaryCalculator::Process(mediapipe::CalculatorContext* 
   for (const auto& detection : detections) {
     for (const auto& label : detection.label()) {
       class_counts[label.label()] += 1;
+      confidence_hist_->Record(label.score(), {{"class", label.label()}}, {});
     }
   }
 

@@ -39,6 +39,7 @@ class DetectionsSummaryCalculator : public mediapipe::CalculatorBase {
 
  private:
   std::unique_ptr<opentelemetry::metrics::Histogram<uint64_t>> detection_hist_;
+  std::unique_ptr<opentelemetry::metrics::Histogram<double>> confidence_hist_;
 };
 
 }  // namespace gml::gem::calculators::core
