@@ -12,6 +12,7 @@
 - [Development Environment](#development-environment)
   - [Running the Control Plane](#running-the-control-plane)
     - [Accessing the UI in the browser](#accessing-the-ui-in-the-browser)
+  - [Running a GEM with a fake camera](#running-a-gem-with-a-fake-camera)
   - [Building the UI locally](#building-the-ui-locally)
     - [Accessing the development postgres DB](#accessing-the-development-postgres-db)
 
