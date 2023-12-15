@@ -351,6 +351,12 @@ def _no_sysroot():
         "//conditions:default": ["@platforms//:incompatible"],
     })
 
+def _jetson_sysroot():
+    return select({
+        "//bazel/cc_toolchains/sysroots:sysroot_type_jetson": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    })
+
 def _intelgpu_sysroot():
     return select({
         "//bazel/cc_toolchains/sysroots:sysroot_type_intelgpu": [],
@@ -381,4 +387,5 @@ def gml_sh_test(**kwargs):
 gml_cc_binary = _gml_cc_binary
 gml_cc_test = _gml_cc_test
 no_sysroot = _no_sysroot
+jetson_sysroot = _jetson_sysroot
 intelgpu_sysroot = _intelgpu_sysroot

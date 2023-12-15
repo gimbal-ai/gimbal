@@ -14,7 +14,7 @@
 # SPDX-License-Identifier: Proprietary
 
 load("//bazel:gml_build_system.bzl", "gml_cc_test")
-load("//bazel:images.bzl", "gml_jetson_image")
+load("//bazel:images.bzl", "gml_binary_image")
 load("//src/gem/plugins:plugins.bzl", "gem_plugin_cc_library")
 
 package(default_visibility = [
@@ -91,31 +91,28 @@ gml_cc_test(
     ],
 )
 
-gml_jetson_image(
+gml_binary_image(
     name = "nvbufsurf_planar_image_calculator_test_image",
     testonly = 1,
     binary = ":nvbufsurf_planar_image_test",
     include_runfiles = True,
-    multiarch = False,
     tags = ["manual"],
 )
 
 # Because the test needs to be run on the Jeston device, we put the tests into container images.
 # The images can then be deployed on the device as part of manually testing.
-gml_jetson_image(
+gml_binary_image(
     name = "nvbuf_to_image_frame_calculator_test_image",
     testonly = 1,
     binary = ":nvbuf_to_image_frame_calculator_test",
     include_runfiles = True,
-    multiarch = False,
     tags = ["manual"],
 )
 
-gml_jetson_image(
+gml_binary_image(
     name = "nvbuf_to_planar_image_calculator_test_image",
     testonly = 1,
     binary = ":nvbuf_to_planar_image_calculator_test",
     include_runfiles = True,
-    multiarch = False,
     tags = ["manual"],
 )

@@ -33,9 +33,6 @@ const std::string kDeviceUUID = "";
 int main(int argc, char** argv) {
   gml::EnvironmentGuard env_guard(&argc, argv);
 
-  // Unset the DISPLAY environment variable, which appears to affect libEGL, causing failures.
-  unsetenv("DISPLAY");
-
   using gml::gem::devices::argus::ArgusCam;
   using gml::gem::devices::argus::NvBufSurfaceWrapper;
 

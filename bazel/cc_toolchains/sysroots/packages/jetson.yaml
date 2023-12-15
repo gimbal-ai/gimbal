@@ -38,16 +38,9 @@ packages:
 - name: linux-libc-dev
 - name: mesa-common-dev
 - name: zlib1g-dev
-- name: dash
-- name: bash
 - name: grep
-- name: gawk
 - name: sed
 - name: libc-bin
-- name: xvfb
-- name: x11-xkb-utils
-- name: util-linux
-- name: coreutils
 - name: libnvinfer-dev
   version: 8.5.2-1+cuda11.4
 - name: libnvinfer-plugin8

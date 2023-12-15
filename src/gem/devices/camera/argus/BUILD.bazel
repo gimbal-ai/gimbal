@@ -14,7 +14,7 @@
 # SPDX-License-Identifier: Proprietary
 
 load("//bazel:gml_build_system.bzl", "gml_cc_binary")
-load("//bazel:images.bzl", "gml_jetson_image")
+load("//bazel:images.bzl", "gml_binary_image")
 load("//src/gem/plugins:plugins.bzl", "gem_plugin_cc_library")
 
 package(default_visibility = [
@@ -52,7 +52,7 @@ gml_cc_binary(
     ],
 )
 
-gml_jetson_image(
+gml_binary_image(
     name = "argus_cam_binary_image",
     binary = ":argus_cam_binary",
 )

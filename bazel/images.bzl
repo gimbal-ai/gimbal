@@ -150,51 +150,5 @@ _collect_runfiles = rule(
     ),
 )
 
-def _jetson_host_ld_library_path():
-    arch = "aarch64"
-    paths = [
-        "/lib/{arch}-linux-gnu",
-        "/usr/lib/{arch}-linux-gnu",
-        "/host_lib/{arch}-linux-gnu",
-        "/host_cuda/lib64",
-        "/host_lib/{arch}-linux-gnu/tegra",
-    ]
-
-    return ":".join(paths).format(arch = arch)
-
-def _gml_jetson_image(name, binary, **kwargs):
-    default_arg(kwargs, "tars", [])
-
-    native.genrule(
-        name = name + "_env_gen",
-        outs = [name + ".env"],
-        cmd = "> $@ echo LD_LIBRARY_PATH=" + _jetson_host_ld_library_path(),
-    )
-
-    needs_xvfb = kwargs.pop("needs_xvfb", False)
-    if needs_xvfb:
-        pkg_tar(
-            name = name + "_xvfb_tar",
-            srcs = ["//src/gem/scripts:xvfb_wrapper.sh"],
-            package_dir = "/scripts",
-        )
-        kwargs["tars"].append(":" + name + "_xvfb_tar")
-        default_arg(kwargs, "entrypoint", ["/scripts/xvfb_wrapper.sh", "/app/" + Label(binary).name])
-
-    default_arg(kwargs, "env", ":" + name + "_env_gen")
-
-    _gml_binary_image(
-        name,
-        binary = binary,
-        target_compatible_with = [
-            "@platforms//cpu:aarch64",
-        ] + select({
-            "@gml//bazel/cc_toolchains:libc_version_glibc2_31": [],
-            "//conditions:default": ["@platforms//:incompatible"],
-        }),
-        **kwargs
-    )
-
 gml_oci_image = _gml_oci_image
 gml_binary_image = _gml_binary_image
-gml_jetson_image = _gml_jetson_image

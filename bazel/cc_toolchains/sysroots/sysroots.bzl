@@ -112,15 +112,6 @@ def _jetson_sysroots():
         "ubuntu2004_libunwind8",
         # NVIDIA's container runtime requires that `ldconfig` exist in the container.
         "ubuntu2004_libc-bin",
-        # `libnvargus` requires an active X11 server, we use `xvfb` to emulate one.
-        "ubuntu2004_xvfb",
-        "ubuntu2004_x11-xkb-utils",
-        # xvfb-run requires a number of script utilities.
-        "ubuntu2004_bash",
-        "ubuntu2004_dash",
-        "ubuntu2004_gawk",
-        "ubuntu2004_util-linux",
-        "ubuntu2004_coreutils",
     ]
     sysroot_repo(
         name = "sysroot_jetson_runtime",

@@ -17,6 +17,7 @@
 
 #include "src/gem/devices/camera/argus/argus_cam.h"
 
+#include <cstdlib>
 #include <iostream>
 #include <string>
 
@@ -97,6 +98,9 @@ StatusOr<Argus::SensorMode*> ArgusCam::SelectSensorMode() {
 }
 
 Status ArgusCam::CreateOutputStream() {
+  // Unset the DISPLAY environment variable, which appears to affect libEGL, causing failures.
+  unsetenv("DISPLAY");
+
   Argus::ICaptureSession* capture_session =
       Argus::interface_cast<Argus::ICaptureSession>(capture_session_obj_);
   if (capture_session == nullptr) {
