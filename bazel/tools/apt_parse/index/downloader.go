@@ -19,6 +19,7 @@ package index
 
 import (
 	"compress/gzip"
+	"errors"
 	"io"
 	"net/http"
 	"strings"
@@ -27,6 +28,9 @@ import (
 
 	"gimletlabs.ai/gimlet/bazel/tools/apt_parse/spec"
 )
+
+// ErrDownloadFailed is returned when a download returns a non 200 code.
+var ErrDownloadFailed = errors.New("download status not OK")
 
 // Downloader is the interface for downloading repository specs.
 type Downloader interface {
@@ -45,6 +49,9 @@ func (*httpDownloaderImpl) Download(repo *spec.Repository) (*Index, error) {
 	resp, err := http.Get(repo.IndexURL)
 	if err != nil {
 		return nil, err
+	}
+	if resp.StatusCode != http.StatusOK {
+		return nil, ErrDownloadFailed
 	}
 	defer resp.Body.Close()
 	var r io.Reader
