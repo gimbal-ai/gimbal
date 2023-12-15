@@ -30,6 +30,7 @@ gml_cc_library(
         "execution_context_calculator.h",
         "image_frame_to_yuv_planar_image.cc",
         "image_frame_to_yuv_planar_image.h",
+        "metrics_sink_calculator.h",
     ],
     deps = [
         "//src/api/corepb/v1:corepb_cc_library",

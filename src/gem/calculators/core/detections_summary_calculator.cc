@@ -26,24 +26,17 @@
 namespace gml::gem::calculators::core {
 using ::gml::internal::api::core::v1::Detection;
 
-absl::Status DetectionsSummaryCalculator::GetContract(mediapipe::CalculatorContract* cc) {
-  cc->Inputs().Index(0).Set<std::vector<Detection>>();
-  return absl::OkStatus();
-}
-
-absl::Status DetectionsSummaryCalculator::Open(mediapipe::CalculatorContext*) {
+Status DetectionsSummaryCalculator::BuildMetrics(mediapipe::CalculatorContext*) {
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
   // TODO(james): make the bounds configurable in CalculatorOptions.
   detection_hist_ = metrics_system.CreateHistogramWithBounds<uint64_t>(
       "gml_gem_model_detection_classes", {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
   confidence_hist_ = metrics_system.CreateHistogramWithBounds<double>(
       "gml_gem_model_confidence_classes", {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9});
-  return absl::OkStatus();
+  return Status::OK();
 }
 
-absl::Status DetectionsSummaryCalculator::Process(mediapipe::CalculatorContext* cc) {
-  const auto& detections = cc->Inputs().Index(0).Get<std::vector<Detection>>();
-
+Status DetectionsSummaryCalculator::RecordMetrics(const std::vector<Detection>& detections) {
   std::map<std::string, uint64_t> class_counts;
 
   for (const auto& detection : detections) {
@@ -60,11 +53,7 @@ absl::Status DetectionsSummaryCalculator::Process(mediapipe::CalculatorContext* 
     detection_hist_->Record(count, {{"class", label}}, {});
   }
 
-  return absl::OkStatus();
-}
-
-absl::Status DetectionsSummaryCalculator::Close(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
+  return Status::OK();
 }
 
 REGISTER_CALCULATOR(DetectionsSummaryCalculator);
