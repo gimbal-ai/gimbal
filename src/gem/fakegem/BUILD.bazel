@@ -13,9 +13,8 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("@rules_oci//oci:defs.bzl", "oci_push")
 load("//bazel:gml_build_system.bzl", "gml_cc_binary", "gml_cc_library")
-load("//bazel:images.bzl", "gml_binary_image")
+load("//bazel:images.bzl", "gml_binary_image", "gml_oci_push")
 
 package(default_visibility = [
     "//src:__subpackages__",
@@ -58,7 +57,7 @@ gml_binary_image(
     include_runfiles = True,
 )
 
-oci_push(
+gml_oci_push(
     name = "push_fakegem_image",
     image = ":fakegem_image",
     remote_tags = ["fake-latest"],

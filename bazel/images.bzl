@@ -13,7 +13,8 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("@rules_oci//oci:defs.bzl", "oci_image", "oci_image_index", "oci_tarball")
+load("@bazel_skylib//rules:write_file.bzl", "write_file")
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_image_index", "oci_push", "oci_tarball")
 load("@rules_pkg//pkg:providers.bzl", "PackageFilesInfo")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("//bazel:lib.bzl", "default_arg")
@@ -104,6 +105,23 @@ def _gml_binary_image(name, binary, multiarch = False, **kwargs):
     kwargs["tars"] = kwargs["tars"] + [name + "_binary_tar"]
     _gml_oci_image(name, multiarch = multiarch, testonly = testonly, **kwargs)
 
+def _gml_oci_push(name, **kwargs):
+    tags = kwargs.pop("remote_tags", [])
+
+    write_file(
+        name = name + "_write_tags",
+        out = name + "_tags.txt",
+        content = select({
+            "//bazel/cc_toolchains/sysroots:sysroot_type_debian12": ["debian12-" + tag for tag in tags],
+            "//bazel/cc_toolchains/sysroots:sysroot_type_intelgpu": ["intelgpu-" + tag for tag in tags],
+            "//bazel/cc_toolchains/sysroots:sysroot_type_jetson": ["jetson-" + tag for tag in tags],
+            "//bazel/cc_toolchains/sysroots:sysroot_type_none": ["nosysroot-" + tag for tag in tags],
+            "//conditions:default": tags,
+        }),
+    )
+
+    oci_push(name = name, remote_tags = name + "_write_tags", **kwargs)
+
 def _collect_runfiles_impl(ctx):
     dest_to_src = dict()
     for binary in ctx.attr.binaries:
@@ -152,3 +170,4 @@ _collect_runfiles = rule(
 
 gml_oci_image = _gml_oci_image
 gml_binary_image = _gml_binary_image
+gml_oci_push = _gml_oci_push

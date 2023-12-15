@@ -347,7 +347,7 @@ def _add_no_sysroot(kwargs):
 
 def _no_sysroot():
     return select({
-        "//bazel/cc_toolchains:libc_version_glibc_host": [],
+        "//bazel/cc_toolchains/sysroots:sysroot_type_none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     })
 

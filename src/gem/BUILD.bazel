@@ -12,10 +12,8 @@
 # Gimlet Labs, Inc.
 #
 # SPDX-License-Identifier: Proprietary
-
-load("@rules_oci//oci:defs.bzl", "oci_push")
-load("//bazel:gml_build_system.bzl", "gml_cc_binary", "gml_cc_library", "intelgpu_sysroot", "jetson_sysroot")
-load("//bazel:images.bzl", "gml_binary_image")
+load("//bazel:gml_build_system.bzl", "gml_cc_binary", "gml_cc_library")
+load("//bazel:images.bzl", "gml_binary_image", "gml_oci_push")
 
 package(default_visibility = [
     "//src:__subpackages__",
@@ -53,27 +51,9 @@ gml_binary_image(
     include_runfiles = True,
 )
 
-oci_push(
+gml_oci_push(
     name = "push_gem_image",
     image = ":gem_image",
     remote_tags = ["dev-latest"],
     repository = "us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/gem_image",
-)
-
-# TODO(james): remove once remote_tags changes have settled.
-oci_push(
-    name = "push_gem_intelgpu_image",
-    image = ":gem_image",
-    remote_tags = ["intelgpu-dev-latest"],
-    repository = "us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/gem_image",
-    target_compatible_with = intelgpu_sysroot(),
-)
-
-# TODO(james): remove once remote_tags changes have settled.
-oci_push(
-    name = "push_gem_jetson_image",
-    image = ":gem_image",
-    remote_tags = ["jetson-dev-latest"],
-    repository = "us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/gem_image",
-    target_compatible_with = jetson_sysroot(),
 )
