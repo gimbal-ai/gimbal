@@ -484,6 +484,7 @@ Status ProcParser::ParseProcPIDStatus(int32_t pid, ProcessStatus* out) const {
       {"RssAnon", offsetof(ProcessStatus, rss_anon_bytes)},
       {"RssFile", offsetof(ProcessStatus, rss_file_bytes)},
       {"RssShmem", offsetof(ProcessStatus, rss_shmem_bytes)},
+      {"Tgid", offsetof(ProcessStatus, tgid)},
       {"VmData", offsetof(ProcessStatus, vm_data_bytes)},
       {"VmStk", offsetof(ProcessStatus, vm_stk_bytes)},
       {"VmExe", offsetof(ProcessStatus, vm_exe_bytes)},

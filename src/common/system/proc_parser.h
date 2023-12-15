@@ -148,6 +148,7 @@ class ProcParser {
     int64_t vm_pte_bytes = 0;
     int64_t vm_swap_bytes = 0;
     int64_t hugetlb_pages_bytes = 0;
+    pid_t tgid = 0;
 
     int64_t voluntary_ctxt_switches = 0;
     int64_t nonvoluntary_ctxt_switches = 0;

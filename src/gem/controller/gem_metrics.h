@@ -63,9 +63,9 @@ class GEMMetricsReader : public gml::metrics::Scrapeable {
       ABSL_GUARDED_BY(pid_stats_lock_);
   absl::flat_hash_map<pid_t, gml::system::ProcParser::ProcessStatus> pid_process_status_
       ABSL_GUARDED_BY(pid_stats_lock_);
-  ;
   absl::flat_hash_map<pid_t, std::vector<gml::system::ProcParser::NetworkStats>> pid_network_stats_
       ABSL_GUARDED_BY(pid_stats_lock_);
+  absl::flat_hash_map<pid_t, pid_t> pid_to_tgid_ ABSL_GUARDED_BY(pid_stats_lock_);
 };
 
 }  // namespace gml::gem::controller

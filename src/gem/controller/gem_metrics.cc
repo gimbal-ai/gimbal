@@ -45,11 +45,18 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
         auto reader = static_cast<GEMMetricsReader*>(parent);
         absl::base_internal::SpinLockHolder lock(&reader->pid_stats_lock_);
         for (auto& p : reader->pid_process_stats_) {
+          auto it = reader->pid_to_tgid_.find(p.first);
+          if (it == reader->pid_to_tgid_.end()) {
+            LOG(INFO) << "Could not find TGID for PID";
+            return;
+          }
+
           GetObservableResult<double>(observer)->Observe(
-              static_cast<double>(p.second.utime_ns) / 1E9, {{"pid", p.first}, {"state", "user"}});
+              static_cast<double>(p.second.utime_ns) / 1E9,
+              {{"pid", p.first}, {"state", "user"}, {"tgid", it->second}});
           GetObservableResult<double>(observer)->Observe(
               static_cast<double>(p.second.ktime_ns) / 1E9,
-              {{"pid", p.first}, {"state", "system"}});
+              {{"pid", p.first}, {"state", "system"}, {"tgid", it->second}});
         }
       },
       this);
@@ -100,12 +107,22 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
         auto reader = static_cast<GEMMetricsReader*>(parent);
         absl::base_internal::SpinLockHolder lock(&reader->pid_stats_lock_);
         for (auto& p : reader->pid_process_status_) {
-          GetObservableResult<int64_t>(observer)->Observe(
-              p.second.voluntary_ctxt_switches,
-              {{"pid", p.first}, {"state", "system"}, {"context_switch_type", "voluntary"}});
-          GetObservableResult<int64_t>(observer)->Observe(
-              p.second.nonvoluntary_ctxt_switches,
-              {{"pid", p.first}, {"state", "system"}, {"context_switch_type", "involuntary"}});
+          auto it = reader->pid_to_tgid_.find(p.first);
+          if (it == reader->pid_to_tgid_.end()) {
+            LOG(INFO) << "Could not find TGID for PID";
+            return;
+          }
+
+          GetObservableResult<int64_t>(observer)->Observe(p.second.voluntary_ctxt_switches,
+                                                          {{"context_switch_type", "voluntary"},
+                                                           {"pid", p.first},
+                                                           {"state", "system"},
+                                                           {"tgid", it->second}});
+          GetObservableResult<int64_t>(observer)->Observe(p.second.nonvoluntary_ctxt_switches,
+                                                          {{"context_switch_type", "involuntary"},
+                                                           {"pid", p.first},
+                                                           {"state", "system"},
+                                                           {"tgid", it->second}});
         }
       },
       this);
@@ -157,15 +174,28 @@ void GEMMetricsReader::Scrape() {
   pid_process_stats_.clear();
   pid_network_stats_.clear();
   pid_process_status_.clear();
+  pid_to_tgid_.clear();
 
   for (auto p : pids) {
     auto pid = std::to_string(p);
 
+    // Parse process status.
+    gml::system::ProcParser::ProcessStatus process_status;
+    auto s = proc_parser_.ParseProcPIDStatus(p, &process_status);
+    if (!s.ok()) {
+      LOG(INFO) << "Failed to read proc status. Skipping...";
+      continue;
+    }
+    pid_process_status_[p] = process_status;
+
+    auto tgid = process_status.tgid;
+    pid_to_tgid_[p] = tgid;
+
     // Parse process stats.
     gml::system::ProcParser::ProcessStats process_stats;
-    auto s = proc_parser_.ParseProcPIDStat(p, gml::system::Config::GetInstance().PageSizeBytes(),
-                                           gml::system::Config::GetInstance().KernelTickTimeNS(),
-                                           &process_stats);
+    s = proc_parser_.ParseProcPIDStat(p, gml::system::Config::GetInstance().PageSizeBytes(),
+                                      gml::system::Config::GetInstance().KernelTickTimeNS(),
+                                      &process_stats);
     if (!s.ok()) {
       LOG(INFO) << "Failed to read proc stats. Skipping...";
       continue;
@@ -177,19 +207,12 @@ void GEMMetricsReader::Scrape() {
     }
     pid_process_stats_[p] = process_stats;
 
-    mem_usage_gauge_->Record(process_stats.rss_bytes, {{"pid", pid}, {"state", "system"}}, {});
+    mem_usage_gauge_->Record(process_stats.rss_bytes,
+                             {{"pid", pid}, {"state", "system"}, {"tgid", tgid}}, {});
     mem_virtual_gauge_->Record(static_cast<int64_t>(process_stats.vsize_bytes),
-                               {{"pid", pid}, {"state", "system"}}, {});
-    thread_gauge_->Record(process_stats.num_threads, {{"pid", pid}, {"state", "system"}}, {});
-
-    // Parse process status.
-    gml::system::ProcParser::ProcessStatus process_status;
-    s = proc_parser_.ParseProcPIDStatus(p, &process_status);
-    if (!s.ok()) {
-      LOG(INFO) << "Failed to read proc status. Skipping...";
-      continue;
-    }
-    pid_process_status_[p] = process_status;
+                               {{"pid", pid}, {"state", "system"}, {"tgid", tgid}}, {});
+    thread_gauge_->Record(process_stats.num_threads,
+                          {{"pid", pid}, {"state", "system"}, {"tgid", tgid}}, {});
 
     // Parse network stats.
     std::vector<gml::system::ProcParser::NetworkStats> network_stats;
@@ -209,8 +232,14 @@ void GEMMetricsReader::GetObservableResultFromProcessStats(
         get_stat) {
   absl::base_internal::SpinLockHolder lock(&pid_stats_lock_);
   for (auto& p : pid_process_stats_) {
+    auto it = pid_to_tgid_.find(p.first);
+    if (it == pid_to_tgid_.end()) {
+      LOG(INFO) << "Could not find TGID for PID";
+      return;
+    }
+
     auto val = get_stat(p.second);
-    GetObservableResult<T>(observer)->Observe(val, {{"pid", p.first}});
+    GetObservableResult<T>(observer)->Observe(val, {{"pid", p.first}, {"tgid", it->second}});
   }
 }
 
@@ -221,10 +250,16 @@ void GEMMetricsReader::GetObservableResultFromNetworkStats(
         get_stat) {
   absl::base_internal::SpinLockHolder lock(&pid_stats_lock_);
   for (auto& p : pid_network_stats_) {
+    auto it = pid_to_tgid_.find(p.first);
+    if (it == pid_to_tgid_.end()) {
+      LOG(INFO) << "Could not find TGID for PID";
+      return;
+    }
+
     for (auto n : p.second) {
       auto val = get_stat(n);
-      GetObservableResult<T>(observer)->Observe(val,
-                                                {{"interface", n.interface}, {"pid", p.first}});
+      GetObservableResult<T>(observer)->Observe(
+          val, {{"interface", n.interface}, {"pid", p.first}, {"tgid", it->second}});
     }
   }
 }
