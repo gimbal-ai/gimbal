@@ -97,8 +97,15 @@ func (g *BazelGenerator) addRule(name string, p *spec.PinnedPackage) {
 	}
 	sort.Strings(deps)
 	r.SetAttr("deps", deps)
-	if p.ExcludePaths != nil {
+	if p.ExcludePaths != nil && len(p.ExcludePaths) > 0 {
 		r.SetAttr("exclude_paths", p.ExcludePaths)
+	}
+	if p.ExtraSymlinks != nil && len(p.ExtraSymlinks) > 0 {
+		extraSymlinks := make(map[string]string)
+		for _, sl := range p.ExtraSymlinks {
+			extraSymlinks[sl.Source] = sl.Target
+		}
+		r.SetAttr("extra_symlinks", extraSymlinks)
 	}
 	r.Insert(g.file)
 }

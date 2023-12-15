@@ -43,6 +43,9 @@ packages:
 - name: podman
 - name: coreutils
 - name: tar
+  extra_symlinks:
+  - source: usr/sbin/rmt
+    target: /usr/sbin/rmt-tar
 exclude_paths:
 - usr/share/man
 - usr/share/doc

@@ -48,6 +48,9 @@ type PackageSet struct {
 type Package struct {
 	Name    string `yaml:"name"`
 	Version string `yaml:"version"`
+	// ExtraSymlinks are extra symlinks to generate. This is useful for links that are usually
+	// created by update-alternatives.
+	ExtraSymlinks []*Symlink `yaml:"extra_symlinks"`
 }
 
 // Repository represents a debian-style package repository with package information contained in a "Package" index file.
@@ -61,6 +64,11 @@ type Repository struct {
 	DownloadPrefix string `yaml:"download_prefix"`
 }
 
+type Symlink struct {
+	Source string `yaml:"source"`
+	Target string `yaml:"target"`
+}
+
 // PinnedPackage represents a fully-resolved package with all its dependencies also resolved.
 type PinnedPackage struct {
 	Name               string `yaml:"name"`
@@ -70,7 +78,8 @@ type PinnedPackage struct {
 	SHA256             string `yaml:"sha256"`
 	RepoName           string `yaml:"repo"`
 	DirectDependencies []*PinnedPackage
-	ExcludePaths       []string `yaml:"exclude_paths"`
+	ExcludePaths       []string   `yaml:"exclude_paths"`
+	ExtraSymlinks      []*Symlink `yaml:"extra_symlinks"`
 }
 
 // ParsePackageSet parses a yaml file into a PackageSet.

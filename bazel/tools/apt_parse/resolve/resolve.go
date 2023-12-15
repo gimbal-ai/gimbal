@@ -92,8 +92,9 @@ func (r *Resolver) Resolve() ([]*spec.PinnedPackage, error) {
 			return nil, fmt.Errorf("could not find package %s in index", p.Name)
 		}
 		dfs.Push(&graphNode{
-			pkg: pkg,
-			r:   r,
+			pkg:   pkg,
+			links: p.ExtraSymlinks,
+			r:     r,
 		})
 	}
 	cb := func(n *graphNode) error {
@@ -105,7 +106,7 @@ func (r *Resolver) Resolve() ([]*spec.PinnedPackage, error) {
 		for i, c := range children {
 			deps[i] = c.Name()
 		}
-		r.resolved[n.Name()] = r.indexPackageToPinned(n.pkg, deps)
+		r.resolved[n.Name()] = r.indexPackageToPinned(n.pkg, n.links, deps)
 		return nil
 	}
 
@@ -147,7 +148,7 @@ func (r *Resolver) packageFromPossibility(pos dependency.Possibility) *index.Pac
 	return pkg
 }
 
-func (r *Resolver) indexPackageToPinned(p *index.Package, deps []string) *spec.PinnedPackage {
+func (r *Resolver) indexPackageToPinned(p *index.Package, links []*spec.Symlink, deps []string) *spec.PinnedPackage {
 	prefix := strings.TrimSuffix(p.Repo.DownloadPrefix, "/")
 	url := fmt.Sprintf("%s/%s", prefix, p.BinaryIndex.Filename)
 	depPkgs := make([]*spec.PinnedPackage, 0)
@@ -169,6 +170,7 @@ func (r *Resolver) indexPackageToPinned(p *index.Package, deps []string) *spec.P
 		RepoName:           p.Repo.Name,
 		DirectDependencies: depPkgs,
 		ExcludePaths:       r.ps.ExcludePaths,
+		ExtraSymlinks:      links,
 	}
 }
 
@@ -198,8 +200,9 @@ func selectOption(pos dependency.Possibility, options []*index.PackageOption) *i
 // the graph node lazily determines its children.
 // It implements Node from dfs.go.
 type graphNode struct {
-	pkg *index.Package
-	r   *Resolver
+	pkg   *index.Package
+	links []*spec.Symlink
+	r     *Resolver
 
 	children []*graphNode
 }

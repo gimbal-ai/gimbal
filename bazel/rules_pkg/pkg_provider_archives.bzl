@@ -59,6 +59,9 @@ def _find_symlinks(rctx, ignore_args):
     )
 
     symlinks = dict()
+    for source, target in rctx.attr.extra_symlinks.items():
+        symlinks[_bazel_target_name_from_path(source)] = (source, target)
+
     repo_path = str(rctx.path("."))
     for res in results:
         path = res[0]
@@ -121,6 +124,7 @@ def _pkg_provider_repo_impl(rctx, ignore_paths):
 _PKG_PROVIDER_REPO_ATTRS = dict(
     deps = attr.string_list(default = []),
     exclude_paths = attr.string_list(default = []),
+    extra_symlinks = attr.string_dict(default = {}),
     _pkg_provider_build_tpl = attr.label(
         allow_single_file = True,
         default = Label("@gml//bazel/rules_pkg:pkg_provider.BUILD"),

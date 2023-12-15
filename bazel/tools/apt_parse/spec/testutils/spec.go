@@ -35,6 +35,7 @@ type PinnedPackage struct {
 	RepoName           string
 	DirectDependencies []string
 	ExcludePaths       []string
+	ExtraSymlinks      map[string]string
 }
 
 // ConvertToSpecPackages converts from a list of testutils.PinnedPackage to a list of spec.PinnedPackage.
@@ -59,7 +60,7 @@ func ConvertToSpecPackages(testPkgs []*PinnedPackage) ([]*spec.PinnedPackage, er
 			DirectDependencies: make([]*spec.PinnedPackage, 0, len(p.DirectDependencies)),
 		}
 	}
-	// Then set the direct dependencies for each one.
+	// Then set the direct dependencies and symlinks for each one.
 	for i, p := range testPkgs {
 		for _, dep := range p.DirectDependencies {
 			ind, ok := nameToIndex[dep]
@@ -67,6 +68,9 @@ func ConvertToSpecPackages(testPkgs []*PinnedPackage) ([]*spec.PinnedPackage, er
 				return nil, fmt.Errorf("dependency %s not in list of expected dependencies", dep)
 			}
 			pkgs[i].DirectDependencies = append(pkgs[i].DirectDependencies, pkgs[ind])
+		}
+		for s, t := range p.ExtraSymlinks {
+			pkgs[i].ExtraSymlinks = append(pkgs[i].ExtraSymlinks, &spec.Symlink{Source: s, Target: t})
 		}
 	}
 	return pkgs, nil

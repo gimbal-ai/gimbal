@@ -185,6 +185,36 @@ def load_debs():
 `,
 		},
 		{
+			name:      "extra symlinks",
+			macroName: "load_debs",
+			pkgSets: [][]*testutils.PinnedPackage{{
+				{
+					Name:               "pkg1",
+					Version:            "0.1",
+					Arch:               "x86_64",
+					URL:                "amd64-download/pool/main/pkg1.deb",
+					SHA256:             "3276ca056801384f1835efd3c4de88be3fb7e98b7de7ff59eb714126aaa287a7",
+					RepoName:           "debian12",
+					DirectDependencies: []string{},
+					ExcludePaths:       []string{},
+					ExtraSymlinks:      map[string]string{"/etc/a": "/usr/sbin/a"},
+				},
+			}},
+			expectedBzl: `load("//bazel/rules_pkg:pkg_provider_archives.bzl", "deb_archive_w_pkg_providers")
+
+def load_debs():
+    deb_archive_w_pkg_providers(
+        name = "debian12_pkg1_x86_64",
+        extra_symlinks = {
+            "/etc/a": "/usr/sbin/a",
+        },
+        sha256 = "3276ca056801384f1835efd3c4de88be3fb7e98b7de7ff59eb714126aaa287a7",
+        urls = ["amd64-download/pool/main/pkg1.deb"],
+        deps = [],
+    )
+`,
+		},
+		{
 			name:      "sorted by package name",
 			macroName: "load_debs",
 			pkgSets: [][]*testutils.PinnedPackage{
