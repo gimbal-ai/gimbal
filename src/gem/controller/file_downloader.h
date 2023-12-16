@@ -18,11 +18,14 @@
 #pragma once
 
 #include <filesystem>
+#include <future>
+#include <memory>
 #include <string>
 
 #include <absl/container/flat_hash_map.h>
 #include <sole.hpp>
 
+#include "src/common/event/task.h"
 #include "src/gem/controller/message_handler.h"
 
 namespace gml::gem::controller {
@@ -42,12 +45,20 @@ class FileDownloader : public MessageHandler {
   Status Finish() override;
 
  private:
+  struct DownloaderTaskMetadata {
+    DownloaderTaskMetadata() = delete;
+    DownloaderTaskMetadata(FileDownloaderTask* task, event::RunnableAsyncTaskUPtr runnable)
+        : task(task), runnable(std::move(runnable)), future(promise.get_future()) {}
+    FileDownloaderTask* task;
+    event::RunnableAsyncTaskUPtr runnable;
+    // We use this promise/future to allow multiple concurrent downloads to the samefile
+    // to create one downloader but track completion across the requesters.
+    std::promise<Status> promise;
+    std::shared_future<Status> future;
+  };
   absl::Mutex downloader_mu_;
-  absl::flat_hash_map<sole::uuid, FileDownloaderTask*> downloaders_ ABSL_GUARDED_BY(downloader_mu_);
-  absl::flat_hash_map<sole::uuid, event::RunnableAsyncTaskUPtr> downloader_tasks_
+  absl::flat_hash_map<sole::uuid, std::unique_ptr<DownloaderTaskMetadata>> downloaders_
       ABSL_GUARDED_BY(downloader_mu_);
-  //  sole::uuid fid_;
-  //  int size_;
   std::string sha256sum_;
 };
 

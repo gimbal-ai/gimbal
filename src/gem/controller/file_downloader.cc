@@ -20,10 +20,13 @@
 #include <fcntl.h>
 
 #include <cerrno>
+#include <future>
+#include <memory>
 #include <queue>
 #include <utility>
 
 #include "src/common/base/base.h"
+#include "src/common/base/status.h"
 #include "src/common/event/task.h"
 #include "src/common/fs/fs_utils.h"
 #include "src/common/fs/fs_wrapper.h"
@@ -94,7 +97,7 @@ class FileDownloaderTask : public event::AsyncTask {
   // make any more requests. These variables should only be accesses in the Work() thread.
   size_t current_file_pos_;
   // Map from start_pos : RequestMetadata.
-  absl::flat_hash_map<size_t, RequestMetadata> outstanding_requests;
+  absl::flat_hash_map<size_t, RequestMetadata> outstanding_requests_;
 
   // We store messages as they arrive here and use the ABSL mutexes to signal when data is
   // avaialble.
@@ -109,21 +112,21 @@ Status FileDownloader::Init() { return Status::OK(); }
 
 Status FileDownloader::BlockingDownload(const sole::uuid& fid, const std::string& sha256sum,
                                         size_t size, const std::filesystem::path& new_path) {
-  std::promise<Status> barrier;
-  std::future<Status> barrier_future = barrier.get_future();
-
-  auto download_complete_handler = [&](const Status& status, sole::uuid id,
+  auto download_complete_handler = [&](Status status, sole::uuid id,
                                        const std::filesystem::path& path) {
-    Status s = status;
     DEFER({
-      {
-        absl::MutexLock l(&downloader_mu_);
-        dispatcher()->DeferredDelete(std::move(downloader_tasks_[id]));
-        downloaders_.erase(id);
-        downloader_tasks_.erase(id);
+      absl::MutexLock l(&downloader_mu_);
+      auto it = downloaders_.find(fid);
+      if (it == downloaders_.end()) {
+        return;
       }
-      barrier.set_value(s);
-    })
+      auto downloader_md = downloaders_.extract(it);
+      downloader_md.mapped()->promise.set_value(status);
+      dispatcher()->DeferredDelete(std::move(downloader_md.mapped()->runnable));
+    });
+
+    LOG(INFO) << absl::Substitute("File download complete, fid: $0, status: $1\n", id.str(),
+                                  status.ToString());
 
     if (!status.ok()) {
       return;
@@ -133,8 +136,8 @@ Status FileDownloader::BlockingDownload(const sole::uuid& fid, const std::string
     std::filesystem::rename(path, new_path, ec);
     if (ec) {
       LOG(ERROR) << "Atomic rename of file: \"" << path << "\" failed, will copy instead";
-      s = fs::Copy(path, new_path, std::filesystem::copy_options::overwrite_existing);
-      if (!s.ok()) {
+      status = fs::Copy(path, new_path, std::filesystem::copy_options::overwrite_existing);
+      if (!status.ok()) {
         return;
       }
     }
@@ -142,19 +145,25 @@ Status FileDownloader::BlockingDownload(const sole::uuid& fid, const std::string
 
   std::filesystem::path download_path = new_path;
   download_path += ".tmp";
-  auto downloader = std::make_unique<FileDownloaderTask>(bridge(), fid, size, sha256sum,
-                                                         download_path, download_complete_handler);
+  std::shared_future<Status> barrier;
   {
     absl::MutexLock l(&downloader_mu_);
-    downloaders_[fid] = downloader.get();
-    auto task = dispatcher()->CreateAsyncTask(std::move(downloader));
-    task->Run();
-    downloader_tasks_[fid] = std::move(task);
+    auto it = downloaders_.find(fid);
+    if (it == downloaders_.end()) {
+      // Insert into the downloaders.
+      auto downloader = std::make_unique<FileDownloaderTask>(
+          bridge(), fid, size, sha256sum, download_path, download_complete_handler);
+      auto md = std::make_unique<DownloaderTaskMetadata>(
+          downloader.get(), dispatcher()->CreateAsyncTask(std::move(downloader)));
+      md->runnable->Run();
+      barrier = md->future;
+      downloaders_[fid] = std::move(md);
+    } else {
+      barrier = it->second->future;
+    }
   }
 
-  // Since this is a blocking handler, we wait for the file download to finish.
-  barrier_future.wait();
-  return barrier_future.get();
+  return barrier.get();
 }
 
 Status FileDownloader::HandleMessage(
@@ -172,7 +181,7 @@ Status FileDownloader::HandleMessage(
   auto end = downloaders_.end();
   downloader_mu_.Unlock();
   if (it != end) {
-    it->second->HandleFileTransferResponse(std::move(resp));
+    it->second->task->HandleFileTransferResponse(std::move(resp));
   }
   // Downloader has already been removed, this is likely a delayed response from the controlplane.
   return Status::OK();
@@ -181,7 +190,7 @@ Status FileDownloader::HandleMessage(
 Status FileDownloader::Finish() {
   absl::MutexLock l(&downloader_mu_);
   for (auto& m : downloaders_) {
-    m.second->Stop();
+    m.second->task->Stop();
   }
   return Status::OK();
 }
@@ -240,12 +249,12 @@ Status FileDownloaderTask::WorkImpl() {
     GML_RETURN_IF_ERROR(Status(resp->status()));
 
     size_t start_bytes = resp->chunk().start_bytes();
-    auto it = outstanding_requests.find(start_bytes);
-    if (it == outstanding_requests.end()) {
+    auto it = outstanding_requests_.find(start_bytes);
+    if (it == outstanding_requests_.end()) {
       // Duplicate response, we can ignore it.
       continue;
     }
-    outstanding_requests.erase(it);
+    outstanding_requests_.erase(it);
 
     auto payload = resp->chunk().payload();
     size_t size = payload.size();
@@ -263,7 +272,7 @@ Status FileDownloaderTask::WorkImpl() {
       offset += num_bytes;
     }
 
-    if ((current_file_pos_ >= size_) && outstanding_requests.empty()) {
+    if ((current_file_pos_ >= size_) && outstanding_requests_.empty()) {
       // Download is complete.
       break;
     }
@@ -297,20 +306,20 @@ void FileDownloaderTask::Stop() {
 Status FileDownloaderTask::GenerateRequests() {
   auto now = absl::Now();
   // Check and see if any of the outstanding_requests have timed out and re-make them.
-  for (auto& kv : outstanding_requests) {
+  for (auto& kv : outstanding_requests_) {
     if ((now - kv.second.req_time) > kRequestTimeout) {
       LOG(INFO) << "Re-requesting: " << kv.second.start_pos;
       GML_RETURN_IF_ERROR(RequestChunk(&kv.second));
     }
   }
 
-  while (current_file_pos_ < size_ && outstanding_requests.size() < kParallelChunks) {
+  while (current_file_pos_ < size_ && outstanding_requests_.size() < kParallelChunks) {
     RequestMetadata md;
     md.start_pos = current_file_pos_;
     md.size = std::min(size_ - current_file_pos_, kChunkSize);
     current_file_pos_ += md.size;
     GML_RETURN_IF_ERROR(RequestChunk(&md));
-    outstanding_requests[md.start_pos] = md;
+    outstanding_requests_[md.start_pos] = md;
   }
   return Status::OK();
 }
