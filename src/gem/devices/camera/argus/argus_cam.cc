@@ -33,6 +33,8 @@
 namespace gml::gem::devices::argus {
 
 Status ArgusCam::SetupCamera(std::string device_uuid) {
+  LOG(INFO) << "Using argus camera: " << device_uuid;
+
   // Create the CameraProvider object and get the core interface.
   camera_provider_obj_ = Argus::UniqueObj<Argus::CameraProvider>(Argus::CameraProvider::create());
   Argus::ICameraProvider* camera_provider =
@@ -59,6 +61,7 @@ Status ArgusCam::SetupCamera(std::string device_uuid) {
   }
 
   if (camera_device_ == nullptr) {
+    LOG(WARNING) << "Couldn't find argus camera: " << device_uuid;
     return error::Internal("Couldn't find selected camera.");
   }
 

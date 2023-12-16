@@ -79,16 +79,20 @@ absl::Status OpenCVCamSourceCalculator::GetContract(mediapipe::CalculatorContrac
 absl::Status OpenCVCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
   options_ = cc->Options<OpenCVCamSourceCalculatorOptions>();
 
+  LOG(INFO) << "Using v4l2 camera: " << options_.device_filename();
+
   // Setting to use V4L2 only. Could revisit this choice in the future.
   cap_ = std::make_unique<cv::VideoCapture>(options_.device_filename(), cv::CAP_V4L2);
 
   if (!cap_->isOpened()) {
+    LOG(WARNING) << "Failed to open camera: " << options_.device_filename();
     return absl::InternalError("Could not open camera.");
   }
 
   // Grab a frame to see its parameters;
   cv::Mat frame = CaptureFrame();
   if (frame.empty()) {
+    LOG(WARNING) << "Failed to capture image with: " << options_.device_filename();
     return absl::InternalError("Could not capture image with camera.");
   }
 
