@@ -13,6 +13,7 @@
 #
 # SPDX-License-Identifier: Proprietary
 
+load("@aspect_bazel_lib//lib:expand_template.bzl", "expand_template")
 load("@bazel_skylib//rules:write_file.bzl", "write_file")
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_image_index", "oci_push", "oci_tarball")
 load("@rules_pkg//pkg:providers.bzl", "PackageFilesInfo")
@@ -109,17 +110,36 @@ def _gml_oci_push(name, **kwargs):
     tags = kwargs.pop("remote_tags", [])
 
     write_file(
-        name = name + "_write_tags",
-        out = name + "_tags.txt",
+        name = name + "_tags_tmpl",
+        out = name + "_tags.txt.tmpl",
         content = select({
-            "//bazel/cc_toolchains/sysroots:sysroot_type_debian12": ["debian12-" + tag for tag in tags],
-            "//bazel/cc_toolchains/sysroots:sysroot_type_intelgpu": ["intelgpu-" + tag for tag in tags],
-            "//bazel/cc_toolchains/sysroots:sysroot_type_jetson": ["jetson-" + tag for tag in tags],
-            "//conditions:default": tags,
-        }),
+            "//bazel:stamped": [
+                "SYSROOT_PREFIXBUILD_USER",
+                "SYSROOT_PREFIXCOMMIT_SHA",
+                "SYSROOT_PREFIXTAG",
+            ],
+            "//conditions:default": [],
+        }) + ["SYSROOT_PREFIX" + tag for tag in tags],
     )
 
-    oci_push(name = name, remote_tags = name + "_write_tags", **kwargs)
+    expand_template(
+        name = name + "_tags",
+        out = name + "_tags.txt",
+        stamp_substitutions = {
+            "BUILD_USER": "{{BUILD_USER}}",
+            "COMMIT_SHA": "{{STABLE_BUILD_SCM_REVISION}}",
+            "TAG": "{{STABLE_BUILD_TAG}}",
+        },
+        substitutions = select({
+            "//bazel/cc_toolchains/sysroots:sysroot_type_debian12": {"SYSROOT_PREFIX": "debian12-"},
+            "//bazel/cc_toolchains/sysroots:sysroot_type_intelgpu": {"SYSROOT_PREFIX": "intelgpu-"},
+            "//bazel/cc_toolchains/sysroots:sysroot_type_jetson": {"SYSROOT_PREFIX": "jetson-"},
+            "//conditions:default": {"SYSROOT_PREFIX": ""},
+        }),
+        template = name + "_tags_tmpl",
+    )
+
+    oci_push(name = name, remote_tags = name + "_tags", **kwargs)
 
 def _collect_runfiles_impl(ctx):
     dest_to_src = dict()
