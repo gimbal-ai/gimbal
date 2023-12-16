@@ -172,7 +172,6 @@ void GEMMetricsReader::Scrape() {
   auto pids = proc_parser_.ListChildPIDsForPGID(pid_);
 
   pid_process_stats_.clear();
-  pid_network_stats_.clear();
   pid_process_status_.clear();
   pid_to_tgid_.clear();
 
@@ -213,16 +212,17 @@ void GEMMetricsReader::Scrape() {
                                {{"pid", pid}, {"state", "system"}, {"tgid", tgid}}, {});
     thread_gauge_->Record(process_stats.num_threads,
                           {{"pid", pid}, {"state", "system"}, {"tgid", tgid}}, {});
-
-    // Parse network stats.
-    std::vector<gml::system::ProcParser::NetworkStats> network_stats;
-    s = proc_parser_.ParseProcPIDNetDev(p, &network_stats);
-    if (!s.ok()) {
-      LOG(INFO) << "Failed to read proc network stats. Skipping...";
-      continue;
-    }
-    pid_network_stats_[p] = network_stats;
   }
+
+  // Parse network stats. This will get the network stats for the entire container, if running
+  // from within docker.
+  std::vector<gml::system::ProcParser::NetworkStats> network_stats;
+  auto s = proc_parser_.ParseProcNetDev(&network_stats);
+  if (!s.ok()) {
+    LOG(INFO) << "Failed to read proc network stats. Skipping...";
+    return;
+  }
+  pid_network_stats_ = network_stats;
 }
 
 template <typename T>
@@ -248,19 +248,9 @@ void GEMMetricsReader::GetObservableResultFromNetworkStats(
     opentelemetry::metrics::ObserverResult observer,
     const std::function<int64_t(const gml::system::ProcParser::NetworkStats& network_stats)>&
         get_stat) {
-  absl::base_internal::SpinLockHolder lock(&pid_stats_lock_);
-  for (auto& p : pid_network_stats_) {
-    auto it = pid_to_tgid_.find(p.first);
-    if (it == pid_to_tgid_.end()) {
-      LOG(INFO) << "Could not find TGID for PID";
-      return;
-    }
-
-    for (auto n : p.second) {
-      auto val = get_stat(n);
-      GetObservableResult<T>(observer)->Observe(
-          val, {{"interface", n.interface}, {"pid", p.first}, {"tgid", it->second}});
-    }
+  for (auto n : pid_network_stats_) {
+    auto val = get_stat(n);
+    GetObservableResult<T>(observer)->Observe(val, {{"interface", n.interface}});
   }
 }
 

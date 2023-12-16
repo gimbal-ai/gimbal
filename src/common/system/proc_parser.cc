@@ -159,6 +159,13 @@ Status ProcParser::ParseProcPIDNetDev(int32_t pid, std::vector<NetworkStats>* ou
   return this->ParseNetDev(fpath, out);
 }
 
+Status ProcParser::ParseProcHostNetDev(std::filesystem::path host_path,
+                                       std::vector<NetworkStats>* out) const {
+  auto fpath = std::move(host_path);
+  fpath /= ProcPath("net", "dev").relative_path();
+  return this->ParseNetDev(fpath, out);
+}
+
 Status ProcParser::ParseProcNetDev(std::vector<NetworkStats>* out) const {
   const auto fpath = ProcPath("net", "dev");
   return this->ParseNetDev(fpath, out);

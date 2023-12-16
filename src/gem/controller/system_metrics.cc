@@ -116,7 +116,8 @@ void SystemMetricsReader::Scrape() {
   mem_stats_free_bytes_->Record(system_stats.mem_free_bytes, {{"state", "system"}}, {});
 
   std::vector<gml::system::ProcParser::NetworkStats> network_stats;
-  auto s = proc_parser_.ParseProcNetDev(&network_stats);
+  auto s = proc_parser_.ParseProcHostNetDev(gml::system::Config::GetInstance().host_path(),
+                                            &network_stats);
   if (!s.ok()) {
     LOG(INFO) << "Failed to read proc network stats. Skipping...";
     return;
