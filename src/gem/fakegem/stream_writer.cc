@@ -33,17 +33,7 @@
 #include "src/controlplane/egw/egwpb/v1/egwpb.grpc.pb.h"
 #include "src/gem/controller/cached_blob_store.h"
 
-DEFINE_string(model_running_stream, gflags::StringFromEnv("GML_MODEL_RUNNING_STREAM", ""),
-              "The id:sha256sum:size of the model running stream. Ie "
-              "'6e6ee5ae-a795-4e88-9e92-0ddce60da93b:"
-              "9831bd13284280438f0988ef90fe9208be4b64519221b229c7aeb592f85d0ede:295755'");
-
 namespace gml::gem::fakegem {
-
-// The duration we sleep for if we can't figure out the next timestamp, such as
-// when we are at the end of the stream. 1/25th of a second. Arbitrarily decided to be
-// the same as the period between frames in a 25fps video.
-const int64_t kFallbackSleepDurationNs = 1000 * 1000 * 1000 / 25;
 
 template <typename T>
 void SetMetricTime(T* dp, uint64_t timestamp_offset_ns) {
@@ -98,45 +88,29 @@ internal::api::core::v1::EdgeOTelMetrics RewriteOTelTimestamps(
 
 Status StreamWriter::Run() {
   replay_timer_ = dispatcher_->CreateTimer([this]() {
-    if (data_ == nullptr) {
+    if (!data_.HasData()) {
       LOG(FATAL) << "Data not loaded";
     }
 
-    if (data_index_ == 0) {
-      LOG(INFO) << "Starting replay from the beginning";
-      uint64_t now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                            std::chrono::system_clock::now().time_since_epoch())
-                            .count();
-
-      timestamp_offset_ns_ = now_ns - data_->model_running_stream[0].timestamp_ns;
-    }
-
-    const auto& cur_msg = data_->model_running_stream[data_index_];
+    auto cur_msg = data_.Next();
     auto status = SendStreamData(cur_msg);
     if (!status.ok()) {
       LOG(ERROR) << "Failed to send message to bridge: " << status.msg();
     }
 
-    data_index_++;
-    data_index_ %= data_->model_running_stream.size();
-    int64_t sleep_time =
-        data_->model_running_stream[data_index_].timestamp_ns - cur_msg.timestamp_ns;
-    if (sleep_time < 0) {
-      sleep_time = kFallbackSleepDurationNs;
-    }
     if (!replay_timer_) {
       LOG(INFO) << "Run complete";
       return;
     }
     replay_timer_->EnableTimer(std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::nanoseconds(sleep_time)));
+        std::chrono::nanoseconds(cur_msg.sleep_for)));
   });
   // Run the download task in the dispatcher because the file downloader needs to
   // run in the event loop. If you call it outside, you can end up blocking the dispatcher from ever
   // starting, since StatusWriter::Run() is usually called before dispatcher_->Run().
-  download_data_task_ = dispatcher_->CreateAsyncTask(std::make_unique<DownloadDataTask>(
-      blob_store_, FLAGS_model_running_stream, [this](std::unique_ptr<AllStreamsData> data) {
-        data_ = std::move(data);
+  download_data_task_ = dispatcher_->CreateAsyncTask(
+      std::make_unique<DownloadDataTask>(blob_store_, [this](std::unique_ptr<ReplayData> data) {
+        data_.SetReplayData(std::move(data));
         dispatcher_->DeferredDelete(std::move(download_data_task_));
         replay_timer_->EnableTimer(std::chrono::milliseconds(0));
       }));
@@ -145,23 +119,26 @@ Status StreamWriter::Run() {
   return Status::OK();
 };
 
-Status StreamWriter::SendStreamData(const StreamData& data) {
-  if (!data.is_otel) {
-    return bridge_->SendMessageToBridge(data.topic, *data.msg);
+Status StreamWriter::SendStreamData(const StreamDataWithOffset& data_with_offset) {
+  // TODO(philkuz) rewrite the timestamps inside of Next() instead of here.
+  if (!data_with_offset.data.is_otel) {
+    return bridge_->SendMessageToBridge(data_with_offset.data.topic, *data_with_offset.data.msg);
   }
   // We need to rewrite the timestamps in the otel message.
-  auto* otel_msg = static_cast<internal::api::core::v1::EdgeOTelMetrics*>(data.msg.get());
+  auto* otel_msg =
+      static_cast<internal::api::core::v1::EdgeOTelMetrics*>(data_with_offset.data.msg.get());
   if (!otel_msg) {
     LOG(FATAL) << "Failed to cast message to otel message";
   }
-  return bridge_->SendMessageToBridge(data.topic,
-                                      RewriteOTelTimestamps(otel_msg, timestamp_offset_ns_));
+  return bridge_->SendMessageToBridge(
+      data_with_offset.data.topic, RewriteOTelTimestamps(otel_msg, data_with_offset.ts_offset_ns));
 }
 
 Status StreamWriter::StartModelStream(sole::uuid id) {
   if (!IsPipelineRunning()) {
     LOG(INFO) << "Starting pipeline << " << id.str();
     pipeline_id_ = id;
+    data_.SetDesiredStreamState(StreamState::kModelCompiling);
     return Status::OK();
   }
   if (IsPipelineRunning() && id != pipeline_id_) {

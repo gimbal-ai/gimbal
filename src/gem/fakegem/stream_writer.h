@@ -43,7 +43,7 @@ class StreamWriter {
   bool IsPipelineRunning() { return pipeline_id_.ab != 0 && pipeline_id_.cd != 0; }
 
   Status StartModelStream(sole::uuid id);
-  Status SendStreamData(const StreamData& data);
+  Status SendStreamData(const StreamDataWithOffset& data);
   bool IsVideoStreamRunning() { return video_running_.load(); }
 
   Status StartVideoStream();
@@ -54,17 +54,14 @@ class StreamWriter {
   controller::CachedBlobStore* blob_store_;
   event::Dispatcher* dispatcher_;
   event::RunnableAsyncTaskUPtr download_data_task_ = nullptr;
-  std::unique_ptr<AllStreamsData> data_ = nullptr;
+  DataReplayer data_;
 
   // video_running_ tracks whether the client requests the video stream.
   // Not currently in use, but in the future, we might want to drop the video stream
   // messages while we're in the model running state.
   // For now if you have many GEMs running this will cause a lot of load on the controlplane.
   std::atomic<bool> video_running_ = false;
-  size_t data_index_ = 0;
   event::TimerUPtr replay_timer_ = nullptr;
-  // This is the time_offset_ that we add to the saved times to match the current time.
-  uint64_t timestamp_offset_ns_ = 0;
 
   sole::uuid pipeline_id_ = {.ab = 0, .cd = 0};
 };

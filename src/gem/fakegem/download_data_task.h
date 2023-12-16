@@ -28,26 +28,83 @@ struct StreamData {
   int64_t timestamp_ns;
   bool is_otel;
 };
-struct AllStreamsData {
-  std::vector<StreamData> model_running_stream;
+struct StreamDataWithOffset {
+  const StreamData& data;
+  uint64_t ts_offset_ns;
+  uint64_t sleep_for;
+};
+
+enum class StreamState { kModelIdle, kModelCompiling, kModelRunning };
+
+/**
+ * Calculates the next state for the map stream when we complete reading the current stream.
+ *
+ * @param state The current state of the map stream.
+ * @return The next state of the map stream.
+ */
+constexpr StreamState NextMapState(StreamState state) {
+  switch (state) {
+    case StreamState::kModelIdle:
+      return StreamState::kModelIdle;
+    case StreamState::kModelCompiling:
+    case StreamState::kModelRunning:
+      return StreamState::kModelRunning;
+  }
+}
+
+struct ReplayData {
+  ReplayData(std::vector<StreamData> model_running_stream,
+             std::vector<StreamData> model_idle_stream,
+             std::vector<StreamData> model_compiling_stream)
+      : model_running_stream_(std::move(model_running_stream)),
+        model_idle_stream_(std::move(model_idle_stream)),
+        model_compiling_stream_(std::move(model_compiling_stream)) {}
+
+  std::vector<StreamData> model_running_stream_;
+  std::vector<StreamData> model_idle_stream_;
+  std::vector<StreamData> model_compiling_stream_;
+};
+
+class DataReplayer {
+ public:
+  ~DataReplayer() = default;
+  StreamDataWithOffset Next();
+
+  void SetReplayData(std::unique_ptr<ReplayData> replay_data) {
+    replay_data_ = std::move(replay_data);
+  }
+  bool HasData() { return replay_data_ != nullptr; }
+
+  void SetDesiredStreamState(StreamState state);
+  StreamState current_state() {
+    absl::ReaderMutexLock lock(&current_state_lock_);
+    return current_state_;
+  }
+  const std::vector<StreamData>& GetStateStream(StreamState stream_state);
+
+ private:
+  absl::Mutex current_state_lock_;
+  StreamState current_state_ ABSL_GUARDED_BY(current_state_lock_) = StreamState::kModelIdle;
+  size_t data_index_ ABSL_GUARDED_BY(current_state_lock_) = 0;
+  std::unique_ptr<ReplayData> replay_data_;
+
+  // This is the time_offset_ that we add to the saved times to match the current time.
+  uint64_t timestamp_offset_ns_ = 0;
 };
 
 class DownloadDataTask : public event::AsyncTask {
  public:
-  DownloadDataTask(controller::CachedBlobStore* blob_store, std::string stream_id,
-                   std::function<void(std::unique_ptr<AllStreamsData>)> download_complete)
-      : blob_store_(blob_store),
-        stream_id_(std::move(stream_id)),
-        download_complete_(std::move(download_complete)) {}
+  DownloadDataTask(controller::CachedBlobStore* blob_store,
+                   std::function<void(std::unique_ptr<ReplayData>)> download_complete)
+      : blob_store_(blob_store), download_complete_(std::move(download_complete)) {}
   void Work() override;
   void Done() override { download_complete_(std::move(data_)); }
 
  private:
   std::vector<StreamData> data;
-  std::unique_ptr<AllStreamsData> data_ = nullptr;
+  std::unique_ptr<ReplayData> data_ = nullptr;
   controller::CachedBlobStore* blob_store_;
-  std::string stream_id_;
-  std::function<void(std::unique_ptr<AllStreamsData>)> download_complete_;
+  std::function<void(std::unique_ptr<ReplayData>)> download_complete_;
 };
 
 }  // namespace gml::gem::fakegem
