@@ -25,7 +25,6 @@ pkg_list = [
   "cmake",
   "emacs",
   "graphviz",
-  "jq",
   "vim",
   "gpg",
   "pinentry-tty",

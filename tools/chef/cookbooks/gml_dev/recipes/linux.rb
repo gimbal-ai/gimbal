@@ -31,6 +31,7 @@ apt_pkg_list = [
   # Not the newest docker CE from official docker repository, but should suffice.
   "docker.io",
   "git",
+  "jq",
   "libncurses5",
   "lcov",
   "podman",
