@@ -40,6 +40,7 @@ packages:
 - name: zlib1g-dev
 - name: grep
 - name: sed
+- name: bash
 - name: libc-bin
 - name: libnvinfer-dev
   version: 8.5.2-1+cuda11.4

@@ -3272,6 +3272,20 @@ def deb_repos():
         deps = ["@ubuntu2004_gtk-update-icon-cache_aarch64//:all_files", "@ubuntu2004_hicolor-icon-theme_aarch64//:all_files", "@ubuntu2004_librsvg2-common_aarch64//:all_files", "@ubuntu2004_ubuntu-mono_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
+        name = "ubuntu2004_base-files_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
+        sha256 = "252b15b8240184a067146e8688598c55fd2f8d0b8f7243100bde063da25f4cf7",
+        urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/b/base-files/base-files_11ubuntu5_arm64.deb"],
+        deps = ["@ubuntu2004_gawk_aarch64//:all_files", "@ubuntu2004_libcrypt1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "ubuntu2004_bash_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
+        sha256 = "2817ffdb13011bbcba0adf0cd7661f575c5c3dd4c9fc136694bf00e46338e27c",
+        urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/b/bash/bash_5.0-6ubuntu1_arm64.deb"],
+        deps = ["@ubuntu2004_base-files_aarch64//:all_files", "@ubuntu2004_debianutils_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
         name = "ubuntu2004_binutils-aarch64-linux-gnu_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
         sha256 = "01170efae77aa1d3582fa5569a0e0813f08177e613e7041a1a515ac403fbe9aa",
@@ -3377,6 +3391,13 @@ def deb_repos():
         deps = ["@ubuntu2004_perl-base_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
+        name = "ubuntu2004_debianutils_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
+        sha256 = "b082366aa0885dce8ac1e59296e97fd4fef6aff1c9daa0b1a44fbade85340102",
+        urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/d/debianutils/debianutils_4.9.1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
         name = "ubuntu2004_dpkg-dev_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
         sha256 = "c5163213c0096f4e59e8f34018820b06e60c9994c52561aafb0c821dafe5e35f",
@@ -3417,6 +3438,13 @@ def deb_repos():
         sha256 = "982061e7f9b672dcb0af67d4567777cda6867e59dc01138e5fd281b021834090",
         urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/g/gcc-defaults/g++_9.3.0-1ubuntu2_arm64.deb"],
         deps = ["@ubuntu2004_cpp_aarch64//:all_files", "@ubuntu2004_g__-9_aarch64//:all_files", "@ubuntu2004_gcc-9_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "ubuntu2004_gawk_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
+        sha256 = "cb85be7e4710392316a0b33f7be12a8b6b4f57fe5f156c1d150b1ceb595a9739",
+        urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/g/gawk/gawk_5.0.1+dfsg-1_arm64.deb"],
+        deps = ["@ubuntu2004_libgmp10_aarch64//:all_files", "@ubuntu2004_libmpfr6_aarch64//:all_files", "@ubuntu2004_libreadline8_aarch64//:all_files", "@ubuntu2004_libsigsegv2_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "ubuntu2004_gcc-10-base_aarch64",
@@ -4553,6 +4581,13 @@ def deb_repos():
         deps = [],
     )
     deb_archive_w_pkg_providers(
+        name = "ubuntu2004_libreadline8_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
+        sha256 = "d017810a798b617f750519537726bdfcd5bca28d3c56598558322250d9012b45",
+        urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/r/readline/libreadline8_8.0-4_arm64.deb"],
+        deps = ["@ubuntu2004_readline-common_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
         name = "ubuntu2004_librest-0.7-0_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
         sha256 = "756ff8702af56cc0913d4db35d25f33e9030f3fa74a6f2a908ff589c36614bad",
@@ -4599,6 +4634,13 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
         sha256 = "e6e0a4fc9175f1dc8e3a90d0937975e25c834f20bb43999c411ca5a42a4268de",
         urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/libs/libsepol/libsepol1_3.0-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "ubuntu2004_libsigsegv2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
+        sha256 = "821e75274e0d453008809eca1f9d422984b5f9be0d032cc4fc989395d02a08d2",
+        urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/libs/libsigsegv/libsigsegv2_2.12-2_arm64.deb"],
         deps = [],
     )
     deb_archive_w_pkg_providers(
@@ -5062,6 +5104,13 @@ def deb_repos():
         sha256 = "141ce1673064c8d2f7ea55529bc0571e91e9c913ecca55934ecee894d2677e5e",
         urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/p/perl/perl_5.30.0-9build1_arm64.deb"],
         deps = ["@ubuntu2004_libperl5.30_aarch64//:all_files", "@ubuntu2004_perl-base_aarch64//:all_files", "@ubuntu2004_perl-modules-5.30_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "ubuntu2004_readline-common_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
+        sha256 = "38c3ac67e2dab4122a2f948f433c4cb5d5653d82b323f3ff30599797b7adee9f",
+        urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/r/readline/readline-common_8.0-4_all.deb"],
+        deps = [],
     )
     deb_archive_w_pkg_providers(
         name = "ubuntu2004_sed_aarch64",

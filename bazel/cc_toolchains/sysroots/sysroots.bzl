@@ -168,6 +168,7 @@ def _jetson_sysroots():
         path_prefix_filters = _DEFAULT_BUILD_PATH_PREFIXES + ["usr/src/jetson_multimedia_api"],
     )
     test_pkgs = [
+        "ubuntu2004_bash",
         "ubuntu2004_grep",
         "ubuntu2004_sed",
     ]
