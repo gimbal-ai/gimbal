@@ -31,6 +31,19 @@ index 3212bdefc7..225ef169f2 100644
  # Cross compiled function
  # TODO: The same for proposal, proposalONNX, topk
  cross_compiled_file(${TARGET_NAME}
+diff --git a/src/plugins/intel_cpu/src/transformations/transformation_pipeline.cpp b/src/plugins/intel_cpu/src/transformations/transformation_pipeline.cpp
+index ae0e82a1c3..2fc68715f3 100644
+--- a/src/plugins/intel_cpu/src/transformations/transformation_pipeline.cpp
++++ b/src/plugins/intel_cpu/src/transformations/transformation_pipeline.cpp
+@@ -424,7 +424,7 @@ void Transformations::PreLpt(const std::vector<ov::element::Type>& defaultPrecis
+ 
+         CPU_SET_CALLBACK_COMMON(manager,
+             [&defaultPrecisions](const_node_ptr &node) -> bool {
+-                return ngraph::pass::low_precision::NetworkHelper::areQuantizeAndDequantizeSupportedForMultiply(node, defaultPrecisions);
++                return !ngraph::pass::low_precision::NetworkHelper::areQuantizeAndDequantizeSupportedForMultiply(node, defaultPrecisions);
+             },
+             ov::pass::ConvertQuantizeDequantize);
+     }
 diff --git a/src/plugins/intel_cpu/thirdparty/CMakeLists.txt b/src/plugins/intel_cpu/thirdparty/CMakeLists.txt
 index 98935a0792..8f40c454ae 100644
 --- a/src/plugins/intel_cpu/thirdparty/CMakeLists.txt
@@ -52,6 +65,45 @@ index 98935a0792..8f40c454ae 100644
 +#ov_add_onednn()
 +include_directories(${DNNL_INCLUDE_DIRS})
 +link_directories(${DNNL_LIBRARY_DIRS})
+diff --git a/src/plugins/intel_gpu/include/intel_gpu/runtime/debug_configuration.hpp b/src/plugins/intel_gpu/include/intel_gpu/runtime/debug_configuration.hpp
+index febf41a557..3ba6fb1677 100644
+--- a/src/plugins/intel_gpu/include/intel_gpu/runtime/debug_configuration.hpp
++++ b/src/plugins/intel_gpu/include/intel_gpu/runtime/debug_configuration.hpp
+@@ -4,6 +4,7 @@
+ 
+ #pragma once
+ #include <string>
++#include <cstring>
+ #include <mutex>
+ #include <vector>
+ #include <set>
+diff --git a/src/plugins/intel_gpu/src/plugin/transformations_pipeline.cpp b/src/plugins/intel_gpu/src/plugin/transformations_pipeline.cpp
+index d091b0c348..22edf2da90 100644
+--- a/src/plugins/intel_gpu/src/plugin/transformations_pipeline.cpp
++++ b/src/plugins/intel_gpu/src/plugin/transformations_pipeline.cpp
+@@ -201,11 +201,11 @@ void TransformationsPipeline::apply(std::shared_ptr<ov::Model> func) {
+         manager.register_pass<ov::pass::MVN6Decomposition>();
+         manager.register_pass<ov::pass::BroadcastTransition>();
+ 
++        manager.register_pass<ov::pass::CommonOptimizations>();
++
+         //  call ConvertPrecision with keep_precision_sensitive_in_fp32 = true
+         manager.register_pass<ov::pass::ConvertPrecision>(fp_convert_precision_map, empty_fuse_map, true);
+ 
+-        manager.register_pass<ov::pass::CommonOptimizations>();
+-
+         manager.register_pass<ov::pass::WrapInterpolateIntoTransposes>();
+         manager.register_pass<ov::pass::TransposeSinking>();
+ 
+@@ -451,7 +451,7 @@ void TransformationsPipeline::apply(std::shared_ptr<ov::Model> func) {
+ 
+         if (enableInt8) {
+             pass_config->set_callback<ov::pass::ConvertQuantizeDequantize>([&defaultPrecisions](const_node_ptr &node) -> bool {
+-                return ngraph::pass::low_precision::NetworkHelper::areQuantizeAndDequantizeSupportedForMultiply(node, defaultPrecisions);
++                return !ngraph::pass::low_precision::NetworkHelper::areQuantizeAndDequantizeSupportedForMultiply(node, defaultPrecisions);
+             });
+         }
+ 
 diff --git a/thirdparty/dependencies.cmake b/thirdparty/dependencies.cmake
 index 43e0ed671a..3133c281af 100644
 --- a/thirdparty/dependencies.cmake

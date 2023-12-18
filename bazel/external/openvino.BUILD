@@ -72,6 +72,9 @@ cmake(
         "ENABLE_PYTHON": "OFF",
         "ENABLE_WHEEL": "OFF",
         "ENABLE_STRICT_DEPENDENCIES": "OFF",
+        # Enable this to enable dumping graphs from the GPU plugin.
+        "ENABLE_DEBUG_CAPS": "OFF",
+        "ENABLE_CPU_DEBUG_CAPS": "OFF",
 
         # Dependencies
         "ENABLE_SYSTEM_PUGIXML": "ON",
