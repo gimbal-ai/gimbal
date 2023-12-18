@@ -74,6 +74,7 @@ gml_cc_library(
         "@com_github_google_mediapipe//mediapipe/calculators/core:flow_limiter_calculator",
         "@com_github_google_mediapipe//mediapipe/calculators/util:annotation_overlay_calculator",
         "@com_github_google_mediapipe//mediapipe/calculators/util:detections_to_render_data_calculator",
+        "@com_github_google_mediapipe//mediapipe/calculators/util:packet_latency_calculator",
         "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
         "@com_github_okdshin_picosha//:picosha",
         "@com_github_oneapi_oneTBB//:tbb",
