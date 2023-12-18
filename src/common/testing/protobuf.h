@@ -135,4 +135,9 @@ MATCHER(EqProto, "") {
   return google::protobuf::util::MessageDifferencer::Equals(std::get<0>(arg), std::get<1>(arg));
 }
 
+MATCHER(ApproxEqProto, "") {
+  return google::protobuf::util::MessageDifferencer::ApproximatelyEquals(std::get<0>(arg),
+                                                                         std::get<1>(arg));
+}
+
 }  // namespace gml::testing::proto

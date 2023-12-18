@@ -34,6 +34,10 @@ message BoundingBoxToDetectionsOptions {
     // Bounding box is specified by pixel coordinates to the center of the box, plus its width and
     // height in pixels. i.e. (xc, yc, w, h)
     COORDINATE_FORMAT_CENTER_ANCHORED = 2;
+    // Bounding box is specified by normalized coordinates of two diagonally opposite corners (with
+    // x coordinate first).
+    // i.e. (x1, y1, x2, y2).
+    COORDINATE_FORMAT_NORMALIZED_DIAG_CORNERS_XY = 3;
   };
 
   CoordinateFormat coordinate_format = 2;

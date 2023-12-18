@@ -139,7 +139,8 @@ TEST_P(BoundingBoxTensorsToDetectionsTest, ConvertsCorrectly) {
       .ForInput("ORIG_IMAGE_SHAPE", std::move(orig_image_shape), 0)
       .Run()
       .ExpectOutput<std::vector<Detection>>(
-          "", 0, 0, ::testing::Pointwise(::gml::testing::proto::EqProto(), expected_detections));
+          "", 0, 0,
+          ::testing::Pointwise(::gml::testing::proto::ApproxEqProto(), expected_detections));
 }
 
 INSTANTIATE_TEST_SUITE_P(
@@ -264,6 +265,48 @@ INSTANTIATE_TEST_SUITE_P(
                 {
                     {0.8, 0.0, 0.1, 0.025},
                     {0.1, 0.025, 0.2, 0.05},
+                },
+            .expected_labels =
+                {
+                    "person",
+                    "cat",
+                },
+            .expected_scores =
+                {
+                    0.5,
+                    0.9,
+                },
+
+        },
+        BoundingBoxTestCase{
+            .coordinate_format = optionspb::BoundingBoxToDetectionsOptions::
+                COORDINATE_FORMAT_NORMALIZED_DIAG_CORNERS_XY,
+            .width = 100,
+            .height = 400,
+            .candidates =
+                {
+                    {0.1, 0.025, 0.2, 0.05},
+                    {0, 0.125, 1, 0.25},
+                    {0.5, 0.125, 0.6, 0.25},
+                    {0.5, 0, 0.6, 0.025},
+                    {0, 0, 0.1, 0.125},
+                },
+            .scores =
+                {
+                    {0.1, 0.1, 0.1, 0.5, 0.1},
+                    {0.9, 0.1, 0.0, 0.2, 0.1},
+                    {0.0, 0.0, 0.8, 0.01, 0.1},
+                },
+            .indices =
+                {
+                    {0, 0, 3},
+                    {0, 1, 0},
+                    {0, -1, 0},
+                },
+            .expected_rects =
+                {
+                    {0.55, 0.0125, 0.1, 0.025},
+                    {0.15, 0.0375, 0.1, 0.025},
                 },
             .expected_labels =
                 {

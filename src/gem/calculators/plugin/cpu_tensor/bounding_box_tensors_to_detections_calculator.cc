@@ -74,6 +74,19 @@ void ConvertCenterAnchoredToNormalizedCetner(const float* coords, const float* o
   rect->set_height(h / orig_h);
 }
 
+void ConvertNormalizedDiagCornerXYToNormalizedCenter(const float* coords, const float*,
+                                                     NormalizedCenterRect* rect) {
+  auto x1 = coords[0];
+  auto y1 = coords[1];
+  auto x2 = coords[2];
+  auto y2 = coords[3];
+
+  rect->set_xc((x1 + x2) / 2);
+  rect->set_yc((y1 + y2) / 2);
+  rect->set_width(x2 - x1);
+  rect->set_height(y2 - y1);
+}
+
 }  // namespace internal
 
 absl::Status BoundingBoxTensorsToDetections::GetContract(mediapipe::CalculatorContract* cc) {
@@ -93,6 +106,9 @@ absl::Status BoundingBoxTensorsToDetections::Open(mediapipe::CalculatorContext* 
       break;
     case BoundingBoxToDetectionsOptions::COORDINATE_FORMAT_CENTER_ANCHORED:
       bounding_box_converter_ = &internal::ConvertCenterAnchoredToNormalizedCetner;
+      break;
+    case BoundingBoxToDetectionsOptions::COORDINATE_FORMAT_NORMALIZED_DIAG_CORNERS_XY:
+      bounding_box_converter_ = &internal::ConvertNormalizedDiagCornerXYToNormalizedCenter;
       break;
     default:
       return AbslStatusAdapter(error::InvalidArgument("Unknown bounding box CoordinateFormat"));

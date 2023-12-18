@@ -138,7 +138,7 @@ node {
       index_to_label: "teddy bear"
       index_to_label: "hair drier"
       index_to_label: "toothbrush"
-      coordinate_format: COORDINATE_FORMAT_DIAG_CORNERS_YX
+      coordinate_format: COORDINATE_FORMAT_NORMALIZED_DIAG_CORNERS_XY
     }
   }
 }
