@@ -165,7 +165,7 @@ done
 
 cmdline_opts+=(--deploy_key="$DEPLOY_KEY")
 
-DEFAULT_IMAGE_REPO="us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/gem_image"
+DEFAULT_IMAGE_REPO="us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/gem_image"
 DEFAULT_CONTROLPLANE_ADDR="dev.app.gimletlabs.dev"
 USE_CONTROLPLANE_ADDR=${GML_CONTROLPLANE_ADDR:-${DEFAULT_CONTROLPLANE_ADDR}}
 cmdline_opts+=(--controlplane_addr="$USE_CONTROLPLANE_ADDR:443")

@@ -61,5 +61,5 @@ gml_oci_push(
     name = "push_fakegem_image",
     image = ":fakegem_image",
     remote_tags = ["fake-latest"],
-    repository = "us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/fakegem_image",
+    repository = "us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/fakegem_image",
 )
