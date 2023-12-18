@@ -126,12 +126,12 @@ def _gml_oci_push(name, **kwargs):
         name = name + "_tags",
         out = name + "_tags.txt",
         stamp_substitutions = {
-            "BUILD_USER": "{{BUILD_USER}}",
+            "BUILD_USER": "{{STABLE_BUILT_BY}}",
             "COMMIT_SHA": "{{STABLE_BUILD_SCM_REVISION}}",
             "TAG": "{{STABLE_BUILD_TAG}}",
         },
         substitutions = select({
-            "//bazel/cc_toolchains/sysroots:sysroot_type_debian12": {"SYSROOT_PREFIX": "debian12-"},
+            "//bazel/cc_toolchains/sysroots:sysroot_type_debian12": {"SYSROOT_PREFIX": ""},
             "//bazel/cc_toolchains/sysroots:sysroot_type_intelgpu": {"SYSROOT_PREFIX": "intelgpu-"},
             "//bazel/cc_toolchains/sysroots:sysroot_type_jetson": {"SYSROOT_PREFIX": "jetson-"},
             "//conditions:default": {"SYSROOT_PREFIX": ""},
