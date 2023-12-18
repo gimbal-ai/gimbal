@@ -125,22 +125,45 @@ gml::StatusOr<std::vector<T>> ReadMessagesFromFile(const std::filesystem::path& 
   return chunks;
 }
 
+class MessageStats {
+ public:
+  void AddInstance(const std::string& type_url) { counts[type_url]++; }
+  /**
+   * Returns the count of each type url in a string, sorted alphabetically.
+   */
+  std::string ToString() const {
+    std::vector<std::string> out;
+    for (const auto& [type_url, count] : counts) {
+      out.push_back(absl::StrCat(type_url, ": ", count));
+    }
+    return absl::StrJoin(out, "\n");
+  }
+
+ private:
+  absl::flat_hash_map<std::string, int64_t> counts;
+};
+
 template <typename T>
-std::unique_ptr<google::protobuf::Message> TryUnpack(const google::protobuf::Any& any) {
+std::unique_ptr<google::protobuf::Message> TryUnpack(const google::protobuf::Any& any,
+                                                     MessageStats* stats) {
   if (any.Is<T>()) {
     auto ptr = std::make_unique<T>();
+    stats->AddInstance(ptr->GetTypeName());
     any.UnpackTo(ptr.get());
     return ptr;
   }
   return nullptr;
 }
 
-std::unique_ptr<google::protobuf::Message> UnpackAny(const google::protobuf::Any& any) {
-  if (auto ptr = TryUnpack<internal::api::core::v1::ImageOverlayChunk>(any)) return ptr;
-  if (auto ptr = TryUnpack<internal::api::core::v1::H264Chunk>(any)) return ptr;
-  if (auto ptr = TryUnpack<internal::api::core::v1::DeviceCapabilities>(any)) return ptr;
-  if (auto ptr = TryUnpack<internal::api::core::v1::ExecutionGraphStatusUpdate>(any)) return ptr;
-  if (auto ptr = TryUnpack<internal::api::core::v1::EdgeOTelMetrics>(any)) return ptr;
+std::unique_ptr<google::protobuf::Message> UnpackAny(const google::protobuf::Any& any,
+                                                     MessageStats* stats) {
+  if (auto ptr = TryUnpack<internal::api::core::v1::ImageOverlayChunk>(any, stats)) return ptr;
+  if (auto ptr = TryUnpack<internal::api::core::v1::H264Chunk>(any, stats)) return ptr;
+  if (auto ptr = TryUnpack<internal::api::core::v1::DeviceCapabilities>(any, stats)) return ptr;
+  if (auto ptr = TryUnpack<internal::api::core::v1::ExecutionGraphStatusUpdate>(any, stats)) {
+    return ptr;
+  }
+  if (auto ptr = TryUnpack<internal::api::core::v1::EdgeOTelMetrics>(any, stats)) return ptr;
   LOG(FATAL) << "Unknown type: " << any.type_url();
   return nullptr;
 }
@@ -148,8 +171,9 @@ std::unique_ptr<google::protobuf::Message> UnpackAny(const google::protobuf::Any
 std::vector<StreamData> ConvertEdgeCPMessageToStreamData(const std::vector<EdgeCPMessage>& msgs) {
   std::vector<StreamData> data;
   data.reserve(msgs.size());
+  MessageStats stats;
   for (const auto& msg : msgs) {
-    auto any = UnpackAny(msg.msg());
+    auto any = UnpackAny(msg.msg(), &stats);
     data.push_back({
         .topic = msg.metadata().topic(),
         .msg = std::move(any),
@@ -158,6 +182,7 @@ std::vector<StreamData> ConvertEdgeCPMessageToStreamData(const std::vector<EdgeC
         .is_otel = msg.msg().Is<internal::api::core::v1::EdgeOTelMetrics>(),
     });
   }
+  LOG(INFO) << "Message stats: \n" << stats.ToString();
   return data;
 }
 
@@ -185,10 +210,13 @@ StatusOr<std::vector<StreamData>> LoadRecordedStream(controller::CachedBlobStore
 }
 
 void DownloadDataTask::Work() {
+  LOG(INFO) << "Downloading model running stream";
   GML_ASSIGN_OR_EXIT(auto model_running_stream,
                      LoadRecordedStream(blob_store_, FLAGS_model_running_stream));
+  LOG(INFO) << "Downloading model idle stream";
   GML_ASSIGN_OR_EXIT(auto model_idle_stream,
                      LoadRecordedStream(blob_store_, FLAGS_model_idle_stream));
+  LOG(INFO) << "Downloading model compiling stream";
   GML_ASSIGN_OR_EXIT(auto model_compiling_stream,
                      LoadRecordedStream(blob_store_, FLAGS_model_compiling_stream));
   data_ =
