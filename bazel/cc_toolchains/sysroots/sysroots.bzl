@@ -52,6 +52,7 @@ _DEBIAN12_BUILD_PKGS = [
     "debian12_linux-libc-dev",
     "debian12_mesa-common-dev",
     "debian12_zlib1g-dev",
+    "debian12_libva-dev",
 ]
 
 _DEBIAN12_TEST_PKGS = [
@@ -135,6 +136,7 @@ def _jetson_sysroots():
         "ubuntu2004_linux-libc-dev",
         "ubuntu2004_mesa-common-dev",
         "ubuntu2004_zlib1g-dev",
+        "ubuntu2004_libva-dev",
         "jetson_libnvinfer-dev",
         "jetson_libnvinfer-plugin8",
         "jetson_libnvonnxparsers-dev",

@@ -31,16 +31,32 @@
 namespace gml::gem::testing {
 
 constexpr std::string_view kTestPNGPath = "src/gem/testing/core/testdata/test.jpg";
+constexpr std::string_view kTestBarcodeJPGPath = "src/gem/testing/core/testdata/barcode.jpg";
 
-cv::Mat LoadTestImageAsOpencvMat() {
-  auto test_path = ::gml::bazel::RunfilePath(std::filesystem::path(kTestPNGPath));
+namespace {
+std::filesystem::path GetPathFromType(TestImageType type) {
+  std::filesystem::path rel_path;
+  switch (type) {
+    case TestImageType::WITH_BARCODE:
+      rel_path = kTestBarcodeJPGPath;
+      break;
+    default:
+      rel_path = kTestPNGPath;
+      break;
+  }
+  return bazel::RunfilePath(rel_path);
+}
+}  // namespace
+
+cv::Mat LoadTestImageAsOpencvMat(TestImageType type) {
+  auto test_path = GetPathFromType(type);
   auto mat = cv::imread(test_path.string());
   CHECK(!mat.empty());
   return mat;
 }
 
-void LoadTestImageAsImageFrame(mediapipe::ImageFrame* image_frame) {
-  auto mat = LoadTestImageAsOpencvMat();
+void LoadTestImageAsImageFrame(mediapipe::ImageFrame* image_frame, TestImageType type) {
+  auto mat = LoadTestImageAsOpencvMat(type);
   image_frame->Reset(mediapipe::ImageFormat::FORMAT_SRGB, mat.cols, mat.rows,
                      mediapipe::ImageFrame::kDefaultAlignmentBoundary);
   CHECK(mat.type() == CV_8UC3);
@@ -48,9 +64,9 @@ void LoadTestImageAsImageFrame(mediapipe::ImageFrame* image_frame) {
   mat.copyTo(mediapipe::formats::MatView(image_frame));
 }
 
-void LoadTestImageAsYUVImage(mediapipe::YUVImage* yuv_image) {
+void LoadTestImageAsYUVImage(mediapipe::YUVImage* yuv_image, TestImageType type) {
   mediapipe::ImageFrame image_frame;
-  LoadTestImageAsImageFrame(&image_frame);
+  LoadTestImageAsImageFrame(&image_frame, type);
   mediapipe::image_frame_util::ImageFrameToYUVImage(image_frame, yuv_image);
 }
 

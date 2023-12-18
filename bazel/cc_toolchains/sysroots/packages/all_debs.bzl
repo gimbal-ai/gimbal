@@ -720,14 +720,14 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "24692e933b98b2b8b80d87c45728efa2bc7176120ce9efcb8793407e508b5a32",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-amdgpu1_2.4.114-1+b1_arm64.deb"],
-        deps = [],
+        deps = ["@debian12_libdrm2_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libdrm-amdgpu1_x86_64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "b75a71e96f1faac0f131ac657e09efcbe8968eef62cc34b8abfcff2ff9f0cccd",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-amdgpu1_2.4.114-1+b1_amd64.deb"],
-        deps = [],
+        deps = ["@debian12_libdrm2_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libdrm-common_aarch64",
@@ -762,56 +762,56 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "be1e16ac0ce067dc4e8b5b6cb1fdafc838eb66bf6e13dbdb0a791df14d8ba4ac",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-etnaviv1_2.4.114-1+b1_arm64.deb"],
-        deps = [],
+        deps = ["@debian12_libdrm2_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libdrm-freedreno1_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "d2e90c205bd4e49ead398d8dbdf9232d651aa16961ad2ded9bc14e0d3e6796b0",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-freedreno1_2.4.114-1+b1_arm64.deb"],
-        deps = [],
+        deps = ["@debian12_libdrm2_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libdrm-intel1_x86_64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "b0e39318d14c07f4d85668b6da7f66a1341addf87a47d785c34d5a8b393f544c",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-intel1_2.4.114-1+b1_amd64.deb"],
-        deps = ["@debian12_libpciaccess0_x86_64//:all_files"],
+        deps = ["@debian12_libdrm2_x86_64//:all_files", "@debian12_libpciaccess0_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libdrm-nouveau2_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "2acf0db609e8569dd89eea5f3e6f27968de50474d31213665901ad1c6d1133de",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-nouveau2_2.4.114-1+b1_arm64.deb"],
-        deps = [],
+        deps = ["@debian12_libdrm2_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libdrm-nouveau2_x86_64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "ba59bb9ec6e1baf59fc4d4eb095a524e40d045af2413dad9d28df517005388b6",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-nouveau2_2.4.114-1+b1_amd64.deb"],
-        deps = [],
+        deps = ["@debian12_libdrm2_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libdrm-radeon1_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "e53c2b4be53b4a8e6413887525c9172bdc95ed3a140a52ce23d6e1a68789aaa0",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-radeon1_2.4.114-1+b1_arm64.deb"],
-        deps = [],
+        deps = ["@debian12_libdrm2_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libdrm-radeon1_x86_64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "2da3a9233187f995ad5a3e6db3d37252ea7209f0ca9605484d03478ebcc15feb",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-radeon1_2.4.114-1+b1_amd64.deb"],
-        deps = [],
+        deps = ["@debian12_libdrm2_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libdrm-tegra0_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "c47ae757624a1740e5160683a31751c77725d8c93f2e626308a9f0380000f0d3",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-tegra0_2.4.114-1+b1_arm64.deb"],
-        deps = [],
+        deps = ["@debian12_libdrm2_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libdrm2_aarch64",
@@ -954,6 +954,20 @@ def deb_repos():
         deps = [],
     )
     deb_archive_w_pkg_providers(
+        name = "debian12_libffi-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "8ff6335f76752ef8659762435d0d88129ef0090a587520853238809bd10ef392",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libf/libffi/libffi-dev_3.4.4-1_arm64.deb"],
+        deps = ["@debian12_libffi8_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libffi-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "89fb890aee5148f4d308a46cd8980a54fd44135f068f05b38a6ad06800bf6df3",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libf/libffi/libffi-dev_3.4.4-1_amd64.deb"],
+        deps = ["@debian12_libffi8_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
         name = "debian12_libffi8_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "80b5c36177dc0e29d531c7eddbed3cc7355cb490e49f8cfa5959572d161f27b3",
@@ -972,14 +986,14 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "2d7e1ab5eddf439954881d9f53d8c99ff7508754ce49de5250fab79808a85f63",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libf/libfile-find-rule-perl/libfile-find-rule-perl_0.34-3_all.deb"],
-        deps = ["@debian12_libnumber-compare-perl_aarch64//:all_files", "@debian12_libtext-glob-perl_aarch64//:all_files"],
+        deps = ["@debian12_libnumber-compare-perl_aarch64//:all_files", "@debian12_libtext-glob-perl_aarch64//:all_files", "@debian12_perl_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libfile-find-rule-perl_x86_64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "2d7e1ab5eddf439954881d9f53d8c99ff7508754ce49de5250fab79808a85f63",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libf/libfile-find-rule-perl/libfile-find-rule-perl_0.34-3_all.deb"],
-        deps = ["@debian12_libnumber-compare-perl_x86_64//:all_files", "@debian12_libtext-glob-perl_x86_64//:all_files"],
+        deps = ["@debian12_libnumber-compare-perl_x86_64//:all_files", "@debian12_libtext-glob-perl_x86_64//:all_files", "@debian12_perl_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libgbm1_aarch64",
@@ -1084,14 +1098,14 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "44f6b12346dc862d1e2031d9b8eab50823d86b89aa80570ba1e8a38a7702b174",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libgl1-mesa-dri_22.3.6-1+deb12u1_arm64.deb"],
-        deps = ["@debian12_libdrm-amdgpu1_aarch64//:all_files", "@debian12_libdrm-nouveau2_aarch64//:all_files", "@debian12_libdrm-radeon1_aarch64//:all_files", "@debian12_libdrm2_aarch64//:all_files", "@debian12_libgcc-s1_aarch64//:all_files", "@debian12_libllvm15_aarch64//:all_files", "@debian12_libsensors5_aarch64//:all_files", "@debian12_libzstd1_aarch64//:all_files"],
+        deps = ["@debian12_libdrm-amdgpu1_aarch64//:all_files", "@debian12_libdrm-nouveau2_aarch64//:all_files", "@debian12_libdrm-radeon1_aarch64//:all_files", "@debian12_libdrm2_aarch64//:all_files", "@debian12_libexpat1_aarch64//:all_files", "@debian12_libgcc-s1_aarch64//:all_files", "@debian12_libllvm15_aarch64//:all_files", "@debian12_libsensors5_aarch64//:all_files", "@debian12_libxcb-dri3-0_aarch64//:all_files", "@debian12_libzstd1_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libgl1-mesa-dri_x86_64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "2c3fbfb89a8eadf6a82836b2443bc4d9578cb83847daf37cf6ab6074daf4fcda",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libgl1-mesa-dri_22.3.6-1+deb12u1_amd64.deb"],
-        deps = ["@debian12_libdrm-amdgpu1_x86_64//:all_files", "@debian12_libdrm-intel1_x86_64//:all_files", "@debian12_libdrm-nouveau2_x86_64//:all_files", "@debian12_libdrm-radeon1_x86_64//:all_files", "@debian12_libdrm2_x86_64//:all_files", "@debian12_libgcc-s1_x86_64//:all_files", "@debian12_libllvm15_x86_64//:all_files", "@debian12_libsensors5_x86_64//:all_files", "@debian12_libzstd1_x86_64//:all_files"],
+        deps = ["@debian12_libdrm-amdgpu1_x86_64//:all_files", "@debian12_libdrm-intel1_x86_64//:all_files", "@debian12_libdrm-nouveau2_x86_64//:all_files", "@debian12_libdrm-radeon1_x86_64//:all_files", "@debian12_libdrm2_x86_64//:all_files", "@debian12_libexpat1_x86_64//:all_files", "@debian12_libgcc-s1_x86_64//:all_files", "@debian12_libllvm15_x86_64//:all_files", "@debian12_libsensors5_x86_64//:all_files", "@debian12_libxcb-dri3-0_x86_64//:all_files", "@debian12_libzstd1_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libgl1_aarch64",
@@ -1280,14 +1294,14 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "523f9b71f75e48ae605d8ef298a4b03ade26ade9a808a85329a3bd82a54b9b0d",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libglx0_1.6.0-1_arm64.deb"],
-        deps = ["@debian12_libglvnd0_aarch64//:all_files", "@debian12_libglx-mesa0_aarch64//:all_files", "@debian12_libx11-6_aarch64//:all_files"],
+        deps = ["@debian12_libglx-mesa0_aarch64//:all_files", "@debian12_libx11-6_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libglx0_x86_64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "95f568df73dedf43ae66834a75502112e0d4f3ad7124f3dbfa790b739383b896",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libglx0_1.6.0-1_amd64.deb"],
-        deps = ["@debian12_libglvnd0_x86_64//:all_files", "@debian12_libglx-mesa0_x86_64//:all_files", "@debian12_libx11-6_x86_64//:all_files"],
+        deps = ["@debian12_libglx-mesa0_x86_64//:all_files", "@debian12_libx11-6_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libgmp10_aarch64",
@@ -2046,6 +2060,20 @@ def deb_repos():
         deps = [],
     )
     deb_archive_w_pkg_providers(
+        name = "debian12_libset-scalar-perl_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "932ba032b5188db0fed59c23f52bb977f7df5061ff543e7e6bdf303f1559ecaf",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libs/libset-scalar-perl/libset-scalar-perl_1.29-3_all.deb"],
+        deps = ["@debian12_perl_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libset-scalar-perl_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "932ba032b5188db0fed59c23f52bb977f7df5061ff543e7e6bdf303f1559ecaf",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libs/libset-scalar-perl/libset-scalar-perl_1.29-3_all.deb"],
+        deps = ["@debian12_perl_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
         name = "debian12_libsigsegv2_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "455bace82a319cda15e6b1f1bdc0c1ae6e0749bff9a93e09055bc3fd168a2df5",
@@ -2270,6 +2298,104 @@ def deb_repos():
         deps = ["@debian12_liblzma5_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
+        name = "debian12_libva-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "b19b4b761a3291da54d7687287359a7147964246ade283939fc8a6e76fb6dc79",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-dev_2.17.0-1_arm64.deb"],
+        deps = ["@debian12_libset-scalar-perl_aarch64//:all_files", "@debian12_libva-drm2_aarch64//:all_files", "@debian12_libva-glx2_aarch64//:all_files", "@debian12_libva-wayland2_aarch64//:all_files", "@debian12_libva-x11-2_aarch64//:all_files", "@debian12_libva2_aarch64//:all_files", "@debian12_libwayland-dev_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libva-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ea3ecdc7f01eb4519701ad17616dbd3e1afb28745d61f11f5af4d26bf6f7db4d",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-dev_2.17.0-1_amd64.deb"],
+        deps = ["@debian12_libset-scalar-perl_x86_64//:all_files", "@debian12_libva-drm2_x86_64//:all_files", "@debian12_libva-glx2_x86_64//:all_files", "@debian12_libva-wayland2_x86_64//:all_files", "@debian12_libva-x11-2_x86_64//:all_files", "@debian12_libva2_x86_64//:all_files", "@debian12_libwayland-dev_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libva-drm2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "dd1c3981a81171f3886f14b56e2c13cb879111109e5b1e3e786c26641ab2cc2f",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-drm2_2.17.0-1_arm64.deb"],
+        deps = ["@debian12_libdrm2_aarch64//:all_files", "@debian12_libva2_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libva-drm2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "dc0a0cadbdc001df3d89855d8054aacb332a731f98c7741ce580492b0e01e605",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-drm2_2.17.0-1_amd64.deb"],
+        deps = ["@debian12_libdrm2_x86_64//:all_files", "@debian12_libva2_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libva-glx2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "9f93326415f364e23241030f2bbe6c8a4dc7665cd53f4e06d6b188eb2627fdd6",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-glx2_2.17.0-1_arm64.deb"],
+        deps = ["@debian12_libgl1_aarch64//:all_files", "@debian12_libva-x11-2_aarch64//:all_files", "@debian12_libva2_aarch64//:all_files", "@debian12_libx11-6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libva-glx2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "881f1ef2343c975d06fd1ca7a99fe46790efe263804bb343a9bf16fed0361e4c",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-glx2_2.17.0-1_amd64.deb"],
+        deps = ["@debian12_libgl1_x86_64//:all_files", "@debian12_libva-x11-2_x86_64//:all_files", "@debian12_libva2_x86_64//:all_files", "@debian12_libx11-6_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libva-wayland2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f314ae3f7bc4c58f8012cf0e9d6f5cfa4948a683e0e3243ff18f9e289cb99b72",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-wayland2_2.17.0-1_arm64.deb"],
+        deps = ["@debian12_libdrm2_aarch64//:all_files", "@debian12_libva2_aarch64//:all_files", "@debian12_libwayland-client0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libva-wayland2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d3334ddbfac5ac006bc7d8fd4f77a3b80a73181895205433b93b537e704d2ff1",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-wayland2_2.17.0-1_amd64.deb"],
+        deps = ["@debian12_libdrm2_x86_64//:all_files", "@debian12_libva2_x86_64//:all_files", "@debian12_libwayland-client0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libva-x11-2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "326f1a6d764adae4ccdc606913ba60b3aecc62788c509444751e7fea75a13584",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-x11-2_2.17.0-1_arm64.deb"],
+        deps = ["@debian12_libdrm2_aarch64//:all_files", "@debian12_libva2_aarch64//:all_files", "@debian12_libx11-6_aarch64//:all_files", "@debian12_libx11-xcb1_aarch64//:all_files", "@debian12_libxcb-dri3-0_aarch64//:all_files", "@debian12_libxcb1_aarch64//:all_files", "@debian12_libxext6_aarch64//:all_files", "@debian12_libxfixes3_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libva-x11-2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "95db1ecd8c2d1c3f99a750f1b2d9ba1959b7cd9cbd7eabfc1b8a86a095b379a6",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-x11-2_2.17.0-1_amd64.deb"],
+        deps = ["@debian12_libdrm2_x86_64//:all_files", "@debian12_libva2_x86_64//:all_files", "@debian12_libx11-6_x86_64//:all_files", "@debian12_libx11-xcb1_x86_64//:all_files", "@debian12_libxcb-dri3-0_x86_64//:all_files", "@debian12_libxcb1_x86_64//:all_files", "@debian12_libxext6_x86_64//:all_files", "@debian12_libxfixes3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libva2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "b737136a783067f8f202115ed820d955aea16b95a6f06c406cc4305f99d20d3e",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva2_2.17.0-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libva2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e6acf0c4071c01df7c35d18a97768047294dc43d252caae9ccddc1e507456695",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva2_2.17.0-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libwayland-bin_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "02e9361617b43b130ff032873a910258884160c169e89a1ca45d34d1150a2615",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-bin_1.21.0-1_arm64.deb"],
+        deps = ["@debian12_libexpat1_aarch64//:all_files", "@debian12_libxml2_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libwayland-bin_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "c07fcba0849b8ca4ed744bbb820fa08a82213f8a46261024005a4d5bbc47afc1",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-bin_1.21.0-1_amd64.deb"],
+        deps = ["@debian12_libexpat1_x86_64//:all_files", "@debian12_libxml2_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
         name = "debian12_libwayland-client0_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "ae390cc04c2eb1de90b9a6373505b22c730ada5e72daa50c507b7f99c12faf06",
@@ -2282,6 +2408,48 @@ def deb_repos():
         sha256 = "1f002d028b8b79eec9847c636d8886d10dfe8c884cc2bebe18086b1391c5a28d",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-client0_1.21.0-1_amd64.deb"],
         deps = ["@debian12_libffi8_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libwayland-cursor0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "8c8d1a3942bc3fc9dd3ea7c679c1a314e59cdaaa700883d54d1bb3ec89db256b",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-cursor0_1.21.0-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libwayland-cursor0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "0b684467ec795024fcaae99ea4384959cc4052b2da5adec38c9b76dfed9bcf41",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-cursor0_1.21.0-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libwayland-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "932405c58195d299495230792e374ad304adadf3d3ffdc07eda3466b756adc33",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-dev_1.21.0-1_arm64.deb"],
+        deps = ["@debian12_libffi-dev_aarch64//:all_files", "@debian12_libwayland-bin_aarch64//:all_files", "@debian12_libwayland-client0_aarch64//:all_files", "@debian12_libwayland-cursor0_aarch64//:all_files", "@debian12_libwayland-egl1_aarch64//:all_files", "@debian12_libwayland-server0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libwayland-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "063ac40e71069a1a92c2be32799f4a2d234f3d361ba98cea2e3137a7ab6804d1",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-dev_1.21.0-1_amd64.deb"],
+        deps = ["@debian12_libffi-dev_x86_64//:all_files", "@debian12_libwayland-bin_x86_64//:all_files", "@debian12_libwayland-client0_x86_64//:all_files", "@debian12_libwayland-cursor0_x86_64//:all_files", "@debian12_libwayland-egl1_x86_64//:all_files", "@debian12_libwayland-server0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libwayland-egl1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "c08124a4d9af24f058b45c88867a84697882e755ea94965795d152fe26fe57c9",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-egl1_1.21.0-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libwayland-egl1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "cb4225f0e15e00a3570d4cbc288c87ff477d73e741c3f1c5a6d47cf350d45378",
+        urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-egl1_1.21.0-1_amd64.deb"],
+        deps = [],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libwayland-server0_aarch64",
@@ -2344,14 +2512,14 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "21c7e6f19909bb1e02bb3c2089789791858c54d37e86cef9d7872782c1cb711e",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libx11/libx11-xcb1_1.8.4-2+deb12u2_arm64.deb"],
-        deps = ["@debian12_libx11-6_aarch64//:all_files"],
+        deps = [],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libx11-xcb1_x86_64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "f5da45e1d881a793250a96613f28c471a248877f1a0f18a5c90e2a620a76c898",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libx11/libx11-xcb1_1.8.4-2+deb12u2_amd64.deb"],
-        deps = ["@debian12_libx11-6_x86_64//:all_files"],
+        deps = [],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libxau-dev_aarch64",
@@ -2554,28 +2722,28 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "5e9c0ad606eb4674c645fe8e0e64330c47d2729f7a59ed569848610efd5d5b62",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxext/libxext6_1.3.4-1+b1_arm64.deb"],
-        deps = ["@debian12_libx11-6_aarch64//:all_files"],
+        deps = [],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libxext6_x86_64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "504b7be9d7df4f6f4519e8dd4d6f9d03a9fb911a78530fa23a692fba3058cba6",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxext/libxext6_1.3.4-1+b1_amd64.deb"],
-        deps = ["@debian12_libx11-6_x86_64//:all_files"],
+        deps = [],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libxfixes3_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "d47bda8fed01b19b41d503e2df05d9166c58e30e2376f2f8784ceb7a834befe6",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxfixes/libxfixes3_6.0.0-2_arm64.deb"],
-        deps = ["@debian12_libx11-6_aarch64//:all_files"],
+        deps = [],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libxfixes3_x86_64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "1cd616396ff2ecae77e6e8b5b7695d414f0146de2d147837a2a02165f99e1a2c",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxfixes/libxfixes3_6.0.0-2_amd64.deb"],
-        deps = ["@debian12_libx11-6_x86_64//:all_files"],
+        deps = [],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libxml2_aarch64",
@@ -2624,14 +2792,14 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "8a4826772ac480804d6b8d776a4130d95260c036b9b218de4c8a0f07eb9c5bba",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxxf86vm/libxxf86vm1_1.1.4-1+b2_arm64.deb"],
-        deps = ["@debian12_libx11-6_aarch64//:all_files"],
+        deps = ["@debian12_libx11-6_aarch64//:all_files", "@debian12_libxext6_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libxxf86vm1_x86_64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "6f4ca916aaec26d7000fa7f58de3f71119309ab7590ce1f517abfe1825a676c7",
         urls = ["https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxxf86vm/libxxf86vm1_1.1.4-1+b2_amd64.deb"],
-        deps = ["@debian12_libx11-6_x86_64//:all_files"],
+        deps = ["@debian12_libx11-6_x86_64//:all_files", "@debian12_libxext6_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libyajl2_aarch64",
@@ -3843,7 +4011,7 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
         sha256 = "b7f34bb3574e2fae9054649d87a69e8d28a0f2c6a616d07a4f294d5462bb161c",
         urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/d/dpkg/libdpkg-perl_1.19.7ubuntu3_all.deb"],
-        deps = [],
+        deps = ["@ubuntu2004_perl_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "ubuntu2004_libdrm-amdgpu1_aarch64",
@@ -3983,7 +4151,7 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
         sha256 = "7abc3c68569ebd52e7e27ba1cd1e97004bf5a1641212acd821220a020b713c2f",
         urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/f/fontconfig/libfontconfig1_2.13.1-2ubuntu3_arm64.deb"],
-        deps = ["@ubuntu2004_fontconfig-config_aarch64//:all_files", "@ubuntu2004_libfreetype6_aarch64//:all_files", "@ubuntu2004_libuuid1_aarch64//:all_files"],
+        deps = ["@ubuntu2004_fontconfig-config_aarch64//:all_files", "@ubuntu2004_libexpat1_aarch64//:all_files", "@ubuntu2004_libfreetype6_aarch64//:all_files", "@ubuntu2004_libuuid1_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "ubuntu2004_libfreetype6_aarch64",
@@ -4004,7 +4172,7 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
         sha256 = "f7ae679229d69969149e2e2c8b1eab0bc1f3d0d4557bd5138e66d0ea34839cc4",
         urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/m/mesa/libgbm1_20.0.4-2ubuntu1_arm64.deb"],
-        deps = ["@ubuntu2004_libexpat1_aarch64//:all_files", "@ubuntu2004_libwayland-server0_aarch64//:all_files"],
+        deps = ["@ubuntu2004_libdrm2_aarch64//:all_files", "@ubuntu2004_libexpat1_aarch64//:all_files", "@ubuntu2004_libwayland-server0_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "ubuntu2004_libgcc-9-dev_aarch64",
@@ -4018,7 +4186,7 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
         sha256 = "ac157ece7e0d41abf7c05309d8c85742f5f895a09c573add08152198390840ee",
         urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/g/gcc-10/libgcc-s1_10-20200411-0ubuntu1_arm64.deb"],
-        deps = [],
+        deps = ["@ubuntu2004_gcc-10-base_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "ubuntu2004_libgcc1_aarch64",
@@ -4151,7 +4319,7 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
         sha256 = "bdeb9deae03be71ae87f45e3f843c9ff197a39d2995d3da5a843ef863ddfd60d",
         urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/libg/libglvnd/libglx0_1.3.1-1_arm64.deb"],
-        deps = ["@ubuntu2004_libglvnd0_aarch64//:all_files", "@ubuntu2004_libglx-mesa0_aarch64//:all_files", "@ubuntu2004_libx11-6_aarch64//:all_files"],
+        deps = ["@ubuntu2004_libglx-mesa0_aarch64//:all_files", "@ubuntu2004_libx11-6_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "ubuntu2004_libgmp10_aarch64",
@@ -4637,6 +4805,13 @@ def deb_repos():
         deps = [],
     )
     deb_archive_w_pkg_providers(
+        name = "ubuntu2004_libset-scalar-perl_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
+        sha256 = "a398e400aedd0d19412fa61fed16b6d968926c4324322224c5b859d50dab63fa",
+        urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/universe/libs/libset-scalar-perl/libset-scalar-perl_1.29-2_all.deb"],
+        deps = ["@ubuntu2004_perl_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
         name = "ubuntu2004_libsigsegv2_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
         sha256 = "821e75274e0d453008809eca1f9d422984b5f9be0d032cc4fc989395d02a08d2",
@@ -4777,6 +4952,55 @@ def deb_repos():
         deps = [],
     )
     deb_archive_w_pkg_providers(
+        name = "ubuntu2004_libva-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
+        sha256 = "15e56e74b30c3650cb464c4be0fdd491556b5448df7bf1131d475163a8f03c48",
+        urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/universe/libv/libva/libva-dev_2.7.0-2_arm64.deb"],
+        deps = ["@ubuntu2004_libset-scalar-perl_aarch64//:all_files", "@ubuntu2004_libva-drm2_aarch64//:all_files", "@ubuntu2004_libva-glx2_aarch64//:all_files", "@ubuntu2004_libva-wayland2_aarch64//:all_files", "@ubuntu2004_libva-x11-2_aarch64//:all_files", "@ubuntu2004_libva2_aarch64//:all_files", "@ubuntu2004_libwayland-dev_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "ubuntu2004_libva-drm2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
+        sha256 = "26bde3cc9783f2c38d5915095ae3ebf754ec33a9a9370b3f138e72e7caf91d76",
+        urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/universe/libv/libva/libva-drm2_2.7.0-2_arm64.deb"],
+        deps = ["@ubuntu2004_libdrm2_aarch64//:all_files", "@ubuntu2004_libva2_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "ubuntu2004_libva-glx2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
+        sha256 = "eb5d02e799fedd8ffaf6f7a217ac70351181cbc5a217285ab65b809ddae44518",
+        urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/universe/libv/libva/libva-glx2_2.7.0-2_arm64.deb"],
+        deps = ["@ubuntu2004_libgl1_aarch64//:all_files", "@ubuntu2004_libva-x11-2_aarch64//:all_files", "@ubuntu2004_libva2_aarch64//:all_files", "@ubuntu2004_libx11-6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "ubuntu2004_libva-wayland2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
+        sha256 = "75a2af56b861ee5fa00e7a815c84ff65a09bd0cc41498718ebb85065fe995c27",
+        urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/universe/libv/libva/libva-wayland2_2.7.0-2_arm64.deb"],
+        deps = ["@ubuntu2004_libdrm2_aarch64//:all_files", "@ubuntu2004_libva2_aarch64//:all_files", "@ubuntu2004_libwayland-client0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "ubuntu2004_libva-x11-2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
+        sha256 = "4f474d6b37a306dcdada7d1e06879497a97bb4712cab228dc9f52ce2cc0b1440",
+        urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/universe/libv/libva/libva-x11-2_2.7.0-2_arm64.deb"],
+        deps = ["@ubuntu2004_libdrm2_aarch64//:all_files", "@ubuntu2004_libva2_aarch64//:all_files", "@ubuntu2004_libx11-6_aarch64//:all_files", "@ubuntu2004_libxext6_aarch64//:all_files", "@ubuntu2004_libxfixes3_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "ubuntu2004_libva2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
+        sha256 = "41e966691e9366db7b335f0ca76d7926176cc6847941f7048ed75cf35e2ef96b",
+        urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/universe/libv/libva/libva2_2.7.0-2_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "ubuntu2004_libwayland-bin_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
+        sha256 = "26023ef475f50d30126f999cd429b86e3b3072e0b4ff25580e7195dfe762217e",
+        urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/w/wayland/libwayland-bin_1.18.0-1_arm64.deb"],
+        deps = ["@ubuntu2004_libexpat1_aarch64//:all_files", "@ubuntu2004_libxml2_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
         name = "ubuntu2004_libwayland-client0_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
         sha256 = "8e2a40a07abd466a06db56ea1dff8fe92f8344a31baca3ca0a30912707a65f38",
@@ -4788,7 +5012,14 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
         sha256 = "01a09497261244fba1440a4c60a9b116bda0bc7a020434dd17adf0f76afaf37e",
         urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/w/wayland/libwayland-cursor0_1.18.0-1_arm64.deb"],
-        deps = ["@ubuntu2004_libwayland-client0_aarch64//:all_files"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "ubuntu2004_libwayland-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
+        sha256 = "a4b4ca33fecfdd57e6e63820bc44fcf847cea1920c868599fc7faa475d32495a",
+        urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/w/wayland/libwayland-dev_1.18.0-1_arm64.deb"],
+        deps = ["@ubuntu2004_libwayland-bin_aarch64//:all_files", "@ubuntu2004_libwayland-client0_aarch64//:all_files", "@ubuntu2004_libwayland-cursor0_aarch64//:all_files", "@ubuntu2004_libwayland-egl1_aarch64//:all_files", "@ubuntu2004_libwayland-server0_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "ubuntu2004_libwayland-egl1_aarch64",
@@ -4921,7 +5152,7 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
         sha256 = "88e171a33249719366a4e29330775e2ac777226f1f379557daf0777083a1fc93",
         urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/libx/libxcb/libxcb1_1.14-2_arm64.deb"],
-        deps = ["@ubuntu2004_libxdmcp6_aarch64//:all_files"],
+        deps = ["@ubuntu2004_libxau6_aarch64//:all_files", "@ubuntu2004_libxdmcp6_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "ubuntu2004_libxcomposite1_aarch64",
@@ -4970,7 +5201,7 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
         sha256 = "3cea7f92d5ff7b0b2a29264c74181edf525b278b0be8d82a5ffe73cf20b1aa1e",
         urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/libx/libxfixes/libxfixes3_5.0.3-2_arm64.deb"],
-        deps = ["@ubuntu2004_libx11-6_aarch64//:all_files"],
+        deps = [],
     )
     deb_archive_w_pkg_providers(
         name = "ubuntu2004_libxi6_aarch64",
@@ -5012,7 +5243,7 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
         sha256 = "931f3d61ec6528221a0a2dc6f9fdac494e24d7e92e49ce1811c495571f3b2cea",
         urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/libx/libxrender/libxrender1_0.9.10-1_arm64.deb"],
-        deps = [],
+        deps = ["@ubuntu2004_libx11-6_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "ubuntu2004_libxshmfence1_aarch64",
@@ -5096,7 +5327,7 @@ def deb_repos():
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/icons", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt", "usr/bin/X11", "lib/systemd/system/system-systemd\\x2dcryptsetup.slice"],
         sha256 = "85bf7d2a1e1fba022a1f246d4c60439b987f5b858b42207759b5cac5b67f9896",
         urls = ["https://snapshot.ubuntu.com/ubuntu/20230401T000000Z/pool/main/p/perl/perl-modules-5.30_5.30.0-9build1_all.deb"],
-        deps = ["@ubuntu2004_perl-base_aarch64//:all_files"],
+        deps = [],
     )
     deb_archive_w_pkg_providers(
         name = "ubuntu2004_perl_aarch64",

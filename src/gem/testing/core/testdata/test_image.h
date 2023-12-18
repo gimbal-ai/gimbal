@@ -23,10 +23,17 @@
 
 namespace gml::gem::testing {
 
-cv::Mat LoadTestImageAsOpencvMat();
+enum class TestImageType {
+  DEFAULT = 0,
+  WITH_BARCODE = 1,
+};
 
-void LoadTestImageAsImageFrame(mediapipe::ImageFrame* image_frame);
+cv::Mat LoadTestImageAsOpencvMat(TestImageType type = TestImageType::DEFAULT);
 
-void LoadTestImageAsYUVImage(mediapipe::YUVImage* yuv_image);
+void LoadTestImageAsImageFrame(mediapipe::ImageFrame* image_frame,
+                               TestImageType type = TestImageType::DEFAULT);
+
+void LoadTestImageAsYUVImage(mediapipe::YUVImage* yuv_image,
+                             TestImageType type = TestImageType::DEFAULT);
 
 }  // namespace gml::gem::testing

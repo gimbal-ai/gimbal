@@ -23,6 +23,8 @@ package(default_visibility = [
 gml_cc_library(
     name = "cc_library",
     srcs = [
+        "barcode_detector_calculator.cc",
+        "barcode_detector_calculator.h",
         "detections_summary_calculator.cc",
         "detections_summary_calculator.h",
         "detections_to_mediapipe_calculator.cc",
@@ -77,5 +79,17 @@ gml_cc_test(
     deps = [
         ":cc_library",
         "//src/gem/testing/core:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "barcode_detector_calculator_test",
+    srcs = [
+        "barcode_detector_calculator_test.cc",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+        "//src/gem/testing/core/testdata:cc_library",
     ],
 )

@@ -56,6 +56,7 @@ packages:
 - name: nvidia-l4t-kernel-headers
 - name: nvidia-l4t-multimedia
 - name: nvidia-l4t-multimedia-utils
+- name: libva-dev
 exclude_paths:
 - usr/share/man
 - usr/share/doc

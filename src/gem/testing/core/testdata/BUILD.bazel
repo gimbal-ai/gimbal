@@ -27,7 +27,10 @@ gml_cc_library(
         "test_image.cc",
         "test_image.h",
     ],
-    data = ["test.jpg"],
+    data = [
+        "barcode.jpg",
+        "test.jpg",
+    ],
     deps = [
         "//src/common/testing:cc_library",
         "@bazel_tools//tools/cpp/runfiles",

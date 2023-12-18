@@ -44,6 +44,7 @@ OPENCV_MODULES = [
     "features2d",
     "flann",
     "highgui",
+    "objdetect",
     "video",
     "videoio",
     "imgcodecs",
