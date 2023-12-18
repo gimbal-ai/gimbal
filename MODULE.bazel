@@ -170,7 +170,7 @@ oci.pull(
     image = "index.docker.io/library/postgres",
     platforms = [
         "linux/amd64",
-        "linux/arm64",
+        "linux/arm64/v8",
     ],
 )
 oci.pull(
