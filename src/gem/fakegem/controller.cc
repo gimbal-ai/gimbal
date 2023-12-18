@@ -59,10 +59,12 @@ Status FakeController::Init() {
   // Register message handlers.
   // Ue the same handlers as real GEM for heartbeat and info
   auto hb_handler = std::make_shared<controller::HeartbeatHandler>(dispatcher(), info(), bridge());
-  auto info_handler =
-      std::make_shared<controller::DeviceInfoHandler>(dispatcher(), info(), bridge());
 
-  // Use fake handlers for exec, video, and metrics.
+  // Use fake handlers for info, exec, video, and metrics.
+  auto info_handler = std::make_shared<FakeMessageHandlerWrapper>(
+      dispatcher(), info(), bridge(),
+      [](const internal::controlplane::egw::v1::BridgeResponse&) { return Status::OK(); });
+
   auto exec_handler = std::make_shared<FakeMessageHandlerWrapper>(
       dispatcher(), info(), bridge(),
       [this](const internal::controlplane::egw::v1::BridgeResponse& msg) {
