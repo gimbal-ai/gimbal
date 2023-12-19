@@ -32,6 +32,8 @@ gml_cc_library(
         "execution_context_calculator.h",
         "image_frame_to_yuv_planar_image.cc",
         "image_frame_to_yuv_planar_image.h",
+        "image_quality_calculator.cc",
+        "image_quality_calculator.h",
         "mediapipe_typed_calculators.cc",
         "metrics_sink_calculator.h",
         "packet_latency_metrics_sink_calculator.cc",
