@@ -17,6 +17,7 @@
 
 #pragma once
 #include <mediapipe/framework/calculator_base.h>
+#include <opencv2/quality/qualitybrisque.hpp>
 
 #include "src/common/base/base.h"
 #include "src/common/base/status.h"

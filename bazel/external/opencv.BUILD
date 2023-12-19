@@ -50,6 +50,7 @@ OPENCV_MODULES = [
     "imgcodecs",
     "imgproc",
     "core",
+    "quality",
 ]
 
 OPENCV_SHARED_LIBS = False
@@ -61,6 +62,9 @@ cmake(
         "-j`nproc`",
         "-l`nproc`",
     ],
+    build_data = [
+        "@com_github_opencv_contrib//:quality",
+    ],
     cache_entries = {
         # The module list is always sorted alphabetically so that we do not
         # cause a rebuild when changing the link order.
@@ -69,6 +73,7 @@ cmake(
         "BUILD_PERF_TESTS": "OFF",
         "BUILD_EXAMPLES": "OFF",
         "BUILD_SHARED_LIBS": "ON" if OPENCV_SHARED_LIBS else "OFF",
+        "OPENCV_EXTRA_MODULES_PATH": "$$EXT_BUILD_ROOT/external/com_github_opencv_contrib/modules/quality",
         "WITH_ITT": "OFF",
         "WITH_IPP": "OFF",
         "WITH_JASPER": "OFF",

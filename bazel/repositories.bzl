@@ -188,6 +188,7 @@ def _cc_deps():
         "com_github_ffmpeg_ffmpeg",
         build_file = "//bazel/external:ffmpeg.BUILD",
     )
+    _bazel_repo("com_github_opencv_contrib", build_file = "//bazel/external:opencv_contrib.BUILD")
     _bazel_repo("com_github_opencv_opencv", build_file = "//bazel/external:opencv.BUILD")
 
     _bazel_repo(

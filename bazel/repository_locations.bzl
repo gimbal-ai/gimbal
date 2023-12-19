@@ -269,6 +269,11 @@ REPOSITORY_LOCATIONS = dict(
         strip_prefix = "opencv-4.8.1",
         urls = ["https://github.com/opencv/opencv/archive/refs/tags/4.8.1.tar.gz"],
     ),
+    com_github_opencv_contrib = dict(
+        sha256 = "0c082a0b29b3118f2a0a1856b403bb098643af7b994a0080f402a12159a99c6e",
+        strip_prefix = "opencv_contrib-4.8.1",
+        urls = ["https://github.com/opencv/opencv_contrib/archive/refs/tags/4.8.1.tar.gz"],
+    ),
     cpuinfo = dict(
         sha256 = "109e9d2f95a0d72fe50174b44de5b8c9be3e9551407b882e4ad497e9e068d202",
         strip_prefix = "cpuinfo-87d8234510367db49a65535021af5e1838a65ac2",
