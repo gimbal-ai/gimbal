@@ -57,6 +57,29 @@ message DetectionList {
   repeated Detection detection = 1;
 }
 
+// ImageHistogram represents histogram data for a single frame.
+message ImageHistogram {
+  double min = 1;
+  double max = 2;
+  double num = 3;
+  double sum = 4;
+  double sum_squares = 5;
+
+  // Parallel arrays encoding the bucket boundaries and the bucket values.
+  // bucket(i) is the count for the bucket i.  The range for
+  // a bucket is:
+  //   i == 0:  [-DBL_MAX .. bucket_limit(0))
+  //   i != 0:  [bucket_limit(i-1) .. bucket_limit(i))
+  repeated double bucket_limit = 6 [ packed = true ];
+  repeated int64 bucket = 7 [ packed = true ];
+}
+
+message ImageQualityMetrics {
+  // The brique score (https://live.ece.utexas.edu/publications/2012/TIP%20BRISQUE.pdf) for the
+  // image in range [0,100].
+  double brisque_score = 1;
+}
+
 // ImageOverlayChunk stores a chunk of image overlays (bounding boxes, segmentation masks, etc)
 // Each chunk only contains overlays for a single frame (not necessarily all the overlays for a
 // single frame).
@@ -70,6 +93,8 @@ message ImageOverlayChunk {
     // Each detection is a bounding box with a label.
     DetectionList detections = 100;
     // TODO(james): add segmentation overlay.
+    ImageHistogram histogram = 200;
+    ImageQualityMetrics image_quality = 300;
   }
 }
 

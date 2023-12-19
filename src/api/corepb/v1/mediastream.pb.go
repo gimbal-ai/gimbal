@@ -239,18 +239,154 @@ func (m *DetectionList) GetDetection() []*Detection {
 	return nil
 }
 
+type ImageHistogram struct {
+	Min         float64   `protobuf:"fixed64,1,opt,name=min,proto3" json:"min,omitempty"`
+	Max         float64   `protobuf:"fixed64,2,opt,name=max,proto3" json:"max,omitempty"`
+	Num         float64   `protobuf:"fixed64,3,opt,name=num,proto3" json:"num,omitempty"`
+	Sum         float64   `protobuf:"fixed64,4,opt,name=sum,proto3" json:"sum,omitempty"`
+	SumSquares  float64   `protobuf:"fixed64,5,opt,name=sum_squares,json=sumSquares,proto3" json:"sum_squares,omitempty"`
+	BucketLimit []float64 `protobuf:"fixed64,6,rep,packed,name=bucket_limit,json=bucketLimit,proto3" json:"bucket_limit,omitempty"`
+	Bucket      []int64   `protobuf:"varint,7,rep,packed,name=bucket,proto3" json:"bucket,omitempty"`
+}
+
+func (m *ImageHistogram) Reset()      { *m = ImageHistogram{} }
+func (*ImageHistogram) ProtoMessage() {}
+func (*ImageHistogram) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d0e2e756820efd7b, []int{4}
+}
+func (m *ImageHistogram) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ImageHistogram) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ImageHistogram.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ImageHistogram) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ImageHistogram.Merge(m, src)
+}
+func (m *ImageHistogram) XXX_Size() int {
+	return m.Size()
+}
+func (m *ImageHistogram) XXX_DiscardUnknown() {
+	xxx_messageInfo_ImageHistogram.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ImageHistogram proto.InternalMessageInfo
+
+func (m *ImageHistogram) GetMin() float64 {
+	if m != nil {
+		return m.Min
+	}
+	return 0
+}
+
+func (m *ImageHistogram) GetMax() float64 {
+	if m != nil {
+		return m.Max
+	}
+	return 0
+}
+
+func (m *ImageHistogram) GetNum() float64 {
+	if m != nil {
+		return m.Num
+	}
+	return 0
+}
+
+func (m *ImageHistogram) GetSum() float64 {
+	if m != nil {
+		return m.Sum
+	}
+	return 0
+}
+
+func (m *ImageHistogram) GetSumSquares() float64 {
+	if m != nil {
+		return m.SumSquares
+	}
+	return 0
+}
+
+func (m *ImageHistogram) GetBucketLimit() []float64 {
+	if m != nil {
+		return m.BucketLimit
+	}
+	return nil
+}
+
+func (m *ImageHistogram) GetBucket() []int64 {
+	if m != nil {
+		return m.Bucket
+	}
+	return nil
+}
+
+type ImageQualityMetrics struct {
+	BrisqueScore float64 `protobuf:"fixed64,1,opt,name=brisque_score,json=brisqueScore,proto3" json:"brisque_score,omitempty"`
+}
+
+func (m *ImageQualityMetrics) Reset()      { *m = ImageQualityMetrics{} }
+func (*ImageQualityMetrics) ProtoMessage() {}
+func (*ImageQualityMetrics) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d0e2e756820efd7b, []int{5}
+}
+func (m *ImageQualityMetrics) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ImageQualityMetrics) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ImageQualityMetrics.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ImageQualityMetrics) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ImageQualityMetrics.Merge(m, src)
+}
+func (m *ImageQualityMetrics) XXX_Size() int {
+	return m.Size()
+}
+func (m *ImageQualityMetrics) XXX_DiscardUnknown() {
+	xxx_messageInfo_ImageQualityMetrics.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ImageQualityMetrics proto.InternalMessageInfo
+
+func (m *ImageQualityMetrics) GetBrisqueScore() float64 {
+	if m != nil {
+		return m.BrisqueScore
+	}
+	return 0
+}
+
 type ImageOverlayChunk struct {
 	FrameNumber int64 `protobuf:"varint,1,opt,name=frame_number,json=frameNumber,proto3" json:"frame_number,omitempty"`
 	EOF         bool  `protobuf:"varint,2,opt,name=eof,proto3" json:"eof,omitempty"`
 	// Types that are valid to be assigned to Overlay:
 	//	*ImageOverlayChunk_Detections
+	//	*ImageOverlayChunk_Histogram
+	//	*ImageOverlayChunk_ImageQuality
 	Overlay isImageOverlayChunk_Overlay `protobuf_oneof:"overlay"`
 }
 
 func (m *ImageOverlayChunk) Reset()      { *m = ImageOverlayChunk{} }
 func (*ImageOverlayChunk) ProtoMessage() {}
 func (*ImageOverlayChunk) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d0e2e756820efd7b, []int{4}
+	return fileDescriptor_d0e2e756820efd7b, []int{6}
 }
 func (m *ImageOverlayChunk) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -289,8 +425,16 @@ type isImageOverlayChunk_Overlay interface {
 type ImageOverlayChunk_Detections struct {
 	Detections *DetectionList `protobuf:"bytes,100,opt,name=detections,proto3,oneof" json:"detections,omitempty"`
 }
+type ImageOverlayChunk_Histogram struct {
+	Histogram *ImageHistogram `protobuf:"bytes,200,opt,name=histogram,proto3,oneof" json:"histogram,omitempty"`
+}
+type ImageOverlayChunk_ImageQuality struct {
+	ImageQuality *ImageQualityMetrics `protobuf:"bytes,300,opt,name=image_quality,json=imageQuality,proto3,oneof" json:"image_quality,omitempty"`
+}
 
-func (*ImageOverlayChunk_Detections) isImageOverlayChunk_Overlay() {}
+func (*ImageOverlayChunk_Detections) isImageOverlayChunk_Overlay()   {}
+func (*ImageOverlayChunk_Histogram) isImageOverlayChunk_Overlay()    {}
+func (*ImageOverlayChunk_ImageQuality) isImageOverlayChunk_Overlay() {}
 
 func (m *ImageOverlayChunk) GetOverlay() isImageOverlayChunk_Overlay {
 	if m != nil {
@@ -320,10 +464,26 @@ func (m *ImageOverlayChunk) GetDetections() *DetectionList {
 	return nil
 }
 
+func (m *ImageOverlayChunk) GetHistogram() *ImageHistogram {
+	if x, ok := m.GetOverlay().(*ImageOverlayChunk_Histogram); ok {
+		return x.Histogram
+	}
+	return nil
+}
+
+func (m *ImageOverlayChunk) GetImageQuality() *ImageQualityMetrics {
+	if x, ok := m.GetOverlay().(*ImageOverlayChunk_ImageQuality); ok {
+		return x.ImageQuality
+	}
+	return nil
+}
+
 // XXX_OneofWrappers is for the internal use of the proto package.
 func (*ImageOverlayChunk) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
 		(*ImageOverlayChunk_Detections)(nil),
+		(*ImageOverlayChunk_Histogram)(nil),
+		(*ImageOverlayChunk_ImageQuality)(nil),
 	}
 }
 
@@ -336,7 +496,7 @@ type H264Chunk struct {
 func (m *H264Chunk) Reset()      { *m = H264Chunk{} }
 func (*H264Chunk) ProtoMessage() {}
 func (*H264Chunk) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d0e2e756820efd7b, []int{5}
+	return fileDescriptor_d0e2e756820efd7b, []int{7}
 }
 func (m *H264Chunk) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -391,6 +551,8 @@ func init() {
 	proto.RegisterType((*NormalizedCenterRect)(nil), "gml.internal.api.core.v1.NormalizedCenterRect")
 	proto.RegisterType((*Detection)(nil), "gml.internal.api.core.v1.Detection")
 	proto.RegisterType((*DetectionList)(nil), "gml.internal.api.core.v1.DetectionList")
+	proto.RegisterType((*ImageHistogram)(nil), "gml.internal.api.core.v1.ImageHistogram")
+	proto.RegisterType((*ImageQualityMetrics)(nil), "gml.internal.api.core.v1.ImageQualityMetrics")
 	proto.RegisterType((*ImageOverlayChunk)(nil), "gml.internal.api.core.v1.ImageOverlayChunk")
 	proto.RegisterType((*H264Chunk)(nil), "gml.internal.api.core.v1.H264Chunk")
 }
@@ -400,39 +562,51 @@ func init() {
 }
 
 var fileDescriptor_d0e2e756820efd7b = []byte{
-	// 507 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x53, 0x31, 0x6f, 0xd3, 0x4e,
-	0x1c, 0xf5, 0x39, 0xff, 0x36, 0xcd, 0x39, 0x7f, 0x24, 0xac, 0x08, 0x19, 0x86, 0x4b, 0x71, 0x25,
-	0xc8, 0x82, 0xad, 0xa6, 0xc0, 0xc2, 0x54, 0xb7, 0xa0, 0x56, 0x8a, 0x52, 0x71, 0x23, 0x4b, 0x74,
-	0xb6, 0xaf, 0xce, 0x89, 0xb3, 0x2f, 0xd8, 0x97, 0x90, 0x30, 0xf1, 0x11, 0x58, 0xf8, 0x0c, 0xf0,
-	0x51, 0x18, 0x33, 0x76, 0xaa, 0x88, 0xb3, 0x30, 0xf6, 0x23, 0xa0, 0x3b, 0x27, 0x29, 0x12, 0x44,
-	0x62, 0x60, 0xfb, 0xbd, 0xa7, 0xdf, 0x7b, 0xbf, 0xf7, 0x2c, 0x1f, 0x3c, 0x28, 0xf2, 0xc8, 0x27,
-	0x23, 0xe6, 0x47, 0x22, 0xa7, 0xa3, 0xd0, 0x9f, 0x1c, 0xfa, 0x29, 0x8d, 0x19, 0x29, 0x64, 0x4e,
-	0x49, 0xea, 0x8d, 0x72, 0x21, 0x85, 0xed, 0x24, 0x29, 0xf7, 0x58, 0x26, 0x69, 0x9e, 0x11, 0xee,
-	0x91, 0x11, 0xf3, 0xd4, 0xb6, 0x37, 0x39, 0x7c, 0xd0, 0x4a, 0x44, 0x22, 0xf4, 0x92, 0xaf, 0xa6,
-	0x6a, 0xdf, 0x3d, 0x82, 0x3b, 0x3d, 0x12, 0x52, 0x6e, 0xb7, 0xe0, 0x0e, 0x57, 0x83, 0x03, 0xf6,
-	0x41, 0xa7, 0x81, 0x2b, 0xa0, 0xd8, 0x42, 0x19, 0x38, 0xe6, 0x3e, 0xe8, 0x98, 0xb8, 0x02, 0x6e,
-	0x0c, 0x5b, 0x7d, 0x91, 0xa7, 0x84, 0xb3, 0x0f, 0x34, 0x3e, 0xa1, 0xea, 0x1a, 0xa6, 0x91, 0xb4,
-	0xef, 0x40, 0x73, 0x1a, 0x69, 0x03, 0x13, 0x9b, 0xd3, 0x48, 0xe1, 0x59, 0xb4, 0x92, 0x9a, 0xb3,
-	0x48, 0xb9, 0xbd, 0x67, 0xb1, 0x1c, 0x3a, 0xb5, 0xca, 0x4d, 0x03, 0xfb, 0x1e, 0xdc, 0x1d, 0x52,
-	0x96, 0x0c, 0xa5, 0xf3, 0x9f, 0xa6, 0x57, 0xc8, 0xfd, 0x0c, 0x60, 0xe3, 0x94, 0x4a, 0x1a, 0x49,
-	0x26, 0x32, 0xfb, 0xd9, 0x6d, 0xbe, 0x5a, 0xc7, 0xea, 0xb6, 0xbd, 0x6d, 0x45, 0x3d, 0xdd, 0x67,
-	0x5d, 0xe0, 0x35, 0x6c, 0x86, 0x62, 0x9c, 0xc5, 0x2c, 0x4b, 0x06, 0xa1, 0x98, 0xea, 0x30, 0x56,
-	0xd7, 0xdb, 0xae, 0xfe, 0x53, 0x31, 0x6c, 0xad, 0x3d, 0x02, 0x31, 0x75, 0x31, 0xfc, 0x7f, 0x13,
-	0xab, 0xc7, 0x0a, 0x69, 0x1f, 0xc3, 0x46, 0xbc, 0x26, 0x56, 0xf1, 0x0e, 0xb6, 0x1f, 0xd8, 0x68,
-	0xf1, 0xad, 0xca, 0xfd, 0x02, 0xe0, 0xdd, 0xf3, 0x94, 0x24, 0xf4, 0x62, 0x42, 0x73, 0x4e, 0x66,
-	0x27, 0xc3, 0x71, 0xf6, 0xd6, 0x7e, 0x08, 0x9b, 0x97, 0x39, 0x49, 0xe9, 0x20, 0x1b, 0xa7, 0x21,
-	0xcd, 0xf5, 0x97, 0xad, 0x61, 0x4b, 0x73, 0x7d, 0x4d, 0xd9, 0xf7, 0x61, 0x8d, 0x8a, 0x4b, 0x5d,
-	0x6b, 0x2f, 0xa8, 0x97, 0xd7, 0xed, 0xda, 0xcb, 0x8b, 0x57, 0x58, 0x71, 0xf6, 0x39, 0x84, 0x9b,
-	0x03, 0x85, 0x13, 0xeb, 0xe2, 0x8f, 0xff, 0x22, 0x97, 0xea, 0x74, 0x66, 0xe0, 0x5f, 0xc4, 0x41,
-	0x03, 0xd6, 0x45, 0x15, 0xcc, 0x7d, 0x07, 0x1b, 0x67, 0xdd, 0xe7, 0x4f, 0xff, 0x45, 0xc0, 0x47,
-	0x70, 0x2f, 0x23, 0x7c, 0x10, 0x13, 0x49, 0xf4, 0x1f, 0xd1, 0x0c, 0xac, 0xf2, 0xba, 0x5d, 0xef,
-	0x1f, 0xf7, 0x4e, 0x89, 0x24, 0xb8, 0x9e, 0x11, 0xae, 0x86, 0x20, 0x9a, 0x2f, 0x90, 0x71, 0xb5,
-	0x40, 0xc6, 0xcd, 0x02, 0x81, 0x8f, 0x25, 0x02, 0x5f, 0x4b, 0x04, 0xbe, 0x95, 0x08, 0xcc, 0x4b,
-	0x04, 0xbe, 0x97, 0x08, 0xfc, 0x28, 0x91, 0x71, 0x53, 0x22, 0xf0, 0x69, 0x89, 0x8c, 0xf9, 0x12,
-	0x19, 0x57, 0x4b, 0x64, 0xbc, 0x79, 0x92, 0xb0, 0x94, 0x53, 0xc9, 0x49, 0x58, 0x78, 0x84, 0xf9,
-	0x15, 0xf2, 0x7f, 0x7b, 0x43, 0x2f, 0xaa, 0x29, 0xdc, 0xd5, 0xef, 0xe1, 0xe8, 0x67, 0x00, 0x00,
-	0x00, 0xff, 0xff, 0x6f, 0x59, 0xff, 0x48, 0x66, 0x03, 0x00, 0x00,
+	// 701 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x94, 0xcd, 0x6e, 0xd3, 0x40,
+	0x10, 0xc7, 0xbd, 0x36, 0x4d, 0x9a, 0x4d, 0x5a, 0x95, 0xa5, 0x42, 0xa6, 0x07, 0x27, 0xa4, 0x02,
+	0x72, 0xa9, 0xa3, 0xb6, 0xc0, 0x01, 0x4e, 0x4d, 0x0b, 0x4a, 0xa5, 0xd0, 0xaa, 0x5b, 0x71, 0xe1,
+	0x12, 0xad, 0xed, 0xad, 0xb3, 0xaa, 0x3f, 0x12, 0x7b, 0x5d, 0x12, 0x4e, 0x3c, 0x02, 0x17, 0xde,
+	0x81, 0x03, 0x8f, 0xc0, 0x03, 0x94, 0x5b, 0x8f, 0x3d, 0x55, 0xd4, 0xbd, 0x70, 0xec, 0x23, 0xa0,
+	0xdd, 0x4d, 0xfa, 0x21, 0x88, 0xe0, 0xc0, 0x6d, 0xe6, 0xe7, 0x9d, 0xbf, 0x67, 0xfe, 0xb3, 0x5a,
+	0xb8, 0x9c, 0x26, 0x6e, 0x93, 0xf4, 0x59, 0xd3, 0x8d, 0x13, 0xda, 0x77, 0x9a, 0x47, 0xab, 0xcd,
+	0x90, 0x7a, 0x8c, 0xa4, 0x3c, 0xa1, 0x24, 0xb4, 0xfb, 0x49, 0xcc, 0x63, 0x64, 0xfa, 0x61, 0x60,
+	0xb3, 0x88, 0xd3, 0x24, 0x22, 0x81, 0x4d, 0xfa, 0xcc, 0x16, 0xa7, 0xed, 0xa3, 0xd5, 0xa5, 0x45,
+	0x3f, 0xf6, 0x63, 0x79, 0xa8, 0x29, 0x22, 0x75, 0xbe, 0xbe, 0x0e, 0x67, 0x3a, 0xc4, 0xa1, 0x01,
+	0x5a, 0x84, 0x33, 0x81, 0x08, 0x4c, 0x50, 0x03, 0x8d, 0x12, 0x56, 0x89, 0xa0, 0xa9, 0x10, 0x30,
+	0xf5, 0x1a, 0x68, 0xe8, 0x58, 0x25, 0x75, 0x0f, 0x2e, 0xee, 0xc4, 0x49, 0x48, 0x02, 0xf6, 0x81,
+	0x7a, 0x9b, 0x54, 0xfc, 0x0d, 0x53, 0x97, 0xa3, 0x79, 0xa8, 0x0f, 0x5d, 0x29, 0xa0, 0x63, 0x7d,
+	0xe8, 0x8a, 0x7c, 0xe4, 0x8e, 0x4b, 0xf5, 0x91, 0x2b, 0xd4, 0xde, 0x33, 0x8f, 0xf7, 0x4c, 0x43,
+	0xa9, 0xc9, 0x04, 0xdd, 0x87, 0x85, 0x1e, 0x65, 0x7e, 0x8f, 0x9b, 0x77, 0x24, 0x1e, 0x67, 0xf5,
+	0xcf, 0x00, 0x96, 0xb6, 0x28, 0xa7, 0x2e, 0x67, 0x71, 0x84, 0x9e, 0x5d, 0xf7, 0x67, 0x34, 0xca,
+	0x6b, 0x55, 0x7b, 0xda, 0xa0, 0xb6, 0x9c, 0x67, 0x32, 0xc0, 0x1e, 0xac, 0x38, 0x71, 0x16, 0x79,
+	0x2c, 0xf2, 0xbb, 0x4e, 0x3c, 0x94, 0xcd, 0x94, 0xd7, 0xec, 0xe9, 0xd5, 0x7f, 0x1a, 0x0c, 0x97,
+	0x27, 0x1a, 0xad, 0x78, 0x58, 0xc7, 0x70, 0xee, 0xaa, 0xad, 0x0e, 0x4b, 0x39, 0xda, 0x80, 0x25,
+	0x6f, 0x02, 0xc6, 0xed, 0x2d, 0x4f, 0xff, 0xc1, 0x55, 0x2d, 0xbe, 0xae, 0xaa, 0x7f, 0x03, 0x70,
+	0x7e, 0x3b, 0x24, 0x3e, 0x6d, 0xb3, 0x94, 0xc7, 0x7e, 0x42, 0x42, 0xb4, 0x00, 0x8d, 0x90, 0x45,
+	0xd2, 0x4d, 0x80, 0x45, 0x28, 0x09, 0x51, 0x23, 0x08, 0x42, 0x86, 0x82, 0x44, 0x59, 0x28, 0xed,
+	0x04, 0x58, 0x84, 0x82, 0xa4, 0x59, 0x28, 0x9d, 0x04, 0x58, 0x84, 0xa8, 0x0a, 0xcb, 0x69, 0x16,
+	0x76, 0xd3, 0x41, 0x46, 0x12, 0x9a, 0x9a, 0x33, 0xf2, 0x0b, 0x4c, 0xb3, 0x70, 0x5f, 0x11, 0xf4,
+	0x08, 0x56, 0x9c, 0xcc, 0x3d, 0xa4, 0xbc, 0x1b, 0xb0, 0x90, 0x71, 0xb3, 0x50, 0x33, 0x1a, 0xa0,
+	0xa5, 0x2f, 0x00, 0x5c, 0x56, 0xbc, 0x23, 0x30, 0x5a, 0x82, 0x05, 0x95, 0x9a, 0xc5, 0x9a, 0xd1,
+	0x30, 0xe4, 0x81, 0x31, 0xa9, 0xbf, 0x80, 0xf7, 0x64, 0xf7, 0x7b, 0x19, 0x09, 0x18, 0x1f, 0xbd,
+	0xa1, 0x3c, 0x61, 0x6e, 0x8a, 0x96, 0xe1, 0x9c, 0x93, 0xb0, 0x74, 0x90, 0xd1, 0xae, 0xba, 0x45,
+	0x6a, 0x98, 0xca, 0x18, 0xee, 0xcb, 0xcb, 0xf4, 0x5d, 0x87, 0x77, 0x65, 0xf1, 0xee, 0x11, 0x4d,
+	0x02, 0x32, 0xda, 0xec, 0x65, 0xd1, 0x21, 0x7a, 0x08, 0x2b, 0x07, 0x09, 0x09, 0x69, 0x37, 0xca,
+	0x42, 0x87, 0x26, 0xb2, 0xd2, 0xc0, 0x65, 0xc9, 0x76, 0x24, 0x42, 0x0f, 0xa0, 0x41, 0xe3, 0x03,
+	0x69, 0xc7, 0x6c, 0xab, 0x98, 0x9f, 0x55, 0x8d, 0x57, 0xbb, 0xaf, 0xb1, 0x60, 0x68, 0x1b, 0xc2,
+	0x2b, 0x6f, 0x53, 0xd3, 0x93, 0x3b, 0x7f, 0xf2, 0x0f, 0x2b, 0x11, 0xeb, 0x6c, 0x6b, 0xf8, 0x46,
+	0x31, 0xda, 0x86, 0xa5, 0xde, 0x64, 0x27, 0xe6, 0x31, 0x90, 0x52, 0x8d, 0xe9, 0x52, 0xb7, 0x97,
+	0xd8, 0xd6, 0xf0, 0x75, 0x35, 0x7a, 0x0b, 0xe7, 0x98, 0xf8, 0xdc, 0x1d, 0x28, 0x9b, 0xcc, 0xaf,
+	0xea, 0x36, 0xae, 0xfc, 0x45, 0xee, 0xb6, 0xab, 0x6d, 0x0d, 0x57, 0xd8, 0x0d, 0xdc, 0x2a, 0xc1,
+	0x62, 0xac, 0xac, 0xab, 0x0f, 0x60, 0xa9, 0xbd, 0xf6, 0xfc, 0xe9, 0xff, 0xb0, 0xf0, 0x31, 0x9c,
+	0x8d, 0x48, 0xd0, 0xf5, 0x08, 0x27, 0xf2, 0x7e, 0x55, 0x5a, 0xe5, 0xfc, 0xac, 0x5a, 0xdc, 0xd9,
+	0xe8, 0x6c, 0x11, 0x4e, 0x70, 0x31, 0x22, 0x81, 0x08, 0x5a, 0xee, 0xc9, 0xb9, 0xa5, 0x9d, 0x9e,
+	0x5b, 0xda, 0xe5, 0xb9, 0x05, 0x3e, 0xe6, 0x16, 0xf8, 0x92, 0x5b, 0xe0, 0x38, 0xb7, 0xc0, 0x49,
+	0x6e, 0x81, 0x1f, 0xb9, 0x05, 0x7e, 0xe6, 0x96, 0x76, 0x99, 0x5b, 0xe0, 0xd3, 0x85, 0xa5, 0x9d,
+	0x5c, 0x58, 0xda, 0xe9, 0x85, 0xa5, 0xbd, 0x5b, 0xf1, 0x59, 0x18, 0x50, 0x1e, 0x10, 0x27, 0xb5,
+	0x09, 0x6b, 0xaa, 0xac, 0xf9, 0xdb, 0x03, 0xf7, 0x52, 0x45, 0x4e, 0x41, 0x3e, 0x56, 0xeb, 0xbf,
+	0x02, 0x00, 0x00, 0xff, 0xff, 0xa4, 0x33, 0xde, 0x6e, 0x03, 0x05, 0x00, 0x00,
 }
 
 func (this *Label) Equal(that interface{}) bool {
@@ -556,6 +730,82 @@ func (this *DetectionList) Equal(that interface{}) bool {
 	}
 	return true
 }
+func (this *ImageHistogram) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ImageHistogram)
+	if !ok {
+		that2, ok := that.(ImageHistogram)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Min != that1.Min {
+		return false
+	}
+	if this.Max != that1.Max {
+		return false
+	}
+	if this.Num != that1.Num {
+		return false
+	}
+	if this.Sum != that1.Sum {
+		return false
+	}
+	if this.SumSquares != that1.SumSquares {
+		return false
+	}
+	if len(this.BucketLimit) != len(that1.BucketLimit) {
+		return false
+	}
+	for i := range this.BucketLimit {
+		if this.BucketLimit[i] != that1.BucketLimit[i] {
+			return false
+		}
+	}
+	if len(this.Bucket) != len(that1.Bucket) {
+		return false
+	}
+	for i := range this.Bucket {
+		if this.Bucket[i] != that1.Bucket[i] {
+			return false
+		}
+	}
+	return true
+}
+func (this *ImageQualityMetrics) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ImageQualityMetrics)
+	if !ok {
+		that2, ok := that.(ImageQualityMetrics)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.BrisqueScore != that1.BrisqueScore {
+		return false
+	}
+	return true
+}
 func (this *ImageOverlayChunk) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
@@ -612,6 +862,54 @@ func (this *ImageOverlayChunk_Detections) Equal(that interface{}) bool {
 		return false
 	}
 	if !this.Detections.Equal(that1.Detections) {
+		return false
+	}
+	return true
+}
+func (this *ImageOverlayChunk_Histogram) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ImageOverlayChunk_Histogram)
+	if !ok {
+		that2, ok := that.(ImageOverlayChunk_Histogram)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Histogram.Equal(that1.Histogram) {
+		return false
+	}
+	return true
+}
+func (this *ImageOverlayChunk_ImageQuality) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ImageOverlayChunk_ImageQuality)
+	if !ok {
+		that2, ok := that.(ImageOverlayChunk_ImageQuality)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.ImageQuality.Equal(that1.ImageQuality) {
 		return false
 	}
 	return true
@@ -697,11 +995,37 @@ func (this *DetectionList) GoString() string {
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
+func (this *ImageHistogram) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 11)
+	s = append(s, "&corepb.ImageHistogram{")
+	s = append(s, "Min: "+fmt.Sprintf("%#v", this.Min)+",\n")
+	s = append(s, "Max: "+fmt.Sprintf("%#v", this.Max)+",\n")
+	s = append(s, "Num: "+fmt.Sprintf("%#v", this.Num)+",\n")
+	s = append(s, "Sum: "+fmt.Sprintf("%#v", this.Sum)+",\n")
+	s = append(s, "SumSquares: "+fmt.Sprintf("%#v", this.SumSquares)+",\n")
+	s = append(s, "BucketLimit: "+fmt.Sprintf("%#v", this.BucketLimit)+",\n")
+	s = append(s, "Bucket: "+fmt.Sprintf("%#v", this.Bucket)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ImageQualityMetrics) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&corepb.ImageQualityMetrics{")
+	s = append(s, "BrisqueScore: "+fmt.Sprintf("%#v", this.BrisqueScore)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
 func (this *ImageOverlayChunk) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 7)
+	s := make([]string, 0, 9)
 	s = append(s, "&corepb.ImageOverlayChunk{")
 	s = append(s, "FrameNumber: "+fmt.Sprintf("%#v", this.FrameNumber)+",\n")
 	s = append(s, "EOF: "+fmt.Sprintf("%#v", this.EOF)+",\n")
@@ -717,6 +1041,22 @@ func (this *ImageOverlayChunk_Detections) GoString() string {
 	}
 	s := strings.Join([]string{`&corepb.ImageOverlayChunk_Detections{` +
 		`Detections:` + fmt.Sprintf("%#v", this.Detections) + `}`}, ", ")
+	return s
+}
+func (this *ImageOverlayChunk_Histogram) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&corepb.ImageOverlayChunk_Histogram{` +
+		`Histogram:` + fmt.Sprintf("%#v", this.Histogram) + `}`}, ", ")
+	return s
+}
+func (this *ImageOverlayChunk_ImageQuality) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&corepb.ImageOverlayChunk_ImageQuality{` +
+		`ImageQuality:` + fmt.Sprintf("%#v", this.ImageQuality) + `}`}, ", ")
 	return s
 }
 func (this *H264Chunk) GoString() string {
@@ -908,6 +1248,117 @@ func (m *DetectionList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *ImageHistogram) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ImageHistogram) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ImageHistogram) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Bucket) > 0 {
+		dAtA3 := make([]byte, len(m.Bucket)*10)
+		var j2 int
+		for _, num1 := range m.Bucket {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA3[j2] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j2++
+			}
+			dAtA3[j2] = uint8(num)
+			j2++
+		}
+		i -= j2
+		copy(dAtA[i:], dAtA3[:j2])
+		i = encodeVarintMediastream(dAtA, i, uint64(j2))
+		i--
+		dAtA[i] = 0x3a
+	}
+	if len(m.BucketLimit) > 0 {
+		for iNdEx := len(m.BucketLimit) - 1; iNdEx >= 0; iNdEx-- {
+			f4 := math.Float64bits(float64(m.BucketLimit[iNdEx]))
+			i -= 8
+			encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(f4))
+		}
+		i = encodeVarintMediastream(dAtA, i, uint64(len(m.BucketLimit)*8))
+		i--
+		dAtA[i] = 0x32
+	}
+	if m.SumSquares != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.SumSquares))))
+		i--
+		dAtA[i] = 0x29
+	}
+	if m.Sum != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Sum))))
+		i--
+		dAtA[i] = 0x21
+	}
+	if m.Num != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Num))))
+		i--
+		dAtA[i] = 0x19
+	}
+	if m.Max != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Max))))
+		i--
+		dAtA[i] = 0x11
+	}
+	if m.Min != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Min))))
+		i--
+		dAtA[i] = 0x9
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ImageQualityMetrics) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ImageQualityMetrics) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ImageQualityMetrics) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.BrisqueScore != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.BrisqueScore))))
+		i--
+		dAtA[i] = 0x9
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *ImageOverlayChunk) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -975,6 +1426,52 @@ func (m *ImageOverlayChunk_Detections) MarshalToSizedBuffer(dAtA []byte) (int, e
 		dAtA[i] = 0x6
 		i--
 		dAtA[i] = 0xa2
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ImageOverlayChunk_Histogram) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ImageOverlayChunk_Histogram) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.Histogram != nil {
+		{
+			size, err := m.Histogram.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintMediastream(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xc2
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ImageOverlayChunk_ImageQuality) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ImageOverlayChunk_ImageQuality) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.ImageQuality != nil {
+		{
+			size, err := m.ImageQuality.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintMediastream(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+		i--
+		dAtA[i] = 0xe2
 	}
 	return len(dAtA) - i, nil
 }
@@ -1105,6 +1602,52 @@ func (m *DetectionList) Size() (n int) {
 	return n
 }
 
+func (m *ImageHistogram) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Min != 0 {
+		n += 9
+	}
+	if m.Max != 0 {
+		n += 9
+	}
+	if m.Num != 0 {
+		n += 9
+	}
+	if m.Sum != 0 {
+		n += 9
+	}
+	if m.SumSquares != 0 {
+		n += 9
+	}
+	if len(m.BucketLimit) > 0 {
+		n += 1 + sovMediastream(uint64(len(m.BucketLimit)*8)) + len(m.BucketLimit)*8
+	}
+	if len(m.Bucket) > 0 {
+		l = 0
+		for _, e := range m.Bucket {
+			l += sovMediastream(uint64(e))
+		}
+		n += 1 + sovMediastream(uint64(l)) + l
+	}
+	return n
+}
+
+func (m *ImageQualityMetrics) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.BrisqueScore != 0 {
+		n += 9
+	}
+	return n
+}
+
 func (m *ImageOverlayChunk) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1131,6 +1674,30 @@ func (m *ImageOverlayChunk_Detections) Size() (n int) {
 	_ = l
 	if m.Detections != nil {
 		l = m.Detections.Size()
+		n += 2 + l + sovMediastream(uint64(l))
+	}
+	return n
+}
+func (m *ImageOverlayChunk_Histogram) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Histogram != nil {
+		l = m.Histogram.Size()
+		n += 2 + l + sovMediastream(uint64(l))
+	}
+	return n
+}
+func (m *ImageOverlayChunk_ImageQuality) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ImageQuality != nil {
+		l = m.ImageQuality.Size()
 		n += 2 + l + sovMediastream(uint64(l))
 	}
 	return n
@@ -1215,6 +1782,32 @@ func (this *DetectionList) String() string {
 	}, "")
 	return s
 }
+func (this *ImageHistogram) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ImageHistogram{`,
+		`Min:` + fmt.Sprintf("%v", this.Min) + `,`,
+		`Max:` + fmt.Sprintf("%v", this.Max) + `,`,
+		`Num:` + fmt.Sprintf("%v", this.Num) + `,`,
+		`Sum:` + fmt.Sprintf("%v", this.Sum) + `,`,
+		`SumSquares:` + fmt.Sprintf("%v", this.SumSquares) + `,`,
+		`BucketLimit:` + fmt.Sprintf("%v", this.BucketLimit) + `,`,
+		`Bucket:` + fmt.Sprintf("%v", this.Bucket) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ImageQualityMetrics) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ImageQualityMetrics{`,
+		`BrisqueScore:` + fmt.Sprintf("%v", this.BrisqueScore) + `,`,
+		`}`,
+	}, "")
+	return s
+}
 func (this *ImageOverlayChunk) String() string {
 	if this == nil {
 		return "nil"
@@ -1233,6 +1826,26 @@ func (this *ImageOverlayChunk_Detections) String() string {
 	}
 	s := strings.Join([]string{`&ImageOverlayChunk_Detections{`,
 		`Detections:` + strings.Replace(fmt.Sprintf("%v", this.Detections), "DetectionList", "DetectionList", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ImageOverlayChunk_Histogram) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ImageOverlayChunk_Histogram{`,
+		`Histogram:` + strings.Replace(fmt.Sprintf("%v", this.Histogram), "ImageHistogram", "ImageHistogram", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ImageOverlayChunk_ImageQuality) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ImageOverlayChunk_ImageQuality{`,
+		`ImageQuality:` + strings.Replace(fmt.Sprintf("%v", this.ImageQuality), "ImageQualityMetrics", "ImageQualityMetrics", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -1648,6 +2261,302 @@ func (m *DetectionList) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *ImageHistogram) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowMediastream
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ImageHistogram: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ImageHistogram: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Min", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Min = float64(math.Float64frombits(v))
+		case 2:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Max", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Max = float64(math.Float64frombits(v))
+		case 3:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Num", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Num = float64(math.Float64frombits(v))
+		case 4:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Sum", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Sum = float64(math.Float64frombits(v))
+		case 5:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SumSquares", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.SumSquares = float64(math.Float64frombits(v))
+		case 6:
+			if wireType == 1 {
+				var v uint64
+				if (iNdEx + 8) > l {
+					return io.ErrUnexpectedEOF
+				}
+				v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+				iNdEx += 8
+				v2 := float64(math.Float64frombits(v))
+				m.BucketLimit = append(m.BucketLimit, v2)
+			} else if wireType == 2 {
+				var packedLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowMediastream
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					packedLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if packedLen < 0 {
+					return ErrInvalidLengthMediastream
+				}
+				postIndex := iNdEx + packedLen
+				if postIndex < 0 {
+					return ErrInvalidLengthMediastream
+				}
+				if postIndex > l {
+					return io.ErrUnexpectedEOF
+				}
+				var elementCount int
+				elementCount = packedLen / 8
+				if elementCount != 0 && len(m.BucketLimit) == 0 {
+					m.BucketLimit = make([]float64, 0, elementCount)
+				}
+				for iNdEx < postIndex {
+					var v uint64
+					if (iNdEx + 8) > l {
+						return io.ErrUnexpectedEOF
+					}
+					v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+					iNdEx += 8
+					v2 := float64(math.Float64frombits(v))
+					m.BucketLimit = append(m.BucketLimit, v2)
+				}
+			} else {
+				return fmt.Errorf("proto: wrong wireType = %d for field BucketLimit", wireType)
+			}
+		case 7:
+			if wireType == 0 {
+				var v int64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowMediastream
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					v |= int64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				m.Bucket = append(m.Bucket, v)
+			} else if wireType == 2 {
+				var packedLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowMediastream
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					packedLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if packedLen < 0 {
+					return ErrInvalidLengthMediastream
+				}
+				postIndex := iNdEx + packedLen
+				if postIndex < 0 {
+					return ErrInvalidLengthMediastream
+				}
+				if postIndex > l {
+					return io.ErrUnexpectedEOF
+				}
+				var elementCount int
+				var count int
+				for _, integer := range dAtA[iNdEx:postIndex] {
+					if integer < 128 {
+						count++
+					}
+				}
+				elementCount = count
+				if elementCount != 0 && len(m.Bucket) == 0 {
+					m.Bucket = make([]int64, 0, elementCount)
+				}
+				for iNdEx < postIndex {
+					var v int64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowMediastream
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						v |= int64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					m.Bucket = append(m.Bucket, v)
+				}
+			} else {
+				return fmt.Errorf("proto: wrong wireType = %d for field Bucket", wireType)
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipMediastream(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthMediastream
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ImageQualityMetrics) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowMediastream
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ImageQualityMetrics: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ImageQualityMetrics: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BrisqueScore", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.BrisqueScore = float64(math.Float64frombits(v))
+		default:
+			iNdEx = preIndex
+			skippy, err := skipMediastream(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthMediastream
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *ImageOverlayChunk) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1750,6 +2659,76 @@ func (m *ImageOverlayChunk) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			m.Overlay = &ImageOverlayChunk_Detections{v}
+			iNdEx = postIndex
+		case 200:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Histogram", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMediastream
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthMediastream
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthMediastream
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &ImageHistogram{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Overlay = &ImageOverlayChunk_Histogram{v}
+			iNdEx = postIndex
+		case 300:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ImageQuality", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMediastream
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthMediastream
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthMediastream
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &ImageQualityMetrics{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Overlay = &ImageOverlayChunk_ImageQuality{v}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
