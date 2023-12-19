@@ -105,7 +105,6 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
 
   Status Run() {
     GML_RETURN_IF_ERROR(PreparePluginExecutionContexts());
-
     std::map<std::string, mediapipe::Packet> side_packets;
 
     GML_RETURN_IF_ERROR(
@@ -140,7 +139,6 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
 
     SendStatusUpdate(ExecutionGraphState::EXECUTION_GRAPH_STATE_DEPLOYED, "");
     GML_RETURN_IF_ERROR(runner.Start());
-
     while (!parent_->stop_signal_.load() && !runner.HasError()) {
       auto dropped = num_frames_dropped.load();
       auto total = num_frames.load();
@@ -162,7 +160,7 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
     auto s = Run();
     if (!s.ok()) {
       SendStatusUpdate(ExecutionGraphState::EXECUTION_GRAPH_STATE_FAILED, "");
-      LOG(ERROR) << "Failed to run model: " << s.msg();
+      LOG(ERROR) << "Failed to run model: " << physical_pipeline_id_ << " " << s.msg();
     }
   }
 
@@ -193,8 +191,6 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
 };
 
 Status ModelExecHandler::HandleMessage(const BridgeResponse& msg) {
-  absl::WriterMutexLock lock(&tasks_mu_);
-
   // TODO(michelle): Handle DeleteExecutionGraph message.
   ApplyExecutionGraph eg;
   if (!msg.msg().UnpackTo(&eg)) {
@@ -203,16 +199,24 @@ Status ModelExecHandler::HandleMessage(const BridgeResponse& msg) {
     return Status::OK();
   }
 
+  return this->HandleApplyExecutionGraph(eg);
+}
+
+Status ModelExecHandler::HandleApplyExecutionGraph(const ApplyExecutionGraph& eg) {
+  absl::base_internal::SpinLockHolder lock(&exec_graph_lock_);
+
   auto id = ParseUUID(eg.physical_pipeline_id());
 
-  auto it = model_tasks_.find(id);
-  if (it != model_tasks_.end()) {
-    // TODO(michelle): Handle updates to existing pipeline.
-    LOG(INFO) << "Pipeline for model already running, skipping request";
+  if (running_task_ != nullptr) {
+    LOG(INFO) << "Model already running... Queuing up RunModel Request";
+    queued_execution_graph_ = std::make_unique<ApplyExecutionGraph>(eg);
+    stop_signal_.store(true);
     return Status::OK();
   }
 
-  LOG(INFO) << "Starting model execution";
+  LOG(INFO) << "Starting model execution  " << id;
+  queued_execution_graph_ = nullptr;
+
   if (!eg.has_spec()) {
     LOG(ERROR) << "Missing spec in ApplyExecutionGraph msg";
     return Status::OK();
@@ -223,9 +227,8 @@ Status ModelExecHandler::HandleMessage(const BridgeResponse& msg) {
   auto task = std::make_unique<RunModelTask>(this, eg.spec().graph(), ctrl_exec_ctx_, id,
                                              eg.spec().version());
 
-  auto running_task = dispatcher()->CreateAsyncTask(std::move(task));
-  running_task->Run();
-  model_tasks_[id] = std::move(running_task);
+  running_task_ = dispatcher()->CreateAsyncTask(std::move(task));
+  running_task_->Run();
 
   return Status::OK();
 }
@@ -233,26 +236,24 @@ Status ModelExecHandler::HandleMessage(const BridgeResponse& msg) {
 Status ModelExecHandler::Init() { return Status::OK(); }
 
 Status ModelExecHandler::Finish() {
-  absl::ReaderMutexLock lock(&tasks_mu_);
-
-  if (!model_tasks_.empty()) {
+  if (running_task_ != nullptr) {
     stop_signal_.store(true);
   }
   return Status::OK();
 }
 
 void ModelExecHandler::HandleRunModelFinished(sole::uuid physical_pipeline_id) {
-  absl::WriterMutexLock lock(&tasks_mu_);
+  LOG(INFO) << "Model execution finished " << physical_pipeline_id;
+  dispatcher()->DeferredDelete(std::move(running_task_));
+  running_task_ = nullptr;
 
-  auto it = model_tasks_.find(physical_pipeline_id);
-  if (it == model_tasks_.end()) {
-    LOG(INFO) << "Model execution finished, but not found in map";
-    return;
+  absl::base_internal::SpinLockHolder lock(&exec_graph_lock_);
+  if (queued_execution_graph_ != nullptr) {
+    auto eg = *queued_execution_graph_.get();
+    auto post_cb = [this, eg]() mutable { ECHECK_OK(this->HandleApplyExecutionGraph(eg)); };
+
+    dispatcher()->Post(event::PostCB(std::move(post_cb)));
   }
-
-  LOG(INFO) << "Model execution finished";
-  dispatcher()->DeferredDelete(std::move(it->second));
-  model_tasks_.erase(it);
 }
 
 void ModelExecHandler::HandleModelStatusUpdate(sole::uuid physical_pipeline_id,

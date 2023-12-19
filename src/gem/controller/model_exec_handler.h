@@ -42,6 +42,7 @@ class ModelExecHandler : public MessageHandler {
   ~ModelExecHandler() override = default;
 
   Status HandleMessage(const ::gml::internal::controlplane::egw::v1::BridgeResponse& msg) override;
+  Status HandleApplyExecutionGraph(const ::gml::internal::api::core::v1::ApplyExecutionGraph&);
 
   Status Init() override;
   Status Finish() override;
@@ -55,10 +56,10 @@ class ModelExecHandler : public MessageHandler {
 
   exec::core::ControlExecutionContext* ctrl_exec_ctx_;
   event::RunnableAsyncTaskUPtr running_task_ = nullptr;
+  absl::base_internal::SpinLock exec_graph_lock_;
+  std::unique_ptr<internal::api::core::v1::ApplyExecutionGraph> queued_execution_graph_
+      ABSL_GUARDED_BY(exec_graph_lock_);
   std::atomic<bool> stop_signal_ = false;
-  absl::Mutex tasks_mu_;
-  absl::flat_hash_map<sole::uuid, event::RunnableAsyncTaskUPtr> model_tasks_
-      ABSL_GUARDED_BY(tasks_mu_);
 };
 
 }  // namespace gml::gem::controller
