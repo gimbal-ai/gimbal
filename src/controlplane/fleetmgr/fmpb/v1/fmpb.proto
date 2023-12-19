@@ -40,6 +40,8 @@ message FleetInfo {
   string description = 5 [ (gogoproto.moretags) = 'db:"description"' ];
   // The timestamp when the fleet was created.
   google.protobuf.Timestamp created_at = 6 [ (gogoproto.moretags) = 'db:"created_at"' ];
+  // A map of the default device tags associated with the fleet.
+  map<string, Tag> tags = 7;
 
   reserved 4;
 }
