@@ -29,6 +29,7 @@ def _apt_parse_impl(ctx):
     args.add("--out_bzl", out)
     args.add_joined("--spec", ctx.attr.specs, join_with = ",", map_each = _target_to_files)
     args.add_joined("--arch", ctx.attr.archs, join_with = ",")
+    args.add("--fake_mirroring", ctx.attr.fake_mirroring)
 
     depsets = []
     for spec in ctx.attr.specs:
@@ -62,6 +63,10 @@ _apt_parse_rule = rule(
             doc = "A list of apt_parse specs to parse.",
             allow_files = True,
         ),
+        fake_mirroring = attr.bool(
+            doc = "If true, skips mirroring but still generates the deb repos as if mirroring was enabled.",
+            default = False,
+        ),
         _apt_parse = attr.label(
             default = Label("//bazel/tools/apt_parse"),
             cfg = "exec",
@@ -74,12 +79,14 @@ def apt_parse(name, specs, archs, **kwargs):
     This macros creates a `<name>.update` target that updates the `<name>.bzl` file based on the specs.
     It also creates a `<name>.test` target that tests that the `<name>.bzl` file is up-to-date for the specs.
     """
+    tags = kwargs.pop("tags", [])
     bzl_file = name + ".bzl"
     _apt_parse_rule(
         name = name,
         archs = archs,
         bzl_file = bzl_file + ".gen",
         specs = specs,
+        tags = tags + ["manual"],
         **kwargs
     )
 
@@ -95,6 +102,7 @@ def apt_parse(name, specs, archs, **kwargs):
                 filename = bzl_file,
             ),
         ],
+        tags = tags + ["manual"],
         **kwargs
     )
 
@@ -102,6 +110,17 @@ def apt_parse(name, specs, archs, **kwargs):
         name = name + ".update",
         srcs = [":" + name + "_update.sh"],
         data = [":" + name],
+        tags = tags + ["manual"],
+        **kwargs
+    )
+
+    _apt_parse_rule(
+        name = name + ".test.gen",
+        archs = archs,
+        bzl_file = bzl_file + ".test.gen",
+        specs = specs,
+        tags = tags + ["manual"],
+        fake_mirroring = True,
         **kwargs
     )
 
@@ -112,7 +131,8 @@ def apt_parse(name, specs, archs, **kwargs):
             target = name + ".update",
         ),
         file1 = bzl_file,
-        file2 = name,
+        file2 = name + ".test.gen",
         target_compatible_with = no_sysroot(),
+        tags = tags,
         **kwargs
     )

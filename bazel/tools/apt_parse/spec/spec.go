@@ -71,12 +71,12 @@ type Symlink struct {
 
 // PinnedPackage represents a fully-resolved package with all its dependencies also resolved.
 type PinnedPackage struct {
-	Name               string `yaml:"name"`
-	Version            string `yaml:"version"`
-	Arch               string `yaml:"arch"`
-	URL                string `yaml:"url"`
-	SHA256             string `yaml:"sha256"`
-	RepoName           string `yaml:"repo"`
+	Name               string   `yaml:"name"`
+	Version            string   `yaml:"version"`
+	Arch               string   `yaml:"arch"`
+	URLs               []string `yaml:"urls"`
+	SHA256             string   `yaml:"sha256"`
+	RepoName           string   `yaml:"repo"`
 	DirectDependencies []*PinnedPackage
 	ExcludePaths       []string   `yaml:"exclude_paths"`
 	ExtraSymlinks      []*Symlink `yaml:"extra_symlinks"`

@@ -84,7 +84,7 @@ func (g *BazelGenerator) Save(path string) error {
 func (g *BazelGenerator) addRule(name string, p *spec.PinnedPackage) {
 	r := rule.NewRule(debRule, name)
 	r.SetAttr("name", name)
-	r.SetAttr("urls", []string{p.URL})
+	r.SetAttr("urls", p.URLs)
 	r.SetAttr("sha256", p.SHA256)
 	depMap := make(map[string]string)
 	for _, dep := range p.DirectDependencies {

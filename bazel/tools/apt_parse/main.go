@@ -28,6 +28,7 @@ import (
 
 	"gimletlabs.ai/gimlet/bazel/tools/apt_parse/bazelgen"
 	"gimletlabs.ai/gimlet/bazel/tools/apt_parse/index"
+	"gimletlabs.ai/gimlet/bazel/tools/apt_parse/mirror"
 	"gimletlabs.ai/gimlet/bazel/tools/apt_parse/resolve"
 	"gimletlabs.ai/gimlet/bazel/tools/apt_parse/spec"
 )
@@ -37,6 +38,9 @@ func init() {
 	pflag.StringSlice("arch", []string{}, "List of architectures to find package dependencies for")
 	pflag.String("out_bzl", "", "Path to output .bzl file")
 	pflag.String("macro_name", "deb_repos", "Name for bazel macro which defines the deb repos")
+	pflag.String("mirror_bucket", "gimlet-dev-infra-public", "Bucket to mirror debs to")
+	pflag.String("mirror_path", "deb-mirrors", "Bucket to mirror debs to")
+	pflag.Bool("fake_mirroring", false, "If true, skips mirroring but outputs a file as if mirrors were created. Useful for checking if the file is up to date without running any of the mirroring.")
 	pflag.Parse()
 	_ = viper.BindPFlags(pflag.CommandLine)
 }
@@ -45,6 +49,20 @@ func generate(d index.Downloader, specs []string, archs []string, macroName stri
 	gen, err := bazelgen.NewBazelGenerator(macroName)
 	if err != nil {
 		return err
+	}
+	m := mirror.NewNoopMirrorer()
+	mirrorBucket := viper.GetString("mirror_bucket")
+	mirrorPath := viper.GetString("mirror_path")
+	if mirrorBucket != "" && mirrorPath != "" {
+		if viper.GetBool("fake_mirroring") {
+			m = mirror.NewFakeGCSMirrorer(mirrorBucket, mirrorPath)
+		} else {
+			var err error
+			m, err = mirror.NewGCSMirrorer(mirrorBucket, mirrorPath)
+			if err != nil {
+				return err
+			}
+		}
 	}
 	for _, specPath := range specs {
 		f, err := os.Open(specPath)
@@ -68,8 +86,14 @@ func generate(d index.Downloader, specs []string, archs []string, macroName stri
 			if err != nil {
 				return fmt.Errorf("failed to resolve spec %s: %w", specPath, err)
 			}
+			if err := m.Mirror(pps); err != nil {
+				return err
+			}
 			gen.AddPinnedSet(pps)
 		}
+	}
+	if err := m.Wait(); err != nil {
+		return err
 	}
 	return gen.Save(outPath)
 }

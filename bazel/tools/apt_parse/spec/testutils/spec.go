@@ -30,7 +30,7 @@ type PinnedPackage struct {
 	Name               string
 	Version            string
 	Arch               string
-	URL                string
+	URLs               []string
 	SHA256             string
 	RepoName           string
 	DirectDependencies []string
@@ -53,7 +53,7 @@ func ConvertToSpecPackages(testPkgs []*PinnedPackage) ([]*spec.PinnedPackage, er
 			Name:               p.Name,
 			Version:            p.Version,
 			Arch:               p.Arch,
-			URL:                p.URL,
+			URLs:               p.URLs,
 			SHA256:             p.SHA256,
 			RepoName:           p.RepoName,
 			ExcludePaths:       p.ExcludePaths,

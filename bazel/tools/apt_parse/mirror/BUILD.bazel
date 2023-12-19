@@ -13,28 +13,21 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("@gml//bazel:gml_build_system.bzl", "gml_go_binary")
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
-    name = "apt_parse_lib",
-    srcs = ["main.go"],
-    importpath = "gimletlabs.ai/gimlet/bazel/tools/apt_parse",
-    visibility = ["//visibility:private"],
+    name = "mirror",
+    srcs = ["mirrorer.go"],
+    importpath = "gimletlabs.ai/gimlet/bazel/tools/apt_parse/mirror",
+    visibility = ["//visibility:public"],
     deps = [
-        "//bazel/tools/apt_parse/bazelgen",
-        "//bazel/tools/apt_parse/index",
-        "//bazel/tools/apt_parse/mirror",
-        "//bazel/tools/apt_parse/resolve",
         "//bazel/tools/apt_parse/spec",
+        "@com_github_cenkalti_backoff_v4//:backoff",
         "@com_github_sirupsen_logrus//:logrus",
         "@com_github_spf13_pflag//:pflag",
         "@com_github_spf13_viper//:viper",
+        "@com_google_cloud_go_storage//:storage",
+        "@org_golang_google_api//iterator",
+        "@org_golang_x_sync//errgroup",
     ],
-)
-
-gml_go_binary(
-    name = "apt_parse",
-    embed = [":apt_parse_lib"],
-    visibility = ["//visibility:public"],
 )
