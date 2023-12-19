@@ -33,10 +33,14 @@ namespace gml::gem::calculators::ffmpeg {
 
 using ::gml::internal::api::core::v1::Detection;
 using ::gml::internal::api::core::v1::H264Chunk;
+using ::gml::internal::api::core::v1::ImageHistogram;
 using ::gml::internal::api::core::v1::ImageOverlayChunk;
+using ::gml::internal::api::core::v1::ImageQualityMetrics;
 
 constexpr std::string_view kDetectionsTag = "DETECTIONS";
 constexpr std::string_view kAVPacketTag = "AV_PACKETS";
+constexpr std::string_view kImageHistTag = "IMAGE_HIST";
+constexpr std::string_view kImageQualityTag = "IMAGE_QUALITY";
 
 // TODO(james): move this into calculator options
 constexpr size_t kMaxDesiredChunkSize = 512UL * 1024UL;
@@ -81,6 +85,20 @@ Status DetectionsToImageOverlayChunks(const std::vector<Detection>& detections,
   return Status::OK();
 }
 
+Status ImageHistogramToImageOverlayChunks(const ImageHistogram& hist,
+                                          std::vector<ImageOverlayChunk>* image_overlay_chunks) {
+  auto& chunk = image_overlay_chunks->emplace_back();
+  (*chunk.mutable_histogram()) = hist;
+  return Status::OK();
+}
+
+Status ImageQualityMetricsToImageOverlayChunks(
+    const ImageQualityMetrics& quality, std::vector<ImageOverlayChunk>* image_overlay_chunks) {
+  auto& chunk = image_overlay_chunks->emplace_back();
+  (*chunk.mutable_image_quality()) = quality;
+  return Status::OK();
+}
+
 Status AVPacketsToH264Chunks(const std::vector<std::unique_ptr<AVPacketWrapper>>& packets,
                              std::vector<H264Chunk>* h264_chunks) {
   // This is part of the estimate for the encoded proto size. See
@@ -115,6 +133,12 @@ absl::Status OverlayedFFmpegVideoSinkCalculator::GetContract(mediapipe::Calculat
   if (cc->Inputs().HasTag(kDetectionsTag)) {
     cc->Inputs().Tag(kDetectionsTag).Set<std::vector<Detection>>();
   }
+  if (cc->Inputs().HasTag(kImageHistTag)) {
+    cc->Inputs().Tag(kImageHistTag).Set<ImageHistogram>();
+  }
+  if (cc->Inputs().HasTag(kImageQualityTag)) {
+    cc->Inputs().Tag(kImageQualityTag).Set<ImageQualityMetrics>();
+  }
   cc->Inputs().Tag(kAVPacketTag).Set<std::vector<std::unique_ptr<AVPacketWrapper>>>();
   return absl::OkStatus();
 }
@@ -127,6 +151,15 @@ Status OverlayedFFmpegVideoSinkCalculator::ProcessImpl(
   if (cc->Inputs().HasTag(kDetectionsTag) && !cc->Inputs().Tag(kDetectionsTag).IsEmpty()) {
     const auto& detections = cc->Inputs().Tag(kDetectionsTag).Get<std::vector<Detection>>();
     GML_RETURN_IF_ERROR(DetectionsToImageOverlayChunks(detections, &image_overlay_chunks));
+  }
+
+  if (cc->Inputs().HasTag(kImageHistTag) && !cc->Inputs().Tag(kImageHistTag).IsEmpty()) {
+    const auto& hist = cc->Inputs().Tag(kImageHistTag).Get<ImageHistogram>();
+    GML_RETURN_IF_ERROR(ImageHistogramToImageOverlayChunks(hist, &image_overlay_chunks));
+  }
+  if (cc->Inputs().HasTag(kImageQualityTag) && !cc->Inputs().Tag(kImageQualityTag).IsEmpty()) {
+    const auto& quality = cc->Inputs().Tag(kImageQualityTag).Get<ImageQualityMetrics>();
+    GML_RETURN_IF_ERROR(ImageQualityMetricsToImageOverlayChunks(quality, &image_overlay_chunks));
   }
 
   const auto& av_packets =

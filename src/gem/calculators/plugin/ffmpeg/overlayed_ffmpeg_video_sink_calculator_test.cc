@@ -31,13 +31,15 @@ namespace gml::gem::calculators::ffmpeg {
 
 using ::gml::internal::api::core::v1::Detection;
 using ::gml::internal::api::core::v1::H264Chunk;
+using ::gml::internal::api::core::v1::ImageHistogram;
 using ::gml::internal::api::core::v1::ImageOverlayChunk;
+using ::gml::internal::api::core::v1::ImageQualityMetrics;
 
 static constexpr char kOverlayedFFmpegVideoSinkNode[] = R"pbtxt(
 calculator: "OverlayedFFmpegVideoSinkCalculator"
 input_side_packet: "EXEC_CTX:ctrl_exec_ctx"
-input_stream: "DETECTIONS:detections"
 input_stream: "AV_PACKETS:av_packets"
+$0
 )pbtxt";
 
 struct FFmpegVideoSinkTestCase {
@@ -45,6 +47,8 @@ struct FFmpegVideoSinkTestCase {
   std::vector<int> av_packet_sizes;
   std::vector<std::string> expected_overlay_chunk_pbtxts;
   std::vector<std::vector<size_t>> expected_h264_chunks_ids;
+  std::optional<std::string> image_hist_pbtxt;
+  std::optional<std::string> image_quality_pbtxt;
 };
 
 class OverlayedFFmpegVideoSinkTest : public ::testing::TestWithParam<FFmpegVideoSinkTestCase> {};
@@ -52,7 +56,25 @@ class OverlayedFFmpegVideoSinkTest : public ::testing::TestWithParam<FFmpegVideo
 TEST_P(OverlayedFFmpegVideoSinkTest, OutputsExpectedChunks) {
   auto test_case = GetParam();
 
-  auto config = absl::Substitute(kOverlayedFFmpegVideoSinkNode);
+  std::vector<std::string> overlay_input_streams;
+  if (test_case.detection_pbtxts.size() > 0) {
+    overlay_input_streams.emplace_back(R"pb(input_stream: "DETECTIONS:detections")pb");
+  }
+  ImageHistogram image_hist;
+  if (test_case.image_hist_pbtxt.has_value()) {
+    overlay_input_streams.emplace_back(R"pb(input_stream: "IMAGE_HIST:hist")pb");
+    ASSERT_TRUE(google::protobuf::TextFormat::ParseFromString(test_case.image_hist_pbtxt.value(),
+                                                              &image_hist));
+  }
+  ImageQualityMetrics image_quality;
+  if (test_case.image_quality_pbtxt.has_value()) {
+    overlay_input_streams.emplace_back(R"pb(input_stream: "IMAGE_QUALITY:quality")pb");
+    ASSERT_TRUE(google::protobuf::TextFormat::ParseFromString(test_case.image_quality_pbtxt.value(),
+                                                              &image_quality));
+  }
+
+  auto config =
+      absl::Substitute(kOverlayedFFmpegVideoSinkNode, absl::StrJoin(overlay_input_streams, "\n"));
   testing::CalculatorTester tester(config);
 
   std::vector<Detection> detections(test_case.detection_pbtxts.size());
@@ -105,10 +127,17 @@ TEST_P(OverlayedFFmpegVideoSinkTest, OutputsExpectedChunks) {
   exec::core::ControlExecutionContext control_ctx;
   control_ctx.RegisterVideoWithOverlaysCallback(cb);
 
-  tester.WithExecutionContext(&control_ctx)
-      .ForInput("DETECTIONS", std::move(detections), 0)
-      .ForInput("AV_PACKETS", std::move(packets), 0)
-      .Run();
+  tester.WithExecutionContext(&control_ctx).ForInput("AV_PACKETS", std::move(packets), 0);
+  if (detections.size() > 0) {
+    tester.ForInput("DETECTIONS", std::move(detections), 0);
+  }
+  if (test_case.image_hist_pbtxt.has_value()) {
+    tester.ForInput("IMAGE_HIST", std::move(image_hist), 0);
+  }
+  if (test_case.image_quality_pbtxt.has_value()) {
+    tester.ForInput("IMAGE_QUALITY", std::move(image_quality), 0);
+  }
+  tester.Run();
 
   EXPECT_THAT(actual_image_overlay_chunks,
               ::testing::Pointwise(::gml::testing::proto::EqProto(), expected_overlay_chunks));
@@ -163,6 +192,8 @@ detections {
                                      {
                                          {0},
                                      },
+                                 .image_hist_pbtxt = {},
+                                 .image_quality_pbtxt = {},
                              },
                              FFmpegVideoSinkTestCase{
                                  .detection_pbtxts =
@@ -236,6 +267,8 @@ detections {
                                          // Second packet is large so it should force a new chunk.
                                          {1},
                                      },
+                                 .image_hist_pbtxt = {},
+                                 .image_quality_pbtxt = {},
                              },
                              FFmpegVideoSinkTestCase{
                                  .detection_pbtxts =
@@ -307,6 +340,69 @@ detections {
                                          // If the packet is larger than the chunk size it should
                                          // still be output as a chunk with a single packet.
                                          {0},
+                                     },
+                                 .image_hist_pbtxt = {},
+                                 .image_quality_pbtxt = {},
+                             },
+
+                             FFmpegVideoSinkTestCase{
+                                 .detection_pbtxts = {},
+                                 .av_packet_sizes =
+                                     {
+                                         100,
+                                     },
+                                 .expected_overlay_chunk_pbtxts =
+                                     {
+                                         R"pbtxt(
+frame_number: 0
+eof: false
+histogram {
+  min: 0.1
+  max: 0.9
+  num: 100
+  sum: 1000
+  sum_squares: 10000
+  bucket_limit: 0
+  bucket_limit: 0.1
+  bucket_limit: 1
+  bucket: 0
+  bucket: 10
+  bucket: 90
+}
+)pbtxt",
+                                         R"pbtxt(
+frame_number: 0
+eof: true
+image_quality {
+  brisque_score: 0.5
+}
+)pbtxt",
+                                     },
+                                 .expected_h264_chunks_ids =
+                                     {
+                                         {0},
+                                     },
+                                 .image_hist_pbtxt =
+                                     {
+                                         R"pbtxt(
+min: 0.1
+max: 0.9
+num: 100
+sum: 1000
+sum_squares: 10000
+bucket_limit: 0
+bucket_limit: 0.1
+bucket_limit: 1
+bucket: 0
+bucket: 10
+bucket: 90
+)pbtxt",
+                                     },
+                                 .image_quality_pbtxt =
+                                     {
+                                         R"pbtxt(
+brisque_score: 0.5
+)pbtxt",
                                      },
                              }));
 

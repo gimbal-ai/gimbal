@@ -35,6 +35,9 @@ namespace gml::gem::calculators::ffmpeg {
  *    AV_PACKETS std::vector<std::unique_ptr<AVPacketWrapper>> list of ffmpeg
  *      encoded packets.
  *
+ *    IMAGE_HIST internal::api::core::v1::ImageHistogram
+ *    IMAGE_QUALITY internal::api::core::v1::ImageQualityMetrics.
+ *
  *  Outputs:
  *    This is a sink node so there are no mediapipe outputs. Instead the node outputs proto data to
  *      the GEM controller through the ControlExecutionContext.
