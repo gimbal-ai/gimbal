@@ -32,7 +32,11 @@ std::string g_binary_name;
 
 using ::bazel::tools::cpp::runfiles::Runfiles;
 
-void SetBazelBinaryName(std::string_view name) { g_binary_name = name; }
+void SetBazelBinaryName(int argc, char** argv) {
+  if (argc > 0) {
+    g_binary_name = static_cast<std::string>(argv[0]);
+  }
+}
 
 // Binaries that support running outside of bazel (i.e. invoked *not* using "bazel run")
 // call this method to find files based on the build manifest created with the build target.

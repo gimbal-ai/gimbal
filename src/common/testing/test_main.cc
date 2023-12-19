@@ -28,7 +28,7 @@
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);
   gml::EnvironmentGuard env_guard(&argc, argv);
-  gml::bazel::SetBazelBinaryName(argv[0]);
+  gml::bazel::SetBazelBinaryName(argc, argv);
   auto action = std::make_unique<gml::SignalAction>();
   int retval = RUN_ALL_TESTS();
   return retval;

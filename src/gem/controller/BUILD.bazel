@@ -56,6 +56,7 @@ gml_cc_library(
     ],
     deps = [
         "//src/api/corepb/v1:corepb_cc_library",
+        "//src/common/bazel:cc_library",
         "//src/common/event:cc_library",
         "//src/common/grpcutils:cc_library",
         "//src/common/metrics:cc_library",
@@ -68,6 +69,7 @@ gml_cc_library(
         "//src/controlplane/fleetmgr/fmpb/v1:fmpb_cc_library",
         "//src/controlplane/fleetmgr/fmpb/v1:fmpb_grpc_cc_library",
         "//src/gem/calculators/core:cc_library",
+        "//src/gem/calculators/plugin/argus/optionspb:optionspb_options_registry",
         "//src/gem/exec/core/runner:cc_library",
         "//src/gem/plugins:cc_library",
         "//src/gem/storage:cc_library",

@@ -27,7 +27,7 @@ namespace gml::bazel {
 /**
  * Set the binary name. Used for determining the bazel runfiles path
  */
-void SetBazelBinaryName(std::string_view name);
+void SetBazelBinaryName(int argc, char** argv);
 
 /**
  * Returns the path to a runfile, specified by a path relative to ToT.

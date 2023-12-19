@@ -51,6 +51,7 @@ class ModelExecHandler : public MessageHandler {
   class RunModelTask;
   void HandleRunModelFinished(sole::uuid);
   void HandleModelStatusUpdate(sole::uuid, ::gml::internal::api::core::v1::ExecutionGraphStatus*);
+  Status GetDefaultVideoExecutionGraph(internal::api::core::v1::ApplyExecutionGraph*);
 
   CachedBlobStore* blob_store_;
 

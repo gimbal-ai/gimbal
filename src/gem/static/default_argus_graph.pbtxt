@@ -1,0 +1,23 @@
+graph {
+  input_side_packet: "frame_rate"
+  input_side_packet: "cpu_exec_ctx"
+  input_side_packet: "ctrl_exec_ctx"
+
+  node {
+    calculator: "ArgusCamSourceSubgraph"
+    output_stream: "FRAMES:frames"
+    input_stream: "FINISHED:video"
+    output_stream: "ALLOW:frame_allowed"
+  }
+  node {
+    calculator: "VideoEncoderSubgraph"
+    input_side_packet: "FRAME_RATE:frame_rate"
+    input_stream: "frames"
+    output_stream: "video"
+  }
+  node {
+    calculator: "ObjDetectionOverlayedVideoSinkSubgraph"
+    input_side_packet: "EXEC_CTX:ctrl_exec_ctx"
+    input_stream: "AV_PACKETS:video"
+  }
+}

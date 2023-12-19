@@ -30,9 +30,12 @@
 
 #include "src/common/base/base.h"
 #include "src/common/base/error.h"
+#include "src/common/bazel/runfiles.h"
 #include "src/common/event/dispatcher.h"
 #include "src/common/event/task.h"
 #include "src/common/uuid/uuid.h"
+#include "src/gem/calculators/plugin/argus/optionspb/argus_cam_calculator_options.pb.h"
+#include "src/gem/calculators/plugin/opencv_cam/optionspb/opencv_cam_calculator_options.pb.h"
 #include "src/gem/controller/controller.h"
 #include "src/gem/exec/core/context.h"
 #include "src/gem/exec/core/control_context.h"
@@ -40,6 +43,11 @@
 #include "src/gem/plugins/registry.h"
 
 DEFINE_int32(frame_rate, 18, "Frame rate for encoding the video");
+
+DEFINE_string(default_opencv_pbtxt, "src/gem/static/default_opencv_graph.pbtxt",
+              "Path to default opencv video stream execution graph in pbtxt format");
+DEFINE_string(default_argus_pbtxt, "src/gem/static/default_argus_graph.pbtxt",
+              "Path to default argus video stream execution graph in pbtxt format");
 
 namespace gml::gem::controller {
 
@@ -52,6 +60,18 @@ using gml::internal::api::core::v1::ExecutionGraphStatus;
 using gml::internal::api::core::v1::ExecutionGraphStatusUpdate;
 using ::gml::internal::api::core::v1::ExecutionSpec;
 using ::gml::internal::controlplane::egw::v1::BridgeResponse;
+
+namespace {
+Status LoadPbtxt(const std::string& path, google::protobuf::Message* msg) {
+  std::ifstream f(bazel::RunfilePath(std::filesystem::path(path)));
+  std::stringstream buf;
+  buf << f.rdbuf();
+  if (!google::protobuf::TextFormat::ParseFromString(buf.str(), msg)) {
+    return error::InvalidArgument("Failed to parse spec from pbtxt");
+  }
+  return Status::OK();
+}
+}  // namespace
 
 ModelExecHandler::ModelExecHandler(gml::event::Dispatcher* dispatcher, GEMInfo* info,
                                    GRPCBridge* bridge, CachedBlobStore* blob_store,
@@ -233,7 +253,55 @@ Status ModelExecHandler::HandleApplyExecutionGraph(const ApplyExecutionGraph& eg
   return Status::OK();
 }
 
-Status ModelExecHandler::Init() { return Status::OK(); }
+Status ModelExecHandler::GetDefaultVideoExecutionGraph(ApplyExecutionGraph* eg) {
+  auto caps = capabilities::core::DeviceCapabilities();
+  auto& plugin_registry = plugins::Registry::GetInstance();
+  for (auto& name : plugin_registry.RegisteredCapabilityListers()) {
+    GML_ASSIGN_OR_RETURN(auto builder, plugin_registry.BuildCapabilityLister(name));
+    auto s = builder->Populate(&caps);
+    if (!s.ok()) {
+      continue;
+    }
+  }
+  // Choose the argus camera, or last camera in the array.
+  gml::internal::api::core::v1::DeviceCapabilities_CameraInfo camera;
+  for (auto& c : caps.cameras()) {
+    camera = c;
+    if (c.driver() ==
+        gml::internal::api::core::v1::DeviceCapabilities_CameraInfo::CAMERA_DRIVER_ARGUS) {
+      break;
+    }
+  }
+
+  // Pass the camera options to the exec graph.
+  auto spec = eg->mutable_spec()->mutable_graph();
+  google::protobuf::Any any;
+  if (camera.driver() ==
+      gml::internal::api::core::v1::DeviceCapabilities_CameraInfo::CAMERA_DRIVER_ARGUS) {
+    GML_RETURN_IF_ERROR(LoadPbtxt(FLAGS_default_argus_pbtxt, spec));
+    gml::gem::calculators::argus::optionspb::ArgusCamSourceCalculatorOptions opts;
+    opts.set_device_uuid(camera.camera_id());
+    any.PackFrom(opts);
+  } else {
+    GML_RETURN_IF_ERROR(LoadPbtxt(FLAGS_default_opencv_pbtxt, spec));
+    gml::gem::calculators::opencv_cam::optionspb::OpenCVCamSourceSubgraphOptions opts;
+    opts.set_device_filename(camera.camera_id());
+    any.PackFrom(opts);
+  }
+  (*spec->mutable_graph()->mutable_node(0)->add_node_options()) = any;
+
+  return Status::OK();
+}
+
+Status ModelExecHandler::Init() {
+  // When the GEM starts up, we want to run the video stream by default. This finds the
+  // device's capabilities and initializes the default video stream.
+  ApplyExecutionGraph eg;
+
+  GML_RETURN_IF_ERROR(this->GetDefaultVideoExecutionGraph(&eg));
+
+  return this->HandleApplyExecutionGraph(eg);
+}
 
 Status ModelExecHandler::Finish() {
   if (running_task_ != nullptr) {
@@ -259,6 +327,11 @@ void ModelExecHandler::HandleRunModelFinished(sole::uuid physical_pipeline_id) {
 void ModelExecHandler::HandleModelStatusUpdate(sole::uuid physical_pipeline_id,
                                                ExecutionGraphStatus* status) {
   ExecutionGraphStatusUpdate update;
+
+  // Don't send the message if it is from the "default" pipeline.
+  if (physical_pipeline_id.ab == 0 && physical_pipeline_id.cd == 0) {
+    return;
+  }
 
   auto mutable_id = update.mutable_physical_pipeline_id();
   ToProto(physical_pipeline_id, mutable_id);

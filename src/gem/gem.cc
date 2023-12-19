@@ -16,6 +16,7 @@
  */
 
 #include "src/common/base/base.h"
+#include "src/common/bazel/runfiles.h"
 #include "src/gem/controller/controller.h"
 #include "src/gem/controller/lifecycle.h"
 #include "src/shared/version/version.h"
@@ -32,6 +33,7 @@ DEFINE_string(controlplane_addr,
 
 int main(int argc, char** argv) {
   gml::EnvironmentGuard env_guard(&argc, argv);
+  gml::bazel::SetBazelBinaryName(argc, argv);
   DefaultDeathHandler err_handler;
   // This covers signals such as SIGSEGV and other fatal errors.
   // We print the stack trace and die.
