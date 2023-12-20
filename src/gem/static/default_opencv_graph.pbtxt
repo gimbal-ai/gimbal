@@ -5,8 +5,8 @@ graph {
 
   node {
     calculator: "OpenCVCamSourceSubgraph"
-    output_stream: "FRAMES:frames"
     input_stream: "FINISHED:video"
+    output_stream: "FRAMES:frames"
     output_stream: "ALLOW:frame_allowed"
   }
   node {

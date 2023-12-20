@@ -279,8 +279,9 @@ Status ModelExecHandler::GetDefaultVideoExecutionGraph(ApplyExecutionGraph* eg) 
   if (camera.driver() ==
       gml::internal::api::core::v1::DeviceCapabilities_CameraInfo::CAMERA_DRIVER_ARGUS) {
     GML_RETURN_IF_ERROR(LoadPbtxt(FLAGS_default_argus_pbtxt, spec));
-    gml::gem::calculators::argus::optionspb::ArgusCamSourceCalculatorOptions opts;
+    gml::gem::calculators::argus::optionspb::ArgusCamSourceSubgraphOptions opts;
     opts.set_device_uuid(camera.camera_id());
+    opts.set_target_frame_rate(30);
     any.PackFrom(opts);
   } else {
     GML_RETURN_IF_ERROR(LoadPbtxt(FLAGS_default_opencv_pbtxt, spec));
