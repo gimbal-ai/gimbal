@@ -151,6 +151,10 @@ Status OverlayedFFmpegVideoSinkCalculator::ProcessImpl(
   if (cc->Inputs().HasTag(kDetectionsTag) && !cc->Inputs().Tag(kDetectionsTag).IsEmpty()) {
     const auto& detections = cc->Inputs().Tag(kDetectionsTag).Get<std::vector<Detection>>();
     GML_RETURN_IF_ERROR(DetectionsToImageOverlayChunks(detections, &image_overlay_chunks));
+  } else {
+    // Always include an overlay chunk of type detections. This ensures that we clear
+    // stale detections if any.
+    image_overlay_chunks.emplace_back().mutable_detections();
   }
 
   if (cc->Inputs().HasTag(kImageHistTag) && !cc->Inputs().Tag(kImageHistTag).IsEmpty()) {

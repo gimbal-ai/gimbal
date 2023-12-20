@@ -145,265 +145,294 @@ TEST_P(OverlayedFFmpegVideoSinkTest, OutputsExpectedChunks) {
               ::testing::Pointwise(::gml::testing::proto::EqProto(), expected_h264_chunks));
 }
 
-INSTANTIATE_TEST_SUITE_P(OverlayedFFmpegVideoSinkTestSuite, OverlayedFFmpegVideoSinkTest,
-                         ::testing::Values(
-                             FFmpegVideoSinkTestCase{
-                                 .detection_pbtxts =
-                                     {
-                                         R"pbtxt(
-label {
-  label: "bottle"
-  score: 0.9
-}
-bounding_box {
-  xc: 0.5
-  yc: 0.2
-  width: 0.1
-  height: 0.2
-}
-)pbtxt",
-                                     },
-                                 .av_packet_sizes =
-                                     {
-                                         100,
-                                     },
-                                 .expected_overlay_chunk_pbtxts =
-                                     {
-                                         R"pbtxt(
-frame_number: 0
-eof: true
-detections {
-  detection {
-    label {
-      label: "bottle"
-      score: 0.9
-    }
-    bounding_box {
-      xc: 0.5
-      yc: 0.2
-      width: 0.1
-      height: 0.2
-    }
-  }
-}
-)pbtxt",
-                                     },
-                                 .expected_h264_chunks_ids =
-                                     {
-                                         {0},
-                                     },
-                                 .image_hist_pbtxt = {},
-                                 .image_quality_pbtxt = {},
-                             },
-                             FFmpegVideoSinkTestCase{
-                                 .detection_pbtxts =
-                                     {
-                                         R"pbtxt(
-label {
-  label: "bottle"
-  score: 0.9
-}
-bounding_box {
-  xc: 0.5
-  yc: 0.2
-  width: 0.1
-  height: 0.2
-}
-)pbtxt",
-                                         R"pbtxt(
-label {
-  label: "person"
-  score: 0.9
-}
-bounding_box {
-  xc: 0.1
-  yc: 0.5
-  width: 0.1
-  height: 0.5
-}
-)pbtxt",
-                                     },
-                                 .av_packet_sizes =
-                                     {
-                                         1024,
-                                         512 * 1024,
-                                     },
-                                 .expected_overlay_chunk_pbtxts =
-                                     {
-                                         R"pbtxt(
-frame_number: 0
-eof: true
-detections {
-  detection {
-    label {
-      label: "bottle"
-      score: 0.9
-    }
-    bounding_box {
-      xc: 0.5
-      yc: 0.2
-      width: 0.1
-      height: 0.2
-    }
-  }
-  detection {
-    label {
-      label: "person"
-      score: 0.9
-    }
-    bounding_box {
-      xc: 0.1
-      yc: 0.5
-      width: 0.1
-      height: 0.5
-    }
-  }
-}
-)pbtxt",
-                                     },
-                                 .expected_h264_chunks_ids =
-                                     {
-                                         {0},
-                                         // Second packet is large so it should force a new chunk.
-                                         {1},
-                                     },
-                                 .image_hist_pbtxt = {},
-                                 .image_quality_pbtxt = {},
-                             },
-                             FFmpegVideoSinkTestCase{
-                                 .detection_pbtxts =
-                                     {
-                                         R"pbtxt(
-label {
-  label: "bottle"
-  score: 0.9
-}
-bounding_box {
-  xc: 0.5
-  yc: 0.2
-  width: 0.1
-  height: 0.2
-}
-)pbtxt",
-                                         R"pbtxt(
-label {
-  label: "person"
-  score: 0.9
-}
-bounding_box {
-  xc: 0.1
-  yc: 0.5
-  width: 0.1
-  height: 0.5
-}
-)pbtxt",
-                                     },
-                                 .av_packet_sizes =
-                                     {
-                                         1024 * 1024,
-                                     },
-                                 .expected_overlay_chunk_pbtxts =
-                                     {
-                                         R"pbtxt(
-frame_number: 0
-eof: true
-detections {
-  detection {
-    label {
-      label: "bottle"
-      score: 0.9
-    }
-    bounding_box {
-      xc: 0.5
-      yc: 0.2
-      width: 0.1
-      height: 0.2
-    }
-  }
-  detection {
-    label {
-      label: "person"
-      score: 0.9
-    }
-    bounding_box {
-      xc: 0.1
-      yc: 0.5
-      width: 0.1
-      height: 0.5
-    }
-  }
-}
-)pbtxt",
-                                     },
-                                 .expected_h264_chunks_ids =
-                                     {
-                                         // If the packet is larger than the chunk size it should
-                                         // still be output as a chunk with a single packet.
-                                         {0},
-                                     },
-                                 .image_hist_pbtxt = {},
-                                 .image_quality_pbtxt = {},
-                             },
+auto sink_tests = ::testing::Values(
+    FFmpegVideoSinkTestCase{
+        .detection_pbtxts =
+            {
+                R"pbtxt(
+                label {
+                  label: "bottle"
+                  score: 0.9
+                }
+                bounding_box {
+                  xc: 0.5
+                  yc: 0.2
+                  width: 0.1
+                  height: 0.2
+                }
+                )pbtxt",
+            },
+        .av_packet_sizes =
+            {
+                100,
+            },
+        .expected_overlay_chunk_pbtxts =
+            {
+                R"pbtxt(
+                frame_number: 0
+                eof: true
+                detections {
+                  detection {
+                    label {
+                      label: "bottle"
+                      score: 0.9
+                    }
+                    bounding_box {
+                      xc: 0.5
+                      yc: 0.2
+                      width: 0.1
+                      height: 0.2
+                    }
+                  }
+                }
+                )pbtxt",
+            },
+        .expected_h264_chunks_ids =
+            {
+                {0},
+            },
+        .image_hist_pbtxt = {},
+        .image_quality_pbtxt = {},
+    },
+    FFmpegVideoSinkTestCase{
+        .detection_pbtxts =
+            {
+                R"pbtxt(
+                label {
+                  label: "bottle"
+                  score: 0.9
+                }
+                bounding_box {
+                  xc: 0.5
+                  yc: 0.2
+                  width: 0.1
+                  height: 0.2
+                }
+                )pbtxt",
+                R"pbtxt(
+                label {
+                  label: "person"
+                  score: 0.9
+                }
+                bounding_box {
+                  xc: 0.1
+                  yc: 0.5
+                  width: 0.1
+                  height: 0.5
+                }
+                )pbtxt",
+            },
+        .av_packet_sizes =
+            {
+                1024,
+                512 * 1024,
+            },
+        .expected_overlay_chunk_pbtxts =
+            {
+                R"pbtxt(
+                frame_number: 0
+                eof: true
+                detections {
+                  detection {
+                    label {
+                      label: "bottle"
+                      score: 0.9
+                    }
+                    bounding_box {
+                      xc: 0.5
+                      yc: 0.2
+                      width: 0.1
+                      height: 0.2
+                    }
+                  }
+                  detection {
+                    label {
+                      label: "person"
+                      score: 0.9
+                    }
+                    bounding_box {
+                      xc: 0.1
+                      yc: 0.5
+                      width: 0.1
+                      height: 0.5
+                    }
+                  }
+                }
+                )pbtxt",
+            },
+        .expected_h264_chunks_ids =
+            {
+                {0},
+                // Second packet is large so it should force a new chunk.
+                {1},
+            },
+        .image_hist_pbtxt = {},
+        .image_quality_pbtxt = {},
+    },
+    FFmpegVideoSinkTestCase{
+        .detection_pbtxts =
+            {
+                R"pbtxt(
+                label {
+                  label: "bottle"
+                  score: 0.9
+                }
+                bounding_box {
+                  xc: 0.5
+                  yc: 0.2
+                  width: 0.1
+                  height: 0.2
+                }
+                )pbtxt",
+                R"pbtxt(
+                label {
+                  label: "person"
+                  score: 0.9
+                }
+                bounding_box {
+                  xc: 0.1
+                  yc: 0.5
+                  width: 0.1
+                  height: 0.5
+                }
+                )pbtxt",
+            },
+        .av_packet_sizes =
+            {
+                1024 * 1024,
+            },
+        .expected_overlay_chunk_pbtxts =
+            {
+                R"pbtxt(
+                frame_number: 0
+                eof: true
+                detections {
+                  detection {
+                    label {
+                      label: "bottle"
+                      score: 0.9
+                    }
+                    bounding_box {
+                      xc: 0.5
+                      yc: 0.2
+                      width: 0.1
+                      height: 0.2
+                    }
+                  }
+                  detection {
+                    label {
+                      label: "person"
+                      score: 0.9
+                    }
+                    bounding_box {
+                      xc: 0.1
+                      yc: 0.5
+                      width: 0.1
+                      height: 0.5
+                    }
+                  }
+                }
+                )pbtxt",
+            },
+        .expected_h264_chunks_ids =
+            {
+                // If the packet is larger than the chunk size it should
+                // still be output as a chunk with a single packet.
+                {0},
+            },
+        .image_hist_pbtxt = {},
+        .image_quality_pbtxt = {},
+    },
+    FFmpegVideoSinkTestCase{
+        .detection_pbtxts = {},
+        .av_packet_sizes =
+            {
+                100,
+            },
+        .expected_overlay_chunk_pbtxts =
+            {
+                // Always expect an overlay chunk even if it's empty.
+                // This ensures detections are cleared if any.
+                R"pbtxt(
+                frame_number: 0
+                eof: true
+                detections {}
+                )pbtxt",
+            },
+        .expected_h264_chunks_ids =
+            {
+                {0},
+            },
+        .image_hist_pbtxt = {},
+        .image_quality_pbtxt = {},
+    },
+    FFmpegVideoSinkTestCase{
+        .detection_pbtxts = {},
+        .av_packet_sizes =
+            {
+                100,
+            },
+        .expected_overlay_chunk_pbtxts =
+            {
+                R"pbtxt(
+                frame_number: 0
+                eof: false
+                detections {}
+                )pbtxt",
+                R"pbtxt(
+                frame_number: 0
+                eof: false
+                histogram {
+                  min: 0.1
+                  max: 0.9
+                  num: 100
+                  sum: 1000
+                  sum_squares: 10000
+                  bucket_limit: 0
+                  bucket_limit: 0.1
+                  bucket_limit: 1
+                  bucket: 0
+                  bucket: 10
+                  bucket: 90
+                }
+                )pbtxt",
+                R"pbtxt(
+                frame_number: 0
+                eof: true
+                image_quality {
+                  brisque_score: 0.5
+                }
+                )pbtxt",
+            },
+        .expected_h264_chunks_ids =
+            {
+                {0},
+            },
+        .image_hist_pbtxt =
+            {
+                R"pbtxt(
+                min: 0.1
+                max: 0.9
+                num: 100
+                sum: 1000
+                sum_squares: 10000
+                bucket_limit: 0
+                bucket_limit: 0.1
+                bucket_limit: 1
+                bucket: 0
+                bucket: 10
+                bucket: 90
+                )pbtxt",
+            },
+        .image_quality_pbtxt =
+            {
+                R"pbtxt(
+                brisque_score: 0.5
+                )pbtxt",
+            },
+    });
 
-                             FFmpegVideoSinkTestCase{
-                                 .detection_pbtxts = {},
-                                 .av_packet_sizes =
-                                     {
-                                         100,
-                                     },
-                                 .expected_overlay_chunk_pbtxts =
-                                     {
-                                         R"pbtxt(
-frame_number: 0
-eof: false
-histogram {
-  min: 0.1
-  max: 0.9
-  num: 100
-  sum: 1000
-  sum_squares: 10000
-  bucket_limit: 0
-  bucket_limit: 0.1
-  bucket_limit: 1
-  bucket: 0
-  bucket: 10
-  bucket: 90
-}
-)pbtxt",
-                                         R"pbtxt(
-frame_number: 0
-eof: true
-image_quality {
-  brisque_score: 0.5
-}
-)pbtxt",
-                                     },
-                                 .expected_h264_chunks_ids =
-                                     {
-                                         {0},
-                                     },
-                                 .image_hist_pbtxt =
-                                     {
-                                         R"pbtxt(
-min: 0.1
-max: 0.9
-num: 100
-sum: 1000
-sum_squares: 10000
-bucket_limit: 0
-bucket_limit: 0.1
-bucket_limit: 1
-bucket: 0
-bucket: 10
-bucket: 90
-)pbtxt",
-                                     },
-                                 .image_quality_pbtxt =
-                                     {
-                                         R"pbtxt(
-brisque_score: 0.5
-)pbtxt",
-                                     },
-                             }));
+INSTANTIATE_TEST_SUITE_P(OverlayedFFmpegVideoSinkTestSuite, OverlayedFFmpegVideoSinkTest,
+                         sink_tests);
 
 }  // namespace gml::gem::calculators::ffmpeg
