@@ -53,10 +53,16 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
 
           GetObservableResult<double>(observer)->Observe(
               static_cast<double>(p.second.utime_ns) / 1E9,
-              {{"pid", p.first}, {"state", "user"}, {"tgid", it->second}});
+              {{"pid", p.first},
+               {"state", "user"},
+               {"tgid", it->second},
+               {"thread_group_leader", p.first == it->second}});
           GetObservableResult<double>(observer)->Observe(
               static_cast<double>(p.second.ktime_ns) / 1E9,
-              {{"pid", p.first}, {"state", "system"}, {"tgid", it->second}});
+              {{"pid", p.first},
+               {"state", "system"},
+               {"tgid", it->second},
+               {"thread_group_leader", p.first == it->second}});
         }
       },
       this);
@@ -113,16 +119,19 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
             return;
           }
 
-          GetObservableResult<int64_t>(observer)->Observe(p.second.voluntary_ctxt_switches,
-                                                          {{"context_switch_type", "voluntary"},
-                                                           {"pid", p.first},
-                                                           {"state", "system"},
-                                                           {"tgid", it->second}});
-          GetObservableResult<int64_t>(observer)->Observe(p.second.nonvoluntary_ctxt_switches,
-                                                          {{"context_switch_type", "involuntary"},
-                                                           {"pid", p.first},
-                                                           {"state", "system"},
-                                                           {"tgid", it->second}});
+          GetObservableResult<int64_t>(observer)->Observe(
+              p.second.voluntary_ctxt_switches, {{"context_switch_type", "voluntary"},
+                                                 {"pid", p.first},
+                                                 {"state", "system"},
+                                                 {"tgid", it->second},
+                                                 {"thread_group_leader", p.first == it->second}});
+          GetObservableResult<int64_t>(observer)->Observe(
+              p.second.nonvoluntary_ctxt_switches,
+              {{"context_switch_type", "involuntary"},
+               {"pid", p.first},
+               {"state", "system"},
+               {"tgid", it->second},
+               {"thread_group_leader", p.first == it->second}});
         }
       },
       this);
@@ -206,12 +215,18 @@ void GEMMetricsReader::Scrape() {
     }
     pid_process_stats_[p] = process_stats;
 
-    mem_usage_gauge_->Record(process_stats.rss_bytes,
-                             {{"pid", pid}, {"state", "system"}, {"tgid", tgid}}, {});
-    mem_virtual_gauge_->Record(static_cast<int64_t>(process_stats.vsize_bytes),
-                               {{"pid", pid}, {"state", "system"}, {"tgid", tgid}}, {});
-    thread_gauge_->Record(process_stats.num_threads,
-                          {{"pid", pid}, {"state", "system"}, {"tgid", tgid}}, {});
+    mem_usage_gauge_->Record(
+        process_stats.rss_bytes,
+        {{"pid", pid}, {"state", "system"}, {"tgid", tgid}, {"thread_group_leader", p == tgid}},
+        {});
+    mem_virtual_gauge_->Record(
+        static_cast<int64_t>(process_stats.vsize_bytes),
+        {{"pid", pid}, {"state", "system"}, {"tgid", tgid}, {"thread_group_leader", p == tgid}},
+        {});
+    thread_gauge_->Record(
+        process_stats.num_threads,
+        {{"pid", pid}, {"state", "system"}, {"tgid", tgid}, {"thread_group_leader", p == tgid}},
+        {});
   }
 
   // Parse network stats. This will get the network stats for the entire container, if running
@@ -239,7 +254,9 @@ void GEMMetricsReader::GetObservableResultFromProcessStats(
     }
 
     auto val = get_stat(p.second);
-    GetObservableResult<T>(observer)->Observe(val, {{"pid", p.first}, {"tgid", it->second}});
+    GetObservableResult<T>(observer)->Observe(
+        val,
+        {{"pid", p.first}, {"tgid", it->second}, {"thread_group_leader", p.first == it->second}});
   }
 }
 
