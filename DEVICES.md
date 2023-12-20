@@ -6,6 +6,8 @@
   - [Standalone devices ie james-jetson](#standalone-devices-ie-james-jetson)
   - [Simulated Devices](#simulated-devices)
   - [Fake Cameras](#fake-cameras)
+    - [If deploying the GEM binary directly](#if-deploying-the-gem-binary-directly)
+    - [If developing with skaffold](#if-developing-with-skaffold)
 
 <!-- /TOC -->
 
@@ -74,17 +76,25 @@ If you'd like to record new data, see <https://github.com/gimletlabs/gimlet/blob
 
 ## Fake Cameras
 
-We only support this on the GKE dev-cluster, where we run fake cameras.
+### If deploying the GEM binary directly
+
+Set `GML_VIDEO_FROM_FILE_OVERRIDE` or `--video_from_file_override` to the location of the
+desired video file to use, and we will use that instead of a camera.
 
 ```sh
-export GML_CONTROLPLANE_ADDR=$USER.dev.app.gimletlabs.dev:443
-export GML_DEPLOY_KEY=<deploy-key> # replace with your deploy key
+export GML_VIDEO_FROM_FILE_OVERRIDE=<path-to-video-file> # replace with your video file
+bazel run -c opt //src/gem:gem -- --blob_store_dir=$HOME/.cache/gml
+```
 
-helm install my-gem-release oci://us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/charts/gem -n $USER \
---version 0.0.0-alpha1 \
---set "deployKey=${GML_DEPLOY_KEY}" \
---set "controlplaneAddr=${GML_CONTROLPLANE_ADDR}" \
---set-json 'gem.resources={"requests":{"squat.ai/video":1},"limits":{"squat.ai/video":1}}'
+### If developing with skaffold
+
+As a developer running with skaffold, you can use the `fake_camera` profile to quickly
+deploy a GEM that uses a fake camera. The `GML_FAKE_VIDEO_GCS` lets you pick which
+video (from Google Cloud Storage) to use.
+
+```sh
+export GML_FAKE_VIDEO_GCS=gs://gml-dev-videos/gimlets/automated-self-checkout/coca-cola.mp4 # replace with your video file (must be on GCS)
+skaffold run -f ./skaffold/skaffold_gem.yaml -n $USER -p fake_camera
 ```
 
 Fake camera devices will still run the real GEM and will be able to run models, but will use the pre-recorded video data.
