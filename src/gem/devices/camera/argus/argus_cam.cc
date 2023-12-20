@@ -220,6 +220,7 @@ StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> ArgusCam::ConsumeFrame() {
   }
 
   EGLStream::Image* image = frame->getImage();
+  last_capture_ns_ = frame->getTime();
 
   // Metadata is also available, if desired.
   VLOG(2) << absl::Substitute("Frame num = $0", frame->getNumber());

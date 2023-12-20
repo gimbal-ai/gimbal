@@ -34,7 +34,6 @@ class ArgusCamSourceCalculator : public mediapipe::CalculatorBase {
  private:
   optionspb::ArgusCamSourceCalculatorOptions options_;
   std::unique_ptr<::gml::gem::devices::argus::ArgusCam> argus_cam_;
-  int64_t timestamp_;
 };
 
 }  // namespace gml::gem::calculators::argus

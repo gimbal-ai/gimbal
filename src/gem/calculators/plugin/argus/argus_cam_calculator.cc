@@ -36,7 +36,6 @@ absl::Status ArgusCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
   options_ = cc->Options<ArgusCamSourceCalculatorOptions>();
   argus_cam_ = std::make_unique<devices::argus::ArgusCam>(options_.target_frame_rate());
   GML_ABSL_RETURN_IF_ERROR(argus_cam_->Init(options_.device_uuid()));
-  timestamp_ = 0;
   return absl::OkStatus();
 }
 
@@ -44,16 +43,15 @@ absl::Status ArgusCamSourceCalculator::Process(mediapipe::CalculatorContext* cc)
   absl::Status s;
 
   GML_ABSL_ASSIGN_OR_RETURN(std::unique_ptr<NvBufSurfaceWrapper> buf, argus_cam_->ConsumeFrame());
+  auto timestamp_ns_ = argus_cam_->GetLastCaptureNS();
   GML_ABSL_RETURN_IF_ERROR(buf->MapForCpu());
   // Convert to shared_ptr to give downstream mediapipe calculators flexibility,
   // specifically for use by the PlanarImage interface.
   std::shared_ptr<NvBufSurfaceWrapper> buf_shared = std::move(buf);
 
   auto packet = mediapipe::MakePacket<std::shared_ptr<NvBufSurfaceWrapper>>(std::move(buf_shared));
-  packet = packet.At(mediapipe::Timestamp(timestamp_));
+  packet = packet.At(mediapipe::Timestamp(timestamp_ns_ / 1000));
   cc->Outputs().Index(0).AddPacket(std::move(packet));
-
-  ++timestamp_;
 
   return absl::OkStatus();
 }
