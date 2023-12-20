@@ -38,12 +38,6 @@ MEGALINTER_BUILD_DIR := $(BUILD_DIR)/megalinter
 MEGALINTER_REV := $(shell date +%Y%m%d%H%M%S)
 MEGALINTER_IMAGE_TAG := "$(REPOSITORY)/megalinter-gml-custom:$(MEGALINTER_REV)"
 
-## Fake camera image
-REPOSITORY := us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts
-FAKE_CAMERA_BUILD_DIR := $(BUILD_DIR)/fake_camera
-FAKE_CAMERA_REV := "v0.2"
-FAKE_CAMERA_IMAGE_TAG := "$(REPOSITORY)/fake_camera:$(FAKE_CAMERA_REV)"
-
 ## NVIDIA stub creator
 NVIDIA_STUB_REV := $(shell date +%Y%m%d%H%M%S)
 NVIDIA_STUB_BUILD_DIR := $(BUILD_DIR)/nvidia_stubs
@@ -78,14 +72,6 @@ build_and_push_megalinter: megalinter/Dockerfile megalinter/.tflint.hcl
 	@mkdir -p $(MEGALINTER_BUILD_DIR)
 	DOCKER_BUILDKIT=1 $(DOCKER) build megalinter -t $(MEGALINTER_IMAGE_TAG) --push
 	$(MAKE) -C ../chef sync_images
-
-##############################################
-# Fake Camera Build
-##############################################
-.PHONY: build_and_push_fake_camera
-build_and_push_fake_camera: fake_camera/Dockerfile fake_camera/loop_video.sh
-	@mkdir -p $(FAKE_CAMERA_BUILD_DIR)
-	DOCKER_BUILDKIT=1 $(DOCKER) build fake_camera -t $(FAKE_CAMERA_IMAGE_TAG) --push
 
 ##############################################
 # NVIDIA Stub libraries
