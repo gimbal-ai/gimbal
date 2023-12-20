@@ -17,6 +17,8 @@
 
 #include "src/gem/calculators/plugin/opencv_cam/opencv_cam_calculator.h"
 
+#include <thread>
+
 #include <absl/status/status.h>
 #include <magic_enum.hpp>
 #include <mediapipe/framework/calculator_framework.h>
@@ -56,16 +58,62 @@ absl::Status SetupFormatConversion(const cv::Mat& frame, mediapipe::ImageFormat:
 }
 }  // namespace
 
-cv::Mat OpenCVCamSourceCalculator::CaptureFrame() {
+cv::Mat OpenCVCamSourceCalculator::LoopCapture() {
   cv::Mat frame;
 
-  // Capture a single frame
-  cap_->read(frame);
+  auto total_frames = cap_->get(cv::CAP_PROP_FRAME_COUNT);
+  auto curr_frame = cap_->get(cv::CAP_PROP_POS_FRAMES);
+  if (total_frames == -1 || curr_frame == -1) {
+    // This is a camera, not a video.
+    cap_->read(frame);
+    return frame;
+  }
 
+  // If we are here, this is a video file.
+  if (video_start_offset_us_ == 0) {
+    // The video file stream starts at time pos 0. This offset indicated the delta between the file
+    // and current time. Used to both adjust the mediapipe output ts and to throttle the video read
+    // from file to match the expected recorded FPS.
+    video_start_offset_us_ =
+        std::chrono::duration_cast<microseconds>(high_resolution_clock::now().time_since_epoch())
+            .count();
+  }
+
+  auto fps = cap_->get(cv::CAP_PROP_FPS);
+
+  if (curr_frame >= total_frames) {
+    // Reset to beginning of video.
+
+    // Push offset by length of video. (add one for the gap between the last frame and looped zeroth
+    // frame).
+    video_start_offset_us_ += std::lround((total_frames + 1) * 1000 * 1000 / fps);
+    // Reset current frame.
+    cap_->set(cv::CAP_PROP_POS_FRAMES, 0);
+  }
+
+  // 0 indexed timestamp of the current frame.
+  auto curr_ts_ms = cap_->get(cv::CAP_PROP_POS_MSEC);
+
+  int64_t now_us =
+      std::chrono::duration_cast<microseconds>(high_resolution_clock::now().time_since_epoch())
+          .count();
+  int64_t expected_output_us = video_start_offset_us_ + std::llround(curr_ts_ms * 1000);
+  int64_t delta_us = expected_output_us - now_us;
+
+  if (delta_us > 0) {
+    std::this_thread::sleep_for(std::chrono::microseconds{delta_us});
+  }
+
+  cap_->read(frame);
+  return frame;
+}
+
+cv::Mat OpenCVCamSourceCalculator::Read() {
+  cv::Mat frame = LoopCapture();
   // Apparently, the first read can fail sometimes, so try a second time just to be sure.
   // This was noted from a comment in the  Mediapipe source code.
   if (frame.empty()) {
-    cap_->read(frame);  // Try again.
+    frame = LoopCapture();  // Try again.
   }
 
   return frame;
@@ -82,7 +130,7 @@ absl::Status OpenCVCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
   LOG(INFO) << "Using v4l2 camera: " << options_.device_filename();
 
   // Setting to use V4L2 only. Could revisit this choice in the future.
-  cap_ = std::make_unique<cv::VideoCapture>(options_.device_filename(), cv::CAP_V4L2);
+  cap_ = std::make_unique<cv::VideoCapture>(options_.device_filename(), cv::CAP_ANY);
 
   if (!cap_->isOpened()) {
     LOG(WARNING) << "Failed to open camera: " << options_.device_filename();
@@ -90,7 +138,7 @@ absl::Status OpenCVCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
   }
 
   // Grab a frame to see its parameters;
-  cv::Mat frame = CaptureFrame();
+  cv::Mat frame = Read();
   if (frame.empty()) {
     LOG(WARNING) << "Failed to capture image with: " << options_.device_filename();
     return absl::InternalError("Could not capture image with camera.");
@@ -101,17 +149,20 @@ absl::Status OpenCVCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
   MP_RETURN_IF_ERROR(SetupFormatConversion(frame, &format_, &color_conversion_));
 
   frame_count_ = 0;
+  video_start_offset_us_ = 0;
   return absl::OkStatus();
 }
 
 absl::Status OpenCVCamSourceCalculator::Process(mediapipe::CalculatorContext* cc) {
   absl::Status s;
 
-  cv::Mat frame = CaptureFrame();
+  cv::Mat frame = Read();
 
   if (frame.empty()) {
     return mediapipe::tool::StatusStop();
   }
+
+  int64_t timestamp = std::llround(cap_->get(cv::CAP_PROP_POS_MSEC) * 1000);
 
   // Convert-copy the cv::Mat into a mediapipe::ImageFormat.
   constexpr int kAlignmentBoundary = 1;
@@ -119,9 +170,8 @@ absl::Status OpenCVCamSourceCalculator::Process(mediapipe::CalculatorContext* cc
       absl::make_unique<mediapipe::ImageFrame>(format_, width_, height_, kAlignmentBoundary);
   cv::cvtColor(frame, mediapipe::formats::MatView(image_frame.get()), color_conversion_);
 
-  int64_t ts_us = std::lround(cap_->get(cv::CAP_PROP_POS_MSEC) * 1000);
-
-  auto packet = mediapipe::Adopt(image_frame.release()).At(mediapipe::Timestamp(ts_us));
+  auto packet = mediapipe::Adopt(image_frame.release())
+                    .At(mediapipe::Timestamp(timestamp + video_start_offset_us_));
   cc->Outputs().Index(0).AddPacket(std::move(packet));
 
   if (options_.max_num_frames() > 0 && ++frame_count_ >= options_.max_num_frames()) {
