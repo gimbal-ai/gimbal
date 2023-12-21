@@ -42,6 +42,12 @@ Status Runner::Stop() {
 }
 
 Status Runner::Wait() {
+  if (graph_.HasError()) {
+    absl::Status graph_status;
+    graph_.GetCombinedErrors(&graph_status);
+    GML_RETURN_IF_ERROR(graph_status);
+  }
+
   GML_RETURN_IF_ERROR(graph_.WaitUntilDone());
   return Status::OK();
 }
