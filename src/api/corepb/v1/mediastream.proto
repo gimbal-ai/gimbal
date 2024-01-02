@@ -78,6 +78,7 @@ message ImageQualityMetrics {
   // The brique score (https://live.ece.utexas.edu/publications/2012/TIP%20BRISQUE.pdf) for the
   // image in range [0,100].
   double brisque_score = 1;
+  double blurriness = 2;
 }
 
 // ImageOverlayChunk stores a chunk of image overlays (bounding boxes, segmentation masks, etc)
