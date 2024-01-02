@@ -76,9 +76,10 @@ message ImageHistogram {
 
 message ImageQualityMetrics {
   // The brique score (https://live.ece.utexas.edu/publications/2012/TIP%20BRISQUE.pdf) for the
-  // image in range [0,100].
+  // image in range [0, 1.0]. Higher score is better.
   double brisque_score = 1;
-  double blurriness = 2;
+  // The blurriness score in range [0, 1.0]. Higher score means more blurry.
+  double blurriness_score = 2;
 }
 
 // ImageOverlayChunk stores a chunk of image overlays (bounding boxes, segmentation masks, etc)
