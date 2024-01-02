@@ -2,6 +2,7 @@ type: "OpenCVCamSourceSubgraph"
 output_stream: "FRAMES:sampled_frames"
 input_stream: "FINISHED:frame_processed"
 output_stream: "ALLOW:frame_allowed"
+output_stream: "VIDEO_HEADER:video_header"
 
 graph_options: {
   [type.googleapis.com/gml.gem.calculators.opencv_cam.optionspb.OpenCVCamSourceSubgraphOptions] {}
@@ -10,6 +11,7 @@ graph_options: {
 node {
   calculator: "OpenCVCamSourceCalculator"
   output_stream: "image_frames"
+  output_stream: "VIDEO_PRESTREAM:video_header"
   node_options: {
     [type.googleapis.com/gml.gem.calculators.opencv_cam.optionspb.OpenCVCamSourceCalculatorOptions] {}
   }

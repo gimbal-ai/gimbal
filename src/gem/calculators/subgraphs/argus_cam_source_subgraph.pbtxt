@@ -2,6 +2,7 @@ type: "ArgusCamSourceSubgraph"
 output_stream: "sampled_frames"
 input_stream: "FINISHED:detections"
 output_stream: "ALLOW:frame_allowed"
+output_stream: "VIDEO_HEADER:video_header"
 
 graph_options: {
   [type.googleapis.com/gml.gem.calculators.argus.optionspb.ArgusCamSourceSubgraphOptions] {
@@ -12,6 +13,7 @@ graph_options: {
 node {
   calculator: "ArgusCamSourceCalculator"
   output_stream: "nv_buf"
+  output_stream: "VIDEO_PRESTREAM:video_header"
   node_options: {
     [type.googleapis.com/gml.gem.calculators.argus.optionspb.ArgusCamSourceCalculatorOptions] {}
   }

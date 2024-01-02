@@ -24,8 +24,12 @@
 #include <mediapipe/framework/calculator_framework.h>
 #include <mediapipe/framework/formats/image_frame.h>
 #include <mediapipe/framework/formats/image_frame_opencv.h>
+#include <mediapipe/framework/formats/video_stream_header.h>
+#include <mediapipe/framework/timestamp.h>
 
 namespace gml::gem::calculators::opencv_cam {
+
+constexpr std::string_view kVideoPrestreamTag = "VIDEO_PRESTREAM";
 
 using ::gml::gem::calculators::opencv_cam::optionspb::OpenCVCamSourceCalculatorOptions;
 
@@ -61,9 +65,8 @@ absl::Status SetupFormatConversion(const cv::Mat& frame, mediapipe::ImageFormat:
 cv::Mat OpenCVCamSourceCalculator::LoopCapture() {
   cv::Mat frame;
 
-  auto total_frames = cap_->get(cv::CAP_PROP_FRAME_COUNT);
   auto curr_frame = cap_->get(cv::CAP_PROP_POS_FRAMES);
-  if (total_frames == -1 || curr_frame == -1) {
+  if (frame_count_ == -1 || curr_frame == -1) {
     // This is a camera, not a video.
     cap_->read(frame);
     return frame;
@@ -79,14 +82,12 @@ cv::Mat OpenCVCamSourceCalculator::LoopCapture() {
             .count();
   }
 
-  auto fps = cap_->get(cv::CAP_PROP_FPS);
-
-  if (curr_frame >= total_frames) {
+  if (curr_frame >= frame_count_) {
     // Reset to beginning of video.
 
     // Push offset by length of video. (add one for the gap between the last frame and looped zeroth
     // frame).
-    video_start_offset_us_ += std::lround((total_frames + 1) * 1000 * 1000 / fps);
+    video_start_offset_us_ += std::lround((frame_count_ + 1) * 1000 * 1000 / fps_);
     // Reset current frame.
     cap_->set(cv::CAP_PROP_POS_FRAMES, 0);
   }
@@ -121,6 +122,9 @@ cv::Mat OpenCVCamSourceCalculator::Read() {
 
 absl::Status OpenCVCamSourceCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   cc->Outputs().Index(0).Set<mediapipe::ImageFrame>();
+  if (cc->Outputs().HasTag(kVideoPrestreamTag)) {
+    cc->Outputs().Tag(kVideoPrestreamTag).Set<mediapipe::VideoHeader>();
+  }
   return absl::OkStatus();
 }
 
@@ -137,6 +141,12 @@ absl::Status OpenCVCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
     return absl::InternalError("Could not open camera.");
   }
 
+  width_ = static_cast<int32_t>(cap_->get(cv::CAP_PROP_FRAME_WIDTH));
+  height_ = static_cast<int32_t>(cap_->get(cv::CAP_PROP_FRAME_HEIGHT));
+  // fps and frame_count must be set before calling Read.
+  fps_ = cap_->get(cv::CAP_PROP_FPS);
+  frame_count_ = cap_->get(cv::CAP_PROP_FRAME_COUNT);
+
   // Grab a frame to see its parameters;
   cv::Mat frame = Read();
   if (frame.empty()) {
@@ -144,11 +154,21 @@ absl::Status OpenCVCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
     return absl::InternalError("Could not capture image with camera.");
   }
 
-  width_ = static_cast<int32_t>(cap_->get(cv::CAP_PROP_FRAME_WIDTH));
-  height_ = static_cast<int32_t>(cap_->get(cv::CAP_PROP_FRAME_HEIGHT));
   MP_RETURN_IF_ERROR(SetupFormatConversion(frame, &format_, &color_conversion_));
 
-  frame_count_ = 0;
+  auto header = std::make_unique<mediapipe::VideoHeader>();
+  header->format = format_;
+  header->width = width_;
+  header->height = height_;
+  header->frame_rate = fps_;
+  header->duration = static_cast<float>(frame_count_ / fps_);
+
+  if (cc->Outputs().HasTag(kVideoPrestreamTag)) {
+    cc->Outputs().Tag(kVideoPrestreamTag).Add(header.release(), mediapipe::Timestamp::PreStream());
+    cc->Outputs().Tag(kVideoPrestreamTag).Close();
+  }
+
+  frame_counter_ = 0;
   video_start_offset_us_ = 0;
   return absl::OkStatus();
 }
@@ -174,7 +194,7 @@ absl::Status OpenCVCamSourceCalculator::Process(mediapipe::CalculatorContext* cc
                     .At(mediapipe::Timestamp(timestamp + video_start_offset_us_));
   cc->Outputs().Index(0).AddPacket(std::move(packet));
 
-  if (options_.max_num_frames() > 0 && ++frame_count_ >= options_.max_num_frames()) {
+  if (options_.max_num_frames() > 0 && ++frame_counter_ >= options_.max_num_frames()) {
     return mediapipe::tool::StatusStop();
   }
 

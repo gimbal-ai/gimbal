@@ -42,8 +42,6 @@
 #include "src/gem/exec/core/runner/runner.h"
 #include "src/gem/plugins/registry.h"
 
-DEFINE_int32(frame_rate, 18, "Frame rate for encoding the video");
-
 DEFINE_string(default_opencv_pbtxt, "src/gem/static/default_opencv_graph.pbtxt",
               "Path to default opencv video stream execution graph in pbtxt format");
 DEFINE_string(default_argus_pbtxt, "src/gem/static/default_argus_graph.pbtxt",
@@ -139,9 +137,6 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
 
     GML_RETURN_IF_ERROR(EmplaceNewKey(&side_packets, std::string("ctrl_exec_ctx"),
                                       mediapipe::MakePacket<ExecutionContext*>(ctrl_exec_ctx_)));
-
-    GML_RETURN_IF_ERROR(EmplaceNewKey(&side_packets, std::string("frame_rate"),
-                                      mediapipe::MakePacket<int>(FLAGS_frame_rate)));
 
     exec::core::Runner runner(exec_spec_);
     GML_RETURN_IF_ERROR(runner.Init(side_packets));

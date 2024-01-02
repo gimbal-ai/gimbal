@@ -160,6 +160,7 @@ TEST(Runner, Subgraph) {
       node {
         calculator: "OpenCVCamSourceSubgraph"
         output_stream: "FRAMES:frame_out"
+        output_stream: "VIDEO_HEADER:video_header"
         input_stream: "FINISHED:frame_processed"
         output_stream: "ALLOW:frame_allowed"
         node_options: {

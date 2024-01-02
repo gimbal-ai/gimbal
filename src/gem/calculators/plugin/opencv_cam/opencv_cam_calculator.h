@@ -31,6 +31,17 @@ using std::chrono::high_resolution_clock;
 using std::chrono::microseconds;
 using us_time = std::chrono::time_point<high_resolution_clock, microseconds>;
 
+/**
+ * OpenCVCamSourceCalculator Graph API:
+ *
+ *  Options:
+ *    device_filename Filename to open (e.g. /dev/video0)
+ *    max_num_frames Maximum number of frames to process (0 for infinite)
+ *  Outputs:
+ *    mediapipe::ImageFrame
+ *    VIDEO_PRESTREAM Optional video header output at Timestamp::PreStream
+ *
+ */
 class OpenCVCamSourceCalculator : public mediapipe::CalculatorBase {
  public:
   static absl::Status GetContract(mediapipe::CalculatorContract* cc);
@@ -44,7 +55,7 @@ class OpenCVCamSourceCalculator : public mediapipe::CalculatorBase {
 
   optionspb::OpenCVCamSourceCalculatorOptions options_;
   std::unique_ptr<cv::VideoCapture> cap_;
-  uint64_t frame_count_;
+  uint64_t frame_counter_;
 
   // Only used for when the source is a video file and not a device.
   int64_t video_start_offset_us_;
@@ -53,6 +64,8 @@ class OpenCVCamSourceCalculator : public mediapipe::CalculatorBase {
   cv::ColorConversionCodes color_conversion_;
   int32_t width_;
   int32_t height_;
+  double fps_;
+  double frame_count_;
 };
 
 }  // namespace gml::gem::calculators::opencv_cam

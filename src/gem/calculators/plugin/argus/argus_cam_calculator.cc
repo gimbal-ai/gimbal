@@ -19,16 +19,23 @@
 
 #include <absl/status/status.h>
 #include <mediapipe/framework/calculator_framework.h>
+#include <mediapipe/framework/formats/image_frame.h>
+#include <mediapipe/framework/formats/video_stream_header.h>
 
 #include "src/gem/devices/camera/argus/argus_cam.h"
 
 namespace gml::gem::calculators::argus {
+
+constexpr std::string_view kVideoPrestreamTag = "VIDEO_PRESTREAM";
 
 using ::gml::gem::calculators::argus::optionspb::ArgusCamSourceCalculatorOptions;
 using ::gml::gem::devices::argus::NvBufSurfaceWrapper;
 
 absl::Status ArgusCamSourceCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   cc->Outputs().Index(0).Set<std::shared_ptr<NvBufSurfaceWrapper>>();
+  if (cc->Outputs().HasTag(kVideoPrestreamTag)) {
+    cc->Outputs().Tag(kVideoPrestreamTag).Set<mediapipe::VideoHeader>();
+  }
   return absl::OkStatus();
 }
 
@@ -36,6 +43,22 @@ absl::Status ArgusCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
   options_ = cc->Options<ArgusCamSourceCalculatorOptions>();
   argus_cam_ = std::make_unique<devices::argus::ArgusCam>(options_.target_frame_rate());
   GML_ABSL_RETURN_IF_ERROR(argus_cam_->Init(options_.device_uuid()));
+
+  // grab one frame to get metadata.
+  GML_ABSL_ASSIGN_OR_RETURN(std::unique_ptr<NvBufSurfaceWrapper> buf, argus_cam_->ConsumeFrame());
+  GML_ABSL_RETURN_IF_ERROR(buf->MapForCpu());
+
+  auto header = std::make_unique<mediapipe::VideoHeader>();
+  header->format = mediapipe::ImageFormat::FORMAT_SRGB;
+  header->width = buf->surface().width;
+  header->height = buf->surface().height;
+  header->frame_rate = static_cast<double>(options_.target_frame_rate());
+
+  if (cc->Outputs().HasTag(kVideoPrestreamTag)) {
+    cc->Outputs().Tag(kVideoPrestreamTag).Add(header.release(), mediapipe::Timestamp::PreStream());
+    cc->Outputs().Tag(kVideoPrestreamTag).Close();
+  }
+
   return absl::OkStatus();
 }
 
