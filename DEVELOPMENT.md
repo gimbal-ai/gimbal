@@ -138,3 +138,19 @@ You should use transactions if you want to make changes to the DB:
   -- ROLLBACK;
   COMMIT;
   ```
+
+
+## Python Development
+
+In order to get functional IDE features in python, it's recommended to install the gml requirements in a virtualenv and point your IDE to that virtualenv.
+These instructions use `pyenv` and `pyenv-virtualenv` to create the virtualenv, but any virtualenv tool should work.
+
+1. Install `pyenv` and `pyenv-virtualenv`.
+1. Create the virtualenv. With `pyenv`:
+    ```bash
+    pyenv virtualenv gml && pyenv local gml
+    ```
+1. Install the gml requirements:
+    ```bash
+    pip install -r bazel/python/requirements_lock.txt
+    ```

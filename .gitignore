@@ -91,3 +91,6 @@ bazel_tests_*
 
 # Ignore credentials for our GML NUC cluster setup.
 tools/chef/cookbooks/gml_nuc_cluster/templates/credentials
+
+# Ignore pyenv files.
+.python-version
