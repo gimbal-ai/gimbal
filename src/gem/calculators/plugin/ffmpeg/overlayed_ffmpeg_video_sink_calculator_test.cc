@@ -31,7 +31,7 @@ namespace gml::gem::calculators::ffmpeg {
 
 using ::gml::internal::api::core::v1::Detection;
 using ::gml::internal::api::core::v1::H264Chunk;
-using ::gml::internal::api::core::v1::ImageHistogram;
+using ::gml::internal::api::core::v1::ImageHistogramBatch;
 using ::gml::internal::api::core::v1::ImageOverlayChunk;
 using ::gml::internal::api::core::v1::ImageQualityMetrics;
 
@@ -47,7 +47,7 @@ struct FFmpegVideoSinkTestCase {
   std::vector<int> av_packet_sizes;
   std::vector<std::string> expected_overlay_chunk_pbtxts;
   std::vector<std::vector<size_t>> expected_h264_chunks_ids;
-  std::optional<std::string> image_hist_pbtxt;
+  std::optional<std::string> image_hist_batch_pbtxt;
   std::optional<std::string> image_quality_pbtxt;
 };
 
@@ -60,11 +60,11 @@ TEST_P(OverlayedFFmpegVideoSinkTest, OutputsExpectedChunks) {
   if (test_case.detection_pbtxts.size() > 0) {
     overlay_input_streams.emplace_back(R"pb(input_stream: "DETECTIONS:detections")pb");
   }
-  ImageHistogram image_hist;
-  if (test_case.image_hist_pbtxt.has_value()) {
+  ImageHistogramBatch image_hist_batch;
+  if (test_case.image_hist_batch_pbtxt.has_value()) {
     overlay_input_streams.emplace_back(R"pb(input_stream: "IMAGE_HIST:hist")pb");
-    ASSERT_TRUE(google::protobuf::TextFormat::ParseFromString(test_case.image_hist_pbtxt.value(),
-                                                              &image_hist));
+    ASSERT_TRUE(google::protobuf::TextFormat::ParseFromString(
+        test_case.image_hist_batch_pbtxt.value(), &image_hist_batch));
   }
   ImageQualityMetrics image_quality;
   if (test_case.image_quality_pbtxt.has_value()) {
@@ -131,8 +131,8 @@ TEST_P(OverlayedFFmpegVideoSinkTest, OutputsExpectedChunks) {
   if (detections.size() > 0) {
     tester.ForInput("DETECTIONS", std::move(detections), 0);
   }
-  if (test_case.image_hist_pbtxt.has_value()) {
-    tester.ForInput("IMAGE_HIST", std::move(image_hist), 0);
+  if (test_case.image_hist_batch_pbtxt.has_value()) {
+    tester.ForInput("IMAGE_HIST", std::move(image_hist_batch), 0);
   }
   if (test_case.image_quality_pbtxt.has_value()) {
     tester.ForInput("IMAGE_QUALITY", std::move(image_quality), 0);
@@ -191,7 +191,7 @@ auto sink_tests = ::testing::Values(
             {
                 {0},
             },
-        .image_hist_pbtxt = {},
+        .image_hist_batch_pbtxt = {},
         .image_quality_pbtxt = {},
     },
     FFmpegVideoSinkTestCase{
@@ -266,7 +266,7 @@ auto sink_tests = ::testing::Values(
                 // Second packet is large so it should force a new chunk.
                 {1},
             },
-        .image_hist_pbtxt = {},
+        .image_hist_batch_pbtxt = {},
         .image_quality_pbtxt = {},
     },
     FFmpegVideoSinkTestCase{
@@ -340,7 +340,7 @@ auto sink_tests = ::testing::Values(
                 // still be output as a chunk with a single packet.
                 {0},
             },
-        .image_hist_pbtxt = {},
+        .image_hist_batch_pbtxt = {},
         .image_quality_pbtxt = {},
     },
     FFmpegVideoSinkTestCase{
@@ -363,7 +363,7 @@ auto sink_tests = ::testing::Values(
             {
                 {0},
             },
-        .image_hist_pbtxt = {},
+        .image_hist_batch_pbtxt = {},
         .image_quality_pbtxt = {},
     },
     FFmpegVideoSinkTestCase{
@@ -382,18 +382,16 @@ auto sink_tests = ::testing::Values(
                 R"pbtxt(
                 frame_number: 0
                 eof: false
-                histogram {
-                  min: 0.1
-                  max: 0.9
-                  num: 100
-                  sum: 1000
-                  sum_squares: 10000
-                  bucket_limit: 0
-                  bucket_limit: 0.1
-                  bucket_limit: 1
-                  bucket: 0
-                  bucket: 10
-                  bucket: 90
+                histograms {
+                  histograms {
+                    min: 0.1
+                    max: 0.9
+                    num: 100
+                    sum: 1000
+                    bucket: 0
+                    bucket: 10
+                    bucket: 90
+                  }
                 }
                 )pbtxt",
                 R"pbtxt(
@@ -408,20 +406,18 @@ auto sink_tests = ::testing::Values(
             {
                 {0},
             },
-        .image_hist_pbtxt =
+        .image_hist_batch_pbtxt =
             {
                 R"pbtxt(
-                min: 0.1
-                max: 0.9
-                num: 100
-                sum: 1000
-                sum_squares: 10000
-                bucket_limit: 0
-                bucket_limit: 0.1
-                bucket_limit: 1
-                bucket: 0
-                bucket: 10
-                bucket: 90
+                histograms {
+                  min: 0.1
+                  max: 0.9
+                  num: 100
+                  sum: 1000
+                  bucket: 0
+                  bucket: 10
+                  bucket: 90
+                }
                 )pbtxt",
             },
         .image_quality_pbtxt =

@@ -33,7 +33,7 @@ namespace gml::gem::calculators::ffmpeg {
 
 using ::gml::internal::api::core::v1::Detection;
 using ::gml::internal::api::core::v1::H264Chunk;
-using ::gml::internal::api::core::v1::ImageHistogram;
+using ::gml::internal::api::core::v1::ImageHistogramBatch;
 using ::gml::internal::api::core::v1::ImageOverlayChunk;
 using ::gml::internal::api::core::v1::ImageQualityMetrics;
 
@@ -85,10 +85,10 @@ Status DetectionsToImageOverlayChunks(const std::vector<Detection>& detections,
   return Status::OK();
 }
 
-Status ImageHistogramToImageOverlayChunks(const ImageHistogram& hist,
+Status ImageHistogramToImageOverlayChunks(const ImageHistogramBatch& hist,
                                           std::vector<ImageOverlayChunk>* image_overlay_chunks) {
   auto& chunk = image_overlay_chunks->emplace_back();
-  (*chunk.mutable_histogram()) = hist;
+  (*chunk.mutable_histograms()) = hist;
   return Status::OK();
 }
 
@@ -134,7 +134,7 @@ absl::Status OverlayedFFmpegVideoSinkCalculator::GetContract(mediapipe::Calculat
     cc->Inputs().Tag(kDetectionsTag).Set<std::vector<Detection>>();
   }
   if (cc->Inputs().HasTag(kImageHistTag)) {
-    cc->Inputs().Tag(kImageHistTag).Set<ImageHistogram>();
+    cc->Inputs().Tag(kImageHistTag).Set<ImageHistogramBatch>();
   }
   if (cc->Inputs().HasTag(kImageQualityTag)) {
     cc->Inputs().Tag(kImageQualityTag).Set<ImageQualityMetrics>();
@@ -158,7 +158,7 @@ Status OverlayedFFmpegVideoSinkCalculator::ProcessImpl(
   }
 
   if (cc->Inputs().HasTag(kImageHistTag) && !cc->Inputs().Tag(kImageHistTag).IsEmpty()) {
-    const auto& hist = cc->Inputs().Tag(kImageHistTag).Get<ImageHistogram>();
+    const auto& hist = cc->Inputs().Tag(kImageHistTag).Get<ImageHistogramBatch>();
     GML_RETURN_IF_ERROR(ImageHistogramToImageOverlayChunks(hist, &image_overlay_chunks));
   }
   if (cc->Inputs().HasTag(kImageQualityTag) && !cc->Inputs().Tag(kImageQualityTag).IsEmpty()) {

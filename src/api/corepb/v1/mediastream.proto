@@ -70,15 +70,12 @@ message ImageHistogram {
   ImageColorChannel channel = 1;
   double min = 2;
   double max = 3;
-  double num = 4;
+  int64 num = 4;
   double sum = 5;
-  double sum_squares = 6;
 
-  // Parallel arrays encoding the bucket boundaries and the bucket values.
   // bucket(i) is the count for the bucket i.  The pixie values are normalized between 0.0 and 1.0.
-  // The range for each bucket is as follows: [bucket_limit(i-1) .. bucket_limit(i))
-  repeated double bucket_limit = 7 [ packed = true ];
-  repeated int64 bucket = 8 [ packed = true ];
+  // The pixel values are binned equally.
+  repeated int64 bucket = 6 [ packed = true ];
 }
 
 // ImageHistogramBatch contains a list of histograms per channel.
@@ -108,7 +105,7 @@ message ImageOverlayChunk {
     // Each detection is a bounding box with a label.
     DetectionList detections = 100;
     // TODO(james): add segmentation overlay.
-    ImageHistogram histogram = 200;
+    ImageHistogramBatch histograms = 200;
     ImageQualityMetrics image_quality = 300;
   }
 }
