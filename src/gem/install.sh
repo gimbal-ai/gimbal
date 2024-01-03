@@ -127,7 +127,7 @@ if [[ "$(device_type)" == "NVIDIA Orin Nano"* ]]; then
     --gpus all
     -v /tmp/argus_socket:/tmp/argus_socket
     -v /usr/local/cuda:/host_cuda
-    -e LD_LIBRARY_PATH=/lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/host_lib/aarch64-linux-gnu:/host_cuda/lib64:/host_lib/aarch64-linux-gnu/tegra
+    -e LD_LIBRARY_PATH=/lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/host_lib/aarch64-linux-gnu:/host_cuda/lib64:/host_lib/aarch64-linux-gnu/tegra:/host_lib/aarch64-linux-gnu/tegra-egl
   )
   DEFAULT_IMAGE_TAG=jetson-dev-latest
 elif [[ "$(device_type)" == "x86_64"* ]]; then
