@@ -1,5 +1,4 @@
 graph {
-  input_side_packet: "cpu_exec_ctx"
   input_side_packet: "ctrl_exec_ctx"
 
   node {
