@@ -25,4 +25,5 @@ filegroup(
       "modules/quality/samples/brisque_model_live.yml",
       "modules/quality/samples/brisque_range_live.yml",
     ],
+    visibility = ["//visibility:public"],
 )

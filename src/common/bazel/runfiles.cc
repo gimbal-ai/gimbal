@@ -34,7 +34,7 @@ using ::bazel::tools::cpp::runfiles::Runfiles;
 
 void SetBazelBinaryName(int argc, char** argv) {
   if (argc > 0) {
-    g_binary_name = static_cast<std::string>(argv[0]);
+    g_binary_name = argv[0];
   }
 }
 

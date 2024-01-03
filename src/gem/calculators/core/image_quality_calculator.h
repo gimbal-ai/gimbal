@@ -21,6 +21,7 @@
 
 #include "src/common/base/base.h"
 #include "src/common/base/status.h"
+#include "src/common/metrics/metrics_system.h"
 
 namespace gml::gem::calculators::core {
 
@@ -55,6 +56,11 @@ class ImageQualityCalculator : public mediapipe::CalculatorBase {
   Status OpenImpl(mediapipe::CalculatorContext* cc);
   Status ProcessImpl(mediapipe::CalculatorContext* cc);
   Status CloseImpl(mediapipe::CalculatorContext* cc);
+
+ private:
+  cv::Ptr<cv::quality::QualityBRISQUE> brisque_calc;
+  std::unique_ptr<opentelemetry::metrics::Gauge<double>> brisque_score_;
+  std::unique_ptr<opentelemetry::metrics::Gauge<double>> blurriness_score_;
 };
 
 }  // namespace gml::gem::calculators::core

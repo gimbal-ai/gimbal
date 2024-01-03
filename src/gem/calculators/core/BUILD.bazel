@@ -41,8 +41,10 @@ gml_cc_library(
         "packet_latency_metrics_sink_calculator.cc",
         "packet_latency_metrics_sink_calculator.h",
     ],
+    data = ["@com_github_opencv_contrib//:quality_models"],
     deps = [
         "//src/api/corepb/v1:corepb_cc_library",
+        "//src/common/bazel:cc_library",
         "//src/common/metrics:cc_library",
         "//src/gem/calculators/core/optionspb:optionspb_cc_library",
         "//src/gem/exec/core:cc_library",
