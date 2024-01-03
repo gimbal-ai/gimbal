@@ -2,16 +2,35 @@ type: "VideoEncoderSubgraph"
 input_stream: "sampled_frames"
 input_stream: "VIDEO_HEADER:video_header"
 output_stream: "encoded_av_packets"
+output_stream: "VIDEO_HEADER:scaled_video_header"
+
+node {
+  calculator: "ScaleImageCalculator"
+  input_stream: "FRAMES:sampled_frames"
+  input_stream: "VIDEO_HEADER:video_header"
+  output_stream: "FRAMES:scaled_frames"
+  output_stream: "VIDEO_HEADER:scaled_video_header"
+  node_options {
+    [type.googleapis.com/mediapipe.ScaleImageCalculatorOptions] {
+      target_width: 640
+      target_height: 480
+      preserve_aspect_ratio: true
+      input_format: FORMAT_SRGB
+      output_format: FORMAT_SRGB
+      algorithm: SCALE_ALGO_DEFAULT
+    }
+  }
+}
 
 node {
   calculator: "ImageFrameToYUVPlanarImage"
-  input_stream: "IMAGE_FRAME:sampled_frames"
+  input_stream: "IMAGE_FRAME:scaled_frames"
   output_stream: "YUV_IMAGE:planar_image"
 }
 
 node {
   calculator: "FFmpegVideoEncoderCalculator"
   input_stream: "PLANAR_IMAGE:planar_image"
-  input_stream: "VIDEO_HEADER:video_header"
+  input_stream: "VIDEO_HEADER:scaled_video_header"
   output_stream: "AV_PACKETS:encoded_av_packets"
 }

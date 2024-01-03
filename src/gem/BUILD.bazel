@@ -28,6 +28,7 @@ gml_cc_library(
         "//src/gem/controller:cc_library",
         "//src/shared/version:cc_library",
         "@com_github_rlyeh_sole//:sole",
+        "@com_google_absl//absl/log:initialize",
     ],
 )
 

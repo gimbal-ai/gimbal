@@ -15,6 +15,8 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include <absl/log/initialize.h>
+
 #include "src/common/base/base.h"
 #include "src/common/bazel/runfiles.h"
 #include "src/gem/controller/controller.h"
@@ -42,6 +44,9 @@ int main(int argc, char** argv) {
 
   // Install signal handlers where graceful exit is possible.
   TerminationHandler::InstallSignalHandlers();
+
+  // We use GLOG not absl, but mediapipe uses absl, so we need to initialize it.
+  absl::InitializeLog();
 
   LOG(INFO) << "Starting GEM";
 

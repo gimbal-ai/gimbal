@@ -56,6 +56,7 @@ mediapipe_simple_subgraph(
     deps = [
         "//src/gem/calculators/core:cc_library",
         "//src/gem/calculators/plugin/ffmpeg:cc_library",
+        "@com_github_google_mediapipe//mediapipe/calculators/image:scale_image_calculator",
     ],
 )
 
