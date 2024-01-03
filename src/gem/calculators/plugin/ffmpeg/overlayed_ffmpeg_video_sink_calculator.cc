@@ -56,7 +56,7 @@ namespace {
 Status DetectionsToImageOverlayChunks(const std::vector<Detection>& detections,
                                       std::vector<ImageOverlayChunk>* image_overlay_chunks) {
   // These are estimates for the encoded proto size. See `src/api/corepb/v1/mediastream.proto`.
-  // The image overlay chunk has a int64 frame_number and bool eof in addition to each bounding box.
+  // The image overlay chunk has a int64 frame_ts and bool eof in addition to each bounding box.
   constexpr size_t kImageOverlayChunkOverhead = sizeof(int64_t) + sizeof(bool);
   constexpr size_t kBoundingBoxSize = 4 * sizeof(float);
   auto chunk = std::make_unique<ImageOverlayChunk>();
@@ -102,7 +102,7 @@ Status ImageQualityMetricsToImageOverlayChunks(
 Status AVPacketsToH264Chunks(const std::vector<std::unique_ptr<AVPacketWrapper>>& packets,
                              std::vector<H264Chunk>* h264_chunks) {
   // This is part of the estimate for the encoded proto size. See
-  // `src/api/corepb/v1/mediastream.proto`. The h264 chunk has a int64 frame_number and bool eof in
+  // `src/api/corepb/v1/mediastream.proto`. The h264 chunk has a int64 frame_ts and bool eof in
   // addition to the video data.
   constexpr size_t kH264ChunkOverhead = sizeof(int64_t) + sizeof(bool);
   auto chunk = std::make_unique<H264Chunk>();
@@ -173,16 +173,16 @@ Status OverlayedFFmpegVideoSinkCalculator::ProcessImpl(
   if (av_packets.empty()) {
     return Status::OK();
   }
-  auto frame_number = av_packets[0]->packet()->pts;
+  auto frame_ts = av_packets[0]->packet()->pts;
   for (size_t i = 0; i < image_overlay_chunks.size(); ++i) {
-    image_overlay_chunks[i].set_frame_number(frame_number);
+    image_overlay_chunks[i].set_frame_ts(frame_ts);
     if (i == (image_overlay_chunks.size() - 1)) {
       image_overlay_chunks[i].set_eof(true);
     }
   }
 
   for (size_t i = 0; i < h264_chunks.size(); i++) {
-    h264_chunks[i].set_frame_number(frame_number);
+    h264_chunks[i].set_frame_ts(frame_ts);
     if (i == (h264_chunks.size() - 1)) {
       h264_chunks[i].set_eof(true);
     }

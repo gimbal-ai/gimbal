@@ -71,18 +71,13 @@ absl::Status FFmpegVideoEncoderCalculator::Open(mediapipe::CalculatorContext*) {
   }
   frame_ = av_frame_alloc();
 
-  frame_number_ = 0;
-
   return absl::OkStatus();
 }
 
-absl::Status FFmpegVideoEncoderCalculator::SetupCodec(int64_t height, int64_t width,
-                                                      int frame_rate) {
-  height_ = height;
-  width_ = width;
+absl::Status FFmpegVideoEncoderCalculator::SetupCodec(int height, int width, int frame_rate) {
   codec_ctx_->bit_rate = kTargetKiloBitrate * 1000;
-  codec_ctx_->width = static_cast<int>(width_);
-  codec_ctx_->height = static_cast<int>(height_);
+  codec_ctx_->width = width;
+  codec_ctx_->height = height;
 
   codec_ctx_->time_base = AVRational{1, frame_rate};
   codec_ctx_->framerate = AVRational{frame_rate, 1};
@@ -145,8 +140,7 @@ absl::Status FFmpegVideoEncoderCalculator::Process(mediapipe::CalculatorContext*
     frame_->linesize[i] = planes[i].row_stride;
   }
 
-  frame_->pts = frame_number_;
-  frame_number_++;
+  frame_->pts = cc->InputTimestamp().Value();
 
   auto ret = avcodec_send_frame(codec_ctx_, frame_);
   if (ret < 0) {

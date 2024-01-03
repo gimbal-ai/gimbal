@@ -103,7 +103,7 @@ TEST_P(OverlayedFFmpegVideoSinkTest, OutputsExpectedChunks) {
   std::vector<H264Chunk> expected_h264_chunks;
   for (auto& chunk_ids : test_case.expected_h264_chunks_ids) {
     auto& chunk = expected_h264_chunks.emplace_back();
-    chunk.set_frame_number(0);
+    chunk.set_frame_ts(0);
     for (auto id : chunk_ids) {
       auto size = test_case.av_packet_sizes[id];
       chunk.mutable_nal_data()->append(std::string(size, static_cast<char>(id)));
@@ -169,7 +169,7 @@ auto sink_tests = ::testing::Values(
         .expected_overlay_chunk_pbtxts =
             {
                 R"pbtxt(
-                frame_number: 0
+                frame_ts: 0
                 eof: true
                 detections {
                   detection {
@@ -230,7 +230,7 @@ auto sink_tests = ::testing::Values(
         .expected_overlay_chunk_pbtxts =
             {
                 R"pbtxt(
-                frame_number: 0
+                frame_ts: 0
                 eof: true
                 detections {
                   detection {
@@ -304,7 +304,7 @@ auto sink_tests = ::testing::Values(
         .expected_overlay_chunk_pbtxts =
             {
                 R"pbtxt(
-                frame_number: 0
+                frame_ts: 0
                 eof: true
                 detections {
                   detection {
@@ -354,7 +354,7 @@ auto sink_tests = ::testing::Values(
                 // Always expect an overlay chunk even if it's empty.
                 // This ensures detections are cleared if any.
                 R"pbtxt(
-                frame_number: 0
+                frame_ts: 0
                 eof: true
                 detections {}
                 )pbtxt",
@@ -375,12 +375,12 @@ auto sink_tests = ::testing::Values(
         .expected_overlay_chunk_pbtxts =
             {
                 R"pbtxt(
-                frame_number: 0
+                frame_ts: 0
                 eof: false
                 detections {}
                 )pbtxt",
                 R"pbtxt(
-                frame_number: 0
+                frame_ts: 0
                 eof: false
                 histograms {
                   histograms {
@@ -395,7 +395,7 @@ auto sink_tests = ::testing::Values(
                 }
                 )pbtxt",
                 R"pbtxt(
-                frame_number: 0
+                frame_ts: 0
                 eof: true
                 image_quality {
                   brisque_score: 0.5

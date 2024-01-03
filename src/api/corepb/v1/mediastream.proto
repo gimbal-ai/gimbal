@@ -96,8 +96,12 @@ message ImageQualityMetrics {
 // Each chunk only contains overlays for a single frame (not necessarily all the overlays for a
 // single frame).
 message ImageOverlayChunk {
-  // Monotonically increasing frame number.
-  int64 frame_number = 1;
+  // Monotonically increasing frame timestamp.
+  int64 frame_ts = 1 [
+    (gogoproto.customname) = "FrameTS",
+    (gogoproto.jsontag) = "frameTS",
+    json_name = "frameTS"
+  ];
   // Whether this is the last overlay chunk for this frame
   bool eof = 2 [ (gogoproto.customname) = "EOF" ];
 
@@ -113,8 +117,12 @@ message ImageOverlayChunk {
 // H264Chunk stores a chunk of h.264 encoded NAL units. The NAL units are stored packed into a
 // single byte array. Each chunk has the NAL units for no more than a single frame.
 message H264Chunk {
-  // Monotonically increasing frame number.
-  int64 frame_number = 1;
+  // Monotonically increasing frame timestamp.
+  int64 frame_ts = 1 [
+    (gogoproto.customname) = "FrameTS",
+    (gogoproto.jsontag) = "frameTS",
+    json_name = "frameTS"
+  ];
   // Whether this is the last h264 chunk for this frame
   bool eof = 2 [ (gogoproto.customname) = "EOF" ];
 
