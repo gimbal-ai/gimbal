@@ -29,15 +29,27 @@ TEST(MetricsTest, CollectAllAsProto) {
 
   auto provider = metrics_sys.GetMeterProvider();
   auto meter = provider->GetMeter("gml-meter", "1.0.0");
-  auto counter = meter->CreateUInt64Counter("counter");
+  auto uint64_counter = meter->CreateUInt64Counter("uint64_counter");
+  auto double_counter = meter->CreateDoubleCounter("double_counter");
+  auto int64_gauge = meter->CreateInt64Gauge("int64_gauge");
+  auto double_gauge = meter->CreateDoubleGauge("double_gauge");
 
-  counter->Add(1);
+  uint64_counter->Add(1);
+  double_counter->Add(11.1);
+  int64_gauge->Record(2, {{}}, {});
+  double_gauge->Record(22.2, {{}}, {});
 
   ResourceMetrics proto_resource_metrics = metrics_sys.CollectAllAsProto();
 
   ASSERT_EQ(proto_resource_metrics.scope_metrics_size(), 1);
-  ASSERT_EQ(proto_resource_metrics.scope_metrics(0).metrics_size(), 1);
-  EXPECT_EQ(proto_resource_metrics.scope_metrics(0).metrics(0).name(), "counter");
+  ASSERT_EQ(proto_resource_metrics.scope_metrics(0).metrics_size(), 4);
+
+  std::vector<std::string> names;
+  for (const auto& metric : proto_resource_metrics.scope_metrics(0).metrics()) {
+    names.push_back(metric.name());
+  }
+  ASSERT_THAT(names, ::testing::UnorderedElementsAre("uint64_counter", "double_counter",
+                                                     "int64_gauge", "double_gauge"));
 }
 
 TEST(MetricsTest, Reader) {
