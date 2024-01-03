@@ -30,8 +30,8 @@
 namespace gml::gem::calculators::core {
 
 constexpr std::string_view kImageFrameTag = "IMAGE_FRAME";
-constexpr std::string_view kHistOutputTag = "HISTOGRAM";
-constexpr std::string_view kQualityOutputTag = "QUALITY";
+constexpr std::string_view kHistOutputTag = "IMAGE_HIST";
+constexpr std::string_view kQualityOutputTag = "IMAGE_QUALITY";
 
 using ImageHistogram = internal::api::core::v1::ImageHistogram;
 using ImageQualityMetrics = internal::api::core::v1::ImageQualityMetrics;

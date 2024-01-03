@@ -30,7 +30,8 @@ namespace gml::gem::calculators::core {
  *  Inputs:
  *    IMAGE_FRAME mediapipe::ImageFrame
  *  Outputs:
- *    QUALITY_METRICS contain image quality metrics such as histogram, etc.
+ *    IMAGE_HIST contain image quality metrics as a histogram
+ *    IMAGE_QUALITY contain image quality metrics
  *
  */
 class ImageQualityCalculator : public mediapipe::CalculatorBase {
