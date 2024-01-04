@@ -54,11 +54,11 @@ node {
   output_stream: "selected_indices"
   node_options {
     [type.googleapis.com/gml.gem.calculators.tensorrt.optionspb.TensorRTExecuteCalculatorOptions] {
-      input_onnx_name: "input_1"
-      input_onnx_name: "image_shape"
-      output_onnx_name: "yolonms_layer_1/ExpandDims_1:0"
-      output_onnx_name: "yolonms_layer_1/ExpandDims_3:0"
-      output_onnx_name: "yolonms_layer_1/concat_2:0"
+      input_onnx_name: "x"
+      input_onnx_name: "shape"
+      output_onnx_name: "Squeeze__229:0"
+      output_onnx_name: "Transpose__230:0"
+      output_onnx_name: "casted_indices"
     }
   }
 }
@@ -164,7 +164,7 @@ node {
       index_to_label: "teddy bear"
       index_to_label: "hair drier"
       index_to_label: "toothbrush"
-      coordinate_format: COORDINATE_FORMAT_DIAG_CORNERS_YX
+      coordinate_format: COORDINATE_FORMAT_NORMALIZED_DIAG_CORNERS_XY
     }
   }
 }

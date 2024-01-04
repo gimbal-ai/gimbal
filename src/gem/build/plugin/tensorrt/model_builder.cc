@@ -61,6 +61,7 @@ StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(
   }
 
   auto config = std::unique_ptr<nvinfer1::IBuilderConfig>(builder->createBuilderConfig());
+  config->setFlag(nvinfer1::BuilderFlag::kINT8);
 
   for (const auto& opt_profile_spec : spec.tensorrt_spec().optimization_profile()) {
     auto* opt_profile = builder->createOptimizationProfile();
