@@ -35,7 +35,6 @@ using AVPacketWrappers = std::vector<std::unique_ptr<AVPacketWrapper>>;
 constexpr std::string_view kPlanarImageTag = "PLANAR_IMAGE";
 constexpr std::string_view kAVPacketsTag = "AV_PACKETS";
 constexpr std::string_view kVideoHeaderTag = "VIDEO_HEADER";
-constexpr std::string_view kFrameRateTag = "FRAME_RATE";
 
 // TODO(james): move these to options.
 constexpr char kCodecName[] = "libopenh264\0";
@@ -44,13 +43,7 @@ constexpr int64_t kGOPSize = 30;
 
 absl::Status FFmpegVideoEncoderCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   cc->Inputs().Tag(kPlanarImageTag).Set<std::unique_ptr<exec::core::PlanarImage>>();
-  if (cc->Inputs().HasTag(kVideoHeaderTag)) {
-    cc->Inputs().Tag(kVideoHeaderTag).Set<mediapipe::VideoHeader>();
-  } else if (cc->InputSidePackets().HasTag(kFrameRateTag)) {
-    cc->InputSidePackets().Tag(kFrameRateTag).Set<int>();
-  } else {
-    return {absl::StatusCode::kInvalidArgument, "Must specify one of VIDEO_HEADER or FRAME_RATE"};
-  }
+  cc->Inputs().Tag(kVideoHeaderTag).Set<mediapipe::VideoHeader>();
   cc->Outputs().Tag(kAVPacketsTag).Set<AVPacketWrappers>();
   return absl::OkStatus();
 }
@@ -118,14 +111,12 @@ absl::Status FFmpegVideoEncoderCalculator::Process(mediapipe::CalculatorContext*
                       static_cast<int>(video_header.frame_rate));
   }
 
+  if (!codec_setup_) {
+    return {absl::StatusCode::kInternal, "No video header provided"};
+  }
+
   const auto& planar_image =
       cc->Inputs().Tag(kPlanarImageTag).Get<std::unique_ptr<exec::core::PlanarImage>>();
-
-  if (!codec_setup_) {
-    // If we don't have a video header we setup using the frame rate side packet.
-    auto frame_rate = cc->InputSidePackets().Tag(kFrameRateTag).Get<int>();
-    GML_ABSL_RETURN_IF_ERROR(SetupCodec(planar_image->Height(), planar_image->Width(), frame_rate));
-  }
 
   auto planes = planar_image->Planes();
 

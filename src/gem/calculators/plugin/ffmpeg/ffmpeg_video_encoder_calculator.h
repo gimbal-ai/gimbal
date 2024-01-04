@@ -33,10 +33,6 @@ namespace gml::gem::calculators::ffmpeg {
 
 /**
  * FFMPEGVideoEncoderCalculator Graph API:
- *  InputSidePackets:
- *    FRAME_RATE frame rate to use for encoding (optional). Must specify this if VIDEO_HEADER is not
- *    present.
- *
  *  Inputs:
  *    PLANAR_IMAGE std::unique_ptr<exec::core::PlanarImage>
  *    VIDEO_HEADER mediapipe::VideoHeader (optional)
