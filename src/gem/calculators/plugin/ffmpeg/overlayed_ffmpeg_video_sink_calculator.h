@@ -18,6 +18,7 @@
 #pragma once
 
 #include <mediapipe/framework/calculator_framework.h>
+#include <mediapipe/framework/formats/video_stream_header.h>
 
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/gem/calculators/core/execution_context_calculator.h"
@@ -47,6 +48,9 @@ class OverlayedFFmpegVideoSinkCalculator : public core::ControlExecutionContextC
   static absl::Status GetContract(mediapipe::CalculatorContract* cc);
   Status ProcessImpl(mediapipe::CalculatorContext* cc,
                      exec::core::ControlExecutionContext* control_ctx) override;
+
+ private:
+  mediapipe::VideoHeader video_header_;
 };
 
 }  // namespace gml::gem::calculators::ffmpeg

@@ -20,6 +20,8 @@ extern "C" {
 #include <libavcodec/avcodec.h>
 }
 
+#include <mediapipe/framework/formats/video_stream_header.h>
+
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/testing/protobuf.h"
 #include "src/common/testing/testing.h"
@@ -34,11 +36,13 @@ using ::gml::internal::api::core::v1::H264Chunk;
 using ::gml::internal::api::core::v1::ImageHistogramBatch;
 using ::gml::internal::api::core::v1::ImageOverlayChunk;
 using ::gml::internal::api::core::v1::ImageQualityMetrics;
+using ::gml::internal::api::core::v1::VideoHeader;
 
 static constexpr char kOverlayedFFmpegVideoSinkNode[] = R"pbtxt(
 calculator: "OverlayedFFmpegVideoSinkCalculator"
 input_side_packet: "EXEC_CTX:ctrl_exec_ctx"
 input_stream: "AV_PACKETS:av_packets"
+input_stream: "VIDEO_HEADER:video_header"
 $0
 )pbtxt";
 
@@ -84,6 +88,11 @@ TEST_P(OverlayedFFmpegVideoSinkTest, OutputsExpectedChunks) {
                                                               &detections[i]));
   }
 
+  auto video_header = mediapipe::VideoHeader();
+  video_header.height = 160;
+  video_header.width = 210;
+  video_header.frame_rate = 12;
+
   std::vector<std::unique_ptr<AVPacketWrapper>> packets(test_case.av_packet_sizes.size());
   for (const auto& [i, packet_size] : Enumerate(test_case.av_packet_sizes)) {
     auto packet = AVPacketWrapper::Create();
@@ -125,6 +134,11 @@ TEST_P(OverlayedFFmpegVideoSinkTest, OutputsExpectedChunks) {
           } else if (type == H264Chunk::descriptor()->full_name()) {
             actual_h264_chunks.emplace_back();
             actual_h264_chunks.back().CopyFrom(static_cast<const H264Chunk&>(*message));
+          } else if (type == VideoHeader::descriptor()->full_name()) {
+            auto header = static_cast<const VideoHeader&>(*message);
+            EXPECT_EQ(header.height(), 160);
+            EXPECT_EQ(header.width(), 210);
+            EXPECT_EQ(header.frame_rate(), 12);
           }
         }
         return Status::OK();
@@ -133,6 +147,8 @@ TEST_P(OverlayedFFmpegVideoSinkTest, OutputsExpectedChunks) {
   exec::core::ControlExecutionContext control_ctx;
   control_ctx.RegisterVideoWithOverlaysCallback(cb);
 
+  tester.WithExecutionContext(&control_ctx)
+      .ForInput("VIDEO_HEADER", video_header, mediapipe::Timestamp::PreStream());
   auto ts = mediapipe::Timestamp::Min();
   tester.WithExecutionContext(&control_ctx).ForInput("AV_PACKETS", std::move(packets), ts);
   if (detections.size() > 0) {

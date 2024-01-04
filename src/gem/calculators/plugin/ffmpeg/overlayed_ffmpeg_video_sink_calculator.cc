@@ -36,9 +36,11 @@ using ::gml::internal::api::core::v1::H264Chunk;
 using ::gml::internal::api::core::v1::ImageHistogramBatch;
 using ::gml::internal::api::core::v1::ImageOverlayChunk;
 using ::gml::internal::api::core::v1::ImageQualityMetrics;
+using ::gml::internal::api::core::v1::VideoHeader;
 
 constexpr std::string_view kDetectionsTag = "DETECTIONS";
 constexpr std::string_view kAVPacketTag = "AV_PACKETS";
+constexpr std::string_view kVideoHeaderTag = "VIDEO_HEADER";
 constexpr std::string_view kImageHistTag = "IMAGE_HIST";
 constexpr std::string_view kImageQualityTag = "IMAGE_QUALITY";
 
@@ -132,12 +134,18 @@ absl::Status OverlayedFFmpegVideoSinkCalculator::GetContract(mediapipe::Calculat
     cc->Inputs().Tag(kImageQualityTag).Set<ImageQualityMetrics>();
   }
   cc->Inputs().Tag(kAVPacketTag).Set<std::vector<std::unique_ptr<AVPacketWrapper>>>();
+  cc->Inputs().Tag(kVideoHeaderTag).Set<mediapipe::VideoHeader>();
   return absl::OkStatus();
 }
 
 Status OverlayedFFmpegVideoSinkCalculator::ProcessImpl(
     mediapipe::CalculatorContext* cc, exec::core::ControlExecutionContext* control_ctx) {
   std::vector<std::unique_ptr<google::protobuf::Message>> messages;
+
+  if (cc->InputTimestamp() == mediapipe::Timestamp::PreStream()) {
+    video_header_ = cc->Inputs().Tag(kVideoHeaderTag).Get<mediapipe::VideoHeader>();
+    return Status::OK();
+  }
 
   const auto& av_packets =
       cc->Inputs().Tag(kAVPacketTag).Get<std::vector<std::unique_ptr<AVPacketWrapper>>>();
@@ -181,6 +189,14 @@ Status OverlayedFFmpegVideoSinkCalculator::ProcessImpl(
   // We always add an overlay chunk, so we can be certain that the last one is of type
   // ImageOverlayChunk.
   static_cast<ImageOverlayChunk*>(messages.back().get())->set_eof(true);
+
+  // Since different clients may start playing the video at different times, we need to send the
+  // video header with every chunk, instead of just once at the beginning.
+  auto header = std::make_unique<VideoHeader>();
+  header->set_height(video_header_.height);
+  header->set_width(video_header_.width);
+  header->set_frame_rate(video_header_.frame_rate);
+  messages.push_back(std::move(header));
 
   auto cb = control_ctx->GetVideoWithOverlaysCallback();
   if (!!cb) {
