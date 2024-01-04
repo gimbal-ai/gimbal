@@ -51,15 +51,16 @@ constexpr size_t kMaxChunkSize =
 
 namespace {
 
-// DetectionsToImageOverlayChunks splits the detection list into ImageOverlayChunks. It is not
-// responsible for setting the frame number or EOF on the chunks.
-Status DetectionsToImageOverlayChunks(const std::vector<Detection>& detections,
-                                      std::vector<ImageOverlayChunk>* image_overlay_chunks) {
+// DetectionsToImageOverlayChunks splits the detection list into ImageOverlayChunks.
+Status DetectionsToImageOverlayChunks(
+    const std::vector<Detection>& detections, int64_t frame_ts,
+    std::vector<std::unique_ptr<google::protobuf::Message>>* messages) {
   // These are estimates for the encoded proto size. See `src/api/corepb/v1/mediastream.proto`.
   // The image overlay chunk has a int64 frame_ts and bool eof in addition to each bounding box.
   constexpr size_t kImageOverlayChunkOverhead = sizeof(int64_t) + sizeof(bool);
   constexpr size_t kBoundingBoxSize = 4 * sizeof(float);
   auto chunk = std::make_unique<ImageOverlayChunk>();
+  chunk->set_frame_ts(frame_ts);
 
   size_t chunk_size = kImageOverlayChunkOverhead;
   for (const auto& detection : detections) {
@@ -71,8 +72,9 @@ Status DetectionsToImageOverlayChunks(const std::vector<Detection>& detections,
 
     if (chunk->mutable_detections()->detection_size() > 0 &&
         chunk_size + detection_size > kMaxChunkSize) {
-      image_overlay_chunks->emplace_back(*chunk);
+      messages->push_back(std::move(chunk));
       chunk = std::make_unique<ImageOverlayChunk>();
+      chunk->set_frame_ts(frame_ts);
       chunk_size = kImageOverlayChunkOverhead;
     }
 
@@ -80,39 +82,29 @@ Status DetectionsToImageOverlayChunks(const std::vector<Detection>& detections,
     chunk_size += detection_size;
   }
   if (chunk->mutable_detections()->detection_size() > 0) {
-    image_overlay_chunks->emplace_back(*chunk);
+    messages->push_back(std::move(chunk));
   }
   return Status::OK();
 }
 
-Status ImageHistogramToImageOverlayChunks(const ImageHistogramBatch& hist,
-                                          std::vector<ImageOverlayChunk>* image_overlay_chunks) {
-  auto& chunk = image_overlay_chunks->emplace_back();
-  (*chunk.mutable_histograms()) = hist;
-  return Status::OK();
-}
-
-Status ImageQualityMetricsToImageOverlayChunks(
-    const ImageQualityMetrics& quality, std::vector<ImageOverlayChunk>* image_overlay_chunks) {
-  auto& chunk = image_overlay_chunks->emplace_back();
-  (*chunk.mutable_image_quality()) = quality;
-  return Status::OK();
-}
-
 Status AVPacketsToH264Chunks(const std::vector<std::unique_ptr<AVPacketWrapper>>& packets,
-                             std::vector<H264Chunk>* h264_chunks) {
+                             int64_t frame_ts,
+                             std::vector<std::unique_ptr<google::protobuf::Message>>* messages) {
   // This is part of the estimate for the encoded proto size. See
   // `src/api/corepb/v1/mediastream.proto`. The h264 chunk has a int64 frame_ts and bool eof in
   // addition to the video data.
   constexpr size_t kH264ChunkOverhead = sizeof(int64_t) + sizeof(bool);
+
   auto chunk = std::make_unique<H264Chunk>();
+  chunk->set_frame_ts(frame_ts);
 
   size_t chunk_size = kH264ChunkOverhead;
   for (const auto& packet : packets) {
     auto* av_packet = packet->packet();
     if (chunk->mutable_nal_data()->size() > 0 && chunk_size + av_packet->size > kMaxChunkSize) {
-      h264_chunks->emplace_back(*chunk);
+      messages->push_back(std::move(chunk));
       chunk = std::make_unique<H264Chunk>();
+      chunk->set_frame_ts(frame_ts);
       chunk_size = kH264ChunkOverhead;
     }
 
@@ -121,7 +113,7 @@ Status AVPacketsToH264Chunks(const std::vector<std::unique_ptr<AVPacketWrapper>>
     chunk_size += av_packet->size;
   }
   if (chunk->nal_data().size() > 0) {
-    h264_chunks->emplace_back(*chunk);
+    messages->push_back(std::move(chunk));
   }
   return Status::OK();
 }
@@ -145,52 +137,54 @@ absl::Status OverlayedFFmpegVideoSinkCalculator::GetContract(mediapipe::Calculat
 
 Status OverlayedFFmpegVideoSinkCalculator::ProcessImpl(
     mediapipe::CalculatorContext* cc, exec::core::ControlExecutionContext* control_ctx) {
-  std::vector<ImageOverlayChunk> image_overlay_chunks;
-  std::vector<H264Chunk> h264_chunks;
-
-  if (cc->Inputs().HasTag(kDetectionsTag) && !cc->Inputs().Tag(kDetectionsTag).IsEmpty()) {
-    const auto& detections = cc->Inputs().Tag(kDetectionsTag).Get<std::vector<Detection>>();
-    GML_RETURN_IF_ERROR(DetectionsToImageOverlayChunks(detections, &image_overlay_chunks));
-  } else {
-    // Always include an overlay chunk of type detections. This ensures that we clear
-    // stale detections if any.
-    image_overlay_chunks.emplace_back().mutable_detections();
-  }
-
-  if (cc->Inputs().HasTag(kImageHistTag) && !cc->Inputs().Tag(kImageHistTag).IsEmpty()) {
-    const auto& hist = cc->Inputs().Tag(kImageHistTag).Get<ImageHistogramBatch>();
-    GML_RETURN_IF_ERROR(ImageHistogramToImageOverlayChunks(hist, &image_overlay_chunks));
-  }
-  if (cc->Inputs().HasTag(kImageQualityTag) && !cc->Inputs().Tag(kImageQualityTag).IsEmpty()) {
-    const auto& quality = cc->Inputs().Tag(kImageQualityTag).Get<ImageQualityMetrics>();
-    GML_RETURN_IF_ERROR(ImageQualityMetricsToImageOverlayChunks(quality, &image_overlay_chunks));
-  }
+  std::vector<std::unique_ptr<google::protobuf::Message>> messages;
 
   const auto& av_packets =
       cc->Inputs().Tag(kAVPacketTag).Get<std::vector<std::unique_ptr<AVPacketWrapper>>>();
-  GML_RETURN_IF_ERROR(AVPacketsToH264Chunks(av_packets, &h264_chunks));
 
   if (av_packets.empty()) {
     return Status::OK();
   }
   auto frame_ts = av_packets[0]->packet()->pts;
-  for (size_t i = 0; i < image_overlay_chunks.size(); ++i) {
-    image_overlay_chunks[i].set_frame_ts(frame_ts);
-    if (i == (image_overlay_chunks.size() - 1)) {
-      image_overlay_chunks[i].set_eof(true);
-    }
+
+  GML_RETURN_IF_ERROR(AVPacketsToH264Chunks(av_packets, frame_ts, &messages));
+  // We always have a H264Chunk, since we return early if that's not the case. Hence this static
+  // cast is safe.
+  static_cast<H264Chunk*>(messages.back().get())->set_eof(true);
+
+  if (cc->Inputs().HasTag(kDetectionsTag) && !cc->Inputs().Tag(kDetectionsTag).IsEmpty()) {
+    const auto& detections = cc->Inputs().Tag(kDetectionsTag).Get<std::vector<Detection>>();
+    GML_RETURN_IF_ERROR(DetectionsToImageOverlayChunks(detections, frame_ts, &messages));
+  } else {
+    // Always include an overlay chunk of type detections. This ensures that we clear
+    // stale detections if any.
+    auto chunk = std::make_unique<ImageOverlayChunk>();
+    chunk->set_frame_ts(frame_ts);
+    chunk->mutable_detections();
+    messages.push_back(std::move(chunk));
   }
 
-  for (size_t i = 0; i < h264_chunks.size(); i++) {
-    h264_chunks[i].set_frame_ts(frame_ts);
-    if (i == (h264_chunks.size() - 1)) {
-      h264_chunks[i].set_eof(true);
-    }
+  if (cc->Inputs().HasTag(kImageHistTag) && !cc->Inputs().Tag(kImageHistTag).IsEmpty()) {
+    const auto& hist = cc->Inputs().Tag(kImageHistTag).Get<ImageHistogramBatch>();
+    auto chunk = std::make_unique<ImageOverlayChunk>();
+    chunk->set_frame_ts(frame_ts);
+    (*chunk->mutable_histograms()) = hist;
+    messages.push_back(std::move(chunk));
   }
+  if (cc->Inputs().HasTag(kImageQualityTag) && !cc->Inputs().Tag(kImageQualityTag).IsEmpty()) {
+    const auto& quality = cc->Inputs().Tag(kImageQualityTag).Get<ImageQualityMetrics>();
+    auto chunk = std::make_unique<ImageOverlayChunk>();
+    chunk->set_frame_ts(frame_ts);
+    (*chunk->mutable_image_quality()) = quality;
+    messages.push_back(std::move(chunk));
+  }
+  // We always add an overlay chunk, so we can be certain that the last one is of type
+  // ImageOverlayChunk.
+  static_cast<ImageOverlayChunk*>(messages.back().get())->set_eof(true);
 
-  if (control_ctx->HasVideoWithOverlaysCallback()) {
-    GML_RETURN_IF_ERROR(
-        control_ctx->GetVideoWithOverlaysCallback()(image_overlay_chunks, h264_chunks));
+  auto cb = control_ctx->GetVideoWithOverlaysCallback();
+  if (!!cb) {
+    GML_RETURN_IF_ERROR(cb(messages));
   }
 
   return Status::OK();

@@ -31,8 +31,7 @@ namespace gml::gem::exec::core {
 class ControlExecutionContext : public ExecutionContext {
  public:
   using VideoWithOverlaysCallback =
-      std::function<Status(const std::vector<::gml::internal::api::core::v1::ImageOverlayChunk>&,
-                           const std::vector<::gml::internal::api::core::v1::H264Chunk>&)>;
+      std::function<Status(const std::vector<std::unique_ptr<google::protobuf::Message>>&)>;
 
   void RegisterVideoWithOverlaysCallback(VideoWithOverlaysCallback cb) {
     absl::base_internal::SpinLockHolder lock(&lock_);
@@ -42,11 +41,6 @@ class ControlExecutionContext : public ExecutionContext {
   void ClearVideoWithOverlaysCallback() {
     absl::base_internal::SpinLockHolder lock(&lock_);
     video_w_overlays_cb_ = nullptr;
-  }
-
-  bool HasVideoWithOverlaysCallback() {
-    absl::base_internal::SpinLockHolder lock(&lock_);
-    return !!video_w_overlays_cb_;
   }
 
   VideoWithOverlaysCallback GetVideoWithOverlaysCallback() {

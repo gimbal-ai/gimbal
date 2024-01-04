@@ -47,11 +47,7 @@ class VideoStreamHandler : public MessageHandler {
   Status Finish() override;
 
  private:
-  using H264Chunk = ::gml::internal::api::core::v1::H264Chunk;
-  using ImageOverlayChunk = ::gml::internal::api::core::v1::ImageOverlayChunk;
-
-  Status VideoWithOverlaysCallback(const std::vector<ImageOverlayChunk>&,
-                                   const std::vector<H264Chunk>&);
+  Status VideoWithOverlaysCallback(const std::vector<std::unique_ptr<google::protobuf::Message>>&);
   exec::core::ControlExecutionContext* ctrl_exec_ctx_;
 
   event::TimerUPtr keep_alive_timer_ = nullptr;

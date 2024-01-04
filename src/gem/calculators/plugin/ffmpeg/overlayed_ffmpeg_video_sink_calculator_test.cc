@@ -115,12 +115,18 @@ TEST_P(OverlayedFFmpegVideoSinkTest, OutputsExpectedChunks) {
   std::vector<H264Chunk> actual_h264_chunks;
 
   exec::core::ControlExecutionContext::VideoWithOverlaysCallback cb =
-      [&](const std::vector<ImageOverlayChunk>& image_overlay_chunks,
-          const std::vector<H264Chunk>& h264_chunks) {
-        actual_image_overlay_chunks.insert(actual_image_overlay_chunks.end(),
-                                           image_overlay_chunks.begin(),
-                                           image_overlay_chunks.end());
-        actual_h264_chunks.insert(actual_h264_chunks.end(), h264_chunks.begin(), h264_chunks.end());
+      [&](const std::vector<std::unique_ptr<google::protobuf::Message>>& messages) {
+        for (auto& message : messages) {
+          auto type = message->GetTypeName();
+          if (type == ImageOverlayChunk::descriptor()->full_name()) {
+            actual_image_overlay_chunks.emplace_back();
+            actual_image_overlay_chunks.back().CopyFrom(
+                static_cast<const ImageOverlayChunk&>(*message));
+          } else if (type == H264Chunk::descriptor()->full_name()) {
+            actual_h264_chunks.emplace_back();
+            actual_h264_chunks.back().CopyFrom(static_cast<const H264Chunk&>(*message));
+          }
+        }
         return Status::OK();
       };
 

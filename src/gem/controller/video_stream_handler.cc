@@ -44,8 +44,6 @@ using gml::internal::api::core::v1::EDGE_CP_TOPIC_VIDEO;
 
 namespace gml::gem::controller {
 
-using ::gml::internal::api::core::v1::H264Chunk;
-using ::gml::internal::api::core::v1::ImageOverlayChunk;
 using ::gml::internal::api::core::v1::VideoStreamKeepAlive;
 using ::gml::internal::api::core::v1::VideoStreamStart;
 using ::gml::internal::api::core::v1::VideoStreamStop;
@@ -55,13 +53,9 @@ VideoStreamHandler::VideoStreamHandler(gml::event::Dispatcher* d, GEMInfo* info,
     : MessageHandler(d, info, b), ctrl_exec_ctx_(ctrl_exec_ctx) {}
 
 Status VideoStreamHandler::VideoWithOverlaysCallback(
-    const std::vector<ImageOverlayChunk>& image_overlay_chunks,
-    const std::vector<H264Chunk>& h264_chunks) {
-  for (const auto& chunk : image_overlay_chunks) {
-    GML_RETURN_IF_ERROR(bridge()->SendMessageToBridge(EDGE_CP_TOPIC_VIDEO, chunk));
-  }
-  for (const auto& chunk : h264_chunks) {
-    GML_RETURN_IF_ERROR(bridge()->SendMessageToBridge(EDGE_CP_TOPIC_VIDEO, chunk));
+    const std::vector<std::unique_ptr<google::protobuf::Message>>& messages) {
+  for (const auto& message : messages) {
+    GML_RETURN_IF_ERROR(bridge()->SendMessageToBridge(EDGE_CP_TOPIC_VIDEO, *message));
   }
   return Status::OK();
 }
@@ -69,8 +63,7 @@ Status VideoStreamHandler::VideoWithOverlaysCallback(
 Status VideoStreamHandler::Start() {
   LOG(INFO) << "Starting VideoStreamHandler";
   ctrl_exec_ctx_->RegisterVideoWithOverlaysCallback(
-      std::bind(&VideoStreamHandler::VideoWithOverlaysCallback, this, std::placeholders::_1,
-                std::placeholders::_2));
+      std::bind(&VideoStreamHandler::VideoWithOverlaysCallback, this, std::placeholders::_1));
   running_ = true;
 
   keep_alive_timer_ = dispatcher()->CreateTimer([this]() {
