@@ -26,10 +26,6 @@ using opentelemetry::sdk::metrics::InstrumentType;
 
 namespace gml::metrics {
 
-namespace {
-std::unique_ptr<MetricsSystem> g_instance;
-}
-
 Scrapeable::Scrapeable(MetricsSystem* metrics_system) : metrics_system_(metrics_system) {
   GML_CHECK_OK(metrics_system_->RegisterScraper(this));
 }
@@ -57,9 +53,11 @@ class BasicMetricReader : public opentelemetry::sdk::metrics::MetricReader {
 // Sets up the Metrics system. Only needs to be called once.
 // Called automatically by GetInstance() on first access.
 void MetricsSystem::Init() {
-  if (g_instance != nullptr) {
-    return;
-  }
+  absl::base_internal::SpinLockHolder scrape_lock(&scrapeables_lock_);
+  absl::base_internal::SpinLockHolder mp_lock(&meter_provider_lock_);
+
+  scrapeables_.clear();
+  reader_.reset();
 
   std::shared_ptr<opentelemetry::metrics::MeterProvider> provider(
       new opentelemetry::sdk::metrics::MeterProvider());
@@ -70,21 +68,14 @@ void MetricsSystem::Init() {
   p->AddMetricReader(reader);
 
   opentelemetry::metrics::Provider::SetMeterProvider(provider);
-
-  g_instance = std::unique_ptr<MetricsSystem>(new MetricsSystem());
-  g_instance->reader_ = std::move(reader);
+  reader_ = std::move(reader);
 }
 
-void MetricsSystem::ResetInstance() {
-  g_instance.reset();
-  Init();
-}
+void MetricsSystem::Reset() { Init(); }
 
 MetricsSystem& MetricsSystem::GetInstance() {
-  if (g_instance == nullptr) {
-    MetricsSystem::ResetInstance();
-  };
-  return *g_instance;
+  static MetricsSystem metrics_system;
+  return metrics_system;
 }
 
 opentelemetry::nostd::shared_ptr<opentelemetry::metrics::MeterProvider>

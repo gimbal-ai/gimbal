@@ -75,8 +75,6 @@ class MetricsSystem {
    */
   static MetricsSystem& GetInstance();
 
-  static void ResetInstance();
-
   /**
    * Main interface to creating and updating statistics. See OTel or test code for examples
    * of how to use it.
@@ -121,6 +119,7 @@ class MetricsSystem {
   template <typename T>
   std::unique_ptr<opentelemetry::metrics::Histogram<T>> CreateHistogramWithBounds(
       std::string name, const std::vector<double>& bounds) {
+    absl::base_internal::SpinLockHolder lock(&meter_provider_lock_);
     auto provider = GetMeterProvider();
     auto meter = provider->GetMeter("gml");
 
@@ -155,13 +154,22 @@ class MetricsSystem {
     return histogram;
   }
 
- private:
-  MetricsSystem() = default;
+  // Reset removes all metrics.
+  void Reset();
 
-  static void Init();
+ private:
+  MetricsSystem() { Init(); }
+
+  void Init();
 
   absl::base_internal::SpinLock scrapeables_lock_;
   std::vector<Scrapeable*> scrapeables_ ABSL_GUARDED_BY(scrapeables_lock_);
+  // MeterProvider::AddMetricReader and MeterProvider::AddView are not thread safe, so we need to
+  // lock for those method calls.
+  // TODO(james): Currently, we allow anyone to call GetMeterProvider and then call these unsafe
+  // APIs, we should refactor this to ensure calls to these methods are only possible from within
+  // metrics system.
+  absl::base_internal::SpinLock meter_provider_lock_;
   std::shared_ptr<opentelemetry::sdk::metrics::MetricReader> reader_;
 };
 

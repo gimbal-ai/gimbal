@@ -24,8 +24,8 @@
 using opentelemetry::proto::metrics::v1::ResourceMetrics;
 
 TEST(MetricsTest, CollectAllAsProto) {
-  ::gml::metrics::MetricsSystem::ResetInstance();
   ::gml::metrics::MetricsSystem& metrics_sys = ::gml::metrics::MetricsSystem::GetInstance();
+  metrics_sys.Reset();
 
   auto provider = metrics_sys.GetMeterProvider();
   auto meter = provider->GetMeter("gml-meter", "1.0.0");
@@ -53,8 +53,8 @@ TEST(MetricsTest, CollectAllAsProto) {
 }
 
 TEST(MetricsTest, Reader) {
-  ::gml::metrics::MetricsSystem::ResetInstance();
   ::gml::metrics::MetricsSystem& metrics_sys = ::gml::metrics::MetricsSystem::GetInstance();
+  metrics_sys.Reset();
 
   auto provider = metrics_sys.GetMeterProvider();
   auto meter = provider->GetMeter("gml-meter", "1.0.0");
@@ -78,8 +78,8 @@ TEST(MetricsTest, Reader) {
 }
 
 TEST(MetricsTest, CreateHistogramWithBounds) {
-  ::gml::metrics::MetricsSystem::ResetInstance();
   ::gml::metrics::MetricsSystem& metrics_sys = ::gml::metrics::MetricsSystem::GetInstance();
+  metrics_sys.Reset();
 
   auto hist = metrics_sys.CreateHistogramWithBounds<uint64_t>("test_metric", {0.0, 10.0, 50.0});
 
