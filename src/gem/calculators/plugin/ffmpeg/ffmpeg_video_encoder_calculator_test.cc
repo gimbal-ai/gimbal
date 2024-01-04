@@ -50,7 +50,7 @@ TEST(FFmpegVideoEncoderCalculator, RunsWithoutError) {
   // This test currently only asserts that there's no error running a single frame through the
   // encoder.
   tester.ForInputSidePacket("FRAME_RATE", 30)
-      .ForInput("PLANAR_IMAGE", std::move(planar_image), 0)
+      .ForInput("PLANAR_IMAGE", std::move(planar_image), mediapipe::Timestamp::Min())
       .Run();
 
   const auto& out_packets =

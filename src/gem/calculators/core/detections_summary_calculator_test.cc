@@ -63,7 +63,7 @@ TEST_P(DetectionsSummaryTest, CollectsStatsCorrectly) {
                                                               &detections[i]));
   }
 
-  tester.ForInput(0, std::move(detections), 0).Run();
+  tester.ForInput(0, std::move(detections), mediapipe::Timestamp::Min()).Run();
 
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
   auto check_results = [&test_case](

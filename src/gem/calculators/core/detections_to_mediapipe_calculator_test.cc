@@ -62,10 +62,12 @@ TEST_P(DetectionsToMediapipeTest, ConvertsCorrectly) {
         test_case.expected_mp_detection_pbtxts[i], &expected_mp_detections[i]));
   }
 
-  tester.ForInput(0, std::move(detections), 0)
+  auto ts = mediapipe::Timestamp::Min();
+  tester.ForInput(0, std::move(detections), ts)
       .Run()
       .ExpectOutput<std::vector<mediapipe::Detection>>(
-          "", 0, 0, ::testing::Pointwise(::gml::testing::proto::EqProto(), expected_mp_detections));
+          "", 0, ts,
+          ::testing::Pointwise(::gml::testing::proto::EqProto(), expected_mp_detections));
 }
 
 INSTANTIATE_TEST_SUITE_P(DetectionsToMediapipeTestSuite, DetectionsToMediapipeTest,

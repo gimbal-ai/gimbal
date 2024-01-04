@@ -42,7 +42,7 @@ TEST(BarcodeDetectorCalculator, DetectsBarcodesDecodesOne) {
   mediapipe::ImageFrame image_frame;
   testing::LoadTestImageAsImageFrame(&image_frame, testing::TestImageType::WITH_BARCODE);
 
-  tester.ForInput("IMAGE_FRAME", std::move(image_frame), 0).Run();
+  tester.ForInput("IMAGE_FRAME", std::move(image_frame), mediapipe::Timestamp::Min()).Run();
 
   const auto& detections = tester.Result<std::vector<Detection>>("DETECTIONS", 0);
 

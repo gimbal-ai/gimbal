@@ -40,7 +40,7 @@ TEST(ImageFrameToYUVPlanarImage, ConvertsCorrectly) {
   mediapipe::ImageFrame image_frame;
   testing::LoadTestImageAsImageFrame(&image_frame);
 
-  tester.ForInput("IMAGE_FRAME", std::move(image_frame), 0).Run();
+  tester.ForInput("IMAGE_FRAME", std::move(image_frame), mediapipe::Timestamp::Min()).Run();
 
   const auto& planar = tester.Result<std::unique_ptr<exec::core::PlanarImage>>("YUV_IMAGE", 0);
 

@@ -133,15 +133,16 @@ TEST_P(OverlayedFFmpegVideoSinkTest, OutputsExpectedChunks) {
   exec::core::ControlExecutionContext control_ctx;
   control_ctx.RegisterVideoWithOverlaysCallback(cb);
 
-  tester.WithExecutionContext(&control_ctx).ForInput("AV_PACKETS", std::move(packets), 0);
+  auto ts = mediapipe::Timestamp::Min();
+  tester.WithExecutionContext(&control_ctx).ForInput("AV_PACKETS", std::move(packets), ts);
   if (detections.size() > 0) {
-    tester.ForInput("DETECTIONS", std::move(detections), 0);
+    tester.ForInput("DETECTIONS", std::move(detections), ts);
   }
   if (test_case.image_hist_batch_pbtxt.has_value()) {
-    tester.ForInput("IMAGE_HIST", std::move(image_hist_batch), 0);
+    tester.ForInput("IMAGE_HIST", std::move(image_hist_batch), ts);
   }
   if (test_case.image_quality_pbtxt.has_value()) {
-    tester.ForInput("IMAGE_QUALITY", std::move(image_quality), 0);
+    tester.ForInput("IMAGE_QUALITY", std::move(image_quality), ts);
   }
   tester.Run();
 

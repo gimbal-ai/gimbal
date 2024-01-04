@@ -52,10 +52,11 @@ TEST(ImageShapeCPUTensorCalculator, CorrectImageShape) {
   float_data[0] = static_cast<float>(kHeight);
   float_data[1] = static_cast<float>(kWidth);
 
+  auto ts = mediapipe::Timestamp::Min();
   tester.WithExecutionContext(cpu_exec_ctx.get())
-      .ForInput("IMAGE_FRAME", std::move(img_frame), 0)
+      .ForInput("IMAGE_FRAME", std::move(img_frame), ts)
       .Run()
-      .ExpectOutput<CPUTensorPtr>("IMAGE_SHAPE", 0, ::testing::Pointee(*expected_tensor));
+      .ExpectOutput<CPUTensorPtr>("IMAGE_SHAPE", ts, ::testing::Pointee(*expected_tensor));
 }
 
 }  // namespace gml::gem::calculators::cpu_tensor

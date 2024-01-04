@@ -133,13 +133,14 @@ TEST_P(BoundingBoxTensorsToDetectionsTest, ConvertsCorrectly) {
     label->set_score(test_case.expected_scores[i]);
   }
 
-  tester.ForInput("BOX_TENSOR", std::move(boxes_tensor), 0)
-      .ForInput("SCORE_TENSOR", std::move(score_tensor), 0)
-      .ForInput("INDEX_TENSOR", std::move(index_tensor), 0)
-      .ForInput("ORIG_IMAGE_SHAPE", std::move(orig_image_shape), 0)
+  auto ts = mediapipe::Timestamp::Min();
+  tester.ForInput("BOX_TENSOR", std::move(boxes_tensor), ts)
+      .ForInput("SCORE_TENSOR", std::move(score_tensor), ts)
+      .ForInput("INDEX_TENSOR", std::move(index_tensor), ts)
+      .ForInput("ORIG_IMAGE_SHAPE", std::move(orig_image_shape), ts)
       .Run()
       .ExpectOutput<std::vector<Detection>>(
-          "", 0, 0,
+          "", 0, ts,
           ::testing::Pointwise(::gml::testing::proto::ApproxEqProto(), expected_detections));
 }
 

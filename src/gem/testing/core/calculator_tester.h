@@ -61,19 +61,20 @@ class CalculatorTester : public mediapipe::CalculatorRunner {
   }
 
   template <typename TData>
-  CalculatorTester& ForInput(const std::string& tag, TData data, int64_t timestamp) {
+  CalculatorTester& ForInput(const std::string& tag, TData data, mediapipe::Timestamp timestamp) {
     return ForInput(tag, 0, std::move(data), timestamp);
   }
 
   template <typename TData>
-  CalculatorTester& ForInput(int index, TData data, int64_t timestamp) {
+  CalculatorTester& ForInput(int index, TData data, mediapipe::Timestamp timestamp) {
     return ForInput("", index, std::move(data), timestamp);
   }
 
   template <typename TData>
-  CalculatorTester& ForInput(const std::string& tag, int index, TData data, int64_t timestamp) {
+  CalculatorTester& ForInput(const std::string& tag, int index, TData data,
+                             mediapipe::Timestamp timestamp) {
     auto packet = mediapipe::MakePacket<TData>(std::move(data));
-    packet = packet.At(mediapipe::Timestamp(timestamp));
+    packet = packet.At(timestamp);
     MutableInputs()->Get(tag, index).packets.emplace_back(std::move(packet));
     return *this;
   }
@@ -84,24 +85,26 @@ class CalculatorTester : public mediapipe::CalculatorRunner {
   }
 
   template <typename TData, typename TMatcher>
-  CalculatorTester& ExpectOutput(std::string tag, int64_t expected_timestamp, TMatcher matcher) {
+  CalculatorTester& ExpectOutput(std::string tag, mediapipe::Timestamp expected_timestamp,
+                                 TMatcher matcher) {
     return ExpectOutput<TData>(tag, 0, expected_timestamp, matcher);
   }
   template <typename TData, typename TMatcher>
-  CalculatorTester& ExpectOutput(size_t index, int64_t expected_timestamp, TMatcher matcher) {
+  CalculatorTester& ExpectOutput(size_t index, mediapipe::Timestamp expected_timestamp,
+                                 TMatcher matcher) {
     return ExpectOutput<TData>("", index, expected_timestamp, matcher);
   }
 
   template <typename TData, typename... TMatchers>
-  CalculatorTester& ExpectOutput(const std::string& tag, int index, int64_t expected_timestamp,
-                                 TMatchers... matchers) {
+  CalculatorTester& ExpectOutput(const std::string& tag, int index,
+                                 mediapipe::Timestamp expected_timestamp, TMatchers... matchers) {
     auto item_id = output_tag_map_->GetId(tag, index);
     auto& packet_idx = packet_index_per_output_[item_id];
 
     const auto& packets = Outputs().Get(tag, index).packets;
     EXPECT_LT(packet_idx, packets.size());
     const auto& packet = packets.at(packet_idx);
-    EXPECT_EQ(mediapipe::Timestamp(expected_timestamp), packet.Timestamp());
+    EXPECT_EQ(expected_timestamp, packet.Timestamp());
     EXPECT_THAT(packet.template Get<TData>(), ::testing::AllOf(matchers...));
 
     packet_idx++;
