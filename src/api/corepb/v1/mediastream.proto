@@ -129,3 +129,14 @@ message H264Chunk {
   // NAL units in bytestream format (i.e. delineated by the 3-byte start code prefix 0x000001)
   bytes nal_data = 3 [ (gogoproto.customname) = "NALData" ];
 }
+
+// VideoHeader stores the header information for a video stream. Roughly matches
+// mediapipe::VideoHeader.
+message VideoHeader {
+  // Dimensions of the video in pixels.
+  int64 width = 1;
+  int64 height = 2;
+
+  // The frame rate in Hz at which the video frames are output.
+  double frame_rate = 3;
+}
