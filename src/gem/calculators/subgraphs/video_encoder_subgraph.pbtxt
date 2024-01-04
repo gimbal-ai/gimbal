@@ -14,6 +14,8 @@ node {
     [type.googleapis.com/mediapipe.ScaleImageCalculatorOptions] {
       target_width: 640
       target_height: 480
+      min_aspect_ratio: "1/0"
+      max_aspect_ratio: "1/0"
       preserve_aspect_ratio: true
       input_format: FORMAT_SRGB
       output_format: FORMAT_SRGB
