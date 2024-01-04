@@ -20,7 +20,7 @@
 #include <Argus/Argus.h>
 #include <sole.hpp>
 
-namespace gml::gem::capabilities::argus {
+namespace gml::gem::devices::argus {
 
 // We are chosing an arbitrary layout mapping between argus UUIDs and sole UUIDs.
 // The chosen mapping is:
@@ -65,4 +65,4 @@ inline Argus::UUID ToArgusUUID(const sole::uuid& uuid) {
   return out;
 }
 
-}  // namespace gml::gem::capabilities::argus
+}  // namespace gml::gem::devices::argus

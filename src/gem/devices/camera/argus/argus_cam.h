@@ -29,15 +29,10 @@ namespace gml::gem::devices::argus {
  * Provides a simple access model to the Argus camera on Nvidia Jetson devices.
  */
 class ArgusCam {
-  static constexpr uint64_t kDefaultTargetFrameRate = 30;
-
  public:
-  explicit ArgusCam(uint64_t target_frame_rate = kDefaultTargetFrameRate)
-      : target_frame_rate_(target_frame_rate) {}
-
   ~ArgusCam() { Stop(); }
 
-  Status Init(std::string device_uuid);
+  Status Init();
 
   /**
    * Acquire a frame from the camera.
@@ -52,8 +47,18 @@ class ArgusCam {
 
   void Stop();
 
+  const std::string& UUID() const { return uuid_; }
+
  private:
-  Status SetupCamera(std::string device_uuid);
+  // Hide the constructor so that only ArgusCamFactory can create ArgusCam objects.
+  ArgusCam(Argus::CameraDevice* device, Argus::UniqueObj<Argus::CaptureSession> session,
+           uint64_t target_frame_rate, std::string uuid)
+      : target_frame_rate_(target_frame_rate),
+        camera_device_(device),
+        capture_session_obj_(std::move(session)),
+        uuid_(std::move(uuid)) {}
+  friend class ArgusCamFactory;
+
   StatusOr<Argus::SensorMode*> SelectSensorMode();
   Status CreateOutputStream();
   StatusOr<Argus::UniqueObj<Argus::Request>> PrepareRequest(Argus::SensorMode* sensor_mode,
@@ -63,11 +68,11 @@ class ArgusCam {
 
   uint64_t last_capture_ns_ = 0;
   uint64_t target_frame_rate_;
-  Argus::UniqueObj<Argus::CameraProvider> camera_provider_obj_;
-  Argus::CameraDevice* camera_device_ = nullptr;
+  Argus::CameraDevice* camera_device_;
   Argus::UniqueObj<Argus::CaptureSession> capture_session_obj_;
   Argus::UniqueObj<Argus::OutputStream> output_stream_obj_;
   Argus::UniqueObj<EGLStream::FrameConsumer> frame_consumer_obj_;
+  std::string uuid_;
 };
 
 }  // namespace gml::gem::devices::argus

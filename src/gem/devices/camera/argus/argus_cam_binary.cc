@@ -26,6 +26,7 @@
 #include <opencv4/opencv2/opencv.hpp>
 
 #include "src/gem/devices/camera/argus/argus_cam.h"
+#include "src/gem/devices/camera/argus/argus_manager.h"
 
 constexpr int kNumFrames = 100;
 const std::string kDeviceUUID = "";
@@ -34,11 +35,19 @@ int main(int argc, char** argv) {
   gml::EnvironmentGuard env_guard(&argc, argv);
 
   using gml::gem::devices::argus::ArgusCam;
+  using gml::gem::devices::argus::ArgusManager;
   using gml::gem::devices::argus::NvBufSurfaceWrapper;
 
-  ArgusCam argus_cam;
-  if (!argus_cam.Init(kDeviceUUID).ok()) {
-    argus_cam.Stop();
+  auto& manager = ArgusManager::GetInstance();
+
+  auto argus_cam_or_s = manager.GetCamera(kDeviceUUID);
+  if (!argus_cam_or_s.ok()) {
+    LOG(ERROR) << argus_cam_or_s.msg();
+    return 1;
+  }
+  auto argus_cam = argus_cam_or_s.ConsumeValueOrDie();
+  if (!argus_cam->Init().ok()) {
+    argus_cam->Stop();
     return 1;
   }
 
@@ -46,13 +55,13 @@ int main(int argc, char** argv) {
 
   for (int i = 0; i < kNumFrames; ++i) {
     LOG(INFO) << absl::Substitute("--- $0", i);
-    GML_ASSIGN_OR(std::unique_ptr<NvBufSurfaceWrapper> nvbuf_surf, argus_cam.ConsumeFrame(), {
-      argus_cam.Stop();
+    GML_ASSIGN_OR(std::unique_ptr<NvBufSurfaceWrapper> nvbuf_surf, argus_cam->ConsumeFrame(), {
+      argus_cam->Stop();
       return 1;
     });
 
     if (!nvbuf_surf->MapForCpu().ok()) {
-      argus_cam.Stop();
+      argus_cam->Stop();
       return 1;
     }
 
@@ -104,7 +113,7 @@ int main(int argc, char** argv) {
   LOG(INFO) << absl::StrFormat("Frames captured = %d\n", kNumFrames);
   LOG(INFO) << absl::StrFormat("Effective FPS = %g\n", effective_fps);
 
-  argus_cam.Stop();
+  argus_cam->Stop();
 
   return 0;
 }

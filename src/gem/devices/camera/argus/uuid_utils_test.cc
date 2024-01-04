@@ -15,7 +15,7 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#include "src/gem/capabilities/plugin/argus/uuid_utils.h"
+#include "src/gem/devices/camera/argus/uuid_utils.h"
 
 #include "src/common/testing/testing.h"
 
@@ -23,7 +23,7 @@ namespace gml {
 
 TEST(ToProto, UUIDBasic) {
   auto uuid = sole::rebuild("ea8aa095-697f-49f1-b127-d50e5b6e2645");
-  Argus::UUID argus_uuid = gem::capabilities::argus::ToArgusUUID(uuid);
+  Argus::UUID argus_uuid = gem::devices::argus::ToArgusUUID(uuid);
 
   EXPECT_EQ(0xea8aa095, argus_uuid.time_low);
   EXPECT_EQ(0x697f, argus_uuid.time_mid);
@@ -42,8 +42,8 @@ TEST(ToProto, UUIDBasic) {
 TEST(UUIDUtils, RegressionTest) {
   for (int i = 0; i < 1000; i++) {
     auto uuid = sole::uuid4();
-    Argus::UUID argus_uuid = gem::capabilities::argus::ToArgusUUID(uuid);
-    auto res = gem::capabilities::argus::ParseUUID(argus_uuid);
+    Argus::UUID argus_uuid = gem::devices::argus::ToArgusUUID(uuid);
+    auto res = gem::devices::argus::ParseUUID(argus_uuid);
     EXPECT_EQ(res.str(), uuid.str());
   }
 }

@@ -19,33 +19,20 @@
 
 #include <Argus/Argus.h>
 
-#include "src/gem/capabilities/plugin/argus/uuid_utils.h"
+#include "src/gem/devices/camera/argus/argus_manager.h"
+#include "src/gem/devices/camera/argus/uuid_utils.h"
 
 namespace gml::gem::capabilities::argus {
 
 Status CapabilityLister::Populate(DeviceCapabilities* cap) {
-  auto camera_provider_obj =
-      Argus::UniqueObj<Argus::CameraProvider>(Argus::CameraProvider::create());
-  Argus::ICameraProvider* camera_provider =
-      Argus::interface_cast<Argus::ICameraProvider>(camera_provider_obj);
-  if (camera_provider == nullptr) {
-    return error::Internal("Failed to create CameraProvider.");
-  }
+  auto& argus_manager = devices::argus::ArgusManager::GetInstance();
 
-  std::vector<Argus::CameraDevice*> camera_devices;
-  camera_provider->getCameraDevices(&camera_devices);
-
-  for (const auto& camera_device : camera_devices) {
-    // TODO(vihang): Grab other camera info from the device.
-    Argus::ICameraProperties* camera_properties =
-        Argus::interface_cast<Argus::ICameraProperties>(camera_device);
-
+  for (const auto& props : argus_manager.ListCameraProperties()) {
     auto mutable_cam = cap->add_cameras();
     mutable_cam->set_driver(
         internal::api::core::v1::DeviceCapabilities::CameraInfo::CAMERA_DRIVER_ARGUS);
 
-    mutable_cam->set_camera_id(
-        gem::capabilities::argus::ParseUUID(camera_properties->getUUID()).str());
+    mutable_cam->set_camera_id(devices::argus::ParseUUID(props->getUUID()).str());
   }
 
   return Status::OK();

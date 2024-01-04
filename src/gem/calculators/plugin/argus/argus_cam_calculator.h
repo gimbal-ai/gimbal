@@ -21,6 +21,7 @@
 
 #include "src/gem/calculators/plugin/argus/optionspb/argus_cam_calculator_options.pb.h"
 #include "src/gem/devices/camera/argus/argus_cam.h"
+#include "src/gem/devices/camera/argus/argus_manager.h"
 
 namespace gml::gem::calculators::argus {
 
@@ -33,7 +34,7 @@ class ArgusCamSourceCalculator : public mediapipe::CalculatorBase {
 
  private:
   optionspb::ArgusCamSourceCalculatorOptions options_;
-  std::unique_ptr<::gml::gem::devices::argus::ArgusCam> argus_cam_;
+  devices::argus::ArgusManager::ArgusCamManagedPtr argus_cam_;
 };
 
 }  // namespace gml::gem::calculators::argus

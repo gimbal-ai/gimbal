@@ -23,6 +23,7 @@
 #include <mediapipe/framework/formats/video_stream_header.h>
 
 #include "src/gem/devices/camera/argus/argus_cam.h"
+#include "src/gem/devices/camera/argus/argus_manager.h"
 
 namespace gml::gem::calculators::argus {
 
@@ -41,8 +42,10 @@ absl::Status ArgusCamSourceCalculator::GetContract(mediapipe::CalculatorContract
 
 absl::Status ArgusCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
   options_ = cc->Options<ArgusCamSourceCalculatorOptions>();
-  argus_cam_ = std::make_unique<devices::argus::ArgusCam>(options_.target_frame_rate());
-  GML_ABSL_RETURN_IF_ERROR(argus_cam_->Init(options_.device_uuid()));
+  auto& argus_manager = devices::argus::ArgusManager::GetInstance();
+  GML_ABSL_ASSIGN_OR_RETURN(
+      argus_cam_, argus_manager.GetCamera(options_.device_uuid(), options_.target_frame_rate()));
+  GML_ABSL_RETURN_IF_ERROR(argus_cam_->Init());
 
   // grab one frame to get metadata.
   GML_ABSL_ASSIGN_OR_RETURN(std::unique_ptr<NvBufSurfaceWrapper> buf, argus_cam_->ConsumeFrame());

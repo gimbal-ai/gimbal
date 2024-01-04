@@ -13,7 +13,7 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("//bazel:gml_build_system.bzl", "gml_cc_binary")
+load("//bazel:gml_build_system.bzl", "gml_cc_binary", "gml_cc_test")
 load("//bazel:images.bzl", "gml_binary_image")
 load("//src/gem/plugins:plugins.bzl", "gem_plugin_cc_library")
 
@@ -26,11 +26,14 @@ gem_plugin_cc_library(
     name = "cc_library",
     srcs = [
         "argus_cam.cc",
+        "argus_manager.cc",
         "nvbufsurfwrapper.cc",
     ],
     hdrs = [
         "argus_cam.h",
+        "argus_manager.h",
         "nvbufsurfwrapper.h",
+        "uuid_utils.h",
     ],
     linkopts = [
         "-lnvbufsurface",
@@ -38,7 +41,6 @@ gem_plugin_cc_library(
     ],
     plugin_name = "argus",
     deps = [
-        "//src/gem/capabilities/plugin/argus:cc_library",
         "@com_github_rlyeh_sole//:sole",
     ],
 )
@@ -55,4 +57,12 @@ gml_cc_binary(
 gml_binary_image(
     name = "argus_cam_binary_image",
     binary = ":argus_cam_binary",
+)
+
+gml_cc_test(
+    name = "uuid_utils_test",
+    srcs = ["uuid_utils_test.cc"],
+    deps = [
+        ":cc_library",
+    ],
 )
