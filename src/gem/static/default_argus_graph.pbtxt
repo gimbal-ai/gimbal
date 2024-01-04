@@ -16,9 +16,17 @@ graph {
     output_stream: "VIDEO_HEADER:scaled_video_header"
   }
   node {
+    calculator: "ImageQualityCalculator"
+    input_stream: "IMAGE_FRAME:frames"
+    output_stream: "IMAGE_QUALITY:quality"
+    output_stream: "IMAGE_HIST:histogram"
+  }
+  node {
     calculator: "ObjDetectionOverlayedVideoSinkSubgraph"
     input_side_packet: "EXEC_CTX:ctrl_exec_ctx"
     input_stream: "AV_PACKETS:video"
     input_stream: "VIDEO_HEADER:scaled_video_header"
+    input_stream: "IMAGE_QUALITY:quality"
+    input_stream: "IMAGE_HIST:histogram"
   }
 }
