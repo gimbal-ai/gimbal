@@ -239,8 +239,6 @@ def _gml_cc_toolchain_deps():
 
 def _gml_deps():
     _bazel_repo("bazel_skylib")
-    _bazel_repo("com_github_fmeum_rules_meta")
-
     _bazel_repo(
         "com_github_benchsci_rules_nodejs_gazelle",
         patches = [

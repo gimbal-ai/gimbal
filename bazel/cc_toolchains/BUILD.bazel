@@ -18,6 +18,10 @@ load("//bazel/cc_toolchains:gcc.bzl", "gcc_x86_64_gnu")
 load("//bazel/cc_toolchains:llvm_libs.bzl", "llvm_variant_settings")
 load("//bazel/cc_toolchains:settings.bzl", "settings")
 
+package(
+    default_visibility = ["//visibility:public"],
+)
+
 filegroup(
     name = "empty",
 )

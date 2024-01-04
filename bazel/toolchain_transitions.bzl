@@ -13,21 +13,21 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("@com_github_fmeum_rules_meta//meta:defs.bzl", "meta")
 load("@rules_oci//oci:defs.bzl", "oci_image")
+load("@with_cfg.bzl", "with_cfg")
 
-oci_image_x86_64 = meta.wrap_with_transition(
-    oci_image,
-    {
-        "//command_line_option:platforms": meta.replace_with("@//bazel/cc_toolchains:linux-x86_64"),
-        "@//bazel/cc_toolchains:libc_version": meta.replace_with("glibc2_36"),
-    },
-)
+oci_image_x86_64, _oci_image_x86_64_internal = with_cfg(oci_image).set(
+    "platforms",
+    [Label("@//bazel/cc_toolchains:linux-x86_64")],
+).set(
+    Label("@//bazel/cc_toolchains:libc_version"),
+    "glibc2_36",
+).build()
 
-oci_image_arm64 = meta.wrap_with_transition(
-    oci_image,
-    {
-        "//command_line_option:platforms": meta.replace_with("@//bazel/cc_toolchains:linux-aarch64"),
-        "@//bazel/cc_toolchains:libc_version": meta.replace_with("glibc2_36"),
-    },
-)
+oci_image_arm64, _oci_image_arm64_internal = with_cfg(oci_image).set(
+    "platforms",
+    [Label("@//bazel/cc_toolchains:linux-aarch64")],
+).set(
+    Label("@//bazel/cc_toolchains:libc_version"),
+    "glibc2_36",
+).build()

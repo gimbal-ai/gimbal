@@ -35,13 +35,6 @@ REPOSITORY_LOCATIONS = dict(
             "https://github.com/benchsci/rules_nodejs_gazelle/archive/refs/tags/v0.4.1.tar.gz",
         ],
     ),
-    com_github_fmeum_rules_meta = dict(
-        sha256 = "ed3ed909e6e3f34a11d7c2adcc461535975a875fe434719540a4e6f63434a866",
-        strip_prefix = "rules_meta-0.0.4",
-        urls = [
-            "https://github.com/fmeum/rules_meta/archive/refs/tags/v0.0.4.tar.gz",
-        ],
-    ),
     com_github_gflags_gflags = dict(
         sha256 = "9e1a38e2dcbb20bb10891b5a171de2e5da70e0a50fff34dd4b0c2c6d75043909",
         strip_prefix = "gflags-524b83d0264cb9f1b2d134c564ef1aa23f207a41",
