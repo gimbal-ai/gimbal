@@ -160,26 +160,6 @@ func (mr *MockFleetMgrServiceClientMockRecorder) ListFleets(ctx, in any, opts ..
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListFleets", reflect.TypeOf((*MockFleetMgrServiceClient)(nil).ListFleets), varargs...)
 }
 
-// UpdateDevice mocks base method.
-func (m *MockFleetMgrServiceClient) UpdateDevice(ctx context.Context, in *fmpb.UpdateDeviceRequest, opts ...grpc.CallOption) (*fmpb.UpdateDeviceResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "UpdateDevice", varargs...)
-	ret0, _ := ret[0].(*fmpb.UpdateDeviceResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UpdateDevice indicates an expected call of UpdateDevice.
-func (mr *MockFleetMgrServiceClientMockRecorder) UpdateDevice(ctx, in any, opts ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateDevice", reflect.TypeOf((*MockFleetMgrServiceClient)(nil).UpdateDevice), varargs...)
-}
-
 // UpdateFleet mocks base method.
 func (m *MockFleetMgrServiceClient) UpdateFleet(ctx context.Context, in *fmpb.UpdateFleetRequest, opts ...grpc.CallOption) (*fmpb.UpdateFleetResponse, error) {
 	m.ctrl.T.Helper()
@@ -331,21 +311,6 @@ func (m *MockFleetMgrServiceServer) ListFleets(arg0 context.Context, arg1 *fmpb.
 func (mr *MockFleetMgrServiceServerMockRecorder) ListFleets(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListFleets", reflect.TypeOf((*MockFleetMgrServiceServer)(nil).ListFleets), arg0, arg1)
-}
-
-// UpdateDevice mocks base method.
-func (m *MockFleetMgrServiceServer) UpdateDevice(arg0 context.Context, arg1 *fmpb.UpdateDeviceRequest) (*fmpb.UpdateDeviceResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateDevice", arg0, arg1)
-	ret0, _ := ret[0].(*fmpb.UpdateDeviceResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UpdateDevice indicates an expected call of UpdateDevice.
-func (mr *MockFleetMgrServiceServerMockRecorder) UpdateDevice(arg0, arg1 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateDevice", reflect.TypeOf((*MockFleetMgrServiceServer)(nil).UpdateDevice), arg0, arg1)
 }
 
 // UpdateFleet mocks base method.
@@ -521,6 +486,26 @@ func (mr *MockFleetMgrEdgeServiceClientMockRecorder) SetDeviceCapabilities(ctx, 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDeviceCapabilities", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).SetDeviceCapabilities), varargs...)
 }
 
+// UpdateDevice mocks base method.
+func (m *MockFleetMgrEdgeServiceClient) UpdateDevice(ctx context.Context, in *fmpb.UpdateDeviceRequest, opts ...grpc.CallOption) (*fmpb.UpdateDeviceResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateDevice", varargs...)
+	ret0, _ := ret[0].(*fmpb.UpdateDeviceResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateDevice indicates an expected call of UpdateDevice.
+func (mr *MockFleetMgrEdgeServiceClientMockRecorder) UpdateDevice(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateDevice", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).UpdateDevice), varargs...)
+}
+
 // UpdateStatus mocks base method.
 func (m *MockFleetMgrEdgeServiceClient) UpdateStatus(ctx context.Context, in *fmpb.UpdateStatusRequest, opts ...grpc.CallOption) (*fmpb.UpdateStatusResponse, error) {
 	m.ctrl.T.Helper()
@@ -672,6 +657,21 @@ func (m *MockFleetMgrEdgeServiceServer) SetDeviceCapabilities(arg0 context.Conte
 func (mr *MockFleetMgrEdgeServiceServerMockRecorder) SetDeviceCapabilities(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDeviceCapabilities", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).SetDeviceCapabilities), arg0, arg1)
+}
+
+// UpdateDevice mocks base method.
+func (m *MockFleetMgrEdgeServiceServer) UpdateDevice(arg0 context.Context, arg1 *fmpb.UpdateDeviceRequest) (*fmpb.UpdateDeviceResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateDevice", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.UpdateDeviceResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateDevice indicates an expected call of UpdateDevice.
+func (mr *MockFleetMgrEdgeServiceServerMockRecorder) UpdateDevice(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateDevice", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).UpdateDevice), arg0, arg1)
 }
 
 // UpdateStatus mocks base method.
