@@ -303,9 +303,9 @@ REPOSITORY_LOCATIONS = dict(
         urls = ["https://github.com/cisco/openh264/archive/refs/tags/v2.3.1.tar.gz"],
     ),
     io_opentelemetry_cpp = dict(
-        sha256 = "74234fe8218aac1451101707f004fe87487fe4082b36b9db2815c36359a3d226",
-        strip_prefix = "opentelemetry-cpp-08f760ed27a8abd2c6e9dc0fdc0826b181b0ad72",
-        urls = ["https://github.com/gimletlabs/opentelemetry-cpp/archive/08f760ed27a8abd2c6e9dc0fdc0826b181b0ad72.tar.gz"],
+        sha256 = "c406ee37be1e0411c07b1c2cfde19aee5e85ca308846ae2d596b1d89cb0f0105",
+        strip_prefix = "opentelemetry-cpp-61b676d63a8b50b1ceca61d717b7f8a699f24b34",
+        urls = ["https://github.com/gimletlabs/opentelemetry-cpp/archive/61b676d63a8b50b1ceca61d717b7f8a699f24b34.tar.gz"],
     ),
     com_github_oneapi_oneTBB = dict(
         sha256 = "487023a955e5a3cc6d3a0d5f89179f9b6c0ae7222613a7185b0227ba0c83700b",

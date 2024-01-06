@@ -36,8 +36,8 @@ TEST(MetricsTest, CollectAllAsProto) {
 
   uint64_counter->Add(1);
   double_counter->Add(11.1);
-  int64_gauge->Record(2, {{}}, {});
-  double_gauge->Record(22.2, {{}}, {});
+  int64_gauge->Record(2);
+  double_gauge->Record(22.2);
 
   ResourceMetrics proto_resource_metrics = metrics_sys.CollectAllAsProto();
 

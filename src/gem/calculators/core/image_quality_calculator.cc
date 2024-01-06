@@ -159,8 +159,8 @@ Status ImageQualityCalculator::ProcessImpl(mediapipe::CalculatorContext* cc) {
   metrics.set_brisque_score(brisque_score);
   metrics.set_blurriness_score(blurriness);
 
-  brisque_score_->Record(brisque_score, {{}}, {});
-  blurriness_score_->Record(blurriness, {{}}, {});
+  brisque_score_->Record(brisque_score);
+  blurriness_score_->Record(blurriness);
 
   // For the histograms we compute the R,G,B and grayscale histograms and store them
   // in the batch. We treat all pixels as normalized 0 - 1, although for computations we use the
