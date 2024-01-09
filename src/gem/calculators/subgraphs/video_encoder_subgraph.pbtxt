@@ -17,9 +17,8 @@ node {
       min_aspect_ratio: "1/0"
       max_aspect_ratio: "1/0"
       preserve_aspect_ratio: true
-      input_format: FORMAT_SRGB
       output_format: FORMAT_SRGB
-      algorithm: SCALE_ALGO_DEFAULT
+      algorithm: SCALE_ALGO_DEFAULT_WITHOUT_UPSCALE
     }
   }
 }

@@ -46,10 +46,12 @@ absl::Status SetupFormatConversion(const cv::Mat& frame, mediapipe::ImageFormat:
       return absl::UnavailableError(
           absl::Substitute("Unsupported format $0", magic_enum::enum_name(format)));
     case 3:
+      VLOG(1) << "Source has BGR format";
       format = mediapipe::ImageFormat::FORMAT_SRGB;
       color_conversion = cv::COLOR_BGR2RGB;
       return absl::OkStatus();
     case 4:
+      VLOG(1) << "Source has BGRA format";
       format = mediapipe::ImageFormat::FORMAT_SRGBA;
       color_conversion = cv::COLOR_BGRA2RGBA;
       return absl::OkStatus();
