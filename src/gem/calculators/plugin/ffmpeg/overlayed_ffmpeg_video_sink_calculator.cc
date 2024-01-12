@@ -43,6 +43,7 @@ constexpr std::string_view kAVPacketTag = "AV_PACKETS";
 constexpr std::string_view kVideoHeaderTag = "VIDEO_HEADER";
 constexpr std::string_view kImageHistTag = "IMAGE_HIST";
 constexpr std::string_view kImageQualityTag = "IMAGE_QUALITY";
+constexpr std::string_view kFinishedTag = "FINISHED";
 
 // TODO(james): move this into calculator options
 constexpr size_t kMaxDesiredChunkSize = 512UL * 1024UL;
@@ -135,6 +136,9 @@ absl::Status OverlayedFFmpegVideoSinkCalculator::GetContract(mediapipe::Calculat
   }
   cc->Inputs().Tag(kAVPacketTag).Set<std::vector<std::unique_ptr<AVPacketWrapper>>>();
   cc->Inputs().Tag(kVideoHeaderTag).Set<mediapipe::VideoHeader>();
+  if (cc->Outputs().HasTag(kFinishedTag)) {
+    cc->Outputs().Tag(kFinishedTag).Set<bool>();
+  }
   return absl::OkStatus();
 }
 
@@ -201,6 +205,10 @@ Status OverlayedFFmpegVideoSinkCalculator::ProcessImpl(
   auto cb = control_ctx->GetVideoWithOverlaysCallback();
   if (!!cb) {
     GML_RETURN_IF_ERROR(cb(messages));
+  }
+
+  if (cc->Outputs().HasTag(kFinishedTag)) {
+    cc->Outputs().Tag(kFinishedTag).Add(new bool(true), cc->InputTimestamp());
   }
 
   return Status::OK();

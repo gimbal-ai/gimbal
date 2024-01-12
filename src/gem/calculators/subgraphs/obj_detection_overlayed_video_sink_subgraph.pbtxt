@@ -4,6 +4,7 @@ input_stream: "VIDEO_HEADER:video_header"
 input_stream: "DETECTIONS:detections"
 input_stream: "IMAGE_QUALITY:quality"
 input_stream: "IMAGE_HIST:hist"
+output_stream: "FINISHED:finished"
 input_side_packet: "EXEC_CTX:ctrl_exec_ctx"
 
 node {
@@ -14,4 +15,5 @@ node {
   input_stream: "VIDEO_HEADER:video_header"
   input_stream: "IMAGE_QUALITY:quality"
   input_stream: "IMAGE_HIST:hist"
+  output_stream: "FINISHED:finished"
 }

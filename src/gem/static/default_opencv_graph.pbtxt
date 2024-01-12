@@ -3,7 +3,7 @@ graph {
 
   node {
     calculator: "OpenCVCamSourceSubgraph"
-    input_stream: "FINISHED:video"
+    input_stream: "FINISHED:finished"
     output_stream: "FRAMES:frames"
     output_stream: "VIDEO_HEADER:video_header"
     output_stream: "ALLOW:frame_allowed"
@@ -28,5 +28,6 @@ graph {
     input_stream: "VIDEO_HEADER:scaled_video_header"
     input_stream: "IMAGE_QUALITY:quality"
     input_stream: "IMAGE_HIST:histogram"
+    output_stream: "FINISHED:finished"
   }
 }

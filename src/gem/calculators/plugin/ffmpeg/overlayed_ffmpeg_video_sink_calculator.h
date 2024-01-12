@@ -40,8 +40,12 @@ namespace gml::gem::calculators::ffmpeg {
  *    IMAGE_QUALITY internal::api::core::v1::ImageQualityMetrics.
  *
  *  Outputs:
- *    This is a sink node so there are no mediapipe outputs. Instead the node outputs proto data to
- *      the GEM controller through the ControlExecutionContext.
+ *    This is a sink node so there are no data mediapipe outputs. Instead the node outputs proto
+ *      data to the GEM controller through the ControlExecutionContext. However, the node does
+ *      output a FINISHED packet, that has the same timestamp as the inputs, that can be used as a
+ *      back edge for flow limiting.
+ *
+ *    FINISHED bool (always true)
  */
 class OverlayedFFmpegVideoSinkCalculator : public core::ControlExecutionContextCalculator {
  public:
