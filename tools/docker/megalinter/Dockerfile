@@ -17,11 +17,12 @@ FROM docker.io/oxsecurity/megalinter-cupcake:v7@sha256:060132512d57e0ad6c1b687ca
 
 COPY .tflint.hcl $HOME/.tflint.hcl
 
-RUN apk add clang-extra-tools && \
+RUN apk add clang-extra-tools g++ && \
     go install github.com/bazelbuild/buildtools/buildifier@v0.0.0-20230926111657-7d855c59baeb  && \
     go install github.com/bufbuild/buf/cmd/buf@v1.26.1 && \
     go clean -modcache && \
     go clean -cache && \
     npm install -g squawk-cli@0.24.0 && \
     npm cache clean --force && \
+    pip install pytype && \
     tflint --init

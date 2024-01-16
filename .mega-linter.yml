@@ -16,6 +16,7 @@ ENABLE_LINTERS:
 - PROTO_BUF_LINT
 - PYTHON_BLACK
 - PYTHON_ISORT
+- PYTHON_PYTYPE
 - REPOSITORY_LICENSE_CHECKER
 # TODO(vihang): Enable this after rubucop is faster.
 # - RUBY_RUBOCOP
@@ -38,6 +39,7 @@ PLUGINS:
 - file://tools/linters/mega-linter-plugin-cpp/cpp.megalinter-descriptor.yml
 - file://tools/linters/mega-linter-plugin-licenses/licenses.megalinter-descriptor.yml
 - file://tools/linters/mega-linter-plugin-sql/sql.megalinter-descriptor.yml
+- file://tools/linters/mega-linter-plugin-pytype/pytype.megalinter-descriptor.yml
 FILTER_REGEX_EXCLUDE: "(app\\/graphql_schema\\.ts|\
                        pnpm-lock\\.yaml|\
                        infra\\/credentials\\/|\

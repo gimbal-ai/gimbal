@@ -27,7 +27,7 @@ execute "install js linters" do
 end
 
 execute "install py linters" do
-  command "python3 -m pip install flake8 flake8-mypy yamllint --no-cache-dir && python3 -m pip cache purge"
+  command "python3 -m pip install flake8 flake8-mypy pytype yamllint --no-cache-dir && python3 -m pip cache purge"
 end
 
 common_remote_bin "prototool"
