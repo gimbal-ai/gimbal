@@ -2,7 +2,6 @@
 <!-- TOC -->
 
 - [Setting up Devices](#setting-up-devices)
-  - [NUC Cluster Kubernetes cluster for real devices](#nuc-cluster-kubernetes-cluster-for-real-devices)
   - [Standalone devices ie james-jetson](#standalone-devices-ie-james-jetson)
   - [Simulated Devices](#simulated-devices)
   - [Fake Cameras](#fake-cameras)
@@ -10,14 +9,6 @@
     - [If developing with skaffold](#if-developing-with-skaffold)
 
 <!-- /TOC -->
-
-This guide shows you how to setup the various devices types that we support.
-You should be able to find the device type you are looking for and just follow the instructions.
-
-## NUC Cluster (Kubernetes cluster for real devices)
-
-Will deploy GEMs to each node in the kubernetes cluster.
-
 ```sh
 # Ensure you set your KUBECONFIG to the right cluster ie
 # export KUBECONFIG=~/nuc_k3s.yaml
@@ -33,6 +24,44 @@ helm install my-gem-release oci://us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-dock
 --set-json 'imagePullSecrets=[{"name": "gml-dev-artifact-registry"}]' \
 --set-json "type.daemonset=true" \
 --set-json 'gem.resources={"requests":{"squat.ai/video":1},"limits":{"squat.ai/video":1}}'
+```
+
+If you need to run the GEM on a specific node, you can use the `nodeSelector` option.
+If you need to get past a taint, you can use the `tolerations` option.
+For example, to run on `nuc-004` and get past the `recorded_video` taint, you can do:
+
+```sh
+export GML_CONTROLPLANE_ADDR=$USER.dev.app.gimletlabs.dev:443
+export GML_DEPLOY_KEY=<deploy-key> # replace with your deploy key
+
+helm install my-gem-release oci://us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/charts/gem -n gml \
+--version 0.0.0-alpha1 \
+--set "deployKey=${GML_DEPLOY_KEY}" \
+--set "controlplaneAddr=${GML_CONTROLPLANE_ADDR}" \
+--set-json "gem.hostNetwork=true" \
+--set-json 'imagePullSecrets=[{"name": "gml-dev-artifact-registry"}]' \
+--set-json "type.daemonset=true" \
+--set-json 'gem.resources={"requests":{"squat.ai/video":1},"limits":{"squat.ai/video":1}}' \
+--set-json 'tolerations=[{"effect": "NoSchedule", "key": "recorded_video", "operator": "Exists"}]' \
+--set-json 'nodeSelector={"kubernetes.io/hostname": "nuc-004"}'
+```
+
+To use the GPUs:
+
+```sh
+export GML_CONTROLPLANE_ADDR=$USER.dev.app.gimletlabs.dev:443
+export GML_DEPLOY_KEY=<deploy-key> # replace with your deploy key
+
+helm install my-gem-release oci://us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/charts/gem -n gml \
+--version 0.0.0-alpha1 \
+--set "deployKey=${GML_DEPLOY_KEY}" \
+--set "controlplaneAddr=${GML_CONTROLPLANE_ADDR}" \
+--set-json "gem.hostNetwork=true" \
+--set-json 'imagePullSecrets=[{"name": "gml-dev-artifact-registry"}]' \
+--set-json "type.daemonset=true" \
+--set-json 'images.gem.tag="intelgpu-dev-latest"' \
+--set-json 'gem.extraEnv=[{"name": "LD_LIBRARY_PATH", "value": "/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/local/lib"}]' \
+--set-json 'gem.resources={"requests": {"squat.ai/video": 1, "gpu.intel.com/i915_monitoring": 1}, "limits": {"squat.ai/video": 1, "gpu.intel.com/i915_monitoring": 1}}'
 ```
 
 ## Standalone devices (ie james-jetson)
