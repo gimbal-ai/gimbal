@@ -42,7 +42,7 @@ We currently only support running control plane in GKE (support for Minikube com
     gcloud auth configure-docker us-docker.pkg.dev
     ```
 
-1. Run skaffold to deploy any dependencies to your namespace. You should only need to run this once unless you are configuring the dependencies. Unfortunately, the `helm depo update` is required due to [#8036](https://github.com/helm/helm/issues/8036), [#9903](https://github.com/helm/helm/issues/9903).
+1. Run skaffold to deploy any dependencies to your namespace. You should only need to run this once unless you are configuring the dependencies. Unfortunately, the `helm dep update` is required due to [#8036](https://github.com/helm/helm/issues/8036), [#9903](https://github.com/helm/helm/issues/9903).
 
     ```sh
     helm dep update k8s/charts/controlplane_deps/
