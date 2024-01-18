@@ -20,14 +20,23 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 
 proto_library(
     name = "optionspb_proto",
-    srcs = ["bounding_box_tensors_to_detections_options.proto"],
+    srcs = [
+        "bounding_box_tensors_to_detections_options.proto",
+        "scores_to_label_calculator_options.proto",
+    ],
     visibility = ["//visibility:public"],
 )
 
 proto_cc_library(
     name = "optionspb_cc_library",
-    srcs = ["bounding_box_tensors_to_detections_options.pb.cc"],
-    hdrs = ["bounding_box_tensors_to_detections_options.pb.h"],
+    srcs = [
+        "bounding_box_tensors_to_detections_options.pb.cc",
+        "scores_to_label_calculator_options.pb.cc",
+    ],
+    hdrs = [
+        "bounding_box_tensors_to_detections_options.pb.h",
+        "scores_to_label_calculator_options.pb.h",
+    ],
     visibility = ["//visibility:public"],
     deps = ["@com_google_protobuf//:protobuf"],
 )
@@ -37,6 +46,8 @@ proto_compile(
     outputs = [
         "bounding_box_tensors_to_detections_options.pb.cc",
         "bounding_box_tensors_to_detections_options.pb.h",
+        "scores_to_label_calculator_options.pb.cc",
+        "scores_to_label_calculator_options.pb.h",
     ],
     plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
     proto = "optionspb_proto",
@@ -45,8 +56,14 @@ proto_compile(
 
 proto_compile(
     name = "optionspb_go_compile",
-    output_mappings = ["bounding_box_tensors_to_detections_options.pb.go=gimletlabs.ai/gimlet/src/gem/calculators/plugin/cpu_tensor/optionspb/bounding_box_tensors_to_detections_options.pb.go"],
-    outputs = ["bounding_box_tensors_to_detections_options.pb.go"],
+    output_mappings = [
+        "bounding_box_tensors_to_detections_options.pb.go=gimletlabs.ai/gimlet/src/gem/calculators/plugin/cpu_tensor/optionspb/bounding_box_tensors_to_detections_options.pb.go",
+        "scores_to_label_calculator_options.pb.go=gimletlabs.ai/gimlet/src/gem/calculators/plugin/cpu_tensor/optionspb/scores_to_label_calculator_options.pb.go",
+    ],
+    outputs = [
+        "bounding_box_tensors_to_detections_options.pb.go",
+        "scores_to_label_calculator_options.pb.go",
+    ],
     plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
     proto = "optionspb_proto",
     visibility = ["//visibility:public"],
@@ -54,7 +71,10 @@ proto_compile(
 
 proto_go_library(
     name = "optionspb_go_proto",
-    srcs = ["bounding_box_tensors_to_detections_options.pb.go"],
+    srcs = [
+        "bounding_box_tensors_to_detections_options.pb.go",
+        "scores_to_label_calculator_options.pb.go",
+    ],
     importpath = "gimletlabs.ai/gimlet/src/gem/calculators/plugin/cpu_tensor/optionspb",
     visibility = ["//visibility:public"],
     deps = [
