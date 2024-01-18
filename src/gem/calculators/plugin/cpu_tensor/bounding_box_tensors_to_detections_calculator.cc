@@ -176,6 +176,11 @@ absl::Status BoundingBoxTensorsToDetections::Process(mediapipe::CalculatorContex
     bounding_box_converter_(box_coords, orig_shape_data, d.mutable_bounding_box());
   }
 
+  if (detections.empty()) {
+    cc->Outputs().Index(0).SetNextTimestampBound(cc->InputTimestamp().NextAllowedInStream());
+    return absl::OkStatus();
+  }
+
   auto packet = mediapipe::MakePacket<std::vector<Detection>>(std::move(detections));
   packet = packet.At(cc->InputTimestamp());
   cc->Outputs().Index(0).AddPacket(std::move(packet));
