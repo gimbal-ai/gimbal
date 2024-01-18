@@ -49,6 +49,8 @@ StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobSt
       }
     }
 
+    LOG(INFO) << absl::Substitute("Using $0 to execute $1", device, spec.name());
+
     auto model = core.read_model(onnx_path);
     std::map<size_t, ov::PartialShape> input_idx_to_shape;
     for (const auto& [idx, shape] : Enumerate(spec.openvino_spec().input_shape())) {
