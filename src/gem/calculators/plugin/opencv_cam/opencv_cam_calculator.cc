@@ -18,6 +18,7 @@
 #include "src/gem/calculators/plugin/opencv_cam/opencv_cam_calculator.h"
 
 #include <thread>
+#include <vector>
 
 #include <absl/status/status.h>
 #include <magic_enum.hpp>
@@ -30,6 +31,12 @@
 namespace gml::gem::calculators::opencv_cam {
 
 constexpr std::string_view kVideoPrestreamTag = "VIDEO_PRESTREAM";
+
+constexpr int kTargetFrameWidth = 1280;
+constexpr int kTargetFrameHeight = 960;
+constexpr int kTargetFPS = 30;
+
+const int kTargetFourCC = cv::VideoWriter::fourcc('M', 'J', 'P', 'G');
 
 using ::gml::gem::calculators::opencv_cam::optionspb::OpenCVCamSourceCalculatorOptions;
 
@@ -135,8 +142,22 @@ absl::Status OpenCVCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
 
   LOG(INFO) << "Using v4l2 camera: " << options_.device_filename();
 
-  // Setting to use V4L2 only. Could revisit this choice in the future.
-  cap_ = std::make_unique<cv::VideoCapture>(options_.device_filename(), cv::CAP_ANY);
+  std::vector<int> params;
+  if (absl::StartsWith(options_.device_filename(), "/dev/video")) {
+    params.insert(params.end(), {
+                                    cv::CAP_PROP_FRAME_WIDTH,
+                                    kTargetFrameWidth,
+                                    cv::CAP_PROP_FRAME_HEIGHT,
+                                    kTargetFrameHeight,
+                                    cv::CAP_PROP_FOURCC,
+                                    kTargetFourCC,
+                                });
+  }
+
+  cap_ = std::make_unique<cv::VideoCapture>(options_.device_filename(), cv::CAP_ANY, params);
+  if (absl::StartsWith(options_.device_filename(), "/dev/video")) {
+    cap_->set(cv::CAP_PROP_FPS, kTargetFPS);
+  }
 
   if (!cap_->isOpened()) {
     LOG(WARNING) << "Failed to open camera: " << options_.device_filename();
@@ -164,6 +185,9 @@ absl::Status OpenCVCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
   header->height = height_;
   header->frame_rate = fps_;
   header->duration = static_cast<float>(frame_count_ / fps_);
+
+  LOG(INFO) << "Video header: " << header->width << "x" << header->height << " @ "
+            << header->frame_rate << " fps";
 
   if (cc->Outputs().HasTag(kVideoPrestreamTag)) {
     cc->Outputs().Tag(kVideoPrestreamTag).Add(header.release(), mediapipe::Timestamp::PreStream());
