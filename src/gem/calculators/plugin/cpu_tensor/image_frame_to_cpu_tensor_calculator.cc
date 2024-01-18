@@ -42,6 +42,7 @@ absl::Status ImageFrameToCPUTensorCalculator::GetContract(mediapipe::CalculatorC
 
   cc->Inputs().Tag(kImageFrameTag).Set<mediapipe::ImageFrame>();
   cc->Outputs().Tag(kOutputTag).Set<CPUTensorPtr>();
+  cc->SetTimestampOffset(0);
   return absl::OkStatus();
 }
 

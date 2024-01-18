@@ -111,6 +111,7 @@ absl::Status ImageQualityCalculator::GetContract(mediapipe::CalculatorContract* 
   cc->Inputs().Tag(kImageFrameTag).Set<mediapipe::ImageFrame>();
   cc->Outputs().Tag(kHistOutputTag).Set<gml::internal::api::core::v1::ImageHistogramBatch>();
   cc->Outputs().Tag(kQualityOutputTag).Set<gml::internal::api::core::v1::ImageQualityMetrics>();
+  cc->SetTimestampOffset(0);
   return absl::OkStatus();
 }
 

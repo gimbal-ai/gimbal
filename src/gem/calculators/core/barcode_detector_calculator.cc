@@ -34,6 +34,7 @@ using ::gml::internal::api::core::v1::Detection;
 absl::Status BarcodeDetectorCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   cc->Inputs().Tag(kImageTag).Set<mediapipe::ImageFrame>();
   cc->Outputs().Tag(kDetectionsTag).Set<std::vector<Detection>>();
+  cc->SetTimestampOffset(0);
   return absl::OkStatus();
 }
 

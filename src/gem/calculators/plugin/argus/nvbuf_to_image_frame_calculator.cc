@@ -31,6 +31,7 @@ using devices::argus::NvBufSurfaceWrapper;
 absl::Status NvBufSurfToImageFrameCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   cc->Inputs().Index(0).Set<std::shared_ptr<NvBufSurfaceWrapper>>();
   cc->Outputs().Index(0).Set<mediapipe::ImageFrame>();
+  cc->SetTimestampOffset(0);
   return absl::OkStatus();
 }
 

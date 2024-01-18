@@ -42,6 +42,7 @@ absl::Status OpenVinoExecuteCalculator::GetContract(mediapipe::CalculatorContrac
   for (int i = 0; i < cc->Outputs().NumEntries(); ++i) {
     cc->Outputs().Index(i).Set<CPUTensorPtr>();
   }
+  cc->SetTimestampOffset(0);
   return absl::OkStatus();
 }
 

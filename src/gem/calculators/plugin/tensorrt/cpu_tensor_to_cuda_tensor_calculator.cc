@@ -38,6 +38,7 @@ absl::Status CPUTensorToCUDATensorCalculator::GetContract(mediapipe::CalculatorC
   for (int i = 0; i < cc->Outputs().NumEntries(); ++i) {
     cc->Outputs().Index(i).Set<CUDATensorPtr>();
   }
+  cc->SetTimestampOffset(0);
   return absl::OkStatus();
 }
 

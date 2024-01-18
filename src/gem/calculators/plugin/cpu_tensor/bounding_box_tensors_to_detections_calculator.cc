@@ -95,6 +95,7 @@ absl::Status BoundingBoxTensorsToDetections::GetContract(mediapipe::CalculatorCo
   cc->Inputs().Tag(kIndicesTag).Set<CPUTensorPtr>();
   cc->Inputs().Tag(kShapeTag).Set<CPUTensorPtr>();
   cc->Outputs().Index(0).Set<std::vector<Detection>>();
+  cc->SetTimestampOffset(0);
   return absl::OkStatus();
 }
 

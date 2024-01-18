@@ -45,6 +45,7 @@ absl::Status FFmpegVideoEncoderCalculator::GetContract(mediapipe::CalculatorCont
   cc->Inputs().Tag(kPlanarImageTag).Set<std::unique_ptr<exec::core::PlanarImage>>();
   cc->Inputs().Tag(kVideoHeaderTag).Set<mediapipe::VideoHeader>();
   cc->Outputs().Tag(kAVPacketsTag).Set<AVPacketWrappers>();
+  cc->SetTimestampOffset(0);
   return absl::OkStatus();
 }
 

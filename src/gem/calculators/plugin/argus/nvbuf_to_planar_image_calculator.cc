@@ -34,6 +34,7 @@ using ::gml::gem::exec::core::PlanarImageFor;
 absl::Status NvBufSurfToPlanarImageCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   cc->Inputs().Index(0).Set<NvBufSurfaceWrapper>();
   cc->Outputs().Index(0).Set<mediapipe::ImageFrame>();
+  cc->SetTimestampOffset(0);
   return absl::OkStatus();
 }
 

@@ -29,6 +29,7 @@ using ::gml::internal::api::core::v1::Detection;
 absl::Status DetectionsToMediapipeCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   cc->Inputs().Index(0).Set<std::vector<Detection>>();
   cc->Outputs().Index(0).Set<std::vector<mediapipe::Detection>>();
+  cc->SetTimestampOffset(0);
   return absl::OkStatus();
 }
 

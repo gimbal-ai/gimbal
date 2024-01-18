@@ -139,6 +139,7 @@ absl::Status OverlayedFFmpegVideoSinkCalculator::GetContract(mediapipe::Calculat
   if (cc->Outputs().HasTag(kFinishedTag)) {
     cc->Outputs().Tag(kFinishedTag).Set<bool>();
   }
+  cc->SetProcessTimestampBounds(true);
   return absl::OkStatus();
 }
 
@@ -151,10 +152,24 @@ Status OverlayedFFmpegVideoSinkCalculator::ProcessImpl(
     return Status::OK();
   }
 
+  if (cc->Inputs().Tag(kAVPacketTag).IsEmpty()) {
+    if (cc->Outputs().HasTag(kFinishedTag)) {
+      cc->Outputs()
+          .Tag(kFinishedTag)
+          .SetNextTimestampBound(cc->InputTimestamp().NextAllowedInStream());
+    }
+    return Status::OK();
+  }
+
   const auto& av_packets =
       cc->Inputs().Tag(kAVPacketTag).Get<std::vector<std::unique_ptr<AVPacketWrapper>>>();
 
   if (av_packets.empty()) {
+    if (cc->Outputs().HasTag(kFinishedTag)) {
+      cc->Outputs()
+          .Tag(kFinishedTag)
+          .SetNextTimestampBound(cc->InputTimestamp().NextAllowedInStream());
+    }
     return Status::OK();
   }
   auto frame_ts = av_packets[0]->packet()->pts;

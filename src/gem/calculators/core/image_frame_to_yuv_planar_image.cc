@@ -32,6 +32,7 @@ constexpr std::string_view kYUVImageTag = "YUV_IMAGE";
 absl::Status ImageFrameToYUVPlanarImage::GetContract(mediapipe::CalculatorContract* cc) {
   cc->Inputs().Tag(kImageFrameTag).Set<mediapipe::ImageFrame>();
   cc->Outputs().Tag(kYUVImageTag).Set<std::unique_ptr<exec::core::PlanarImage>>();
+  cc->SetTimestampOffset(0);
   return absl::OkStatus();
 }
 

@@ -43,6 +43,7 @@ absl::Status ImageFrameToCUDATensorCalculator::GetContract(mediapipe::Calculator
 
   cc->Inputs().Tag(kImageFrameTag).Set<mediapipe::ImageFrame>();
   cc->Outputs().Tag(kTensorTag).Set<CUDATensorPtr>();
+  cc->SetTimestampOffset(0);
   return absl::OkStatus();
 }
 
