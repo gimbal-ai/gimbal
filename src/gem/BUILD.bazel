@@ -19,6 +19,10 @@ package(default_visibility = [
     "//src:__subpackages__",
 ])
 
+exports_files([
+    "install.sh",
+])
+
 gml_cc_library(
     name = "cc_library",
     srcs = [
