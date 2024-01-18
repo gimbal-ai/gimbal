@@ -82,6 +82,28 @@ mediapipe_simple_subgraph(
     ],
 )
 
+mediapipe_simple_subgraph(
+    name = "product_model_tensorrt_subgraph",
+    graph = "product_model_tensorrt_subgraph.pbtxt",
+    register_as = "ProductModelTensorRTSubgraph",
+    deps = [
+        "//src/gem/calculators/plugin/cpu_tensor:cc_library",
+        "//src/gem/calculators/plugin/tensorrt:cc_library",
+        "@com_github_google_mediapipe//mediapipe/calculators/image:image_transformation_calculator",
+    ],
+)
+
+mediapipe_simple_subgraph(
+    name = "product_model_openvino_subgraph",
+    graph = "product_model_openvino_subgraph.pbtxt",
+    register_as = "ProductModelOpenVINOSubgraph",
+    deps = [
+        "//src/gem/calculators/plugin/cpu_tensor:cc_library",
+        "//src/gem/calculators/plugin/openvino:cc_library",
+        "@com_github_google_mediapipe//mediapipe/calculators/image:image_transformation_calculator",
+    ],
+)
+
 gml_cc_test(
     name = "subgraph_test",
     srcs = ["subgraph_test.cc"],
