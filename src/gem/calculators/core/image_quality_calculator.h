@@ -16,9 +16,12 @@
  */
 
 #pragma once
+#include <cstdint>
+
 #include <mediapipe/framework/calculator_base.h>
 #include <opencv2/quality/qualitybrisque.hpp>
 
+#include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/base/base.h"
 #include "src/common/base/status.h"
 #include "src/common/metrics/metrics_system.h"
@@ -61,6 +64,9 @@ class ImageQualityCalculator : public mediapipe::CalculatorBase {
   cv::Ptr<cv::quality::QualityBRISQUE> brisque_calc;
   std::unique_ptr<opentelemetry::metrics::Gauge<double>> brisque_score_;
   std::unique_ptr<opentelemetry::metrics::Gauge<double>> blurriness_score_;
+
+  internal::api::core::v1::ImageQualityMetrics metrics_;
+  int64_t frame_count = 0;
 };
 
 }  // namespace gml::gem::calculators::core

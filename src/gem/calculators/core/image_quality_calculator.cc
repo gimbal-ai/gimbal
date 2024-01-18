@@ -40,6 +40,8 @@ constexpr std::string_view kQualityOutputTag = "IMAGE_QUALITY";
 // The value of ~150.0 gives a reasonable threshold to say the image is not blurry.
 constexpr double kVarianceScaleFactor = 150.0f;
 constexpr int kHistBuckets = 64;
+constexpr double kBlurrinessThreshold = 0.25f;
+constexpr int64_t kBrisqueFramesToSkip = 15;
 
 using internal::api::core::v1::ImageHistogram;
 using internal::api::core::v1::ImageHistogramBatch;
@@ -128,6 +130,7 @@ Status ImageQualityCalculator::OpenImpl(mediapipe::CalculatorContext*) {
 }
 
 Status ImageQualityCalculator::ProcessImpl(mediapipe::CalculatorContext* cc) {
+  DEFER(frame_count++);
   const auto& image_frame = cc->Inputs().Tag(kImageFrameTag).Get<mediapipe::ImageFrame>();
   cv::Mat input_mat = mediapipe::formats::MatView(&image_frame);
 
@@ -135,8 +138,6 @@ Status ImageQualityCalculator::ProcessImpl(mediapipe::CalculatorContext* cc) {
     return error::InvalidArgument("Only RGB images are supported. Image with $0 channels passed in",
                                   input_mat.channels());
   }
-
-  ImageQualityMetrics metrics;
 
   cv::Mat gray_img, laplacian_img;
   // Convert the incoming RGB image into a grayscale image.
@@ -151,16 +152,20 @@ Status ImageQualityCalculator::ProcessImpl(mediapipe::CalculatorContext* cc) {
   double var = l_stddev.val[0] * l_stddev.val[0];
   double norm = std::clamp((var / kVarianceScaleFactor), 0.0, 1.0);
   double blurriness = 1.0 - norm;
+  double prev_blurriness = metrics_.blurriness_score();
+  metrics_.set_blurriness_score(1.0 - norm);
 
-  cv::Scalar res = brisque_calc->compute(gray_img);
-  double brisque_score = std::clamp((100 - res[0]) / 100.0, 0.0, 1.0);
+  // Brisque is slow so we only compute it every few iterations or if there is a significant change
+  // in the blurriness.
+  if ((frame_count % kBrisqueFramesToSkip) == 0 ||
+      std::abs(prev_blurriness - blurriness) > kBlurrinessThreshold) {
+    cv::Scalar res = brisque_calc->compute(gray_img);
+    metrics_.set_brisque_score(std::clamp((100 - res[0]) / 100.0, 0.0, 1.0));
+  }
 
-  // Record the quality metrics in proto and metrics formats.
-  metrics.set_brisque_score(brisque_score);
-  metrics.set_blurriness_score(blurriness);
-
-  brisque_score_->Record(brisque_score);
-  blurriness_score_->Record(blurriness);
+  // Record the otel metrics.
+  brisque_score_->Record(metrics_.brisque_score());
+  blurriness_score_->Record(metrics_.blurriness_score());
 
   // For the histograms we compute the R,G,B and grayscale histograms and store them
   // in the batch. We treat all pixels as normalized 0 - 1, although for computations we use the
@@ -194,8 +199,7 @@ Status ImageQualityCalculator::ProcessImpl(mediapipe::CalculatorContext* cc) {
 
   cc->Outputs()
       .Tag(kQualityOutputTag)
-      .AddPacket(
-          mediapipe::MakePacket<ImageQualityMetrics>(std::move(metrics)).At(cc->InputTimestamp()));
+      .AddPacket(mediapipe::MakePacket<ImageQualityMetrics>(metrics_).At(cc->InputTimestamp()));
 
   return Status::OK();
 }
