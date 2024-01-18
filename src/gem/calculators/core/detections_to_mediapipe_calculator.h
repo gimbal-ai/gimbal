@@ -27,10 +27,14 @@ namespace gml::gem::calculators::core {
  *  DetectionsToMediapipeCalculator Graph API:
  *
  *  Inputs:
- *    std::vector<internal::api::corepb::v1::Detection> list of detection protos.
+ *    DETECTIONS std::vector<internal::api::corepb::v1::Detection> list of detection protos.
+ *    OR
+ *    DETECTION internal::api::corepb::v1::Detection single detection proto.
  *
  *  Outputs:
- *    std::vector<mediapipe::Detection> proto
+ *    DETECTIONS std::vector<mediapipe::Detection> proto
+ *    OR
+ *    DETECTION mediapipe::Detection proto
  */
 class DetectionsToMediapipeCalculator : public mediapipe::CalculatorBase {
  public:

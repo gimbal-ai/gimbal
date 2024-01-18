@@ -31,8 +31,8 @@ using ::gml::internal::api::core::v1::Detection;
 
 constexpr std::string_view kDetectionsToMediapipeNode = R"pbtxt(
 calculator: "DetectionsToMediapipeCalculator"
-input_stream: "detection_list"
-output_stream: "mp_detection_list"
+input_stream: "DETECTIONS:detection_list"
+output_stream: "DETECTIONS:mp_detection_list"
 )pbtxt";
 
 struct DetectionsToMediapipeTestCase {
@@ -63,10 +63,10 @@ TEST_P(DetectionsToMediapipeTest, ConvertsCorrectly) {
   }
 
   auto ts = mediapipe::Timestamp::Min();
-  tester.ForInput(0, std::move(detections), ts)
+  tester.ForInput("DETECTIONS", std::move(detections), ts)
       .Run()
       .ExpectOutput<std::vector<mediapipe::Detection>>(
-          "", 0, ts,
+          "DETECTIONS", 0, ts,
           ::testing::Pointwise(::gml::testing::proto::EqProto(), expected_mp_detections));
 }
 
