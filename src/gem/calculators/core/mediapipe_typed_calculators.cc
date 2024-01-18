@@ -15,7 +15,9 @@
  * SPDX-License-Identifier: Proprietary
  */
 
+#include <mediapipe/calculators/core/begin_loop_calculator.h>
 #include <mediapipe/calculators/core/concatenate_vector_calculator.h>
+#include <mediapipe/calculators/core/end_loop_calculator.h>
 #include <mediapipe/framework/calculator_registry.h>
 
 #include "src/api/corepb/v1/mediastream.pb.h"
@@ -25,7 +27,11 @@ using ::gml::internal::api::core::v1::Detection;
 namespace gml::gem::calculators::core {
 
 using ConcatenateDetectionsCalculator = mediapipe::ConcatenateVectorCalculator<Detection>;
+using BeginDetectionsLoopCalculator = mediapipe::BeginLoopCalculator<std::vector<Detection>>;
+using EndDetectionsLoopCalculator = mediapipe::EndLoopCalculator<std::vector<Detection>>;
 
 REGISTER_CALCULATOR(ConcatenateDetectionsCalculator);
+REGISTER_CALCULATOR(BeginDetectionsLoopCalculator);
+REGISTER_CALCULATOR(EndDetectionsLoopCalculator);
 
 }  // namespace gml::gem::calculators::core
