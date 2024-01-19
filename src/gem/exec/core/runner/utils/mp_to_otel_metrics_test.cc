@@ -99,6 +99,7 @@ scope_metrics {
     unit: "seconds"
     sum {
       data_points {
+      start_time_unix_nano: 1000
         as_double: 3.7e-05
       }
       aggregation_temporality: AGGREGATION_TEMPORALITY_CUMULATIVE
@@ -111,6 +112,7 @@ scope_metrics {
     unit: "seconds"
     sum {
       data_points {
+        start_time_unix_nano: 1000
         as_double: 0
       }
       aggregation_temporality: AGGREGATION_TEMPORALITY_CUMULATIVE
@@ -123,6 +125,7 @@ scope_metrics {
     unit: "seconds"
     histogram {
       data_points {
+        start_time_unix_nano: 1000
         count: 11
         sum: 4.2e-05
         bucket_counts: 11
@@ -154,6 +157,7 @@ scope_metrics {
     unit: "seconds"
     histogram {
       data_points {
+        start_time_unix_nano: 1000
         count: 11
         sum: 4.2e-05
         bucket_counts: 11
@@ -185,6 +189,7 @@ scope_metrics {
     unit: "seconds"
     histogram {
       data_points {
+        start_time_unix_nano: 1000
         count: 11
         sum: 4.2e-05
         bucket_counts: 11
@@ -213,13 +218,15 @@ scope_metrics {
 }
 )";
 
+constexpr int64_t kStartTimeUnixNs = 1000;
+
 TEST(MpToOTelMetrics, Basic) {
   ::mediapipe::CalculatorProfile calculator_profile;
   ::google::protobuf::TextFormat::ParseFromString(kMediapipePB, &calculator_profile);
 
   opentelemetry::proto::metrics::v1::ResourceMetrics metrics;
   EXPECT_OK(CalculatorProfileVecToOTelProto(
-      std::vector<mediapipe::CalculatorProfile>{calculator_profile}, &metrics));
+      std::vector<mediapipe::CalculatorProfile>{calculator_profile}, kStartTimeUnixNs, &metrics));
 
   EXPECT_THAT(metrics, testing::proto::Partially(testing::proto::EqualsProto(kExpectedPB)));
 
@@ -249,7 +256,7 @@ TEST(MpToOTelMetrics, MalformedInput) {
 
   opentelemetry::proto::metrics::v1::ResourceMetrics metrics;
   EXPECT_NOT_OK(CalculatorProfileVecToOTelProto(
-      std::vector<mediapipe::CalculatorProfile>{calculator_profile}, &metrics));
+      std::vector<mediapipe::CalculatorProfile>{calculator_profile}, kStartTimeUnixNs, &metrics));
 }
 
 }  // namespace gml::gem::utils

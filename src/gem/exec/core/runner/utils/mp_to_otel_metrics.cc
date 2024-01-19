@@ -31,7 +31,7 @@ constexpr int64_t kUSecondsPerSecond = 1000LL * 1000LL;
 
 Status PopulateSumMetric(Metric* metric, std::string&& name, std::string&& desc, std::string&& unit,
                          absl::flat_hash_map<std::string, std::string>&& attributes,
-                         int64_t time_since_epoch_ns, int64_t value) {
+                         int64_t start_time_unix_ns, int64_t time_unix_ns, int64_t value) {
   metric->set_name(std::move(name));
   metric->set_description(std::move(desc));
   metric->set_unit(std::move(unit));
@@ -42,7 +42,8 @@ Status PopulateSumMetric(Metric* metric, std::string&& name, std::string&& desc,
       opentelemetry::proto::metrics::v1::AGGREGATION_TEMPORALITY_CUMULATIVE);
 
   auto* data_point = sum->add_data_points();
-  data_point->set_time_unix_nano(time_since_epoch_ns);
+  data_point->set_start_time_unix_nano(start_time_unix_ns);
+  data_point->set_time_unix_nano(time_unix_ns);
   data_point->set_as_double(static_cast<double>(value) / kUSecondsPerSecond);
 
   for (auto [k, v] : attributes) {
@@ -57,7 +58,7 @@ Status PopulateSumMetric(Metric* metric, std::string&& name, std::string&& desc,
 Status PopulateHistogramMetric(Metric* metric, std::string&& name, std::string&& desc,
                                std::string&& unit,
                                absl::flat_hash_map<std::string, std::string>&& attributes,
-                               int64_t time_since_epoch_ns,
+                               int64_t start_time_unix_ns, int64_t time_unix_ns,
                                const ::mediapipe::TimeHistogram& value) {
   metric->set_name(std::move(name));
   metric->set_description(std::move(desc));
@@ -68,7 +69,8 @@ Status PopulateHistogramMetric(Metric* metric, std::string&& name, std::string&&
       opentelemetry::proto::metrics::v1::AGGREGATION_TEMPORALITY_CUMULATIVE);
 
   auto* data_point = histogram->add_data_points();
-  data_point->set_time_unix_nano(time_since_epoch_ns);
+  data_point->set_start_time_unix_nano(start_time_unix_ns);
+  data_point->set_time_unix_nano(time_unix_ns);
 
   data_point->set_sum(static_cast<double>(value.total()) / kUSecondsPerSecond);
 
@@ -104,15 +106,14 @@ Status PopulateHistogramMetric(Metric* metric, std::string&& name, std::string&&
 }  // namespace
 
 Status CalculatorProfileVecToOTelProto(
-    const std::vector<mediapipe::CalculatorProfile>& profiles,
+    const std::vector<mediapipe::CalculatorProfile>& profiles, int64_t start_time_unix_ns,
     opentelemetry::proto::metrics::v1::ResourceMetrics* metrics_out) {
   // We need a timestamp for the metrics, so calculate the duration since the epoch now.
   // TODO(oazizi): It would be more correct if we timestamped the profiles data when it was
   //               collected, and use that timestamp.
   auto now = std::chrono::steady_clock::now();
-  auto time_since_epoch = now.time_since_epoch();
-  auto time_since_epoch_ns =
-      std::chrono::duration_cast<std::chrono::nanoseconds>(time_since_epoch).count();
+  auto time_unix = now.time_since_epoch();
+  auto time_unix_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(time_unix).count();
 
   auto* scope_metrics = metrics_out->add_scope_metrics();
   // Scope information will be ignored by our metrics store, but setting for completeness.
@@ -135,7 +136,7 @@ Status CalculatorProfileVecToOTelProto(
       absl::flat_hash_map<std::string, std::string> attributes{kStageNameAttr};
       GML_RETURN_IF_ERROR(PopulateSumMetric(open_runtime_metric, std::move(name), std::move(desc),
                                             std::move(unit), std::move(attributes),
-                                            time_since_epoch_ns, p.open_runtime()));
+                                            start_time_unix_ns, time_unix_ns, p.open_runtime()));
     }
 
     // Populate close_runtime.
@@ -147,7 +148,7 @@ Status CalculatorProfileVecToOTelProto(
       absl::flat_hash_map<std::string, std::string> attributes{kStageNameAttr};
       GML_RETURN_IF_ERROR(PopulateSumMetric(close_runtime_metric, std::move(name), std::move(desc),
                                             std::move(unit), std::move(attributes),
-                                            time_since_epoch_ns, p.close_runtime()));
+                                            start_time_unix_ns, time_unix_ns, p.close_runtime()));
     }
 
     // Populate process_runtime histogram.
@@ -159,7 +160,7 @@ Status CalculatorProfileVecToOTelProto(
       absl::flat_hash_map<std::string, std::string> attributes{kStageNameAttr};
       GML_RETURN_IF_ERROR(PopulateHistogramMetric(
           process_runtime_metric, std::move(name), std::move(desc), std::move(unit),
-          std::move(attributes), time_since_epoch_ns, p.process_runtime()));
+          std::move(attributes), start_time_unix_ns, time_unix_ns, p.process_runtime()));
     }
 
     // Populate process_input_latency histogram.
@@ -171,7 +172,7 @@ Status CalculatorProfileVecToOTelProto(
       absl::flat_hash_map<std::string, std::string> attributes{kStageNameAttr};
       GML_RETURN_IF_ERROR(PopulateHistogramMetric(
           process_input_latency_metric, std::move(name), std::move(desc), std::move(unit),
-          std::move(attributes), time_since_epoch_ns, p.process_runtime()));
+          std::move(attributes), start_time_unix_ns, time_unix_ns, p.process_runtime()));
     }
 
     // Populate process_output_latency histogram.
@@ -183,7 +184,7 @@ Status CalculatorProfileVecToOTelProto(
       absl::flat_hash_map<std::string, std::string> attributes{kStageNameAttr};
       GML_RETURN_IF_ERROR(PopulateHistogramMetric(
           process_output_latency_metric, std::move(name), std::move(desc), std::move(unit),
-          std::move(attributes), time_since_epoch_ns, p.process_runtime()));
+          std::move(attributes), start_time_unix_ns, time_unix_ns, p.process_runtime()));
     }
   }
 
