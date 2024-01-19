@@ -104,6 +104,20 @@ mediapipe_simple_subgraph(
     ],
 )
 
+mediapipe_simple_subgraph(
+    name = "classify_roi_subgraph",
+    graph = "classify_roi_subgraph.pbtxt",
+    register_as = "ClassifyROISubgraph",
+    deps = [
+        "//src/gem/calculators/core:cc_library",
+        "//src/gem/calculators/plugin/cpu_tensor:cc_library",
+        "//src/gem/calculators/plugin/openvino:cc_library",
+        "@com_github_google_mediapipe//mediapipe/calculators/image:image_cropping_calculator",
+        "@com_github_google_mediapipe//mediapipe/calculators/image:image_transformation_calculator",
+        "@com_github_google_mediapipe//mediapipe/calculators/util:detections_to_rects_calculator",
+    ],
+)
+
 gml_cc_test(
     name = "subgraph_test",
     srcs = ["subgraph_test.cc"],
