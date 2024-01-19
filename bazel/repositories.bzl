@@ -239,15 +239,7 @@ def _gml_cc_toolchain_deps():
 
 def _gml_deps():
     _bazel_repo("bazel_skylib")
-    _bazel_repo(
-        "com_github_benchsci_rules_nodejs_gazelle",
-        patches = [
-            "//bazel/external:rules_nodejs_gazelle.builtins.patch",
-            "//bazel/external:rules_nodejs_gazelle.import.patch",
-            "//bazel/external:rules_nodejs_gazelle.snapshots.patch",
-        ],
-        patch_args = ["-p1"],
-    )
+    _bazel_repo("com_github_benchsci_rules_nodejs_gazelle")
 
     _com_llvm_lib()
     _cc_deps()
