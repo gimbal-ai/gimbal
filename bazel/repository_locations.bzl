@@ -357,6 +357,11 @@ REPOSITORY_LOCATIONS = dict(
         strip_prefix = "OpenCL-CLHPP-2023.04.17",
         urls = ["https://github.com/KhronosGroup/OpenCL-CLHPP/archive/refs/tags/v2023.04.17.tar.gz"],
     ),
+    com_github_googlecoral_libedgetpu = dict(
+        sha256 = "86a6e654e093c204b4fb579a60773bfa080f095c9cbb3a2c114ca4a13e0b15eb",
+        strip_prefix = "libedgetpu-release-grouper",
+        urls = ["https://github.com/google-coral/libedgetpu/archive/refs/tags/release-grouper.tar.gz"],
+    ),
 )
 
 # To use a local repo for local development, simply add a `local_path` key to the relevant

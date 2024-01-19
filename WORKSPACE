@@ -90,6 +90,10 @@ load("@org_tensorflow//tensorflow:workspace0.bzl", "tf_workspace0")
 
 tf_workspace0()
 
+load("@com_github_googlecoral_libedgetpu//:workspace.bzl", "libedgetpu_dependencies")
+
+libedgetpu_dependencies()
+
 load("//bazel/external:mediapipe_repos.bzl", "mediapipe_repos")
 
 mediapipe_repos()

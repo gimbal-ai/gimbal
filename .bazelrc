@@ -40,6 +40,9 @@ build --test_tag_filters=-disabled
 # Sets the default Apple platform to macOS.
 build --apple_platform_type=macos
 
+# Required for Coral/Edge TPU.
+build --define darwinn_portable=1
+
 build --incompatible_sandbox_hermetic_tmp
 # Give each sandbox its own tmp directory.
 # For more context, see: https://github.com/bazelbuild/bazel/issues/3236
