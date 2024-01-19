@@ -32,8 +32,8 @@ namespace gml::gem::calculators::opencv_cam {
 
 constexpr std::string_view kVideoPrestreamTag = "VIDEO_PRESTREAM";
 
-constexpr int kTargetFrameWidth = 1280;
-constexpr int kTargetFrameHeight = 960;
+constexpr int kTargetFrameWidth = 800;
+constexpr int kTargetFrameHeight = 600;
 constexpr int kTargetFPS = 30;
 
 const int kTargetFourCC = cv::VideoWriter::fourcc('M', 'J', 'P', 'G');

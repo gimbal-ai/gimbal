@@ -38,7 +38,7 @@ constexpr std::string_view kHistOutputTag = "IMAGE_HIST";
 constexpr std::string_view kQualityOutputTag = "IMAGE_QUALITY";
 
 // The value of ~150.0 gives a reasonable threshold to say the image is not blurry.
-constexpr double kVarianceScaleFactor = 150.0f;
+constexpr double kVarianceScaleFactor = 50.0f;
 constexpr int kHistBuckets = 64;
 constexpr double kBlurrinessThreshold = 0.25f;
 constexpr int64_t kBrisqueFramesToSkip = 15;
