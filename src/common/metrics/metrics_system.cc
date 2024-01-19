@@ -100,4 +100,22 @@ opentelemetry::proto::metrics::v1::ResourceMetrics MetricsSystem::CollectAllAsPr
 
 opentelemetry::sdk::metrics::MetricReader* MetricsSystem::Reader() { return reader_.get(); };
 
+Status MetricsSystem::RegisterScraper(Scrapeable* s) {
+  absl::base_internal::SpinLockHolder lock(&scrapeables_lock_);
+  // Check and make sure it hasn't already been registered.
+  auto [_, inserted] = scrapeables_.emplace(s);
+  if (!inserted) {
+    return error::AlreadyExists("scraper has already been registered");
+  }
+  return Status::OK();
+}
+
+Status MetricsSystem::UnRegisterScraper(Scrapeable* s) {
+  absl::base_internal::SpinLockHolder lock(&scrapeables_lock_);
+  bool erased = scrapeables_.erase(s);
+  if (!erased) {
+    return error::NotFound("scraper not found");
+  }
+  return Status::OK();
+}
 }  // namespace gml::metrics

@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include <absl/container/flat_hash_set.h>
 #include <opentelemetry/exporters/otlp/otlp_metric_utils.h>
 #include <opentelemetry/metrics/provider.h>
 #include <opentelemetry/sdk/metrics/meter.h>
@@ -33,14 +34,14 @@ class Scrapeable {
  public:
   Scrapeable() = delete;
   /*
-   * Scrapeable object with metrics_system. The lifetime of metrics_system needs to be outlive the
+   * Scrapeable object with metrics_system. The lifetime of metrics_system needs to outlive the
    * scrapeable.
    */
   explicit Scrapeable(MetricsSystem*);
   virtual ~Scrapeable();
 
   /**
-   * Scrapeables need to define a Scrape function that wil be called before new metrics will be
+   * Scrapeables need to define a Scrape function that will be called before new metrics will be
    * pulled.
    */
   virtual void Scrape() = 0;
@@ -61,7 +62,7 @@ class Scrapeable {
  *
  * Consuming stats:
  *
- * On the reader side, the CollectAllAsProto() can be used to extract all the stats in an OTel
+ * On the reader side, CollectAllAsProto() can be used to extract all the stats in an OTel
  * defined protobuf, or Reader() can be called to set-up your own callback of how to process the
  * stats.
  *
@@ -91,27 +92,11 @@ class MetricsSystem {
    */
   opentelemetry::sdk::metrics::MetricReader* Reader();
 
-  Status RegisterScraper(Scrapeable* s) {
-    absl::base_internal::SpinLockHolder lock(&scrapeables_lock_);
-    // Check and make sure it hasn't already been registered.
-    if (std::find(scrapeables_.begin(), scrapeables_.end(), s) != scrapeables_.end()) {
-      return error::AlreadyExists("scraper has already been registered");
-    }
-    scrapeables_.emplace_back(s);
-    return Status::OK();
-  }
+  Status RegisterScraper(Scrapeable* s);
 
-  const std::vector<Scrapeable*>& scrapeables() const { return scrapeables_; };
+  const absl::flat_hash_set<Scrapeable*>& scrapeables() const { return scrapeables_; };
 
-  Status UnRegisterScraper(Scrapeable* s) {
-    absl::base_internal::SpinLockHolder lock(&scrapeables_lock_);
-    auto it = std::find(scrapeables_.begin(), scrapeables_.end(), s);
-    if (it == scrapeables_.end()) {
-      return error::NotFound("scraper not found");
-    }
-    scrapeables_.erase(it);
-    return Status::OK();
-  }
+  Status UnRegisterScraper(Scrapeable* s);
 
   /**
    * Returns a histogram with the given custom bounds.
@@ -163,7 +148,8 @@ class MetricsSystem {
   void Init();
 
   absl::base_internal::SpinLock scrapeables_lock_;
-  std::vector<Scrapeable*> scrapeables_ ABSL_GUARDED_BY(scrapeables_lock_);
+  absl::flat_hash_set<Scrapeable*> scrapeables_ ABSL_GUARDED_BY(scrapeables_lock_);
+
   // MeterProvider::AddMetricReader and MeterProvider::AddView are not thread safe, so we need to
   // lock for those method calls.
   // TODO(james): Currently, we allow anyone to call GetMeterProvider and then call these unsafe

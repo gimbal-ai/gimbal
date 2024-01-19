@@ -19,13 +19,7 @@
 
 #include <unistd.h>
 
-#include <atomic>
 #include <chrono>
-#include <fstream>
-#include <sstream>
-
-#include <google/protobuf/any.pb.h>
-#include <grpcpp/grpcpp.h>
 
 #include "src/api/corepb/v1/cp_edge.pb.h"
 #include "src/common/base/base.h"
@@ -33,6 +27,7 @@
 #include "src/common/event/dispatcher.h"
 #include "src/common/metrics/metrics_system.h"
 #include "src/gem/controller/controller.h"
+#include "src/gem/controller/grpc_bridge.h"
 #include "src/gem/exec/core/control_context.h"
 
 using gml::internal::api::core::v1::EDGE_CP_TOPIC_METRICS;
@@ -48,7 +43,7 @@ Status MetricsHandler::CollectAndPushMetrics() {
   }
   auto resource_metrics = metrics_system.CollectAllAsProto();
   EdgeOTelMetrics metrics;
-  (*metrics.mutable_resource_metrics()) = resource_metrics;
+  *metrics.mutable_resource_metrics() = resource_metrics;
   return bridge()->SendMessageToBridge(EDGE_CP_TOPIC_METRICS, metrics);
 }
 

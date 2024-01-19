@@ -73,7 +73,6 @@ class Runner {
  private:
   ::gml::internal::api::core::v1::ExecutionSpec spec_;
   mediapipe::CalculatorGraph graph_;
-  std::vector<std::unique_ptr<ExecutionContext>> exec_ctxs_;
   std::map<std::string, mediapipe::Packet> side_packets_;
   bool initialized_ = false;
   bool started_ = false;
