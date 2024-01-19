@@ -31,6 +31,8 @@ gem_plugin_cc_library(
         "image_frame_to_cpu_tensor_calculator.h",
         "image_shape_cpu_tensor_calculator.cc",
         "image_shape_cpu_tensor_calculator.h",
+        "scores_to_label_calculator.cc",
+        "scores_to_label_calculator.h",
         "standardize_tensor_calculator.cc",
         "standardize_tensor_calculator.h",
     ],

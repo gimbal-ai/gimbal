@@ -56,7 +56,7 @@ absl::Status DetectionsToMediapipeCalculator::GetContract(mediapipe::CalculatorC
     cc->Outputs().Tag(kDetectionVectorTag).Set<std::vector<mediapipe::Detection>>();
   } else if (cc->Inputs().HasTag(kSingleDetectionTag)) {
     cc->Inputs().Tag(kSingleDetectionTag).Set<Detection>();
-    cc->Outputs().Tag(kSingleDetectionTag).Set<Detection>();
+    cc->Outputs().Tag(kSingleDetectionTag).Set<mediapipe::Detection>();
   } else {
     return {absl::StatusCode::kInvalidArgument, "Must specify DETECTIONS or DETECTION tag"};
   }
