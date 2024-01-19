@@ -30,7 +30,6 @@ def _sysroot_variant_tar_factory(variant):
         return _tar_from_sysroot_info(ctx, sysroot_toolchain.sysroot)
 
     return rule(
-        name = "sysroot_{variant}_tar".format(variant = variant),
         attrs = dict(
             _empty_tar = attr.label(
                 default = "//bazel/cc_toolchains/sysroots:empty_tar",
