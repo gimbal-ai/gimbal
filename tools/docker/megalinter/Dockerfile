@@ -13,7 +13,7 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-FROM docker.io/oxsecurity/megalinter-cupcake:v7@sha256:8e8a323d779a51ebbb0e73871b5e4367095be883b46b8348dbea965b8ae17d51
+FROM docker.io/oxsecurity/megalinter-cupcake:v7@sha256:1b52d3cafa9151c93dc5289fdca58b68d016bc4e9cf43a47c046d25b0ae069a6
 
 COPY .tflint.hcl $HOME/.tflint.hcl
 
@@ -24,5 +24,4 @@ RUN apk add clang-extra-tools g++ && \
     go clean -cache && \
     npm install -g squawk-cli@0.24.0 && \
     npm cache clean --force && \
-    pip install pytype && \
     tflint --init

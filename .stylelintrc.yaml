@@ -11,5 +11,4 @@ rules:
     - responsive
     - screen
   custom-property-empty-line-before: null
-  declaration-block-trailing-semicolon: null
   no-descending-specificity: null

@@ -1,9 +1,0 @@
----
-descriptor_id: PYTHON
-descriptor_type: language
-file_extensions:
-- ".py"
-linters:
-- linter_name: pytype
-  linter_url: https://github.com/google/pytype
-  cli_lint_mode: 'list_of_files'
