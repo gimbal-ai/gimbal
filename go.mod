@@ -1,13 +1,13 @@
 module gimletlabs.ai/gimlet
 
-go 1.21
+go 1.21.3
 
 require (
 	cloud.google.com/go/storage v1.35.1
 	github.com/PuerkitoBio/goquery v1.8.1
 	github.com/bazelbuild/bazel-gazelle v0.34.0
 	github.com/bazelbuild/buildtools v0.0.0-20231017121127-23aa65d4e117
-	github.com/bazelbuild/rules_go v0.43.0
+	github.com/bazelbuild/rules_go v0.45.1
 	github.com/blang/semver/v4 v4.0.0
 	github.com/bmatcuk/doublestar v1.3.4
 	github.com/cenkalti/backoff/v4 v4.2.1
