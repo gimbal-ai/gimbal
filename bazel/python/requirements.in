@@ -1,2 +1,9 @@
+# Projectwide requirements for commonn tooling
 black==23.12.1
 pytest==7.4.2
+
+# src/experimental/research/
+Pillow==10.2.0
+pycocotools==2.0.7
+torch==2.1.2
+torchvision==0.16.2

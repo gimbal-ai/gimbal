@@ -16,15 +16,15 @@
 load("@rules_python//python:pip.bzl", "compile_pip_requirements")
 load("//bazel:gml_build_system.bzl", "no_sysroot")
 
+exports_files(["requirements_lock.txt"])
+
 compile_pip_requirements(
     name = "requirements",
-    extra_args = ["--allow-unsafe"],
+    extra_args = [
+        "--extra-index-url https://download.pytorch.org/whl/cpu",
+        "--allow-unsafe",
+    ],
     requirements_in = "requirements.in",
     requirements_txt = "requirements_lock.txt",
     target_compatible_with = no_sysroot(),
 )
-
-exports_files([
-    "requirements.in",
-    "requirements_lock.txt",
-])

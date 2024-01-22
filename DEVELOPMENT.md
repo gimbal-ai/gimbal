@@ -16,6 +16,7 @@
   - [Building the UI locally](#building-the-ui-locally)
     - [Accessing the development postgres DB](#accessing-the-development-postgres-db)
   - [Python Development](#python-development)
+    - [Python gazelle](#python-gazelle)
 
 <!-- /TOC -->
 ## Running the Control Plane
@@ -155,5 +156,23 @@ These instructions use `pyenv` and `pyenv-virtualenv` to create the virtualenv, 
 1. Install the gml requirements:
 
     ```bash
-    pip install -r bazel/python/requirements_lock.txt
+    pip install -r bazel/python/requirements.in
+    ```
+
+### Python gazelle
+
+When adding a new python dependency, we need multiple steps before gazelle can be run.
+
+1. Add the dependency to `bazel/python/requirements.in`.
+
+1. Run the `compile_pip_requirements` target to generate the `requirements_lock.txt` file.
+
+    ```bash
+    bazel run //bazel/python:requirements.update
+    ```
+
+1. Finally run the `gazelle` target to generate the `gazelle_python.yaml` file and the rest of the `BUILD.bazel` file.
+
+    ```bash
+    make gazelle
     ```
