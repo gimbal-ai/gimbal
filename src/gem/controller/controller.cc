@@ -99,7 +99,7 @@ Status Controller::Register() {
 
   info_.id = ParseUUID(resp.device_id());
   LOG(INFO) << "Device ID: " << info_.id;
-  LOG(INFO) << "Starting GRPC Bridge";
+  LOG(INFO) << "Starting GRPC Bridge to: " << cp_addr_;
 
   bridge_ = std::make_unique<GRPCBridge>(cp_chan_, deploy_key_, info_.id);
   GML_RETURN_IF_ERROR(bridge_->Init());
