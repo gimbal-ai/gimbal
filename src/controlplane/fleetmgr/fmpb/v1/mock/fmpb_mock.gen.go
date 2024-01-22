@@ -366,6 +366,26 @@ func (m *MockFleetMgrEdgeServiceClient) EXPECT() *MockFleetMgrEdgeServiceClientM
 	return m.recorder
 }
 
+// DeleteDevices mocks base method.
+func (m *MockFleetMgrEdgeServiceClient) DeleteDevices(ctx context.Context, in *fmpb.DeleteDevicesRequest, opts ...grpc.CallOption) (*fmpb.DeleteDevicesResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteDevices", varargs...)
+	ret0, _ := ret[0].(*fmpb.DeleteDevicesResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteDevices indicates an expected call of DeleteDevices.
+func (mr *MockFleetMgrEdgeServiceClientMockRecorder) DeleteDevices(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDevices", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).DeleteDevices), varargs...)
+}
+
 // DeleteTag mocks base method.
 func (m *MockFleetMgrEdgeServiceClient) DeleteTag(ctx context.Context, in *fmpb.DeleteTagRequest, opts ...grpc.CallOption) (*fmpb.DeleteTagResponse, error) {
 	m.ctrl.T.Helper()
@@ -567,6 +587,21 @@ func NewMockFleetMgrEdgeServiceServer(ctrl *gomock.Controller) *MockFleetMgrEdge
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockFleetMgrEdgeServiceServer) EXPECT() *MockFleetMgrEdgeServiceServerMockRecorder {
 	return m.recorder
+}
+
+// DeleteDevices mocks base method.
+func (m *MockFleetMgrEdgeServiceServer) DeleteDevices(arg0 context.Context, arg1 *fmpb.DeleteDevicesRequest) (*fmpb.DeleteDevicesResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteDevices", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.DeleteDevicesResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteDevices indicates an expected call of DeleteDevices.
+func (mr *MockFleetMgrEdgeServiceServerMockRecorder) DeleteDevices(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDevices", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).DeleteDevices), arg0, arg1)
 }
 
 // DeleteTag mocks base method.

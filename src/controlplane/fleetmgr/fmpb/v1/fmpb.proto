@@ -226,6 +226,13 @@ message UpdateDeviceResponse {
   DeviceInfo device = 1;
 }
 
+message DeleteDevicesRequest {
+  // List of IDs associated with devices to delete.
+  repeated gml.types.UUID ids = 1 [ (gogoproto.customname) = "IDs" ];
+}
+
+message DeleteDevicesResponse {}
+
 message SetDeviceCapabilitiesRequest {
   // The deviceID of the device.
   gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
@@ -298,6 +305,8 @@ service FleetMgrEdgeService {
   rpc ListDevices(ListDevicesRequest) returns (ListDevicesResponse);
   // UpdateDevice updates information about a device, such as its tags.
   rpc UpdateDevice(UpdateDeviceRequest) returns (UpdateDeviceResponse);
+  // DeleteDevices deletes one or more devices from a fleet.
+  rpc DeleteDevices(DeleteDevicesRequest) returns (DeleteDevicesResponse);
   // SetDeviceCapabilities sets the capabilities of a device.
   rpc SetDeviceCapabilities(SetDeviceCapabilitiesRequest) returns (SetDeviceCapabilitiesResponse);
   // GetTags gets the tags for a device.
