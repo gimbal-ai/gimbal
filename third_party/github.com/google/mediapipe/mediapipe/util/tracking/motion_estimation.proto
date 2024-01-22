@@ -594,7 +594,7 @@ message MotionEstimationOptions {
 
   // Shot boundaries are introduced in 3 different scenarios:
   // a) Frame has zero tracked features w.r.t. previous frame
-  // b) Estimated motion is deemed invalid (CameraMotion::CAMERA_MOTION_CAMERA_MOTION_TYPE_INVALID).
+  // b) Estimated motion is deemed invalid (CameraMotion::CAMERA_MOTION_TYPE_INVALID).
   // c) Visual consistency is above threshold of two adjacent frames.
   message ShotBoundaryOptions {
     // After cases a & b are determined from features/camera motion, they

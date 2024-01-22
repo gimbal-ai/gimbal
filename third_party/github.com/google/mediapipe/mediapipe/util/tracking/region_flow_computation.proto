@@ -66,15 +66,15 @@ message TrackingOptions {
   // TRACK_ACROSS_FRAMES. Maximum track length can be specified by
   // long_tracks_max_frames.
   enum TrackingPolicy {
-    POLICY_UNKNOWN = 0;
-    POLICY_SINGLE_FRAME = 1;  // Tracks w.r.t. previous or next frame.
-    POLICY_MULTI_FRAME = 2;   // Tracks w.r.t. multiple frames.
-    POLICY_LONG_TRACKS = 3;   // Create long feature tracks.
-                              // Requires internal_tracking_direction to be
-                              // FORWARD. Checked against.
+    TRACKING_POLICY_UNKNOWN = 0;
+    TRACKING_POLICY_SINGLE_FRAME = 1;  // Tracks w.r.t. previous or next frame.
+    TRACKING_POLICY_MULTI_FRAME = 2;   // Tracks w.r.t. multiple frames.
+    TRACKING_POLICY_LONG_TRACKS = 3;   // Create long feature tracks.
+                                       // Requires internal_tracking_direction to be
+                                       // FORWARD. Checked against.
   }
 
-  optional TrackingPolicy tracking_policy = 25 [default = POLICY_SINGLE_FRAME];
+  optional TrackingPolicy tracking_policy = 25 [default = TRACKING_POLICY_SINGLE_FRAME];
 
   // Number of frame-pairs used for POLICY_MULTI_FRAME, ignored for other
   // policies.
@@ -98,15 +98,15 @@ message TrackingOptions {
 
   // Specifies the extraction method for features.
   enum CornerExtractionMethod {
-    EXTRACTION_UNKNOWN = 0;
-    EXTRACTION_HARRIS = 1;       // Using Harris' approximation of
-                                 // EXTRACTION_MIN_EIG_VAL.
-    EXTRACTION_MIN_EIG_VAL = 2;  // Exact smallest eigenvalue computation.
-    EXTRACTION_FAST = 3;         // Extract using FAST feature detector.
+    CORNER_EXTRACTION_METHOD_UNKNOWN = 0;
+    CORNER_EXTRACTION_METHOD_HARRIS = 1;       // Using Harris' approximation of
+                                               // EXTRACTION_MIN_EIG_VAL.
+    CORNER_EXTRACTION_METHOD_MIN_EIG_VAL = 2;  // Exact smallest eigenvalue computation.
+    CORNER_EXTRACTION_METHOD_FAST = 3;         // Extract using FAST feature detector.
   }
 
   optional CornerExtractionMethod corner_extraction_method = 27
-      [default = EXTRACTION_MIN_EIG_VAL];
+      [default = CORNER_EXTRACTION_METHOD_MIN_EIG_VAL];
 
   // Settings for above corner extraction methods.
   message MinEigValExtractionSettings {
@@ -232,7 +232,7 @@ message TrackingOptions {
   optional float reuse_features_min_survived_frac = 18 [default = 0.7];
 
   enum KltTrackerImplementation {
-    UNSPECIFIED = 0;
+    KLT_UNSPECIFIED = 0;
     KLT_OPENCV = 1;  // Use OpenCV's implementation of KLT tracker.
   }
 
@@ -310,20 +310,20 @@ message RegionFlowComputationOptions {
   // Determines how irls weights for computed features are initialized.
   // In general, more stable features are given higher weight.
   enum IrlsInitialization {
-    INIT_UNKNOWN = 0;
-    INIT_UNIFORM = 1;  // All weights equal 1
+    IRIS_INIT_UNKNOWN = 0;
+    IRIS_INIT_UNIFORM = 1;  // All weights equal 1
 
     // Feature's irls weight is initialized to a value in [0, 2]
     // indicating how consistent the feature's motion is w.r.t. neighboring
     // features (high values = very consistent). Determined by counting how
     // often a feature is part of the inlier set for a particular bin.
-    INIT_CONSISTENCY = 2;
+    IRIS_INIT_CONSISTENCY = 2;
   }
 
   // If this option is activated, feature's irls weight is initialized to the
   // inverse of its computed flow.
   optional IrlsInitialization irls_initialization = 49
-      [default = INIT_CONSISTENCY];
+      [default = IRIS_INIT_CONSISTENCY];
 
   // We support down-sampling of an incoming frame before running the
   // resolution dependent part of the region flow computation (feature
@@ -333,27 +333,27 @@ message RegionFlowComputationOptions {
   // the nearest even dimension, i.e. 350p with a downsample_factor of 2.0
   // would expect an input of size 176p.
   enum DownsampleMode {
-    REGION_FLOW_DOWNSAMPLE_UNKNOWN = 0;
+    DOWNSAMPLE_MODE_UNKNOWN = 0;
     // No downsampling.
-    REGION_FLOW_DOWNSAMPLE_NONE = 1;
+    DOWNSAMPLE_MODE_NONE = 1;
     // Downsizes the input frame such that frame_size == downsampling_size,
     // where frame_size := max(width, height).
-    REGION_FLOW_DOWNSAMPLE_TO_MAX_SIZE = 2;
+    DOWNSAMPLE_MODE_TO_MAX_SIZE = 2;
     // Downsizes frame by pre-defined factor, downsample_factor below.
-    REGION_FLOW_DOWNSAMPLE_BY_FACTOR = 3;
+    DOWNSAMPLE_MODE_BY_FACTOR = 3;
     // Downsampling based on downsampling schedule, see DownsampleSchedule below
     // for details.
-    REGION_FLOW_DOWNSAMPLE_BY_SCHEDULE = 4;
+    DOWNSAMPLE_MODE_BY_SCHEDULE = 4;
     // Downsizes the input frame such that frame_size == downsampling_size,
     // where frame_size := min(width, height).
-    REGION_FLOW_DOWNSAMPLE_TO_MIN_SIZE = 5;
+    DOWNSAMPLE_MODE_TO_MIN_SIZE = 5;
     // Input frame is assumed to be already downsampled by the factor specified
     // by downsample_factor below. For example if the original frame is 720p,
     // and downsample_factor is set to 2.0, then we expect as input 360p.
-    REGION_FLOW_DOWNSAMPLE_TO_INPUT_SIZE = 6;
+    DOWNSAMPLE_MODE_TO_INPUT_SIZE = 6;
   }
 
-  optional DownsampleMode downsample_mode = 11 [default = REGION_FLOW_DOWNSAMPLE_NONE];
+  optional DownsampleMode downsample_mode = 11 [default = DOWNSAMPLE_MODE_NONE];
 
   // Specify the size of either dimension here, the frame will be
   // downsampled to fit downsampling_size.
@@ -527,19 +527,19 @@ message RegionFlowComputationOptions {
   optional float frac_gain_step = 38 [default = 0.1];
 
   enum GainCorrectMode {
-    GAIN_CORRECT_DEFAULT_USER = 1;  // Uses default or user supplied bounds,
-                                    // i.e. gain_bias_bounds is left untouched.
-    GAIN_CORRECT_VIDEO = 2;         // Uses defaults for video (most strict).
-    GAIN_CORRECT_HDR = 3;           // Uses most relaxed settings to track
-                                    // across HDR frames, taken at different
-                                    // exposures.
-    GAIN_CORRECT_PHOTO_BURST = 4;   // More relaxed than video but stricter
-                                    // than HDR; use for photo burst where
-                                    // exposure between frames can change.
+    GAIN_CORRECT_MODE_DEFAULT_USER = 1;  // Uses default or user supplied bounds,
+                                         // i.e. gain_bias_bounds is left untouched.
+    GAIN_CORRECT_MODE_VIDEO = 2;         // Uses defaults for video (most strict).
+    GAIN_CORRECT_MODE_HDR = 3;           // Uses most relaxed settings to track
+                                         // across HDR frames, taken at different
+                                         // exposures.
+    GAIN_CORRECT_MODE_PHOTO_BURST = 4;   // More relaxed than video but stricter
+                                         // than HDR; use for photo burst where
+                                         // exposure between frames can change.
   }
 
   optional GainCorrectMode gain_correct_mode = 41
-      [default = GAIN_CORRECT_DEFAULT_USER];
+      [default = GAIN_CORRECT_MODE_DEFAULT_USER];
 
   // Bounds for the estimated model. If not set externally, will be set
   // based on GainCorrectMode.
@@ -550,25 +550,25 @@ message RegionFlowComputationOptions {
   // IMPORTANT: All the Retrieve* methods expect RGB when the descriptors
   // are computed.
   enum ImageFormat {
-    FORMAT_UNKNOWN = 0;
-    FORMAT_GRAYSCALE = 1;
-    FORMAT_RGB = 2;
-    FORMAT_RGBA = 3;
-    FORMAT_BGR = 4;
-    FORMAT_BGRA = 5;
+    IMAGE_FORMAT_UNKNOWN = 0;
+    IMAGE_FORMAT_GRAYSCALE = 1;
+    IMAGE_FORMAT_RGB = 2;
+    IMAGE_FORMAT_RGBA = 3;
+    IMAGE_FORMAT_BGR = 4;
+    IMAGE_FORMAT_BGRA = 5;
   }
 
   // Image format of the input.
-  optional ImageFormat image_format = 58 [default = FORMAT_RGB];
+  optional ImageFormat image_format = 58 [default = IMAGE_FORMAT_RGB];
 
   enum DescriptorExtractorType {
-    ORB =
+    DESCRIPTOR_EXTRACTOR_ORB =
         0;  // http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.370.4395&rep=rep1&type=pdf
   }
 
   // The descriptor extractor type used.
   optional DescriptorExtractorType descriptor_extractor_type = 65
-      [default = ORB];
+      [default = DESCRIPTOR_EXTRACTOR_ORB];
 
   // Whether to compute derivatives when building the pyramid. When set to
   // true, it's building a Laplacian pyramid. When set to false, it's building
