@@ -18,6 +18,7 @@
 #include "src/gem/exec/core/runner/runner.h"
 
 #include "src/common/base/base.h"
+#include "src/gem/exec/core/runner/utils/mp_to_otel_metrics.h"
 
 namespace gml::gem::exec::core {
 
@@ -57,9 +58,14 @@ Status Runner::Wait() {
   return Status::OK();
 }
 
-Status Runner::GetCalculatorProfiles(std::vector<mediapipe::CalculatorProfile>* profiles) {
+Status Runner::CollectMediaPipeMetrics(
+    opentelemetry::proto::metrics::v1::ResourceMetrics* metrics) {
+  std::vector<mediapipe::CalculatorProfile> profiles;
   GML_RETURN_IF_ERROR(
-      StatusAdapter<absl::Status>(graph_.profiler()->GetCalculatorProfiles(profiles)));
+      StatusAdapter<absl::Status>(graph_.profiler()->GetCalculatorProfiles(&profiles)));
+  GML_RETURN_IF_ERROR(
+      utils::CalculatorProfileVecToOTelProto(profiles, start_time_unix_nanos_, metrics));
+
   return Status::OK();
 }
 

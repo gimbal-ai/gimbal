@@ -32,6 +32,10 @@ Scrapeable::Scrapeable(MetricsSystem* metrics_system) : metrics_system_(metrics_
 
 Scrapeable::~Scrapeable() { GML_CHECK_OK(metrics_system_->UnRegisterScraper(this)); }
 
+AuxMetricsProvider::~AuxMetricsProvider() {
+  MetricsSystem::GetInstance().UnRegisterAuxMetricsProvider(this);
+}
+
 /**
  * A basic metric reader. In our pull-based model, we really want access to the Collect() call,
  * which is defined in the base class. But we must still define a MetricReader to initialize Otel.
@@ -118,4 +122,19 @@ Status MetricsSystem::UnRegisterScraper(Scrapeable* s) {
   }
   return Status::OK();
 }
+
+Status MetricsSystem::RegisterAuxMetricsProvider(AuxMetricsProvider* p) {
+  absl::base_internal::SpinLockHolder lock(&aux_metrics_providers_lock_);
+  auto [_, inserted] = aux_metrics_providers_.emplace(p);
+  if (!inserted) {
+    return error::AlreadyExists("auxiliary stats provider has already been registered.");
+  }
+  return Status::OK();
+}
+
+void MetricsSystem::UnRegisterAuxMetricsProvider(AuxMetricsProvider* p) {
+  absl::base_internal::SpinLockHolder lock(&aux_metrics_providers_lock_);
+  aux_metrics_providers_.erase(p);
+}
+
 }  // namespace gml::metrics

@@ -28,6 +28,8 @@ gml_cc_library(
     ],
     deps = [
         "//src/api/corepb/v1:corepb_cc_library",
+        "//src/common/metrics:cc_library",
+        "//src/gem/exec/core/runner/utils:cc_library",
         "//src/gem/plugins:cc_library",
         "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
     ],

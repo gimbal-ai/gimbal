@@ -23,6 +23,7 @@
 
 #include "src/api/corepb/v1/model_exec.pb.h"
 #include "src/common/base/base.h"
+#include "src/common/metrics/metrics_system.h"
 #include "src/gem/exec/core/model.h"
 #include "src/gem/plugins/registry.h"
 
@@ -31,9 +32,15 @@ namespace gml::gem::exec::core {
 /**
  * Runner executes an ExecutionSpec until stopped.
  */
-class Runner {
+class Runner : public metrics::AuxMetricsProvider {
  public:
-  explicit Runner(::gml::internal::api::core::v1::ExecutionSpec spec) : spec_(std::move(spec)) {}
+  explicit Runner(::gml::internal::api::core::v1::ExecutionSpec spec) : spec_(std::move(spec)) {
+    // Record the start time. This is used for metrics.
+    auto now = std::chrono::system_clock::now();
+    auto time_since_epoch = now.time_since_epoch();
+    start_time_unix_nanos_ =
+        std::chrono::duration_cast<std::chrono::nanoseconds>(time_since_epoch).count();
+  }
 
   Status Init(const std::map<std::string, mediapipe::Packet>& extra_side_packets);
   Status Start();
@@ -43,9 +50,14 @@ class Runner {
   bool HasError() { return graph_.HasError(); }
 
   /**
-   * Returns performance information about the running graph.
+   * Returns performance information about the running graph. Adds results to the metrics proto.
    */
-  Status GetCalculatorProfiles(std::vector<mediapipe::CalculatorProfile>* profiles);
+  Status CollectMediaPipeMetrics(opentelemetry::proto::metrics::v1::ResourceMetrics* metrics);
+
+  Status CollectMetrics(opentelemetry::proto::metrics::v1::ResourceMetrics* metrics) override {
+    GML_RETURN_IF_ERROR(CollectMediaPipeMetrics(metrics));
+    return Status::OK();
+  }
 
   template <typename TPacket>
   Status AddOutputStreamCallback(
@@ -76,6 +88,7 @@ class Runner {
   std::map<std::string, mediapipe::Packet> side_packets_;
   bool initialized_ = false;
   bool started_ = false;
+  int64_t start_time_unix_nanos_ = 0;
 };
 
 }  // namespace gml::gem::exec::core

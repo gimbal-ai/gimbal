@@ -38,10 +38,20 @@ namespace gml::gem::controller {
 Status MetricsHandler::CollectAndPushMetrics() {
   GML_UNUSED(ctrl_exec_ctx_);
   auto& metrics_system = gml::metrics::MetricsSystem::GetInstance();
+
+  // Trigger update of stats that require polling.
   for (auto& s : metrics_system.scrapeables()) {
     s->Scrape();
   }
+
+  // Collect all OTel metrics.
   auto resource_metrics = metrics_system.CollectAllAsProto();
+
+  // We have auxiliary stats providers, like MediaPipe, so collect those stats as well.
+  for (auto& s : metrics_system.aux_metrics_providers()) {
+    GML_RETURN_IF_ERROR(s->CollectMetrics(&resource_metrics));
+  }
+
   EdgeOTelMetrics metrics;
   *metrics.mutable_resource_metrics() = resource_metrics;
   return bridge()->SendMessageToBridge(EDGE_CP_TOPIC_METRICS, metrics);

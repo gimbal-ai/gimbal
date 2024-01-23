@@ -111,7 +111,7 @@ Status CalculatorProfileVecToOTelProto(
   // We need a timestamp for the metrics, so calculate the duration since the epoch now.
   // TODO(oazizi): It would be more correct if we timestamped the profiles data when it was
   //               collected, and use that timestamp.
-  auto now = std::chrono::steady_clock::now();
+  auto now = std::chrono::system_clock::now();
   auto time_unix = now.time_since_epoch();
   auto time_unix_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(time_unix).count();
 

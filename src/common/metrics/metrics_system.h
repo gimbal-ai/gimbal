@@ -50,6 +50,16 @@ class Scrapeable {
   MetricsSystem* metrics_system_;
 };
 
+class AuxMetricsProvider {
+ public:
+  virtual ~AuxMetricsProvider();
+
+  /**
+   * Needs to be defined by implementer. Must populate stats.
+   */
+  virtual Status CollectMetrics(opentelemetry::proto::metrics::v1::ResourceMetrics* metrics) = 0;
+};
+
 /**
  * MetricsSystem is a wrapper around OTel metrics. It is structured such that it is
  * system-wide, with a single instance for the whole system.
@@ -97,6 +107,12 @@ class MetricsSystem {
   const absl::flat_hash_set<Scrapeable*>& scrapeables() const { return scrapeables_; };
 
   Status UnRegisterScraper(Scrapeable* s);
+
+  Status RegisterAuxMetricsProvider(AuxMetricsProvider* p);
+  void UnRegisterAuxMetricsProvider(AuxMetricsProvider* p);
+  const absl::flat_hash_set<AuxMetricsProvider*>& aux_metrics_providers() const {
+    return aux_metrics_providers_;
+  }
 
   /**
    * Returns a histogram with the given custom bounds.
@@ -149,6 +165,10 @@ class MetricsSystem {
 
   absl::base_internal::SpinLock scrapeables_lock_;
   absl::flat_hash_set<Scrapeable*> scrapeables_ ABSL_GUARDED_BY(scrapeables_lock_);
+
+  absl::base_internal::SpinLock aux_metrics_providers_lock_;
+  absl::flat_hash_set<AuxMetricsProvider*> aux_metrics_providers_
+      ABSL_GUARDED_BY(aux_metrics_providers_lock_);
 
   // MeterProvider::AddMetricReader and MeterProvider::AddView are not thread safe, so we need to
   // lock for those method calls.

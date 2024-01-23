@@ -137,17 +137,14 @@ TEST(Runner, CollectStats) {
   ASSERT_OK(runner.Start());
   ASSERT_OK(runner.Wait());
 
-  std::vector<mediapipe::CalculatorProfile> profiles;
-  EXPECT_OK(runner.GetCalculatorProfiles(&profiles));
+  opentelemetry::proto::metrics::v1::ResourceMetrics metrics;
+  EXPECT_OK(runner.CollectMediaPipeMetrics(&metrics));
 
-  EXPECT_THAT(profiles, ::testing::UnorderedElementsAre(
-                            CalculatorProfileNameIs("CountingSourceCalculator"),
-                            CalculatorProfileNameIs("OutputTextSidePacketCalculator")));
+  constexpr int kNumCalculators = 2;
+  constexpr int kNumMetricsPerCalc = 5;
 
-  // Now check some additional values on calculator[0] (doesn't really matter which one it is).
-  EXPECT_EQ(profiles[0].process_runtime().interval_size_usec(), kHistIntervalSizeUSec);
-  EXPECT_EQ(profiles[0].process_runtime().num_intervals(), kNumHistIntervals);
-  EXPECT_EQ(profiles[0].process_runtime().count_size(), kNumHistIntervals);
+  EXPECT_EQ(metrics.scope_metrics_size(), 1);
+  EXPECT_EQ(metrics.scope_metrics(0).metrics().size(), kNumCalculators * kNumMetricsPerCalc);
 }
 
 TEST(Runner, Subgraph) {
