@@ -30,6 +30,10 @@
 #include "src/gem/controller/grpc_bridge.h"
 #include "src/gem/exec/core/control_context.h"
 
+DEFINE_int64(metrics_chunk_size_bytes,
+             gflags::Int64FromEnv("GML_METRICS_CHUNK_SIZE", 1024UL * 512UL),
+             "The chunk size for the metrics we send out, in bytes.");
+
 using gml::internal::api::core::v1::EDGE_CP_TOPIC_METRICS;
 using ::gml::internal::api::core::v1::EdgeOTelMetrics;
 
@@ -52,9 +56,15 @@ Status MetricsHandler::CollectAndPushMetrics() {
     GML_RETURN_IF_ERROR(s->CollectMetrics(&resource_metrics));
   }
 
-  EdgeOTelMetrics metrics;
-  *metrics.mutable_resource_metrics() = resource_metrics;
-  return bridge()->SendMessageToBridge(EDGE_CP_TOPIC_METRICS, metrics);
+  auto chunked_metrics =
+      metrics_system.ChunkMetrics(&resource_metrics, FLAGS_metrics_chunk_size_bytes);
+  for (const auto& metric : chunked_metrics) {
+    EdgeOTelMetrics metrics;
+    *metrics.mutable_resource_metrics() = metric;
+    GML_RETURN_IF_ERROR(bridge()->SendMessageToBridge(EDGE_CP_TOPIC_METRICS, metrics));
+  }
+
+  return Status::OK();
 }
 
 Status MetricsHandler::Init() {

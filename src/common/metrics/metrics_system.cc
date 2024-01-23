@@ -89,6 +89,38 @@ MetricsSystem::GetMeterProvider() {
   return p;
 }
 
+std::vector<opentelemetry::proto::metrics::v1::ResourceMetrics> MetricsSystem::ChunkMetrics(
+    opentelemetry::proto::metrics::v1::ResourceMetrics* metrics, uint64_t chunk_size) {
+  std::vector<opentelemetry::proto::metrics::v1::ResourceMetrics> chunks;
+  for (const auto& scope_metric : metrics->scope_metrics()) {
+    opentelemetry::proto::metrics::v1::ResourceMetrics chunk;
+
+    // Create new scope metric, copying over resource/scope info.
+    *chunk.mutable_resource() = metrics->resource();
+    auto scope_metric_chunk = chunk.add_scope_metrics();
+    *scope_metric_chunk->mutable_scope() = scope_metric.scope();
+
+    for (const auto& metric : scope_metric.metrics()) {
+      if (chunk.ByteSizeLong() + metric.ByteSizeLong() > chunk_size) {
+        chunks.push_back(chunk);
+
+        // Create new scope metric, now that we're starting a new chunk.
+        chunk.Clear();
+        *chunk.mutable_resource() = metrics->resource();
+        scope_metric_chunk = chunk.add_scope_metrics();
+        *scope_metric_chunk->mutable_scope() = scope_metric.scope();
+      }
+      *scope_metric_chunk->add_metrics() = metric;
+    }
+
+    if (chunk.scope_metrics(0).metrics_size() > 0) {
+      chunks.push_back(chunk);
+    }
+  }
+
+  return chunks;
+}
+
 opentelemetry::proto::metrics::v1::ResourceMetrics MetricsSystem::CollectAllAsProto() {
   opentelemetry::proto::metrics::v1::ResourceMetrics metrics;
 

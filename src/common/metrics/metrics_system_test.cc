@@ -52,6 +52,62 @@ TEST(MetricsTest, CollectAllAsProto) {
                                                      "int64_gauge", "double_gauge"));
 }
 
+TEST(MetricsTest, ChunkMetrics) {
+  ::gml::metrics::MetricsSystem& metrics_sys = ::gml::metrics::MetricsSystem::GetInstance();
+  metrics_sys.Reset();
+
+  auto provider = metrics_sys.GetMeterProvider();
+  auto meter = provider->GetMeter("gml-meter", "1.0.0");
+  auto uint64_counter = meter->CreateUInt64Counter("uint64_counter");
+  auto double_counter = meter->CreateDoubleCounter("double_counter");
+  auto int64_gauge = meter->CreateInt64Gauge("int64_gauge");
+  auto double_gauge = meter->CreateDoubleGauge("double_gauge");
+
+  uint64_counter->Add(1);
+  double_counter->Add(11.1);
+  int64_gauge->Record(2);
+  double_gauge->Record(22.2);
+
+  auto meter2 = provider->GetMeter("gml-meter2", "1.0.0");
+  auto uint64_counter2 = meter2->CreateUInt64Counter("uint64_counter2");
+  auto double_counter2 = meter2->CreateDoubleCounter("double_counter2");
+  auto int64_gauge2 = meter2->CreateInt64Gauge("int64_gauge2");
+  auto double_gauge2 = meter2->CreateDoubleGauge("double_gauge2");
+  auto double_gauge3 = meter2->CreateDoubleGauge("double_gauge3");
+
+  uint64_counter2->Add(1);
+  double_counter2->Add(11.1);
+  int64_gauge2->Record(2);
+  double_gauge2->Record(22.2);
+  double_gauge3->Record(33.3);
+
+  ResourceMetrics resource_metrics = metrics_sys.CollectAllAsProto();
+
+  auto proto_resource_metrics = metrics_sys.ChunkMetrics(&resource_metrics, 300);
+
+  ASSERT_EQ(proto_resource_metrics.size(), 5);
+
+  std::vector<std::string> names;
+  int64_t num_metrics = 0;
+  int64_t num_scope_metrics = 0;
+  for (const auto& resource_metrics : proto_resource_metrics) {
+    for (const auto& scope_metric : resource_metrics.scope_metrics()) {
+      for (const auto& metric : scope_metric.metrics()) {
+        names.push_back(metric.name());
+        num_metrics++;
+      }
+    }
+    num_scope_metrics++;
+  }
+
+  ASSERT_EQ(num_scope_metrics, 5);
+  ASSERT_EQ(num_metrics, 9);
+  ASSERT_THAT(names,
+              ::testing::UnorderedElementsAre("uint64_counter", "double_counter", "int64_gauge",
+                                              "double_gauge", "uint64_counter2", "double_counter2",
+                                              "int64_gauge2", "double_gauge2", "double_gauge3"));
+}
+
 TEST(MetricsTest, Reader) {
   ::gml::metrics::MetricsSystem& metrics_sys = ::gml::metrics::MetricsSystem::GetInstance();
   metrics_sys.Reset();

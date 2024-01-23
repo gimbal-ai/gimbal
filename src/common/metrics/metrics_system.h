@@ -97,6 +97,9 @@ class MetricsSystem {
    */
   opentelemetry::proto::metrics::v1::ResourceMetrics CollectAllAsProto();
 
+  std::vector<opentelemetry::proto::metrics::v1::ResourceMetrics> ChunkMetrics(
+      opentelemetry::proto::metrics::v1::ResourceMetrics* metrics, uint64_t chunk_size);
+
   /**
    * Returns the reader for custom access to the Collect() call.
    */
