@@ -544,6 +544,40 @@ manifest:
     functorch.experimental: torch
     functorch.experimental.control_flow: torch
     functorch.experimental.ops: torch
+    groundingdino: groundingdino_gml
+    groundingdino.config: groundingdino_gml
+    groundingdino.config.GroundingDINO_SwinB_cfg: groundingdino_gml
+    groundingdino.config.GroundingDINO_SwinT_OGC: groundingdino_gml
+    groundingdino.datasets: groundingdino_gml
+    groundingdino.datasets.cocogrounding_eval: groundingdino_gml
+    groundingdino.datasets.transforms: groundingdino_gml
+    groundingdino.models: groundingdino_gml
+    groundingdino.models.GroundingDINO: groundingdino_gml
+    groundingdino.models.GroundingDINO.backbone: groundingdino_gml
+    groundingdino.models.GroundingDINO.backbone.backbone: groundingdino_gml
+    groundingdino.models.GroundingDINO.backbone.position_encoding: groundingdino_gml
+    groundingdino.models.GroundingDINO.backbone.swin_transformer: groundingdino_gml
+    groundingdino.models.GroundingDINO.bertwarper: groundingdino_gml
+    groundingdino.models.GroundingDINO.fuse_modules: groundingdino_gml
+    groundingdino.models.GroundingDINO.groundingdino: groundingdino_gml
+    groundingdino.models.GroundingDINO.ms_deform_attn: groundingdino_gml
+    groundingdino.models.GroundingDINO.transformer: groundingdino_gml
+    groundingdino.models.GroundingDINO.transformer_vanilla: groundingdino_gml
+    groundingdino.models.GroundingDINO.utils: groundingdino_gml
+    groundingdino.models.registry: groundingdino_gml
+    groundingdino.util: groundingdino_gml
+    groundingdino.util.box_ops: groundingdino_gml
+    groundingdino.util.get_tokenlizer: groundingdino_gml
+    groundingdino.util.inference: groundingdino_gml
+    groundingdino.util.logger: groundingdino_gml
+    groundingdino.util.misc: groundingdino_gml
+    groundingdino.util.slconfig: groundingdino_gml
+    groundingdino.util.slio: groundingdino_gml
+    groundingdino.util.time_counter: groundingdino_gml
+    groundingdino.util.utils: groundingdino_gml
+    groundingdino.util.visualizer: groundingdino_gml
+    groundingdino.util.vl_utils: groundingdino_gml
+    groundingdino.version: groundingdino_gml
     idna: idna
     idna.codec: idna
     idna.compat: idna
@@ -4942,4 +4976,4 @@ manifest:
   pip_repository:
     name: pip
     use_pip_repository_aliases: true
-integrity: 1aac3b57e4ac3ed007b41596e12b53fa6095e32fbf4e6814f214392c0b8cc9f1
+integrity: e30c5eb27cc12e9a928e16fea1bf447340f3d208ae9e3b3c6a99e7e6e7b1368c
