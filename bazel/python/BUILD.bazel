@@ -20,6 +20,7 @@ exports_files(["requirements_lock.txt"])
 
 compile_pip_requirements(
     name = "requirements",
+    timeout = "long",
     extra_args = [
         "--extra-index-url https://download.pytorch.org/whl/cpu",
         "--allow-unsafe",
