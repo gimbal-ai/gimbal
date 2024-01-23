@@ -36,6 +36,12 @@ gazelle: go-mod-tidy update-python-manifest ## Run gazelle.
 update-python-manifest:
 	$(BAZEL) run //:gazelle_python_manifest.update
 
+.PHONY: update-python-requirements
+update-python-requirements:
+	rm bazel/python/requirements_lock.txt
+	touch bazel/python/requirements_lock.txt
+	$(BAZEL) run //bazel/python:requirements.update
+
 src/ui/node_modules: src/ui/package.json src/ui/pnpm-lock.yaml
 	cd src/ui && pnpm install
 

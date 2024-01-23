@@ -192,6 +192,10 @@ filelock==3.13.1 \
     --hash=sha256:521f5f56c50f8426f5e03ad3b281b490a87ef15bc6c526f168290f0c7148d44e \
     --hash=sha256:57dbda9b35157b05fb3e58ee91448612eb674172fab98ee235ccb0b5bee19a1c
     # via torch
+filetype==1.2.0 \
+    --hash=sha256:66b56cd6474bf41d8c54660347d37afcc3f7d1970648de365c102ef77548aadb \
+    --hash=sha256:7ce71b6880181241cf7ac8697a2f1eb6a8bd9b429f7ad6d27b8db9ba5f1c2d25
+    # via -r bazel/python/requirements.in
 fonttools==4.47.2 \
     --hash=sha256:0255dbc128fee75fb9be364806b940ed450dd6838672a150d501ee86523ac61e \
     --hash=sha256:0a00bd0e68e88987dcc047ea31c26d40a3c61185153b03457956a87e39d43c37 \

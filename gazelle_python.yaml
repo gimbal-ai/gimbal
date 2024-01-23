@@ -212,6 +212,21 @@ manifest:
     exceptiongroup: exceptiongroup
     filelock: filelock
     filelock.version: filelock
+    filetype: filetype
+    filetype.filetype: filetype
+    filetype.helpers: filetype
+    filetype.match: filetype
+    filetype.types: filetype
+    filetype.types.application: filetype
+    filetype.types.archive: filetype
+    filetype.types.audio: filetype
+    filetype.types.base: filetype
+    filetype.types.document: filetype
+    filetype.types.font: filetype
+    filetype.types.image: filetype
+    filetype.types.isobmff: filetype
+    filetype.types.video: filetype
+    filetype.utils: filetype
     fontTools: fonttools
     fontTools.afmLib: fonttools
     fontTools.agl: fonttools
@@ -4927,4 +4942,4 @@ manifest:
   pip_repository:
     name: pip
     use_pip_repository_aliases: true
-integrity: 3cafb7ec9dc8019ca34f3fca136955a7b53dd170c38106efe7dd16ac204aa9f7
+integrity: 1aac3b57e4ac3ed007b41596e12b53fa6095e32fbf4e6814f214392c0b8cc9f1
