@@ -26,6 +26,8 @@
 namespace gml::gem::calculators::core {
 using ::gml::internal::api::core::v1::Detection;
 
+constexpr size_t kMaxMetricClasses = 80;
+
 Status DetectionsSummaryCalculator::BuildMetrics(mediapipe::CalculatorContext*) {
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
   // TODO(james): make the bounds configurable in CalculatorOptions.
@@ -37,20 +39,38 @@ Status DetectionsSummaryCalculator::BuildMetrics(mediapipe::CalculatorContext*) 
 }
 
 Status DetectionsSummaryCalculator::RecordMetrics(const std::vector<Detection>& detections) {
+  // If there are many labels in a detection, we don't want to send metrics for all of them, as the
+  // metrics will not be useful after some point. Instead, only send metrics for the top N
+  // classes.
+  auto cmp = [](const std::pair<std::string, double>& lhs,
+                const std::pair<std::string, double>& rhs) { return lhs.second > rhs.second; };
+  std::priority_queue<std::pair<std::string, double>, std::vector<std::pair<std::string, double>>,
+                      decltype(cmp)>
+      top_classes(cmp);
+
   std::map<std::string, uint64_t> class_counts;
 
   for (const auto& detection : detections) {
     for (const auto& label : detection.label()) {
       class_counts[label.label()] += 1;
-      confidence_hist_->Record(label.score(), {{"class", label.label()}}, {});
+      top_classes.push({label.label(), label.score()});
+
+      if (top_classes.size() > kMaxMetricClasses) {
+        top_classes.pop();
+      }
     }
   }
 
-  for (const auto& pair : class_counts) {
-    auto label = pair.first;
-    auto count = pair.second;
+  while (top_classes.size() > 0) {
+    auto c = top_classes.top();
+    top_classes.pop();
+    confidence_hist_->Record(c.second, {{"class", c.first}}, {});
 
-    detection_hist_->Record(count, {{"class", label}}, {});
+    auto class_count = class_counts.find(c.first);
+    if (class_count != class_counts.end()) {
+      detection_hist_->Record(class_count->second, {{"class", c.first}}, {});
+      class_counts.erase(c.first);
+    }
   }
 
   return Status::OK();
