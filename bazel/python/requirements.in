@@ -14,3 +14,4 @@ torch==2.1.2
 torchvision==0.16.2
 groundingdino-gml==0.1.0
 salesforce-lavis==1.0.2
+grequests==0.7.0
