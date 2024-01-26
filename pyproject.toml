@@ -1,0 +1,10 @@
+[project]
+name = "gml"
+version = "0.0.1"
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = "bazel/python/requirements.in"}
+
+[tool.setuptools.packages.find]
+include = ["src*"]

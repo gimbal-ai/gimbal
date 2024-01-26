@@ -156,7 +156,7 @@ These instructions use `pyenv` and `pyenv-virtualenv` to create the virtualenv, 
 1. Install the gml requirements:
 
     ```bash
-    pip install -r bazel/python/requirements.in
+    pip install -e .
     ```
 
 ### Python gazelle

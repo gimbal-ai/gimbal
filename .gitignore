@@ -94,3 +94,5 @@ tools/chef/cookbooks/gml_nuc_cluster/templates/credentials
 
 # Ignore pyenv files.
 .python-version
+
+*.egg-info
