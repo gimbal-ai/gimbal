@@ -36,7 +36,6 @@ gazelle_python_manifest(
         "//bazel/python:requirements_lock.txt",
     ],
     target_compatible_with = no_sysroot(),
-    use_pip_repository_aliases = True,
 )
 
 gazelle_binary(

@@ -13718,5 +13718,4 @@ manifest:
     zope.interface.verify: zope.interface
   pip_repository:
     name: pip
-    use_pip_repository_aliases: true
-integrity: 60874f71ec98a55078331e0d209b53677ff1ad6e6acea2ded63b0594cae3e819
+integrity: dcf2129ae26bf30f3cf6855545bffc95271fd2ef27cceed09bacf36519897450
