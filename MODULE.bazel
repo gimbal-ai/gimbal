@@ -185,4 +185,13 @@ oci.pull(
         "linux/arm64",
     ],
 )
-use_repo(oci, "distroless_nodejs", "postgres_15_alpine", "victoria_metrics_1_93_6")
+oci.pull(
+    name = "python_3_10_image",
+    digest = "sha256:bd4097b62c6752da37c3f1ca2e330b5e76d8deb4848cf1795a2473bf7910a91e",  # 3.10.13-bookworm multiarch
+    image = "index.docker.io/library/python",
+    platforms = [
+        "linux/amd64",
+        "linux/arm64/v8",
+    ],
+)
+use_repo(oci, "distroless_nodejs", "postgres_15_alpine", "python_3_10_image", "victoria_metrics_1_93_6")

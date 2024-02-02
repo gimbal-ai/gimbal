@@ -16,7 +16,7 @@
 load("@aspect_bazel_lib//lib:expand_template.bzl", "expand_template")
 load("@bazel_skylib//rules:write_file.bzl", "write_file")
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_image_index", "oci_push", "oci_tarball")
-load("@rules_pkg//pkg:providers.bzl", "PackageFilesInfo")
+load("@rules_pkg//pkg:providers.bzl", "PackageFilegroupInfo", "PackageFilesInfo", "PackageSymlinkInfo")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("//bazel:lib.bzl", "default_arg")
 load("//bazel:toolchain_transitions.bzl", "oci_image_arm64", "oci_image_x86_64")
@@ -143,11 +143,9 @@ def _gml_oci_push(name, **kwargs):
 
 def _collect_runfiles_impl(ctx):
     dest_to_src = dict()
+    external_symlinks = dict()
     for binary in ctx.attr.binaries:
-        binary_files = binary[DefaultInfo].files.to_list()
-        if len(binary_files) != 1:
-            fail("_collect_runfiles only works with binaries with a single file")
-        binary_file = binary_files[0]
+        binary_file = binary[DefaultInfo].files_to_run.executable
         binary_name = binary_file.basename
         runfiles_dir = binary_name + ".runfiles"
 
@@ -167,13 +165,33 @@ def _collect_runfiles_impl(ctx):
             path = f.path
             if path.startswith("bazel-out"):
                 _, _, path = path.partition("/bin/")
+            if path.startswith("external/"):
+                path_wo_external = path.removeprefix("external/")
+                repo, _, _ = path_wo_external.partition("/")
+                if repo not in external_symlinks:
+                    external_symlinks[repo] = PackageSymlinkInfo(
+                        destination = "/".join([runfiles_dir, repo]),
+                        target = "/".join(["_main/external", repo]),
+                    )
             path = "/".join([runfiles_dir, "_main", path])
             dest_to_src[path] = f
 
+    origin = ctx.label
     return [
-        PackageFilesInfo(
-            dest_src_map = dest_to_src,
-            attributes = {},
+        PackageFilegroupInfo(
+            pkg_files = [
+                (
+                    PackageFilesInfo(
+                        dest_src_map = dest_to_src,
+                        attributes = {},
+                    ),
+                    origin,
+                ),
+            ],
+            pkg_symlinks = [
+                (sym_info, origin)
+                for sym_info in external_symlinks.values()
+            ],
         ),
         DefaultInfo(
             files = depset(dest_to_src.values()),
@@ -186,6 +204,15 @@ _collect_runfiles = rule(
         binaries = attr.label_list(),
     ),
 )
+
+def gml_py_image(name, binary, **kwargs):
+    default_arg(kwargs, "base", "@python_3_10_image")
+    default_arg(kwargs, "include_runfiles", True)
+    _gml_binary_image(
+        name = name,
+        binary = binary,
+        **kwargs
+    )
 
 gml_oci_image = _gml_oci_image
 gml_binary_image = _gml_binary_image
