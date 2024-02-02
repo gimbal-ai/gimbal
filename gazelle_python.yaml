@@ -3439,6 +3439,7 @@ manifest:
     numpy.typing.tests.test_runtime: numpy
     numpy.typing.tests.test_typing: numpy
     numpy.version: numpy
+    nvfuser: torch
     omegaconf: omegaconf
     omegaconf.base: omegaconf
     omegaconf.basecontainer: omegaconf
@@ -6694,6 +6695,7 @@ manifest:
     pycocotools.mask: pycocotools
     pydantic: pydantic
     pydantic.alias_generators: pydantic
+    pydantic.aliases: pydantic
     pydantic.annotated_handlers: pydantic
     pydantic.class_validators: pydantic
     pydantic.color: pydantic
@@ -9505,6 +9507,7 @@ manifest:
     streamlit.proto.NumberInput_pb2: streamlit
     streamlit.proto.PageConfig_pb2: streamlit
     streamlit.proto.PageInfo_pb2: streamlit
+    streamlit.proto.PageLink_pb2: streamlit
     streamlit.proto.PageNotFound_pb2: streamlit
     streamlit.proto.PageProfile_pb2: streamlit
     streamlit.proto.PagesChanged_pb2: streamlit
@@ -11969,15 +11972,17 @@ manifest:
     torch.jit.quantized: torch
     torch.jit.supported_ops: torch
     torch.jit.unsupported_tensor_ops: torch
-    torch.lib.libbackend_with_compiler: torch
     torch.lib.libc10: torch
-    torch.lib.libjitbackend_test: torch
+    torch.lib.libc10_cuda: torch
+    torch.lib.libcaffe2_nvrtc: torch
+    torch.lib.libnvfuser_codegen: torch
     torch.lib.libshm: torch
     torch.lib.libtorch: torch
     torch.lib.libtorch_cpu: torch
+    torch.lib.libtorch_cuda: torch
+    torch.lib.libtorch_cuda_linalg: torch
     torch.lib.libtorch_global_deps: torch
     torch.lib.libtorch_python: torch
-    torch.lib.libtorchbind_test: torch
     torch.library: torch
     torch.linalg: torch
     torch.masked: torch
@@ -13764,6 +13769,49 @@ manifest:
     transformers.utils.notebook: transformers
     transformers.utils.sentencepiece_model_pb2: transformers
     transformers.utils.versions: transformers
+    triton: triton
+    triton.common: triton
+    triton.common.backend: triton
+    triton.common.build: triton
+    triton.compiler: triton
+    triton.compiler.code_generator: triton
+    triton.compiler.compiler: triton
+    triton.compiler.errors: triton
+    triton.compiler.make_launcher: triton
+    triton.interpreter: triton
+    triton.interpreter.core: triton
+    triton.interpreter.interpreter: triton
+    triton.interpreter.memory_map: triton
+    triton.interpreter.tl_lang: triton
+    triton.interpreter.torch_wrapper: triton
+    triton.language: triton
+    triton.language.core: triton
+    triton.language.extra: triton
+    triton.language.extra.cuda: triton
+    triton.language.math: triton
+    triton.language.random: triton
+    triton.language.semantic: triton
+    triton.language.standard: triton
+    triton.ops: triton
+    triton.ops.blocksparse: triton
+    triton.ops.blocksparse.matmul: triton
+    triton.ops.blocksparse.softmax: triton
+    triton.ops.cross_entropy: triton
+    triton.ops.flash_attention: triton
+    triton.ops.matmul: triton
+    triton.ops.matmul_perf_model: triton
+    triton.runtime: triton
+    triton.runtime.autotuner: triton
+    triton.runtime.cache: triton
+    triton.runtime.driver: triton
+    triton.runtime.errors: triton
+    triton.runtime.jit: triton
+    triton.testing: triton
+    triton.tools: triton
+    triton.tools.build_extern: triton
+    triton.tools.compile: triton
+    triton.tools.disasm: triton
+    triton.tools.link: triton
     typer: typer
     typer.colors: typer
     typer.completion: typer
@@ -13806,11 +13854,17 @@ manifest:
     urllib3.connection: urllib3
     urllib3.connectionpool: urllib3
     urllib3.contrib: urllib3
+    urllib3.contrib.emscripten: urllib3
+    urllib3.contrib.emscripten.connection: urllib3
+    urllib3.contrib.emscripten.fetch: urllib3
+    urllib3.contrib.emscripten.request: urllib3
+    urllib3.contrib.emscripten.response: urllib3
     urllib3.contrib.pyopenssl: urllib3
     urllib3.contrib.socks: urllib3
     urllib3.exceptions: urllib3
     urllib3.fields: urllib3
     urllib3.filepost: urllib3
+    urllib3.http2: urllib3
     urllib3.poolmanager: urllib3
     urllib3.response: urllib3
     urllib3.util: urllib3
@@ -14139,4 +14193,4 @@ manifest:
     zope.interface.verify: zope.interface
   pip_repository:
     name: pip
-integrity: 26345c4f0385d1094e91ae5e192d66108b9d7f5180a81d7cde54ad46bda57e4d
+integrity: 06b48abb6535b177dc330eadb80fd82fbf82faba94e54a788e999af5d49e0245
