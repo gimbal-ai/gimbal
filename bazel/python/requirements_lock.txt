@@ -10,6 +10,10 @@ absl-py==2.0.0 \
     --hash=sha256:9a28abb62774ae4e8edbe2dd4c49ffcd45a6a848952a5eccc6a49f3f0fc1e2f3 \
     --hash=sha256:d9690211c5fcfefcdd1a45470ac2b5c5acd45241c3af71eed96bc5441746c0d5
     # via -r bazel/python/requirements.in
+addict==2.4.0 \
+    --hash=sha256:249bb56bbfd3cdc2a004ea0ff4c2b6ddc84d53bc2194761636eb314d5cfa5dfc \
+    --hash=sha256:b3b2210e0e067a281f5646c8c5db92e99b7231ea8b0eb5f74dbdf9e259d4e494
+    # via groundingdino-gml
 altair==5.2.0 \
     --hash=sha256:2ad7f0c8010ebbc46319cc30febfb8e59ccf84969a201541c207bc3a4fa6cf81 \
     --hash=sha256:8c4888ad11db7c39f3f17aa7f4ea985775da389d79ac30a6c22856ab238df399
@@ -538,9 +542,8 @@ grequests==0.7.0 \
     --hash=sha256:4733edfcece027de25ae8eff86a87f563d7e829fdacbf3ce8b3aeea507694287 \
     --hash=sha256:5c33f14268df5b8fa1107d8537815be6febbad6ec560524d6a404b7778cf6ba6
     # via -r bazel/python/requirements.in
-groundingdino-gml==0.1.0 \
-    --hash=sha256:632cf8fc07cc115f71dc455b0666f4980a9426a88bc7963a877d4fadc0bf1458 \
-    --hash=sha256:788af69ed4cea716a733528abf6239528fde793034563c472288269ff523685f
+groundingdino-gml==0.1.1 \
+    --hash=sha256:a57870c8a0f7584f1bd8a323c4da7f30a220cddba6098db89813a9dc8160e3e5
     # via -r bazel/python/requirements.in
 huggingface-hub==0.20.3 \
     --hash=sha256:94e7f8e074475fbc67d6a71957b678e1b4a74ff1b64a644fd6cbb83da962d05d \
@@ -561,7 +564,9 @@ imageio==2.33.1 \
 importlib-metadata==7.0.1 \
     --hash=sha256:4805911c3a4ec7c3966410053e9ec6a1fecd629117df5adee56dfc9432a1081e \
     --hash=sha256:f238736bb06590ae52ac1fab06a3a9ef1d8dce2b7a35b5ab329371d6c8f5d2cc
-    # via streamlit
+    # via
+    #   streamlit
+    #   yapf
 importlib-resources==6.1.1 \
     --hash=sha256:3893a00122eafde6894c59914446a512f728a0c1a45f9bb9b63721b6bacf0b4a \
     --hash=sha256:e8bf90d8213b486f428c9c39714b920041cb02c184686a3dee24905aaa8105d6
@@ -924,8 +929,10 @@ numpy==1.26.2 \
     #   blis
     #   contourpy
     #   decord
+    #   groundingdino-gml
     #   imageio
     #   matplotlib
+    #   opencv-python
     #   opencv-python-headless
     #   pandas
     #   pyarrow
@@ -947,6 +954,15 @@ omegaconf==2.3.0 \
     --hash=sha256:7b4df175cdb08ba400f45cae3bdcae7ba8365db4d165fc65fd04b050ab63b46b \
     --hash=sha256:d5d4b6d29955cc50ad50c46dc269bcd92c6e00f5f90d23ab5fee7bfca4ba4cc7
     # via salesforce-lavis
+opencv-python==4.9.0.80 \
+    --hash=sha256:1a9f0e6267de3a1a1db0c54213d022c7c8b5b9ca4b580e80bdc58516c922c9e1 \
+    --hash=sha256:3f16f08e02b2a2da44259c7cc712e779eff1dd8b55fdb0323e8cab09548086c0 \
+    --hash=sha256:71dfb9555ccccdd77305fc3dcca5897fbf0cf28b297c51ee55e079c065d812a3 \
+    --hash=sha256:7b34a52e9da36dda8c151c6394aed602e4b17fa041df0b9f5b93ae10b0fcca2a \
+    --hash=sha256:7e5f7aa4486651a6ebfa8ed4b594b65bd2d2f41beeb4241a3e4b1b85acbbbadb \
+    --hash=sha256:dcf000c36dd1651118a2462257e3a9e76db789a78432e1f303c7bac54f63ef6c \
+    --hash=sha256:e4088cab82b66a3b37ffc452976b14a3c599269c247895ae9ceb4066d8188a57
+    # via groundingdino-gml
 opencv-python-headless==4.5.5.64 \
     --hash=sha256:3f330468c29882dbbec5af25695c5e575572c6b855cb0f9fe53e14116fd46bfc \
     --hash=sha256:4bdf982574bf2fefc5f82c86df7cb42e56ad627874c7c0f4d94ecf4ae8885304 \
@@ -1109,6 +1125,7 @@ platformdirs==4.2.0 \
     # via
     #   black
     #   virtualenv
+    #   yapf
 plotly==5.18.0 \
     --hash=sha256:23aa8ea2f4fb364a20d34ad38235524bd9d691bf5299e800bca608c31e8db8de \
     --hash=sha256:360a31e6fbb49d12b007036eb6929521343d6bee2236f8459915821baefa2cbb
@@ -1252,6 +1269,7 @@ pycocotools==2.0.7 \
     --hash=sha256:f1a675728e459d72be6e3bb3546672bb37c7daffdc2e5335aa7b834aece2b560
     # via
     #   -r bazel/python/requirements.in
+    #   groundingdino-gml
     #   pycocoevalcap
     #   salesforce-lavis
 pydantic==2.6.0 \
@@ -1923,7 +1941,9 @@ streamlit==1.31.0 \
 supervision==0.17.1 \
     --hash=sha256:813689af02e4e9231e331493a806a7f83702ededb238d0be5e4c05d9ab2a95a5 \
     --hash=sha256:d36ce87ba2e43f31fb36f2064339419d331c89a60178362f33ec6e2619471215
-    # via -r bazel/python/requirements.in
+    # via
+    #   -r bazel/python/requirements.in
+    #   groundingdino-gml
 sympy==1.12 \
     --hash=sha256:c3588cd4295d0c0f603d0f2ae780587e64e2efeedb3521e46b9bb1d08d184fa5 \
     --hash=sha256:ebf595c8dac3e0fdc4152c51878b498396ec7f30e7a914d6071e674d49420fb8
@@ -1985,7 +2005,9 @@ tifffile==2024.1.30 \
 timm==0.4.12 \
     --hash=sha256:b14be70dbd4528b5ca8657cf5bc2672c7918c3d9ebfbffe80f4785b54e884b1e \
     --hash=sha256:dba6b1702b7d24bf9f0f1c2fc394b4ee28f93cde5404f1dc732d63ccd00533b6
-    # via salesforce-lavis
+    # via
+    #   groundingdino-gml
+    #   salesforce-lavis
 tokenizers==0.13.3 \
     --hash=sha256:00cee1e0859d55507e693a48fa4aef07060c4bb6bd93d80120e18fea9371c66d \
     --hash=sha256:0527dc5436a1f6bf2c0327da3145687d3bcfbeab91fed8458920093de3901b44 \
@@ -2038,6 +2060,7 @@ tomli==2.0.1 \
     # via
     #   black
     #   pytest
+    #   yapf
 toolz==0.12.1 \
     --hash=sha256:d22731364c07d72eea0a0ad45bafb2c2937ab6fd38a3507bf55eae8744aa7d85 \
     --hash=sha256:ecca342664893f177a13dac0e6b41cbd8ac25a358e5f215316d43e2100224f4d
@@ -2054,6 +2077,7 @@ torch==2.1.2+cu121 \
     # via
     #   -r bazel/python/requirements.in
     #   fairscale
+    #   groundingdino-gml
     #   salesforce-lavis
     #   timm
     #   torchvision
@@ -2068,6 +2092,7 @@ torchvision==0.16.2+cu121 \
     --hash=sha256:dbeb2cd41956db95b08f7848dcb8740e04bbafb1f42cf69b214849bf0615f11a
     # via
     #   -r bazel/python/requirements.in
+    #   groundingdino-gml
     #   salesforce-lavis
     #   timm
 tornado==6.4 \
@@ -2103,7 +2128,9 @@ traitlets==5.14.1 \
 transformers==4.26.1 \
     --hash=sha256:32dc474157367f8e551f470af0136a1ddafc9e18476400c3869f1ef4f0c12042 \
     --hash=sha256:dae2fa15290c1f526e1b629b0e235eea5e4c04078fcaf1f197a70d51b4f65df2
-    # via salesforce-lavis
+    # via
+    #   groundingdino-gml
+    #   salesforce-lavis
 triton==2.1.0 \
     --hash=sha256:143582ca31dd89cd982bd3bf53666bab1c7527d41e185f9e3d8a3051ce1b663b \
     --hash=sha256:21544e522c02005a626c8ad63d39bdff2f31d41069592919ef281e964ed26446 \
@@ -2215,6 +2242,10 @@ wheel==0.42.0 \
     --hash=sha256:177f9c9b0d45c47873b619f5b650346d632cdc35fb5e4d25058e09c9e581433d \
     --hash=sha256:c45be39f7882c9d34243236f2d63cbd58039e360f85d0913425fbd7ceea617a8
     # via salesforce-lavis
+yapf==0.40.2 \
+    --hash=sha256:4dab8a5ed7134e26d57c1647c7483afb3f136878b579062b786c9ba16b94637b \
+    --hash=sha256:adc8b5dd02c0143108878c499284205adb258aad6db6634e5b869e7ee2bd548b
+    # via groundingdino-gml
 zipp==3.17.0 \
     --hash=sha256:0e923e726174922dce09c53c59ad483ff7bbb8e572e00c7f7c46b88556409f31 \
     --hash=sha256:84e64a1c28cf7e91ed2078bb8cc8c259cb19b76942096c8d7b84947690cabaf0

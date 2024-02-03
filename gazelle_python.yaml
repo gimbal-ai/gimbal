@@ -373,6 +373,8 @@ manifest:
     absl.testing.flagsaver: absl_py
     absl.testing.parameterized: absl_py
     absl.testing.xml_reporter: absl_py
+    addict: addict
+    addict.addict: addict
     altair: altair
     altair.expr: altair
     altair.expr.consts: altair
@@ -655,6 +657,8 @@ manifest:
     cv2.mat_wrapper: opencv_python_headless
     cv2.misc: opencv_python_headless
     cv2.misc.version: opencv_python_headless
+    cv2.qt.plugins.platforms.libqxcb: opencv_python
+    cv2.typing: opencv_python
     cv2.utils: opencv_python_headless
     cv2.version: opencv_python_headless
     cycler: cycler
@@ -3460,6 +3464,7 @@ manifest:
     omegaconf.resolvers.oc: omegaconf
     omegaconf.resolvers.oc.dict: omegaconf
     omegaconf.version: omegaconf
+    opencv_python.libs.libopenblas-r0-f650aae0: opencv_python
     opencv_python_headless.libs.libopenblas-r0-f650aae0: opencv_python_headless
     opendatasets: opendatasets
     opendatasets.datasets: opendatasets
@@ -14137,6 +14142,61 @@ manifest:
     yaml.scanner: PyYAML
     yaml.serializer: PyYAML
     yaml.tokens: PyYAML
+    yapf: yapf
+    yapf.pyparser: yapf
+    yapf.pyparser.pyparser: yapf
+    yapf.pyparser.pyparser_utils: yapf
+    yapf.pyparser.split_penalty_visitor: yapf
+    yapf.pytree: yapf
+    yapf.pytree.blank_line_calculator: yapf
+    yapf.pytree.comment_splicer: yapf
+    yapf.pytree.continuation_splicer: yapf
+    yapf.pytree.pytree_unwrapper: yapf
+    yapf.pytree.pytree_utils: yapf
+    yapf.pytree.pytree_visitor: yapf
+    yapf.pytree.split_penalty: yapf
+    yapf.pytree.subtype_assigner: yapf
+    yapf.yapflib: yapf
+    yapf.yapflib.errors: yapf
+    yapf.yapflib.file_resources: yapf
+    yapf.yapflib.format_decision_state: yapf
+    yapf.yapflib.format_token: yapf
+    yapf.yapflib.identify_container: yapf
+    yapf.yapflib.line_joiner: yapf
+    yapf.yapflib.logical_line: yapf
+    yapf.yapflib.object_state: yapf
+    yapf.yapflib.reformatter: yapf
+    yapf.yapflib.split_penalty: yapf
+    yapf.yapflib.style: yapf
+    yapf.yapflib.subtypes: yapf
+    yapf.yapflib.yapf_api: yapf
+    yapf_third_party: yapf
+    yapf_third_party.yapf_diff: yapf
+    yapf_third_party.yapf_diff.yapf_diff: yapf
+    yapftests: yapf
+    yapftests.blank_line_calculator_test: yapf
+    yapftests.comment_splicer_test: yapf
+    yapftests.file_resources_test: yapf
+    yapftests.format_decision_state_test: yapf
+    yapftests.format_token_test: yapf
+    yapftests.line_joiner_test: yapf
+    yapftests.logical_line_test: yapf
+    yapftests.main_test: yapf
+    yapftests.pytree_unwrapper_test: yapf
+    yapftests.pytree_utils_test: yapf
+    yapftests.pytree_visitor_test: yapf
+    yapftests.reformatter_basic_test: yapf
+    yapftests.reformatter_buganizer_test: yapf
+    yapftests.reformatter_facebook_test: yapf
+    yapftests.reformatter_pep8_test: yapf
+    yapftests.reformatter_python3_test: yapf
+    yapftests.reformatter_style_config_test: yapf
+    yapftests.split_penalty_test: yapf
+    yapftests.style_test: yapf
+    yapftests.subtype_assigner_test: yapf
+    yapftests.utils: yapf
+    yapftests.yapf_test: yapf
+    yapftests.yapf_test_helper: yapf
     zipp: zipp
     zipp.glob: zipp
     zipp.py310compat: zipp
@@ -14193,4 +14253,4 @@ manifest:
     zope.interface.verify: zope.interface
   pip_repository:
     name: pip
-integrity: 06b48abb6535b177dc330eadb80fd82fbf82faba94e54a788e999af5d49e0245
+integrity: 0cfcfeab4fe78ccd4572131ebe99efac295104e2949ab33d3a2c06f877b16e55
