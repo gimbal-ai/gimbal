@@ -159,11 +159,24 @@ These instructions use `pyenv` and `pyenv-virtualenv` to create the virtualenv, 
     pip install -e .
     ```
 
+### Fast python image builds
+Python image builds can be very slow. The default `gml_py_image` rule will build a normal minimal python image.
+This image will only include the relevant dependencies but can be very slow to build.
+To reduce build time there is an additional `.fast` target for each `gml_py_image`.
+This image will include all python pip packages in the image but is faster to build since it can better utilize the cache.
+Keep in mind that this image will be larger than it needs to be and doesn't use bazel's hermetic python toolchain.
+These bazel options can also help speed up the python image builds:
+- `--bes_upload_mode=fully_async`
+- `--noremote_upload_local_results`
+
 ### Python gazelle
 
 When adding a new python dependency, we need multiple steps before gazelle can be run.
 
 1. Add the dependency to `bazel/python/requirements.in`.
+
+1. Add the dependency to the list in `bazel/python/BUILD.bazel:python_deps_files`, in the form `@pip//{name}`
+  where `name` is the pip dependency name with dashes converted to underscores and all letters lowercased.
 
 1. Run the `compile_pip_requirements` target to generate the `requirements_lock.txt` file.
 

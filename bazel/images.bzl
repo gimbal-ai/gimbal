@@ -89,10 +89,12 @@ def _gml_binary_image(name, binary, multiarch = False, **kwargs):
 
     tar_srcs = [binary]
     if include_runfiles:
+        denylist = kwargs.pop("runfiles_denylist", [])
         _collect_runfiles(
             name = name + "_binary_runfiles",
             binaries = [binary],
             testonly = testonly,
+            denylist = denylist,
         )
         tar_srcs.append(":" + name + "_binary_runfiles")
 
@@ -103,7 +105,7 @@ def _gml_binary_image(name, binary, multiarch = False, **kwargs):
         testonly = testonly,
     )
 
-    kwargs["tars"] = kwargs["tars"] + [name + "_binary_tar"]
+    kwargs["tars"] = [name + "_binary_tar"] + kwargs["tars"]
     _gml_oci_image(name, multiarch = multiarch, testonly = testonly, **kwargs)
 
 def _gml_oci_push(name, **kwargs):
@@ -153,6 +155,12 @@ def _collect_runfiles_impl(ctx):
         if binary[DefaultInfo].default_runfiles:
             runfiles = binary[DefaultInfo].default_runfiles.files.to_list()
         for f in runfiles:
+            denied = False
+            for partial in ctx.attr.denylist:
+                if partial in f.path:
+                    denied = True
+            if denied:
+                continue
             if f.path.startswith("external/sysroot"):
                 # Ignore sysroot runfiles.
                 continue
@@ -202,17 +210,41 @@ _collect_runfiles = rule(
     implementation = _collect_runfiles_impl,
     attrs = dict(
         binaries = attr.label_list(),
+        denylist = attr.string_list(),
     ),
 )
 
-def gml_py_image(name, binary, **kwargs):
-    default_arg(kwargs, "base", "@python_3_10_image")
-    default_arg(kwargs, "include_runfiles", True)
+def _gml_fast_py_image(name, binary, **kwargs):
+    default_arg(kwargs, "base", "@gml//bazel/python:python_base_image")
+    default_arg(kwargs, "runfiles_denylist", [])
+    default_arg(kwargs, "tars", [])
+
+    binary_name = Label(binary).name
+    default_arg(kwargs, "entrypoint", ["python", "/app/{}.py".format(binary_name)])
+    default_arg(kwargs, "env", {"PYTHONPATH": "/app/{}.runfiles/_main".format(binary_name)})
+
+    # Exclude rules_python dependencies (includes hermetic python toolchain and pip dependencies)
+    kwargs["runfiles_denylist"].append("rules_python~")
+
     _gml_binary_image(
         name = name,
         binary = binary,
         **kwargs
     )
+
+def _gml_minimal_py_image(name, binary, **kwargs):
+    default_arg(kwargs, "base", "@python_3_9_image")
+    _gml_binary_image(
+        name = name,
+        binary = binary,
+        **kwargs
+    )
+
+def gml_py_image(name, binary, **kwargs):
+    default_arg(kwargs, "include_runfiles", True)
+
+    _gml_fast_py_image(name + ".fast", binary, **kwargs)
+    _gml_minimal_py_image(name, binary, **kwargs)
 
 gml_oci_image = _gml_oci_image
 gml_binary_image = _gml_binary_image

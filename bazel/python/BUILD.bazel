@@ -13,8 +13,11 @@
 #
 # SPDX-License-Identifier: Proprietary
 
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("@rules_python//python:pip.bzl", "compile_pip_requirements")
 load("//bazel:gml_build_system.bzl", "no_sysroot")
+load("//bazel:images.bzl", "gml_oci_image")
+load("//bazel/python:py_pkg_provider.bzl", "py_pkg_provider")
 
 exports_files(["requirements_lock.txt"])
 
@@ -28,4 +31,45 @@ compile_pip_requirements(
     requirements_in = "requirements.in",
     requirements_txt = "requirements_lock.txt",
     target_compatible_with = no_sysroot(),
+)
+
+py_pkg_provider(
+    name = "python_deps_files",
+    srcs = [
+        "@pip//absl_py",
+        "@pip//black",
+        "@pip//filetype",
+        "@pip//grequests",
+        "@pip//groundingdino_gml",
+        "@pip//numpy",
+        "@pip//pillow",
+        "@pip//pycocotools",
+        "@pip//pytest",
+        "@pip//requests",
+        "@pip//salesforce_lavis",
+        "@pip//scikit_image",
+        "@pip//scikit_learn",
+        "@pip//seaborn",
+        "@pip//supervision",
+        "@pip//torch",
+        "@pip//torchvision",
+    ],
+)
+
+pkg_tar(
+    name = "python_deps_tar",
+    srcs = [":python_deps_files"],
+)
+
+# This is a workaround for the fact that OCI image and pkg_tar are really slow for large tars.
+# Typically the pip dependencies are pulled in as runfiles for each python binary target.
+# So any change to python source files would lead to the full tar with all the pip dependencies being rebuilt.
+# To avoid this we build a tar with the pip dependencies separately.
+# This ensures that changes to python source won't cause the pip dependency tar to be rebuilt.
+# However, this has the downside that all pip dependencies are always included in the python images.
+gml_oci_image(
+    name = "python_base_image",
+    base = "@python_3_9_image",
+    tars = [":python_deps_tar"],
+    visibility = ["//visibility:public"],
 )

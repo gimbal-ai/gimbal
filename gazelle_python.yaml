@@ -657,8 +657,6 @@ manifest:
     cv2.mat_wrapper: opencv_python_headless
     cv2.misc: opencv_python_headless
     cv2.misc.version: opencv_python_headless
-    cv2.qt.plugins.platforms.libqxcb: opencv_python
-    cv2.typing: opencv_python
     cv2.utils: opencv_python_headless
     cv2.version: opencv_python_headless
     cycler: cycler
@@ -3464,7 +3462,6 @@ manifest:
     omegaconf.resolvers.oc: omegaconf
     omegaconf.resolvers.oc.dict: omegaconf
     omegaconf.version: omegaconf
-    opencv_python.libs.libopenblas-r0-f650aae0: opencv_python
     opencv_python_headless.libs.libopenblas-r0-f650aae0: opencv_python_headless
     opendatasets: opendatasets
     opendatasets.datasets: opendatasets
@@ -14253,4 +14250,4 @@ manifest:
     zope.interface.verify: zope.interface
   pip_repository:
     name: pip
-integrity: 0cfcfeab4fe78ccd4572131ebe99efac295104e2949ab33d3a2c06f877b16e55
+integrity: a0e40e459c1fe22d3c1be5af4842e5b63f2611a3925cd514eb9ac9597768186f

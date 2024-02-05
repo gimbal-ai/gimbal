@@ -186,12 +186,12 @@ oci.pull(
     ],
 )
 oci.pull(
-    name = "python_3_10_image",
-    digest = "sha256:bd4097b62c6752da37c3f1ca2e330b5e76d8deb4848cf1795a2473bf7910a91e",  # 3.10.13-bookworm multiarch
+    name = "python_3_9_image",
+    digest = "sha256:eaa7d8748b2448d25bba68dad87fe205dc361c854718d35865f2f7f46a81acc6",  # 3.9-bookworm multiarch
     image = "index.docker.io/library/python",
     platforms = [
         "linux/amd64",
         "linux/arm64/v8",
     ],
 )
-use_repo(oci, "distroless_nodejs", "postgres_15_alpine", "python_3_10_image", "victoria_metrics_1_93_6")
+use_repo(oci, "distroless_nodejs", "postgres_15_alpine", "python_3_9_image", "victoria_metrics_1_93_6")
