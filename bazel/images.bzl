@@ -233,7 +233,7 @@ def _gml_fast_py_image(name, binary, **kwargs):
     )
 
 def _gml_minimal_py_image(name, binary, **kwargs):
-    default_arg(kwargs, "base", "@python_3_9_image")
+    default_arg(kwargs, "base", "@python_3_10_image")
     _gml_binary_image(
         name = name,
         binary = binary,

@@ -49,7 +49,7 @@ py_pkg_provider = rule(
             providers = [DefaultInfo],
         ),
         python_prefix = attr.string(
-            default = "/usr/local/lib/python3.9",
+            default = "/usr/local/lib/python3.10",
         ),
     ),
 )

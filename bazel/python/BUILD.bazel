@@ -69,7 +69,7 @@ pkg_tar(
 # However, this has the downside that all pip dependencies are always included in the python images.
 gml_oci_image(
     name = "python_base_image",
-    base = "@python_3_9_image",
+    base = "@python_3_10_image",
     tars = [":python_deps_tar"],
     visibility = ["//visibility:public"],
 )

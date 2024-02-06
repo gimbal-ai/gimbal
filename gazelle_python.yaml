@@ -1649,27 +1649,6 @@ manifest:
     imageio.v3: imageio
     importlib_metadata: importlib_metadata
     importlib_metadata.diagnose: importlib_metadata
-    importlib_resources: importlib_resources
-    importlib_resources.abc: importlib_resources
-    importlib_resources.readers: importlib_resources
-    importlib_resources.simple: importlib_resources
-    importlib_resources.tests: importlib_resources
-    importlib_resources.tests.data01: importlib_resources
-    importlib_resources.tests.data01.subdirectory: importlib_resources
-    importlib_resources.tests.data02: importlib_resources
-    importlib_resources.tests.data02.one: importlib_resources
-    importlib_resources.tests.data02.two: importlib_resources
-    importlib_resources.tests.test_compatibilty_files: importlib_resources
-    importlib_resources.tests.test_contents: importlib_resources
-    importlib_resources.tests.test_custom: importlib_resources
-    importlib_resources.tests.test_files: importlib_resources
-    importlib_resources.tests.test_open: importlib_resources
-    importlib_resources.tests.test_path: importlib_resources
-    importlib_resources.tests.test_read: importlib_resources
-    importlib_resources.tests.test_reader: importlib_resources
-    importlib_resources.tests.test_resource: importlib_resources
-    importlib_resources.tests.util: importlib_resources
-    importlib_resources.tests.zip: importlib_resources
     iniconfig: iniconfig
     iniconfig.exceptions: iniconfig
     iopath: iopath
@@ -14250,4 +14229,4 @@ manifest:
     zope.interface.verify: zope.interface
   pip_repository:
     name: pip
-integrity: a0e40e459c1fe22d3c1be5af4842e5b63f2611a3925cd514eb9ac9597768186f
+integrity: f8f4967189aa8bc0026c03ad2e6b3632cdff14844f63bc27dddaee0f5a8ba6ce

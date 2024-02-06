@@ -136,7 +136,7 @@ def _cc_deps():
     _bazel_repo(
         "org_tensorflow",
         repo_mapping = {
-            "@python": "@python_3_9",
+            "@python": "@python_3_10",
         },
     )
     _bazel_repo("com_github_neargye_magic_enum")
