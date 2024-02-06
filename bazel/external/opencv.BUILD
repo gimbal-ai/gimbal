@@ -137,7 +137,7 @@ cmake(
         for module in OPENCV_MODULES
     ] if not OPENCV_SHARED_LIBS else None,
     deps = [
-        "@com_github_ffmpeg_ffmpeg//:ffmpeg",
+        "@com_github_ffmpeg_ffmpeg//:ffmpeg_lib",
     ],
     visibility = ["//visibility:public"],
 )

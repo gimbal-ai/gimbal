@@ -35,7 +35,7 @@ gem_plugin_cc_library(
         "//src/api/corepb/v1:corepb_cc_library",
         "//src/gem/calculators/core:cc_library",
         "//src/gem/exec/core:cc_library",
-        "@com_github_ffmpeg_ffmpeg//:ffmpeg",
+        "@com_github_ffmpeg_ffmpeg//:ffmpeg_lib",
         "@com_github_google_mediapipe//mediapipe/framework/formats:video_stream_header",
     ],
 )

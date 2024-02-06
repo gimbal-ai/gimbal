@@ -31,16 +31,14 @@ SHARED_LIBS = [
 ]
 
 configure_make(
-    name = "ffmpeg",
+    name = "ffmpeg_lib",
     args = ["-j`nproc`"],
     lib_source = ":all",
     configure_options = [
         "--disable-static",
         "--enable-shared",
         "--enable-cross-compile",
-        "--disable-ffmpeg",
         "--disable-ffplay",
-        "--disable-ffprobe",
         "--enable-libopenh264",
         "--ar=$$EXT_BUILD_ROOT/$(AR)",
         "--cc=$$EXT_BUILD_ROOT/$(CC)",
@@ -55,10 +53,28 @@ configure_make(
         "PKG_CONFIG_PATH": "$${EXT_BUILD_DEPS}/openh264/lib/pkgconfig",
     },
     out_shared_libs = SHARED_LIBS,
+    out_binaries = [
+        "ffmpeg",
+        "ffprobe",
+    ],
     deps = [
         "@com_github_cisco_openh264//:openh264",
     ],
     visibility = ["//visibility:public"],
 )
 
-collect_shared_libs(":ffmpeg", SHARED_LIBS)
+filegroup(
+    name = "ffmpeg_bin",
+    srcs = [":ffmpeg_lib"],
+    output_group = "ffmpeg",
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "ffprobe_bin",
+    srcs = [":ffmpeg_lib"],
+    output_group = "ffprobe",
+    visibility = ["//visibility:public"],
+)
+
+collect_shared_libs(":ffmpeg_lib", SHARED_LIBS)
