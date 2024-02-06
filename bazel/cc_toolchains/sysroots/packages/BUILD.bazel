@@ -23,6 +23,7 @@ apt_parse(
     ],
     specs = [
         "debian12.yaml",
+        "debian12_no_distribute.yaml",
         "jetson.yaml",
         "intel_compute_runtime.yaml",
     ],

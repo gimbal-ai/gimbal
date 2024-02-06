@@ -13,8 +13,9 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("@rules_foreign_cc//foreign_cc:defs.bzl", "configure_make")
 load("@gml//bazel:foreign_cc.bzl", "collect_shared_libs")
+load("@gml//bazel:gml_build_system.bzl", "gpl_do_not_distribute_sysroot")
+load("@rules_foreign_cc//foreign_cc:defs.bzl", "configure_make")
 
 filegroup(
     name = "all",

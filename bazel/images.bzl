@@ -134,6 +134,7 @@ def _gml_oci_push(name, **kwargs):
         },
         substitutions = select({
             "//bazel/cc_toolchains/sysroots:sysroot_type_debian12": {"SYSROOT_PREFIX": ""},
+            "//bazel/cc_toolchains/sysroots:sysroot_type_gpl_do_not_distribute": {"SYSROOT_PREFIX": "do-not-distribute-"},
             "//bazel/cc_toolchains/sysroots:sysroot_type_intelgpu": {"SYSROOT_PREFIX": "intelgpu-"},
             "//bazel/cc_toolchains/sysroots:sysroot_type_jetson": {"SYSROOT_PREFIX": "jetson-"},
             "//conditions:default": {"SYSROOT_PREFIX": ""},
@@ -233,7 +234,11 @@ def _gml_fast_py_image(name, binary, **kwargs):
     )
 
 def _gml_minimal_py_image(name, binary, **kwargs):
-    default_arg(kwargs, "base", "@python_3_10_image")
+    # We switch out the base image to include extra libs when we need to run a optimized ffmpeg.
+    default_arg(kwargs, "base", select({
+        "//bazel/cc_toolchains/sysroots:sysroot_type_gpl_do_not_distribute": "@gml//:cc_base_image",
+        "//conditions:default": "@python_3_10_image",
+    }))
     _gml_binary_image(
         name = name,
         binary = binary,

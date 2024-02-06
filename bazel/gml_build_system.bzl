@@ -347,19 +347,25 @@ def _add_no_sysroot(kwargs):
 
 def _no_sysroot():
     return select({
-        "//bazel/cc_toolchains:libc_version_glibc_host": [],
+        "@gml//bazel/cc_toolchains:libc_version_glibc_host": [],
         "//conditions:default": ["@platforms//:incompatible"],
     })
 
 def _jetson_sysroot():
     return select({
-        "//bazel/cc_toolchains/sysroots:sysroot_type_jetson": [],
+        "@gml//bazel/cc_toolchains/sysroots:sysroot_type_jetson": [],
         "//conditions:default": ["@platforms//:incompatible"],
     })
 
 def _intelgpu_sysroot():
     return select({
-        "//bazel/cc_toolchains/sysroots:sysroot_type_intelgpu": [],
+        "@gml//bazel/cc_toolchains/sysroots:sysroot_type_intelgpu": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    })
+
+def _gpl_do_not_distribute_sysroot():
+    return select({
+        "@gml//bazel/cc_toolchains/sysroots:sysroot_type_gpl_do_not_distribute": [],
         "//conditions:default": ["@platforms//:incompatible"],
     })
 
@@ -389,3 +395,4 @@ gml_cc_test = _gml_cc_test
 no_sysroot = _no_sysroot
 jetson_sysroot = _jetson_sysroot
 intelgpu_sysroot = _intelgpu_sysroot
+gpl_do_not_distribute_sysroot = _gpl_do_not_distribute_sysroot

@@ -184,6 +184,18 @@ def deb_repos():
         deps = [],
     )
     deb_archive_w_pkg_providers(
+        name = "debian12_dpkg_aarch64",
+        sha256 = "4775b5f27315054c6860f402d1ef74614090e61a4192ec9c63cec9c88a75f9c2",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/4775b5f27315054c6860f402d1ef74614090e61a4192ec9c63cec9c88a75f9c2.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/d/dpkg/dpkg_1.21.22_arm64.deb"],
+        deps = ["@debian12_libbz2-1.0_aarch64//:all_files", "@debian12_libc6_aarch64//:all_files", "@debian12_liblzma5_aarch64//:all_files", "@debian12_libmd0_aarch64//:all_files", "@debian12_libselinux1_aarch64//:all_files", "@debian12_libzstd1_aarch64//:all_files", "@debian12_tar_aarch64//:all_files", "@debian12_zlib1g_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_dpkg_x86_64",
+        sha256 = "9d97f27d8a8a06dd4800e8e0291337ca02e11cdfd7df09a4566a982a6d9fe4c4",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/9d97f27d8a8a06dd4800e8e0291337ca02e11cdfd7df09a4566a982a6d9fe4c4.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/d/dpkg/dpkg_1.21.22_amd64.deb"],
+        deps = ["@debian12_libbz2-1.0_x86_64//:all_files", "@debian12_libc6_x86_64//:all_files", "@debian12_liblzma5_x86_64//:all_files", "@debian12_libmd0_x86_64//:all_files", "@debian12_libselinux1_x86_64//:all_files", "@debian12_libzstd1_x86_64//:all_files", "@debian12_tar_x86_64//:all_files", "@debian12_zlib1g_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
         name = "debian12_gawk_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "38f1cfc73847954dd2a0a94e414472a0d6ea0d1bb0c399d1f6e1948e15ff5880",
@@ -1745,6 +1757,18 @@ def deb_repos():
         deps = [],
     )
     deb_archive_w_pkg_providers(
+        name = "debian12_libnuma1_aarch64",
+        sha256 = "b4ed2547f387eb2e97d13c0b423b034d2a4d052b2131dfe043e45a84915452c5",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b4ed2547f387eb2e97d13c0b423b034d2a4d052b2131dfe043e45a84915452c5.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/n/numactl/libnuma1_2.0.16-1_arm64.deb"],
+        deps = ["@debian12_libc6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libnuma1_x86_64",
+        sha256 = "639e1ab6bd66ead40db8a22c332d7199679fa22db261cac34444eb8eb4c17dda",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/639e1ab6bd66ead40db8a22c332d7199679fa22db261cac34444eb8eb4c17dda.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/n/numactl/libnuma1_2.0.16-1_amd64.deb"],
+        deps = ["@debian12_libc6_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
         name = "debian12_libnumber-compare-perl_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "cf95662e27037d92c582647400bb1ca7a6dfd2eb26eee5b968b23263cd4976dc",
@@ -2382,6 +2406,42 @@ def deb_repos():
         deps = [],
     )
     deb_archive_w_pkg_providers(
+        name = "debian12_libvdpau1_aarch64",
+        sha256 = "2f13f0bce02b7c5c5caecf5522e22852e296d93b2275c6a445dbf5427605b93c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/2f13f0bce02b7c5c5caecf5522e22852e296d93b2275c6a445dbf5427605b93c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libvdpau/libvdpau1_1.5-2_arm64.deb"],
+        deps = ["@debian12_libc6_aarch64//:all_files", "@debian12_libx11-6_aarch64//:all_files", "@debian12_libxext6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libvdpau1_x86_64",
+        sha256 = "517039c1bfbfc453c4b952a068a1b02b77bf46bbf7af882ad877a581bf2c0e21",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/517039c1bfbfc453c4b952a068a1b02b77bf46bbf7af882ad877a581bf2c0e21.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libvdpau/libvdpau1_1.5-2_amd64.deb"],
+        deps = ["@debian12_libc6_x86_64//:all_files", "@debian12_libx11-6_x86_64//:all_files", "@debian12_libxext6_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libvpx-dev_aarch64",
+        sha256 = "921630c0e4d44073dbe930e59c944c5d2a0ce58586c94ab38b87ac9b2697dd6d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/921630c0e4d44073dbe930e59c944c5d2a0ce58586c94ab38b87ac9b2697dd6d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libvpx/libvpx-dev_1.12.0-1+deb12u2_arm64.deb"],
+        deps = ["@debian12_libvpx7_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libvpx-dev_x86_64",
+        sha256 = "5eaf2e9ec92e689c524322b9aaf7c3b8f23d2f863c03a09646abe5c07bde5c96",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/5eaf2e9ec92e689c524322b9aaf7c3b8f23d2f863c03a09646abe5c07bde5c96.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libvpx/libvpx-dev_1.12.0-1+deb12u2_amd64.deb"],
+        deps = ["@debian12_libvpx7_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libvpx7_aarch64",
+        sha256 = "99c0f4ecaf5308f2c00b9634ecafd8b833228dbda3f4717961b583d3a815361d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/99c0f4ecaf5308f2c00b9634ecafd8b833228dbda3f4717961b583d3a815361d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libvpx/libvpx7_1.12.0-1+deb12u2_arm64.deb"],
+        deps = ["@debian12_libc6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libvpx7_x86_64",
+        sha256 = "5ccc3485f9cd2eafa32d163e4368a96722fe18440fb28906e3073c31ce742d60",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/5ccc3485f9cd2eafa32d163e4368a96722fe18440fb28906e3073c31ce742d60.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libvpx/libvpx7_1.12.0-1+deb12u2_amd64.deb"],
+        deps = ["@debian12_libc6_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
         name = "debian12_libwayland-bin_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "02e9361617b43b130ff032873a910258884160c169e89a1ca45d34d1150a2615",
@@ -2520,6 +2580,54 @@ def deb_repos():
         sha256 = "f5da45e1d881a793250a96613f28c471a248877f1a0f18a5c90e2a620a76c898",
         urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f5da45e1d881a793250a96613f28c471a248877f1a0f18a5c90e2a620a76c898.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libx11/libx11-xcb1_1.8.4-2+deb12u2_amd64.deb"],
         deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libx264-164_aarch64",
+        sha256 = "95475856611f971affe2dfaccc85253d1c6bb2fcb1d67c3147b32021cf304b8e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/95475856611f971affe2dfaccc85253d1c6bb2fcb1d67c3147b32021cf304b8e.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/x264/libx264-164_0.164.3095+gitbaee400-3_arm64.deb"],
+        deps = ["@debian12_libc6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libx264-164_x86_64",
+        sha256 = "2b9f0d79ab1dccc10c24963c1debaf5a37d839bdba369ac358deefd1a7d56a12",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/2b9f0d79ab1dccc10c24963c1debaf5a37d839bdba369ac358deefd1a7d56a12.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/x264/libx264-164_0.164.3095+gitbaee400-3_amd64.deb"],
+        deps = ["@debian12_libc6_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libx264-dev_aarch64",
+        sha256 = "ec6a88835263d14dd63620b2be829ce2592fe17d9449517f67820dd3a6f76f3f",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ec6a88835263d14dd63620b2be829ce2592fe17d9449517f67820dd3a6f76f3f.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/x264/libx264-dev_0.164.3095+gitbaee400-3_arm64.deb"],
+        deps = ["@debian12_libx264-164_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libx264-dev_x86_64",
+        sha256 = "d884b8961502263879ca0fd9e16fbd4527405fcb1a58a9eb1235e81381f6f4f0",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d884b8961502263879ca0fd9e16fbd4527405fcb1a58a9eb1235e81381f6f4f0.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/x264/libx264-dev_0.164.3095+gitbaee400-3_amd64.deb"],
+        deps = ["@debian12_libx264-164_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libx265-199_aarch64",
+        sha256 = "3142b9c9fb005013cee57abee51abbd78ca0a693fc61aa252fefd5be5d074b03",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3142b9c9fb005013cee57abee51abbd78ca0a693fc61aa252fefd5be5d074b03.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/x265/libx265-199_3.5-2+b1_arm64.deb"],
+        deps = ["@debian12_libc6_aarch64//:all_files", "@debian12_libnuma1_aarch64//:all_files", "@debian12_libstdc__6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libx265-199_x86_64",
+        sha256 = "9cd87d1b0c56f34f51bcbe8bdb55ebb45dd08ce6c0c6ff2dc77378bac3f64cc0",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/9cd87d1b0c56f34f51bcbe8bdb55ebb45dd08ce6c0c6ff2dc77378bac3f64cc0.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/x265/libx265-199_3.5-2+b1_amd64.deb"],
+        deps = ["@debian12_libc6_x86_64//:all_files", "@debian12_libnuma1_x86_64//:all_files", "@debian12_libstdc__6_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libx265-dev_aarch64",
+        sha256 = "0234798a4bc53e229cf6894b60bd09e54b08f13c237dba0f030dc239342cecf3",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/0234798a4bc53e229cf6894b60bd09e54b08f13c237dba0f030dc239342cecf3.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/x265/libx265-dev_3.5-2+b1_arm64.deb"],
+        deps = ["@debian12_libx265-199_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libx265-dev_x86_64",
+        sha256 = "f23c7797a85fac88b7e894898e7137d2b452e9a1226f2b5ad2ee55bef8056b7d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f23c7797a85fac88b7e894898e7137d2b452e9a1226f2b5ad2ee55bef8056b7d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/x265/libx265-dev_3.5-2+b1_amd64.deb"],
+        deps = ["@debian12_libx265-199_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libxau-dev_aarch64",
@@ -2886,6 +2994,18 @@ def deb_repos():
         deps = ["@debian12_libdrm-dev_x86_64//:all_files", "@debian12_libgl-dev_x86_64//:all_files", "@debian12_libglx-dev_x86_64//:all_files", "@debian12_libx11-dev_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
+        name = "debian12_nasm_aarch64",
+        sha256 = "291e7bd6c76358bc44f0a5b5dae2320f3d63f6a1da004d70b3f024de5f5fa493",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/291e7bd6c76358bc44f0a5b5dae2320f3d63f6a1da004d70b3f024de5f5fa493.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/n/nasm/nasm_2.16.01-1_arm64.deb"],
+        deps = ["@debian12_dpkg_aarch64//:all_files", "@debian12_libc6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_nasm_x86_64",
+        sha256 = "0180693ad5d2da8b36e7d73b9b596dc3e9f900238e3de699976c0576875b878f",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/0180693ad5d2da8b36e7d73b9b596dc3e9f900238e3de699976c0576875b878f.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/n/nasm/nasm_2.16.01-1_amd64.deb"],
+        deps = ["@debian12_dpkg_x86_64//:all_files", "@debian12_libc6_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
         name = "debian12_ncurses-bin_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "59a56e4bfd04716771bcae67465e6bb87e535da0b232b04d30cf1a920a869b40",
@@ -3026,6 +3146,18 @@ def deb_repos():
         deps = ["@debian12_conmon_x86_64//:all_files", "@debian12_crun_x86_64//:all_files", "@debian12_golang-github-containers-common_x86_64//:all_files", "@debian12_libdevmapper1.02.1_x86_64//:all_files", "@debian12_libgpgme11_x86_64//:all_files", "@debian12_libseccomp2_x86_64//:all_files", "@debian12_libsubid4_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
+        name = "debian12_python3.10_aarch64",
+        sha256 = "d1833657699e61c1947475e63c906ad9f8405f3a436d6abbb714fec6c5a0a61a",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d1833657699e61c1947475e63c906ad9f8405f3a436d6abbb714fec6c5a0a61a.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/python3.10/python3.10_3.10.13-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_python3.10_x86_64",
+        sha256 = "3d171ae37680cab5bc978ffb035ebd2fb8ae5518500b382a8935c11f0502fc7f",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3d171ae37680cab5bc978ffb035ebd2fb8ae5518500b382a8935c11f0502fc7f.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/python3.10/python3.10_3.10.13-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
         name = "debian12_readline-common_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "69317523fe56429aa361545416ad339d138c1500e5a604856a80dd9074b4e35c",
@@ -3156,6 +3288,18 @@ def deb_repos():
         sha256 = "9ce1af9464faee0c679348dd11cdf63934c12e734a64e0903692b0cb5af38e06",
         urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/9ce1af9464faee0c679348dd11cdf63934c12e734a64e0903692b0cb5af38e06.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/xtrans/xtrans-dev_1.4.0-1_all.deb"],
         deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_yasm_aarch64",
+        sha256 = "16c8569c99da33b0cce63029055f1da255d2d8c5b86a35c27341ae6d6da35a8f",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/16c8569c99da33b0cce63029055f1da255d2d8c5b86a35c27341ae6d6da35a8f.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/y/yasm/yasm_1.3.0-4_arm64.deb"],
+        deps = ["@debian12_libc6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_yasm_x86_64",
+        sha256 = "1e2b29b9ad5f469aed7f17f7d23fc34860c469186b4b5274f1759988936e4faa",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/1e2b29b9ad5f469aed7f17f7d23fc34860c469186b4b5274f1759988936e4faa.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/y/yasm/yasm_1.3.0-4_amd64.deb"],
+        deps = ["@debian12_libc6_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_zlib1g-dev_aarch64",

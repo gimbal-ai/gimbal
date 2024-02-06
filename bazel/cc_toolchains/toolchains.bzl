@@ -53,6 +53,15 @@ def _gml_cc_toolchains():
         target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_jetson"],
     )
     clang_toolchain(
+        name = "clang-15.0-x86_64-glibc2.36-non-free-sysroot",
+        toolchain_repo = "com_llvm_clang_15",
+        target_arch = "x86_64",
+        clang_version = "15.0.6",
+        libc_version = "glibc2_36",
+        use_sysroot = True,
+        target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_gpl_do_not_distribute"],
+    )
+    clang_toolchain(
         name = "clang-15.0-exec",
         toolchain_repo = "com_llvm_clang_15",
         target_arch = "x86_64",

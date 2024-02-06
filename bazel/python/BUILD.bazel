@@ -69,7 +69,11 @@ pkg_tar(
 # However, this has the downside that all pip dependencies are always included in the python images.
 gml_oci_image(
     name = "python_base_image",
-    base = "@python_3_10_image",
+    # We switch out the base image to include extra libs when we need to run a optimized ffmpeg.
+    base = select({
+        "//bazel/cc_toolchains/sysroots:sysroot_type_gpl_do_not_distribute": "@gml//:cc_base_image",
+        "//conditions:default": "@python_3_10_image",
+    }),
     tars = [":python_deps_tar"],
     visibility = ["//visibility:public"],
 )
