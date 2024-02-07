@@ -55,8 +55,26 @@ filegroup(
 )
 
 filegroup(
+    name = "toolchain_nm_files",
+    srcs = [":nm"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
     name = "toolchain_objcopy_files",
     srcs = [":objcopy"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "toolchain_objdump_files",
+    srcs = [":objdump"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "toolchain_profdata_files",
+    srcs = [":profdata"],
     visibility = ["//visibility:public"],
 )
 
@@ -123,9 +141,12 @@ filegroup(
         "ar",
         "as",
         "cov",
-        "objcopy",
-        "strip",
         "dwp",
+        "nm",
+        "objcopy",
+        "objdump",
+        "profdata",
+        "strip",
     ]
 ]
 
@@ -137,7 +158,10 @@ filegroup(
         ":toolchain_compiler_files",
         ":toolchain_dwp_files",
         ":toolchain_linker_files",
+        ":toolchain_nm_files",
         ":toolchain_objcopy_files",
+        ":toolchain_objdump_files",
+        ":toolchain_profdata_files",
         ":toolchain_strip_files",
         ":toolchain_clangtidy_files",
     ],
