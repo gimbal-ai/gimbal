@@ -375,6 +375,16 @@ manifest:
     absl.testing.xml_reporter: absl_py
     addict: addict
     addict.addict: addict
+    aiofiles: aiofiles
+    aiofiles.base: aiofiles
+    aiofiles.os: aiofiles
+    aiofiles.ospath: aiofiles
+    aiofiles.tempfile: aiofiles
+    aiofiles.tempfile.temptypes: aiofiles
+    aiofiles.threadpool: aiofiles
+    aiofiles.threadpool.binary: aiofiles
+    aiofiles.threadpool.text: aiofiles
+    aiofiles.threadpool.utils: aiofiles
     altair: altair
     altair.expr: altair
     altair.expr.consts: altair
@@ -470,6 +480,20 @@ manifest:
     antlr4.tree.Trees: antlr4_python3_runtime
     antlr4.xpath: antlr4_python3_runtime
     antlr4.xpath.XPath: antlr4_python3_runtime
+    anyio: anyio
+    anyio.abc: anyio
+    anyio.from_thread: anyio
+    anyio.lowlevel: anyio
+    anyio.pytest_plugin: anyio
+    anyio.streams: anyio
+    anyio.streams.buffered: anyio
+    anyio.streams.file: anyio
+    anyio.streams.memory: anyio
+    anyio.streams.stapled: anyio
+    anyio.streams.text: anyio
+    anyio.streams.tls: anyio
+    anyio.to_process: anyio
+    anyio.to_thread: anyio
     app: salesforce_lavis
     app.calculate_coco_features: salesforce_lavis
     app.caption: salesforce_lavis
@@ -622,6 +646,19 @@ manifest:
     cloudpathlib.s3: cloudpathlib
     cloudpathlib.s3.s3client: cloudpathlib
     cloudpathlib.s3.s3path: cloudpathlib
+    colorama: colorama
+    colorama.ansi: colorama
+    colorama.ansitowin32: colorama
+    colorama.initialise: colorama
+    colorama.tests: colorama
+    colorama.tests.ansi_test: colorama
+    colorama.tests.ansitowin32_test: colorama
+    colorama.tests.initialise_test: colorama
+    colorama.tests.isatty_test: colorama
+    colorama.tests.utils: colorama
+    colorama.tests.winterm_test: colorama
+    colorama.win32: colorama
+    colorama.winterm: colorama
     confection: confection
     confection.tests: confection
     confection.tests.conftest: confection
@@ -834,6 +871,48 @@ manifest:
     fairscale.utils.testing_memory: fairscale
     fairscale.utils.version: fairscale
     fairscale.version: fairscale
+    fastapi: fastapi
+    fastapi.applications: fastapi
+    fastapi.background: fastapi
+    fastapi.concurrency: fastapi
+    fastapi.datastructures: fastapi
+    fastapi.dependencies: fastapi
+    fastapi.dependencies.models: fastapi
+    fastapi.dependencies.utils: fastapi
+    fastapi.encoders: fastapi
+    fastapi.exception_handlers: fastapi
+    fastapi.exceptions: fastapi
+    fastapi.logger: fastapi
+    fastapi.middleware: fastapi
+    fastapi.middleware.cors: fastapi
+    fastapi.middleware.gzip: fastapi
+    fastapi.middleware.httpsredirect: fastapi
+    fastapi.middleware.trustedhost: fastapi
+    fastapi.middleware.wsgi: fastapi
+    fastapi.openapi: fastapi
+    fastapi.openapi.constants: fastapi
+    fastapi.openapi.docs: fastapi
+    fastapi.openapi.models: fastapi
+    fastapi.openapi.utils: fastapi
+    fastapi.param_functions: fastapi
+    fastapi.params: fastapi
+    fastapi.requests: fastapi
+    fastapi.responses: fastapi
+    fastapi.routing: fastapi
+    fastapi.security: fastapi
+    fastapi.security.api_key: fastapi
+    fastapi.security.base: fastapi
+    fastapi.security.http: fastapi
+    fastapi.security.oauth2: fastapi
+    fastapi.security.open_id_connect_url: fastapi
+    fastapi.security.utils: fastapi
+    fastapi.staticfiles: fastapi
+    fastapi.templating: fastapi
+    fastapi.testclient: fastapi
+    fastapi.types: fastapi
+    fastapi.utils: fastapi
+    fastapi.websockets: fastapi
+    ffmpy: ffmpy
     filelock: filelock
     filelock.version: filelock
     filetype: filetype
@@ -1500,6 +1579,130 @@ manifest:
     google.protobuf.unknown_fields: protobuf
     google.protobuf.util: protobuf
     google.protobuf.wrappers_pb2: protobuf
+    gradio: gradio
+    gradio.analytics: gradio
+    gradio.blocks: gradio
+    gradio.blocks_events: gradio
+    gradio.chat_interface: gradio
+    gradio.cli: gradio
+    gradio.cli.cli: gradio
+    gradio.cli.commands: gradio
+    gradio.cli.commands.cli_env_info: gradio
+    gradio.cli.commands.components: gradio
+    gradio.cli.commands.components.app: gradio
+    gradio.cli.commands.components.build: gradio
+    gradio.cli.commands.components.create: gradio
+    gradio.cli.commands.components.dev: gradio
+    gradio.cli.commands.components.install_component: gradio
+    gradio.cli.commands.components.publish: gradio
+    gradio.cli.commands.components.show: gradio
+    gradio.cli.commands.deploy_space: gradio
+    gradio.cli.commands.display: gradio
+    gradio.cli.commands.reload: gradio
+    gradio.cli.commands.utils: gradio
+    gradio.component_meta: gradio
+    gradio.components: gradio
+    gradio.components.annotated_image: gradio
+    gradio.components.audio: gradio
+    gradio.components.bar_plot: gradio
+    gradio.components.base: gradio
+    gradio.components.button: gradio
+    gradio.components.chatbot: gradio
+    gradio.components.checkbox: gradio
+    gradio.components.checkboxgroup: gradio
+    gradio.components.clear_button: gradio
+    gradio.components.code: gradio
+    gradio.components.color_picker: gradio
+    gradio.components.dataframe: gradio
+    gradio.components.dataset: gradio
+    gradio.components.dropdown: gradio
+    gradio.components.duplicate_button: gradio
+    gradio.components.fallback: gradio
+    gradio.components.file: gradio
+    gradio.components.file_explorer: gradio
+    gradio.components.gallery: gradio
+    gradio.components.highlighted_text: gradio
+    gradio.components.html: gradio
+    gradio.components.image: gradio
+    gradio.components.image_editor: gradio
+    gradio.components.json_component: gradio
+    gradio.components.label: gradio
+    gradio.components.line_plot: gradio
+    gradio.components.login_button: gradio
+    gradio.components.logout_button: gradio
+    gradio.components.markdown: gradio
+    gradio.components.model3d: gradio
+    gradio.components.number: gradio
+    gradio.components.plot: gradio
+    gradio.components.radio: gradio
+    gradio.components.scatter_plot: gradio
+    gradio.components.slider: gradio
+    gradio.components.state: gradio
+    gradio.components.textbox: gradio
+    gradio.components.upload_button: gradio
+    gradio.components.video: gradio
+    gradio.context: gradio
+    gradio.data_classes: gradio
+    gradio.events: gradio
+    gradio.exceptions: gradio
+    gradio.external: gradio
+    gradio.external_utils: gradio
+    gradio.flagging: gradio
+    gradio.helpers: gradio
+    gradio.image_utils: gradio
+    gradio.interface: gradio
+    gradio.ipython_ext: gradio
+    gradio.layouts: gradio
+    gradio.layouts.accordion: gradio
+    gradio.layouts.column: gradio
+    gradio.layouts.form: gradio
+    gradio.layouts.group: gradio
+    gradio.layouts.row: gradio
+    gradio.layouts.tabs: gradio
+    gradio.networking: gradio
+    gradio.node.examine: gradio
+    gradio.oauth: gradio
+    gradio.pipelines: gradio
+    gradio.processing_utils: gradio
+    gradio.queueing: gradio
+    gradio.ranged_response: gradio
+    gradio.route_utils: gradio
+    gradio.routes: gradio
+    gradio.state_holder: gradio
+    gradio.strings: gradio
+    gradio.templates: gradio
+    gradio.test_data: gradio
+    gradio.test_data.blocks_configs: gradio
+    gradio.themes: gradio
+    gradio.themes.app: gradio
+    gradio.themes.base: gradio
+    gradio.themes.builder_app: gradio
+    gradio.themes.default: gradio
+    gradio.themes.glass: gradio
+    gradio.themes.monochrome: gradio
+    gradio.themes.soft: gradio
+    gradio.themes.upload_theme: gradio
+    gradio.themes.utils: gradio
+    gradio.themes.utils.colors: gradio
+    gradio.themes.utils.fonts: gradio
+    gradio.themes.utils.readme_content: gradio
+    gradio.themes.utils.semver_match: gradio
+    gradio.themes.utils.sizes: gradio
+    gradio.themes.utils.theme_dropdown: gradio
+    gradio.tunneling: gradio
+    gradio.utils: gradio
+    gradio.wasm_utils: gradio
+    gradio_client: gradio_client
+    gradio_client.cli: gradio_client
+    gradio_client.cli.deploy_discord: gradio_client
+    gradio_client.client: gradio_client
+    gradio_client.data_classes: gradio_client
+    gradio_client.documentation: gradio_client
+    gradio_client.exceptions: gradio_client
+    gradio_client.media_data: gradio_client
+    gradio_client.serializing: gradio_client
+    gradio_client.templates.discord_chat: gradio_client
+    gradio_client.utils: gradio_client
     greenlet: greenlet
     greenlet.platform: greenlet
     greenlet.tests: greenlet
@@ -1560,6 +1763,20 @@ manifest:
     groundingdino.util.visualizer: groundingdino_gml
     groundingdino.util.vl_utils: groundingdino_gml
     groundingdino.version: groundingdino_gml
+    h11: h11
+    h11.tests: h11
+    h11.tests.helpers: h11
+    h11.tests.test_against_stdlib_http: h11
+    h11.tests.test_connection: h11
+    h11.tests.test_events: h11
+    h11.tests.test_headers: h11
+    h11.tests.test_helpers: h11
+    h11.tests.test_io: h11
+    h11.tests.test_receivebuffer: h11
+    h11.tests.test_state: h11
+    h11.tests.test_util: h11
+    httpcore: httpcore
+    httpx: httpx
     huggingface_hub: huggingface_hub
     huggingface_hub.commands: huggingface_hub
     huggingface_hub.commands.delete_cache: huggingface_hub
@@ -1649,6 +1866,27 @@ manifest:
     imageio.v3: imageio
     importlib_metadata: importlib_metadata
     importlib_metadata.diagnose: importlib_metadata
+    importlib_resources: importlib_resources
+    importlib_resources.abc: importlib_resources
+    importlib_resources.readers: importlib_resources
+    importlib_resources.simple: importlib_resources
+    importlib_resources.tests: importlib_resources
+    importlib_resources.tests.data01: importlib_resources
+    importlib_resources.tests.data01.subdirectory: importlib_resources
+    importlib_resources.tests.data02: importlib_resources
+    importlib_resources.tests.data02.one: importlib_resources
+    importlib_resources.tests.data02.two: importlib_resources
+    importlib_resources.tests.test_compatibilty_files: importlib_resources
+    importlib_resources.tests.test_contents: importlib_resources
+    importlib_resources.tests.test_custom: importlib_resources
+    importlib_resources.tests.test_files: importlib_resources
+    importlib_resources.tests.test_open: importlib_resources
+    importlib_resources.tests.test_path: importlib_resources
+    importlib_resources.tests.test_read: importlib_resources
+    importlib_resources.tests.test_reader: importlib_resources
+    importlib_resources.tests.test_resource: importlib_resources
+    importlib_resources.tests.util: importlib_resources
+    importlib_resources.tests.zip: importlib_resources
     iniconfig: iniconfig
     iniconfig.exceptions: iniconfig
     iopath: iopath
@@ -2439,6 +2677,10 @@ manifest:
     mpmath.tests.torture: mpmath
     mpmath.usertools: mpmath
     mpmath.visualization: mpmath
+    multipart: python_multipart
+    multipart.decoders: python_multipart
+    multipart.exceptions: python_multipart
+    multipart.multipart: python_multipart
     murmurhash: murmurhash
     murmurhash.about: murmurhash
     murmurhash.mrmr: murmurhash
@@ -3458,6 +3700,8 @@ manifest:
     opendatasets.utils.kaggle_direct: opendatasets
     opendatasets.utils.md5: opendatasets
     opendatasets.utils.network: opendatasets
+    orjson: orjson
+    orjson.orjson: orjson
     packaging: packaging
     packaging.markers: packaging
     packaging.metadata: packaging
@@ -6777,6 +7021,17 @@ manifest:
     pydevd_plugins: omegaconf
     pydevd_plugins.extensions: omegaconf
     pydevd_plugins.extensions.pydevd_plugin_omegaconf: omegaconf
+    pydub: pydub
+    pydub.audio_segment: pydub
+    pydub.effects: pydub
+    pydub.exceptions: pydub
+    pydub.generators: pydub
+    pydub.logging_utils: pydub
+    pydub.playback: pydub
+    pydub.pyaudioop: pydub
+    pydub.scipy_effects: pydub
+    pydub.silence: pydub
+    pydub.utils: pydub
     pygments: pygments
     pygments.cmdline: pygments
     pygments.console: pygments
@@ -7651,6 +7906,9 @@ manifest:
     seaborn.relational: seaborn
     seaborn.utils: seaborn
     seaborn.widgets: seaborn
+    semantic_version: semantic_version
+    semantic_version.base: semantic_version
+    semantic_version.django_fields: semantic_version
     sentencepiece: sentencepiece
     sentencepiece.sentencepiece_model_pb2: sentencepiece
     sentencepiece.sentencepiece_pb2: sentencepiece
@@ -7709,6 +7967,11 @@ manifest:
     setuptools.warnings: setuptools
     setuptools.wheel: setuptools
     setuptools.windows_support: setuptools
+    shellingham: shellingham
+    shellingham.nt: shellingham
+    shellingham.posix: shellingham
+    shellingham.posix.proc: shellingham
+    shellingham.posix.ps: shellingham
     six: six
     skimage: scikit_image
     skimage.color: scikit_image
@@ -8336,6 +8599,7 @@ manifest:
     smmap.test.test_tutorial: smmap
     smmap.test.test_util: smmap
     smmap.util: smmap
+    sniffio: sniffio
     spacy: spacy
     spacy.about: spacy
     spacy.attrs: spacy
@@ -9335,6 +9599,38 @@ manifest:
     stack_data.serializing: stack_data
     stack_data.utils: stack_data
     stack_data.version: stack_data
+    starlette: starlette
+    starlette.applications: starlette
+    starlette.authentication: starlette
+    starlette.background: starlette
+    starlette.concurrency: starlette
+    starlette.config: starlette
+    starlette.convertors: starlette
+    starlette.datastructures: starlette
+    starlette.endpoints: starlette
+    starlette.exceptions: starlette
+    starlette.formparsers: starlette
+    starlette.middleware: starlette
+    starlette.middleware.authentication: starlette
+    starlette.middleware.base: starlette
+    starlette.middleware.cors: starlette
+    starlette.middleware.errors: starlette
+    starlette.middleware.exceptions: starlette
+    starlette.middleware.gzip: starlette
+    starlette.middleware.httpsredirect: starlette
+    starlette.middleware.sessions: starlette
+    starlette.middleware.trustedhost: starlette
+    starlette.middleware.wsgi: starlette
+    starlette.requests: starlette
+    starlette.responses: starlette
+    starlette.routing: starlette
+    starlette.schemas: starlette
+    starlette.staticfiles: starlette
+    starlette.status: starlette
+    starlette.templating: starlette
+    starlette.testclient: starlette
+    starlette.types: starlette
+    starlette.websockets: starlette
     streamlit: streamlit
     streamlit.case_converters: streamlit
     streamlit.code_util: streamlit
@@ -11447,6 +11743,16 @@ manifest:
     toml.ordered: toml
     toml.tz: toml
     tomli: tomli
+    tomlkit: tomlkit
+    tomlkit.api: tomlkit
+    tomlkit.container: tomlkit
+    tomlkit.exceptions: tomlkit
+    tomlkit.items: tomlkit
+    tomlkit.parser: tomlkit
+    tomlkit.source: tomlkit
+    tomlkit.toml_char: tomlkit
+    tomlkit.toml_document: tomlkit
+    tomlkit.toml_file: tomlkit
     toolz: toolz
     toolz.compatibility: toolz
     toolz.curried: toolz
@@ -13861,6 +14167,42 @@ manifest:
     urllib3.util.url: urllib3
     urllib3.util.util: urllib3
     urllib3.util.wait: urllib3
+    uvicorn: uvicorn
+    uvicorn.config: uvicorn
+    uvicorn.importer: uvicorn
+    uvicorn.lifespan: uvicorn
+    uvicorn.lifespan.off: uvicorn
+    uvicorn.lifespan.on: uvicorn
+    uvicorn.logging: uvicorn
+    uvicorn.loops: uvicorn
+    uvicorn.loops.asyncio: uvicorn
+    uvicorn.loops.auto: uvicorn
+    uvicorn.loops.uvloop: uvicorn
+    uvicorn.main: uvicorn
+    uvicorn.middleware: uvicorn
+    uvicorn.middleware.asgi2: uvicorn
+    uvicorn.middleware.message_logger: uvicorn
+    uvicorn.middleware.proxy_headers: uvicorn
+    uvicorn.middleware.wsgi: uvicorn
+    uvicorn.protocols: uvicorn
+    uvicorn.protocols.http: uvicorn
+    uvicorn.protocols.http.auto: uvicorn
+    uvicorn.protocols.http.flow_control: uvicorn
+    uvicorn.protocols.http.h11_impl: uvicorn
+    uvicorn.protocols.http.httptools_impl: uvicorn
+    uvicorn.protocols.utils: uvicorn
+    uvicorn.protocols.websockets: uvicorn
+    uvicorn.protocols.websockets.auto: uvicorn
+    uvicorn.protocols.websockets.websockets_impl: uvicorn
+    uvicorn.protocols.websockets.wsproto_impl: uvicorn
+    uvicorn.server: uvicorn
+    uvicorn.supervisors: uvicorn
+    uvicorn.supervisors.basereload: uvicorn
+    uvicorn.supervisors.multiprocess: uvicorn
+    uvicorn.supervisors.statreload: uvicorn
+    uvicorn.supervisors.watchfilesreload: uvicorn
+    uvicorn.supervisors.watchgodreload: uvicorn
+    uvicorn.workers: uvicorn
     validators: validators
     validators.between: validators
     validators.btc_address: validators
@@ -14073,6 +14415,45 @@ manifest:
     webencodings.mklabels: webencodings
     webencodings.tests: webencodings
     webencodings.x_user_defined: webencodings
+    websockets: websockets
+    websockets.auth: websockets
+    websockets.client: websockets
+    websockets.connection: websockets
+    websockets.datastructures: websockets
+    websockets.exceptions: websockets
+    websockets.extensions: websockets
+    websockets.extensions.base: websockets
+    websockets.extensions.permessage_deflate: websockets
+    websockets.frames: websockets
+    websockets.headers: websockets
+    websockets.http: websockets
+    websockets.http11: websockets
+    websockets.imports: websockets
+    websockets.legacy: websockets
+    websockets.legacy.async_timeout: websockets
+    websockets.legacy.auth: websockets
+    websockets.legacy.client: websockets
+    websockets.legacy.compatibility: websockets
+    websockets.legacy.framing: websockets
+    websockets.legacy.handshake: websockets
+    websockets.legacy.http: websockets
+    websockets.legacy.protocol: websockets
+    websockets.legacy.server: websockets
+    websockets.protocol: websockets
+    websockets.server: websockets
+    websockets.speedups: websockets
+    websockets.streams: websockets
+    websockets.sync: websockets
+    websockets.sync.client: websockets
+    websockets.sync.compatibility: websockets
+    websockets.sync.connection: websockets
+    websockets.sync.messages: websockets
+    websockets.sync.server: websockets
+    websockets.sync.utils: websockets
+    websockets.typing: websockets
+    websockets.uri: websockets
+    websockets.utils: websockets
+    websockets.version: websockets
     wheel: wheel
     wheel.bdist_wheel: wheel
     wheel.cli: wheel
@@ -14229,4 +14610,4 @@ manifest:
     zope.interface.verify: zope.interface
   pip_repository:
     name: pip
-integrity: f8f4967189aa8bc0026c03ad2e6b3632cdff14844f63bc27dddaee0f5a8ba6ce
+integrity: adf8b58deb57402140341b4d97cfcbab0a0eaedd2a2dd6ad27978cd4cf3f0220
