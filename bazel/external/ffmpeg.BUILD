@@ -92,6 +92,7 @@ pkg_tar(
 pkg_tar(
     name = "ffmpeg_binaries",
     srcs = [":ffmpeg_bin", ":ffprobe_bin"],
+    package_dir = "/usr/local/bin",
 )
 
 collect_shared_libs(":ffmpeg_lib", SHARED_LIBS)
