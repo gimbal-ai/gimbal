@@ -97,10 +97,10 @@ common:intelgpu_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
 common:intelgpu_sysroot --config=sysroot-base
 common:intelgpu_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=intelgpu
 
-common:gpl_do_not_distribute_sysroot --config=clang-libc++
-common:gpl_do_not_distribute_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
-common:gpl_do_not_distribute_sysroot --config=sysroot-base
-common:gpl_do_not_distribute_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=gpl_do_not_distribute
+common:cuda_sysroot --config=clang-libc++
+common:cuda_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
+common:cuda_sysroot --config=sysroot-base
+common:cuda_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=cuda
 
 # Build for Clang using Libc++.
 build:clang-libc++ --//bazel/cc_toolchains:compiler=clang

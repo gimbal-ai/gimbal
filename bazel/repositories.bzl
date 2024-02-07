@@ -183,8 +183,10 @@ def _cc_deps():
     )
     _include_all_repo("com_github_libuv_libuv", patches = ["//bazel/external:libuv.patch"], patch_args = ["-p1"])
 
-    # mediapipe deps.
+    _bazel_repo("com_github_ffmpeg_nv_codec_headers", build_file = "//bazel/external:ffmpeg_nv_codec_headers.BUILD")
     _bazel_repo("com_github_ffmpeg_ffmpeg", build_file = "//bazel/external:ffmpeg.BUILD")
+
+    # mediapipe deps.
     _bazel_repo("com_github_opencv_contrib", build_file = "//bazel/external:opencv_contrib.BUILD")
     _bazel_repo("com_github_opencv_opencv", build_file = "//bazel/external:opencv.BUILD")
 

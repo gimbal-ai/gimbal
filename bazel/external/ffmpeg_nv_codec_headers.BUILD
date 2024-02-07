@@ -13,19 +13,23 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("//bazel/tools/apt_parse:apt_parse.bzl", "apt_parse")
+load("@gml//bazel:gml_build_system.bzl", "cuda_sysroot")
+load("@rules_foreign_cc//foreign_cc:defs.bzl", "make")
 
-apt_parse(
-    name = "all_debs",
-    archs = [
-        "aarch64",
-        "x86_64",
+filegroup(
+    name = "all",
+    srcs = glob(["**"]),
+    visibility = ["//visibility:public"],
+)
+
+make(
+    name = "ffmpeg_nv_codec_headers",
+    args = ["-j`nproc`"],
+    lib_source = ":all",
+    out_headers_only = True,
+    out_data_dirs = [
+        "lib/pkgconfig",
     ],
-    specs = [
-        "debian12.yaml",
-        "debian12_no_distribute.yaml",
-        "nvidia.yaml",
-        "jetson.yaml",
-        "intel_compute_runtime.yaml",
-    ],
+    visibility = ["//visibility:public"],
+    target_compatible_with = cuda_sysroot(),
 )

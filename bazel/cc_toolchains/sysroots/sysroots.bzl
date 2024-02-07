@@ -199,44 +199,45 @@ def _intel_gpu_sysroots():
         target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_intelgpu"],
     )
 
-def _gpl_do_not_distribute_sysroot():
+def _cuda_sysroot():
     sysroot_repo(
-        name = "sysroot_gpl_do_not_distribute_runtime",
+        name = "sysroot_cuda_runtime",
         libc_version = "glibc2_36",
         supported_archs = ["x86_64"],
         variant = "runtime",
         packages = _DEBIAN12_RUNTIME_PKGS + [
             "debian12_libvdpau1",
-            "debian12_libvpx-dev",
-            "debian12_libx264-dev",
-            "debian12_libx265-dev",
             "debian12_python3.10",
         ],
-        target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_gpl_do_not_distribute"],
+        target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_cuda"],
     )
 
     sysroot_repo(
-        name = "sysroot_gpl_do_not_distribute_build",
+        name = "sysroot_cuda_build",
         libc_version = "glibc2_36",
         supported_archs = ["x86_64"],
         variant = "build",
         packages = _DEBIAN12_RUNTIME_PKGS + _DEBIAN12_BUILD_PKGS + [
             "debian12_libvdpau1",
-            "debian12_libvpx-dev",
-            "debian12_libx264-dev",
-            "debian12_libx265-dev",
             "debian12_nasm",
             "debian12_yasm",
             "debian12_python3.10",
+            "nvidia_cuda-toolkit-12-3",
         ],
-        target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_gpl_do_not_distribute"],
+        extra_compile_flags = [
+            "-isystem%sysroot%/usr/local/cuda/include",
+        ],
+        extra_link_flags = [
+            "-L%sysroot%/usr/local/cuda/lib64",
+        ],
+        target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_cuda"],
     )
 
 def _gml_sysroots():
     _debian12_sysroots()
     _jetson_sysroots()
     _intel_gpu_sysroots()
-    _gpl_do_not_distribute_sysroot()
+    _cuda_sysroot()
 
 SYSROOT_LIBC_VERSIONS = [
     "glibc2_36",

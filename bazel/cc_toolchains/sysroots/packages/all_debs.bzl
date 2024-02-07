@@ -1757,18 +1757,6 @@ def deb_repos():
         deps = [],
     )
     deb_archive_w_pkg_providers(
-        name = "debian12_libnuma1_aarch64",
-        sha256 = "b4ed2547f387eb2e97d13c0b423b034d2a4d052b2131dfe043e45a84915452c5",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b4ed2547f387eb2e97d13c0b423b034d2a4d052b2131dfe043e45a84915452c5.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/n/numactl/libnuma1_2.0.16-1_arm64.deb"],
-        deps = ["@debian12_libc6_aarch64//:all_files"],
-    )
-    deb_archive_w_pkg_providers(
-        name = "debian12_libnuma1_x86_64",
-        sha256 = "639e1ab6bd66ead40db8a22c332d7199679fa22db261cac34444eb8eb4c17dda",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/639e1ab6bd66ead40db8a22c332d7199679fa22db261cac34444eb8eb4c17dda.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/n/numactl/libnuma1_2.0.16-1_amd64.deb"],
-        deps = ["@debian12_libc6_x86_64//:all_files"],
-    )
-    deb_archive_w_pkg_providers(
         name = "debian12_libnumber-compare-perl_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "cf95662e27037d92c582647400bb1ca7a6dfd2eb26eee5b968b23263cd4976dc",
@@ -2418,30 +2406,6 @@ def deb_repos():
         deps = ["@debian12_libc6_x86_64//:all_files", "@debian12_libx11-6_x86_64//:all_files", "@debian12_libxext6_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
-        name = "debian12_libvpx-dev_aarch64",
-        sha256 = "921630c0e4d44073dbe930e59c944c5d2a0ce58586c94ab38b87ac9b2697dd6d",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/921630c0e4d44073dbe930e59c944c5d2a0ce58586c94ab38b87ac9b2697dd6d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libvpx/libvpx-dev_1.12.0-1+deb12u2_arm64.deb"],
-        deps = ["@debian12_libvpx7_aarch64//:all_files"],
-    )
-    deb_archive_w_pkg_providers(
-        name = "debian12_libvpx-dev_x86_64",
-        sha256 = "5eaf2e9ec92e689c524322b9aaf7c3b8f23d2f863c03a09646abe5c07bde5c96",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/5eaf2e9ec92e689c524322b9aaf7c3b8f23d2f863c03a09646abe5c07bde5c96.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libvpx/libvpx-dev_1.12.0-1+deb12u2_amd64.deb"],
-        deps = ["@debian12_libvpx7_x86_64//:all_files"],
-    )
-    deb_archive_w_pkg_providers(
-        name = "debian12_libvpx7_aarch64",
-        sha256 = "99c0f4ecaf5308f2c00b9634ecafd8b833228dbda3f4717961b583d3a815361d",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/99c0f4ecaf5308f2c00b9634ecafd8b833228dbda3f4717961b583d3a815361d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libvpx/libvpx7_1.12.0-1+deb12u2_arm64.deb"],
-        deps = ["@debian12_libc6_aarch64//:all_files"],
-    )
-    deb_archive_w_pkg_providers(
-        name = "debian12_libvpx7_x86_64",
-        sha256 = "5ccc3485f9cd2eafa32d163e4368a96722fe18440fb28906e3073c31ce742d60",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/5ccc3485f9cd2eafa32d163e4368a96722fe18440fb28906e3073c31ce742d60.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libvpx/libvpx7_1.12.0-1+deb12u2_amd64.deb"],
-        deps = ["@debian12_libc6_x86_64//:all_files"],
-    )
-    deb_archive_w_pkg_providers(
         name = "debian12_libwayland-bin_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "02e9361617b43b130ff032873a910258884160c169e89a1ca45d34d1150a2615",
@@ -2580,54 +2544,6 @@ def deb_repos():
         sha256 = "f5da45e1d881a793250a96613f28c471a248877f1a0f18a5c90e2a620a76c898",
         urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f5da45e1d881a793250a96613f28c471a248877f1a0f18a5c90e2a620a76c898.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libx11/libx11-xcb1_1.8.4-2+deb12u2_amd64.deb"],
         deps = [],
-    )
-    deb_archive_w_pkg_providers(
-        name = "debian12_libx264-164_aarch64",
-        sha256 = "95475856611f971affe2dfaccc85253d1c6bb2fcb1d67c3147b32021cf304b8e",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/95475856611f971affe2dfaccc85253d1c6bb2fcb1d67c3147b32021cf304b8e.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/x264/libx264-164_0.164.3095+gitbaee400-3_arm64.deb"],
-        deps = ["@debian12_libc6_aarch64//:all_files"],
-    )
-    deb_archive_w_pkg_providers(
-        name = "debian12_libx264-164_x86_64",
-        sha256 = "2b9f0d79ab1dccc10c24963c1debaf5a37d839bdba369ac358deefd1a7d56a12",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/2b9f0d79ab1dccc10c24963c1debaf5a37d839bdba369ac358deefd1a7d56a12.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/x264/libx264-164_0.164.3095+gitbaee400-3_amd64.deb"],
-        deps = ["@debian12_libc6_x86_64//:all_files"],
-    )
-    deb_archive_w_pkg_providers(
-        name = "debian12_libx264-dev_aarch64",
-        sha256 = "ec6a88835263d14dd63620b2be829ce2592fe17d9449517f67820dd3a6f76f3f",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ec6a88835263d14dd63620b2be829ce2592fe17d9449517f67820dd3a6f76f3f.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/x264/libx264-dev_0.164.3095+gitbaee400-3_arm64.deb"],
-        deps = ["@debian12_libx264-164_aarch64//:all_files"],
-    )
-    deb_archive_w_pkg_providers(
-        name = "debian12_libx264-dev_x86_64",
-        sha256 = "d884b8961502263879ca0fd9e16fbd4527405fcb1a58a9eb1235e81381f6f4f0",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d884b8961502263879ca0fd9e16fbd4527405fcb1a58a9eb1235e81381f6f4f0.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/x264/libx264-dev_0.164.3095+gitbaee400-3_amd64.deb"],
-        deps = ["@debian12_libx264-164_x86_64//:all_files"],
-    )
-    deb_archive_w_pkg_providers(
-        name = "debian12_libx265-199_aarch64",
-        sha256 = "3142b9c9fb005013cee57abee51abbd78ca0a693fc61aa252fefd5be5d074b03",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3142b9c9fb005013cee57abee51abbd78ca0a693fc61aa252fefd5be5d074b03.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/x265/libx265-199_3.5-2+b1_arm64.deb"],
-        deps = ["@debian12_libc6_aarch64//:all_files", "@debian12_libnuma1_aarch64//:all_files", "@debian12_libstdc__6_aarch64//:all_files"],
-    )
-    deb_archive_w_pkg_providers(
-        name = "debian12_libx265-199_x86_64",
-        sha256 = "9cd87d1b0c56f34f51bcbe8bdb55ebb45dd08ce6c0c6ff2dc77378bac3f64cc0",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/9cd87d1b0c56f34f51bcbe8bdb55ebb45dd08ce6c0c6ff2dc77378bac3f64cc0.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/x265/libx265-199_3.5-2+b1_amd64.deb"],
-        deps = ["@debian12_libc6_x86_64//:all_files", "@debian12_libnuma1_x86_64//:all_files", "@debian12_libstdc__6_x86_64//:all_files"],
-    )
-    deb_archive_w_pkg_providers(
-        name = "debian12_libx265-dev_aarch64",
-        sha256 = "0234798a4bc53e229cf6894b60bd09e54b08f13c237dba0f030dc239342cecf3",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/0234798a4bc53e229cf6894b60bd09e54b08f13c237dba0f030dc239342cecf3.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/x265/libx265-dev_3.5-2+b1_arm64.deb"],
-        deps = ["@debian12_libx265-199_aarch64//:all_files"],
-    )
-    deb_archive_w_pkg_providers(
-        name = "debian12_libx265-dev_x86_64",
-        sha256 = "f23c7797a85fac88b7e894898e7137d2b452e9a1226f2b5ad2ee55bef8056b7d",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f23c7797a85fac88b7e894898e7137d2b452e9a1226f2b5ad2ee55bef8056b7d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/x265/libx265-dev_3.5-2+b1_amd64.deb"],
-        deps = ["@debian12_libx265-199_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_libxau-dev_aarch64",
@@ -3568,6 +3484,309 @@ def deb_repos():
         sha256 = "83d719a866b4477a4c98efc27e46c8694f6fc99402954e027dc208990d2205fb",
         urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/83d719a866b4477a4c98efc27e46c8694f6fc99402954e027dc208990d2205fb.deb", "https://repo.download.nvidia.com/jetson/t234/pool/main/n/nvidia-l4t-tools/nvidia-l4t-tools_35.4.1-20230801124926_arm64.deb"],
         deps = ["@ubuntu2004_libnl-genl-3-200_aarch64//:all_files", "@ubuntu2004_libnl-route-3-200_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-cccl-12-3_x86_64",
+        sha256 = "d00c678373128e45661fbfe1791e598fc7c5c8ce8016834f7beac90c148bf923",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d00c678373128e45661fbfe1791e598fc7c5c8ce8016834f7beac90c148bf923.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-cccl-12-3_12.3.101-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-command-line-tools-12-3_x86_64",
+        sha256 = "371015766f8411deb570cfaa52dd0837eaca2f50b02fe0642b1ca43a4f81a579",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/371015766f8411deb570cfaa52dd0837eaca2f50b02fe0642b1ca43a4f81a579.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-command-line-tools-12-3_12.3.2-1_amd64.deb"],
+        deps = ["@nvidia_cuda-cupti-dev-12-3_x86_64//:all_files", "@nvidia_cuda-gdb-12-3_x86_64//:all_files", "@nvidia_cuda-nvdisasm-12-3_x86_64//:all_files", "@nvidia_cuda-nvprof-12-3_x86_64//:all_files", "@nvidia_cuda-nvtx-12-3_x86_64//:all_files", "@nvidia_cuda-sanitizer-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-compiler-12-3_x86_64",
+        sha256 = "b027e7549fbe1b5258ac81ea85a86ee9e74f9636edb9e96520249cf9cce252a8",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b027e7549fbe1b5258ac81ea85a86ee9e74f9636edb9e96520249cf9cce252a8.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-compiler-12-3_12.3.2-1_amd64.deb"],
+        deps = ["@nvidia_cuda-cuobjdump-12-3_x86_64//:all_files", "@nvidia_cuda-cuxxfilt-12-3_x86_64//:all_files", "@nvidia_cuda-nvcc-12-3_x86_64//:all_files", "@nvidia_cuda-nvprune-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-crt-12-3_x86_64",
+        sha256 = "33c8a03beae7f2790d99cbf73158ab5e67db71a560cfee7611893fa27f4acdac",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/33c8a03beae7f2790d99cbf73158ab5e67db71a560cfee7611893fa27f4acdac.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-crt-12-3_12.3.107-1_amd64.deb"],
+        deps = ["@nvidia_cuda-cudart-dev-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-cudart-12-3_x86_64",
+        sha256 = "fd3fce7cdec43675c452bea3060f50cad69562e7aa85f75b146532c45d3b9142",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/fd3fce7cdec43675c452bea3060f50cad69562e7aa85f75b146532c45d3b9142.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-cudart-12-3_12.3.101-1_amd64.deb"],
+        deps = ["@nvidia_cuda-toolkit-12-3-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-12-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-config-common_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-cudart-dev-12-3_x86_64",
+        sha256 = "0c88aa6232503568f0d5468285cf2395228c24266fbdab11f104980f8ef4926a",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/0c88aa6232503568f0d5468285cf2395228c24266fbdab11f104980f8ef4926a.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-cudart-dev-12-3_12.3.101-1_amd64.deb"],
+        deps = ["@nvidia_cuda-cccl-12-3_x86_64//:all_files", "@nvidia_cuda-cudart-12-3_x86_64//:all_files", "@nvidia_cuda-driver-dev-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-cuobjdump-12-3_x86_64",
+        sha256 = "345c85e3824f167cac5ef56b1d55cad82516ba7ae09dead0f1af5f63fa1270fd",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/345c85e3824f167cac5ef56b1d55cad82516ba7ae09dead0f1af5f63fa1270fd.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-cuobjdump-12-3_12.3.101-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-cupti-12-3_x86_64",
+        sha256 = "ced15e5958757942b7a6014ad8b5d91e9f71be2e29ab81bc10d99a3910e90bd1",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ced15e5958757942b7a6014ad8b5d91e9f71be2e29ab81bc10d99a3910e90bd1.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-cupti-12-3_12.3.101-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-cupti-dev-12-3_x86_64",
+        sha256 = "113cc5411cf217d8c782867cb3da5be1bd52b8facf1e59396b9ef355e4abf773",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/113cc5411cf217d8c782867cb3da5be1bd52b8facf1e59396b9ef355e4abf773.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-cupti-dev-12-3_12.3.101-1_amd64.deb"],
+        deps = ["@nvidia_cuda-cupti-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-cuxxfilt-12-3_x86_64",
+        sha256 = "713c0d470f8a0b3dfb6ed46a8a3975dae27ccaaecd8166ebac269d27907dbccd",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/713c0d470f8a0b3dfb6ed46a8a3975dae27ccaaecd8166ebac269d27907dbccd.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-cuxxfilt-12-3_12.3.101-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-documentation-12-3_x86_64",
+        sha256 = "df1013ac3b3bbc0be3cdfc91edc6009f28a84f8fb2e9b36e8008b8c2e1d51718",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/df1013ac3b3bbc0be3cdfc91edc6009f28a84f8fb2e9b36e8008b8c2e1d51718.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-documentation-12-3_12.3.101-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-driver-dev-12-3_x86_64",
+        sha256 = "865b16610fca1f4f6234bcd69d6ea5ecffa3695d21bbc61b3695b9a03c3b3c4f",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/865b16610fca1f4f6234bcd69d6ea5ecffa3695d21bbc61b3695b9a03c3b3c4f.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-driver-dev-12-3_12.3.101-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-gdb-12-3_x86_64",
+        sha256 = "6a7b568fc632d557cda62c6b5aca7b2b9067c30607014fc9c072b8583407f6ae",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6a7b568fc632d557cda62c6b5aca7b2b9067c30607014fc9c072b8583407f6ae.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-gdb-12-3_12.3.101-1_amd64.deb"],
+        deps = ["@nvidia_cuda-cuobjdump-12-3_x86_64//:all_files", "@nvidia_cuda-nvdisasm-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-libraries-12-3_x86_64",
+        sha256 = "6dbf9d34ecfce50d5eb871d4d98421786153590e1935a32103fe2c843c1849a2",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6dbf9d34ecfce50d5eb871d4d98421786153590e1935a32103fe2c843c1849a2.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-libraries-12-3_12.3.2-1_amd64.deb"],
+        deps = ["@nvidia_cuda-cudart-12-3_x86_64//:all_files", "@nvidia_cuda-nvrtc-12-3_x86_64//:all_files", "@nvidia_cuda-opencl-12-3_x86_64//:all_files", "@nvidia_libcublas-12-3_x86_64//:all_files", "@nvidia_libcufft-12-3_x86_64//:all_files", "@nvidia_libcurand-12-3_x86_64//:all_files", "@nvidia_libcusolver-12-3_x86_64//:all_files", "@nvidia_libcusparse-12-3_x86_64//:all_files", "@nvidia_libnpp-12-3_x86_64//:all_files", "@nvidia_libnvjitlink-12-3_x86_64//:all_files", "@nvidia_libnvjpeg-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-libraries-dev-12-3_x86_64",
+        sha256 = "5eedb9eea413bcd0a9f7c327667c03b89fe9cff5a47d171ccb5d44b904875b5b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/5eedb9eea413bcd0a9f7c327667c03b89fe9cff5a47d171ccb5d44b904875b5b.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-libraries-dev-12-3_12.3.2-1_amd64.deb"],
+        deps = ["@nvidia_cuda-cccl-12-3_x86_64//:all_files", "@nvidia_cuda-cudart-dev-12-3_x86_64//:all_files", "@nvidia_cuda-driver-dev-12-3_x86_64//:all_files", "@nvidia_cuda-nvrtc-dev-12-3_x86_64//:all_files", "@nvidia_cuda-opencl-dev-12-3_x86_64//:all_files", "@nvidia_cuda-profiler-api-12-3_x86_64//:all_files", "@nvidia_libcublas-dev-12-3_x86_64//:all_files", "@nvidia_libcufft-dev-12-3_x86_64//:all_files", "@nvidia_libcufile-dev-12-3_x86_64//:all_files", "@nvidia_libcurand-dev-12-3_x86_64//:all_files", "@nvidia_libcusolver-dev-12-3_x86_64//:all_files", "@nvidia_libcusparse-dev-12-3_x86_64//:all_files", "@nvidia_libnpp-dev-12-3_x86_64//:all_files", "@nvidia_libnvjitlink-dev-12-3_x86_64//:all_files", "@nvidia_libnvjpeg-dev-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-nvcc-12-3_x86_64",
+        sha256 = "2c9c2a62651dbd500435c881416f469357ec43f6f8eebfdd335588e0d02e5f33",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/2c9c2a62651dbd500435c881416f469357ec43f6f8eebfdd335588e0d02e5f33.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-nvcc-12-3_12.3.107-1_amd64.deb"],
+        deps = ["@nvidia_cuda-crt-12-3_x86_64//:all_files", "@nvidia_cuda-cudart-dev-12-3_x86_64//:all_files", "@nvidia_cuda-nvvm-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-nvdisasm-12-3_x86_64",
+        sha256 = "1e3b7715bd72c59216bfe8753667898841047c609347bd38a6829e4ff309f972",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/1e3b7715bd72c59216bfe8753667898841047c609347bd38a6829e4ff309f972.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-nvdisasm-12-3_12.3.101-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-nvml-dev-12-3_x86_64",
+        sha256 = "1ce1d191736e3c4cc846162b932776e38572f993409dcbef429c8c42555008a1",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/1ce1d191736e3c4cc846162b932776e38572f993409dcbef429c8c42555008a1.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-nvml-dev-12-3_12.3.101-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-nvprof-12-3_x86_64",
+        sha256 = "7028304f0d9dd46eafb2905b65349f5df07eb35cc1edfca59283544299dfb12b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/7028304f0d9dd46eafb2905b65349f5df07eb35cc1edfca59283544299dfb12b.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-nvprof-12-3_12.3.101-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-nvprune-12-3_x86_64",
+        sha256 = "93ccebdafa087f7b74bc3f1d8fa314558d479bfa66136ad91a7a11c56d943dfe",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/93ccebdafa087f7b74bc3f1d8fa314558d479bfa66136ad91a7a11c56d943dfe.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-nvprune-12-3_12.3.101-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-nvrtc-12-3_x86_64",
+        sha256 = "f36740f528a5cd3089725478dc46fc30293e249043ca7d3cd009b3e39ae5de55",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f36740f528a5cd3089725478dc46fc30293e249043ca7d3cd009b3e39ae5de55.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-nvrtc-12-3_12.3.107-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-nvrtc-dev-12-3_x86_64",
+        sha256 = "123a3aaa41995192b529ddb4c6ff35d56a024c6dbbcfda571d8f065d11621de5",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/123a3aaa41995192b529ddb4c6ff35d56a024c6dbbcfda571d8f065d11621de5.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-nvrtc-dev-12-3_12.3.107-1_amd64.deb"],
+        deps = ["@nvidia_cuda-nvrtc-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-nvtx-12-3_x86_64",
+        sha256 = "09a4c8d0e6ff05a5ba94812d74bb534209f7a8adb0b290767109dd351b705b12",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/09a4c8d0e6ff05a5ba94812d74bb534209f7a8adb0b290767109dd351b705b12.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-nvtx-12-3_12.3.101-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-nvvm-12-3_x86_64",
+        sha256 = "66da8086b45a2b1c9266ee51b53b0b1fb403ec5cba764b8a37396d6b2b3e1c9f",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/66da8086b45a2b1c9266ee51b53b0b1fb403ec5cba764b8a37396d6b2b3e1c9f.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-nvvm-12-3_12.3.107-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-opencl-12-3_x86_64",
+        sha256 = "b6d5dcf61831ef4e2c176d451eed36803bb9d19d7801b929edd4cddfdc3b8b36",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b6d5dcf61831ef4e2c176d451eed36803bb9d19d7801b929edd4cddfdc3b8b36.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-opencl-12-3_12.3.101-1_amd64.deb"],
+        deps = ["@nvidia_cuda-toolkit-12-3-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-12-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-config-common_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-opencl-dev-12-3_x86_64",
+        sha256 = "c07c2bee317bb110482e71aa9bd727640fd4ed746ef4537956f5dde6b725d70e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/c07c2bee317bb110482e71aa9bd727640fd4ed746ef4537956f5dde6b725d70e.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-opencl-dev-12-3_12.3.101-1_amd64.deb"],
+        deps = ["@nvidia_cuda-opencl-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-profiler-api-12-3_x86_64",
+        sha256 = "96862c14435fe29c142861543cf3edc1b393c8198f5449f8902db4066e6c4791",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/96862c14435fe29c142861543cf3edc1b393c8198f5449f8902db4066e6c4791.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-profiler-api-12-3_12.3.101-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-sanitizer-12-3_x86_64",
+        sha256 = "ed51f75f2a70929b71e714fa42dc01cc9db39835eb9ec7b9f03b7fcd624dea66",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ed51f75f2a70929b71e714fa42dc01cc9db39835eb9ec7b9f03b7fcd624dea66.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-sanitizer-12-3_12.3.101-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-toolkit-12-3-config-common_x86_64",
+        sha256 = "b14276527b4f19d94cd43e789ef6e76ca693ff438140bf471958ba864bf3891e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b14276527b4f19d94cd43e789ef6e76ca693ff438140bf471958ba864bf3891e.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-toolkit-12-3-config-common_12.3.101-1_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-toolkit-12-3_x86_64",
+        extra_symlinks = {
+            "usr/local/cuda": "/usr/local/cuda-12.3",
+        },
+        sha256 = "e20c7f87d74caf949f3d0876fd32bae13e1321ab52f83630a1e43cf6ae179ee1",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e20c7f87d74caf949f3d0876fd32bae13e1321ab52f83630a1e43cf6ae179ee1.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-toolkit-12-3_12.3.2-1_amd64.deb"],
+        deps = ["@nvidia_cuda-compiler-12-3_x86_64//:all_files", "@nvidia_cuda-documentation-12-3_x86_64//:all_files", "@nvidia_cuda-libraries-12-3_x86_64//:all_files", "@nvidia_cuda-libraries-dev-12-3_x86_64//:all_files", "@nvidia_cuda-nvml-dev-12-3_x86_64//:all_files", "@nvidia_cuda-tools-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-toolkit-12-config-common_x86_64",
+        sha256 = "1473ec552f55dab6dc1b696d6932e7127081fc8f96cf87a2c2c12a699954f6d4",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/1473ec552f55dab6dc1b696d6932e7127081fc8f96cf87a2c2c12a699954f6d4.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-toolkit-12-config-common_12.3.101-1_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-toolkit-config-common_x86_64",
+        sha256 = "80bc6cbce2a366ed5a5df16d4e50dec92412f1761d0323b2bfac80bdabd07a1c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/80bc6cbce2a366ed5a5df16d4e50dec92412f1761d0323b2bfac80bdabd07a1c.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-toolkit-config-common_12.3.101-1_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_cuda-tools-12-3_x86_64",
+        sha256 = "f4ccf6f164fd3ee474e31cf1e3e675326471b62196a17b66eca26de8f0a255a9",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f4ccf6f164fd3ee474e31cf1e3e675326471b62196a17b66eca26de8f0a255a9.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-tools-12-3_12.3.2-1_amd64.deb"],
+        deps = ["@nvidia_cuda-command-line-tools-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_libcublas-12-3_x86_64",
+        sha256 = "92c89dd47e6961aeec15bf93bb7f8663a6188e6f91b4ef1ac2478c9b24e0fc8b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/92c89dd47e6961aeec15bf93bb7f8663a6188e6f91b4ef1ac2478c9b24e0fc8b.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./libcublas-12-3_12.3.4.1-1_amd64.deb"],
+        deps = ["@nvidia_cuda-toolkit-12-3-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-12-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-config-common_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_libcublas-dev-12-3_x86_64",
+        sha256 = "56e55f9e0d29537668106e9f296bbcde8f383963cf9f7c122b41c1019b8a4220",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/56e55f9e0d29537668106e9f296bbcde8f383963cf9f7c122b41c1019b8a4220.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./libcublas-dev-12-3_12.3.4.1-1_amd64.deb"],
+        deps = ["@nvidia_libcublas-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_libcufft-12-3_x86_64",
+        sha256 = "ac89b9b7ae4c4df8eb79d65c1abfd321a47cdf3590f81c2f2f4aa92c50465565",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ac89b9b7ae4c4df8eb79d65c1abfd321a47cdf3590f81c2f2f4aa92c50465565.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./libcufft-12-3_11.0.12.1-1_amd64.deb"],
+        deps = ["@nvidia_cuda-toolkit-12-3-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-12-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-config-common_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_libcufft-dev-12-3_x86_64",
+        sha256 = "e9746f270d0f296f0b5f8db3d0f821c898283c57e03f04ff08122b5482100f91",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e9746f270d0f296f0b5f8db3d0f821c898283c57e03f04ff08122b5482100f91.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./libcufft-dev-12-3_11.0.12.1-1_amd64.deb"],
+        deps = ["@nvidia_libcufft-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_libcufile-dev-12-3_x86_64",
+        sha256 = "bfa0192ef2e0eaa510a9c0095a5a016cf14185d2a8a42f83f38c30d7b60a6365",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/bfa0192ef2e0eaa510a9c0095a5a016cf14185d2a8a42f83f38c30d7b60a6365.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./libcufile-dev-12-3_1.8.1.2-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_libcurand-12-3_x86_64",
+        sha256 = "7cf301a647200abee73815f7573cd3e18d282237432ed2633517d9de88f1de1e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/7cf301a647200abee73815f7573cd3e18d282237432ed2633517d9de88f1de1e.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./libcurand-12-3_10.3.4.107-1_amd64.deb"],
+        deps = ["@nvidia_cuda-toolkit-12-3-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-12-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-config-common_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_libcurand-dev-12-3_x86_64",
+        sha256 = "9e4a63d06aa5d94bb1bbb8bc4fdcd703edde168b8ce4391731643a4d1b2e3589",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/9e4a63d06aa5d94bb1bbb8bc4fdcd703edde168b8ce4391731643a4d1b2e3589.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./libcurand-dev-12-3_10.3.4.107-1_amd64.deb"],
+        deps = ["@nvidia_libcurand-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_libcusolver-12-3_x86_64",
+        sha256 = "319a12863060ed881ad6923a64856fee27bcd0727ae7abf06e79ffa85da2176d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/319a12863060ed881ad6923a64856fee27bcd0727ae7abf06e79ffa85da2176d.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./libcusolver-12-3_11.5.4.101-1_amd64.deb"],
+        deps = ["@nvidia_cuda-toolkit-12-3-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-12-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-config-common_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_libcusolver-dev-12-3_x86_64",
+        sha256 = "f971c8d9d9a635b8df1b8dd2d82bc4cefcde8c4733cd32b55f2f93b5ebe9362a",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f971c8d9d9a635b8df1b8dd2d82bc4cefcde8c4733cd32b55f2f93b5ebe9362a.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./libcusolver-dev-12-3_11.5.4.101-1_amd64.deb"],
+        deps = ["@nvidia_libcusolver-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_libcusparse-12-3_x86_64",
+        sha256 = "0f747b1b42aef83d2857031f28667123a378e0f7160e3a7d818689ae0b1e3e1b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/0f747b1b42aef83d2857031f28667123a378e0f7160e3a7d818689ae0b1e3e1b.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./libcusparse-12-3_12.2.0.103-1_amd64.deb"],
+        deps = ["@nvidia_cuda-toolkit-12-3-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-12-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-config-common_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_libcusparse-dev-12-3_x86_64",
+        sha256 = "e5ed533dfc04961deeb2e525b22d349498653f95ed530b2d06e9dd436934a86c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e5ed533dfc04961deeb2e525b22d349498653f95ed530b2d06e9dd436934a86c.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./libcusparse-dev-12-3_12.2.0.103-1_amd64.deb"],
+        deps = ["@nvidia_libcusparse-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_libnpp-12-3_x86_64",
+        sha256 = "ae6376d0a7817c150357cab152e167265b2ec793627943daf57eee8cd35faf67",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ae6376d0a7817c150357cab152e167265b2ec793627943daf57eee8cd35faf67.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./libnpp-12-3_12.2.3.2-1_amd64.deb"],
+        deps = ["@nvidia_cuda-toolkit-12-3-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-12-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-config-common_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_libnpp-dev-12-3_x86_64",
+        sha256 = "3ce918f118cf9c3cea4ce56cb815e687245f56ab839b27e13cf5c0289e7a2f7f",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3ce918f118cf9c3cea4ce56cb815e687245f56ab839b27e13cf5c0289e7a2f7f.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./libnpp-dev-12-3_12.2.3.2-1_amd64.deb"],
+        deps = ["@nvidia_libnpp-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_libnvjitlink-12-3_x86_64",
+        sha256 = "3584a84bff54e3896a67e92b75f96ed75ff5823ed4ce704a172a55e8959a4c71",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3584a84bff54e3896a67e92b75f96ed75ff5823ed4ce704a172a55e8959a4c71.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./libnvjitlink-12-3_12.3.101-1_amd64.deb"],
+        deps = ["@nvidia_cuda-toolkit-12-3-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-12-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-config-common_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_libnvjitlink-dev-12-3_x86_64",
+        sha256 = "78f864fccc0dbb470861b80e3b7ca28a636654f8dddc3836019ed8c9ced689bf",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/78f864fccc0dbb470861b80e3b7ca28a636654f8dddc3836019ed8c9ced689bf.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./libnvjitlink-dev-12-3_12.3.101-1_amd64.deb"],
+        deps = ["@nvidia_libnvjitlink-12-3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_libnvjpeg-12-3_x86_64",
+        sha256 = "7556266a34c724281f1480111f986e2e1798e905302d5f86bdc27f985d88da19",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/7556266a34c724281f1480111f986e2e1798e905302d5f86bdc27f985d88da19.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./libnvjpeg-12-3_12.3.0.81-1_amd64.deb"],
+        deps = ["@nvidia_cuda-toolkit-12-3-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-12-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-config-common_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "nvidia_libnvjpeg-dev-12-3_x86_64",
+        sha256 = "bb9ada9920af13c8e83c064342c6bc326321173a3022097b74cda3191e30a7f9",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/bb9ada9920af13c8e83c064342c6bc326321173a3022097b74cda3191e30a7f9.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./libnvjpeg-dev-12-3_12.3.0.81-1_amd64.deb"],
+        deps = ["@nvidia_libnvjpeg-12-3_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "ubuntu2004_adduser_aarch64",

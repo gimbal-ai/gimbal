@@ -14,6 +14,7 @@
 # SPDX-License-Identifier: Proprietary
 
 load("@gml//bazel/cc_toolchains/sysroots:create_sysroot.bzl", "create_sysroot")
+load("@gml//bazel/cc_toolchains/sysroots:sysroot_path.bzl", "sysroot_path_provider")
 load("@gml//bazel/cc_toolchains/sysroots:sysroot_toolchain.bzl", "sysroot_toolchain")
 
 create_sysroot(
@@ -31,6 +32,12 @@ sysroot_toolchain(
     files = ":sysroot_all_files",
     tar = ":sysroot",
     path_info = ":sysroot_all_files",
+)
+
+sysroot_path_provider(
+    name = "sysroot_path_provider",
+    path_info = ":sysroot_all_files",
+    visibility = ["//visibility:public"],
 )
 
 alias(

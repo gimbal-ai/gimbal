@@ -10,9 +10,6 @@ repositories:
   download_prefix: https://snapshot.debian.org/archive/debian/20231209T111918Z/
 packages:
 - name: libvdpau1
-- name: libvpx-dev
-- name: libx264-dev
-- name: libx265-dev
 - name: nasm
 - name: yasm
 manual_packages:

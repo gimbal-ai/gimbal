@@ -363,9 +363,9 @@ def _intelgpu_sysroot():
         "//conditions:default": ["@platforms//:incompatible"],
     })
 
-def _gpl_do_not_distribute_sysroot():
+def _cuda_sysroot():
     return select({
-        "@gml//bazel/cc_toolchains/sysroots:sysroot_type_gpl_do_not_distribute": [],
+        "@gml//bazel/cc_toolchains/sysroots:sysroot_type_cuda": [],
         "//conditions:default": ["@platforms//:incompatible"],
     })
 
@@ -395,4 +395,4 @@ gml_cc_test = _gml_cc_test
 no_sysroot = _no_sysroot
 jetson_sysroot = _jetson_sysroot
 intelgpu_sysroot = _intelgpu_sysroot
-gpl_do_not_distribute_sysroot = _gpl_do_not_distribute_sysroot
+cuda_sysroot = _cuda_sysroot

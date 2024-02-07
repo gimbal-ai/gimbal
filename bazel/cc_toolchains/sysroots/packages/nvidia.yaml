@@ -1,0 +1,16 @@
+---
+repositories:
+- name: nvidia
+  arch: x86_64
+  index_url: https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/Packages.gz
+  download_prefix: https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/
+packages:
+- name: cuda-toolkit-12-3
+  extra_symlinks:
+  - source: usr/local/cuda
+    target: /usr/local/cuda-12.3
+exclude_packages:
+- build-essential
+- cuda-visual-tools-12-3
+- gds-tools-12-3
+- libcufile-12-3

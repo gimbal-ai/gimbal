@@ -37,7 +37,7 @@ string_flag(
         "debian12",
         "jetson",
         "intelgpu",
-        "gpl_do_not_distribute",
+        "cuda",
     ],
 )
 
@@ -63,9 +63,9 @@ config_setting(
 )
 
 config_setting(
-    name = "sysroot_type_gpl_do_not_distribute",
+    name = "sysroot_type_cuda",
     flag_values = {
-        ":sysroot_type": "gpl_do_not_distribute",
+        ":sysroot_type": "cuda",
     },
 )
 
@@ -92,7 +92,7 @@ selects.config_setting_group(
     match_any = [
         ":sysroot_type_debian12",
         ":sysroot_type_intelgpu",
-        ":sysroot_type_gpl_do_not_distribute",
+        ":sysroot_type_cuda",
     ],
     visibility = ["//visibility:public"],
 )

@@ -250,6 +250,13 @@ REPOSITORY_LOCATIONS = dict(
             "https://github.com/stackb/rules_proto/archive/v2.0.1.tar.gz",
         ],
     ),
+    com_github_ffmpeg_nv_codec_headers = dict(
+        sha256 = "62b30ab37e4e9be0d0c5b37b8fee4b094e38e570984d56e1135a6b6c2c164c9f",
+        strip_prefix = "nv-codec-headers-12.1.14.0",
+        urls = [
+            "https://github.com/FFmpeg/nv-codec-headers/releases/download/n12.1.14.0/nv-codec-headers-12.1.14.0.tar.gz",
+        ],
+    ),
     com_github_ffmpeg_ffmpeg = dict(
         sha256 = "7c1ebea95d815e49c1e60c7ee816410dec73a81b8ac002b276780d2f9048e598",
         strip_prefix = "FFmpeg-n6.1.1",

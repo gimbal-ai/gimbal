@@ -71,7 +71,7 @@ gml_oci_image(
     name = "python_base_image",
     # We switch out the base image to include extra libs when we need to run a optimized ffmpeg.
     base = select({
-        "//bazel/cc_toolchains/sysroots:sysroot_type_gpl_do_not_distribute": "@gml//:cc_base_image",
+        "//bazel/cc_toolchains/sysroots:sysroot_type_cuda": "@gml//:cc_base_image",
         "//conditions:default": "@python_3_10_image",
     }),
     tars = [":python_deps_tar"],

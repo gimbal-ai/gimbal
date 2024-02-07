@@ -13,19 +13,18 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("//bazel/tools/apt_parse:apt_parse.bzl", "apt_parse")
+load("//bazel/cc_toolchains/sysroots:sysroot_toolchain.bzl", "SysrootPathInfo")
 
-apt_parse(
-    name = "all_debs",
-    archs = [
-        "aarch64",
-        "x86_64",
-    ],
-    specs = [
-        "debian12.yaml",
-        "debian12_no_distribute.yaml",
-        "nvidia.yaml",
-        "jetson.yaml",
-        "intel_compute_runtime.yaml",
-    ],
+def _sysroot_path_provider_impl(ctx):
+    return [
+        platform_common.TemplateVariableInfo({
+            "SYSROOT": ctx.attr.path_info[SysrootPathInfo].path,
+        }),
+    ]
+
+sysroot_path_provider = rule(
+    implementation = _sysroot_path_provider_impl,
+    attrs = {
+        "path_info": attr.label(mandatory = True, doc = "Target providing SysrootPathInfo"),
+    },
 )
