@@ -50,12 +50,11 @@ absl::Status FFmpegVideoEncoderCalculator::GetContract(mediapipe::CalculatorCont
 }
 
 absl::Status FFmpegVideoEncoderCalculator::Open(mediapipe::CalculatorContext*) {
-  avcodec_register_all();
-  codec_ = avcodec_find_encoder_by_name(kCodecName);
-  if (!codec_) {
+  const AVCodec* codec = avcodec_find_encoder_by_name(kCodecName);
+  if (!codec) {
     return {absl::StatusCode::kInvalidArgument, "Codec not found"};
   }
-  codec_ctx_ = avcodec_alloc_context3(codec_);
+  codec_ctx_ = avcodec_alloc_context3(codec);
   if (!codec_ctx_) {
     return {absl::StatusCode::kInternal, "Failed to allocate codec context"};
   }
@@ -84,7 +83,7 @@ absl::Status FFmpegVideoEncoderCalculator::SetupCodec(int height, int width, int
   av_opt_set_int(codec_ctx_->priv_data, "b", kTargetKiloBitrate * 1000, 0);
   av_opt_set(codec_ctx_->priv_data, "preset", "constrained_baseline", 0);
 
-  auto ret = avcodec_open2(codec_ctx_, codec_, nullptr);
+  auto ret = avcodec_open2(codec_ctx_, codec_ctx_->codec, nullptr);
   if (ret < 0) {
     return absl::Status(absl::StatusCode::kInternal,
                         absl::Substitute("Failed avcodec_open2: $0", av_err2str(ret)));

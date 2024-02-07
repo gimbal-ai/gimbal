@@ -49,7 +49,6 @@ class FFmpegVideoEncoderCalculator : public mediapipe::CalculatorBase {
   absl::Status Close(mediapipe::CalculatorContext* cc) override;
 
  private:
-  AVCodec* codec_;
   AVCodecContext* codec_ctx_;
   AVFrame* frame_;
   std::unique_ptr<AVPacketWrapper> av_packet_;

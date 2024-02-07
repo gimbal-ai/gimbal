@@ -251,10 +251,10 @@ REPOSITORY_LOCATIONS = dict(
         ],
     ),
     com_github_ffmpeg_ffmpeg = dict(
-        sha256 = "5f417a4c00ec7874d255b24dbca33246be7ea72253bd9449bf9ebac51133e2a8",
-        strip_prefix = "FFmpeg-n4.3.6",
+        sha256 = "7c1ebea95d815e49c1e60c7ee816410dec73a81b8ac002b276780d2f9048e598",
+        strip_prefix = "FFmpeg-n6.1.1",
         urls = [
-            "https://github.com/FFmpeg/FFmpeg/archive/refs/tags/n4.3.6.tar.gz",
+            "https://github.com/FFmpeg/FFmpeg/archive/refs/tags/n6.1.1.tar.gz",
         ],
     ),
     com_github_opencv_opencv = dict(

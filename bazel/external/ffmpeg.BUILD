@@ -14,8 +14,8 @@
 # SPDX-License-Identifier: Proprietary
 
 load("@gml//bazel:foreign_cc.bzl", "collect_shared_libs")
-load("@gml//bazel:gml_build_system.bzl", "gpl_do_not_distribute_sysroot")
 load("@rules_foreign_cc//foreign_cc:defs.bzl", "configure_make")
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 
 filegroup(
     name = "all",
@@ -24,11 +24,13 @@ filegroup(
 )
 
 SHARED_LIBS = [
-    "libavcodec.so.58",
-    "libavformat.so.58",
-    "libavutil.so.56",
-    "libswscale.so.5",
-    "libswresample.so.3",
+    "libavdevice.so.60",
+    "libavfilter.so.9",
+    "libavcodec.so.60",
+    "libavformat.so.60",
+    "libswresample.so.4",
+    "libswscale.so.7",
+    "libavutil.so.58",
 ]
 
 configure_make(
@@ -76,6 +78,20 @@ filegroup(
     srcs = [":ffmpeg_lib"],
     output_group = "ffprobe",
     visibility = ["//visibility:public"],
+)
+
+pkg_tar(
+    name = "ffmpeg_libs",
+    srcs = [":shared_libs"],
+    package_dir = select({
+        "@platforms//cpu:aarch64": "/usr/lib/aarch64-linux-gnu",
+        "@platforms//cpu:x86_64": "/usr/lib/x86_64-linux-gnu",
+    }),
+)
+
+pkg_tar(
+    name = "ffmpeg_binaries",
+    srcs = [":ffmpeg_bin", ":ffprobe_bin"],
 )
 
 collect_shared_libs(":ffmpeg_lib", SHARED_LIBS)

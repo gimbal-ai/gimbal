@@ -111,15 +111,15 @@ cmake(
         "HAVE_FFMPEG": "TRUE",
         "FFMPEG_LIBRARIES": ";".join([
             "$$EXT_BUILD_DEPS/ffmpeg/lib/{lib}".format(lib = lib)
-            for lib in ["libavcodec.so.58", "libavformat.so.58", "libavutil.so.56", "libswresample.so.3", "libswscale.so.5"]
+            for lib in ["libavcodec.so.60", "libavformat.so.60", "libavutil.so.58", "libswresample.so.4", "libswscale.so.7"]
         ]),
         "FFMPEG_LIBRARY_DIRS": "$$EXT_BUILD_DEPS/ffmpeg/lib",
         "FFMPEG_INCLUDE_DIRS": "$$EXT_BUILD_DEPS/ffmpeg/include",
-        "FFMPEG_libavcodec_VERSION": "58.91.100",
-        "FFMPEG_libavformat_VERSION": "58.45.100",
-        "FFMPEG_libavutil_VERSION": "56.51.100",
-        "FFMPEG_libswresample_VERSION": "3.7.100",
-        "FFMPEG_libswscale_VERSION": "5.7.100",
+        "FFMPEG_libavcodec_VERSION": "60.3.100",
+        "FFMPEG_libavformat_VERSION": "60.16.100",
+        "FFMPEG_libavutil_VERSION": "58.29.100",
+        "FFMPEG_libswresample_VERSION": "4.12.100",
+        "FFMPEG_libswscale_VERSION": "7.5.100",
     },
     includes = ["opencv4"],
     lib_source = ":all",
