@@ -28,31 +28,31 @@ cmake(
         "-j`nproc`",
         "-l`nproc`",
     ],
+    build_data = [
+        "@com_google_protobuf//:protoc",
+    ],
     cache_entries = {
-        "BUILD_SHARED_LIBS": "OFF",
         "BUILD_ONNX_PYTHON": "OFF",
+        "BUILD_SHARED_LIBS": "OFF",
         "ONNX_BUILD_TESTS": "OFF",
         "ONNX_DISABLE_EXCEPTIONS": "ON",
         "ONNX_GEN_PB_TYPE_STUBS": "OFF",
         "ONNX_USE_PROTOBUF_SHARED_LIBS": "OFF",
+        "Protobuf_FOUND": "TRUE",
+        "Protobuf_INCLUDE_DIR": "$$EXT_BUILD_DEPS/include",
+        "Protobuf_LIBRARY": "$$EXT_BUILD_DEPS/lib/libprotobuf.a",
+        "Protobuf_PROTOC_EXECUTABLE": "$$EXT_BUILD_ROOT/$(location @com_google_protobuf//:protoc)",
 
         # Use our own protobuf library.
         "Protobuf_USE_STATIC_LIBS": "ON",
-        "Protobuf_INCLUDE_DIR": "$$EXT_BUILD_DEPS/include",
-        "Protobuf_LIBRARY": "$$EXT_BUILD_DEPS/lib/libprotobuf.a",
-        "Protobuf_FOUND": "TRUE",
-        "Protobuf_PROTOC_EXECUTABLE": "$$EXT_BUILD_ROOT/$(location @com_google_protobuf//:protoc)",
     },
-    out_data_dirs = ["lib/cmake"],
-    visibility = ["//visibility:public"],
     lib_source = ":source",
+    out_data_dirs = ["lib/cmake"],
     out_static_libs = [
         "libonnx.a",
         "libonnx_proto.a",
     ],
-    build_data = [
-        "@com_google_protobuf//:protoc",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         "@com_google_protobuf//:protobuf",
     ],

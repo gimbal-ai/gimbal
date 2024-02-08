@@ -13,11 +13,11 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-def _collect_shared_libs(foreign_cc_target, libs):
+def _collect_shared_libs(srcs, libs):
     for lib in libs:
         native.filegroup(
             name = lib.partition(".")[0],
-            srcs = [foreign_cc_target],
+            srcs = [srcs],
             output_group = lib,
             visibility = ["//visibility:public"],
         )

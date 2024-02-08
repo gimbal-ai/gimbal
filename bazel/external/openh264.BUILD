@@ -28,11 +28,11 @@ make(
         "@platforms//cpu:x86_64": ["ARCH=x86_64"],
     }),
     lib_source = ":all",
-    out_static_libs = [
-        "libopenh264.a",
-    ],
     out_data_dirs = [
         "lib/pkgconfig",
+    ],
+    out_static_libs = [
+        "libopenh264.a",
     ],
     visibility = ["//visibility:public"],
 )

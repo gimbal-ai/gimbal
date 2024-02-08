@@ -29,6 +29,7 @@ toolchain_identifier = "{name}_toolchain"
 
 tool_paths = {
     "ar": "{toolchain_path}/bin/llvm-ar",
+    "clang-tidy": "{toolchain_path}/bin/clang-tidy",
     "cpp": "{toolchain_path}/bin/clang-cpp",
     "dwp": "{toolchain_path}/bin/llvm-dwp",
     "gcc": "{toolchain_path}/bin/clang-15",
@@ -38,7 +39,6 @@ tool_paths = {
     "objcopy": "{toolchain_path}/bin/llvm-objcopy",
     "objdump": "{toolchain_path}/bin/llvm-objdump",
     "strip": "{toolchain_path}/bin/llvm-strip",
-    "clang-tidy": "{toolchain_path}/bin/clang-tidy",
 }
 
 includes = [
@@ -120,8 +120,8 @@ filegroup(
     name = "all_files",
     srcs = [
         ":libcxx_all_files",
-        ":toolchain_all_files",
         ":sysroot_files",
+        ":toolchain_all_files",
     ],
 )
 
@@ -143,8 +143,8 @@ filegroup(
     name = "compiler_files",
     srcs = [
         ":libcxx_compiler_files",
-        ":toolchain_compiler_files",
         ":sysroot_files",
+        ":toolchain_compiler_files",
     ],
 )
 
@@ -159,8 +159,8 @@ filegroup(
     name = "linker_files",
     srcs = [
         ":libcxx_linker_files",
-        ":toolchain_linker_files",
         ":sysroot_files",
+        ":toolchain_linker_files",
     ],
 )
 
@@ -185,6 +185,7 @@ cc_toolchain(
     as_files = ":as_files",
     compiler_files = ":compiler_files",
     dwp_files = ":dwp_files",
+    exec_transition_for_inputs = False,
     linker_files = ":linker_files",
     module_map = None,
     objcopy_files = ":objcopy_files",
@@ -192,6 +193,5 @@ cc_toolchain(
     supports_param_files = 1,
     toolchain_config = "toolchain_config",
     toolchain_identifier = toolchain_identifier,
-    exec_transition_for_inputs = False,
     visibility = ["//visibility:public"],
 )

@@ -16,32 +16,32 @@
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files", "pkg_mkdirs", "pkg_mklink", "strip_prefix")
 
 symlinks = {symlinks}
+
 empty_dirs = {empty_dirs}
+
 regular_files = {regular_files}
 
 [
     pkg_mklink(
         name = name,
-        target = target,
         link_name = path,
+        target = target,
     )
     for name, (path, target) in symlinks.items()
 ]
 
-[
-    pkg_mkdirs(
-        name = "dirs",
-        dirs = empty_dirs,
-    ),
-] if empty_dirs else []
+pkg_mkdirs(
+    name = "dirs",
+    dirs = empty_dirs,
+)
 
 [
     pkg_files(
         name = "files_w_mode_{}".format(mode),
+        srcs = files,
         attributes = pkg_attributes(
             mode = mode,
         ),
-        srcs = files,
         strip_prefix = strip_prefix.from_pkg(),
     )
     for mode, files in regular_files.items()

@@ -28,16 +28,16 @@ cmake(
         "-j`nproc`",
         "-l`nproc`",
     ],
-    visibility = ["//visibility:public"],
     lib_name = "libmlas",
     lib_source = ":all",
-    out_lib_dir = "lib",
-    out_include_dir = "include",
-    out_static_libs = [
-        "libmlas.a",
-    ],
     out_data_dirs = [
         "lib/pkgconfig",
         "lib/cmake",
     ],
+    out_include_dir = "include",
+    out_lib_dir = "lib",
+    out_static_libs = [
+        "libmlas.a",
+    ],
+    visibility = ["//visibility:public"],
 )

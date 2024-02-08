@@ -26,10 +26,10 @@ make(
     name = "ffmpeg_nv_codec_headers",
     args = ["-j`nproc`"],
     lib_source = ":all",
-    out_headers_only = True,
     out_data_dirs = [
         "lib/pkgconfig",
     ],
-    visibility = ["//visibility:public"],
+    out_headers_only = True,
     target_compatible_with = cuda_sysroot(),
+    visibility = ["//visibility:public"],
 )

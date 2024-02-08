@@ -23,15 +23,15 @@ filegroup(
 
 cmake(
     name = "opencl_icd_loader",
-    cache_entries = {
-        "BUILD_SHARED_LIBS": "OFF",
-        "OpenCLHeaders_DIR": "$$EXT_BUILD_DEPS/opencl_headers/share/cmake/OpenCLHeaders",
-    },
     build_args = [
         "--",  # <- Pass remaining options to the native tool.
         "-j`nproc`",
         "-l`nproc`",
     ],
+    cache_entries = {
+        "BUILD_SHARED_LIBS": "OFF",
+        "OpenCLHeaders_DIR": "$$EXT_BUILD_DEPS/opencl_headers/share/cmake/OpenCLHeaders",
+    },
     lib_source = ":source",
     out_data_dirs = [
         "share",
@@ -39,8 +39,8 @@ cmake(
     out_static_libs = [
         "libOpenCL.a",
     ],
+    visibility = ["//visibility:public"],
     deps = [
         "@com_github_khronosgroup_opencl_headers//:opencl_headers",
     ],
-    visibility = ["//visibility:public"],
 )

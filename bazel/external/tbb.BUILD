@@ -30,13 +30,16 @@ cmake(
     ],
     cache_entries = {
         "BUILD_SHARED_LIBS": "OFF",
-        "TBB_TEST": "OFF",
-        "TBB_BUILD": "ON",
         "TBBMALLOC_BUILD": "ON",
         "TBBMALLOC_PROXY_BUILD": "ON",
+        "TBB_BUILD": "ON",
+        "TBB_TEST": "OFF",
     },
-    visibility = ["//visibility:public"],
     lib_source = ":all",
+    out_data_dirs = [
+        "lib/pkgconfig",
+        "lib/cmake",
+    ],
     out_static_libs = select({
         "@gml//bazel:debug_build": [
             "libtbb_debug.a",
@@ -47,8 +50,5 @@ cmake(
             "libtbbmalloc.a",
         ],
     }),
-    out_data_dirs = [
-        "lib/pkgconfig",
-        "lib/cmake",
-    ],
+    visibility = ["//visibility:public"],
 )

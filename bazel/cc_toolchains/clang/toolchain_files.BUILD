@@ -155,6 +155,7 @@ filegroup(
     srcs = [
         ":toolchain_ar_files",
         ":toolchain_as_files",
+        ":toolchain_clangtidy_files",
         ":toolchain_compiler_files",
         ":toolchain_dwp_files",
         ":toolchain_linker_files",
@@ -163,7 +164,6 @@ filegroup(
         ":toolchain_objdump_files",
         ":toolchain_profdata_files",
         ":toolchain_strip_files",
-        ":toolchain_clangtidy_files",
     ],
     visibility = ["//visibility:public"],
 )

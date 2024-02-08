@@ -23,6 +23,11 @@ filegroup(
 
 cmake(
     name = "opencl_clhpp",
+    build_args = [
+        "--",  # <- Pass remaining options to the native tool.
+        "-j`nproc`",
+        "-l`nproc`",
+    ],
     cache_entries = {
         "BUILD_DOCS": "OFF",
         "BUILD_EXAMPLES": "OFF",
@@ -32,16 +37,11 @@ cmake(
         "OpenCLHeaders_DIR": "$$EXT_BUILD_DEPS/opencl_headers/share/cmake/OpenCLHeaders",
         "OpenCLICDLoader_DIR": "$$EXT_BUILD_DEPS/opencl_icd_loader/share/cmake/OpenCLICDLoader",
     },
-    build_args = [
-        "--",  # <- Pass remaining options to the native tool.
-        "-j`nproc`",
-        "-l`nproc`",
-    ],
     lib_source = ":source",
     out_headers_only = True,
+    visibility = ["//visibility:public"],
     deps = [
         "@com_github_khronosgroup_opencl_headers//:opencl_headers",
         "@com_github_khronosgroup_opencl_icd_loader//:opencl_icd_loader",
     ],
-    visibility = ["//visibility:public"],
 )

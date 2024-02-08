@@ -30,27 +30,27 @@ cmake(
     ],
     cache_entries = {
         "BUILD_SHARED_LIBS": "OFF",
-        "DNNL_CPU_RUNTIME": "TBB",
-        "DNNL_BUILD_TESTS": "OFF",
         "DNNL_BUILD_EXAMPLES": "OFF",
-        "DNNL_LIBRARY_TYPE": "STATIC",
-        # DNNL_ENABLE_JIT_PROFILING causes a linking issue, so turn it off. See:
-        # https://github.com/oneapi-src/oneDNN/blob/e3243ab905f4171c1d7f5f05b2458b843402ea96/cmake/options.cmake#L218
-        "DNNL_ENABLE_JIT_PROFILING": "OFF",
+        "DNNL_BUILD_TESTS": "OFF",
+        "DNNL_CPU_RUNTIME": "TBB",
         # ITT gets statically linked and causes a conflict with TBB which also has it. Remove it for now.
         # TODO(oazizi): Fix build so ITT can be enabled.
         "DNNL_ENABLE_ITT_TASKS": "OFF",
+        # DNNL_ENABLE_JIT_PROFILING causes a linking issue, so turn it off. See:
+        # https://github.com/oneapi-src/oneDNN/blob/e3243ab905f4171c1d7f5f05b2458b843402ea96/cmake/options.cmake#L218
+        "DNNL_ENABLE_JIT_PROFILING": "OFF",
+        "DNNL_LIBRARY_TYPE": "STATIC",
         "TBBROOT": "$$EXT_BUILD_DEPS",
     },
-    visibility = ["//visibility:public"],
     lib_source = ":all",
-    out_static_libs = [
-        "libdnnl.a",
-    ],
     out_data_dirs = [
         "lib/pkgconfig",
         "lib/cmake",
     ],
+    out_static_libs = [
+        "libdnnl.a",
+    ],
+    visibility = ["//visibility:public"],
     deps = [
         "@com_github_oneapi_oneTBB//:tbb",
     ],

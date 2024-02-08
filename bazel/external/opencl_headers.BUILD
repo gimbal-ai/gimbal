@@ -29,9 +29,9 @@ cmake(
         "-l`nproc`",
     ],
     lib_source = ":source",
-    out_headers_only = True,
     out_data_dirs = [
         "share",
     ],
+    out_headers_only = True,
     visibility = ["//visibility:public"],
 )

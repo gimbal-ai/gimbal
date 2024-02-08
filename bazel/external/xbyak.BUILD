@@ -28,7 +28,7 @@ cmake(
         "-j`nproc`",
         "-l`nproc`",
     ],
+    lib_source = ":source",
     out_headers_only = True,
     visibility = ["//visibility:public"],
-    lib_source = ":source",
 )

@@ -67,29 +67,41 @@ cmake(
         "@com_github_opencv_contrib//:quality",
     ],
     cache_entries = {
+        "BUILD_EXAMPLES": "OFF",
         # The module list is always sorted alphabetically so that we do not
         # cause a rebuild when changing the link order.
         "BUILD_LIST": ",".join(sorted(OPENCV_MODULES)),
-        "BUILD_TESTS": "OFF",
         "BUILD_PERF_TESTS": "OFF",
-        "BUILD_EXAMPLES": "OFF",
         "BUILD_SHARED_LIBS": "ON" if OPENCV_SHARED_LIBS else "OFF",
-        "OPENCV_EXTRA_MODULES_PATH": "$$EXT_BUILD_ROOT/external/com_github_opencv_contrib/modules/quality",
-        "WITH_ITT": "OFF",
-        "WITH_IPP": "OFF",
-        "WITH_JASPER": "OFF",
-        "WITH_JPEG": "ON",
-        # TODO(james): enable png support if we need it.
-        "WITH_PNG": "OFF",
-        "WITH_TIFF": "ON",
-        "WITH_OPENCL": "OFF",
-        "WITH_WEBP": "OFF",
+        "BUILD_TESTS": "OFF",
+        "BUILD_opencv_python": "OFF",
+
         # Optimization flags
         "CV_ENABLE_INTRINSICS": "ON",
-        "WITH_EIGEN": "ON",
-        "WITH_PTHREADS": "ON",
-        "WITH_PTHREADS_PF": "ON",
-        "WITH_FFMPEG": "ON",
+        "ENABLE_CCACHE": "OFF",
+        "FFMPEG_INCLUDE_DIRS": "$$EXT_BUILD_DEPS/ffmpeg/include",
+        "FFMPEG_LIBRARIES": ";".join([
+            "$$EXT_BUILD_DEPS/ffmpeg/lib/{lib}".format(lib = lib)
+            for lib in [
+                "libavcodec.so.60",
+                "libavformat.so.60",
+                "libavutil.so.58",
+                "libswresample.so.4",
+                "libswscale.so.7",
+            ]
+        ]),
+        "FFMPEG_LIBRARY_DIRS": "$$EXT_BUILD_DEPS/ffmpeg/lib",
+        "FFMPEG_libavcodec_VERSION": "60.3.100",
+        "FFMPEG_libavformat_VERSION": "60.16.100",
+        "FFMPEG_libavutil_VERSION": "58.29.100",
+        "FFMPEG_libswresample_VERSION": "4.12.100",
+        "FFMPEG_libswscale_VERSION": "7.5.100",
+
+        # Bypass opencv's cmake search mechanisms for deps we build.
+        "HAVE_FFMPEG": "TRUE",
+        "OPENCV_EXTRA_MODULES_PATH": "$$EXT_BUILD_ROOT/external/com_github_opencv_contrib/modules/quality",
+        "OPENCV_SKIP_PYTHON_LOADER": "ON",
+
         # COPIED FROM MEDIAPIPE:
         # When building tests, by default Bazel builds them in dynamic mode.
         # See https://docs.bazel.build/versions/master/be/c-cpp.html#cc_binary.linkstatic
@@ -103,23 +115,19 @@ cmake(
         # opencv_video_encoder_calculator_test but it is not exported, so
         # libimage_frame_opencv.so fails to find it.
         "OPENCV_SKIP_VISIBILITY_HIDDEN": "ON" if not OPENCV_SHARED_LIBS else "OFF",
-        "OPENCV_SKIP_PYTHON_LOADER": "ON",
-        "BUILD_opencv_python": "OFF",
-        "ENABLE_CCACHE": "OFF",
-
-        # Bypass opencv's cmake search mechanisms for deps we build.
-        "HAVE_FFMPEG": "TRUE",
-        "FFMPEG_LIBRARIES": ";".join([
-            "$$EXT_BUILD_DEPS/ffmpeg/lib/{lib}".format(lib = lib)
-            for lib in ["libavcodec.so.60", "libavformat.so.60", "libavutil.so.58", "libswresample.so.4", "libswscale.so.7"]
-        ]),
-        "FFMPEG_LIBRARY_DIRS": "$$EXT_BUILD_DEPS/ffmpeg/lib",
-        "FFMPEG_INCLUDE_DIRS": "$$EXT_BUILD_DEPS/ffmpeg/include",
-        "FFMPEG_libavcodec_VERSION": "60.3.100",
-        "FFMPEG_libavformat_VERSION": "60.16.100",
-        "FFMPEG_libavutil_VERSION": "58.29.100",
-        "FFMPEG_libswresample_VERSION": "4.12.100",
-        "FFMPEG_libswscale_VERSION": "7.5.100",
+        "WITH_EIGEN": "ON",
+        "WITH_FFMPEG": "ON",
+        "WITH_IPP": "OFF",
+        "WITH_ITT": "OFF",
+        "WITH_JASPER": "OFF",
+        "WITH_JPEG": "ON",
+        "WITH_OPENCL": "OFF",
+        # TODO(james): enable png support if we need it.
+        "WITH_PNG": "OFF",
+        "WITH_PTHREADS": "ON",
+        "WITH_PTHREADS_PF": "ON",
+        "WITH_TIFF": "ON",
+        "WITH_WEBP": "OFF",
     },
     includes = ["opencv4"],
     lib_source = ":all",
@@ -136,8 +144,8 @@ cmake(
         "libopencv_%s.a" % module
         for module in OPENCV_MODULES
     ] if not OPENCV_SHARED_LIBS else None,
+    visibility = ["//visibility:public"],
     deps = [
         "@com_github_ffmpeg_ffmpeg//:ffmpeg_lib",
     ],
-    visibility = ["//visibility:public"],
 )

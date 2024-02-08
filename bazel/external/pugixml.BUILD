@@ -28,11 +28,11 @@ cmake(
         "-j`nproc`",
         "-l`nproc`",
     ],
-    visibility = ["//visibility:public"],
     lib_name = "libpugixml",
     lib_source = ":all",
     out_data_dirs = [
         "lib/pkgconfig",
         "lib/cmake",
     ],
+    visibility = ["//visibility:public"],
 )

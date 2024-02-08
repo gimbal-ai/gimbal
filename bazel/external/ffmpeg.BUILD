@@ -36,7 +36,6 @@ SHARED_LIBS = [
 configure_make(
     name = "ffmpeg_lib",
     args = ["-j`nproc`"],
-    lib_source = ":all",
     configure_options = [
         "--disable-static",
         "--enable-shared",
@@ -52,49 +51,50 @@ configure_make(
         "@platforms//cpu:aarch64": ["--arch=aarch64"],
         "@platforms//cpu:x86_64": ["--arch=x86_64"],
     }) + select({
-      "@gml//bazel/cc_toolchains/sysroots:sysroot_type_cuda": [
-          "--enable-cuda",
-          "--enable-cuda-llvm",
-          "--enable-cuda-nvcc",
-          "--enable-cuvid",
-          "--enable-ffnvcodec",
-          "--enable-libnpp",
-          "--enable-nonfree",
-          "--enable-nvdec",
-          "--nvcc=$$EXT_BUILD_ROOT/$(SYSROOT)/usr/local/cuda/bin/nvcc",
-          "--nvccflags=\"-gencode arch=compute_75,code=sm_75\"",
-          "--x86asmexe=$$EXT_BUILD_ROOT/$(SYSROOT)/usr/bin/nasm",
-      ],
-      "//conditions:default": [],
+        "@gml//bazel/cc_toolchains/sysroots:sysroot_type_cuda": [
+            "--enable-cuda",
+            "--enable-cuda-llvm",
+            "--enable-cuda-nvcc",
+            "--enable-cuvid",
+            "--enable-ffnvcodec",
+            "--enable-libnpp",
+            "--enable-nonfree",
+            "--enable-nvdec",
+            "--nvcc=$$EXT_BUILD_ROOT/$(SYSROOT)/usr/local/cuda/bin/nvcc",
+            "--nvccflags=\"-gencode arch=compute_75,code=sm_75\"",
+            "--x86asmexe=$$EXT_BUILD_ROOT/$(SYSROOT)/usr/bin/nasm",
+        ],
+        "//conditions:default": [],
     }),
     env = select({
-      "@gml//bazel/cc_toolchains/sysroots:sysroot_type_cuda": {
-          "PKG_CONFIG_PATH": "$${EXT_BUILD_DEPS}/openh264/lib/pkgconfig:$${EXT_BUILD_DEPS}/ffmpeg_nv_codec_headers/lib/pkgconfig",
-      },
-      "//conditions:default": {
-          "PKG_CONFIG_PATH": "$${EXT_BUILD_DEPS}/openh264/lib/pkgconfig",
-      },
+        "@gml//bazel/cc_toolchains/sysroots:sysroot_type_cuda": {
+            "PKG_CONFIG_PATH": "$${EXT_BUILD_DEPS}/openh264/lib/pkgconfig:$${EXT_BUILD_DEPS}/ffmpeg_nv_codec_headers/lib/pkgconfig",
+        },
+        "//conditions:default": {
+            "PKG_CONFIG_PATH": "$${EXT_BUILD_DEPS}/openh264/lib/pkgconfig",
+        },
     }),
-    out_shared_libs = SHARED_LIBS,
+    lib_source = ":all",
     out_binaries = [
         "ffmpeg",
         "ffprobe",
     ],
+    out_shared_libs = SHARED_LIBS,
+    toolchains = select({
+        "@gml//bazel/cc_toolchains/sysroots:sysroot_type_cuda": [
+            "@sysroot_cuda_build_x86_64//:sysroot_path_provider",
+        ],
+        "//conditions:default": [],
+    }),
+    visibility = ["//visibility:public"],
     deps = [
         "@com_github_cisco_openh264//:openh264",
     ] + select({
-      "@gml//bazel/cc_toolchains/sysroots:sysroot_type_cuda": [
-          "@com_github_ffmpeg_nv_codec_headers//:ffmpeg_nv_codec_headers",
-      ],
-      "//conditions:default": [],
+        "@gml//bazel/cc_toolchains/sysroots:sysroot_type_cuda": [
+            "@com_github_ffmpeg_nv_codec_headers//:ffmpeg_nv_codec_headers",
+        ],
+        "//conditions:default": [],
     }),
-    toolchains = select({
-      "@gml//bazel/cc_toolchains/sysroots:sysroot_type_cuda": [
-          "@sysroot_cuda_build_x86_64//:sysroot_path_provider",
-      ],
-      "//conditions:default": [],
-    }),
-    visibility = ["//visibility:public"],
 )
 
 filegroup(
@@ -122,8 +122,14 @@ pkg_tar(
 
 pkg_tar(
     name = "ffmpeg_binaries",
-    srcs = [":ffmpeg_bin", ":ffprobe_bin"],
+    srcs = [
+        ":ffmpeg_bin",
+        ":ffprobe_bin",
+    ],
     package_dir = "/usr/local/bin",
 )
 
-collect_shared_libs(":ffmpeg_lib", SHARED_LIBS)
+collect_shared_libs(
+    srcs = ":ffmpeg_lib",
+    libs = SHARED_LIBS,
+)
