@@ -17,11 +17,11 @@
 
 
 if node.platform_family?("debian")
-  apt_package ["python3-pip", "python3.10", "python3.10-dev"] do
+  apt_package ["python3-pip", "python3.11", "python3.11-dev"] do
     action :upgrade
   end
 
   execute "python alternatives selection" do
-    command "update-alternatives --install /usr/bin/python python /usr/bin/python3 100"
+    command "update-alternatives --install /usr/bin/python python /usr/bin/python3.11 101"
   end
 end

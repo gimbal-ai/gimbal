@@ -207,7 +207,7 @@ def _cuda_sysroot():
         variant = "runtime",
         packages = _DEBIAN12_RUNTIME_PKGS + [
             "debian12_libvdpau1",
-            "debian12_python3.10",
+            "debian12_python3.11-minimal",
         ],
         target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_cuda"],
     )
@@ -221,7 +221,7 @@ def _cuda_sysroot():
             "debian12_libvdpau1",
             "debian12_nasm",
             "debian12_yasm",
-            "debian12_python3.10",
+            "debian12_python3.11-minimal",
             "nvidia_cuda-toolkit-12-3",
         ],
         extra_compile_flags = [

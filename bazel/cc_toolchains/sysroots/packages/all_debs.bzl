@@ -1925,6 +1925,18 @@ def deb_repos():
         deps = [],
     )
     deb_archive_w_pkg_providers(
+        name = "debian12_libpython3.11-minimal_aarch64",
+        sha256 = "399271d141a1e08479c80f7832921ddf5fdb46c15c8b0dd3172c52c74b79b197",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/399271d141a1e08479c80f7832921ddf5fdb46c15c8b0dd3172c52c74b79b197.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/python3.11/libpython3.11-minimal_3.11.2-6_arm64.deb"],
+        deps = ["@debian12_libc6_aarch64//:all_files", "@debian12_libssl3_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libpython3.11-minimal_x86_64",
+        sha256 = "6fc5ab5858781ab90c68b4deea09f21871fd7b55dc1a0764ad7116ac4c86574d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6fc5ab5858781ab90c68b4deea09f21871fd7b55dc1a0764ad7116ac4c86574d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/python3.11/libpython3.11-minimal_3.11.2-6_amd64.deb"],
+        deps = ["@debian12_libc6_x86_64//:all_files", "@debian12_libssl3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
         name = "debian12_libquadmath0_x86_64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "4e21728bbb1f170f35a5d60fe26adadb48c436f1b5fd977454e632668074169c",
@@ -3062,16 +3074,24 @@ def deb_repos():
         deps = ["@debian12_conmon_x86_64//:all_files", "@debian12_crun_x86_64//:all_files", "@debian12_golang-github-containers-common_x86_64//:all_files", "@debian12_libdevmapper1.02.1_x86_64//:all_files", "@debian12_libgpgme11_x86_64//:all_files", "@debian12_libseccomp2_x86_64//:all_files", "@debian12_libsubid4_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
-        name = "debian12_python3.10_aarch64",
-        sha256 = "d1833657699e61c1947475e63c906ad9f8405f3a436d6abbb714fec6c5a0a61a",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d1833657699e61c1947475e63c906ad9f8405f3a436d6abbb714fec6c5a0a61a.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/python3.10/python3.10_3.10.13-1_arm64.deb"],
-        deps = [],
+        name = "debian12_python3.11-minimal_aarch64",
+        extra_symlinks = {
+            "usr/bin/python": "/usr/bin/python3",
+            "usr/bin/python3": "/usr/bin/python3.11",
+        },
+        sha256 = "6e83406f07fb2f567aa12d57e51c24c40c42d7f144970ed9a05f0be25a1b1241",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6e83406f07fb2f567aa12d57e51c24c40c42d7f144970ed9a05f0be25a1b1241.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/python3.11/python3.11-minimal_3.11.2-6_arm64.deb"],
+        deps = ["@debian12_libc6_aarch64//:all_files", "@debian12_libexpat1_aarch64//:all_files", "@debian12_libpython3.11-minimal_aarch64//:all_files", "@debian12_zlib1g_aarch64//:all_files"],
     )
     deb_archive_w_pkg_providers(
-        name = "debian12_python3.10_x86_64",
-        sha256 = "3d171ae37680cab5bc978ffb035ebd2fb8ae5518500b382a8935c11f0502fc7f",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3d171ae37680cab5bc978ffb035ebd2fb8ae5518500b382a8935c11f0502fc7f.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/python3.10/python3.10_3.10.13-1_amd64.deb"],
-        deps = [],
+        name = "debian12_python3.11-minimal_x86_64",
+        extra_symlinks = {
+            "usr/bin/python": "/usr/bin/python3",
+            "usr/bin/python3": "/usr/bin/python3.11",
+        },
+        sha256 = "a72247ba64bcd1d0ace2ea8eefd7bcfaca84204def9495269526c25dd9fddc0c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/a72247ba64bcd1d0ace2ea8eefd7bcfaca84204def9495269526c25dd9fddc0c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/python3.11/python3.11-minimal_3.11.2-6_amd64.deb"],
+        deps = ["@debian12_libc6_x86_64//:all_files", "@debian12_libexpat1_x86_64//:all_files", "@debian12_libpython3.11-minimal_x86_64//:all_files", "@debian12_zlib1g_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
         name = "debian12_readline-common_aarch64",

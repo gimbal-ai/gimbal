@@ -148,14 +148,14 @@ python.toolchain(
     configure_coverage_tool = True,
     ignore_root_user_error = True,
     is_default = True,
-    python_version = "3.10",
+    python_version = "3.11",
 )
-use_repo(python, python = "python_3_10")
+use_repo(python, python = "python_3_11")
 
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 pip.parse(
     hub_name = "pip",
-    python_version = "3.10",
+    python_version = "3.11",
     requirements_lock = "//bazel/python:requirements_lock.txt",
 )
 use_repo(pip, "pip")
@@ -186,12 +186,12 @@ oci.pull(
     ],
 )
 oci.pull(
-    name = "python_3_10_image",
-    digest = "sha256:bd4097b62c6752da37c3f1ca2e330b5e76d8deb4848cf1795a2473bf7910a91e",  # 3.10-bookworm multiarch
+    name = "python_3_11_image",
+    digest = "sha256:2a746e2b9dfd9c155e1218ee5bcaad64c3c8816258c0ee7d25f3893ed2252a1e",  # 3.11-slim-bookworm multiarch
     image = "index.docker.io/library/python",
     platforms = [
         "linux/amd64",
         "linux/arm64/v8",
     ],
 )
-use_repo(oci, "distroless_nodejs", "postgres_15_alpine", "python_3_10_image", "victoria_metrics_1_93_6")
+use_repo(oci, "distroless_nodejs", "postgres_15_alpine", "python_3_11_image", "victoria_metrics_1_93_6")

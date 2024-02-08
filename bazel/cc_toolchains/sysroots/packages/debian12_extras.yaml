@@ -1,0 +1,20 @@
+---
+repositories:
+- name: debian12
+  arch: x86_64
+  index_url: https://snapshot.debian.org/archive/debian/20231209T111918Z/dists/bookworm/main/binary-amd64/Packages.gz
+  download_prefix: https://snapshot.debian.org/archive/debian/20231209T111918Z/
+- name: debian12
+  arch: aarch64
+  index_url: https://snapshot.debian.org/archive/debian/20231209T111918Z/dists/bookworm/main/binary-arm64/Packages.gz
+  download_prefix: https://snapshot.debian.org/archive/debian/20231209T111918Z/
+packages:
+- name: libvdpau1
+- name: nasm
+- name: python3.11-minimal
+  extra_symlinks:
+  - source: usr/bin/python3
+    target: /usr/bin/python3.11
+  - source: usr/bin/python
+    target: /usr/bin/python3
+- name: yasm

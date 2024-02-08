@@ -240,7 +240,7 @@ def _gml_minimal_py_image(name, binary, **kwargs):
     # We switch out the base image to include extra libs when we need to run a optimized ffmpeg.
     default_arg(kwargs, "base", select({
         "//bazel/cc_toolchains/sysroots:sysroot_type_cuda": "@gml//:cc_base_image",
-        "//conditions:default": "@python_3_10_image",
+        "//conditions:default": "@python_3_11_image",
     }))
     _gml_binary_image(
         name = name,

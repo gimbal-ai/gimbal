@@ -770,7 +770,6 @@ manifest:
     einops.layers.torch: einops
     einops.packing: einops
     einops.parsing: einops
-    exceptiongroup: exceptiongroup
     executing: executing
     executing.executing: executing
     executing.version: executing
@@ -8750,6 +8749,8 @@ manifest:
     spacy.lang.fi.stop_words: spacy
     spacy.lang.fi.syntax_iterators: spacy
     spacy.lang.fi.tokenizer_exceptions: spacy
+    spacy.lang.fo: spacy
+    spacy.lang.fo.tokenizer_exceptions: spacy
     spacy.lang.fr: spacy
     spacy.lang.fr.examples: spacy
     spacy.lang.fr.lemmatizer: spacy
@@ -8901,6 +8902,10 @@ manifest:
     spacy.lang.nl.stop_words: spacy
     spacy.lang.nl.syntax_iterators: spacy
     spacy.lang.nl.tokenizer_exceptions: spacy
+    spacy.lang.nn: spacy
+    spacy.lang.nn.examples: spacy
+    spacy.lang.nn.punctuation: spacy
+    spacy.lang.nn.tokenizer_exceptions: spacy
     spacy.lang.norm_exceptions: spacy
     spacy.lang.pl: spacy
     spacy.lang.pl.examples: spacy
@@ -9164,6 +9169,8 @@ manifest:
     spacy.tests.lang.fi.test_noun_chunks: spacy
     spacy.tests.lang.fi.test_text: spacy
     spacy.tests.lang.fi.test_tokenizer: spacy
+    spacy.tests.lang.fo: spacy
+    spacy.tests.lang.fo.test_tokenizer: spacy
     spacy.tests.lang.fr: spacy
     spacy.tests.lang.fr.test_exceptions: spacy
     spacy.tests.lang.fr.test_noun_chunks: spacy
@@ -9246,6 +9253,8 @@ manifest:
     spacy.tests.lang.nl: spacy
     spacy.tests.lang.nl.test_noun_chunks: spacy
     spacy.tests.lang.nl.test_text: spacy
+    spacy.tests.lang.nn: spacy
+    spacy.tests.lang.nn.test_tokenizer: spacy
     spacy.tests.lang.pl: spacy
     spacy.tests.lang.pl.test_text: spacy
     spacy.tests.lang.pl.test_tokenizer: spacy
@@ -9392,6 +9401,7 @@ manifest:
     spacy.tests.test_pickles: spacy
     spacy.tests.test_scorer: spacy
     spacy.tests.test_ty: spacy
+    spacy.tests.tok2vec: spacy
     spacy.tests.tokenizer: spacy
     spacy.tests.tokenizer.test_exceptions: spacy
     spacy.tests.tokenizer.test_explain: spacy
@@ -14610,4 +14620,4 @@ manifest:
     zope.interface.verify: zope.interface
   pip_repository:
     name: pip
-integrity: adf8b58deb57402140341b4d97cfcbab0a0eaedd2a2dd6ad27978cd4cf3f0220
+integrity: 6c816c9170803d9220a5f5a300152c3a285cbc53acde0453f60c3cc130c984ec
