@@ -224,8 +224,13 @@ def _gml_fast_py_image(name, binary, **kwargs):
     default_arg(kwargs, "tars", [])
 
     binary_name = Label(binary).name
-    default_arg(kwargs, "entrypoint", ["python", "/app/{}.py".format(binary_name)])
-    default_arg(kwargs, "env", {"PYTHONPATH": "/app/{}.runfiles/_main".format(binary_name)})
+    default_arg(kwargs, "entrypoint", ["python3", "/app/{}.py".format(binary_name)])
+    python_path = [
+        "/usr/local/lib/python3.11/site-packages",
+        "/usr/local/lib/python3.11/dist-packages",
+        "/app/{}.runfiles/_main".format(binary_name),
+    ]
+    default_arg(kwargs, "env", {"PYTHONPATH": ":".join(python_path)})
 
     # Exclude rules_python dependencies (includes hermetic python toolchain and pip dependencies)
     kwargs["runfiles_denylist"].append("rules_python~")

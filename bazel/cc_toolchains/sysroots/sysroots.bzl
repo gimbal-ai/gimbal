@@ -200,15 +200,27 @@ def _intel_gpu_sysroots():
     )
 
 def _cuda_sysroot():
+    python_runtime_pkgs = [
+        "debian12_coreutils",
+        "debian12_python3.11",
+    ]
+
+    ffmpeg_runtime_pkgs = [
+        "debian12_libvdpau1",
+    ]
+
+    ffmpeg_build_pkgs = [
+        "debian12_nasm",
+        "debian12_yasm",
+        "nvidia_cuda-toolkit-12-3",
+    ]
+
     sysroot_repo(
         name = "sysroot_cuda_runtime",
         libc_version = "glibc2_36",
         supported_archs = ["x86_64"],
         variant = "runtime",
-        packages = _DEBIAN12_RUNTIME_PKGS + [
-            "debian12_libvdpau1",
-            "debian12_python3.11",
-        ],
+        packages = _DEBIAN12_RUNTIME_PKGS + python_runtime_pkgs + ffmpeg_runtime_pkgs,
         target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_cuda"],
     )
 
@@ -217,13 +229,7 @@ def _cuda_sysroot():
         libc_version = "glibc2_36",
         supported_archs = ["x86_64"],
         variant = "build",
-        packages = _DEBIAN12_RUNTIME_PKGS + _DEBIAN12_BUILD_PKGS + [
-            "debian12_libvdpau1",
-            "debian12_nasm",
-            "debian12_yasm",
-            "debian12_python3.11",
-            "nvidia_cuda-toolkit-12-3",
-        ],
+        packages = _DEBIAN12_RUNTIME_PKGS + _DEBIAN12_BUILD_PKGS + python_runtime_pkgs + ffmpeg_runtime_pkgs + ffmpeg_build_pkgs,
         extra_compile_flags = [
             "-isystem%sysroot%/usr/local/cuda/include",
         ],
@@ -238,13 +244,7 @@ def _cuda_sysroot():
         libc_version = "glibc2_36",
         supported_archs = ["x86_64"],
         variant = "test",
-        packages = _DEBIAN12_RUNTIME_PKGS + _DEBIAN12_BUILD_PKGS + _DEBIAN12_TEST_PKGS + [
-            "debian12_libvdpau1",
-            "debian12_nasm",
-            "debian12_yasm",
-            "debian12_python3.11",
-            "nvidia_cuda-toolkit-12-3",
-        ],
+        packages = _DEBIAN12_RUNTIME_PKGS + _DEBIAN12_BUILD_PKGS + _DEBIAN12_TEST_PKGS + python_runtime_pkgs + ffmpeg_runtime_pkgs + ffmpeg_build_pkgs,
         extra_compile_flags = [
             "-isystem%sysroot%/usr/local/cuda/include",
         ],
