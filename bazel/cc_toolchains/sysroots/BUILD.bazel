@@ -92,7 +92,6 @@ selects.config_setting_group(
     match_any = [
         ":sysroot_type_debian12",
         ":sysroot_type_intelgpu",
-        ":sysroot_type_cuda",
     ],
     visibility = ["//visibility:public"],
 )

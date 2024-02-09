@@ -11,7 +11,7 @@ repositories:
 packages:
 - name: libvdpau1
 - name: nasm
-- name: python3.11-minimal
+- name: python3.11
   extra_symlinks:
   - source: usr/bin/python3
     target: /usr/bin/python3.11
