@@ -45,6 +45,10 @@ NVIDIA_STUB_CREATOR_IMAGE_TAG := nvidia-stub-creator
 NVIDIA_STUB_GS_PATH := gs://gimlet-dev-infra-public/nvidia-stubs/$(NVIDIA_STUB_REV)
 NVIDIA_STUB_TARGETS := $(NVIDIA_STUB_BUILD_DIR)/nvidia_stubs_amd64.tar.gz $(NVIDIA_STUB_BUILD_DIR)/nvidia_stubs_arm64.tar.gz
 
+## rsyncd image
+RSYNCD_REV := $(shell date +%Y%m%d%H%M%S)
+RSYNCD_IMAGE_TAG := "$(REPOSITORY)/rsyncd-image:$(RSYNCD_REV)"
+
 ##############################################
 # Clang Build
 ##############################################
@@ -90,3 +94,10 @@ $(NVIDIA_STUB_BUILD_DIR)/nvidia_stubs.tar.gz: $(NVIDIA_STUB_BUILD_DIR)/nvidia_st
 upload_nvidia_stubs: $(NVIDIA_STUB_BUILD_DIR)/nvidia_stubs.tar.gz
 	gsutil cp $< $(NVIDIA_STUB_GS_PATH)/nvidia_stubs.tar.gz
 	sha256sum $<
+
+##############################################
+# rsyncd image
+##############################################
+.PHONY: build_and_push_rsyncd
+build_and_push_rsyncd: rsyncd/Dockerfile rsyncd/entrypoint.sh
+	DOCKER_BUILDKIT=1 $(DOCKER) build rsyncd -t $(RSYNCD_IMAGE_TAG) --push
