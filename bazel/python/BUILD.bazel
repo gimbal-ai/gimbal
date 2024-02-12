@@ -51,6 +51,7 @@ py_pkg_provider(
         "@pip//scikit_learn",
         "@pip//seaborn",
         "@pip//supervision",
+        "@pip//tensorboard",
         "@pip//torch",
         "@pip//torchvision",
     ],
