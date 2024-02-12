@@ -207,6 +207,7 @@ def _cuda_sysroot():
 
     ffmpeg_runtime_pkgs = [
         "debian12_libvdpau1",
+        "nvidia_libnpp-12-3",
     ]
 
     ffmpeg_build_pkgs = [
