@@ -16,7 +16,7 @@
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("@rules_python//python:pip.bzl", "compile_pip_requirements")
 load("//bazel:gml_build_system.bzl", "no_sysroot")
-load("//bazel:images.bzl", "gml_oci_image")
+load("//bazel:images.bzl", "gml_oci_image", "gml_oci_push")
 load("//bazel/python:py_pkg_provider.bzl", "py_pkg_provider")
 
 exports_files(["requirements_lock.txt"])
@@ -76,4 +76,11 @@ gml_oci_image(
     }),
     tars = [":python_deps_tar"],
     visibility = ["//visibility:public"],
+)
+
+gml_oci_push(
+    name = "push_python_base_image",
+    image = ":python_base_image",
+    remote_tags = ["latest"],
+    repository = "us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/python_base_image",
 )
