@@ -3837,9 +3837,6 @@ def deb_repos():
     )
     deb_archive_w_pkg_providers(
         name = "nvidia_cuda-toolkit-12-3_x86_64",
-        extra_symlinks = {
-            "usr/local/cuda": "/usr/local/cuda-12.3",
-        },
         sha256 = "e20c7f87d74caf949f3d0876fd32bae13e1321ab52f83630a1e43cf6ae179ee1",
         urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e20c7f87d74caf949f3d0876fd32bae13e1321ab52f83630a1e43cf6ae179ee1.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-toolkit-12-3_12.3.2-1_amd64.deb"],
         deps = ["@nvidia_cuda-compiler-12-3_x86_64//:all_files", "@nvidia_cuda-documentation-12-3_x86_64//:all_files", "@nvidia_cuda-libraries-12-3_x86_64//:all_files", "@nvidia_cuda-libraries-dev-12-3_x86_64//:all_files", "@nvidia_cuda-nvml-dev-12-3_x86_64//:all_files", "@nvidia_cuda-tools-12-3_x86_64//:all_files"],
@@ -3930,6 +3927,9 @@ def deb_repos():
     )
     deb_archive_w_pkg_providers(
         name = "nvidia_libnpp-12-3_x86_64",
+        extra_symlinks = {
+            "usr/local/cuda": "/usr/local/cuda-12.3",
+        },
         sha256 = "ae6376d0a7817c150357cab152e167265b2ec793627943daf57eee8cd35faf67",
         urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ae6376d0a7817c150357cab152e167265b2ec793627943daf57eee8cd35faf67.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./libnpp-12-3_12.2.3.2-1_amd64.deb"],
         deps = ["@nvidia_cuda-toolkit-12-3-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-12-config-common_x86_64//:all_files", "@nvidia_cuda-toolkit-config-common_x86_64//:all_files"],
