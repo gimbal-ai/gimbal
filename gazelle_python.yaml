@@ -506,6 +506,19 @@ manifest:
     app.text_localization: salesforce_lavis
     app.utils: salesforce_lavis
     app.vqa: salesforce_lavis
+    argon2: argon2_cffi
+    argon2.exceptions: argon2_cffi
+    argon2.low_level: argon2_cffi
+    argon2.profiles: argon2_cffi
+    arrow: arrow
+    arrow.api: arrow
+    arrow.arrow: arrow
+    arrow.constants: arrow
+    arrow.factory: arrow
+    arrow.formatter: arrow
+    arrow.locales: arrow
+    arrow.parser: arrow
+    arrow.util: arrow
     asttokens: asttokens
     asttokens.astroid_compat: asttokens
     asttokens.asttokens: asttokens
@@ -513,6 +526,7 @@ manifest:
     asttokens.mark_tokens: asttokens
     asttokens.util: asttokens
     asttokens.version: asttokens
+    async_lru: async_lru
     attr: attrs
     attr.converters: attrs
     attr.exceptions: attrs
@@ -525,6 +539,28 @@ manifest:
     attrs.filters: attrs
     attrs.setters: attrs
     attrs.validators: attrs
+    babel: Babel
+    babel.core: Babel
+    babel.dates: Babel
+    babel.languages: Babel
+    babel.lists: Babel
+    babel.localedata: Babel
+    babel.localtime: Babel
+    babel.messages: Babel
+    babel.messages.catalog: Babel
+    babel.messages.checkers: Babel
+    babel.messages.extract: Babel
+    babel.messages.frontend: Babel
+    babel.messages.jslexer: Babel
+    babel.messages.mofile: Babel
+    babel.messages.plurals: Babel
+    babel.messages.pofile: Babel
+    babel.messages.setuptools_frontend: Babel
+    babel.numbers: Babel
+    babel.plural: Babel
+    babel.support: Babel
+    babel.units: Babel
+    babel.util: Babel
     benchmarks: fairscale
     benchmarks.datasets: fairscale
     benchmarks.datasets.mnist: fairscale
@@ -592,6 +628,30 @@ manifest:
     blis.tests.test_dotv: blis
     blis.tests.test_gemm: blis
     braceexpand: braceexpand
+    bs4: beautifulsoup4
+    bs4.builder: beautifulsoup4
+    bs4.css: beautifulsoup4
+    bs4.dammit: beautifulsoup4
+    bs4.diagnose: beautifulsoup4
+    bs4.element: beautifulsoup4
+    bs4.formatter: beautifulsoup4
+    bs4.tests: beautifulsoup4
+    bs4.tests.test_builder: beautifulsoup4
+    bs4.tests.test_builder_registry: beautifulsoup4
+    bs4.tests.test_css: beautifulsoup4
+    bs4.tests.test_dammit: beautifulsoup4
+    bs4.tests.test_docs: beautifulsoup4
+    bs4.tests.test_element: beautifulsoup4
+    bs4.tests.test_formatter: beautifulsoup4
+    bs4.tests.test_fuzz: beautifulsoup4
+    bs4.tests.test_html5lib: beautifulsoup4
+    bs4.tests.test_htmlparser: beautifulsoup4
+    bs4.tests.test_lxml: beautifulsoup4
+    bs4.tests.test_navigablestring: beautifulsoup4
+    bs4.tests.test_pageelement: beautifulsoup4
+    bs4.tests.test_soup: beautifulsoup4
+    bs4.tests.test_tag: beautifulsoup4
+    bs4.tests.test_tree: beautifulsoup4
     cachetools: cachetools
     cachetools.func: cachetools
     cachetools.keys: cachetools
@@ -600,6 +660,22 @@ manifest:
     catalogue.tests.test_catalogue: catalogue
     certifi: certifi
     certifi.core: certifi
+    cffi: cffi
+    cffi.api: cffi
+    cffi.backend_ctypes: cffi
+    cffi.cffi_opcode: cffi
+    cffi.commontypes: cffi
+    cffi.cparser: cffi
+    cffi.error: cffi
+    cffi.ffiplatform: cffi
+    cffi.lock: cffi
+    cffi.model: cffi
+    cffi.pkgconfig: cffi
+    cffi.recompiler: cffi
+    cffi.setuptools_ext: cffi
+    cffi.vengine_cpy: cffi
+    cffi.vengine_gen: cffi
+    cffi.verifier: cffi
     cfgv: cfgv
     charset_normalizer: charset_normalizer
     charset_normalizer.api: charset_normalizer
@@ -659,6 +735,8 @@ manifest:
     colorama.tests.winterm_test: colorama
     colorama.win32: colorama
     colorama.winterm: colorama
+    comm: comm
+    comm.base_comm: comm
     confection: confection
     confection.tests: confection
     confection.tests.conftest: confection
@@ -715,6 +793,32 @@ manifest:
     dateutil.utils: python_dateutil
     dateutil.zoneinfo: python_dateutil
     dateutil.zoneinfo.rebuild: python_dateutil
+    debugpy: debugpy
+    debugpy.adapter: debugpy
+    debugpy.adapter.clients: debugpy
+    debugpy.adapter.components: debugpy
+    debugpy.adapter.launchers: debugpy
+    debugpy.adapter.servers: debugpy
+    debugpy.adapter.sessions: debugpy
+    debugpy.common: debugpy
+    debugpy.common.json: debugpy
+    debugpy.common.log: debugpy
+    debugpy.common.messaging: debugpy
+    debugpy.common.singleton: debugpy
+    debugpy.common.sockets: debugpy
+    debugpy.common.stacks: debugpy
+    debugpy.common.timestamp: debugpy
+    debugpy.common.util: debugpy
+    debugpy.launcher: debugpy
+    debugpy.launcher.debuggee: debugpy
+    debugpy.launcher.handlers: debugpy
+    debugpy.launcher.output: debugpy
+    debugpy.launcher.winapi: debugpy
+    debugpy.public_api: debugpy
+    debugpy.server: debugpy
+    debugpy.server.api: debugpy
+    debugpy.server.attach_pid_injected: debugpy
+    debugpy.server.cli: debugpy
     decorator: decorator
     decord: decord
     decord.audio_reader: decord
@@ -740,6 +844,17 @@ manifest:
     decord.ndarray: decord
     decord.video_loader: decord
     decord.video_reader: decord
+    defusedxml: defusedxml
+    defusedxml.ElementTree: defusedxml
+    defusedxml.cElementTree: defusedxml
+    defusedxml.common: defusedxml
+    defusedxml.expatbuilder: defusedxml
+    defusedxml.expatreader: defusedxml
+    defusedxml.lxml: defusedxml
+    defusedxml.minidom: defusedxml
+    defusedxml.pulldom: defusedxml
+    defusedxml.sax: defusedxml
+    defusedxml.xmlrpc: defusedxml
     distlib: distlib
     distlib.compat: distlib
     distlib.database: distlib
@@ -911,6 +1026,15 @@ manifest:
     fastapi.types: fastapi
     fastapi.utils: fastapi
     fastapi.websockets: fastapi
+    fastjsonschema: fastjsonschema
+    fastjsonschema.draft04: fastjsonschema
+    fastjsonschema.draft06: fastjsonschema
+    fastjsonschema.draft07: fastjsonschema
+    fastjsonschema.exceptions: fastjsonschema
+    fastjsonschema.generator: fastjsonschema
+    fastjsonschema.indent: fastjsonschema
+    fastjsonschema.ref_resolver: fastjsonschema
+    fastjsonschema.version: fastjsonschema
     ffmpy: ffmpy
     filelock: filelock
     filelock.version: filelock
@@ -1182,6 +1306,7 @@ manifest:
     fontTools.voltLib.lexer: fonttools
     fontTools.voltLib.parser: fonttools
     fontTools.voltLib.voltToFea: fonttools
+    fqdn: fqdn
     fsspec: fsspec
     fsspec.archive: fsspec
     fsspec.asyn: fsspec
@@ -1967,6 +2092,119 @@ manifest:
     iopath.tabular: iopath
     iopath.tabular.tabular_io: iopath
     iopath.version: iopath
+    ipykernel: ipykernel
+    ipykernel.comm: ipykernel
+    ipykernel.comm.comm: ipykernel
+    ipykernel.comm.manager: ipykernel
+    ipykernel.compiler: ipykernel
+    ipykernel.connect: ipykernel
+    ipykernel.control: ipykernel
+    ipykernel.datapub: ipykernel
+    ipykernel.debugger: ipykernel
+    ipykernel.displayhook: ipykernel
+    ipykernel.embed: ipykernel
+    ipykernel.eventloops: ipykernel
+    ipykernel.gui: ipykernel
+    ipykernel.gui.gtk3embed: ipykernel
+    ipykernel.gui.gtkembed: ipykernel
+    ipykernel.heartbeat: ipykernel
+    ipykernel.inprocess: ipykernel
+    ipykernel.inprocess.blocking: ipykernel
+    ipykernel.inprocess.channels: ipykernel
+    ipykernel.inprocess.client: ipykernel
+    ipykernel.inprocess.constants: ipykernel
+    ipykernel.inprocess.ipkernel: ipykernel
+    ipykernel.inprocess.manager: ipykernel
+    ipykernel.inprocess.socket: ipykernel
+    ipykernel.iostream: ipykernel
+    ipykernel.ipkernel: ipykernel
+    ipykernel.jsonutil: ipykernel
+    ipykernel.kernelapp: ipykernel
+    ipykernel.kernelbase: ipykernel
+    ipykernel.kernelspec: ipykernel
+    ipykernel.log: ipykernel
+    ipykernel.parentpoller: ipykernel
+    ipykernel.pickleutil: ipykernel
+    ipykernel.pylab: ipykernel
+    ipykernel.pylab.backend_inline: ipykernel
+    ipykernel.pylab.config: ipykernel
+    ipykernel.serialize: ipykernel
+    ipykernel.trio_runner: ipykernel
+    ipykernel.zmqshell: ipykernel
+    ipykernel_launcher: ipykernel
+    ipywidgets: ipywidgets
+    ipywidgets.comm: ipywidgets
+    ipywidgets.embed: ipywidgets
+    ipywidgets.tests: ipywidgets
+    ipywidgets.tests.test_embed: ipywidgets
+    ipywidgets.widgets: ipywidgets
+    ipywidgets.widgets.docutils: ipywidgets
+    ipywidgets.widgets.domwidget: ipywidgets
+    ipywidgets.widgets.interaction: ipywidgets
+    ipywidgets.widgets.tests: ipywidgets
+    ipywidgets.widgets.tests.test_datetime_serializers: ipywidgets
+    ipywidgets.widgets.tests.test_docutils: ipywidgets
+    ipywidgets.widgets.tests.test_interaction: ipywidgets
+    ipywidgets.widgets.tests.test_link: ipywidgets
+    ipywidgets.widgets.tests.test_selectioncontainer: ipywidgets
+    ipywidgets.widgets.tests.test_send_state: ipywidgets
+    ipywidgets.widgets.tests.test_set_state: ipywidgets
+    ipywidgets.widgets.tests.test_traits: ipywidgets
+    ipywidgets.widgets.tests.test_utils: ipywidgets
+    ipywidgets.widgets.tests.test_widget: ipywidgets
+    ipywidgets.widgets.tests.test_widget_box: ipywidgets
+    ipywidgets.widgets.tests.test_widget_button: ipywidgets
+    ipywidgets.widgets.tests.test_widget_datetime: ipywidgets
+    ipywidgets.widgets.tests.test_widget_float: ipywidgets
+    ipywidgets.widgets.tests.test_widget_image: ipywidgets
+    ipywidgets.widgets.tests.test_widget_naive_datetime: ipywidgets
+    ipywidgets.widgets.tests.test_widget_output: ipywidgets
+    ipywidgets.widgets.tests.test_widget_selection: ipywidgets
+    ipywidgets.widgets.tests.test_widget_string: ipywidgets
+    ipywidgets.widgets.tests.test_widget_templates: ipywidgets
+    ipywidgets.widgets.tests.test_widget_time: ipywidgets
+    ipywidgets.widgets.tests.test_widget_upload: ipywidgets
+    ipywidgets.widgets.tests.utils: ipywidgets
+    ipywidgets.widgets.trait_types: ipywidgets
+    ipywidgets.widgets.utils: ipywidgets
+    ipywidgets.widgets.valuewidget: ipywidgets
+    ipywidgets.widgets.widget: ipywidgets
+    ipywidgets.widgets.widget_bool: ipywidgets
+    ipywidgets.widgets.widget_box: ipywidgets
+    ipywidgets.widgets.widget_button: ipywidgets
+    ipywidgets.widgets.widget_color: ipywidgets
+    ipywidgets.widgets.widget_controller: ipywidgets
+    ipywidgets.widgets.widget_core: ipywidgets
+    ipywidgets.widgets.widget_date: ipywidgets
+    ipywidgets.widgets.widget_datetime: ipywidgets
+    ipywidgets.widgets.widget_description: ipywidgets
+    ipywidgets.widgets.widget_float: ipywidgets
+    ipywidgets.widgets.widget_int: ipywidgets
+    ipywidgets.widgets.widget_layout: ipywidgets
+    ipywidgets.widgets.widget_link: ipywidgets
+    ipywidgets.widgets.widget_media: ipywidgets
+    ipywidgets.widgets.widget_output: ipywidgets
+    ipywidgets.widgets.widget_selection: ipywidgets
+    ipywidgets.widgets.widget_selectioncontainer: ipywidgets
+    ipywidgets.widgets.widget_string: ipywidgets
+    ipywidgets.widgets.widget_style: ipywidgets
+    ipywidgets.widgets.widget_tagsinput: ipywidgets
+    ipywidgets.widgets.widget_templates: ipywidgets
+    ipywidgets.widgets.widget_time: ipywidgets
+    ipywidgets.widgets.widget_upload: ipywidgets
+    isoduration: isoduration
+    isoduration.constants: isoduration
+    isoduration.formatter: isoduration
+    isoduration.formatter.checking: isoduration
+    isoduration.formatter.exceptions: isoduration
+    isoduration.formatter.formatting: isoduration
+    isoduration.operations: isoduration
+    isoduration.operations.util: isoduration
+    isoduration.parser: isoduration
+    isoduration.parser.exceptions: isoduration
+    isoduration.parser.parsing: isoduration
+    isoduration.parser.util: isoduration
+    isoduration.types: isoduration
     isympy: sympy
     jedi: jedi
     jedi.api: jedi
@@ -2136,6 +2374,14 @@ manifest:
     joblib.test.test_utils: joblib
     joblib.test.testutils: joblib
     joblib.testing: joblib
+    json5: json5
+    json5.arg_parser: json5
+    json5.host: json5
+    json5.lib: json5
+    json5.parser: json5
+    json5.tool: json5
+    json5.version: json5
+    jsonpointer: jsonpointer
     jsonschema: jsonschema
     jsonschema.benchmarks: jsonschema
     jsonschema.benchmarks.contains: jsonschema
@@ -2162,7 +2408,277 @@ manifest:
     jsonschema_specifications: jsonschema_specifications
     jsonschema_specifications.tests: jsonschema_specifications
     jsonschema_specifications.tests.test_jsonschema_specifications: jsonschema_specifications
+    jupyter: jupyter_core
+    jupyter_client: jupyter_client
+    jupyter_client.adapter: jupyter_client
+    jupyter_client.asynchronous: jupyter_client
+    jupyter_client.asynchronous.client: jupyter_client
+    jupyter_client.blocking: jupyter_client
+    jupyter_client.blocking.client: jupyter_client
+    jupyter_client.channels: jupyter_client
+    jupyter_client.channelsabc: jupyter_client
+    jupyter_client.client: jupyter_client
+    jupyter_client.clientabc: jupyter_client
+    jupyter_client.connect: jupyter_client
+    jupyter_client.consoleapp: jupyter_client
+    jupyter_client.ioloop: jupyter_client
+    jupyter_client.ioloop.manager: jupyter_client
+    jupyter_client.ioloop.restarter: jupyter_client
+    jupyter_client.jsonutil: jupyter_client
+    jupyter_client.kernelapp: jupyter_client
+    jupyter_client.kernelspec: jupyter_client
+    jupyter_client.kernelspecapp: jupyter_client
+    jupyter_client.launcher: jupyter_client
+    jupyter_client.localinterfaces: jupyter_client
+    jupyter_client.manager: jupyter_client
+    jupyter_client.managerabc: jupyter_client
+    jupyter_client.multikernelmanager: jupyter_client
+    jupyter_client.provisioning: jupyter_client
+    jupyter_client.provisioning.factory: jupyter_client
+    jupyter_client.provisioning.local_provisioner: jupyter_client
+    jupyter_client.provisioning.provisioner_base: jupyter_client
+    jupyter_client.restarter: jupyter_client
+    jupyter_client.runapp: jupyter_client
+    jupyter_client.session: jupyter_client
+    jupyter_client.ssh: jupyter_client
+    jupyter_client.ssh.forward: jupyter_client
+    jupyter_client.ssh.tunnel: jupyter_client
+    jupyter_client.threaded: jupyter_client
+    jupyter_client.utils: jupyter_client
+    jupyter_client.win_interrupt: jupyter_client
+    jupyter_console: jupyter_console
+    jupyter_console.app: jupyter_console
+    jupyter_console.completer: jupyter_console
+    jupyter_console.ptshell: jupyter_console
+    jupyter_console.tests: jupyter_console
+    jupyter_console.tests.conftest: jupyter_console
+    jupyter_console.tests.test_console: jupyter_console
+    jupyter_console.tests.test_image_handler: jupyter_console
+    jupyter_console.tests.writetofile: jupyter_console
+    jupyter_console.utils: jupyter_console
+    jupyter_console.zmqhistory: jupyter_console
+    jupyter_core: jupyter_core
+    jupyter_core.application: jupyter_core
+    jupyter_core.command: jupyter_core
+    jupyter_core.migrate: jupyter_core
+    jupyter_core.paths: jupyter_core
+    jupyter_core.troubleshoot: jupyter_core
+    jupyter_core.utils: jupyter_core
+    jupyter_core.version: jupyter_core
+    jupyter_events: jupyter_events
+    jupyter_events.cli: jupyter_events
+    jupyter_events.logger: jupyter_events
+    jupyter_events.pytest_plugin: jupyter_events
+    jupyter_events.schema: jupyter_events
+    jupyter_events.schema_registry: jupyter_events
+    jupyter_events.traits: jupyter_events
+    jupyter_events.validators: jupyter_events
+    jupyter_events.yaml: jupyter_events
+    jupyter_lsp: jupyter_lsp
+    jupyter_lsp.constants: jupyter_lsp
+    jupyter_lsp.handlers: jupyter_lsp
+    jupyter_lsp.manager: jupyter_lsp
+    jupyter_lsp.non_blocking: jupyter_lsp
+    jupyter_lsp.paths: jupyter_lsp
+    jupyter_lsp.schema: jupyter_lsp
+    jupyter_lsp.serverextension: jupyter_lsp
+    jupyter_lsp.session: jupyter_lsp
+    jupyter_lsp.specs: jupyter_lsp
+    jupyter_lsp.specs.bash_language_server: jupyter_lsp
+    jupyter_lsp.specs.config: jupyter_lsp
+    jupyter_lsp.specs.dockerfile_language_server_nodejs: jupyter_lsp
+    jupyter_lsp.specs.javascript_typescript_langserver: jupyter_lsp
+    jupyter_lsp.specs.jedi_language_server: jupyter_lsp
+    jupyter_lsp.specs.julia_language_server: jupyter_lsp
+    jupyter_lsp.specs.pyls: jupyter_lsp
+    jupyter_lsp.specs.pyright: jupyter_lsp
+    jupyter_lsp.specs.python_lsp_server: jupyter_lsp
+    jupyter_lsp.specs.r_languageserver: jupyter_lsp
+    jupyter_lsp.specs.sql_language_server: jupyter_lsp
+    jupyter_lsp.specs.texlab: jupyter_lsp
+    jupyter_lsp.specs.typescript_language_server: jupyter_lsp
+    jupyter_lsp.specs.unified_language_server: jupyter_lsp
+    jupyter_lsp.specs.utils: jupyter_lsp
+    jupyter_lsp.specs.vscode_css_languageserver: jupyter_lsp
+    jupyter_lsp.specs.vscode_html_languageserver: jupyter_lsp
+    jupyter_lsp.specs.vscode_json_languageserver: jupyter_lsp
+    jupyter_lsp.specs.yaml_language_server: jupyter_lsp
+    jupyter_lsp.stdio: jupyter_lsp
+    jupyter_lsp.tests: jupyter_lsp
+    jupyter_lsp.tests.conftest: jupyter_lsp
+    jupyter_lsp.tests.listener: jupyter_lsp
+    jupyter_lsp.tests.test_auth: jupyter_lsp
+    jupyter_lsp.tests.test_bad_spec: jupyter_lsp
+    jupyter_lsp.tests.test_conf_d: jupyter_lsp
+    jupyter_lsp.tests.test_detect: jupyter_lsp
+    jupyter_lsp.tests.test_extension: jupyter_lsp
+    jupyter_lsp.tests.test_listener: jupyter_lsp
+    jupyter_lsp.tests.test_paths: jupyter_lsp
+    jupyter_lsp.tests.test_session: jupyter_lsp
+    jupyter_lsp.tests.test_stdio: jupyter_lsp
+    jupyter_lsp.tests.test_virtual_documents_shadow: jupyter_lsp
+    jupyter_lsp.trait_types: jupyter_lsp
+    jupyter_lsp.types: jupyter_lsp
+    jupyter_lsp.virtual_documents_shadow: jupyter_lsp
+    jupyter_server: jupyter_server
+    jupyter_server.auth: jupyter_server
+    jupyter_server.auth.authorizer: jupyter_server
+    jupyter_server.auth.decorator: jupyter_server
+    jupyter_server.auth.identity: jupyter_server
+    jupyter_server.auth.login: jupyter_server
+    jupyter_server.auth.logout: jupyter_server
+    jupyter_server.auth.security: jupyter_server
+    jupyter_server.auth.utils: jupyter_server
+    jupyter_server.base: jupyter_server
+    jupyter_server.base.call_context: jupyter_server
+    jupyter_server.base.handlers: jupyter_server
+    jupyter_server.base.websocket: jupyter_server
+    jupyter_server.base.zmqhandlers: jupyter_server
+    jupyter_server.config_manager: jupyter_server
+    jupyter_server.extension: jupyter_server
+    jupyter_server.extension.application: jupyter_server
+    jupyter_server.extension.config: jupyter_server
+    jupyter_server.extension.handler: jupyter_server
+    jupyter_server.extension.manager: jupyter_server
+    jupyter_server.extension.serverextension: jupyter_server
+    jupyter_server.extension.utils: jupyter_server
+    jupyter_server.files: jupyter_server
+    jupyter_server.files.handlers: jupyter_server
+    jupyter_server.gateway: jupyter_server
+    jupyter_server.gateway.connections: jupyter_server
+    jupyter_server.gateway.gateway_client: jupyter_server
+    jupyter_server.gateway.handlers: jupyter_server
+    jupyter_server.gateway.managers: jupyter_server
+    jupyter_server.i18n: jupyter_server
+    jupyter_server.kernelspecs: jupyter_server
+    jupyter_server.kernelspecs.handlers: jupyter_server
+    jupyter_server.log: jupyter_server
+    jupyter_server.nbconvert: jupyter_server
+    jupyter_server.nbconvert.handlers: jupyter_server
+    jupyter_server.prometheus: jupyter_server
+    jupyter_server.prometheus.log_functions: jupyter_server
+    jupyter_server.prometheus.metrics: jupyter_server
+    jupyter_server.pytest_plugin: jupyter_server
+    jupyter_server.serverapp: jupyter_server
+    jupyter_server.services: jupyter_server
+    jupyter_server.services.api: jupyter_server
+    jupyter_server.services.api.handlers: jupyter_server
+    jupyter_server.services.config: jupyter_server
+    jupyter_server.services.config.handlers: jupyter_server
+    jupyter_server.services.config.manager: jupyter_server
+    jupyter_server.services.contents: jupyter_server
+    jupyter_server.services.contents.checkpoints: jupyter_server
+    jupyter_server.services.contents.filecheckpoints: jupyter_server
+    jupyter_server.services.contents.fileio: jupyter_server
+    jupyter_server.services.contents.filemanager: jupyter_server
+    jupyter_server.services.contents.handlers: jupyter_server
+    jupyter_server.services.contents.largefilemanager: jupyter_server
+    jupyter_server.services.contents.manager: jupyter_server
+    jupyter_server.services.events: jupyter_server
+    jupyter_server.services.events.handlers: jupyter_server
+    jupyter_server.services.kernels: jupyter_server
+    jupyter_server.services.kernels.connection: jupyter_server
+    jupyter_server.services.kernels.connection.abc: jupyter_server
+    jupyter_server.services.kernels.connection.base: jupyter_server
+    jupyter_server.services.kernels.connection.channels: jupyter_server
+    jupyter_server.services.kernels.handlers: jupyter_server
+    jupyter_server.services.kernels.kernelmanager: jupyter_server
+    jupyter_server.services.kernels.websocket: jupyter_server
+    jupyter_server.services.kernelspecs: jupyter_server
+    jupyter_server.services.kernelspecs.handlers: jupyter_server
+    jupyter_server.services.nbconvert: jupyter_server
+    jupyter_server.services.nbconvert.handlers: jupyter_server
+    jupyter_server.services.security: jupyter_server
+    jupyter_server.services.security.handlers: jupyter_server
+    jupyter_server.services.sessions: jupyter_server
+    jupyter_server.services.sessions.handlers: jupyter_server
+    jupyter_server.services.sessions.sessionmanager: jupyter_server
+    jupyter_server.services.shutdown: jupyter_server
+    jupyter_server.terminal: jupyter_server
+    jupyter_server.terminal.api_handlers: jupyter_server
+    jupyter_server.terminal.handlers: jupyter_server
+    jupyter_server.terminal.terminalmanager: jupyter_server
+    jupyter_server.traittypes: jupyter_server
+    jupyter_server.transutils: jupyter_server
+    jupyter_server.utils: jupyter_server
+    jupyter_server.view: jupyter_server
+    jupyter_server.view.handlers: jupyter_server
+    jupyter_server_terminals: jupyter_server_terminals
+    jupyter_server_terminals.api_handlers: jupyter_server_terminals
+    jupyter_server_terminals.app: jupyter_server_terminals
+    jupyter_server_terminals.base: jupyter_server_terminals
+    jupyter_server_terminals.handlers: jupyter_server_terminals
+    jupyter_server_terminals.terminalmanager: jupyter_server_terminals
+    jupyterlab: jupyterlab
+    jupyterlab.browser_check: jupyterlab
+    jupyterlab.commands: jupyterlab
+    jupyterlab.coreconfig: jupyterlab
+    jupyterlab.debuglog: jupyterlab
+    jupyterlab.extensions: jupyterlab
+    jupyterlab.extensions.manager: jupyterlab
+    jupyterlab.extensions.pypi: jupyterlab
+    jupyterlab.extensions.readonly: jupyterlab
+    jupyterlab.federated_labextensions: jupyterlab
+    jupyterlab.galata: jupyterlab
+    jupyterlab.handlers: jupyterlab
+    jupyterlab.handlers.announcements: jupyterlab
+    jupyterlab.handlers.build_handler: jupyterlab
+    jupyterlab.handlers.error_handler: jupyterlab
+    jupyterlab.handlers.extension_manager_handler: jupyterlab
+    jupyterlab.jlpmapp: jupyterlab
+    jupyterlab.labapp: jupyterlab
+    jupyterlab.labextensions: jupyterlab
+    jupyterlab.labhubapp: jupyterlab
+    jupyterlab.pytest_plugin: jupyterlab
+    jupyterlab.semver: jupyterlab
+    jupyterlab.serverextension: jupyterlab
+    jupyterlab.tests: jupyterlab
+    jupyterlab.tests.conftest: jupyterlab
+    jupyterlab.tests.echo_kernel: jupyterlab
+    jupyterlab.tests.mock_packages.extension.mock_package: jupyterlab
+    jupyterlab.tests.mock_packages.extension.setup: jupyterlab
+    jupyterlab.tests.mock_packages.interop.consumer.jlab_mock_consumer: jupyterlab
+    jupyterlab.tests.mock_packages.interop.consumer.setup: jupyterlab
+    jupyterlab.tests.mock_packages.interop.provider.jlab_mock_provider: jupyterlab
+    jupyterlab.tests.mock_packages.interop.provider.setup: jupyterlab
+    jupyterlab.tests.mock_packages.test-hyphens-underscore.setup: jupyterlab
+    jupyterlab.tests.mock_packages.test-hyphens-underscore.test_hyphens_underscore: jupyterlab
+    jupyterlab.tests.mock_packages.test-hyphens.setup: jupyterlab
+    jupyterlab.tests.mock_packages.test-hyphens.test_hyphens: jupyterlab
+    jupyterlab.tests.mock_packages.test_no_hyphens.setup: jupyterlab
+    jupyterlab.tests.mock_packages.test_no_hyphens.test_no_hyphens: jupyterlab
+    jupyterlab.tests.test_announcements: jupyterlab
+    jupyterlab.tests.test_app: jupyterlab
+    jupyterlab.tests.test_build_api: jupyterlab
+    jupyterlab.tests.test_extensions: jupyterlab
+    jupyterlab.tests.test_jupyterlab: jupyterlab
+    jupyterlab.tests.test_registry: jupyterlab
+    jupyterlab.upgrade_extension: jupyterlab
+    jupyterlab.utils: jupyterlab
     jupyterlab_plotly: plotly
+    jupyterlab_pygments: jupyterlab_pygments
+    jupyterlab_pygments.style: jupyterlab_pygments
+    jupyterlab_server: jupyterlab_server
+    jupyterlab_server.app: jupyterlab_server
+    jupyterlab_server.config: jupyterlab_server
+    jupyterlab_server.handlers: jupyterlab_server
+    jupyterlab_server.licenses_app: jupyterlab_server
+    jupyterlab_server.licenses_handler: jupyterlab_server
+    jupyterlab_server.listings_handler: jupyterlab_server
+    jupyterlab_server.process: jupyterlab_server
+    jupyterlab_server.process_app: jupyterlab_server
+    jupyterlab_server.pytest_plugin: jupyterlab_server
+    jupyterlab_server.server: jupyterlab_server
+    jupyterlab_server.settings_handler: jupyterlab_server
+    jupyterlab_server.settings_utils: jupyterlab_server
+    jupyterlab_server.spec: jupyterlab_server
+    jupyterlab_server.test_utils: jupyterlab_server
+    jupyterlab_server.themes_handler: jupyterlab_server
+    jupyterlab_server.translation_utils: jupyterlab_server
+    jupyterlab_server.translations_handler: jupyterlab_server
+    jupyterlab_server.workspaces_app: jupyterlab_server
+    jupyterlab_server.workspaces_handler: jupyterlab_server
+    jupyterlab_widgets: jupyterlab_widgets
     kaggle: kaggle
     kaggle.api: kaggle
     kaggle.api.kaggle_api: kaggle
@@ -2647,6 +3163,36 @@ manifest:
     matplotlib_inline.backend_inline: matplotlib_inline
     matplotlib_inline.config: matplotlib_inline
     mdurl: mdurl
+    mistune: mistune
+    mistune.block_parser: mistune
+    mistune.core: mistune
+    mistune.directives: mistune
+    mistune.directives.admonition: mistune
+    mistune.directives.image: mistune
+    mistune.directives.include: mistune
+    mistune.directives.toc: mistune
+    mistune.helpers: mistune
+    mistune.inline_parser: mistune
+    mistune.list_parser: mistune
+    mistune.markdown: mistune
+    mistune.plugins: mistune
+    mistune.plugins.abbr: mistune
+    mistune.plugins.def_list: mistune
+    mistune.plugins.footnotes: mistune
+    mistune.plugins.formatting: mistune
+    mistune.plugins.math: mistune
+    mistune.plugins.ruby: mistune
+    mistune.plugins.speedup: mistune
+    mistune.plugins.spoiler: mistune
+    mistune.plugins.table: mistune
+    mistune.plugins.task_lists: mistune
+    mistune.plugins.url: mistune
+    mistune.renderers: mistune
+    mistune.renderers.html: mistune
+    mistune.renderers.markdown: mistune
+    mistune.renderers.rst: mistune
+    mistune.toc: mistune
+    mistune.util: mistune
     mpl_toolkits.axes_grid1: matplotlib
     mpl_toolkits.axes_grid1.anchored_artists: matplotlib
     mpl_toolkits.axes_grid1.axes_divider: matplotlib
@@ -2787,6 +3333,120 @@ manifest:
     murmurhash.tests.test_hash: murmurhash
     murmurhash.tests.test_import: murmurhash
     mypy_extensions: mypy_extensions
+    nbclient: nbclient
+    nbclient.cli: nbclient
+    nbclient.client: nbclient
+    nbclient.exceptions: nbclient
+    nbclient.jsonutil: nbclient
+    nbclient.output_widget: nbclient
+    nbclient.util: nbclient
+    nbconvert: nbconvert
+    nbconvert.conftest: nbconvert
+    nbconvert.exporters: nbconvert
+    nbconvert.exporters.asciidoc: nbconvert
+    nbconvert.exporters.base: nbconvert
+    nbconvert.exporters.exporter: nbconvert
+    nbconvert.exporters.html: nbconvert
+    nbconvert.exporters.latex: nbconvert
+    nbconvert.exporters.markdown: nbconvert
+    nbconvert.exporters.notebook: nbconvert
+    nbconvert.exporters.pdf: nbconvert
+    nbconvert.exporters.python: nbconvert
+    nbconvert.exporters.qt_exporter: nbconvert
+    nbconvert.exporters.qt_screenshot: nbconvert
+    nbconvert.exporters.qtpdf: nbconvert
+    nbconvert.exporters.qtpng: nbconvert
+    nbconvert.exporters.rst: nbconvert
+    nbconvert.exporters.script: nbconvert
+    nbconvert.exporters.slides: nbconvert
+    nbconvert.exporters.templateexporter: nbconvert
+    nbconvert.exporters.webpdf: nbconvert
+    nbconvert.filters: nbconvert
+    nbconvert.filters.ansi: nbconvert
+    nbconvert.filters.citation: nbconvert
+    nbconvert.filters.datatypefilter: nbconvert
+    nbconvert.filters.filter_links: nbconvert
+    nbconvert.filters.highlight: nbconvert
+    nbconvert.filters.latex: nbconvert
+    nbconvert.filters.markdown: nbconvert
+    nbconvert.filters.markdown_mistune: nbconvert
+    nbconvert.filters.metadata: nbconvert
+    nbconvert.filters.pandoc: nbconvert
+    nbconvert.filters.strings: nbconvert
+    nbconvert.filters.widgetsdatatypefilter: nbconvert
+    nbconvert.nbconvertapp: nbconvert
+    nbconvert.postprocessors: nbconvert
+    nbconvert.postprocessors.base: nbconvert
+    nbconvert.postprocessors.serve: nbconvert
+    nbconvert.preprocessors: nbconvert
+    nbconvert.preprocessors.base: nbconvert
+    nbconvert.preprocessors.clearmetadata: nbconvert
+    nbconvert.preprocessors.clearoutput: nbconvert
+    nbconvert.preprocessors.coalescestreams: nbconvert
+    nbconvert.preprocessors.convertfigures: nbconvert
+    nbconvert.preprocessors.csshtmlheader: nbconvert
+    nbconvert.preprocessors.execute: nbconvert
+    nbconvert.preprocessors.extractattachments: nbconvert
+    nbconvert.preprocessors.extractoutput: nbconvert
+    nbconvert.preprocessors.highlightmagics: nbconvert
+    nbconvert.preprocessors.latex: nbconvert
+    nbconvert.preprocessors.regexremove: nbconvert
+    nbconvert.preprocessors.sanitize: nbconvert
+    nbconvert.preprocessors.svg2pdf: nbconvert
+    nbconvert.preprocessors.tagremove: nbconvert
+    nbconvert.resources: nbconvert
+    nbconvert.utils: nbconvert
+    nbconvert.utils.base: nbconvert
+    nbconvert.utils.exceptions: nbconvert
+    nbconvert.utils.io: nbconvert
+    nbconvert.utils.iso639_1: nbconvert
+    nbconvert.utils.lexers: nbconvert
+    nbconvert.utils.pandoc: nbconvert
+    nbconvert.utils.text: nbconvert
+    nbconvert.utils.version: nbconvert
+    nbconvert.writers: nbconvert
+    nbconvert.writers.base: nbconvert
+    nbconvert.writers.debug: nbconvert
+    nbconvert.writers.files: nbconvert
+    nbconvert.writers.stdout: nbconvert
+    nbformat: nbformat
+    nbformat.converter: nbformat
+    nbformat.corpus: nbformat
+    nbformat.corpus.tests: nbformat
+    nbformat.corpus.tests.test_words: nbformat
+    nbformat.corpus.words: nbformat
+    nbformat.current: nbformat
+    nbformat.json_compat: nbformat
+    nbformat.notebooknode: nbformat
+    nbformat.reader: nbformat
+    nbformat.sentinel: nbformat
+    nbformat.sign: nbformat
+    nbformat.v1: nbformat
+    nbformat.v1.convert: nbformat
+    nbformat.v1.nbbase: nbformat
+    nbformat.v1.nbjson: nbformat
+    nbformat.v1.rwbase: nbformat
+    nbformat.v2: nbformat
+    nbformat.v2.convert: nbformat
+    nbformat.v2.nbbase: nbformat
+    nbformat.v2.nbjson: nbformat
+    nbformat.v2.nbpy: nbformat
+    nbformat.v2.nbxml: nbformat
+    nbformat.v2.rwbase: nbformat
+    nbformat.v3: nbformat
+    nbformat.v3.convert: nbformat
+    nbformat.v3.nbbase: nbformat
+    nbformat.v3.nbjson: nbformat
+    nbformat.v3.nbpy: nbformat
+    nbformat.v3.rwbase: nbformat
+    nbformat.v4: nbformat
+    nbformat.v4.convert: nbformat
+    nbformat.v4.nbbase: nbformat
+    nbformat.v4.nbjson: nbformat
+    nbformat.v4.rwbase: nbformat
+    nbformat.validator: nbformat
+    nbformat.warnings: nbformat
+    nest_asyncio: nest_asyncio
     networkx: networkx
     networkx.algorithms: networkx
     networkx.algorithms.approximation: networkx
@@ -3348,6 +4008,18 @@ manifest:
     networkx.utils.tests.test_unionfind: networkx
     networkx.utils.union_find: networkx
     nodeenv: nodeenv
+    notebook: notebook
+    notebook.app: notebook
+    notebook_shim: notebook_shim
+    notebook_shim.nbserver: notebook_shim
+    notebook_shim.shim: notebook_shim
+    notebook_shim.tests: notebook_shim
+    notebook_shim.tests.confs.jupyter_my_ext_config: notebook_shim
+    notebook_shim.tests.confs.jupyter_notebook_config: notebook_shim
+    notebook_shim.tests.confs.jupyter_server_config: notebook_shim
+    notebook_shim.tests.mockextension: notebook_shim
+    notebook_shim.tests.test_extension: notebook_shim
+    notebook_shim.traits: notebook_shim
     numpy: numpy
     numpy.array_api: numpy
     numpy.array_api.linalg: numpy
@@ -3869,6 +4541,12 @@ manifest:
     opendatasets.utils.network: opendatasets
     orjson: orjson
     orjson.orjson: orjson
+    overrides: overrides
+    overrides.enforce: overrides
+    overrides.final: overrides
+    overrides.overrides: overrides
+    overrides.signature: overrides
+    overrides.typing_utils: overrides
     packaging: packaging
     packaging.markers: packaging
     packaging.metadata: packaging
@@ -5220,6 +5898,7 @@ manifest:
     pandas.tseries.offsets: pandas
     pandas.util: pandas
     pandas.util.version: pandas
+    pandocfilters: pandocfilters
     parso: parso
     parso.cache: parso
     parso.file_io: parso
@@ -6809,6 +7488,30 @@ manifest:
     preshed.tests.test_hashing: preshed
     preshed.tests.test_pop: preshed
     projects.img2prompt-vqa.img2prompt_vqa: salesforce_lavis
+    prometheus_client: prometheus_client
+    prometheus_client.asgi: prometheus_client
+    prometheus_client.bridge: prometheus_client
+    prometheus_client.bridge.graphite: prometheus_client
+    prometheus_client.context_managers: prometheus_client
+    prometheus_client.core: prometheus_client
+    prometheus_client.decorator: prometheus_client
+    prometheus_client.exposition: prometheus_client
+    prometheus_client.gc_collector: prometheus_client
+    prometheus_client.metrics: prometheus_client
+    prometheus_client.metrics_core: prometheus_client
+    prometheus_client.mmap_dict: prometheus_client
+    prometheus_client.multiprocess: prometheus_client
+    prometheus_client.openmetrics: prometheus_client
+    prometheus_client.openmetrics.exposition: prometheus_client
+    prometheus_client.openmetrics.parser: prometheus_client
+    prometheus_client.parser: prometheus_client
+    prometheus_client.platform_collector: prometheus_client
+    prometheus_client.process_collector: prometheus_client
+    prometheus_client.registry: prometheus_client
+    prometheus_client.samples: prometheus_client
+    prometheus_client.twisted: prometheus_client
+    prometheus_client.utils: prometheus_client
+    prometheus_client.values: prometheus_client
     prompt_toolkit: prompt_toolkit
     prompt_toolkit.application: prompt_toolkit
     prompt_toolkit.application.application: prompt_toolkit
@@ -6953,6 +7656,25 @@ manifest:
     prompt_toolkit.widgets.menus: prompt_toolkit
     prompt_toolkit.widgets.toolbars: prompt_toolkit
     prompt_toolkit.win32_types: prompt_toolkit
+    psutil: psutil
+    psutil.tests: psutil
+    psutil.tests.runner: psutil
+    psutil.tests.test_aix: psutil
+    psutil.tests.test_bsd: psutil
+    psutil.tests.test_connections: psutil
+    psutil.tests.test_contracts: psutil
+    psutil.tests.test_linux: psutil
+    psutil.tests.test_memleaks: psutil
+    psutil.tests.test_misc: psutil
+    psutil.tests.test_osx: psutil
+    psutil.tests.test_posix: psutil
+    psutil.tests.test_process: psutil
+    psutil.tests.test_process_all: psutil
+    psutil.tests.test_sunos: psutil
+    psutil.tests.test_system: psutil
+    psutil.tests.test_testutils: psutil
+    psutil.tests.test_unicode: psutil
+    psutil.tests.test_windows: psutil
     ptyprocess: ptyprocess
     ptyprocess.ptyprocess: ptyprocess
     ptyprocess.util: ptyprocess
@@ -7250,6 +7972,21 @@ manifest:
     pycocotools.coco: pycocotools
     pycocotools.cocoeval: pycocotools
     pycocotools.mask: pycocotools
+    pycparser: pycparser
+    pycparser.ast_transforms: pycparser
+    pycparser.c_ast: pycparser
+    pycparser.c_generator: pycparser
+    pycparser.c_lexer: pycparser
+    pycparser.c_parser: pycparser
+    pycparser.lextab: pycparser
+    pycparser.ply: pycparser
+    pycparser.ply.cpp: pycparser
+    pycparser.ply.ctokens: pycparser
+    pycparser.ply.lex: pycparser
+    pycparser.ply.yacc: pycparser
+    pycparser.ply.ygen: pycparser
+    pycparser.plyparser: pycparser
+    pycparser.yacctab: pycparser
     pydantic: pydantic
     pydantic.alias_generators: pydantic
     pydantic.aliases: pydantic
@@ -7669,12 +8406,190 @@ manifest:
     pyparsing.unicode: pyparsing
     pyparsing.util: pyparsing
     pytest: pytest
+    pythonjsonlogger: python_json_logger
+    pythonjsonlogger.jsonlogger: python_json_logger
     pytz: pytz
     pytz.exceptions: pytz
     pytz.lazy: pytz
     pytz.reference: pytz
     pytz.tzfile: pytz
     pytz.tzinfo: pytz
+    qtconsole: qtconsole
+    qtconsole.ansi_code_processor: qtconsole
+    qtconsole.base_frontend_mixin: qtconsole
+    qtconsole.bracket_matcher: qtconsole
+    qtconsole.call_tip_widget: qtconsole
+    qtconsole.client: qtconsole
+    qtconsole.comms: qtconsole
+    qtconsole.completion_html: qtconsole
+    qtconsole.completion_plain: qtconsole
+    qtconsole.completion_widget: qtconsole
+    qtconsole.console_widget: qtconsole
+    qtconsole.frontend_widget: qtconsole
+    qtconsole.history_console_widget: qtconsole
+    qtconsole.inprocess: qtconsole
+    qtconsole.ipython_widget: qtconsole
+    qtconsole.jupyter_widget: qtconsole
+    qtconsole.kernel_mixins: qtconsole
+    qtconsole.kill_ring: qtconsole
+    qtconsole.mainwindow: qtconsole
+    qtconsole.manager: qtconsole
+    qtconsole.pygments_highlighter: qtconsole
+    qtconsole.qstringhelpers: qtconsole
+    qtconsole.qtconsoleapp: qtconsole
+    qtconsole.rich_ipython_widget: qtconsole
+    qtconsole.rich_jupyter_widget: qtconsole
+    qtconsole.rich_text: qtconsole
+    qtconsole.styles: qtconsole
+    qtconsole.svg: qtconsole
+    qtconsole.tests: qtconsole
+    qtconsole.tests.test_00_console_widget: qtconsole
+    qtconsole.tests.test_ansi_code_processor: qtconsole
+    qtconsole.tests.test_app: qtconsole
+    qtconsole.tests.test_comms: qtconsole
+    qtconsole.tests.test_completion_widget: qtconsole
+    qtconsole.tests.test_frontend_widget: qtconsole
+    qtconsole.tests.test_inprocess_kernel: qtconsole
+    qtconsole.tests.test_jupyter_widget: qtconsole
+    qtconsole.tests.test_kill_ring: qtconsole
+    qtconsole.tests.test_styles: qtconsole
+    qtconsole.usage: qtconsole
+    qtconsole.util: qtconsole
+    qtpy: QtPy
+    qtpy.Qsci: QtPy
+    qtpy.Qt3DAnimation: QtPy
+    qtpy.Qt3DCore: QtPy
+    qtpy.Qt3DExtras: QtPy
+    qtpy.Qt3DInput: QtPy
+    qtpy.Qt3DLogic: QtPy
+    qtpy.Qt3DRender: QtPy
+    qtpy.QtAxContainer: QtPy
+    qtpy.QtBluetooth: QtPy
+    qtpy.QtCharts: QtPy
+    qtpy.QtConcurrent: QtPy
+    qtpy.QtCore: QtPy
+    qtpy.QtDBus: QtPy
+    qtpy.QtDataVisualization: QtPy
+    qtpy.QtDesigner: QtPy
+    qtpy.QtGui: QtPy
+    qtpy.QtHelp: QtPy
+    qtpy.QtLocation: QtPy
+    qtpy.QtMacExtras: QtPy
+    qtpy.QtMultimedia: QtPy
+    qtpy.QtMultimediaWidgets: QtPy
+    qtpy.QtNetwork: QtPy
+    qtpy.QtNetworkAuth: QtPy
+    qtpy.QtNfc: QtPy
+    qtpy.QtOpenGL: QtPy
+    qtpy.QtOpenGLWidgets: QtPy
+    qtpy.QtPdf: QtPy
+    qtpy.QtPdfWidgets: QtPy
+    qtpy.QtPositioning: QtPy
+    qtpy.QtPrintSupport: QtPy
+    qtpy.QtPurchasing: QtPy
+    qtpy.QtQml: QtPy
+    qtpy.QtQuick: QtPy
+    qtpy.QtQuick3D: QtPy
+    qtpy.QtQuickControls2: QtPy
+    qtpy.QtQuickWidgets: QtPy
+    qtpy.QtRemoteObjects: QtPy
+    qtpy.QtScxml: QtPy
+    qtpy.QtSensors: QtPy
+    qtpy.QtSerialPort: QtPy
+    qtpy.QtSql: QtPy
+    qtpy.QtStateMachine: QtPy
+    qtpy.QtSvg: QtPy
+    qtpy.QtSvgWidgets: QtPy
+    qtpy.QtTest: QtPy
+    qtpy.QtTextToSpeech: QtPy
+    qtpy.QtUiTools: QtPy
+    qtpy.QtWebChannel: QtPy
+    qtpy.QtWebEngine: QtPy
+    qtpy.QtWebEngineCore: QtPy
+    qtpy.QtWebEngineQuick: QtPy
+    qtpy.QtWebEngineWidgets: QtPy
+    qtpy.QtWebSockets: QtPy
+    qtpy.QtWidgets: QtPy
+    qtpy.QtWinExtras: QtPy
+    qtpy.QtX11Extras: QtPy
+    qtpy.QtXml: QtPy
+    qtpy.QtXmlPatterns: QtPy
+    qtpy.cli: QtPy
+    qtpy.compat: QtPy
+    qtpy.enums_compat: QtPy
+    qtpy.shiboken: QtPy
+    qtpy.sip: QtPy
+    qtpy.tests: QtPy
+    qtpy.tests.conftest: QtPy
+    qtpy.tests.optional_deps: QtPy
+    qtpy.tests.optional_deps.optional_dep: QtPy
+    qtpy.tests.test_cli: QtPy
+    qtpy.tests.test_compat: QtPy
+    qtpy.tests.test_macos_checks: QtPy
+    qtpy.tests.test_main: QtPy
+    qtpy.tests.test_missing_optional_deps: QtPy
+    qtpy.tests.test_qdesktopservice_split: QtPy
+    qtpy.tests.test_qsci: QtPy
+    qtpy.tests.test_qt3danimation: QtPy
+    qtpy.tests.test_qt3dcore: QtPy
+    qtpy.tests.test_qt3dextras: QtPy
+    qtpy.tests.test_qt3dinput: QtPy
+    qtpy.tests.test_qt3dlogic: QtPy
+    qtpy.tests.test_qt3drender: QtPy
+    qtpy.tests.test_qtaxcontainer: QtPy
+    qtpy.tests.test_qtbluetooth: QtPy
+    qtpy.tests.test_qtcharts: QtPy
+    qtpy.tests.test_qtconcurrent: QtPy
+    qtpy.tests.test_qtcore: QtPy
+    qtpy.tests.test_qtdatavisualization: QtPy
+    qtpy.tests.test_qtdbus: QtPy
+    qtpy.tests.test_qtdesigner: QtPy
+    qtpy.tests.test_qtgui: QtPy
+    qtpy.tests.test_qthelp: QtPy
+    qtpy.tests.test_qtlocation: QtPy
+    qtpy.tests.test_qtmacextras: QtPy
+    qtpy.tests.test_qtmultimedia: QtPy
+    qtpy.tests.test_qtmultimediawidgets: QtPy
+    qtpy.tests.test_qtnetwork: QtPy
+    qtpy.tests.test_qtnetworkauth: QtPy
+    qtpy.tests.test_qtopengl: QtPy
+    qtpy.tests.test_qtopenglwidgets: QtPy
+    qtpy.tests.test_qtpdf: QtPy
+    qtpy.tests.test_qtpdfwidgets: QtPy
+    qtpy.tests.test_qtpositioning: QtPy
+    qtpy.tests.test_qtprintsupport: QtPy
+    qtpy.tests.test_qtpurchasing: QtPy
+    qtpy.tests.test_qtqml: QtPy
+    qtpy.tests.test_qtquick: QtPy
+    qtpy.tests.test_qtquick3d: QtPy
+    qtpy.tests.test_qtquickcontrols2: QtPy
+    qtpy.tests.test_qtquickwidgets: QtPy
+    qtpy.tests.test_qtremoteobjects: QtPy
+    qtpy.tests.test_qtscxml: QtPy
+    qtpy.tests.test_qtsensors: QtPy
+    qtpy.tests.test_qtserialport: QtPy
+    qtpy.tests.test_qtsql: QtPy
+    qtpy.tests.test_qtstatemachine: QtPy
+    qtpy.tests.test_qtsvg: QtPy
+    qtpy.tests.test_qtsvgwidgets: QtPy
+    qtpy.tests.test_qttest: QtPy
+    qtpy.tests.test_qttexttospeech: QtPy
+    qtpy.tests.test_qtuitools: QtPy
+    qtpy.tests.test_qtwebchannel: QtPy
+    qtpy.tests.test_qtwebenginecore: QtPy
+    qtpy.tests.test_qtwebenginequick: QtPy
+    qtpy.tests.test_qtwebenginewidgets: QtPy
+    qtpy.tests.test_qtwebsockets: QtPy
+    qtpy.tests.test_qtwidgets: QtPy
+    qtpy.tests.test_qtwinextras: QtPy
+    qtpy.tests.test_qtx11extras: QtPy
+    qtpy.tests.test_qtxml: QtPy
+    qtpy.tests.test_qtxmlpatterns: QtPy
+    qtpy.tests.test_shiboken: QtPy
+    qtpy.tests.test_sip: QtPy
+    qtpy.tests.test_uic: QtPy
+    qtpy.tests.utils: QtPy
+    qtpy.uic: QtPy
     referencing: referencing
     referencing.exceptions: referencing
     referencing.jsonschema: referencing
@@ -7720,6 +8635,8 @@ manifest:
     requests_oauthlib.oauth1_session: requests_oauthlib
     requests_oauthlib.oauth2_auth: requests_oauthlib
     requests_oauthlib.oauth2_session: requests_oauthlib
+    rfc3339_validator: rfc3339_validator
+    rfc3986_validator: rfc3986_validator
     rich: rich
     rich.abc: rich
     rich.align: rich
@@ -8271,6 +9188,19 @@ manifest:
     semantic_version: semantic_version
     semantic_version.base: semantic_version
     semantic_version.django_fields: semantic_version
+    send2trash: Send2Trash
+    send2trash.compat: Send2Trash
+    send2trash.exceptions: Send2Trash
+    send2trash.mac: Send2Trash
+    send2trash.mac.legacy: Send2Trash
+    send2trash.mac.modern: Send2Trash
+    send2trash.plat_gio: Send2Trash
+    send2trash.plat_other: Send2Trash
+    send2trash.util: Send2Trash
+    send2trash.win: Send2Trash
+    send2trash.win.IFileOperationProgressSink: Send2Trash
+    send2trash.win.legacy: Send2Trash
+    send2trash.win.modern: Send2Trash
     sentencepiece: sentencepiece
     sentencepiece.sentencepiece_model_pb2: sentencepiece
     sentencepiece.sentencepiece_pb2: sentencepiece
@@ -8302,6 +9232,9 @@ manifest:
     setuptools.command.test: setuptools
     setuptools.command.upload: setuptools
     setuptools.command.upload_docs: setuptools
+    setuptools.compat: setuptools
+    setuptools.compat.py310: setuptools
+    setuptools.compat.py311: setuptools
     setuptools.config: setuptools
     setuptools.config.expand: setuptools
     setuptools.config.pyprojecttoml: setuptools
@@ -8322,7 +9255,6 @@ manifest:
     setuptools.msvc: setuptools
     setuptools.namespaces: setuptools
     setuptools.package_index: setuptools
-    setuptools.py312compat: setuptools
     setuptools.sandbox: setuptools
     setuptools.unicode_utils: setuptools
     setuptools.version: setuptools
@@ -8962,6 +9894,12 @@ manifest:
     smmap.test.test_util: smmap
     smmap.util: smmap
     sniffio: sniffio
+    soupsieve: soupsieve
+    soupsieve.css_match: soupsieve
+    soupsieve.css_parser: soupsieve
+    soupsieve.css_types: soupsieve
+    soupsieve.pretty: soupsieve
+    soupsieve.util: soupsieve
     spacy: spacy
     spacy.about: spacy
     spacy.attrs: spacy
@@ -9112,8 +10050,6 @@ manifest:
     spacy.lang.fi.stop_words: spacy
     spacy.lang.fi.syntax_iterators: spacy
     spacy.lang.fi.tokenizer_exceptions: spacy
-    spacy.lang.fo: spacy
-    spacy.lang.fo.tokenizer_exceptions: spacy
     spacy.lang.fr: spacy
     spacy.lang.fr.examples: spacy
     spacy.lang.fr.lemmatizer: spacy
@@ -9265,10 +10201,6 @@ manifest:
     spacy.lang.nl.stop_words: spacy
     spacy.lang.nl.syntax_iterators: spacy
     spacy.lang.nl.tokenizer_exceptions: spacy
-    spacy.lang.nn: spacy
-    spacy.lang.nn.examples: spacy
-    spacy.lang.nn.punctuation: spacy
-    spacy.lang.nn.tokenizer_exceptions: spacy
     spacy.lang.norm_exceptions: spacy
     spacy.lang.pl: spacy
     spacy.lang.pl.examples: spacy
@@ -9532,8 +10464,6 @@ manifest:
     spacy.tests.lang.fi.test_noun_chunks: spacy
     spacy.tests.lang.fi.test_text: spacy
     spacy.tests.lang.fi.test_tokenizer: spacy
-    spacy.tests.lang.fo: spacy
-    spacy.tests.lang.fo.test_tokenizer: spacy
     spacy.tests.lang.fr: spacy
     spacy.tests.lang.fr.test_exceptions: spacy
     spacy.tests.lang.fr.test_noun_chunks: spacy
@@ -9616,8 +10546,6 @@ manifest:
     spacy.tests.lang.nl: spacy
     spacy.tests.lang.nl.test_noun_chunks: spacy
     spacy.tests.lang.nl.test_text: spacy
-    spacy.tests.lang.nn: spacy
-    spacy.tests.lang.nn.test_tokenizer: spacy
     spacy.tests.lang.pl: spacy
     spacy.tests.lang.pl.test_text: spacy
     spacy.tests.lang.pl.test_tokenizer: spacy
@@ -9764,7 +10692,6 @@ manifest:
     spacy.tests.test_pickles: spacy
     spacy.tests.test_scorer: spacy
     spacy.tests.test_ty: spacy
-    spacy.tests.tok2vec: spacy
     spacy.tests.tokenizer: spacy
     spacy.tests.tokenizer.test_exceptions: spacy
     spacy.tests.tokenizer.test_explain: spacy
@@ -11983,6 +12910,10 @@ manifest:
     tensorboard.util.timing: tensorboard
     tensorboard.version: tensorboard
     tensorboard_data_server: tensorboard_data_server
+    terminado: terminado
+    terminado.management: terminado
+    terminado.uimodule: terminado
+    terminado.websocket: terminado
     tests.models.test_albef: salesforce_lavis
     tests.models.test_blip: salesforce_lavis
     tests.models.test_blip2: salesforce_lavis
@@ -12325,6 +13256,14 @@ manifest:
     timm.utils.random: timm
     timm.utils.summary: timm
     timm.version: timm
+    tinycss2: tinycss2
+    tinycss2.ast: tinycss2
+    tinycss2.bytes: tinycss2
+    tinycss2.color3: tinycss2
+    tinycss2.nth: tinycss2
+    tinycss2.parser: tinycss2
+    tinycss2.serializer: tinycss2
+    tinycss2.tokenizer: tinycss2
     tlz: toolz
     tokenizers: tokenizers
     tokenizers.decoders: tokenizers
@@ -14743,6 +15682,11 @@ manifest:
     tzlocal.utils: tzlocal
     tzlocal.win32: tzlocal
     tzlocal.windows_tz: tzlocal
+    uri_template: uri_template
+    uri_template.charset: uri_template
+    uri_template.expansions: uri_template
+    uri_template.uritemplate: uri_template
+    uri_template.variable: uri_template
     urllib3: urllib3
     urllib3.connection: urllib3
     urllib3.connectionpool: urllib3
@@ -14997,6 +15941,12 @@ manifest:
     weasel.util.remote: weasel
     weasel.util.validation: weasel
     weasel.util.versions: weasel
+    webcolors: webcolors
+    webcolors.constants: webcolors
+    webcolors.conversion: webcolors
+    webcolors.html5: webcolors
+    webcolors.normalization: webcolors
+    webcolors.types: webcolors
     webdataset: webdataset
     webdataset.autodecode: webdataset
     webdataset.bench: webdataset
@@ -15021,6 +15971,15 @@ manifest:
     webencodings.mklabels: webencodings
     webencodings.tests: webencodings
     webencodings.x_user_defined: webencodings
+    websocket: websocket_client
+    websocket.tests: websocket_client
+    websocket.tests.echo-server: websocket_client
+    websocket.tests.test_abnf: websocket_client
+    websocket.tests.test_app: websocket_client
+    websocket.tests.test_cookiejar: websocket_client
+    websocket.tests.test_http: websocket_client
+    websocket.tests.test_url: websocket_client
+    websocket.tests.test_websocket: websocket_client
     websockets: websockets
     websockets.auth: websockets
     websockets.client: websockets
@@ -15129,6 +16088,7 @@ manifest:
     wheel.vendored.packaging.utils: wheel
     wheel.vendored.packaging.version: wheel
     wheel.wheelfile: wheel
+    widgetsnbextension: widgetsnbextension
     wids: webdataset
     wids.wids: webdataset
     wids.wids_bench: webdataset
@@ -15213,6 +16173,108 @@ manifest:
     zipp: zipp
     zipp.glob: zipp
     zipp.py310compat: zipp
+    zmq: pyzmq
+    zmq.asyncio: pyzmq
+    zmq.auth: pyzmq
+    zmq.auth.asyncio: pyzmq
+    zmq.auth.base: pyzmq
+    zmq.auth.certs: pyzmq
+    zmq.auth.ioloop: pyzmq
+    zmq.auth.thread: pyzmq
+    zmq.backend: pyzmq
+    zmq.backend.cffi: pyzmq
+    zmq.backend.cffi.context: pyzmq
+    zmq.backend.cffi.devices: pyzmq
+    zmq.backend.cffi.error: pyzmq
+    zmq.backend.cffi.message: pyzmq
+    zmq.backend.cffi.socket: pyzmq
+    zmq.backend.cffi.utils: pyzmq
+    zmq.backend.cython: pyzmq
+    zmq.backend.cython.context: pyzmq
+    zmq.backend.cython.error: pyzmq
+    zmq.backend.cython.message: pyzmq
+    zmq.backend.cython.socket: pyzmq
+    zmq.backend.cython.utils: pyzmq
+    zmq.backend.select: pyzmq
+    zmq.constants: pyzmq
+    zmq.decorators: pyzmq
+    zmq.devices: pyzmq
+    zmq.devices.basedevice: pyzmq
+    zmq.devices.monitoredqueue: pyzmq
+    zmq.devices.monitoredqueuedevice: pyzmq
+    zmq.devices.proxydevice: pyzmq
+    zmq.devices.proxysteerabledevice: pyzmq
+    zmq.error: pyzmq
+    zmq.eventloop: pyzmq
+    zmq.eventloop.future: pyzmq
+    zmq.eventloop.ioloop: pyzmq
+    zmq.eventloop.zmqstream: pyzmq
+    zmq.green: pyzmq
+    zmq.green.core: pyzmq
+    zmq.green.device: pyzmq
+    zmq.green.eventloop: pyzmq
+    zmq.green.eventloop.ioloop: pyzmq
+    zmq.green.eventloop.zmqstream: pyzmq
+    zmq.green.poll: pyzmq
+    zmq.log: pyzmq
+    zmq.log.handlers: pyzmq
+    zmq.ssh: pyzmq
+    zmq.ssh.forward: pyzmq
+    zmq.ssh.tunnel: pyzmq
+    zmq.sugar: pyzmq
+    zmq.sugar.attrsettr: pyzmq
+    zmq.sugar.context: pyzmq
+    zmq.sugar.frame: pyzmq
+    zmq.sugar.poll: pyzmq
+    zmq.sugar.socket: pyzmq
+    zmq.sugar.stopwatch: pyzmq
+    zmq.sugar.tracker: pyzmq
+    zmq.sugar.version: pyzmq
+    zmq.tests: pyzmq
+    zmq.tests.conftest: pyzmq
+    zmq.tests.test_asyncio: pyzmq
+    zmq.tests.test_auth: pyzmq
+    zmq.tests.test_cffi_backend: pyzmq
+    zmq.tests.test_constants: pyzmq
+    zmq.tests.test_context: pyzmq
+    zmq.tests.test_cython: pyzmq
+    zmq.tests.test_decorators: pyzmq
+    zmq.tests.test_device: pyzmq
+    zmq.tests.test_draft: pyzmq
+    zmq.tests.test_error: pyzmq
+    zmq.tests.test_etc: pyzmq
+    zmq.tests.test_ext: pyzmq
+    zmq.tests.test_future: pyzmq
+    zmq.tests.test_imports: pyzmq
+    zmq.tests.test_includes: pyzmq
+    zmq.tests.test_ioloop: pyzmq
+    zmq.tests.test_log: pyzmq
+    zmq.tests.test_message: pyzmq
+    zmq.tests.test_monitor: pyzmq
+    zmq.tests.test_monqueue: pyzmq
+    zmq.tests.test_multipart: pyzmq
+    zmq.tests.test_mypy: pyzmq
+    zmq.tests.test_pair: pyzmq
+    zmq.tests.test_poll: pyzmq
+    zmq.tests.test_proxy_steerable: pyzmq
+    zmq.tests.test_pubsub: pyzmq
+    zmq.tests.test_reqrep: pyzmq
+    zmq.tests.test_retry_eintr: pyzmq
+    zmq.tests.test_security: pyzmq
+    zmq.tests.test_socket: pyzmq
+    zmq.tests.test_ssh: pyzmq
+    zmq.tests.test_version: pyzmq
+    zmq.tests.test_win32_shim: pyzmq
+    zmq.tests.test_z85: pyzmq
+    zmq.tests.test_zmqstream: pyzmq
+    zmq.utils: pyzmq
+    zmq.utils.garbage: pyzmq
+    zmq.utils.interop: pyzmq
+    zmq.utils.jsonapi: pyzmq
+    zmq.utils.monitor: pyzmq
+    zmq.utils.strtypes: pyzmq
+    zmq.utils.win32: pyzmq
+    zmq.utils.z85: pyzmq
     zope.event: zope.event
     zope.event.classhandler: zope.event
     zope.event.tests: zope.event
@@ -15266,4 +16328,4 @@ manifest:
     zope.interface.verify: zope.interface
   pip_repository:
     name: pip
-integrity: 4874970160f2d4ae76d40a3def2d8b4d2c507334a0ed8d6fa8d9b53155434ec9
+integrity: 3a222e997b29ffd7d0dde81f5533d5471e63493c24fff33900250755df5e7735
