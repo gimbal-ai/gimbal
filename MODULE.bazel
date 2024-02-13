@@ -64,6 +64,14 @@ single_version_override(
     ],
 )
 
+single_version_override(
+    module_name = "rules_python",
+    patch_strip = 1,
+    patches = [
+        "//bazel/external:rules_python.binaries.patch",
+    ],
+)
+
 # rules_go/gazelle setup
 go_sdk = use_extension("@io_bazel_rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(version = "1.21.3")

@@ -17,19 +17,27 @@ load("@rules_pkg//pkg:providers.bzl", "PackageFilesInfo")
 
 def _py_pkg_provider_impl(ctx):
     dest_to_src = dict()
+    lib_prefix = "/".join([ctx.attr.install_prefix, "lib", ctx.attr.python_version])
+    bin_prefix = "/".join([ctx.attr.install_prefix, "bin"])
     for src in ctx.attr.srcs:
         all_files = src[DefaultInfo].files.to_list()
         all_files.extend(src[DefaultInfo].default_runfiles.files.to_list())
         for f in all_files:
             if "/site-packages/" in f.path:
                 _, _, path = f.path.partition("/site-packages/")
-                prefix = "site-packages"
+                prefix = "/".join([lib_prefix, "site-packages"])
             elif "/dist-packages/" in f.path:
                 _, _, path = f.path.partition("/dist-packages/")
-                prefix = "dist-packages"
+                prefix = "/".join([lib_prefix, "dist-packages"])
+            elif "/bin/" in f.path:
+                _, _, path = f.path.partition("/bin/")
+                prefix = bin_prefix
+            elif "/data/" in f.path:
+                _, _, path = f.path.partition("/data/")
+                prefix = ctx.attr.install_prefix
             else:
                 continue
-            path = "/".join([ctx.attr.python_prefix, prefix, path])
+            path = "/".join([prefix, path])
             dest_to_src[path] = f
     return [
         DefaultInfo(
@@ -48,8 +56,11 @@ py_pkg_provider = rule(
             mandatory = True,
             providers = [DefaultInfo],
         ),
-        python_prefix = attr.string(
-            default = "/usr/local/lib/python3.11",
+        python_version = attr.string(
+            default = "python3.11",
+        ),
+        install_prefix = attr.string(
+            default = "/usr/local",
         ),
     ),
 )

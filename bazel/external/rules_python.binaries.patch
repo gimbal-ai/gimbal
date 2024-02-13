@@ -1,0 +1,26 @@
+diff --git a/python/pip_install/private/generate_whl_library_build_bazel.bzl b/python/pip_install/private/generate_whl_library_build_bazel.bzl
+index 568b00e..26061e7 100644
+--- a/python/pip_install/private/generate_whl_library_build_bazel.bzl
++++ b/python/pip_install/private/generate_whl_library_build_bazel.bzl
+@@ -80,7 +80,7 @@ py_library(
+         allow_empty = True,
+     ),
+     data = {data} + glob(
+-        ["site-packages/**/*"],
++        ["site-packages/**/*", "bin/**/*"],
+         exclude={data_exclude},
+     ),
+     # This makes this directory a top-level in the python import
+diff --git a/python/pip_install/tools/wheel_installer/wheel.py b/python/pip_install/tools/wheel_installer/wheel.py
+index 2275f77..7c15e81 100644
+--- a/python/pip_install/tools/wheel_installer/wheel.py
++++ b/python/pip_install/tools/wheel_installer/wheel.py
+@@ -496,7 +496,7 @@ class Wheel:
+         destination = installer.destinations.SchemeDictionaryDestination(
+             installation_schemes,
+             # TODO Should entry_point scripts also be handled by installer rather than custom code?
+-            interpreter="/dev/null",
++            interpreter="/usr/local/bin/python3",
+             script_kind="posix",
+             destdir=directory,
+             bytecode_optimization_levels=[],

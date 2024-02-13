@@ -13,6 +13,7 @@
 #
 # SPDX-License-Identifier: Proprietary
 
+load("@pip//:requirements.bzl", "all_data_requirements", "all_requirements")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("@rules_python//python:pip.bzl", "compile_pip_requirements")
 load("//bazel:gml_build_system.bzl", "no_sysroot")
@@ -35,26 +36,7 @@ compile_pip_requirements(
 
 py_pkg_provider(
     name = "python_deps_files",
-    srcs = [
-        "@pip//absl_py",
-        "@pip//black",
-        "@pip//filetype",
-        "@pip//grequests",
-        "@pip//groundingdino_gml",
-        "@pip//numpy",
-        "@pip//pillow",
-        "@pip//pycocotools",
-        "@pip//pytest",
-        "@pip//requests",
-        "@pip//salesforce_lavis",
-        "@pip//scikit_image",
-        "@pip//scikit_learn",
-        "@pip//seaborn",
-        "@pip//supervision",
-        "@pip//tensorboard",
-        "@pip//torch",
-        "@pip//torchvision",
-    ],
+    srcs = all_requirements + all_data_requirements,
 )
 
 pkg_tar(
