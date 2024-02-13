@@ -244,10 +244,10 @@ REPOSITORY_LOCATIONS = dict(
         ],
     ),
     build_stack_rules_proto = dict(
-        sha256 = "ac7e2966a78660e83e1ba84a06db6eda9a7659a841b6a7fd93028cd8757afbfb",
-        strip_prefix = "rules_proto-2.0.1",
+        sha256 = "ee7a11d66e7bbc5b0f7a35ca3e960cb9a5f8a314b22252e19912dfbc6e22782d",
+        strip_prefix = "rules_proto-3.1.0",
         urls = [
-            "https://github.com/stackb/rules_proto/archive/v2.0.1.tar.gz",
+            "https://github.com/stackb/rules_proto/archive/v3.1.0.tar.gz",
         ],
     ),
     com_github_ffmpeg_nv_codec_headers = dict(
