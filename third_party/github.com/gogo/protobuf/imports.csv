@@ -1,4 +1,8 @@
+go,go,github.com/gogo/protobuf/gogoproto,//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_go_proto
 proto,proto,gogoproto/gogo.proto,//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_proto
+proto,proto,third_party/github.com/gogo/protobuf/gogoproto/gogo.proto,//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_proto
 protobuf,proto_cc_library,gogoproto/gogo.proto,//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_cc_library
+protobuf,proto_cc_library,third_party/github.com/gogo/protobuf/gogoproto/gogo.proto,//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_cc_library
 protobuf,proto_go_library,gogoproto/gogo.proto,//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_go_proto
+protobuf,proto_go_library,third_party/github.com/gogo/protobuf/gogoproto/gogo.proto,//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_go_proto
 protobuf,proto_py_library,gogoproto/gogo.proto,//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_py_library
