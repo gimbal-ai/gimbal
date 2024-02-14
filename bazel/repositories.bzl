@@ -173,6 +173,7 @@ def _cc_deps():
         patches = [
             "//bazel/external:rules_proto.silence_warnings.patch",
             "//bazel/external:rules_proto.cpp_plugin_fix.patch",
+            "//bazel/external:rules_proto.imports.patch",
         ],
         patch_args = ["-p1"],
     )
