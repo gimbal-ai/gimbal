@@ -1956,6 +1956,9 @@ manifest:
     grpc.framework.interfaces.face: grpcio
     grpc.framework.interfaces.face.face: grpcio
     grpc.framework.interfaces.face.utilities: grpcio
+    grpc_tools: grpcio_tools
+    grpc_tools.command: grpcio_tools
+    grpc_tools.protoc: grpcio_tools
     h11: h11
     h11.tests: h11
     h11.tests.helpers: h11
@@ -1968,6 +1971,25 @@ manifest:
     h11.tests.test_receivebuffer: h11
     h11.tests.test_state: h11
     h11.tests.test_util: h11
+    h2: h2
+    h2.config: h2
+    h2.connection: h2
+    h2.errors: h2
+    h2.events: h2
+    h2.exceptions: h2
+    h2.frame_buffer: h2
+    h2.settings: h2
+    h2.stream: h2
+    h2.utilities: h2
+    h2.windows: h2
+    hpack: hpack
+    hpack.exceptions: hpack
+    hpack.hpack: hpack
+    hpack.huffman: hpack
+    hpack.huffman_constants: hpack
+    hpack.huffman_table: hpack
+    hpack.struct: hpack
+    hpack.table: hpack
     httpcore: httpcore
     httpx: httpx
     huggingface_hub: huggingface_hub
@@ -2000,6 +2022,10 @@ manifest:
     huggingface_hub.utils.logging: huggingface_hub
     huggingface_hub.utils.sha: huggingface_hub
     huggingface_hub.utils.tqdm: huggingface_hub
+    hyperframe: hyperframe
+    hyperframe.exceptions: hyperframe
+    hyperframe.flags: hyperframe
+    hyperframe.frame: hyperframe
     identify: identify
     identify.cli: identify
     identify.extensions: identify
@@ -8414,6 +8440,74 @@ manifest:
     pytz.reference: pytz
     pytz.tzfile: pytz
     pytz.tzinfo: pytz
+    qdrant_client: qdrant_client
+    qdrant_client.async_client_base: qdrant_client
+    qdrant_client.async_qdrant_client: qdrant_client
+    qdrant_client.async_qdrant_fastembed: qdrant_client
+    qdrant_client.async_qdrant_remote: qdrant_client
+    qdrant_client.client_base: qdrant_client
+    qdrant_client.connection: qdrant_client
+    qdrant_client.conversions: qdrant_client
+    qdrant_client.conversions.common_types: qdrant_client
+    qdrant_client.conversions.conversion: qdrant_client
+    qdrant_client.fastembed_common: qdrant_client
+    qdrant_client.grpc: qdrant_client
+    qdrant_client.grpc.collections_pb2: qdrant_client
+    qdrant_client.grpc.collections_pb2_grpc: qdrant_client
+    qdrant_client.grpc.collections_service_pb2: qdrant_client
+    qdrant_client.grpc.collections_service_pb2_grpc: qdrant_client
+    qdrant_client.grpc.json_with_int_pb2: qdrant_client
+    qdrant_client.grpc.json_with_int_pb2_grpc: qdrant_client
+    qdrant_client.grpc.points_pb2: qdrant_client
+    qdrant_client.grpc.points_pb2_grpc: qdrant_client
+    qdrant_client.grpc.points_service_pb2: qdrant_client
+    qdrant_client.grpc.points_service_pb2_grpc: qdrant_client
+    qdrant_client.grpc.qdrant_pb2: qdrant_client
+    qdrant_client.grpc.qdrant_pb2_grpc: qdrant_client
+    qdrant_client.grpc.snapshots_service_pb2: qdrant_client
+    qdrant_client.grpc.snapshots_service_pb2_grpc: qdrant_client
+    qdrant_client.http: qdrant_client
+    qdrant_client.http.api: qdrant_client
+    qdrant_client.http.api.cluster_api: qdrant_client
+    qdrant_client.http.api.collections_api: qdrant_client
+    qdrant_client.http.api.points_api: qdrant_client
+    qdrant_client.http.api.service_api: qdrant_client
+    qdrant_client.http.api.snapshots_api: qdrant_client
+    qdrant_client.http.api_client: qdrant_client
+    qdrant_client.http.configuration: qdrant_client
+    qdrant_client.http.exceptions: qdrant_client
+    qdrant_client.http.models: qdrant_client
+    qdrant_client.http.models.models: qdrant_client
+    qdrant_client.local: qdrant_client
+    qdrant_client.local.async_qdrant_local: qdrant_client
+    qdrant_client.local.distances: qdrant_client
+    qdrant_client.local.geo: qdrant_client
+    qdrant_client.local.local_collection: qdrant_client
+    qdrant_client.local.payload_filters: qdrant_client
+    qdrant_client.local.payload_value_extractor: qdrant_client
+    qdrant_client.local.persistence: qdrant_client
+    qdrant_client.local.qdrant_local: qdrant_client
+    qdrant_client.local.sparse: qdrant_client
+    qdrant_client.local.tests: qdrant_client
+    qdrant_client.local.tests.test_payload_filters: qdrant_client
+    qdrant_client.migrate: qdrant_client
+    qdrant_client.migrate.migrate: qdrant_client
+    qdrant_client.models: qdrant_client
+    qdrant_client.parallel_processor: qdrant_client
+    qdrant_client.qdrant_client: qdrant_client
+    qdrant_client.qdrant_fastembed: qdrant_client
+    qdrant_client.qdrant_remote: qdrant_client
+    qdrant_client.uploader: qdrant_client
+    qdrant_client.uploader.grpc_uploader: qdrant_client
+    qdrant_client.uploader.rest_uploader: qdrant_client
+    qdrant_client.uploader.uploader: qdrant_client
+    qdrant_openapi_client: qdrant_client
+    qdrant_openapi_client.api: qdrant_client
+    qdrant_openapi_client.api.collections_api: qdrant_client
+    qdrant_openapi_client.api.points_api: qdrant_client
+    qdrant_openapi_client.exceptions: qdrant_client
+    qdrant_openapi_client.models: qdrant_client
+    qdrant_openapi_client.models.models: qdrant_client
     qtconsole: qtconsole
     qtconsole.ansi_code_processor: qtconsole
     qtconsole.base_frontend_mixin: qtconsole
@@ -16328,4 +16422,4 @@ manifest:
     zope.interface.verify: zope.interface
   pip_repository:
     name: pip
-integrity: 3a222e997b29ffd7d0dde81f5533d5471e63493c24fff33900250755df5e7735
+integrity: b11a76f54492039651fd28c4b103fb7fc12a1de9244b229b4e899fde3502590c
