@@ -16,6 +16,7 @@
 load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
 load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_library")
 load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
+load("@build_stack_rules_proto//rules/py:proto_py_library.bzl", "proto_py_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
 proto_library(
@@ -236,5 +237,75 @@ proto_go_library(
         "@org_golang_google_grpc//:go_default_library",
         "@org_golang_google_grpc//codes",
         "@org_golang_google_grpc//status",
+    ],
+)
+
+proto_compile(
+    name = "tensor_py_compile",
+    output_mappings = [
+        "audio_to_tensor_calculator_pb2.py=/mediapipe/calculators/tensor/audio_to_tensor_calculator_pb2.py",
+        "bert_preprocessor_calculator_pb2.py=/mediapipe/calculators/tensor/bert_preprocessor_calculator_pb2.py",
+        "feedback_tensors_calculator_pb2.py=/mediapipe/calculators/tensor/feedback_tensors_calculator_pb2.py",
+        "image_to_tensor_calculator_pb2.py=/mediapipe/calculators/tensor/image_to_tensor_calculator_pb2.py",
+        "inference_calculator_pb2.py=/mediapipe/calculators/tensor/inference_calculator_pb2.py",
+        "landmarks_to_tensor_calculator_pb2.py=/mediapipe/calculators/tensor/landmarks_to_tensor_calculator_pb2.py",
+        "regex_preprocessor_calculator_pb2.py=/mediapipe/calculators/tensor/regex_preprocessor_calculator_pb2.py",
+        "tensor_converter_calculator_pb2.py=/mediapipe/calculators/tensor/tensor_converter_calculator_pb2.py",
+        "tensors_readback_calculator_pb2.py=/mediapipe/calculators/tensor/tensors_readback_calculator_pb2.py",
+        "tensors_to_audio_calculator_pb2.py=/mediapipe/calculators/tensor/tensors_to_audio_calculator_pb2.py",
+        "tensors_to_classification_calculator_pb2.py=/mediapipe/calculators/tensor/tensors_to_classification_calculator_pb2.py",
+        "tensors_to_detections_calculator_pb2.py=/mediapipe/calculators/tensor/tensors_to_detections_calculator_pb2.py",
+        "tensors_to_floats_calculator_pb2.py=/mediapipe/calculators/tensor/tensors_to_floats_calculator_pb2.py",
+        "tensors_to_landmarks_calculator_pb2.py=/mediapipe/calculators/tensor/tensors_to_landmarks_calculator_pb2.py",
+        "tensors_to_segmentation_calculator_pb2.py=/mediapipe/calculators/tensor/tensors_to_segmentation_calculator_pb2.py",
+    ],
+    outputs = [
+        "audio_to_tensor_calculator_pb2.py",
+        "bert_preprocessor_calculator_pb2.py",
+        "feedback_tensors_calculator_pb2.py",
+        "image_to_tensor_calculator_pb2.py",
+        "inference_calculator_pb2.py",
+        "landmarks_to_tensor_calculator_pb2.py",
+        "regex_preprocessor_calculator_pb2.py",
+        "tensor_converter_calculator_pb2.py",
+        "tensors_readback_calculator_pb2.py",
+        "tensors_to_audio_calculator_pb2.py",
+        "tensors_to_classification_calculator_pb2.py",
+        "tensors_to_detections_calculator_pb2.py",
+        "tensors_to_floats_calculator_pb2.py",
+        "tensors_to_landmarks_calculator_pb2.py",
+        "tensors_to_segmentation_calculator_pb2.py",
+    ],
+    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    proto = "tensor_proto",
+    visibility = ["//visibility:public"],
+)
+
+proto_py_library(
+    name = "tensor_py_library",
+    srcs = [
+        "audio_to_tensor_calculator_pb2.py",
+        "bert_preprocessor_calculator_pb2.py",
+        "feedback_tensors_calculator_pb2.py",
+        "image_to_tensor_calculator_pb2.py",
+        "inference_calculator_pb2.py",
+        "landmarks_to_tensor_calculator_pb2.py",
+        "regex_preprocessor_calculator_pb2.py",
+        "tensor_converter_calculator_pb2.py",
+        "tensors_readback_calculator_pb2.py",
+        "tensors_to_audio_calculator_pb2.py",
+        "tensors_to_classification_calculator_pb2.py",
+        "tensors_to_detections_calculator_pb2.py",
+        "tensors_to_floats_calculator_pb2.py",
+        "tensors_to_landmarks_calculator_pb2.py",
+        "tensors_to_segmentation_calculator_pb2.py",
+    ],
+    imports = ["../../.."],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_py_library",
+        "//third_party/github.com/google/mediapipe/mediapipe/gpu:gpu_py_library",
+        "//third_party/github.com/google/mediapipe/mediapipe/util:util_py_library",
+        "@pip//protobuf",
     ],
 )

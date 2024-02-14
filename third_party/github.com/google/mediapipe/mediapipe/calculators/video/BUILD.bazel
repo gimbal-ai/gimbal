@@ -16,6 +16,7 @@
 load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
 load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_library")
 load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
+load("@build_stack_rules_proto//rules/py:proto_py_library.bzl", "proto_py_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
 proto_library(
@@ -163,5 +164,53 @@ proto_go_library(
         "@org_golang_google_grpc//:go_default_library",
         "@org_golang_google_grpc//codes",
         "@org_golang_google_grpc//status",
+    ],
+)
+
+proto_compile(
+    name = "video_py_compile",
+    output_mappings = [
+        "box_detector_calculator_pb2.py=/mediapipe/calculators/video/box_detector_calculator_pb2.py",
+        "box_tracker_calculator_pb2.py=/mediapipe/calculators/video/box_tracker_calculator_pb2.py",
+        "flow_packager_calculator_pb2.py=/mediapipe/calculators/video/flow_packager_calculator_pb2.py",
+        "flow_to_image_calculator_pb2.py=/mediapipe/calculators/video/flow_to_image_calculator_pb2.py",
+        "motion_analysis_calculator_pb2.py=/mediapipe/calculators/video/motion_analysis_calculator_pb2.py",
+        "opencv_video_encoder_calculator_pb2.py=/mediapipe/calculators/video/opencv_video_encoder_calculator_pb2.py",
+        "tracked_detection_manager_calculator_pb2.py=/mediapipe/calculators/video/tracked_detection_manager_calculator_pb2.py",
+        "video_pre_stream_calculator_pb2.py=/mediapipe/calculators/video/video_pre_stream_calculator_pb2.py",
+    ],
+    outputs = [
+        "box_detector_calculator_pb2.py",
+        "box_tracker_calculator_pb2.py",
+        "flow_packager_calculator_pb2.py",
+        "flow_to_image_calculator_pb2.py",
+        "motion_analysis_calculator_pb2.py",
+        "opencv_video_encoder_calculator_pb2.py",
+        "tracked_detection_manager_calculator_pb2.py",
+        "video_pre_stream_calculator_pb2.py",
+    ],
+    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    proto = "video_proto",
+    visibility = ["//visibility:public"],
+)
+
+proto_py_library(
+    name = "video_py_library",
+    srcs = [
+        "box_detector_calculator_pb2.py",
+        "box_tracker_calculator_pb2.py",
+        "flow_packager_calculator_pb2.py",
+        "flow_to_image_calculator_pb2.py",
+        "motion_analysis_calculator_pb2.py",
+        "opencv_video_encoder_calculator_pb2.py",
+        "tracked_detection_manager_calculator_pb2.py",
+        "video_pre_stream_calculator_pb2.py",
+    ],
+    imports = ["../../.."],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_py_library",
+        "//third_party/github.com/google/mediapipe/mediapipe/util/tracking:tracking_py_library",
+        "@pip//protobuf",
     ],
 )

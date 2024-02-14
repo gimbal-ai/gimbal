@@ -17,6 +17,8 @@ load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
 load("@build_stack_rules_proto//rules/cc:grpc_cc_library.bzl", "grpc_cc_library")
 load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_library")
 load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
+load("@build_stack_rules_proto//rules/py:grpc_py_library.bzl", "grpc_py_library")
+load("@build_stack_rules_proto//rules/py:proto_py_library.bzl", "proto_py_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
 proto_library(
@@ -98,5 +100,46 @@ proto_go_library(
         "@org_golang_google_grpc//:go_default_library",
         "@org_golang_google_grpc//codes",
         "@org_golang_google_grpc//status",
+    ],
+)
+
+grpc_py_library(
+    name = "v1_grpc_py_library",
+    srcs = ["trace_service_pb2_grpc.py"],
+    imports = ["../../../../.."],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":v1_py_library",
+        "@pip//grpcio",
+        "@pip//protobuf",
+    ],
+)
+
+proto_compile(
+    name = "v1_py_compile",
+    output_mappings = [
+        "trace_service_pb2.py=/opentelemetry/proto/collector/trace/v1/trace_service_pb2.py",
+        "trace_service_pb2_grpc.py=/opentelemetry/proto/collector/trace/v1/trace_service_pb2_grpc.py",
+    ],
+    outputs = [
+        "trace_service_pb2.py",
+        "trace_service_pb2_grpc.py",
+    ],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:python",
+        "@build_stack_rules_proto//plugin/grpc/grpc:protoc-gen-grpc-python",
+    ],
+    proto = "v1_proto",
+    visibility = ["//visibility:public"],
+)
+
+proto_py_library(
+    name = "v1_py_library",
+    srcs = ["trace_service_pb2.py"],
+    imports = ["../../../../.."],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/github.com/open-telemetry/opentelemetry-proto/opentelemetry/proto/trace/v1:v1_py_library",
+        "@pip//protobuf",
     ],
 )

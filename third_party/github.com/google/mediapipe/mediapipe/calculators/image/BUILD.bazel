@@ -16,6 +16,7 @@
 load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
 load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_library")
 load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
+load("@build_stack_rules_proto//rules/py:proto_py_library.bzl", "proto_py_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
 proto_library(
@@ -229,5 +230,73 @@ proto_go_library(
         "@org_golang_google_grpc//:go_default_library",
         "@org_golang_google_grpc//codes",
         "@org_golang_google_grpc//status",
+    ],
+)
+
+proto_compile(
+    name = "image_py_compile",
+    output_mappings = [
+        "bilateral_filter_calculator_pb2.py=/mediapipe/calculators/image/bilateral_filter_calculator_pb2.py",
+        "feature_detector_calculator_pb2.py=/mediapipe/calculators/image/feature_detector_calculator_pb2.py",
+        "image_clone_calculator_pb2.py=/mediapipe/calculators/image/image_clone_calculator_pb2.py",
+        "image_cropping_calculator_pb2.py=/mediapipe/calculators/image/image_cropping_calculator_pb2.py",
+        "image_transformation_calculator_pb2.py=/mediapipe/calculators/image/image_transformation_calculator_pb2.py",
+        "mask_overlay_calculator_pb2.py=/mediapipe/calculators/image/mask_overlay_calculator_pb2.py",
+        "opencv_encoded_image_to_image_frame_calculator_pb2.py=/mediapipe/calculators/image/opencv_encoded_image_to_image_frame_calculator_pb2.py",
+        "opencv_image_encoder_calculator_pb2.py=/mediapipe/calculators/image/opencv_image_encoder_calculator_pb2.py",
+        "recolor_calculator_pb2.py=/mediapipe/calculators/image/recolor_calculator_pb2.py",
+        "rotation_mode_pb2.py=/mediapipe/calculators/image/rotation_mode_pb2.py",
+        "scale_image_calculator_pb2.py=/mediapipe/calculators/image/scale_image_calculator_pb2.py",
+        "segmentation_smoothing_calculator_pb2.py=/mediapipe/calculators/image/segmentation_smoothing_calculator_pb2.py",
+        "set_alpha_calculator_pb2.py=/mediapipe/calculators/image/set_alpha_calculator_pb2.py",
+        "warp_affine_calculator_pb2.py=/mediapipe/calculators/image/warp_affine_calculator_pb2.py",
+    ],
+    outputs = [
+        "bilateral_filter_calculator_pb2.py",
+        "feature_detector_calculator_pb2.py",
+        "image_clone_calculator_pb2.py",
+        "image_cropping_calculator_pb2.py",
+        "image_transformation_calculator_pb2.py",
+        "mask_overlay_calculator_pb2.py",
+        "opencv_encoded_image_to_image_frame_calculator_pb2.py",
+        "opencv_image_encoder_calculator_pb2.py",
+        "recolor_calculator_pb2.py",
+        "rotation_mode_pb2.py",
+        "scale_image_calculator_pb2.py",
+        "segmentation_smoothing_calculator_pb2.py",
+        "set_alpha_calculator_pb2.py",
+        "warp_affine_calculator_pb2.py",
+    ],
+    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    proto = "image_proto",
+    visibility = ["//visibility:public"],
+)
+
+proto_py_library(
+    name = "image_py_library",
+    srcs = [
+        "bilateral_filter_calculator_pb2.py",
+        "feature_detector_calculator_pb2.py",
+        "image_clone_calculator_pb2.py",
+        "image_cropping_calculator_pb2.py",
+        "image_transformation_calculator_pb2.py",
+        "mask_overlay_calculator_pb2.py",
+        "opencv_encoded_image_to_image_frame_calculator_pb2.py",
+        "opencv_image_encoder_calculator_pb2.py",
+        "recolor_calculator_pb2.py",
+        "rotation_mode_pb2.py",
+        "scale_image_calculator_pb2.py",
+        "segmentation_smoothing_calculator_pb2.py",
+        "set_alpha_calculator_pb2.py",
+        "warp_affine_calculator_pb2.py",
+    ],
+    imports = ["../../.."],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_py_library",
+        "//third_party/github.com/google/mediapipe/mediapipe/framework/formats:formats_py_library",
+        "//third_party/github.com/google/mediapipe/mediapipe/gpu:gpu_py_library",
+        "//third_party/github.com/google/mediapipe/mediapipe/util:util_py_library",
+        "@pip//protobuf",
     ],
 )

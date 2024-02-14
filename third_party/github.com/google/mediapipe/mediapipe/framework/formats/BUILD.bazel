@@ -16,6 +16,7 @@
 load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
 load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_library")
 load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
+load("@build_stack_rules_proto//rules/py:proto_py_library.bzl", "proto_py_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
 proto_library(
@@ -188,5 +189,61 @@ proto_go_library(
         "@org_golang_google_grpc//:go_default_library",
         "@org_golang_google_grpc//codes",
         "@org_golang_google_grpc//status",
+    ],
+)
+
+proto_compile(
+    name = "formats_py_compile",
+    output_mappings = [
+        "affine_transform_data_pb2.py=/mediapipe/framework/formats/affine_transform_data_pb2.py",
+        "body_rig_pb2.py=/mediapipe/framework/formats/body_rig_pb2.py",
+        "classification_pb2.py=/mediapipe/framework/formats/classification_pb2.py",
+        "detection_pb2.py=/mediapipe/framework/formats/detection_pb2.py",
+        "image_file_properties_pb2.py=/mediapipe/framework/formats/image_file_properties_pb2.py",
+        "image_format_pb2.py=/mediapipe/framework/formats/image_format_pb2.py",
+        "landmark_pb2.py=/mediapipe/framework/formats/landmark_pb2.py",
+        "location_data_pb2.py=/mediapipe/framework/formats/location_data_pb2.py",
+        "matrix_data_pb2.py=/mediapipe/framework/formats/matrix_data_pb2.py",
+        "rect_pb2.py=/mediapipe/framework/formats/rect_pb2.py",
+        "time_series_header_pb2.py=/mediapipe/framework/formats/time_series_header_pb2.py",
+    ],
+    outputs = [
+        "affine_transform_data_pb2.py",
+        "body_rig_pb2.py",
+        "classification_pb2.py",
+        "detection_pb2.py",
+        "image_file_properties_pb2.py",
+        "image_format_pb2.py",
+        "landmark_pb2.py",
+        "location_data_pb2.py",
+        "matrix_data_pb2.py",
+        "rect_pb2.py",
+        "time_series_header_pb2.py",
+    ],
+    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    proto = "formats_proto",
+    visibility = ["//visibility:public"],
+)
+
+proto_py_library(
+    name = "formats_py_library",
+    srcs = [
+        "affine_transform_data_pb2.py",
+        "body_rig_pb2.py",
+        "classification_pb2.py",
+        "detection_pb2.py",
+        "image_file_properties_pb2.py",
+        "image_format_pb2.py",
+        "landmark_pb2.py",
+        "location_data_pb2.py",
+        "matrix_data_pb2.py",
+        "rect_pb2.py",
+        "time_series_header_pb2.py",
+    ],
+    imports = ["../../.."],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/github.com/google/mediapipe/mediapipe/framework/formats/annotation:annotation_py_library",
+        "@pip//protobuf",
     ],
 )

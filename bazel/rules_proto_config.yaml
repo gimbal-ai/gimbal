@@ -77,7 +77,6 @@ languages:
   - proto_cc_library
   - grpc_cc_library
 - name: py
-  enabled: false
   plugins:
   - python
   - protoc-gen-grpc-python

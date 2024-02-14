@@ -17,6 +17,8 @@ load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
 load("@build_stack_rules_proto//rules/cc:grpc_cc_library.bzl", "grpc_cc_library")
 load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_library")
 load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
+load("@build_stack_rules_proto//rules/py:grpc_py_library.bzl", "grpc_py_library")
+load("@build_stack_rules_proto//rules/py:proto_py_library.bzl", "proto_py_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
 proto_library(
@@ -97,5 +99,42 @@ proto_go_library(
         "@org_golang_google_grpc//:go_default_library",
         "@org_golang_google_grpc//codes",
         "@org_golang_google_grpc//status",
+    ],
+)
+
+grpc_py_library(
+    name = "lppb_grpc_py_library",
+    srcs = ["lppb_pb2_grpc.py"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":lppb_py_library",
+        "@pip//grpcio",
+        "@pip//protobuf",
+    ],
+)
+
+proto_compile(
+    name = "lppb_py_compile",
+    outputs = [
+        "lppb_pb2.py",
+        "lppb_pb2_grpc.py",
+    ],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:python",
+        "@build_stack_rules_proto//plugin/grpc/grpc:protoc-gen-grpc-python",
+    ],
+    proto = "lppb_proto",
+    visibility = ["//visibility:public"],
+)
+
+proto_py_library(
+    name = "lppb_py_library",
+    srcs = ["lppb_pb2.py"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//src/api/corepb/v1:corepb_py_library",
+        "//src/common/typespb:typespb_py_library",
+        "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_py_library",
+        "@pip//protobuf",
     ],
 )

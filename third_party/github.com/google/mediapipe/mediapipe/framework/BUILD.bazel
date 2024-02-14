@@ -16,6 +16,7 @@
 load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
 load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_library")
 load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
+load("@build_stack_rules_proto//rules/py:proto_py_library.bzl", "proto_py_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
 proto_library(
@@ -196,4 +197,60 @@ proto_go_library(
         "@org_golang_google_grpc//status",
         "@org_golang_google_protobuf//types/known/anypb",
     ],
+)
+
+proto_compile(
+    name = "framework_py_compile",
+    output_mappings = [
+        "calculator_contract_test_pb2.py=/mediapipe/framework/calculator_contract_test_pb2.py",
+        "calculator_options_pb2.py=/mediapipe/framework/calculator_options_pb2.py",
+        "calculator_pb2.py=/mediapipe/framework/calculator_pb2.py",
+        "calculator_profile_pb2.py=/mediapipe/framework/calculator_profile_pb2.py",
+        "mediapipe_options_pb2.py=/mediapipe/framework/mediapipe_options_pb2.py",
+        "packet_factory_pb2.py=/mediapipe/framework/packet_factory_pb2.py",
+        "packet_generator_pb2.py=/mediapipe/framework/packet_generator_pb2.py",
+        "packet_test_pb2.py=/mediapipe/framework/packet_test_pb2.py",
+        "status_handler_pb2.py=/mediapipe/framework/status_handler_pb2.py",
+        "stream_handler_pb2.py=/mediapipe/framework/stream_handler_pb2.py",
+        "test_calculators_pb2.py=/mediapipe/framework/test_calculators_pb2.py",
+        "thread_pool_executor_pb2.py=/mediapipe/framework/thread_pool_executor_pb2.py",
+    ],
+    outputs = [
+        "calculator_contract_test_pb2.py",
+        "calculator_options_pb2.py",
+        "calculator_pb2.py",
+        "calculator_profile_pb2.py",
+        "mediapipe_options_pb2.py",
+        "packet_factory_pb2.py",
+        "packet_generator_pb2.py",
+        "packet_test_pb2.py",
+        "status_handler_pb2.py",
+        "stream_handler_pb2.py",
+        "test_calculators_pb2.py",
+        "thread_pool_executor_pb2.py",
+    ],
+    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    proto = "framework_proto",
+    visibility = ["//visibility:public"],
+)
+
+proto_py_library(
+    name = "framework_py_library",
+    srcs = [
+        "calculator_contract_test_pb2.py",
+        "calculator_options_pb2.py",
+        "calculator_pb2.py",
+        "calculator_profile_pb2.py",
+        "mediapipe_options_pb2.py",
+        "packet_factory_pb2.py",
+        "packet_generator_pb2.py",
+        "packet_test_pb2.py",
+        "status_handler_pb2.py",
+        "stream_handler_pb2.py",
+        "test_calculators_pb2.py",
+        "thread_pool_executor_pb2.py",
+    ],
+    imports = ["../.."],
+    visibility = ["//visibility:public"],
+    deps = ["@pip//protobuf"],
 )
