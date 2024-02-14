@@ -10,15 +10,68 @@
 <!-- TOC -->
 
 - [Development Environment](#development-environment)
+  - [Pegboard Cluster](#pegboard-cluster)
+    - [kubeconfig](#kubeconfig)
+    - [Local Image Registry](#local-image-registry)
+    - [GPU Requests](#gpu-requests)
+    - [Priority Classes](#priority-classes)
   - [Running the Control Plane](#running-the-control-plane)
     - [Accessing the UI in the browser](#accessing-the-ui-in-the-browser)
   - [Running a GEM with a fake camera](#running-a-gem-with-a-fake-camera)
   - [Building the UI locally](#building-the-ui-locally)
     - [Accessing the development postgres DB](#accessing-the-development-postgres-db)
   - [Python Development](#python-development)
+    - [Fast python image builds](#fast-python-image-builds)
     - [Python gazelle](#python-gazelle)
 
 <!-- /TOC -->
+
+## Pegboard Cluster
+
+### kubeconfig
+
+We have a k3s backed cluster of machines in the office named pegboard. The kubeconfig to access the cluster is stored in 1Password (or ask a coworker to send it to you).
+
+To merge the kubeconfig for pegboard into your existing kubeconfig, you can run:
+
+```sh
+export EXTRA_CONFIG=$HOME/pegboard.yaml
+
+cp $HOME/.kube/config $HOME/.kube/config_bkup
+KUBECONFIG="$HOME/.kube/config:${EXTRA_CONFIG}" kubectl config view --flatten > merged.yaml
+mv merged.yaml $HOME/.kube/config
+```
+
+### Local Image Registry
+
+The cluster also runs a local image registry at [registry.pegboard.cluster.gimletlabs.dev](registry.pegboard.cluster.gimletlabs.dev). We prefer using this registry to both avoid egress costs on Google Artifact Registry and to keep our images private and local.
+
+Once your kubectx is set to point to the pegboard cluster, you can run `skaffold config set default-repo registry.pegboard.cluster.gimletlabs.dev` to ensure that skaffold pushes images to the local registry whenever you deploy images to this cluster.
+
+### GPU Requests
+
+To run k8s containers that have access to the GPU, you need to request the GPU resource. You can do this by adding the following to your pod spec:
+
+```yaml
+nvidia.com/gpu: "1"
+```
+
+The GPUs are currently sliced into 2, so requesting 1 GPU will give you access to half of a GPU. Note that this doesn't enfore GPU memory limits and someone requesting half a GPU should ensure that their batch size is small enough to use only half the memory on the card.
+
+You might also need to set the runtimeClassName to your Pod Spec for CUDA access to work. This is supposed to be the default class but setting it doesn't hurt.
+
+```yaml
+runtimeClassName: nvidia
+```
+
+### Priority Classes
+
+The cluster has custom priority classes that can be used to prioritize workloads. The priority classes in order of descending priority are: `interactive-high, interactive-low, batch-high, batch-low`
+
+There are also nonpreempting versions of every priority class. These are useful for running workloads that need eventual completion but should not preempt any existing workloads. Since nonpreempting workloads are expected to take longer to schedule in the queue, they are given a slightly higher priority than their preempting counterparts.
+
+Workloads default to `batch-low` if no priority class is specified. Please set appropriate priority classes for your workloads as needed.
+
 ## Running the Control Plane
 
 We currently only support running control plane in GKE (support for Minikube coming soon). To get a development version of the control plane up-and-running:
@@ -160,12 +213,14 @@ These instructions use `pyenv` and `pyenv-virtualenv` to create the virtualenv, 
     ```
 
 ### Fast python image builds
+
 Python image builds can be very slow. The default `gml_py_image` rule will build a normal minimal python image.
 This image will only include the relevant dependencies but can be very slow to build.
 To reduce build time there is an additional `.fast` target for each `gml_py_image`.
 This image will include all python pip packages in the image but is faster to build since it can better utilize the cache.
 Keep in mind that this image will be larger than it needs to be and doesn't use bazel's hermetic python toolchain.
 These bazel options can also help speed up the python image builds:
+
 - `--bes_upload_mode=fully_async`
 - `--noremote_upload_local_results`
 
@@ -175,16 +230,19 @@ When adding a new python dependency, we need multiple steps before gazelle can b
 
 1. Add the dependency to `bazel/python/requirements.in`.
 
-1. Add the dependency to the list in `bazel/python/BUILD.bazel:python_deps_files`, in the form `@pip//{name}`
-  where `name` is the pip dependency name with dashes converted to underscores and all letters lowercased.
-
 1. Run the `compile_pip_requirements` target to generate the `requirements_lock.txt` file.
 
     ```bash
-    bazel run //bazel/python:requirements.update
+    make update-python-requirements
     ```
 
-1. Finally run the `gazelle` target to generate the `gazelle_python.yaml` file and the rest of the `BUILD.bazel` file.
+1. Finally run the `gazelle_python_manifest` target to generate the `gazelle_python.yaml` file.
+
+    ```bash
+    make update-python-manifest
+    ```
+
+1. Finally run the `gazelle` target if needed to generate and update `BUILD.bazel` files.
 
     ```bash
     make gazelle
