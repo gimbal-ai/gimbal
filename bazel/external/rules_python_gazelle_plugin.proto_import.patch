@@ -1,0 +1,38 @@
+diff --git a/gazelle/python/resolve.go b/gazelle/python/resolve.go
+index f019a64..50a79d4 100644
+--- a/gazelle/python/resolve.go
++++ b/gazelle/python/resolve.go
+@@ -199,7 +199,32 @@ func (py *Resolver) Resolve(
+ 						}
+ 						continue MODULES_LOOP
+ 					} else {
+-						matches := ix.FindRulesByImportWithConfig(c, imp, languageName)
++						impLangName := imp.Lang
++						langName := languageName
++						convertToProto := false
++						trimSuffix := ""
++						if strings.HasSuffix(moduleName, "_pb2") {
++							convertToProto = true
++							trimSuffix = "_pb2"
++							impLangName = "proto_py_library"
++							langName = "protobuf"
++						}
++						if strings.HasSuffix(moduleName, "_pb2_grpc") {
++							convertToProto = true
++							trimSuffix = "_pb2_grpc"
++							impLangName = "grpc_py_library"
++							langName = "protobuf"
++						}
++						if convertToProto {
++							parts := strings.Split(moduleName, ".")
++							last := parts[len(parts)-1]
++							last = strings.TrimSuffix(last, trimSuffix)
++							last = last + ".proto"
++							parts[len(parts)-1] = last
++							imp.Imp = strings.Join(parts, "/")
++							imp.Lang = impLangName
++						}
++						matches := ix.FindRulesByImportWithConfig(c, imp, langName)
+ 						if len(matches) == 0 {
+ 							// Check if the imported module is part of the standard library.
+ 							if isStd, err := isStdModule(module{Name: moduleName}); err != nil {
