@@ -8,3 +8,6 @@ dependencies = {file = "bazel/python/requirements.in"}
 
 [tool.setuptools.packages.find]
 include = ["src*"]
+
+[tool.pyright]
+include = ["src"]
