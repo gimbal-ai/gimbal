@@ -24,14 +24,14 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"gimletlabs.ai/gimlet/src/shared/services/env"
+	"gimletlabs.ai/gimlet/src/shared/testing/testutils"
 )
 
 func TestEnv_New(t *testing.T) {
-	viper.Set("jwt_signing_key", "the-jwt-key")
+	testutils.GenerateAndSetJWTSigningKey(t)
 	viper.Set("pod_name", "thepod")
 
 	e := env.New("aud", "svc")
-	assert.Equal(t, "the-jwt-key", e.JWTSigningKey())
 	assert.Equal(t, "aud", e.Audience())
 	assert.Equal(t, "svc", e.ServiceName())
 	assert.Equal(t, "thepod", e.PodName())

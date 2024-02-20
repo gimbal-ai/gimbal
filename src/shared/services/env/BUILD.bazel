@@ -29,6 +29,7 @@ gml_go_test(
     srcs = ["env_test.go"],
     deps = [
         ":env",
+        "//src/shared/testing/testutils",
         "@com_github_spf13_viper//:viper",
         "@com_github_stretchr_testify//assert",
     ],

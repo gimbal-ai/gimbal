@@ -80,7 +80,6 @@ func (*testserver) PingClientStream(srv ping.PingService_PingClientStreamServer)
 
 func startTestGRPCServer(t *testing.T, o *server.GRPCServerOptions) *bufconn.Listener {
 	opts := o
-	viper.Set("jwt_signing_key", "abc")
 	if opts == nil {
 		opts = &server.GRPCServerOptions{}
 	}
@@ -159,9 +158,12 @@ func makeTestServerStreamRequest(ctx context.Context, t *testing.T, lis *bufconn
 }
 
 func TestGrpcServerUnary(t *testing.T) {
+	jwtkey := testutils.GenerateJWTSigningKey(t)
+	viper.Set("jwt_signing_key", jwtkey)
+
 	tests := []struct {
 		name         string
-		token        string
+		signingKey   string
 		clientStream bool
 		serverStream bool
 		expectError  bool
@@ -169,58 +171,58 @@ func TestGrpcServerUnary(t *testing.T) {
 	}{
 		{
 			name:        "success - unary",
-			token:       "abc",
+			signingKey:  jwtkey,
 			expectError: false,
 		},
 		{
 			name:        "bad token - unary",
-			token:       "bad.jwt.token",
+			signingKey:  "{\"k\": \"bad\", \"kty\": \"oct\"}",
 			expectError: true,
 		},
 		{
 			name:        "unauthenticated - unary",
-			token:       "",
+			signingKey:  "",
 			expectError: true,
 		},
 		{
 			name:         "success - client stream",
-			token:        "abc",
+			signingKey:   jwtkey,
 			expectError:  false,
 			clientStream: true,
 		},
 		{
 			name:         "bad token - client stream",
-			token:        "bad.jwt.token",
+			signingKey:   "{\"k\": \"bad\", \"kty\": \"oct\"}",
 			expectError:  true,
 			clientStream: true,
 		},
 		{
 			name:         "unauthenticated - client stream",
-			token:        "",
+			signingKey:   "",
 			expectError:  true,
 			clientStream: true,
 		},
 		{
 			name:         "success - server stream",
-			token:        "abc",
+			signingKey:   jwtkey,
 			expectError:  false,
 			serverStream: true,
 		},
 		{
 			name:         "bad token - server stream",
-			token:        "bad.jwt.token",
+			signingKey:   "{\"k\": \"bad\", \"kty\": \"oct\"}",
 			expectError:  true,
 			serverStream: true,
 		},
 		{
 			name:         "unauthenticated - server stream",
-			token:        "",
+			signingKey:   "",
 			expectError:  true,
 			serverStream: true,
 		},
 		{
 			name:         "disable auth - unary",
-			token:        "",
+			signingKey:   "",
 			expectError:  false,
 			clientStream: false,
 			serverOpts: &server.GRPCServerOptions{
@@ -231,12 +233,12 @@ func TestGrpcServerUnary(t *testing.T) {
 		},
 		{
 			name:         "authmiddleware",
-			token:        "",
+			signingKey:   "",
 			expectError:  false,
 			clientStream: false,
 			serverOpts: &server.GRPCServerOptions{
 				AuthMiddleware: func(context.Context, env.Env) (string, error) {
-					return testutils.GenerateTestJWTToken(t, "abc"), nil
+					return testutils.GenerateTestJWTToken(t, jwtkey), nil
 				},
 			},
 		},
@@ -247,8 +249,8 @@ func TestGrpcServerUnary(t *testing.T) {
 			lis := startTestGRPCServer(t, test.serverOpts)
 
 			var ctx context.Context
-			if test.token != "" {
-				token := testutils.GenerateTestJWTToken(t, test.token)
+			if test.signingKey != "" {
+				token := testutils.GenerateTestJWTToken(t, test.signingKey)
 				ctx = metadata.AppendToOutgoingContext(context.Background(),
 					"authorization", "bearer "+token)
 			} else {

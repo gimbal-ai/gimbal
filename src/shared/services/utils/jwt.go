@@ -186,7 +186,7 @@ func deviceTokenToProto(token jwt.Token) *typespb.JWTClaims_DeviceClaims {
 
 // SignToken signs the token using the given signing key.
 func SignToken(token jwt.Token, signingKey string) (string, error) {
-	key, err := jwk.FromRaw([]byte(signingKey))
+	key, err := jwk.ParseKey([]byte(signingKey))
 	if err != nil {
 		return "", err
 	}
@@ -200,7 +200,7 @@ func SignToken(token jwt.Token, signingKey string) (string, error) {
 // ParseToken parses the claim and validates that it was signed given signing key,
 // and has the expected audience.
 func ParseToken(tokenString string, signingKey string, audience string) (jwt.Token, error) {
-	key, err := jwk.FromRaw([]byte(signingKey))
+	key, err := jwk.ParseKey([]byte(signingKey))
 	if err != nil {
 		return nil, err
 	}

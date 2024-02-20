@@ -47,7 +47,7 @@ func New() *AuthContext {
 
 // UseJWTAuth takes a token and sets claims, etc.
 func (s *AuthContext) UseJWTAuth(signingKey string, tokenString string, audience string) error {
-	key, err := jwk.FromRaw([]byte(signingKey))
+	key, err := jwk.ParseKey([]byte(signingKey))
 	if err != nil {
 		return err
 	}

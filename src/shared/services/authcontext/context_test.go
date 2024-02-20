@@ -30,10 +30,11 @@ import (
 )
 
 func TestSessionCtx_UseJWTAuth(t *testing.T) {
-	token := testutils.GenerateTestJWTToken(t, "signing_key")
+	key := testutils.GenerateJWTSigningKey(t)
+	token := testutils.GenerateTestJWTToken(t, key)
 
 	ctx := authcontext.New()
-	err := ctx.UseJWTAuth("signing_key", token, "gml.ai")
+	err := ctx.UseJWTAuth(key, token, "gml.ai")
 	require.NoError(t, err)
 
 	assert.Equal(t, testutils.TestUserID, ctx.Claims.Subject)
@@ -94,13 +95,14 @@ func TestSessionCtx_ValidClaims(t *testing.T) {
 		},
 	}
 
+	key := testutils.GenerateJWTSigningKey(t)
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			ctx := authcontext.New()
 			ctx.ServiceID = "api"
 			if tc.claims != nil {
-				token := testutils.SignPBClaims(t, tc.claims, "signing_key")
-				err := ctx.UseJWTAuth("signing_key", token, "gml.ai")
+				token := testutils.SignPBClaims(t, tc.claims, key)
+				err := ctx.UseJWTAuth(key, token, "gml.ai")
 				require.NoError(t, err)
 
 				ctx.Claims.ExpiresAt = time.Now().Add(tc.expiryFromNow).Unix()

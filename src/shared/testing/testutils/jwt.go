@@ -18,8 +18,14 @@
 package testutils
 
 import (
+	"crypto/rand"
+	"encoding/json"
 	"testing"
 	"time"
+
+	"github.com/lestrrat-go/jwx/v2/jwk"
+	"github.com/spf13/viper"
+	"github.com/stretchr/testify/require"
 
 	"gimletlabs.ai/gimlet/src/common/typespb"
 	"gimletlabs.ai/gimlet/src/shared/services/utils"
@@ -71,11 +77,29 @@ func GenerateTestJWTTokenWithDuration(t *testing.T, signingKey string, timeout t
 	return SignPBClaims(t, claims, signingKey)
 }
 
+func GenerateJWTSigningKey(t *testing.T) string {
+	octets := make([]byte, 256)
+	_, err := rand.Read(octets)
+	require.NoError(t, err)
+
+	key, err := jwk.FromRaw(octets)
+	require.NoError(t, err)
+
+	enc, err := json.Marshal(key)
+	require.NoError(t, err)
+
+	return string(enc)
+}
+
+func GenerateAndSetJWTSigningKey(t *testing.T) {
+	key := GenerateJWTSigningKey(t)
+	viper.Set("jwt_signing_key", key)
+}
+
 // SignPBClaims signs our protobuf claims after converting to json.
 func SignPBClaims(t *testing.T, claims *typespb.JWTClaims, signingKey string) string {
 	signed, err := utils.SignJWTClaims(claims, signingKey)
-	if err != nil {
-		t.Fatal("failed to generate token")
-	}
+	require.NoError(t, err)
+
 	return signed
 }
