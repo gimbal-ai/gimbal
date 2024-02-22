@@ -34,8 +34,8 @@ github.com/bazelbuild/bazel-gazelle v0.35.0 h1:Bvg+zEHWYwWrhJT4WxyvcU3y1DEJpT/Xl
 github.com/bazelbuild/bazel-gazelle v0.35.0/go.mod h1:o2+s90f3w3U6jjw0gcdok0EJOfNK0AK/9RyVP7QkRDk=
 github.com/bazelbuild/buildtools v0.0.0-20231115204819-d4c9dccdfbb1 h1:2Gc2Q6hVR1SJ8bBI9Ybzoggp8u/ED2WkM4MfvEIn9+c=
 github.com/bazelbuild/buildtools v0.0.0-20231115204819-d4c9dccdfbb1/go.mod h1:689QdV3hBP7Vo9dJMmzhoYIyo/9iMhEmHkJcnaPRCbo=
-github.com/bazelbuild/rules_go v0.45.1 h1:kuiC/mK1SKoZ0lyX5gD9uVBGFWOoXT3I4W/ose6Jouo=
-github.com/bazelbuild/rules_go v0.45.1/go.mod h1:Dhcz716Kqg1RHNWos+N6MlXNkjNP2EwZQ0LukRKJfMs=
+github.com/bazelbuild/rules_go v0.46.0 h1:CTefzjN/D3Cdn3rkrM6qMWuQj59OBcuOjyIp3m4hZ7s=
+github.com/bazelbuild/rules_go v0.46.0/go.mod h1:Dhcz716Kqg1RHNWos+N6MlXNkjNP2EwZQ0LukRKJfMs=
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/blang/semver/v4 v4.0.0 h1:1PFHFE6yCCTv8C1TeyNNarDzntLi7wMI5i/pzqYIsAM=
