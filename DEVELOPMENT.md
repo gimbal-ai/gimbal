@@ -247,3 +247,12 @@ When adding a new python dependency, we need multiple steps before gazelle can b
     ```bash
     make gazelle
     ```
+
+## C++ Development
+
+In order to get proper C++ code analysis in your IDE, run this script first:
+
+  ```bash
+  ./scripts/gen_compilation_database.sh
+  ```
+
