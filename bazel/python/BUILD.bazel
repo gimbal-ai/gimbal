@@ -28,7 +28,6 @@ compile_pip_requirements(
     extra_args = [
         "--extra-index-url https://download.pytorch.org/whl/cu121",
         "--find-links https://download.openmmlab.com/mmcv/dist/cu121/torch2.1/index.html",
-        "--allow-unsafe",
     ],
     requirements_in = "requirements.in",
     requirements_txt = "requirements_lock.txt",

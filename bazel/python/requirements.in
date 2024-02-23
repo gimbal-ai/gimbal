@@ -1,6 +1,11 @@
-# Projectwide requirements for commonn tooling
+# Projectwide requirements for common tooling
 black==23.12.1
 pytest==7.4.2
+
+# Some deps use opencv-python-headless, some use opencv-python
+# we need to keep both versions in sync to avoid issues.
+opencv-python==4.5.5.64
+opencv-python-headless==4.5.5.64
 
 # src/experimental/research/
 absl-py==2.0.0

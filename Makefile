@@ -38,6 +38,10 @@ update-python-manifest:
 
 .PHONY: update-python-requirements
 update-python-requirements:
+	$(BAZEL) run //bazel/python:requirements.update
+
+.PHONY: update-python-requirements-clean
+update-python-requirements-clean:
 	rm bazel/python/requirements_lock.txt
 	touch bazel/python/requirements_lock.txt
 	$(BAZEL) run //bazel/python:requirements.update

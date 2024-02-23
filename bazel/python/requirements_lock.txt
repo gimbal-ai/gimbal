@@ -1464,15 +1464,16 @@ omegaconf==2.3.0 \
     --hash=sha256:7b4df175cdb08ba400f45cae3bdcae7ba8365db4d165fc65fd04b050ab63b46b \
     --hash=sha256:d5d4b6d29955cc50ad50c46dc269bcd92c6e00f5f90d23ab5fee7bfca4ba4cc7
     # via salesforce-lavis
-opencv-python==4.9.0.80 \
-    --hash=sha256:1a9f0e6267de3a1a1db0c54213d022c7c8b5b9ca4b580e80bdc58516c922c9e1 \
-    --hash=sha256:3f16f08e02b2a2da44259c7cc712e779eff1dd8b55fdb0323e8cab09548086c0 \
-    --hash=sha256:71dfb9555ccccdd77305fc3dcca5897fbf0cf28b297c51ee55e079c065d812a3 \
-    --hash=sha256:7b34a52e9da36dda8c151c6394aed602e4b17fa041df0b9f5b93ae10b0fcca2a \
-    --hash=sha256:7e5f7aa4486651a6ebfa8ed4b594b65bd2d2f41beeb4241a3e4b1b85acbbbadb \
-    --hash=sha256:dcf000c36dd1651118a2462257e3a9e76db789a78432e1f303c7bac54f63ef6c \
-    --hash=sha256:e4088cab82b66a3b37ffc452976b14a3c599269c247895ae9ceb4066d8188a57
+opencv-python==4.5.5.64 \
+    --hash=sha256:408d5332550287aa797fd06bef47b2dfed163c6787668cc82ef9123a9484b56a \
+    --hash=sha256:6247e584813c00c3b9ed69a795da40d2c153dc923d0182e957e1c2f00a554ac2 \
+    --hash=sha256:7787bb017ae93d5f9bb1b817ac8e13e45dd193743cb648498fcab21d00cf20a3 \
+    --hash=sha256:a512a0c59b6fec0fac3844b2f47d6ecb1a9d18d235e6c5491ce8dbbe0663eae8 \
+    --hash=sha256:b293ced62f4360d9f11cf72ae7e9df95320ff7bf5b834d87546f844e838c0c35 \
+    --hash=sha256:ca6138b6903910e384067d001763d40f97656875487381aed32993b076f44375 \
+    --hash=sha256:f65de0446a330c3b773cd04ba10345d8ce1b15dcac3f49770204e37602d0b3f7
     # via
+    #   -r bazel/python/requirements.in
     #   mmcv
     #   mmengine
 opencv-python-headless==4.5.5.64 \
@@ -1484,6 +1485,7 @@ opencv-python-headless==4.5.5.64 \
     --hash=sha256:c3c2dda44d601757a508b07d628537c49f31223ad4edd0f747a70d4c852a7b98 \
     --hash=sha256:ca4f013fa958f60fb2327fe87e6127c1ac0ab536890b1d4b00847f417b7af1ba
     # via
+    #   -r bazel/python/requirements.in
     #   groundingdino-gml
     #   salesforce-lavis
     #   supervision

@@ -773,7 +773,6 @@ manifest:
     cv2.misc: opencv_python_headless
     cv2.misc.version: opencv_python_headless
     cv2.qt.plugins.platforms.libqxcb: opencv_python
-    cv2.typing: opencv_python
     cv2.utils: opencv_python_headless
     cv2.version: opencv_python_headless
     cycler: cycler
@@ -16697,4 +16696,4 @@ manifest:
     zope.interface.verify: zope.interface
   pip_repository:
     name: pip
-integrity: b35b9f21f1016bb6ef18a888c45012cd6aedfa3c3262690d4aa066e36e5736a4
+integrity: 1b461903934784da3aa6a36003c10943de2d155b5ee1cb02d47c028c94ed3091
