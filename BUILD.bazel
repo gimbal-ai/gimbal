@@ -32,9 +32,7 @@ gazelle_python_manifest(
     name = "gazelle_python_manifest",
     modules_mapping = ":modules_map",
     pip_repository_name = "pip",
-    requirements = [
-        "//bazel/python:requirements_lock.txt",
-    ],
+    requirements = "//bazel/python:requirements_lock.txt",
     target_compatible_with = no_sysroot(),
 )
 
