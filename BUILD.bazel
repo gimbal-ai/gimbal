@@ -99,6 +99,8 @@ gml_oci_image(
 # gazelle:map_kind go_test gml_go_test @gml//bazel:gml_build_system.bzl
 # gazelle:map_kind py_test gml_py_test @gml//bazel:gml_build_system.bzl
 
+# gazelle:python_generation_mode file
+
 exports_files([
     "LICENSE",
     "go.sum",
