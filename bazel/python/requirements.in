@@ -17,6 +17,7 @@ jupyter==1.0.0
 mmcv==2.1.0
 numpy==1.26.2
 Pillow==10.2.0
+psycopg2-binary==2.9.9
 pycocotools==2.0.7
 qdrant_client==1.7.3
 requests==2.31.0

@@ -1528,7 +1528,6 @@ manifest:
     gevent.tests.test__memleak: gevent
     gevent.tests.test__monkey: gevent
     gevent.tests.test__monkey_builtins_future: gevent
-    gevent.tests.test__monkey_futures_thread: gevent
     gevent.tests.test__monkey_hub_in_thread: gevent
     gevent.tests.test__monkey_logging: gevent
     gevent.tests.test__monkey_module_run: gevent
@@ -1578,6 +1577,7 @@ manifest:
     gevent.tests.test__threading: gevent
     gevent.tests.test__threading_2: gevent
     gevent.tests.test__threading_before_monkey: gevent
+    gevent.tests.test__threading_fork_from_dummy: gevent
     gevent.tests.test__threading_holding_lock_while_monkey: gevent
     gevent.tests.test__threading_monkey_in_thread: gevent
     gevent.tests.test__threading_native_before_monkey: gevent
@@ -2652,6 +2652,7 @@ manifest:
     jupyterlab.handlers.build_handler: jupyterlab
     jupyterlab.handlers.error_handler: jupyterlab
     jupyterlab.handlers.extension_manager_handler: jupyterlab
+    jupyterlab.handlers.plugin_manager_handler: jupyterlab
     jupyterlab.jlpmapp: jupyterlab
     jupyterlab.labapp: jupyterlab
     jupyterlab.labextensions: jupyterlab
@@ -2677,6 +2678,7 @@ manifest:
     jupyterlab.tests.test_announcements: jupyterlab
     jupyterlab.tests.test_app: jupyterlab
     jupyterlab.tests.test_build_api: jupyterlab
+    jupyterlab.tests.test_custom_css_handler: jupyterlab
     jupyterlab.tests.test_extensions: jupyterlab
     jupyterlab.tests.test_jupyterlab: jupyterlab
     jupyterlab.tests.test_registry: jupyterlab
@@ -3108,6 +3110,7 @@ manifest:
     matplotlib.tests.test_backends_interactive: matplotlib
     matplotlib.tests.test_basic: matplotlib
     matplotlib.tests.test_bbox_tight: matplotlib
+    matplotlib.tests.test_bezier: matplotlib
     matplotlib.tests.test_category: matplotlib
     matplotlib.tests.test_cbook: matplotlib
     matplotlib.tests.test_collections: matplotlib
@@ -5502,6 +5505,7 @@ manifest:
     pandas.tests.indexes.categorical.test_indexing: pandas
     pandas.tests.indexes.categorical.test_map: pandas
     pandas.tests.indexes.categorical.test_reindex: pandas
+    pandas.tests.indexes.categorical.test_setops: pandas
     pandas.tests.indexes.conftest: pandas
     pandas.tests.indexes.datetimelike_: pandas
     pandas.tests.indexes.datetimelike_.test_drop_duplicates: pandas
@@ -7973,6 +7977,14 @@ manifest:
     psutil.tests.test_testutils: psutil
     psutil.tests.test_unicode: psutil
     psutil.tests.test_windows: psutil
+    psycopg2: psycopg2_binary
+    psycopg2.errorcodes: psycopg2_binary
+    psycopg2.errors: psycopg2_binary
+    psycopg2.extensions: psycopg2_binary
+    psycopg2.extras: psycopg2_binary
+    psycopg2.pool: psycopg2_binary
+    psycopg2.sql: psycopg2_binary
+    psycopg2.tz: psycopg2_binary
     ptyprocess: ptyprocess
     ptyprocess.ptyprocess: ptyprocess
     ptyprocess.util: ptyprocess
@@ -10416,6 +10428,8 @@ manifest:
     spacy.lang.fi.stop_words: spacy
     spacy.lang.fi.syntax_iterators: spacy
     spacy.lang.fi.tokenizer_exceptions: spacy
+    spacy.lang.fo: spacy
+    spacy.lang.fo.tokenizer_exceptions: spacy
     spacy.lang.fr: spacy
     spacy.lang.fr.examples: spacy
     spacy.lang.fr.lemmatizer: spacy
@@ -10567,6 +10581,10 @@ manifest:
     spacy.lang.nl.stop_words: spacy
     spacy.lang.nl.syntax_iterators: spacy
     spacy.lang.nl.tokenizer_exceptions: spacy
+    spacy.lang.nn: spacy
+    spacy.lang.nn.examples: spacy
+    spacy.lang.nn.punctuation: spacy
+    spacy.lang.nn.tokenizer_exceptions: spacy
     spacy.lang.norm_exceptions: spacy
     spacy.lang.pl: spacy
     spacy.lang.pl.examples: spacy
@@ -10830,6 +10848,8 @@ manifest:
     spacy.tests.lang.fi.test_noun_chunks: spacy
     spacy.tests.lang.fi.test_text: spacy
     spacy.tests.lang.fi.test_tokenizer: spacy
+    spacy.tests.lang.fo: spacy
+    spacy.tests.lang.fo.test_tokenizer: spacy
     spacy.tests.lang.fr: spacy
     spacy.tests.lang.fr.test_exceptions: spacy
     spacy.tests.lang.fr.test_noun_chunks: spacy
@@ -10912,6 +10932,8 @@ manifest:
     spacy.tests.lang.nl: spacy
     spacy.tests.lang.nl.test_noun_chunks: spacy
     spacy.tests.lang.nl.test_text: spacy
+    spacy.tests.lang.nn: spacy
+    spacy.tests.lang.nn.test_tokenizer: spacy
     spacy.tests.lang.pl: spacy
     spacy.tests.lang.pl.test_text: spacy
     spacy.tests.lang.pl.test_tokenizer: spacy
@@ -11058,6 +11080,7 @@ manifest:
     spacy.tests.test_pickles: spacy
     spacy.tests.test_scorer: spacy
     spacy.tests.test_ty: spacy
+    spacy.tests.tok2vec: spacy
     spacy.tests.tokenizer: spacy
     spacy.tests.tokenizer.test_exceptions: spacy
     spacy.tests.tokenizer.test_explain: spacy
@@ -16696,4 +16719,4 @@ manifest:
     zope.interface.verify: zope.interface
   pip_repository:
     name: pip
-integrity: 1b461903934784da3aa6a36003c10943de2d155b5ee1cb02d47c028c94ed3091
+integrity: e6cfe1f1f71144fa96d1fe172720bc88c594cabefa91968ab89fa940fc34477f
