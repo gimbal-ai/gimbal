@@ -772,6 +772,8 @@ manifest:
     cv2.mat_wrapper: opencv_python_headless
     cv2.misc: opencv_python_headless
     cv2.misc.version: opencv_python_headless
+    cv2.qt.plugins.platforms.libqxcb: opencv_python
+    cv2.typing: opencv_python
     cv2.utils: opencv_python_headless
     cv2.version: opencv_python_headless
     cycler: cycler
@@ -3219,6 +3221,276 @@ manifest:
     mistune.renderers.rst: mistune
     mistune.toc: mistune
     mistune.util: mistune
+    mmcv: mmcv
+    mmcv.arraymisc: mmcv
+    mmcv.arraymisc.quantization: mmcv
+    mmcv.cnn: mmcv
+    mmcv.cnn.alexnet: mmcv
+    mmcv.cnn.bricks: mmcv
+    mmcv.cnn.bricks.activation: mmcv
+    mmcv.cnn.bricks.context_block: mmcv
+    mmcv.cnn.bricks.conv: mmcv
+    mmcv.cnn.bricks.conv2d_adaptive_padding: mmcv
+    mmcv.cnn.bricks.conv_module: mmcv
+    mmcv.cnn.bricks.conv_ws: mmcv
+    mmcv.cnn.bricks.depthwise_separable_conv_module: mmcv
+    mmcv.cnn.bricks.drop: mmcv
+    mmcv.cnn.bricks.generalized_attention: mmcv
+    mmcv.cnn.bricks.hsigmoid: mmcv
+    mmcv.cnn.bricks.hswish: mmcv
+    mmcv.cnn.bricks.non_local: mmcv
+    mmcv.cnn.bricks.norm: mmcv
+    mmcv.cnn.bricks.padding: mmcv
+    mmcv.cnn.bricks.plugin: mmcv
+    mmcv.cnn.bricks.scale: mmcv
+    mmcv.cnn.bricks.swish: mmcv
+    mmcv.cnn.bricks.transformer: mmcv
+    mmcv.cnn.bricks.upsample: mmcv
+    mmcv.cnn.bricks.wrappers: mmcv
+    mmcv.cnn.resnet: mmcv
+    mmcv.cnn.rfsearch: mmcv
+    mmcv.cnn.rfsearch.operator: mmcv
+    mmcv.cnn.rfsearch.search: mmcv
+    mmcv.cnn.rfsearch.utils: mmcv
+    mmcv.cnn.utils: mmcv
+    mmcv.cnn.utils.flops_counter: mmcv
+    mmcv.cnn.utils.fuse_conv_bn: mmcv
+    mmcv.cnn.vgg: mmcv
+    mmcv.image: mmcv
+    mmcv.image.colorspace: mmcv
+    mmcv.image.geometric: mmcv
+    mmcv.image.io: mmcv
+    mmcv.image.misc: mmcv
+    mmcv.image.photometric: mmcv
+    mmcv.ops: mmcv
+    mmcv.ops.active_rotated_filter: mmcv
+    mmcv.ops.assign_score_withk: mmcv
+    mmcv.ops.ball_query: mmcv
+    mmcv.ops.bbox: mmcv
+    mmcv.ops.bezier_align: mmcv
+    mmcv.ops.bias_act: mmcv
+    mmcv.ops.border_align: mmcv
+    mmcv.ops.box_iou_quadri: mmcv
+    mmcv.ops.box_iou_rotated: mmcv
+    mmcv.ops.carafe: mmcv
+    mmcv.ops.cc_attention: mmcv
+    mmcv.ops.chamfer_distance: mmcv
+    mmcv.ops.contour_expand: mmcv
+    mmcv.ops.conv2d_gradfix: mmcv
+    mmcv.ops.convex_iou: mmcv
+    mmcv.ops.corner_pool: mmcv
+    mmcv.ops.correlation: mmcv
+    mmcv.ops.deform_conv: mmcv
+    mmcv.ops.deform_roi_pool: mmcv
+    mmcv.ops.deprecated_wrappers: mmcv
+    mmcv.ops.diff_iou_rotated: mmcv
+    mmcv.ops.filtered_lrelu: mmcv
+    mmcv.ops.focal_loss: mmcv
+    mmcv.ops.furthest_point_sample: mmcv
+    mmcv.ops.fused_bias_leakyrelu: mmcv
+    mmcv.ops.gather_points: mmcv
+    mmcv.ops.group_points: mmcv
+    mmcv.ops.info: mmcv
+    mmcv.ops.iou3d: mmcv
+    mmcv.ops.knn: mmcv
+    mmcv.ops.masked_conv: mmcv
+    mmcv.ops.merge_cells: mmcv
+    mmcv.ops.min_area_polygons: mmcv
+    mmcv.ops.modulated_deform_conv: mmcv
+    mmcv.ops.multi_scale_deform_attn: mmcv
+    mmcv.ops.nms: mmcv
+    mmcv.ops.pixel_group: mmcv
+    mmcv.ops.point_sample: mmcv
+    mmcv.ops.points_in_boxes: mmcv
+    mmcv.ops.points_in_polygons: mmcv
+    mmcv.ops.points_sampler: mmcv
+    mmcv.ops.prroi_pool: mmcv
+    mmcv.ops.psa_mask: mmcv
+    mmcv.ops.riroi_align_rotated: mmcv
+    mmcv.ops.roi_align: mmcv
+    mmcv.ops.roi_align_rotated: mmcv
+    mmcv.ops.roi_pool: mmcv
+    mmcv.ops.roiaware_pool3d: mmcv
+    mmcv.ops.roipoint_pool3d: mmcv
+    mmcv.ops.rotated_feature_align: mmcv
+    mmcv.ops.saconv: mmcv
+    mmcv.ops.scatter_points: mmcv
+    mmcv.ops.sparse_conv: mmcv
+    mmcv.ops.sparse_functional: mmcv
+    mmcv.ops.sparse_modules: mmcv
+    mmcv.ops.sparse_ops: mmcv
+    mmcv.ops.sparse_pool: mmcv
+    mmcv.ops.sparse_structure: mmcv
+    mmcv.ops.sync_bn: mmcv
+    mmcv.ops.three_interpolate: mmcv
+    mmcv.ops.three_nn: mmcv
+    mmcv.ops.tin_shift: mmcv
+    mmcv.ops.upfirdn2d: mmcv
+    mmcv.ops.voxelize: mmcv
+    mmcv.transforms: mmcv
+    mmcv.transforms.base: mmcv
+    mmcv.transforms.builder: mmcv
+    mmcv.transforms.formatting: mmcv
+    mmcv.transforms.loading: mmcv
+    mmcv.transforms.processing: mmcv
+    mmcv.transforms.utils: mmcv
+    mmcv.transforms.wrappers: mmcv
+    mmcv.utils: mmcv
+    mmcv.utils.device_type: mmcv
+    mmcv.utils.env: mmcv
+    mmcv.utils.ext_loader: mmcv
+    mmcv.utils.parrots_jit: mmcv
+    mmcv.version: mmcv
+    mmcv.video: mmcv
+    mmcv.video.io: mmcv
+    mmcv.video.optflow: mmcv
+    mmcv.video.processing: mmcv
+    mmcv.visualization: mmcv
+    mmcv.visualization.color: mmcv
+    mmcv.visualization.image: mmcv
+    mmcv.visualization.optflow: mmcv
+    mmengine: mmengine
+    mmengine.analysis: mmengine
+    mmengine.analysis.complexity_analysis: mmengine
+    mmengine.analysis.jit_analysis: mmengine
+    mmengine.analysis.jit_handles: mmengine
+    mmengine.analysis.print_helper: mmengine
+    mmengine.config: mmengine
+    mmengine.config.config: mmengine
+    mmengine.config.lazy: mmengine
+    mmengine.config.utils: mmengine
+    mmengine.dataset: mmengine
+    mmengine.dataset.base_dataset: mmengine
+    mmengine.dataset.dataset_wrapper: mmengine
+    mmengine.dataset.sampler: mmengine
+    mmengine.dataset.utils: mmengine
+    mmengine.device: mmengine
+    mmengine.device.utils: mmengine
+    mmengine.dist: mmengine
+    mmengine.dist.dist: mmengine
+    mmengine.dist.utils: mmengine
+    mmengine.evaluator: mmengine
+    mmengine.evaluator.evaluator: mmengine
+    mmengine.evaluator.metric: mmengine
+    mmengine.evaluator.utils: mmengine
+    mmengine.fileio: mmengine
+    mmengine.fileio.backends: mmengine
+    mmengine.fileio.backends.base: mmengine
+    mmengine.fileio.backends.http_backend: mmengine
+    mmengine.fileio.backends.lmdb_backend: mmengine
+    mmengine.fileio.backends.local_backend: mmengine
+    mmengine.fileio.backends.memcached_backend: mmengine
+    mmengine.fileio.backends.petrel_backend: mmengine
+    mmengine.fileio.backends.registry_utils: mmengine
+    mmengine.fileio.file_client: mmengine
+    mmengine.fileio.handlers: mmengine
+    mmengine.fileio.handlers.base: mmengine
+    mmengine.fileio.handlers.json_handler: mmengine
+    mmengine.fileio.handlers.pickle_handler: mmengine
+    mmengine.fileio.handlers.registry_utils: mmengine
+    mmengine.fileio.handlers.yaml_handler: mmengine
+    mmengine.fileio.io: mmengine
+    mmengine.fileio.parse: mmengine
+    mmengine.hooks: mmengine
+    mmengine.hooks.checkpoint_hook: mmengine
+    mmengine.hooks.early_stopping_hook: mmengine
+    mmengine.hooks.ema_hook: mmengine
+    mmengine.hooks.empty_cache_hook: mmengine
+    mmengine.hooks.hook: mmengine
+    mmengine.hooks.iter_timer_hook: mmengine
+    mmengine.hooks.logger_hook: mmengine
+    mmengine.hooks.naive_visualization_hook: mmengine
+    mmengine.hooks.param_scheduler_hook: mmengine
+    mmengine.hooks.profiler_hook: mmengine
+    mmengine.hooks.runtime_info_hook: mmengine
+    mmengine.hooks.sampler_seed_hook: mmengine
+    mmengine.hooks.sync_buffer_hook: mmengine
+    mmengine.hooks.test_time_aug_hook: mmengine
+    mmengine.hub: mmengine
+    mmengine.hub.hub: mmengine
+    mmengine.infer: mmengine
+    mmengine.infer.infer: mmengine
+    mmengine.logging: mmengine
+    mmengine.logging.history_buffer: mmengine
+    mmengine.logging.logger: mmengine
+    mmengine.logging.message_hub: mmengine
+    mmengine.model: mmengine
+    mmengine.model.averaged_model: mmengine
+    mmengine.model.base_model: mmengine
+    mmengine.model.base_model.base_model: mmengine
+    mmengine.model.base_model.data_preprocessor: mmengine
+    mmengine.model.base_module: mmengine
+    mmengine.model.efficient_conv_bn_eval: mmengine
+    mmengine.model.test_time_aug: mmengine
+    mmengine.model.utils: mmengine
+    mmengine.model.weight_init: mmengine
+    mmengine.model.wrappers: mmengine
+    mmengine.model.wrappers.distributed: mmengine
+    mmengine.model.wrappers.fully_sharded_distributed: mmengine
+    mmengine.model.wrappers.seperate_distributed: mmengine
+    mmengine.model.wrappers.utils: mmengine
+    mmengine.optim: mmengine
+    mmengine.optim.optimizer: mmengine
+    mmengine.optim.optimizer.amp_optimizer_wrapper: mmengine
+    mmengine.optim.optimizer.apex_optimizer_wrapper: mmengine
+    mmengine.optim.optimizer.base: mmengine
+    mmengine.optim.optimizer.builder: mmengine
+    mmengine.optim.optimizer.default_constructor: mmengine
+    mmengine.optim.optimizer.optimizer_wrapper: mmengine
+    mmengine.optim.optimizer.optimizer_wrapper_dict: mmengine
+    mmengine.optim.optimizer.zero_optimizer: mmengine
+    mmengine.optim.scheduler: mmengine
+    mmengine.optim.scheduler.lr_scheduler: mmengine
+    mmengine.optim.scheduler.momentum_scheduler: mmengine
+    mmengine.optim.scheduler.param_scheduler: mmengine
+    mmengine.registry: mmengine
+    mmengine.registry.build_functions: mmengine
+    mmengine.registry.default_scope: mmengine
+    mmengine.registry.registry: mmengine
+    mmengine.registry.root: mmengine
+    mmengine.registry.utils: mmengine
+    mmengine.runner: mmengine
+    mmengine.runner.activation_checkpointing: mmengine
+    mmengine.runner.amp: mmengine
+    mmengine.runner.base_loop: mmengine
+    mmengine.runner.checkpoint: mmengine
+    mmengine.runner.log_processor: mmengine
+    mmengine.runner.loops: mmengine
+    mmengine.runner.priority: mmengine
+    mmengine.runner.runner: mmengine
+    mmengine.runner.utils: mmengine
+    mmengine.structures: mmengine
+    mmengine.structures.base_data_element: mmengine
+    mmengine.structures.instance_data: mmengine
+    mmengine.structures.label_data: mmengine
+    mmengine.structures.pixel_data: mmengine
+    mmengine.testing: mmengine
+    mmengine.testing.compare: mmengine
+    mmengine.testing.runner_test_case: mmengine
+    mmengine.utils: mmengine
+    mmengine.utils.dl_utils: mmengine
+    mmengine.utils.dl_utils.collect_env: mmengine
+    mmengine.utils.dl_utils.hub: mmengine
+    mmengine.utils.dl_utils.misc: mmengine
+    mmengine.utils.dl_utils.parrots_wrapper: mmengine
+    mmengine.utils.dl_utils.setup_env: mmengine
+    mmengine.utils.dl_utils.time_counter: mmengine
+    mmengine.utils.dl_utils.torch_ops: mmengine
+    mmengine.utils.dl_utils.trace: mmengine
+    mmengine.utils.dl_utils.visualize: mmengine
+    mmengine.utils.manager: mmengine
+    mmengine.utils.misc: mmengine
+    mmengine.utils.package_utils: mmengine
+    mmengine.utils.path: mmengine
+    mmengine.utils.progressbar: mmengine
+    mmengine.utils.progressbar_rich: mmengine
+    mmengine.utils.timer: mmengine
+    mmengine.utils.version_utils: mmengine
+    mmengine.version: mmengine
+    mmengine.visualization: mmengine
+    mmengine.visualization.utils: mmengine
+    mmengine.visualization.vis_backend: mmengine
+    mmengine.visualization.visualizer: mmengine
     mpl_toolkits.axes_grid1: matplotlib
     mpl_toolkits.axes_grid1.anchored_artists: matplotlib
     mpl_toolkits.axes_grid1.axes_divider: matplotlib
@@ -4548,6 +4820,7 @@ manifest:
     omegaconf.resolvers.oc: omegaconf
     omegaconf.resolvers.oc.dict: omegaconf
     omegaconf.version: omegaconf
+    opencv_python.libs.libopenblas-r0-f650aae0: opencv_python
     opencv_python_headless.libs.libopenblas-r0-f650aae0: opencv_python_headless
     opendatasets: opendatasets
     opendatasets.datasets: opendatasets
@@ -13004,6 +13277,8 @@ manifest:
     tensorboard.util.timing: tensorboard
     tensorboard.version: tensorboard
     tensorboard_data_server: tensorboard_data_server
+    termcolor: termcolor
+    termcolor.termcolor: termcolor
     terminado: terminado
     terminado.management: terminado
     terminado.uimodule: terminado
@@ -16422,4 +16697,4 @@ manifest:
     zope.interface.verify: zope.interface
   pip_repository:
     name: pip
-integrity: b11a76f54492039651fd28c4b103fb7fc12a1de9244b229b4e899fde3502590c
+integrity: b35b9f21f1016bb6ef18a888c45012cd6aedfa3c3262690d4aa066e36e5736a4
