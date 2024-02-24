@@ -79,19 +79,21 @@ cmake(
         # Optimization flags
         "CV_ENABLE_INTRINSICS": "ON",
         "ENABLE_CCACHE": "OFF",
-        "FFMPEG_INCLUDE_DIRS": "$$EXT_BUILD_DEPS/ffmpeg/include",
+        "FFMPEG_INCLUDE_DIRS": "$$EXT_BUILD_DEPS/ffmpeg_lib/include",
         "FFMPEG_LIBRARIES": ";".join([
-            "$$EXT_BUILD_DEPS/ffmpeg/lib/{lib}".format(lib = lib)
+            "$$EXT_BUILD_DEPS/ffmpeg_lib/lib/{lib}".format(lib = lib)
             for lib in [
                 "libavcodec.so.60",
+                "libavdevice.so.60",
                 "libavformat.so.60",
                 "libavutil.so.58",
                 "libswresample.so.4",
                 "libswscale.so.7",
             ]
         ]),
-        "FFMPEG_LIBRARY_DIRS": "$$EXT_BUILD_DEPS/ffmpeg/lib",
-        "FFMPEG_libavcodec_VERSION": "60.3.100",
+        "FFMPEG_LIBRARY_DIRS": "$$EXT_BUILD_DEPS/ffmpeg_lib/lib",
+        "FFMPEG_libavcodec_VERSION": "60.31.102",
+        "FFMPEG_libavdevice_VERSION": "60.3.100",
         "FFMPEG_libavformat_VERSION": "60.16.100",
         "FFMPEG_libavutil_VERSION": "58.29.100",
         "FFMPEG_libswresample_VERSION": "4.12.100",
@@ -100,6 +102,7 @@ cmake(
         # Bypass opencv's cmake search mechanisms for deps we build.
         "HAVE_FFMPEG": "TRUE",
         "OPENCV_EXTRA_MODULES_PATH": "$$EXT_BUILD_ROOT/external/com_github_opencv_contrib/modules/quality",
+        "OPENCV_FFMPEG_ENABLE_LIBAVDEVICE": "ON",
         "OPENCV_SKIP_PYTHON_LOADER": "ON",
 
         # COPIED FROM MEDIAPIPE:
