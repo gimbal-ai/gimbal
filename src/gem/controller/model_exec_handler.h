@@ -43,6 +43,7 @@ class ModelExecHandler : public MessageHandler {
 
   Status HandleMessage(const ::gml::internal::controlplane::egw::v1::BridgeResponse& msg) override;
   Status HandleApplyExecutionGraph(const ::gml::internal::api::core::v1::ApplyExecutionGraph&);
+  Status HandleDeleteExecutionGraph(const ::gml::internal::api::core::v1::DeleteExecutionGraph&);
 
   Status Init() override;
   Status Finish() override;
@@ -57,6 +58,7 @@ class ModelExecHandler : public MessageHandler {
 
   exec::core::ControlExecutionContext* ctrl_exec_ctx_;
   event::RunnableAsyncTaskUPtr running_task_ = nullptr;
+  sole::uuid physical_pipeline_id_;
   absl::base_internal::SpinLock exec_graph_lock_;
   std::unique_ptr<internal::api::core::v1::ApplyExecutionGraph> queued_execution_graph_
       ABSL_GUARDED_BY(exec_graph_lock_);

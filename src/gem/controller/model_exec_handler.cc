@@ -52,6 +52,7 @@ namespace gml::gem::controller {
 using ::gml::gem::exec::core::ExecutionContext;
 using ::gml::gem::exec::core::Model;
 using ::gml::internal::api::core::v1::ApplyExecutionGraph;
+using ::gml::internal::api::core::v1::DeleteExecutionGraph;
 using gml::internal::api::core::v1::EDGE_CP_TOPIC_EXEC;
 using gml::internal::api::core::v1::ExecutionGraphState;
 using gml::internal::api::core::v1::ExecutionGraphStatus;
@@ -208,15 +209,55 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
 };
 
 Status ModelExecHandler::HandleMessage(const BridgeResponse& msg) {
-  // TODO(michelle): Handle DeleteExecutionGraph message.
   ApplyExecutionGraph eg;
-  if (!msg.msg().UnpackTo(&eg)) {
-    LOG(ERROR) << "Failed to unpack apply execution graph message. Received message of type: "
-               << msg.msg().type_url() << " . Ignoring...";
+  if (msg.msg().UnpackTo(&eg)) {
+    return this->HandleApplyExecutionGraph(eg);
+  }
+
+  DeleteExecutionGraph dg;
+  if (msg.msg().UnpackTo(&dg)) {
+    return this->HandleDeleteExecutionGraph(dg);
+  }
+
+  LOG(ERROR) << "Failed to unpack message. Received message of type: " << msg.msg().type_url()
+             << " . Ignoring...";
+
+  return Status::OK();
+}
+
+Status ModelExecHandler::HandleDeleteExecutionGraph(const DeleteExecutionGraph& dg) {
+  absl::base_internal::SpinLockHolder lock(&exec_graph_lock_);
+
+  auto id = ParseUUID(dg.physical_pipeline_id());
+
+  // If there's a running task and its ID matches the one to delete, stop it.
+  if (running_task_ != nullptr && id == physical_pipeline_id_) {
+    LOG(INFO) << "Model is running... Signaling the running task to stop";
+    stop_signal_.store(true);
+
+    // If there are no queued execution graphs, run the default pipeline.
+    if (queued_execution_graph_ == nullptr) {
+      LOG(INFO) << "No other models are queued... Starting the DefaultVideoExecutionGraph";
+      ApplyExecutionGraph eg;
+      GML_RETURN_IF_ERROR(this->GetDefaultVideoExecutionGraph(&eg));
+      return this->HandleApplyExecutionGraph(eg);
+    }
+
     return Status::OK();
   }
 
-  return this->HandleApplyExecutionGraph(eg);
+  // If the queued execution graph's ID matches the one to delete, remove it from the queue.
+  if (queued_execution_graph_ != nullptr &&
+      id == ParseUUID(queued_execution_graph_->physical_pipeline_id())) {
+    LOG(INFO) << "Model is running... Signaling the running task to stop";
+    queued_execution_graph_ = nullptr;
+
+    return Status::OK();
+  }
+
+  LOG(INFO) << "Could not find model to delete from device  " << id;
+
+  return Status::OK();
 }
 
 Status ModelExecHandler::HandleApplyExecutionGraph(const ApplyExecutionGraph& eg) {
@@ -246,6 +287,7 @@ Status ModelExecHandler::HandleApplyExecutionGraph(const ApplyExecutionGraph& eg
 
   running_task_ = dispatcher()->CreateAsyncTask(std::move(task));
   running_task_->Run();
+  physical_pipeline_id_ = id;
 
   return Status::OK();
 }
@@ -312,6 +354,7 @@ void ModelExecHandler::HandleRunModelFinished(sole::uuid physical_pipeline_id) {
   LOG(INFO) << "Model execution finished " << physical_pipeline_id;
   dispatcher()->DeferredDelete(std::move(running_task_));
   running_task_ = nullptr;
+  physical_pipeline_id_ = sole::uuid{};
 
   absl::base_internal::SpinLockHolder lock(&exec_graph_lock_);
   if (queued_execution_graph_ != nullptr) {
