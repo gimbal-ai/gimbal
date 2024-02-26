@@ -155,8 +155,8 @@ If you need a GEM that sends data to your controlplane for testing purposes, you
 1. Set the env vars:
 
     ```sh
-    export AUTH0_CLIENT_ID='f66GcpkIKEliCvvPoejx3Y6mlmYiM8p6'
-    export AUTH0_ISSUER_BASE_URL='gimlet-dev.us.auth0.com'
+    export GML_AUTH0_CLIENT_ID='f66GcpkIKEliCvvPoejx3Y6mlmYiM8p6'
+    export GML_AUTH0_BASE_URL='https://gimlet-dev.us.auth0.com'
     ```
 
 1. To point to a backend that isn't yours, set the `BACKEND` env var. We default to `${USER}.dev.app.gimletlabs.dev`
@@ -255,4 +255,3 @@ In order to get proper C++ code analysis in your IDE, run this script first:
   ```bash
   ./scripts/gen_compilation_database.sh
   ```
-
