@@ -16719,4 +16719,4 @@ manifest:
     zope.interface.verify: zope.interface
   pip_repository:
     name: pip
-integrity: e6cfe1f1f71144fa96d1fe172720bc88c594cabefa91968ab89fa940fc34477f
+integrity: e6cbb52f9c22195818b7e53c349da2ed2f12d6e6a4252682b90661d0b666597f

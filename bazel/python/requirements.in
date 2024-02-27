@@ -16,6 +16,7 @@ groundingdino-gml==0.1.2
 jupyter==1.0.0
 mmcv==2.1.0
 numpy==1.26.2
+pandas==2.2.1
 Pillow==10.2.0
 psycopg2-binary==2.9.9
 pycocotools==2.0.7

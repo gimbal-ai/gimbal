@@ -1609,6 +1609,7 @@ pandas==2.2.1 \
     --hash=sha256:f821213d48f4ab353d20ebc24e4faf94ba40d76680642fb7ce2ea31a3ad94f9b \
     --hash=sha256:f9d3558d263073ed95e46f4650becff0c5e1ffe0fc3a015de3c79283dfbdb3df
     # via
+    #   -r bazel/python/requirements.in
     #   altair
     #   gradio
     #   salesforce-lavis
