@@ -11,3 +11,4 @@ include = ["src*"]
 
 [tool.pyright]
 include = ["src"]
+reportUnusedImport = true
