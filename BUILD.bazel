@@ -88,6 +88,8 @@ gml_oci_image(
 # gazelle:js_extension disabled
 
 # gazelle:exclude **/*.pb.go
+# gazelle:exclude **/*_pb2.py
+# gazelle:exclude **/*_pb2_grpc.py
 # gazelle:exclude **/.terraform/**
 # gazelle:exclude **/mock.go
 
