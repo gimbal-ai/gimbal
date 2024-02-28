@@ -125,7 +125,7 @@ message OrgInfo {
   // The ID of the org.
   gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
   // The name of the org. This is globally unique across the whole system.
-  string org_name = 2 [ (gogoproto.moretags) = 'db:"org_name"' ];
+  string org_name = 2 [ (gogoproto.moretags) = 'db:"name"' ];
 }
 
 // Request to create an org in the system.
