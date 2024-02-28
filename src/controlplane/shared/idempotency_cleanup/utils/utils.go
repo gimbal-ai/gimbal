@@ -29,7 +29,7 @@ import (
 var tablesQuery = `select
 table_name
 from information_schema.tables
-where table_name like '%_idempotency_keys'
+where table_name like '%_idempotency_key'
 and table_schema not in ('information_schema', 'pg_catalog')
 and table_type = 'BASE TABLE'
 order by table_name,

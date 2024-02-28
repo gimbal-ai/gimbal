@@ -44,24 +44,24 @@ func TestExpireKeys(t *testing.T) {
 	// 2 days from now.
 	future2 := now.Add(2 * 24 * time.Hour)
 
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS test1_idempotency_keys (idempotency_key text UNIQUE, created_at timestamp NOT NULL DEFAULT NOW())")
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS test1_idempotency_key (idempotency_key text UNIQUE, created_at timestamp NOT NULL DEFAULT NOW())")
 	require.NoError(t, err)
-	_, err = db.Exec("INSERT INTO test1_idempotency_keys (idempotency_key, created_at) VALUES ('test-key', $1)", future1)
+	_, err = db.Exec("INSERT INTO test1_idempotency_key (idempotency_key, created_at) VALUES ('test-key', $1)", future1)
 	require.NoError(t, err)
-	_, err = db.Exec("INSERT INTO test1_idempotency_keys (idempotency_key, created_at) VALUES ('expired-key', $1)", expired1)
+	_, err = db.Exec("INSERT INTO test1_idempotency_key (idempotency_key, created_at) VALUES ('expired-key', $1)", expired1)
 	require.NoError(t, err)
 
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS test2_idempotency_keys (idempotency_key text UNIQUE, created_at timestamp NOT NULL DEFAULT NOW())")
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS test2_idempotency_key (idempotency_key text UNIQUE, created_at timestamp NOT NULL DEFAULT NOW())")
 	require.NoError(t, err)
-	_, err = db.Exec("INSERT INTO test2_idempotency_keys (idempotency_key, created_at) VALUES ('test-key', $1)", future2)
+	_, err = db.Exec("INSERT INTO test2_idempotency_key (idempotency_key, created_at) VALUES ('test-key', $1)", future2)
 	require.NoError(t, err)
-	_, err = db.Exec("INSERT INTO test2_idempotency_keys (idempotency_key, created_at) VALUES ('expired-key', $1)", expired2)
+	_, err = db.Exec("INSERT INTO test2_idempotency_key (idempotency_key, created_at) VALUES ('expired-key', $1)", expired2)
 	require.NoError(t, err)
 
 	err = utils.ExpireKeys(context.Background(), db, 24*time.Hour)
 	require.NoError(t, err)
 
-	rows, err := db.Queryx("SELECT idempotency_key FROM test1_idempotency_keys")
+	rows, err := db.Queryx("SELECT idempotency_key FROM test1_idempotency_key")
 	require.NoError(t, err)
 	defer rows.Close()
 	var keys []string
@@ -73,7 +73,7 @@ func TestExpireKeys(t *testing.T) {
 	}
 	assert.ElementsMatch(t, keys, []string{"test-key"})
 
-	rows2, err := db.Queryx("SELECT idempotency_key FROM test2_idempotency_keys")
+	rows2, err := db.Queryx("SELECT idempotency_key FROM test2_idempotency_key")
 	require.NoError(t, err)
 	defer rows2.Close()
 	var keys2 []string

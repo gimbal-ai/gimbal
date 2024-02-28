@@ -35,9 +35,9 @@ func TestCreateIdempotentTx(t *testing.T) {
 	require.NotNil(t, db)
 
 	// Add idempotency table. In general, we expect this table to be created by the service creator in the migrations.
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS test_idempotency_keys (idempotency_key text UNIQUE, created_at timestamp NOT NULL DEFAULT NOW())")
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS test_idempotency_key (idempotency_key text UNIQUE, created_at timestamp NOT NULL DEFAULT NOW())")
 	require.NoError(t, err)
-	_, err = db.Exec("INSERT INTO test_idempotency_keys (idempotency_key) VALUES ('test-key')")
+	_, err = db.Exec("INSERT INTO test_idempotency_key (idempotency_key) VALUES ('test-key')")
 	require.NoError(t, err)
 
 	// Create fake test table.
@@ -75,7 +75,7 @@ func TestCreateIdempotentTx(t *testing.T) {
 
 	rows1.Close()
 
-	rows2, err := db.Queryx("SELECT count(*) FROM test_idempotency_keys")
+	rows2, err := db.Queryx("SELECT count(*) FROM test_idempotency_key")
 	assert.NoError(t, err)
 	defer rows2.Close()
 	require.True(t, rows2.Next())

@@ -50,7 +50,7 @@ func CreateIdempotentTx(ctx context.Context, db *sqlx.DB, svc string) (*sqlx.Tx,
 	}
 	idempotencyKey := idempotencyKeys[0]
 	// Will fail if unique key already exists.
-	_, err = tx.ExecContext(ctx, fmt.Sprintf("INSERT INTO %s_idempotency_keys (idempotency_key) VALUES ('%s')", svc, idempotencyKey))
+	_, err = tx.ExecContext(ctx, fmt.Sprintf("INSERT INTO %s_idempotency_key (idempotency_key) VALUES ('%s')", svc, idempotencyKey))
 	if err != nil {
 		return tx, ErrIdempotencyTxFailed
 	}
