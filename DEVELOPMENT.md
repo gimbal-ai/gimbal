@@ -152,13 +152,6 @@ If you need a GEM that sends data to your controlplane for testing purposes, you
     sudo chmod g+r ${HOSTNAME}.beluga-snapper.ts.net.key
     ```
 
-1. Set the env vars:
-
-    ```sh
-    export GML_AUTH0_CLIENT_ID='f66GcpkIKEliCvvPoejx3Y6mlmYiM8p6'
-    export GML_AUTH0_BASE_URL='https://gimlet-dev.us.auth0.com'
-    ```
-
 1. To point to a backend that isn't yours, set the `BACKEND` env var. We default to `${USER}.dev.app.gimletlabs.dev`
 
 1. From the `src/ui` directory, run `pnpm dev`.
