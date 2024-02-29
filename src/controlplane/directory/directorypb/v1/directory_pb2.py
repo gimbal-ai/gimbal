@@ -16,7 +16,7 @@ from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb
 from src.common.typespb import uuid_pb2 as src_dot_common_dot_typespb_dot_uuid__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n9src/controlplane/directory/directorypb/v1/directory.proto\x12&gml.internal.controlplane.directory.v1\x1a\x14gogoproto/gogo.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1dsrc/common/typespb/uuid.proto\"\xc3\x02\n\x08UserInfo\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\x12!\n\x04name\x18\x02 \x01(\tB\r\xf2\xde\x1f\tdb:\"name\"R\x04name\x12$\n\x05\x65mail\x18\x03 \x01(\tB\x0e\xf2\xde\x1f\ndb:\"email\"R\x05\x65mail\x12\x41\n\x0f\x64isplay_picture\x18\x04 \x01(\tB\x18\xf2\xde\x1f\x14\x64\x62:\"display_picture\"R\x0e\x64isplayPicture\x12+\n\x11identity_provider\x18\x05 \x01(\tR\x10identityProvider\x12U\n\x10\x61uth_provider_id\x18\x06 \x01(\tB+\xe2\xde\x1f\x0e\x41uthProviderID\xf2\xde\x1f\x15\x64\x62:\"auth_provider_id\"R\x0e\x61uthProviderId\"b\n\x11UpsertUserRequest\x12M\n\tuser_info\x18\x01 \x01(\x0b\x32\x30.gml.internal.controlplane.directory.v1.UserInfoR\x08userInfo\"}\n\x12UpsertUserResponse\x12M\n\tuser_info\x18\x01 \x01(\x0b\x32\x30.gml.internal.controlplane.directory.v1.UserInfoR\x08userInfo\x12\x18\n\x07\x63reated\x18\x02 \x01(\x08R\x07\x63reated\"9\n\x0eGetUserRequest\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\"`\n\x0fGetUserResponse\x12M\n\tuser_info\x18\x01 \x01(\x0b\x32\x30.gml.internal.controlplane.directory.v1.UserInfoR\x08userInfo\"\x83\x01\n\x11UpdateUserRequest\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\x12\x45\n\x0f\x64isplay_picture\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValueR\x0e\x64isplayPicture\"\x14\n\x12UpdateUserResponse\"<\n\x11\x44\x65leteUserRequest\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\"\x14\n\x12\x44\x65leteUserResponse\"`\n\x07OrgInfo\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\x12,\n\x08org_name\x18\x02 \x01(\tB\x11\xf2\xde\x1f\rdb:\"org_name\"R\x07orgName\"\x9d\x01\n\x10\x43reateOrgRequest\x12J\n\x08org_info\x18\x01 \x01(\x0b\x32/.gml.internal.controlplane.directory.v1.OrgInfoR\x07orgInfo\x12=\n\ncreator_id\x18\x02 \x01(\x0b\x32\x0f.gml.types.UUIDB\r\xe2\xde\x1f\tCreatorIDR\tcreatorId\"<\n\x11\x43reateOrgResponse\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\"S\n\rGetOrgRequest\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\x12\x19\n\x08org_name\x18\x02 \x01(\tR\x07orgName\"\\\n\x0eGetOrgResponse\x12J\n\x08org_info\x18\x01 \x01(\x0b\x32/.gml.internal.controlplane.directory.v1.OrgInfoR\x07orgInfo\";\n\x10\x44\x65leteOrgRequest\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\"\x13\n\x11\x44\x65leteOrgResponse\"\x18\n\x16GrantUserScopesRequest\"\x19\n\x17GrantUserScopesResponse\"\x19\n\x17RevokeUserScopesRequest\"\x1a\n\x18RevokeUserScopesResponse\"G\n\x0fListOrgsRequest\x12\x34\n\x07user_id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\n\xe2\xde\x1f\x06UserIDR\x06userId\"H\n\x10ListOrgsResponse\x12\x34\n\x07org_ids\x18\x01 \x03(\x0b\x32\x0f.gml.types.UUIDB\n\xe2\xde\x1f\x06OrgIDsR\x06orgIds2\xa4\x04\n\x14UserDirectoryService\x12z\n\x07GetUser\x12\x36.gml.internal.controlplane.directory.v1.GetUserRequest\x1a\x37.gml.internal.controlplane.directory.v1.GetUserResponse\x12\x83\x01\n\nUpdateUser\x12\x39.gml.internal.controlplane.directory.v1.UpdateUserRequest\x1a:.gml.internal.controlplane.directory.v1.UpdateUserResponse\x12\x83\x01\n\nDeleteUser\x12\x39.gml.internal.controlplane.directory.v1.DeleteUserRequest\x1a:.gml.internal.controlplane.directory.v1.DeleteUserResponse\x12\x83\x01\n\nUpsertUser\x12\x39.gml.internal.controlplane.directory.v1.UpsertUserRequest\x1a:.gml.internal.controlplane.directory.v1.UpsertUserResponse2\x94\x03\n\x13OrgDirectoryService\x12\x80\x01\n\tCreateOrg\x12\x38.gml.internal.controlplane.directory.v1.CreateOrgRequest\x1a\x39.gml.internal.controlplane.directory.v1.CreateOrgResponse\x12w\n\x06GetOrg\x12\x35.gml.internal.controlplane.directory.v1.GetOrgRequest\x1a\x36.gml.internal.controlplane.directory.v1.GetOrgResponse\x12\x80\x01\n\tDeleteOrg\x12\x38.gml.internal.controlplane.directory.v1.DeleteOrgRequest\x1a\x39.gml.internal.controlplane.directory.v1.DeleteOrgResponse2\xc6\x03\n\x18OrgUserManagementService\x12\x92\x01\n\x0fGrantUserScopes\x12>.gml.internal.controlplane.directory.v1.GrantUserScopesRequest\x1a?.gml.internal.controlplane.directory.v1.GrantUserScopesResponse\x12\x95\x01\n\x10RevokeUserScopes\x12?.gml.internal.controlplane.directory.v1.RevokeUserScopesRequest\x1a@.gml.internal.controlplane.directory.v1.RevokeUserScopesResponse\x12}\n\x08ListOrgs\x12\x37.gml.internal.controlplane.directory.v1.ListOrgsRequest\x1a\x38.gml.internal.controlplane.directory.v1.ListOrgsResponseBLZJgimletlabs.ai/gimlet/src/controlplane/directory/directorypb/v1;directorypbb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n9src/controlplane/directory/directorypb/v1/directory.proto\x12&gml.internal.controlplane.directory.v1\x1a\x14gogoproto/gogo.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1dsrc/common/typespb/uuid.proto\"\xc3\x02\n\x08UserInfo\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\x12!\n\x04name\x18\x02 \x01(\tB\r\xf2\xde\x1f\tdb:\"name\"R\x04name\x12$\n\x05\x65mail\x18\x03 \x01(\tB\x0e\xf2\xde\x1f\ndb:\"email\"R\x05\x65mail\x12\x41\n\x0f\x64isplay_picture\x18\x04 \x01(\tB\x18\xf2\xde\x1f\x14\x64\x62:\"display_picture\"R\x0e\x64isplayPicture\x12+\n\x11identity_provider\x18\x05 \x01(\tR\x10identityProvider\x12U\n\x10\x61uth_provider_id\x18\x06 \x01(\tB+\xe2\xde\x1f\x0e\x41uthProviderID\xf2\xde\x1f\x15\x64\x62:\"auth_provider_id\"R\x0e\x61uthProviderId\"b\n\x11UpsertUserRequest\x12M\n\tuser_info\x18\x01 \x01(\x0b\x32\x30.gml.internal.controlplane.directory.v1.UserInfoR\x08userInfo\"}\n\x12UpsertUserResponse\x12M\n\tuser_info\x18\x01 \x01(\x0b\x32\x30.gml.internal.controlplane.directory.v1.UserInfoR\x08userInfo\x12\x18\n\x07\x63reated\x18\x02 \x01(\x08R\x07\x63reated\"9\n\x0eGetUserRequest\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\"`\n\x0fGetUserResponse\x12M\n\tuser_info\x18\x01 \x01(\x0b\x32\x30.gml.internal.controlplane.directory.v1.UserInfoR\x08userInfo\"\x83\x01\n\x11UpdateUserRequest\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\x12\x45\n\x0f\x64isplay_picture\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValueR\x0e\x64isplayPicture\"\x14\n\x12UpdateUserResponse\"<\n\x11\x44\x65leteUserRequest\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\"\x14\n\x12\x44\x65leteUserResponse\"\\\n\x07OrgInfo\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\x12(\n\x08org_name\x18\x02 \x01(\tB\r\xf2\xde\x1f\tdb:\"name\"R\x07orgName\"\x9d\x01\n\x10\x43reateOrgRequest\x12J\n\x08org_info\x18\x01 \x01(\x0b\x32/.gml.internal.controlplane.directory.v1.OrgInfoR\x07orgInfo\x12=\n\ncreator_id\x18\x02 \x01(\x0b\x32\x0f.gml.types.UUIDB\r\xe2\xde\x1f\tCreatorIDR\tcreatorId\"<\n\x11\x43reateOrgResponse\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\"S\n\rGetOrgRequest\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\x12\x19\n\x08org_name\x18\x02 \x01(\tR\x07orgName\"\\\n\x0eGetOrgResponse\x12J\n\x08org_info\x18\x01 \x01(\x0b\x32/.gml.internal.controlplane.directory.v1.OrgInfoR\x07orgInfo\";\n\x10\x44\x65leteOrgRequest\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\"\x13\n\x11\x44\x65leteOrgResponse\"\x18\n\x16GrantUserScopesRequest\"\x19\n\x17GrantUserScopesResponse\"\x19\n\x17RevokeUserScopesRequest\"\x1a\n\x18RevokeUserScopesResponse\"G\n\x0fListOrgsRequest\x12\x34\n\x07user_id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\n\xe2\xde\x1f\x06UserIDR\x06userId\"H\n\x10ListOrgsResponse\x12\x34\n\x07org_ids\x18\x01 \x03(\x0b\x32\x0f.gml.types.UUIDB\n\xe2\xde\x1f\x06OrgIDsR\x06orgIds2\xa4\x04\n\x14UserDirectoryService\x12z\n\x07GetUser\x12\x36.gml.internal.controlplane.directory.v1.GetUserRequest\x1a\x37.gml.internal.controlplane.directory.v1.GetUserResponse\x12\x83\x01\n\nUpdateUser\x12\x39.gml.internal.controlplane.directory.v1.UpdateUserRequest\x1a:.gml.internal.controlplane.directory.v1.UpdateUserResponse\x12\x83\x01\n\nDeleteUser\x12\x39.gml.internal.controlplane.directory.v1.DeleteUserRequest\x1a:.gml.internal.controlplane.directory.v1.DeleteUserResponse\x12\x83\x01\n\nUpsertUser\x12\x39.gml.internal.controlplane.directory.v1.UpsertUserRequest\x1a:.gml.internal.controlplane.directory.v1.UpsertUserResponse2\x94\x03\n\x13OrgDirectoryService\x12\x80\x01\n\tCreateOrg\x12\x38.gml.internal.controlplane.directory.v1.CreateOrgRequest\x1a\x39.gml.internal.controlplane.directory.v1.CreateOrgResponse\x12w\n\x06GetOrg\x12\x35.gml.internal.controlplane.directory.v1.GetOrgRequest\x1a\x36.gml.internal.controlplane.directory.v1.GetOrgResponse\x12\x80\x01\n\tDeleteOrg\x12\x38.gml.internal.controlplane.directory.v1.DeleteOrgRequest\x1a\x39.gml.internal.controlplane.directory.v1.DeleteOrgResponse2\xc6\x03\n\x18OrgUserManagementService\x12\x92\x01\n\x0fGrantUserScopes\x12>.gml.internal.controlplane.directory.v1.GrantUserScopesRequest\x1a?.gml.internal.controlplane.directory.v1.GrantUserScopesResponse\x12\x95\x01\n\x10RevokeUserScopes\x12?.gml.internal.controlplane.directory.v1.RevokeUserScopesRequest\x1a@.gml.internal.controlplane.directory.v1.RevokeUserScopesResponse\x12}\n\x08ListOrgs\x12\x37.gml.internal.controlplane.directory.v1.ListOrgsRequest\x1a\x38.gml.internal.controlplane.directory.v1.ListOrgsResponseBLZJgimletlabs.ai/gimlet/src/controlplane/directory/directorypb/v1;directorypbb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'src.controlplane.directory.directorypb.v1.directory_pb2', globals())
@@ -43,7 +43,7 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _ORGINFO.fields_by_name['id']._options = None
   _ORGINFO.fields_by_name['id']._serialized_options = b'\342\336\037\002ID'
   _ORGINFO.fields_by_name['org_name']._options = None
-  _ORGINFO.fields_by_name['org_name']._serialized_options = b'\362\336\037\rdb:\"org_name\"'
+  _ORGINFO.fields_by_name['org_name']._serialized_options = b'\362\336\037\tdb:\"name\"'
   _CREATEORGREQUEST.fields_by_name['creator_id']._options = None
   _CREATEORGREQUEST.fields_by_name['creator_id']._serialized_options = b'\342\336\037\tCreatorID'
   _CREATEORGRESPONSE.fields_by_name['id']._options = None
@@ -75,35 +75,35 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _DELETEUSERRESPONSE._serialized_start=1114
   _DELETEUSERRESPONSE._serialized_end=1134
   _ORGINFO._serialized_start=1136
-  _ORGINFO._serialized_end=1232
-  _CREATEORGREQUEST._serialized_start=1235
-  _CREATEORGREQUEST._serialized_end=1392
-  _CREATEORGRESPONSE._serialized_start=1394
-  _CREATEORGRESPONSE._serialized_end=1454
-  _GETORGREQUEST._serialized_start=1456
-  _GETORGREQUEST._serialized_end=1539
-  _GETORGRESPONSE._serialized_start=1541
-  _GETORGRESPONSE._serialized_end=1633
-  _DELETEORGREQUEST._serialized_start=1635
-  _DELETEORGREQUEST._serialized_end=1694
-  _DELETEORGRESPONSE._serialized_start=1696
-  _DELETEORGRESPONSE._serialized_end=1715
-  _GRANTUSERSCOPESREQUEST._serialized_start=1717
-  _GRANTUSERSCOPESREQUEST._serialized_end=1741
-  _GRANTUSERSCOPESRESPONSE._serialized_start=1743
-  _GRANTUSERSCOPESRESPONSE._serialized_end=1768
-  _REVOKEUSERSCOPESREQUEST._serialized_start=1770
-  _REVOKEUSERSCOPESREQUEST._serialized_end=1795
-  _REVOKEUSERSCOPESRESPONSE._serialized_start=1797
-  _REVOKEUSERSCOPESRESPONSE._serialized_end=1823
-  _LISTORGSREQUEST._serialized_start=1825
-  _LISTORGSREQUEST._serialized_end=1896
-  _LISTORGSRESPONSE._serialized_start=1898
-  _LISTORGSRESPONSE._serialized_end=1970
-  _USERDIRECTORYSERVICE._serialized_start=1973
-  _USERDIRECTORYSERVICE._serialized_end=2521
-  _ORGDIRECTORYSERVICE._serialized_start=2524
-  _ORGDIRECTORYSERVICE._serialized_end=2928
-  _ORGUSERMANAGEMENTSERVICE._serialized_start=2931
-  _ORGUSERMANAGEMENTSERVICE._serialized_end=3385
+  _ORGINFO._serialized_end=1228
+  _CREATEORGREQUEST._serialized_start=1231
+  _CREATEORGREQUEST._serialized_end=1388
+  _CREATEORGRESPONSE._serialized_start=1390
+  _CREATEORGRESPONSE._serialized_end=1450
+  _GETORGREQUEST._serialized_start=1452
+  _GETORGREQUEST._serialized_end=1535
+  _GETORGRESPONSE._serialized_start=1537
+  _GETORGRESPONSE._serialized_end=1629
+  _DELETEORGREQUEST._serialized_start=1631
+  _DELETEORGREQUEST._serialized_end=1690
+  _DELETEORGRESPONSE._serialized_start=1692
+  _DELETEORGRESPONSE._serialized_end=1711
+  _GRANTUSERSCOPESREQUEST._serialized_start=1713
+  _GRANTUSERSCOPESREQUEST._serialized_end=1737
+  _GRANTUSERSCOPESRESPONSE._serialized_start=1739
+  _GRANTUSERSCOPESRESPONSE._serialized_end=1764
+  _REVOKEUSERSCOPESREQUEST._serialized_start=1766
+  _REVOKEUSERSCOPESREQUEST._serialized_end=1791
+  _REVOKEUSERSCOPESRESPONSE._serialized_start=1793
+  _REVOKEUSERSCOPESRESPONSE._serialized_end=1819
+  _LISTORGSREQUEST._serialized_start=1821
+  _LISTORGSREQUEST._serialized_end=1892
+  _LISTORGSRESPONSE._serialized_start=1894
+  _LISTORGSRESPONSE._serialized_end=1966
+  _USERDIRECTORYSERVICE._serialized_start=1969
+  _USERDIRECTORYSERVICE._serialized_end=2517
+  _ORGDIRECTORYSERVICE._serialized_start=2520
+  _ORGDIRECTORYSERVICE._serialized_end=2924
+  _ORGUSERMANAGEMENTSERVICE._serialized_start=2927
+  _ORGUSERMANAGEMENTSERVICE._serialized_end=3381
 # @@protoc_insertion_point(module_scope)
