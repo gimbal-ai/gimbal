@@ -163,6 +163,9 @@ std::unique_ptr<google::protobuf::Message> UnpackAny(const google::protobuf::Any
   if (auto ptr = TryUnpack<internal::api::core::v1::ExecutionGraphStatusUpdate>(any, stats)) {
     return ptr;
   }
+  if (auto ptr = TryUnpack<internal::api::core::v1::VideoHeader>(any, stats)) {
+    return ptr;
+  }
   if (auto ptr = TryUnpack<internal::api::core::v1::EdgeOTelMetrics>(any, stats)) return ptr;
   LOG(FATAL) << "Unknown type: " << any.type_url();
   return nullptr;
