@@ -20,7 +20,7 @@ go_library(
     name = "dockertestutils",
     srcs = ["utils.go"],
     data = [
-        ":postgres_15_alpine",
+        ":pgvector_pg15",
         ":victoria_metrics_v1_93_6",
     ],
     importpath = "gimletlabs.ai/gimlet/src/testutils/dockertestutils",
@@ -34,13 +34,13 @@ go_library(
 )
 
 oci_tarball(
-    name = "postgres_15_alpine",
-    image = "@postgres_15_alpine",
-    repo_tags = ["postgres:15-alpine"],
-)
-
-oci_tarball(
     name = "victoria_metrics_v1_93_6",
     image = "@victoria_metrics_1_93_6",
     repo_tags = ["victoriametrics/victoria-metrics:v1.93.6"],
+)
+
+oci_tarball(
+    name = "pgvector_pg15",
+    image = "@pgvector_pg15",
+    repo_tags = ["pgvector/pgvector:pg15"],
 )

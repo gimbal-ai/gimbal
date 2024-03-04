@@ -63,8 +63,8 @@ func SetupTestDB(t testing.TB, schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx
 		return nil, fmt.Errorf("connect to docker failed: %w", err)
 	}
 
-	imageRepo := "postgres"
-	imageTag := "15-alpine"
+	imageRepo := "pgvector/pgvector"
+	imageTag := "pg15"
 	err = dockertestutils.LoadOrFetchImage(pool, imageRepo, imageTag)
 	if err != nil {
 		return nil, err

@@ -29,8 +29,8 @@ import (
 )
 
 var imageToTarget = map[string]string{
-	"postgres:15-alpine":                       "gml/src/testutils/postgres_15_alpine/tarball.tar",
 	"victoriametrics/victoria-metrics:v1.93.6": "gml/src/testutils/victoria_metrics_v1_93_6/tarball.tar",
+	"pgvector/pgvector:pg15":                   "gml/src/testutils/pgvector_pg15/tarball.tar",
 }
 
 var (
