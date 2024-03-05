@@ -27,9 +27,6 @@
 DEFINE_string(model_idle_stream, gflags::StringFromEnv("GML_MODEL_IDLE_STREAM", ""),
               "The id:sha256sum:size of the model idle stream. This is when the device is not "
               "running a model yet. It will be looped over until the state changes.");
-DEFINE_string(model_compiling_stream, gflags::StringFromEnv("GML_MODEL_COMPILING_STREAM", ""),
-              "The id:sha256sum:size of the model compiling stream. This is when the device is "
-              "transitioning from idle to running. It does not loop.");
 DEFINE_string(model_running_stream, gflags::StringFromEnv("GML_MODEL_RUNNING_STREAM", ""),
               "The id:sha256sum:size of the model running stream. This is what happens when the "
               "device is running a model. It will be looped over until the state changes. Ie "
@@ -59,8 +56,6 @@ const std::vector<StreamData>& DataReplayer::GetStateStream(StreamState stream_s
   switch (stream_state) {
     case StreamState::kModelIdle:
       return replay_data_->model_idle_stream_;
-    case StreamState::kModelCompiling:
-      return replay_data_->model_compiling_stream_;
     case StreamState::kModelRunning:
       return replay_data_->model_running_stream_;
   }
@@ -72,7 +67,6 @@ StreamDataWithOffset DataReplayer::Next() {
   {
     absl::MutexLock lock(&current_state_lock_);
     if (data_index_ >= GetStateStream(current_state_).size()) {
-      current_state_ = NextMapState(current_state_);
       LOG(INFO) << absl::Substitute("Transition to next state: $0",
                                     magic_enum::enum_name(current_state_));
       data_index_ = 0;
@@ -219,12 +213,8 @@ void DownloadDataTask::Work() {
   LOG(INFO) << "Downloading model idle stream";
   GML_ASSIGN_OR_EXIT(auto model_idle_stream,
                      LoadRecordedStream(blob_store_, FLAGS_model_idle_stream));
-  LOG(INFO) << "Downloading model compiling stream";
-  GML_ASSIGN_OR_EXIT(auto model_compiling_stream,
-                     LoadRecordedStream(blob_store_, FLAGS_model_compiling_stream));
   data_ =
-      std::make_unique<ReplayData>(std::move(model_running_stream), std::move(model_idle_stream),
-                                   std::move(model_compiling_stream));
+      std::make_unique<ReplayData>(std::move(model_running_stream), std::move(model_idle_stream));
 };
 
 }  // namespace gml::gem::fakegem

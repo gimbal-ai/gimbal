@@ -138,7 +138,7 @@ Status StreamWriter::StartModelStream(sole::uuid id) {
   if (!IsPipelineRunning()) {
     LOG(INFO) << "Starting pipeline << " << id.str();
     pipeline_id_ = id;
-    data_.SetDesiredStreamState(StreamState::kModelCompiling);
+    data_.SetDesiredStreamState(StreamState::kModelRunning);
     return Status::OK();
   }
   if (IsPipelineRunning() && id != pipeline_id_) {

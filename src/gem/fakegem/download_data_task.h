@@ -34,35 +34,16 @@ struct StreamDataWithOffset {
   uint64_t sleep_for;
 };
 
-enum class StreamState { kModelIdle, kModelCompiling, kModelRunning };
-
-/**
- * Calculates the next state for the map stream when we complete reading the current stream.
- *
- * @param state The current state of the map stream.
- * @return The next state of the map stream.
- */
-constexpr StreamState NextMapState(StreamState state) {
-  switch (state) {
-    case StreamState::kModelIdle:
-      return StreamState::kModelIdle;
-    case StreamState::kModelCompiling:
-    case StreamState::kModelRunning:
-      return StreamState::kModelRunning;
-  }
-}
+enum class StreamState { kModelIdle, kModelRunning };
 
 struct ReplayData {
   ReplayData(std::vector<StreamData> model_running_stream,
-             std::vector<StreamData> model_idle_stream,
-             std::vector<StreamData> model_compiling_stream)
+             std::vector<StreamData> model_idle_stream)
       : model_running_stream_(std::move(model_running_stream)),
-        model_idle_stream_(std::move(model_idle_stream)),
-        model_compiling_stream_(std::move(model_compiling_stream)) {}
+        model_idle_stream_(std::move(model_idle_stream)) {}
 
   std::vector<StreamData> model_running_stream_;
   std::vector<StreamData> model_idle_stream_;
-  std::vector<StreamData> model_compiling_stream_;
 };
 
 class DataReplayer {
