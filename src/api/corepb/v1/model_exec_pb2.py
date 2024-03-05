@@ -20,7 +20,7 @@ except AttributeError:
 from src.common.typespb import uuid_pb2 as src_dot_common_dot_typespb_dot_uuid__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\"src/api/corepb/v1/model_exec.proto\x12\x18gml.internal.api.core.v1\x1a\x14gogoproto/gogo.proto\x1a$mediapipe/framework/calculator.proto\x1a\x1dsrc/common/typespb/uuid.proto\"H\n\x08Pipeline\x12<\n\x05nodes\x18\x02 \x03(\x0b\x32&.gml.internal.api.core.v1.PipelineNodeR\x05nodes\"\xa4\x01\n\x0cPipelineNode\x12\x0e\n\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n\x04type\x18\x02 \x01(\tR\x04type\x12\x36\n\x06inputs\x18\x03 \x03(\x0b\x32\x1e.gml.internal.api.core.v1.PortR\x06inputs\x12\x38\n\x07outputs\x18\x04 \x03(\x0b\x32\x1e.gml.internal.api.core.v1.PortR\x07outputs\",\n\x04Port\x12\x12\n\x04name\x18\x01 \x01(\tR\x04name\x12\x10\n\x03net\x18\x02 \x01(\tR\x03net\"\x84\x01\n\x0c\x46ileResource\x12\x34\n\x07\x66ile_id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\n\xe2\xde\x1f\x06\x46ileIDR\x06\x66ileId\x12\x1d\n\nsize_bytes\x18\x02 \x01(\x04R\tsizeBytes\x12\x1f\n\x0bsha256_hash\x18\x03 \x01(\tR\nsha256Hash\"\x8b\x01\n\rExecutionSpec\x12\x36\n\x05graph\x18\x01 \x01(\x0b\x32 .mediapipe.CalculatorGraphConfigR\x05graph\x12\x42\n\nmodel_spec\x18\x02 \x03(\x0b\x32#.gml.internal.api.core.v1.ModelSpecR\tmodelSpec\"\x89\x03\n\tModelSpec\x12\x12\n\x04name\x18\x01 \x01(\tR\x04name\x12\x33\n\ronnx_blob_key\x18\x02 \x01(\tB\x0f\xe2\xde\x1f\x0bONNXBlobKeyR\x0bonnxBlobKey\x12Q\n\tonnx_file\x18\x03 \x01(\x0b\x32&.gml.internal.api.core.v1.FileResourceB\x0c\xe2\xde\x1f\x08ONNXFileR\x08onnxFile\x12\x18\n\x07runtime\x18\x32 \x01(\tR\x07runtime\x12\x62\n\rtensorrt_spec\x18\x64 \x01(\x0b\x32+.gml.internal.api.core.v1.TensorRTModelSpecB\x10\xe2\xde\x1f\x0cTensorRTSpecR\x0ctensorrtSpec\x12\x62\n\ropenvino_spec\x18\x65 \x01(\x0b\x32+.gml.internal.api.core.v1.OpenVINOModelSpecB\x10\xe2\xde\x1f\x0cOpenVINOSpecR\x0copenvinoSpec\"\xfe\x01\n\x11TensorRTModelSpec\x12h\n\x14optimization_profile\x18\x01 \x03(\x0b\x32\x35.gml.internal.api.core.v1.TensorRTOptimizationProfileR\x13optimizationProfile\x12&\n\x0f\x65ngine_blob_key\x18\x02 \x01(\tR\rengineBlobKey\x12W\n\x0fmem_pool_limits\x18\x03 \x01(\x0b\x32/.gml.internal.api.core.v1.TensorRTMemPoolLimitsR\rmemPoolLimits\"\x7f\n\x1bTensorRTOptimizationProfile\x12`\n\x12tensor_shape_range\x18\x01 \x03(\x0b\x32\x32.gml.internal.api.core.v1.TensorRTTensorShapeRangeR\x10tensorShapeRange\"M\n\x18TensorRTTensorShapeRange\x12\x1f\n\x0btensor_name\x18\x01 \x01(\tR\ntensorName\x12\x10\n\x03\x64im\x18\x02 \x03(\x05R\x03\x64im\"5\n\x15TensorRTMemPoolLimits\x12\x1c\n\tworkspace\x18\x01 \x01(\x03R\tworkspace\"\x8e\x01\n\x11OpenVINOModelSpec\x12X\n\x0binput_shape\x18\x01 \x03(\x0b\x32\x37.gml.internal.api.core.v1.OpenVINOModelSpec.TensorShapeR\ninputShape\x1a\x1f\n\x0bTensorShape\x12\x10\n\x03\x64im\x18\x01 \x03(\x05R\x03\x64imB/Z-gimletlabs.ai/gimlet/src/api/corepb/v1;corepbb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\"src/api/corepb/v1/model_exec.proto\x12\x18gml.internal.api.core.v1\x1a\x14gogoproto/gogo.proto\x1a$mediapipe/framework/calculator.proto\x1a\x1dsrc/common/typespb/uuid.proto\"H\n\x08Pipeline\x12<\n\x05nodes\x18\x02 \x03(\x0b\x32&.gml.internal.api.core.v1.PipelineNodeR\x05nodes\"\xa3\x02\n\x0cPipelineNode\x12\x0e\n\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n\x04type\x18\x02 \x01(\tR\x04type\x12\x36\n\x06inputs\x18\x03 \x03(\x0b\x32\x1e.gml.internal.api.core.v1.PortR\x06inputs\x12\x38\n\x07outputs\x18\x04 \x03(\x0b\x32\x1e.gml.internal.api.core.v1.PortR\x07outputs\x12\x44\n\x04\x61ttr\x18\x05 \x03(\x0b\x32\x30.gml.internal.api.core.v1.PipelineNode.AttrEntryR\x04\x61ttr\x1a\x37\n\tAttrEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n\x05value\x18\x02 \x01(\tR\x05value:\x02\x38\x01\",\n\x04Port\x12\x12\n\x04name\x18\x01 \x01(\tR\x04name\x12\x10\n\x03net\x18\x02 \x01(\tR\x03net\"\x84\x01\n\x0c\x46ileResource\x12\x34\n\x07\x66ile_id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\n\xe2\xde\x1f\x06\x46ileIDR\x06\x66ileId\x12\x1d\n\nsize_bytes\x18\x02 \x01(\x04R\tsizeBytes\x12\x1f\n\x0bsha256_hash\x18\x03 \x01(\tR\nsha256Hash\"\x8b\x01\n\rExecutionSpec\x12\x36\n\x05graph\x18\x01 \x01(\x0b\x32 .mediapipe.CalculatorGraphConfigR\x05graph\x12\x42\n\nmodel_spec\x18\x02 \x03(\x0b\x32#.gml.internal.api.core.v1.ModelSpecR\tmodelSpec\"\x89\x03\n\tModelSpec\x12\x12\n\x04name\x18\x01 \x01(\tR\x04name\x12\x33\n\ronnx_blob_key\x18\x02 \x01(\tB\x0f\xe2\xde\x1f\x0bONNXBlobKeyR\x0bonnxBlobKey\x12Q\n\tonnx_file\x18\x03 \x01(\x0b\x32&.gml.internal.api.core.v1.FileResourceB\x0c\xe2\xde\x1f\x08ONNXFileR\x08onnxFile\x12\x18\n\x07runtime\x18\x32 \x01(\tR\x07runtime\x12\x62\n\rtensorrt_spec\x18\x64 \x01(\x0b\x32+.gml.internal.api.core.v1.TensorRTModelSpecB\x10\xe2\xde\x1f\x0cTensorRTSpecR\x0ctensorrtSpec\x12\x62\n\ropenvino_spec\x18\x65 \x01(\x0b\x32+.gml.internal.api.core.v1.OpenVINOModelSpecB\x10\xe2\xde\x1f\x0cOpenVINOSpecR\x0copenvinoSpec\"\xfe\x01\n\x11TensorRTModelSpec\x12h\n\x14optimization_profile\x18\x01 \x03(\x0b\x32\x35.gml.internal.api.core.v1.TensorRTOptimizationProfileR\x13optimizationProfile\x12&\n\x0f\x65ngine_blob_key\x18\x02 \x01(\tR\rengineBlobKey\x12W\n\x0fmem_pool_limits\x18\x03 \x01(\x0b\x32/.gml.internal.api.core.v1.TensorRTMemPoolLimitsR\rmemPoolLimits\"\x7f\n\x1bTensorRTOptimizationProfile\x12`\n\x12tensor_shape_range\x18\x01 \x03(\x0b\x32\x32.gml.internal.api.core.v1.TensorRTTensorShapeRangeR\x10tensorShapeRange\"M\n\x18TensorRTTensorShapeRange\x12\x1f\n\x0btensor_name\x18\x01 \x01(\tR\ntensorName\x12\x10\n\x03\x64im\x18\x02 \x03(\x05R\x03\x64im\"5\n\x15TensorRTMemPoolLimits\x12\x1c\n\tworkspace\x18\x01 \x01(\x03R\tworkspace\"\x8e\x01\n\x11OpenVINOModelSpec\x12X\n\x0binput_shape\x18\x01 \x03(\x0b\x32\x37.gml.internal.api.core.v1.OpenVINOModelSpec.TensorShapeR\ninputShape\x1a\x1f\n\x0bTensorShape\x12\x10\n\x03\x64im\x18\x01 \x03(\x05R\x03\x64imB/Z-gimletlabs.ai/gimlet/src/api/corepb/v1;corepbb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'src.api.corepb.v1.model_exec_pb2', globals())
@@ -28,6 +28,8 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   DESCRIPTOR._serialized_options = b'Z-gimletlabs.ai/gimlet/src/api/corepb/v1;corepb'
+  _PIPELINENODE_ATTRENTRY._options = None
+  _PIPELINENODE_ATTRENTRY._serialized_options = b'8\001'
   _FILERESOURCE.fields_by_name['file_id']._options = None
   _FILERESOURCE.fields_by_name['file_id']._serialized_options = b'\342\336\037\006FileID'
   _MODELSPEC.fields_by_name['onnx_blob_key']._options = None
@@ -41,25 +43,27 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _PIPELINE._serialized_start=155
   _PIPELINE._serialized_end=227
   _PIPELINENODE._serialized_start=230
-  _PIPELINENODE._serialized_end=394
-  _PORT._serialized_start=396
-  _PORT._serialized_end=440
-  _FILERESOURCE._serialized_start=443
-  _FILERESOURCE._serialized_end=575
-  _EXECUTIONSPEC._serialized_start=578
-  _EXECUTIONSPEC._serialized_end=717
-  _MODELSPEC._serialized_start=720
-  _MODELSPEC._serialized_end=1113
-  _TENSORRTMODELSPEC._serialized_start=1116
-  _TENSORRTMODELSPEC._serialized_end=1370
-  _TENSORRTOPTIMIZATIONPROFILE._serialized_start=1372
-  _TENSORRTOPTIMIZATIONPROFILE._serialized_end=1499
-  _TENSORRTTENSORSHAPERANGE._serialized_start=1501
-  _TENSORRTTENSORSHAPERANGE._serialized_end=1578
-  _TENSORRTMEMPOOLLIMITS._serialized_start=1580
-  _TENSORRTMEMPOOLLIMITS._serialized_end=1633
-  _OPENVINOMODELSPEC._serialized_start=1636
-  _OPENVINOMODELSPEC._serialized_end=1778
-  _OPENVINOMODELSPEC_TENSORSHAPE._serialized_start=1747
-  _OPENVINOMODELSPEC_TENSORSHAPE._serialized_end=1778
+  _PIPELINENODE._serialized_end=521
+  _PIPELINENODE_ATTRENTRY._serialized_start=466
+  _PIPELINENODE_ATTRENTRY._serialized_end=521
+  _PORT._serialized_start=523
+  _PORT._serialized_end=567
+  _FILERESOURCE._serialized_start=570
+  _FILERESOURCE._serialized_end=702
+  _EXECUTIONSPEC._serialized_start=705
+  _EXECUTIONSPEC._serialized_end=844
+  _MODELSPEC._serialized_start=847
+  _MODELSPEC._serialized_end=1240
+  _TENSORRTMODELSPEC._serialized_start=1243
+  _TENSORRTMODELSPEC._serialized_end=1497
+  _TENSORRTOPTIMIZATIONPROFILE._serialized_start=1499
+  _TENSORRTOPTIMIZATIONPROFILE._serialized_end=1626
+  _TENSORRTTENSORSHAPERANGE._serialized_start=1628
+  _TENSORRTTENSORSHAPERANGE._serialized_end=1705
+  _TENSORRTMEMPOOLLIMITS._serialized_start=1707
+  _TENSORRTMEMPOOLLIMITS._serialized_end=1760
+  _OPENVINOMODELSPEC._serialized_start=1763
+  _OPENVINOMODELSPEC._serialized_end=1905
+  _OPENVINOMODELSPEC_TENSORSHAPE._serialized_start=1874
+  _OPENVINOMODELSPEC_TENSORSHAPE._serialized_end=1905
 # @@protoc_insertion_point(module_scope)

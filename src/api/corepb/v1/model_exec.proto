@@ -40,6 +40,8 @@ message PipelineNode {
   string type = 2;
   repeated Port inputs = 3;
   repeated Port outputs = 4;
+  // TODO(james): temporary API change, will likely remove when we redo the pipelinecompiler.
+  map<string, string> attr = 5;
 }
 
 // A port has a name, and a net.
