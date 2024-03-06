@@ -57,9 +57,7 @@ message CreateFleetResponse {
 message GetFleetRequest {
   // Will use ID if supplied, else will try to lookup by name.
   gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
-  // This is deprecated and should be removed when we switch over to using GetFleetByName
-  // everywhere.
-  string name = 2 [ deprecated = true ];
+  reserved 2;
 }
 
 message GetFleetResponse {
