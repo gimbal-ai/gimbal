@@ -40,6 +40,26 @@ func (m *MockLogicalPipelineServiceClient) EXPECT() *MockLogicalPipelineServiceC
 	return m.recorder
 }
 
+// CreateLogicalPipeline mocks base method.
+func (m *MockLogicalPipelineServiceClient) CreateLogicalPipeline(ctx context.Context, in *lppb.CreateLogicalPipelineRequest, opts ...grpc.CallOption) (*lppb.CreateLogicalPipelineResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateLogicalPipeline", varargs...)
+	ret0, _ := ret[0].(*lppb.CreateLogicalPipelineResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateLogicalPipeline indicates an expected call of CreateLogicalPipeline.
+func (mr *MockLogicalPipelineServiceClientMockRecorder) CreateLogicalPipeline(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateLogicalPipeline", reflect.TypeOf((*MockLogicalPipelineServiceClient)(nil).CreateLogicalPipeline), varargs...)
+}
+
 // GetLogicalPipeline mocks base method.
 func (m *MockLogicalPipelineServiceClient) GetLogicalPipeline(ctx context.Context, in *lppb.GetLogicalPipelineRequest, opts ...grpc.CallOption) (*lppb.GetLogicalPipelineResponse, error) {
 	m.ctrl.T.Helper()
@@ -101,6 +121,21 @@ func NewMockLogicalPipelineServiceServer(ctrl *gomock.Controller) *MockLogicalPi
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockLogicalPipelineServiceServer) EXPECT() *MockLogicalPipelineServiceServerMockRecorder {
 	return m.recorder
+}
+
+// CreateLogicalPipeline mocks base method.
+func (m *MockLogicalPipelineServiceServer) CreateLogicalPipeline(arg0 context.Context, arg1 *lppb.CreateLogicalPipelineRequest) (*lppb.CreateLogicalPipelineResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateLogicalPipeline", arg0, arg1)
+	ret0, _ := ret[0].(*lppb.CreateLogicalPipelineResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateLogicalPipeline indicates an expected call of CreateLogicalPipeline.
+func (mr *MockLogicalPipelineServiceServerMockRecorder) CreateLogicalPipeline(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateLogicalPipeline", reflect.TypeOf((*MockLogicalPipelineServiceServer)(nil).CreateLogicalPipeline), arg0, arg1)
 }
 
 // GetLogicalPipeline mocks base method.

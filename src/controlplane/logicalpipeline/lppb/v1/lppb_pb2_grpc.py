@@ -24,6 +24,11 @@ class LogicalPipelineServiceStub(object):
                 request_serializer=src_dot_controlplane_dot_logicalpipeline_dot_lppb_dot_v1_dot_lppb__pb2.GetLogicalPipelineRequest.SerializeToString,
                 response_deserializer=src_dot_controlplane_dot_logicalpipeline_dot_lppb_dot_v1_dot_lppb__pb2.GetLogicalPipelineResponse.FromString,
                 )
+        self.CreateLogicalPipeline = channel.unary_unary(
+                '/gml.internal.controlplane.logicalpipeline.v1.LogicalPipelineService/CreateLogicalPipeline',
+                request_serializer=src_dot_controlplane_dot_logicalpipeline_dot_lppb_dot_v1_dot_lppb__pb2.CreateLogicalPipelineRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_logicalpipeline_dot_lppb_dot_v1_dot_lppb__pb2.CreateLogicalPipelineResponse.FromString,
+                )
 
 
 class LogicalPipelineServiceServicer(object):
@@ -41,6 +46,12 @@ class LogicalPipelineServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def CreateLogicalPipeline(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_LogicalPipelineServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -53,6 +64,11 @@ def add_LogicalPipelineServiceServicer_to_server(servicer, server):
                     servicer.GetLogicalPipeline,
                     request_deserializer=src_dot_controlplane_dot_logicalpipeline_dot_lppb_dot_v1_dot_lppb__pb2.GetLogicalPipelineRequest.FromString,
                     response_serializer=src_dot_controlplane_dot_logicalpipeline_dot_lppb_dot_v1_dot_lppb__pb2.GetLogicalPipelineResponse.SerializeToString,
+            ),
+            'CreateLogicalPipeline': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateLogicalPipeline,
+                    request_deserializer=src_dot_controlplane_dot_logicalpipeline_dot_lppb_dot_v1_dot_lppb__pb2.CreateLogicalPipelineRequest.FromString,
+                    response_serializer=src_dot_controlplane_dot_logicalpipeline_dot_lppb_dot_v1_dot_lppb__pb2.CreateLogicalPipelineResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -95,5 +111,22 @@ class LogicalPipelineService(object):
         return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.logicalpipeline.v1.LogicalPipelineService/GetLogicalPipeline',
             src_dot_controlplane_dot_logicalpipeline_dot_lppb_dot_v1_dot_lppb__pb2.GetLogicalPipelineRequest.SerializeToString,
             src_dot_controlplane_dot_logicalpipeline_dot_lppb_dot_v1_dot_lppb__pb2.GetLogicalPipelineResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def CreateLogicalPipeline(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.logicalpipeline.v1.LogicalPipelineService/CreateLogicalPipeline',
+            src_dot_controlplane_dot_logicalpipeline_dot_lppb_dot_v1_dot_lppb__pb2.CreateLogicalPipelineRequest.SerializeToString,
+            src_dot_controlplane_dot_logicalpipeline_dot_lppb_dot_v1_dot_lppb__pb2.CreateLogicalPipelineResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

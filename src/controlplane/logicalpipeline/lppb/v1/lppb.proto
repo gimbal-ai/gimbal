@@ -48,8 +48,22 @@ message GetLogicalPipelineResponse {
   LogicalPipelineInfo pipeline_info = 2;
 }
 
+message CreateLogicalPipelineRequest {
+  // The orgID of the org to create a logical pipeline in.
+  gml.types.UUID org_id = 1 [ (gogoproto.customname) = "OrgID" ];
+  // The name of the logical pipeline.
+  string name = 2;
+  // The pipeline spec.
+  gml.internal.api.core.v1.Pipeline pipeline = 3;
+}
+
+message CreateLogicalPipelineResponse {
+  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
+}
+
 // LogicalPipelineService manages the registry of pipelines available to deploy.
 service LogicalPipelineService {
   rpc ListLogicalPipelines(ListLogicalPipelinesRequest) returns (ListLogicalPipelinesResponse);
   rpc GetLogicalPipeline(GetLogicalPipelineRequest) returns (GetLogicalPipelineResponse);
+  rpc CreateLogicalPipeline(CreateLogicalPipelineRequest) returns (CreateLogicalPipelineResponse);
 }
