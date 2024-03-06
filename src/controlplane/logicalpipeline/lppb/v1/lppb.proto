@@ -30,7 +30,10 @@ message LogicalPipelineInfo {
   string name = 2 [ (gogoproto.moretags) = 'db:"name"' ];
 }
 
-message ListLogicalPipelinesRequest {}
+message ListLogicalPipelinesRequest {
+  // The orgID of the org to get logical pipelines from.
+  gml.types.UUID org_id = 1 [ (gogoproto.customname) = "OrgID" ];
+}
 
 message ListLogicalPipelinesResponse {
   repeated LogicalPipelineInfo pipelines = 1;
