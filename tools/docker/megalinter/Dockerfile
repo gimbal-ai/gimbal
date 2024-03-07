@@ -15,7 +15,7 @@
 
 FROM docker.io/oxsecurity/megalinter-cupcake:v7@sha256:1b52d3cafa9151c93dc5289fdca58b68d016bc4e9cf43a47c046d25b0ae069a6
 
-COPY .tflint.hcl $HOME/.tflint.hcl
+COPY .tflint.hcl /.tflint.hcl
 
 RUN apk add clang-extra-tools g++ && \
     go install github.com/bazelbuild/buildtools/buildifier@v0.0.0-20230926111657-7d855c59baeb  && \
