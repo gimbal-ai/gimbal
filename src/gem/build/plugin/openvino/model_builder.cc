@@ -23,6 +23,7 @@
 
 #include "src/common/base/error.h"
 #include "src/common/uuid/uuid.h"
+#include "src/gem/exec/plugin/openvino/core_singleton.h"
 #include "src/gem/exec/plugin/openvino/model.h"
 #include "src/gem/storage/blob_store.h"
 
@@ -36,7 +37,7 @@ StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobSt
   GML_ASSIGN_OR_RETURN(auto onnx_path,
                        store->FilePath(ParseUUID(spec.onnx_file().file_id()).str()));
 
-  ov::Core core;
+  auto& core = exec::openvino::OpenVinoCoreGetInstance();
 
   try {
     // For now explicitly select between GPU and CPU based on availability.

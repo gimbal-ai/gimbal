@@ -22,8 +22,9 @@ package(default_visibility = [
 
 gem_plugin_cc_library(
     name = "cc_library",
-    srcs = [
+    hdrs = [
         "context.h",
+        "core_singleton.h",
         "model.h",
     ],
     plugin_name = "openvino",
