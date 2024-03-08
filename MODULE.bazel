@@ -110,6 +110,7 @@ use_repo(
     "com_github_mikefarah_yq_v4",
     "com_github_nats_io_nats_go",
     "com_github_nats_io_nats_server_v2",
+    "com_github_olekukonko_tablewriter",
     "com_github_ory_dockertest_v3",
     "com_github_phayes_freeport",
     "com_github_prometheus_client_golang",
