@@ -23,6 +23,7 @@
 
 #include "src/api/corepb/v1/cp_edge.pb.h"
 #include "src/common/event/timer.h"
+#include "src/common/metrics/metrics_system.h"
 #include "src/controlplane/egw/egwpb/v1/egwpb.grpc.pb.h"
 #include "src/gem/controller/controller.h"
 #include "src/gem/exec/core/control_context.h"
@@ -50,6 +51,8 @@ class MetricsHandler : public MessageHandler {
 
   event::TimerUPtr collect_timer_ = nullptr;
   exec::core::ControlExecutionContext* ctrl_exec_ctx_;
+
+  std::vector<std::unique_ptr<metrics::Scrapeable>> metrics_scrapers_;
 };
 
 }  // namespace gml::gem::controller

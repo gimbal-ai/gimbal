@@ -29,6 +29,7 @@
 #include "src/gem/controller/controller.h"
 #include "src/gem/controller/grpc_bridge.h"
 #include "src/gem/exec/core/control_context.h"
+#include "src/gem/plugins/registry.h"
 
 DEFINE_int64(metrics_chunk_size_bytes,
              gflags::Int64FromEnv("GML_METRICS_CHUNK_SIZE", 1024UL * 512UL),
@@ -68,6 +69,13 @@ Status MetricsHandler::CollectAndPushMetrics() {
 }
 
 Status MetricsHandler::Init() {
+  auto& plugin_registry = plugins::Registry::GetInstance();
+  auto& metrics_system = gml::metrics::MetricsSystem::GetInstance();
+  for (const auto& scraper_name : plugin_registry.RegisteredMetricsScrapers()) {
+    GML_ASSIGN_OR_RETURN(auto scraper,
+                         plugin_registry.BuildMetricsScraper(scraper_name, &metrics_system));
+    metrics_scrapers_.push_back(std::move(scraper));
+  }
   collect_timer_ = dispatcher()->CreateTimer([this]() {
     VLOG(1) << "Collecting GEM metrics";
     auto s = CollectAndPushMetrics();

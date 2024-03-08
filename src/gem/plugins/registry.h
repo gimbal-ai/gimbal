@@ -21,11 +21,13 @@
 
 #include "src/api/corepb/v1/model_exec.pb.h"
 #include "src/common/base/base.h"
+#include "src/common/metrics/metrics_system.h"
 #include "src/gem/build/core/execution_context_builder.h"
 #include "src/gem/build/core/model_builder.h"
 #include "src/gem/capabilities/core/capability_lister_builder.h"
 #include "src/gem/exec/core/context.h"
 #include "src/gem/exec/core/model.h"
+#include "src/gem/metrics/core/scraper_builder.h"
 #include "src/gem/storage/blob_store.h"
 
 namespace gml::gem::plugins {
@@ -92,6 +94,11 @@ class Registry {
     capability_lister_builders_.RegisterOrDie<T>(name);
   }
 
+  template <typename T>
+  void RegisterMetricsScraperOrDie(std::string_view name) {
+    metrics_scraper_builders_.RegisterOrDie<T>(name);
+  }
+
   StatusOr<std::unique_ptr<exec::core::ExecutionContext>> BuildExecutionContext(
       std::string_view name, exec::core::Model* model) {
     return exec_ctx_builders_.Build(name, model);
@@ -108,8 +115,17 @@ class Registry {
     return capability_lister_builders_.Build(name);
   }
 
+  StatusOr<std::unique_ptr<metrics::core::Scraper>> BuildMetricsScraper(
+      std::string_view name, gml::metrics::MetricsSystem* metrics_system) {
+    return metrics_scraper_builders_.Build(name, metrics_system);
+  }
+
   std::vector<std::string> RegisteredCapabilityListers() {
     return capability_lister_builders_.ListRegistered();
+  }
+
+  std::vector<std::string> RegisteredMetricsScrapers() {
+    return metrics_scraper_builders_.ListRegistered();
   }
 
  private:
@@ -121,6 +137,10 @@ class Registry {
       model_builders_;
   BuilderRegistry<capabilities::core::CapabilityListerBuilder, capabilities::core::CapabilityLister>
       capability_lister_builders_;
+
+  BuilderRegistry<metrics::core::ScraperBuilder, metrics::core::Scraper,
+                  gml::metrics::MetricsSystem*>
+      metrics_scraper_builders_;
 };
 
 #define GML_REGISTER_PLUGIN(reg_func)                        \

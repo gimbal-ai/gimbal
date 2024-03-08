@@ -13,39 +13,19 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-load("//bazel:gml_build_system.bzl", "gml_cc_library", "gml_cc_test")
-load("//src/gem/plugins:plugins.bzl", "plugin_settings")
+load("//bazel:gml_build_system.bzl", "gml_cc_library")
 
 package(default_visibility = [
-    "//src:__subpackages__",
     "//src/experimental:__subpackages__",
+    "//src/gem:__subpackages__",
 ])
-
-plugin_settings()
 
 gml_cc_library(
     name = "cc_library",
-    srcs = [
-        "registry.cc",
-    ],
     hdrs = [
-        "registry.h",
+        "scraper_builder.h",
     ],
     deps = [
-        "//src/api/corepb/v1:corepb_cc_library",
         "//src/common/metrics:cc_library",
-        "//src/gem/build/core:cc_library",
-        "//src/gem/capabilities/core:cc_library",
-        "//src/gem/exec/core:cc_library",
-        "//src/gem/metrics/core:cc_library",
-        "//src/gem/storage:cc_library",
-    ],
-)
-
-gml_cc_test(
-    name = "registry_test",
-    srcs = ["registry_test.cc"],
-    deps = [
-        ":cc_library",
     ],
 )

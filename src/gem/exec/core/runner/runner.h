@@ -32,7 +32,7 @@ namespace gml::gem::exec::core {
 /**
  * Runner executes an ExecutionSpec until stopped.
  */
-class Runner : public metrics::AuxMetricsProvider {
+class Runner : public gml::metrics::AuxMetricsProvider {
  public:
   explicit Runner(::gml::internal::api::core::v1::ExecutionSpec spec) : spec_(std::move(spec)) {
     // Record the start time. This is used for metrics.
