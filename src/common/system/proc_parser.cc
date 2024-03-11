@@ -901,4 +901,23 @@ std::vector<pid_t> ProcParser::ListChildPIDsForPGID(pid_t pid) {
   return pids;
 }
 
+Status ProcParser::ParseProcPIDFDInfo(std::string_view pid, std::vector<FDInfo>* out) {
+  const auto fdinfo_path = ProcPath(pid, "fdinfo");
+
+  for (const auto& p : std::filesystem::directory_iterator(fdinfo_path)) {
+    FDInfo fdinfo = {};
+    if (!absl::SimpleAtoi(p.path().filename().string(), &fdinfo.fd)) {
+      continue;
+    }
+    std::ifstream ifs;
+    ifs.open(p.path());
+    if (!ifs) {
+      continue;
+    }
+    GML_RETURN_IF_ERROR(ParseFDInfo(&ifs, &fdinfo));
+    out->emplace_back(std::move(fdinfo));
+  }
+  return Status::OK();
+}
+
 }  // namespace gml::system

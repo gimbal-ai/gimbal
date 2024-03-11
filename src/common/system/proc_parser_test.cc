@@ -28,6 +28,7 @@
 
 #include "src/common/bazel/runfiles.h"
 #include "src/common/fs/fs_wrapper.h"
+#include "src/common/system/fdinfo.h"
 #include "src/common/system/proc_pid_path.h"
 #include "src/common/testing/test_environment.h"
 #include "src/common/testing/testing.h"
@@ -411,6 +412,72 @@ TEST(ProcParserGetExePathTest, CheckTestProcess) {
   const std::string kExpectedPathRegex = ".*/src/common/system/proc_parser_test";
   ASSERT_OK_AND_ASSIGN(std::filesystem::path proc_exe, parser.GetExePath(getpid()));
   EXPECT_THAT(proc_exe.string(), MatchesRegex(kExpectedPathRegex));
+}
+
+TEST_F(ProcParserTest, ParseProcPIDFDInfo) {
+  GML_SET_FOR_SCOPE(FLAGS_proc_path, GetPathToTestDataFile("testdata/proc"));
+
+  std::vector<FDInfo> fdinfos;
+  ASSERT_OK(parser_->ParseProcPIDFDInfo("1", &fdinfos));
+  EXPECT_THAT(
+      fdinfos,
+      ::testing::UnorderedElementsAre(
+          ::testing::AllOf(::testing::Field(&FDInfo::fd, 0), ::testing::Field(&FDInfo::pos, 0),
+                           ::testing::Field(&FDInfo::flags, 2004000),
+                           ::testing::Field(&FDInfo::mnt_id, 14),
+                           ::testing::Field(&FDInfo::inode, 4040260)),
+          ::testing::AllOf(
+              ::testing::Field(&FDInfo::fd, 1), ::testing::Field(&FDInfo::pos, 0),
+              ::testing::Field(&FDInfo::flags, 2100002), ::testing::Field(&FDInfo::mnt_id, 763),
+              ::testing::Field(&FDInfo::inode, 53),
+              ::testing::Field(
+                  &FDInfo::ext,
+                  ::testing::Property(
+                      &std::unique_ptr<FDInfoExtension>::get,
+                      ::testing::WhenDynamicCastTo<DRMFDInfo*>(::testing::AllOf(
+                          ::testing::Property(&DRMFDInfo::driver, "i915"),
+                          ::testing::Property(&DRMFDInfo::pdev, "0000:00:02.0"),
+                          ::testing::Property(&DRMFDInfo::client_id, 116),
+                          ::testing::Property(&DRMFDInfo::engines,
+                                              ::testing::UnorderedElementsAreArray(
+                                                  std::vector<absl::flat_hash_map<
+                                                      std::string, DRMFDInfo::Engine>::value_type>{
+                                                      {
+                                                          "render",
+                                                          DRMFDInfo::Engine{
+                                                              .busy_ns = 23144220094,
+                                                              .capacity = 1,
+                                                          },
+                                                      },
+                                                      {
+                                                          "copy",
+                                                          DRMFDInfo::Engine{
+                                                              .busy_ns = 0,
+                                                              .capacity = 1,
+                                                          },
+                                                      },
+                                                      {
+                                                          "video",
+                                                          DRMFDInfo::Engine{
+                                                              .busy_ns = 0,
+                                                              .capacity = 2,
+                                                          },
+                                                      },
+                                                      {
+                                                          "video-enhance",
+                                                          DRMFDInfo::Engine{
+                                                              .busy_ns = 0,
+                                                              .capacity = 1,
+                                                          },
+                                                      }}))))))),
+          ::testing::AllOf(::testing::Field(&FDInfo::fd, 2), ::testing::Field(&FDInfo::pos, 0),
+                           ::testing::Field(&FDInfo::flags, 2004002),
+                           ::testing::Field(&FDInfo::mnt_id, 15),
+                           ::testing::Field(&FDInfo::inode, 1053))));
+}
+
+bool operator==(const DRMFDInfo::Engine& a, const DRMFDInfo::Engine& b) {
+  return (a.busy_ns == b.busy_ns) && (a.capacity == b.capacity);
 }
 
 }  // namespace gml::system

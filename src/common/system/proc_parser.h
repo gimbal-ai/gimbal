@@ -32,6 +32,7 @@
 #include <absl/container/flat_hash_set.h>
 
 #include "src/common/base/base.h"
+#include "src/common/system/fdinfo.h"
 
 namespace gml::system {
 /*
@@ -407,6 +408,11 @@ class ProcParser {
                                                uint64_t vmem_start);
 
   std::vector<pid_t> ListChildPIDsForPGID(pid_t pid);
+
+  /**
+   * Parses /proc/<pid>/fdinfo/<fd>
+   */
+  Status ParseProcPIDFDInfo(std::string_view pid, std::vector<FDInfo>* out);
 
  private:
   static Status ParseNetworkStatIFaceData(const std::vector<std::string_view>& dev_stat_record,

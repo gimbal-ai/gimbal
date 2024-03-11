@@ -24,4 +24,5 @@
  * This library is system dependent and only works on Linux.
  */
 
+#include "src/common/system/fdinfo.h"       // IWYU pragma: export
 #include "src/common/system/proc_parser.h"  // IWYU pragma: export
