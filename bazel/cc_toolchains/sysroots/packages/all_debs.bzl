@@ -3843,14 +3843,14 @@ def deb_repos():
     )
     deb_archive_w_pkg_providers(
         name = "nvidia_cuda-toolkit-12-config-common_x86_64",
-        sha256 = "1473ec552f55dab6dc1b696d6932e7127081fc8f96cf87a2c2c12a699954f6d4",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/1473ec552f55dab6dc1b696d6932e7127081fc8f96cf87a2c2c12a699954f6d4.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-toolkit-12-config-common_12.3.101-1_all.deb"],
+        sha256 = "d349a2ab9e3eeab302115c2853c8da2638f7e67f7effdaa66036f18b5c887f0e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d349a2ab9e3eeab302115c2853c8da2638f7e67f7effdaa66036f18b5c887f0e.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-toolkit-12-config-common_12.4.99-1_all.deb"],
         deps = [],
     )
     deb_archive_w_pkg_providers(
         name = "nvidia_cuda-toolkit-config-common_x86_64",
-        sha256 = "80bc6cbce2a366ed5a5df16d4e50dec92412f1761d0323b2bfac80bdabd07a1c",
-        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/80bc6cbce2a366ed5a5df16d4e50dec92412f1761d0323b2bfac80bdabd07a1c.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-toolkit-config-common_12.3.101-1_all.deb"],
+        sha256 = "14ee356d719475e1f4bf2e68dacb6ab410fea54e65dd7e51c38ffee872b42f4e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/14ee356d719475e1f4bf2e68dacb6ab410fea54e65dd7e51c38ffee872b42f4e.deb", "https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/./cuda-toolkit-config-common_12.4.99-1_all.deb"],
         deps = [],
     )
     deb_archive_w_pkg_providers(

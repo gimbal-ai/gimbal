@@ -18,6 +18,7 @@ load("@bazel_skylib//rules:write_file.bzl", "write_file")
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_image_index", "oci_push", "oci_tarball")
 load("@rules_pkg//pkg:providers.bzl", "PackageFilegroupInfo", "PackageFilesInfo", "PackageSymlinkInfo")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
+load("//bazel:gml_build_system.bzl", "glibc2_36")
 load("//bazel:lib.bzl", "default_arg")
 load("//bazel:toolchain_transitions.bzl", "oci_image_arm64", "oci_image_x86_64")
 
@@ -66,10 +67,12 @@ def _gml_oci_image(name, multiarch = False, **kwargs):
 
     oci_image_x86_64(
         name = name + "_x86_64",
+        target_compatible_with = glibc2_36(),
         **x86_kwargs
     )
     oci_image_arm64(
         name = name + "_arm64",
+        target_compatible_with = glibc2_36(),
         **arm64_kwargs
     )
 

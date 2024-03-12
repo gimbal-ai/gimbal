@@ -25,6 +25,6 @@ namespace gml::gem::exec::tensorrt {
 
 using CUDATensorPool = core::TensorPool<CUDATensor>;
 
-using CUDATensorPtr = CUDATensorPool::PoolManagedPtr;
+using CUDATensorPtr = std::shared_ptr<CUDATensor>;
 
 }  // namespace gml::gem::exec::tensorrt

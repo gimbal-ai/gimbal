@@ -369,6 +369,12 @@ def _cuda_sysroot():
         "//conditions:default": ["@platforms//:incompatible"],
     })
 
+def _glibc2_36():
+    return select({
+        "@//bazel/cc_toolchains:libc_version_glibc2_36": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    })
+
 def gml_go_test(**kwargs):
     default_arg(kwargs, "linkmode", select({
         "@gml//bazel:no_pie": "auto",
@@ -396,3 +402,4 @@ no_sysroot = _no_sysroot
 jetson_sysroot = _jetson_sysroot
 intelgpu_sysroot = _intelgpu_sysroot
 cuda_sysroot = _cuda_sysroot
+glibc2_36 = _glibc2_36
