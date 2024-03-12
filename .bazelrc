@@ -96,6 +96,7 @@ common:intelgpu_sysroot --config=clang-libc++
 common:intelgpu_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
 common:intelgpu_sysroot --config=sysroot-base
 common:intelgpu_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=intelgpu
+common:intelgpu_sysroot --//src/gem/plugins:enable_intelgpu
 
 common:cuda_sysroot --config=clang-libc++
 common:cuda_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36

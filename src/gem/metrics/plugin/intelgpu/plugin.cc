@@ -15,20 +15,17 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#pragma once
+#include "src/gem/metrics/core/scraper_builder.h"
+#include "src/gem/metrics/plugin/intelgpu/intel_gpu_metrics.h"
+#include "src/gem/plugins/registry.h"
 
-#include <string_view>
+namespace gml::gem::metrics::intelgpu {
 
-namespace gml::gem::metrics::core {
+void RegisterPluginOrDie(plugins::Registry* plugin_registry) {
+  plugin_registry->RegisterMetricsScraperOrDie<core::DefaultScraperBuilder<IntelGPUMetrics>>(
+      "intelgpu");
+}
 
-/**
- * Any metric that can be produced by different plugins should keep the metric name here.
- */
+GML_REGISTER_PLUGIN(RegisterPluginOrDie);
 
-constexpr std::string_view kGPUMemoryGEMUsageGaugeName = "gml.gem.gpu.memory.usage.bytes";
-// Size of GPU memory per GPU device on the system.
-constexpr std::string_view kGPUMemorySystemSizeGaugeName = "gml.system.gpu.memory.size.bytes";
-
-constexpr std::string_view kGPUUtilizationSystemCounterName = "gml.system.gpu.seconds.total";
-
-}  // namespace gml::gem::metrics::core
+}  // namespace gml::gem::metrics::intelgpu

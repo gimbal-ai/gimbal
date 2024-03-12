@@ -369,6 +369,11 @@ REPOSITORY_LOCATIONS = dict(
         strip_prefix = "libedgetpu-release-grouper",
         urls = ["https://github.com/google-coral/libedgetpu/archive/refs/tags/release-grouper.tar.gz"],
     ),
+    com_github_oneapi_level_zero = dict(
+        sha256 = "f341dd6355d8da6ee9c29031642b8e8e4259f91c13c72d318c81663af048817e",
+        strip_prefix = "level-zero-1.16.1",
+        urls = ["https://github.com/oneapi-src/level-zero/archive/refs/tags/v1.16.1.tar.gz"],
+    ),
 )
 
 # To use a local repo for local development, simply add a `local_path` key to the relevant

@@ -208,6 +208,8 @@ def _cc_deps():
     # Coral/edge TPU repos.
     _bazel_repo("com_github_googlecoral_libedgetpu")
 
+    _bazel_repo("com_github_oneapi_level_zero", build_file = "//bazel/external:level_zero.BUILD")
+
 def _list_gml_deps(name):
     modules = dict()
     for _, repo_config in REPOSITORY_LOCATIONS.items():
