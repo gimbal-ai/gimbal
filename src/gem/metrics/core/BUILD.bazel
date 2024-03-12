@@ -24,6 +24,7 @@ gml_cc_library(
     name = "cc_library",
     hdrs = [
         "scraper_builder.h",
+        "shared_metric_names.h",
     ],
     deps = [
         "//src/common/metrics:cc_library",

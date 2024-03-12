@@ -17,10 +17,17 @@
 
 #pragma once
 
-#include <openvino/openvino.hpp>
+#include "src/common/metrics/metrics_system.h"
+#include "src/gem/metrics/core/scraper_builder.h"
 
-namespace gml::gem::exec::openvino {
+namespace gml::gem::metrics::openvino {
+class OpenVinoGPUMetrics : public core::Scraper {
+ public:
+  explicit OpenVinoGPUMetrics(gml::metrics::MetricsSystem* metrics_system);
 
-ov::Core& OpenVinoCoreGetInstance();
+  void Scrape() override;
 
-}  // namespace gml::gem::exec::openvino
+ private:
+  std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> gpu_mem_usage_gauge_;
+};
+}  // namespace gml::gem::metrics::openvino

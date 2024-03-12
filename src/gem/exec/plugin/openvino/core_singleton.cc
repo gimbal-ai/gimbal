@@ -15,12 +15,11 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#pragma once
-
-#include <openvino/openvino.hpp>
+#include "src/gem/exec/plugin/openvino/core_singleton.h"
 
 namespace gml::gem::exec::openvino {
-
-ov::Core& OpenVinoCoreGetInstance();
-
+ov::Core& OpenVinoCoreGetInstance() {
+  static ov::Core core;
+  return core;
+}
 }  // namespace gml::gem::exec::openvino

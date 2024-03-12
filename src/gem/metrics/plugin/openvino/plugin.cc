@@ -15,12 +15,19 @@
  * SPDX-License-Identifier: Proprietary
  */
 
-#pragma once
+#include "src/gem/metrics/core/scraper_builder.h"
+#include "src/gem/metrics/plugin/openvino/ov_gpu_metrics.h"
+#include "src/gem/plugins/registry.h"
 
-#include <openvino/openvino.hpp>
+namespace gml::gem::metrics::openvino {
 
-namespace gml::gem::exec::openvino {
+static constexpr std::string_view kPluginName = "openvino";
 
-ov::Core& OpenVinoCoreGetInstance();
+void RegisterPluginOrDie(plugins::Registry* plugin_registry) {
+  plugin_registry->RegisterMetricsScraperOrDie<core::DefaultScraperBuilder<OpenVinoGPUMetrics>>(
+      kPluginName);
+}
 
-}  // namespace gml::gem::exec::openvino
+GML_REGISTER_PLUGIN(RegisterPluginOrDie);
+
+}  // namespace gml::gem::metrics::openvino

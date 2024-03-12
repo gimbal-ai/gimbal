@@ -17,10 +17,14 @@
 
 #pragma once
 
-#include <openvino/openvino.hpp>
+#include <string_view>
 
-namespace gml::gem::exec::openvino {
+namespace gml::gem::metrics::core {
 
-ov::Core& OpenVinoCoreGetInstance();
+/**
+ * Any metric that can be produced by different plugins should keep the metric name here.
+ */
 
-}  // namespace gml::gem::exec::openvino
+constexpr std::string_view kGPUMemoryGEMUsageGaugeName = "gml.gem.gpu.memory.usage.bytes";
+
+}  // namespace gml::gem::metrics::core
