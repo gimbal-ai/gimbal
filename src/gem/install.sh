@@ -145,6 +145,8 @@ if [[ "$(device_type)" == "x86_64 Intel GPU" ]]; then
     "--device" "/dev/dri"
     # We need to add /usr/local/lib to the library search path.
     "--env" "LD_LIBRARY_PATH=/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/local/lib"
+    # We need privileged to collect system GPU metrics.
+    "--privileged"
   )
 fi
 
