@@ -80,6 +80,12 @@ PLUGINS = dict(
             "//src/gem/metrics/plugin/intelgpu:cc_library",
         ],
     ),
+    jetson = struct(
+        enabled_by_default = False,
+        libs = [
+            "//src/gem/metrics/plugin/jetson:cc_library",
+        ],
+    ),
 )
 
 def _plugin_enabled(plugin_name):

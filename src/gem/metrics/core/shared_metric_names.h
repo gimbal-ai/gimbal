@@ -28,6 +28,7 @@ namespace gml::gem::metrics::core {
 constexpr std::string_view kGPUMemoryGEMUsageGaugeName = "gml.gem.gpu.memory.usage.bytes";
 // Size of GPU memory per GPU device on the system.
 constexpr std::string_view kGPUMemorySystemSizeGaugeName = "gml.system.gpu.memory.size.bytes";
+constexpr std::string_view kGPUMemorySystemUsageGaugeName = "gml.system.gpu.memory.usage.bytes";
 
 constexpr std::string_view kGPUUtilizationSystemCounterName = "gml.system.gpu.seconds.total";
 constexpr std::string_view kGPUUtilizationGEMCounterName = "gml.gem.gpu.seconds.total";

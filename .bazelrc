@@ -82,14 +82,15 @@ test:aarch64_sysroot --test_timeout=180,600,1800,3600
 test:aarch64_sysroot --test_env=QEMU_STRACE
 test:aarch64_sysroot --test_tag_filters=-no_libcpp,-disabled
 
-build:jetson_sysroot --config=clang-libc++
-build:jetson_sysroot --//bazel/cc_toolchains:libc_version=glibc2_31
-build:jetson_sysroot --platforms=//bazel/cc_toolchains:linux-aarch64
-build:jetson_sysroot --//src/gem/plugins:enable_argus
-build:jetson_sysroot --//src/gem/plugins:enable_tensorrt
-build:jetson_sysroot --//src/gem/plugins:enable_openvino=false
-build:jetson_sysroot --config=sysroot-base
-build:jetson_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=jetson
+common:jetson_sysroot --config=clang-libc++
+common:jetson_sysroot --//bazel/cc_toolchains:libc_version=glibc2_31
+common:jetson_sysroot --platforms=//bazel/cc_toolchains:linux-aarch64
+common:jetson_sysroot --//src/gem/plugins:enable_argus
+common:jetson_sysroot --//src/gem/plugins:enable_tensorrt
+common:jetson_sysroot --//src/gem/plugins:enable_openvino=false
+common:jetson_sysroot --//src/gem/plugins:enable_jetson
+common:jetson_sysroot --config=sysroot-base
+common:jetson_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=jetson
 test:jetson_sysroot --test_env=LD_LIBRARY_PATH=/usr/lib/aarch64-linux-gnu/tegra
 
 common:intelgpu_sysroot --config=clang-libc++
