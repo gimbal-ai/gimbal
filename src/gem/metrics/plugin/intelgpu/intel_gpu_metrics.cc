@@ -30,6 +30,7 @@
 #include "src/common/base/byte_utils.h"
 #include "src/common/base/error.h"
 #include "src/common/metrics/metrics_system.h"
+#include "src/common/system/fdinfo.h"
 #include "src/gem/metrics/core/shared_metric_names.h"
 
 namespace gml::gem::metrics::intelgpu {
@@ -288,6 +289,16 @@ StatusOr<zes_engine_stats_t> GetEngineStats(zes_engine_handle_t engine) {
   return stats;
 }
 
+StatusOr<zes_pci_properties_t> GetDevicePCIProperties(zes_device_handle_t device) {
+  zes_pci_properties_t props = {};
+  props.stype = ZES_STRUCTURE_TYPE_PCI_PROPERTIES;
+  ze_result_t status = zesDevicePciGetProperties(device, &props);
+  if (status != ZE_RESULT_SUCCESS) {
+    return error::Internal("failed to get PCI properties: $0", ZEResultEnumName(status));
+  }
+  return props;
+}
+
 template <typename T>
 auto GetObservableResult(opentelemetry::metrics::ObserverResult& observer) {
   return std::get<std::shared_ptr<opentelemetry::metrics::ObserverResultT<T>>>(observer);
@@ -311,6 +322,21 @@ IntelGPUMetrics::IntelGPUMetrics(gml::metrics::MetricsSystem* metrics_system)
               static_cast<double>(metrics.system_counter_ns) / 1E9, {
                                                                         {"gpu_id", device_id},
                                                                     });
+        }
+      },
+      this);
+  gem_utilization_counter_ =
+      gml_meter->CreateDoubleObservableCounter(core::kGPUUtilizationGEMCounterName);
+  gem_utilization_counter_->AddCallback(
+      [](auto observer, void* parent) {
+        auto gpu_metrics = static_cast<IntelGPUMetrics*>(parent);
+        absl::base_internal::SpinLockHolder lock(&gpu_metrics->metrics_lock_);
+
+        for (const auto& [device_id, metrics] : gpu_metrics->device_metrics_) {
+          GetObservableResult<double>(observer)->Observe(
+              static_cast<double>(metrics.gem_counter_ns) / 1E9, {
+                                                                     {"gpu_id", device_id},
+                                                                 });
         }
       },
       this);
@@ -388,6 +414,8 @@ Status IntelGPUMetrics::ScrapeWithError() {
                                       {});
   }
 
+  absl::flat_hash_map<std::string, std::string> pci_addr_to_device_id;
+
   // From each sysman handle, we get the device's active time across all processes.
   for (auto [device_id, device] : sysman_devices) {
     GML_ASSIGN_OR_RETURN(auto engines, GetDeviceEngines(device));
@@ -423,12 +451,45 @@ Status IntelGPUMetrics::ScrapeWithError() {
         // are microseconds, but we might need to try it out on a larger variety of hardware to make
         // sure.
         .system_counter_ns = 1000 * stats.activeTime,
+        .gem_counter_ns = 0,
     };
+
+    // Get the PCI bus address for the device so that we can map fdinfo statistics to the device id
+    // from level zero.
+    GML_ASSIGN_OR_RETURN(auto pci_props, GetDevicePCIProperties(device));
+    auto pci_addr =
+        absl::StrFormat("%04d:%02d:%02d.%01d", pci_props.address.domain, pci_props.address.bus,
+                        pci_props.address.device, pci_props.address.function);
+    pci_addr_to_device_id.emplace(pci_addr, device_id_str);
+  }
+
+  std::vector<system::FDInfo> fdinfos;
+  GML_RETURN_IF_ERROR(proc_parser_.ParseProcPIDFDInfo("self", &fdinfos));
+
+  for (const auto& fdinfo : fdinfos) {
+    if (!fdinfo.ext || fdinfo.ext->Type() != system::FDInfoExtension::FDINFO_TYPE_DRM) {
+      continue;
+    }
+
+    const auto* drm_info = static_cast<system::DRMFDInfo*>(fdinfo.ext.get());
+
+    auto it = pci_addr_to_device_id.find(drm_info->pdev());
+    if (it == pci_addr_to_device_id.end()) {
+      continue;
+    }
+    auto device_id = it->second;
+
+    // TODO(james): check if discrete graphics cards also report usage under the "render" engine.
+    if (!drm_info->engines().contains("render")) {
+      continue;
+    }
+    // Add the active time across all open file descriptors with the same PCI address.
+    device_metrics_[device_id].gem_counter_ns += drm_info->engines().find("render")->second.busy_ns;
   }
 
   for (const auto& [device_id, metrics] : device_metrics_) {
-    VLOG(1) << absl::Substitute("Device $0: Engine active for $1.", device_id,
-                                metrics.system_counter_ns);
+    VLOG(1) << absl::Substitute("Device $0: Engine active for $1. GEM active for $2", device_id,
+                                metrics.system_counter_ns, metrics.gem_counter_ns);
   }
 
   return Status::OK();

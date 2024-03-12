@@ -21,12 +21,14 @@
 #include <absl/container/flat_hash_map.h>
 #include <opentelemetry/sdk/metrics/sync_instruments.h>
 
+#include "src/common/system/proc_parser.h"
 #include "src/gem/metrics/core/scraper_builder.h"
 
 namespace gml::gem::metrics::intelgpu {
 
 struct DeviceMetrics {
   uint64_t system_counter_ns;
+  uint64_t gem_counter_ns;
 };
 
 class IntelGPUMetrics : public core::Scraper {
@@ -39,10 +41,13 @@ class IntelGPUMetrics : public core::Scraper {
  private:
   std::shared_ptr<opentelemetry::metrics::ObservableInstrument> system_utilization_counter_;
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> system_memory_size_gauge_;
+  std::shared_ptr<opentelemetry::metrics::ObservableInstrument> gem_utilization_counter_;
 
   absl::base_internal::SpinLock metrics_lock_;
   absl::flat_hash_map<std::string, DeviceMetrics> device_metrics_ ABSL_GUARDED_BY(metrics_lock_);
   std::chrono::steady_clock::time_point start_time_;
+
+  gml::system::ProcParser proc_parser_;
 
   Status ScrapeWithError();
 };

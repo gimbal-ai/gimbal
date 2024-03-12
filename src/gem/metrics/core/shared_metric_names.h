@@ -30,5 +30,6 @@ constexpr std::string_view kGPUMemoryGEMUsageGaugeName = "gml.gem.gpu.memory.usa
 constexpr std::string_view kGPUMemorySystemSizeGaugeName = "gml.system.gpu.memory.size.bytes";
 
 constexpr std::string_view kGPUUtilizationSystemCounterName = "gml.system.gpu.seconds.total";
+constexpr std::string_view kGPUUtilizationGEMCounterName = "gml.gem.gpu.seconds.total";
 
 }  // namespace gml::gem::metrics::core
