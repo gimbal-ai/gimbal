@@ -150,6 +150,13 @@ enum DeviceStatus {
   DEVICE_STATUS_DISCONNECTED = 3;
 }
 
+message OS {
+  // The name of the OS.
+  string name = 1;
+  // The version of the OS.
+  string version = 2;
+}
+
 message DeviceInfo {
   // The ID of the device. Not filled in for create requests.
   gml.types.UUID id = 1 [ (gogoproto.customname) = "ID", (gogoproto.moretags) = 'db:"id"' ];
@@ -170,6 +177,7 @@ message DeviceInfo {
   gml.internal.api.core.v1.DeviceCapabilities capabilities = 8;
   // A map of the tags associated with the device in the <key, Tag> format.
   map<string, Tag> tags = 9;
+  OS os = 10 [ (gogoproto.customname) = "OS" ];
 
   reserved 7;
 }
