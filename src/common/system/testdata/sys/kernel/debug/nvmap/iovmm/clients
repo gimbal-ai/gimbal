@@ -1,0 +1,6 @@
+CLIENT                        PROCESS      PID        SIZE
+user                              gem     4481     118372K
+user                      gnome-shell     2831       5384K
+user                             Xorg     1731      18140K
+user                   nvargus-daemon     1012          0K
+total                                              141896K

@@ -36,6 +36,8 @@ gml_cc_library(
         "mac_address.h",
         "memory_mapped_file.cc",
         "memory_mapped_file.h",
+        "nvmap.cc",
+        "nvmap.h",
         "parsers.cc",
         "parsers.h",
         "proc_parser.cc",
@@ -100,5 +102,14 @@ gml_cc_test(
     deps = [
         ":cc_library",
         "//src/common/fs:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "nvmap_test",
+    srcs = ["nvmap_test.cc"],
+    data = ["//src/common/system/testdata:sys_fs"],
+    deps = [
+        ":cc_library",
     ],
 )
