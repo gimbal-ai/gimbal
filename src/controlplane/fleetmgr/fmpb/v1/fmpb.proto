@@ -189,6 +189,7 @@ message RegisterRequest {
   string device_serial = 1;
   // The hostname of the device.
   string hostname = 2;
+  OS os = 3 [ (gogoproto.customname) = "OS" ];
   // TODO(zasgar): Pass the device's public key here so that we can encrypt the request.
 }
 
