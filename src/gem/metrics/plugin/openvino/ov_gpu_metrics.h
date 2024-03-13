@@ -17,13 +17,15 @@
 
 #pragma once
 
+#include "src/common/event/dispatcher.h"
 #include "src/common/metrics/metrics_system.h"
 #include "src/gem/metrics/core/scraper_builder.h"
 
 namespace gml::gem::metrics::openvino {
 class OpenVinoGPUMetrics : public core::Scraper {
  public:
-  explicit OpenVinoGPUMetrics(gml::metrics::MetricsSystem* metrics_system);
+  explicit OpenVinoGPUMetrics(gml::metrics::MetricsSystem* metrics_system,
+                              gml::event::Dispatcher* dispatcher);
 
   void Scrape() override;
 

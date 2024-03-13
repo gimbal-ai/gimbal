@@ -21,6 +21,7 @@
 
 #include "src/api/corepb/v1/model_exec.pb.h"
 #include "src/common/base/base.h"
+#include "src/common/event/dispatcher.h"
 #include "src/common/metrics/metrics_system.h"
 #include "src/gem/build/core/execution_context_builder.h"
 #include "src/gem/build/core/model_builder.h"
@@ -116,8 +117,9 @@ class Registry {
   }
 
   StatusOr<std::unique_ptr<metrics::core::Scraper>> BuildMetricsScraper(
-      std::string_view name, gml::metrics::MetricsSystem* metrics_system) {
-    return metrics_scraper_builders_.Build(name, metrics_system);
+      std::string_view name, gml::metrics::MetricsSystem* metrics_system,
+      gml::event::Dispatcher* dispatcher) {
+    return metrics_scraper_builders_.Build(name, metrics_system, dispatcher);
   }
 
   std::vector<std::string> RegisteredCapabilityListers() {
@@ -139,7 +141,7 @@ class Registry {
       capability_lister_builders_;
 
   BuilderRegistry<metrics::core::ScraperBuilder, metrics::core::Scraper,
-                  gml::metrics::MetricsSystem*>
+                  gml::metrics::MetricsSystem*, gml::event::Dispatcher*>
       metrics_scraper_builders_;
 };
 

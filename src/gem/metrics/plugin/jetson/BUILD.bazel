@@ -29,6 +29,7 @@ gem_plugin_cc_library(
     ],
     plugin_name = "jetson",
     deps = [
+        "//src/common/event:cc_library",
         "//src/common/metrics:cc_library",
         "//src/gem/metrics/core:cc_library",
         "//src/gem/plugins:cc_library",

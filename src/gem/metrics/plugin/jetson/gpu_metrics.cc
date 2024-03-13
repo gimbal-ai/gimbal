@@ -17,6 +17,7 @@
 
 #include "src/gem/metrics/plugin/jetson/gpu_metrics.h"
 
+#include "src/common/event/dispatcher.h"
 #include "src/common/metrics/metrics_system.h"
 #include "src/common/system/nvmap.h"
 #include "src/common/system/proc_parser.h"
@@ -25,13 +26,17 @@
 
 namespace gml::gem::metrics::jetson {
 
-JetsonGPUMetrics::JetsonGPUMetrics(gml::metrics::MetricsSystem* metrics_system)
-    : core::Scraper(metrics_system) {
+JetsonGPUMetrics::JetsonGPUMetrics(gml::metrics::MetricsSystem* metrics_system,
+                                   gml::event::Dispatcher* dispatcher)
+    : core::Scraper(metrics_system), dispatcher_(dispatcher) {
   auto gml_meter = metrics_system_->GetMeterProvider()->GetMeter("gml");
 
   system_memory_size_gauge_ = gml_meter->CreateInt64Gauge(core::kGPUMemorySystemSizeGaugeName);
   system_memory_usage_gauge_ = gml_meter->CreateInt64Gauge(core::kGPUMemorySystemUsageGaugeName);
   gem_memory_usage_gauge_ = gml_meter->CreateInt64Gauge(core::kGPUMemoryGEMUsageGaugeName);
+
+  // TODO(james): use the dispatcher to start a timer to poll for GPU utilization.
+  GML_UNUSED(dispatcher_);
 }
 
 void JetsonGPUMetrics::Scrape() {

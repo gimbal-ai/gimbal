@@ -19,6 +19,7 @@
 
 #include <opentelemetry/metrics/sync_instruments.h>
 
+#include "src/common/event/dispatcher.h"
 #include "src/common/metrics/metrics_system.h"
 #include "src/common/system/proc_parser.h"
 #include "src/gem/metrics/core/scraper_builder.h"
@@ -28,11 +29,12 @@ class JetsonGPUMetrics : public core::Scraper {
  public:
   ~JetsonGPUMetrics() override = default;
   JetsonGPUMetrics() = delete;
-  explicit JetsonGPUMetrics(gml::metrics::MetricsSystem* metrics_system);
+  JetsonGPUMetrics(gml::metrics::MetricsSystem* metrics_system, gml::event::Dispatcher* dispatcher);
 
   void Scrape() override;
 
  private:
+  gml::event::Dispatcher* dispatcher_;
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> system_memory_size_gauge_;
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> system_memory_usage_gauge_;
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> gem_memory_usage_gauge_;

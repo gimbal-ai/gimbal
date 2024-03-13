@@ -29,6 +29,7 @@
 
 #include "src/common/base/byte_utils.h"
 #include "src/common/base/error.h"
+#include "src/common/event/dispatcher.h"
 #include "src/common/metrics/metrics_system.h"
 #include "src/common/system/fdinfo.h"
 #include "src/gem/metrics/core/shared_metric_names.h"
@@ -306,7 +307,8 @@ auto GetObservableResult(opentelemetry::metrics::ObserverResult& observer) {
 
 }  // namespace
 
-IntelGPUMetrics::IntelGPUMetrics(gml::metrics::MetricsSystem* metrics_system)
+IntelGPUMetrics::IntelGPUMetrics(gml::metrics::MetricsSystem* metrics_system,
+                                 gml::event::Dispatcher*)
     : core::Scraper(metrics_system) {
   auto gml_meter = metrics_system_->GetMeterProvider()->GetMeter("gml");
 

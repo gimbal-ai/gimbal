@@ -72,8 +72,8 @@ Status MetricsHandler::Init() {
   auto& plugin_registry = plugins::Registry::GetInstance();
   auto& metrics_system = gml::metrics::MetricsSystem::GetInstance();
   for (const auto& scraper_name : plugin_registry.RegisteredMetricsScrapers()) {
-    GML_ASSIGN_OR_RETURN(auto scraper,
-                         plugin_registry.BuildMetricsScraper(scraper_name, &metrics_system));
+    GML_ASSIGN_OR_RETURN(auto scraper, plugin_registry.BuildMetricsScraper(
+                                           scraper_name, &metrics_system, dispatcher()));
     metrics_scrapers_.push_back(std::move(scraper));
   }
   collect_timer_ = dispatcher()->CreateTimer([this]() {

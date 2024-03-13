@@ -21,6 +21,7 @@
 #include <absl/container/flat_hash_map.h>
 #include <opentelemetry/sdk/metrics/sync_instruments.h>
 
+#include "src/common/event/dispatcher.h"
 #include "src/common/system/proc_parser.h"
 #include "src/gem/metrics/core/scraper_builder.h"
 
@@ -34,7 +35,7 @@ struct DeviceMetrics {
 class IntelGPUMetrics : public core::Scraper {
  public:
   IntelGPUMetrics() = delete;
-  explicit IntelGPUMetrics(::gml::metrics::MetricsSystem* metrics_system);
+  IntelGPUMetrics(::gml::metrics::MetricsSystem* metrics_system, gml::event::Dispatcher*);
 
   void Scrape() override;
 

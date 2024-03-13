@@ -18,6 +18,7 @@
 #pragma once
 
 #include "src/common/base/base.h"
+#include "src/common/event/dispatcher.h"
 #include "src/common/metrics/metrics_system.h"
 
 namespace gml::gem::metrics::core {
@@ -30,7 +31,8 @@ using Scraper = gml::metrics::Scrapeable;
 class ScraperBuilder {
  public:
   virtual ~ScraperBuilder() = default;
-  virtual StatusOr<std::unique_ptr<Scraper>> Build(gml::metrics::MetricsSystem*) = 0;
+  virtual StatusOr<std::unique_ptr<Scraper>> Build(gml::metrics::MetricsSystem*,
+                                                   gml::event::Dispatcher* dispatcher) = 0;
 };
 
 /**
@@ -42,23 +44,27 @@ class DefaultScraperBuilder : public ScraperBuilder {
  public:
   ~DefaultScraperBuilder() override = default;
 
-  StatusOr<std::unique_ptr<Scraper>> Build(gml::metrics::MetricsSystem* metrics_system) override {
-    return BuildInternal(metrics_system);
+  StatusOr<std::unique_ptr<Scraper>> Build(gml::metrics::MetricsSystem* metrics_system,
+                                           gml::event::Dispatcher* dispatcher) override {
+    return BuildInternal(metrics_system, dispatcher);
   }
 
  private:
   template <typename Q = TScraper,
-            std::enable_if_t<std::is_constructible_v<Q, gml::metrics::MetricsSystem*>>* = nullptr>
-  StatusOr<std::unique_ptr<Scraper>> BuildInternal(gml::metrics::MetricsSystem* metrics_system) {
-    return std::unique_ptr<Scraper>(new Q(metrics_system));
+            std::enable_if_t<std::is_constructible_v<Q, gml::metrics::MetricsSystem*,
+                                                     gml::event::Dispatcher*>>* = nullptr>
+  StatusOr<std::unique_ptr<Scraper>> BuildInternal(gml::metrics::MetricsSystem* metrics_system,
+                                                   gml::event::Dispatcher* dispatcher) {
+    return std::unique_ptr<Scraper>(new Q(metrics_system, dispatcher));
   }
 
   template <typename Q = TScraper,
-            std::enable_if_t<!std::is_constructible_v<Q, gml::metrics::MetricsSystem*>>* = nullptr>
+            std::enable_if_t<!std::is_constructible_v<Q, gml::metrics::MetricsSystem*,
+                                                      gml::event::Dispatcher*>>* = nullptr>
   StatusOr<std::unique_ptr<Scraper>> BuildInternal() {
     static_assert(sizeof(Q) == 0,
-                  "Scraper must have a single argument constructor with "
-                  "gml::metrics::MetricsSystem* as the argument");
+                  "Scraper must have constructor with "
+                  "gml::metrics::MetricsSystem* and gml::event::Dispatcher* as arguments");
     return Status();
   }
 };

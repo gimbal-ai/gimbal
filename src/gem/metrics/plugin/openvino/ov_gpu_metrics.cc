@@ -19,6 +19,7 @@
 
 #include <openvino/runtime/intel_gpu/properties.hpp>
 
+#include "src/common/event/dispatcher.h"
 #include "src/common/metrics/metrics_system.h"
 #include "src/gem/exec/plugin/openvino/core_singleton.h"
 #include "src/gem/metrics/core/scraper_builder.h"
@@ -26,7 +27,8 @@
 
 namespace gml::gem::metrics::openvino {
 
-OpenVinoGPUMetrics::OpenVinoGPUMetrics(gml::metrics::MetricsSystem* metrics_system)
+OpenVinoGPUMetrics::OpenVinoGPUMetrics(gml::metrics::MetricsSystem* metrics_system,
+                                       gml::event::Dispatcher*)
     : core::Scraper(metrics_system) {
   auto gml_meter = metrics_system_->GetMeterProvider()->GetMeter("gml");
 

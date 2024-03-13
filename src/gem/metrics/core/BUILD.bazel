@@ -27,6 +27,7 @@ gml_cc_library(
         "shared_metric_names.h",
     ],
     deps = [
+        "//src/common/event:cc_library",
         "//src/common/metrics:cc_library",
     ],
 )

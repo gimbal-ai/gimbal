@@ -33,6 +33,7 @@ gml_cc_library(
     ],
     deps = [
         "//src/api/corepb/v1:corepb_cc_library",
+        "//src/common/event:cc_library",
         "//src/common/metrics:cc_library",
         "//src/gem/build/core:cc_library",
         "//src/gem/capabilities/core:cc_library",
