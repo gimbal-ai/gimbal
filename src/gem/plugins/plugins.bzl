@@ -73,6 +73,7 @@ PLUGINS = dict(
             "//src/gem/calculators/subgraphs:product_model_openvino_subgraph",
             "//src/gem/calculators/subgraphs:classify_roi_openvino_subgraph",
             "//src/gem/capabilities/plugin/openvino:cc_library",
+            "//src/gem/metrics/plugin/openvino:cc_library",
         ],
     ),
     intelgpu = struct(
