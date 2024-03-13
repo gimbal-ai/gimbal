@@ -17,9 +17,13 @@
 
 #pragma once
 
+#include <chrono>
+#include <fstream>
+
 #include <opentelemetry/metrics/sync_instruments.h>
 
 #include "src/common/event/dispatcher.h"
+#include "src/common/event/timer.h"
 #include "src/common/metrics/metrics_system.h"
 #include "src/common/system/proc_parser.h"
 #include "src/gem/metrics/core/scraper_builder.h"
@@ -38,9 +42,19 @@ class JetsonGPUMetrics : public core::Scraper {
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> system_memory_size_gauge_;
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> system_memory_usage_gauge_;
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> gem_memory_usage_gauge_;
+  std::shared_ptr<opentelemetry::metrics::ObservableInstrument> system_utilization_counter_;
 
   system::ProcParser proc_parser_;
 
+  gml::event::TimerUPtr util_collect_timer_;
+  absl::base_internal::SpinLock utilization_lock_;
+  uint64_t system_utilization_ns_ ABSL_GUARDED_BY(utilization_lock_) = 0;
+  std::ifstream load_file_;
+  std::string line_buf_;
+  std::chrono::high_resolution_clock::time_point prev_collect_;
+
   Status ScrapeWithError();
+  Status InitUtilizationCollection();
+  void CollectUtilization();
 };
 }  // namespace gml::gem::metrics::jetson
