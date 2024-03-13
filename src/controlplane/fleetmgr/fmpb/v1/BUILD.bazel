@@ -86,7 +86,11 @@ proto_compile(
 
 proto_go_library(
     name = "fmpb_go_proto",
-    srcs = ["fmpb.pb.go"],
+    srcs = [
+        "fmpb.pb.go",
+        # keep
+        "pg_helpers.go",
+    ],
     importpath = "gimletlabs.ai/gimlet/src/controlplane/fleetmgr/fmpb/v1",
     visibility = ["//visibility:public"],
     deps = [
@@ -140,3 +144,5 @@ proto_py_library(
         "@pip//protobuf",
     ],
 )
+
+# gazelle:exclude pg_helpers.go

@@ -44,6 +44,7 @@ gml_cc_library(
         "proc_parser.h",
         "proc_pid_path.cc",
         "proc_pid_path.h",
+        "version.h",
     ],
     hdrs = ["system.h"],
     deps = [
