@@ -56,8 +56,8 @@ node {
     [type.googleapis.com/gml.gem.calculators.tensorrt.optionspb.TensorRTExecuteCalculatorOptions] {
       input_onnx_name: "x"
       input_onnx_name: "shape"
-      output_onnx_name: "Squeeze__229:0"
-      output_onnx_name: "Transpose__230:0"
+      output_onnx_name: "Squeeze__232:0"
+      output_onnx_name: "Transpose__233:0"
       output_onnx_name: "casted_indices"
     }
   }

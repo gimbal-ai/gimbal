@@ -1,4 +1,4 @@
-type: "ClassifyROISubgraph"
+type: "ClassifyROIOpenVINOSubgraph"
 input_side_packet: "CPU_EXEC_CTX:cpu_exec_ctx"
 input_side_packet: "OV_EXEC_CTX:openvino_exec_ctx"
 input_stream: "IMAGE:sampled_frames"

@@ -60,8 +60,19 @@ StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(
                   absl::StrCat("Failed to parse onnx file: ", absl::StrJoin(errors, ", ")));
   }
 
+  bool needs_int8 = false;
+  for (int i = 0; i < network->getNbLayers(); ++i) {
+    auto* layer = network->getLayer(i);
+    if (layer->getType() == nvinfer1::LayerType::kDEQUANTIZE ||
+        layer->getType() == nvinfer1::LayerType::kQUANTIZE) {
+      needs_int8 = true;
+      break;
+    }
+  }
   auto config = std::unique_ptr<nvinfer1::IBuilderConfig>(builder->createBuilderConfig());
-  config->setFlag(nvinfer1::BuilderFlag::kINT8);
+  if (needs_int8) {
+    config->setFlag(nvinfer1::BuilderFlag::kINT8);
+  }
 
   for (const auto& opt_profile_spec : spec.tensorrt_spec().optimization_profile()) {
     auto* opt_profile = builder->createOptimizationProfile();

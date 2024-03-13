@@ -1,0 +1,217 @@
+type: "ClassifyROITensorRTSubgraph"
+input_side_packet: "CPU_EXEC_CTX:cpu_exec_ctx"
+input_side_packet: "TENSORRT_EXEC_CTX:tensorrt_exec_ctx"
+input_stream: "IMAGE:sampled_frames"
+input_stream: "DETECTIONS:detections"
+output_stream: "detections_w_classifications"
+
+node {
+  calculator: "BeginDetectionsLoopCalculator"
+  input_stream: "ITERABLE:detections"
+  input_stream: "CLONE:sampled_frames"
+  output_stream: "ITEM:detection_iter"
+  output_stream: "CLONE:cloned_sampled_frames"
+  output_stream: "BATCH_END:iterable_ts"
+}
+
+node {
+  calculator: "DetectionsToMediapipeCalculator"
+  input_stream: "DETECTION:detection_iter"
+  output_stream: "DETECTION:mp_detection"
+}
+
+
+node {
+  calculator: "DetectionsToRectsCalculator"
+  input_stream: "DETECTION:mp_detection"
+  output_stream: "NORM_RECT:rect"
+}
+
+node {
+  calculator: "ImageCroppingCalculator"
+  input_stream: "IMAGE:cloned_sampled_frames"
+  input_stream: "NORM_RECT:rect"
+  output_stream: "IMAGE:cropped_image_frame"
+}
+
+node {
+  calculator: "ImageTransformationCalculator"
+  input_stream: "IMAGE:cropped_image_frame"
+  output_stream: "IMAGE:resized_frame"
+  node_options {
+    [type.googleapis.com/mediapipe.ImageTransformationCalculatorOptions] {
+      output_width: 224
+      output_height: 224
+      scale_mode: SCALE_MODE_STRETCH
+    }
+  }
+}
+
+node {
+  calculator: "ImageFrameToCPUTensorCalculator"
+  input_side_packet: "EXEC_CTX:cpu_exec_ctx"
+  input_stream: "IMAGE_FRAME:resized_frame"
+  output_stream: "CPU_TENSOR:image_tensor"
+}
+
+node {
+  calculator: "StandardizeTensorCalculator"
+  input_stream: "TENSOR:image_tensor"
+  output_stream: "TENSOR:standardized_image_tensor"
+  node_options {
+    [type.googleapis.com/gml.gem.calculators.cpu_tensor.optionspb.StandardizeTensorCalculatorOptions] {
+      mean: 0.485
+      mean: 0.456
+      mean: 0.406
+      stddev: 0.229
+      stddev: 0.224
+      stddev: 0.225
+    }
+  }
+}
+
+node {
+  calculator: "CPUTensorToCUDATensorCalculator"
+  input_side_packet: "EXEC_CTX:tensorrt_exec_ctx"
+  input_stream: "standardized_image_tensor"
+  output_stream: "cuda_standardized_image_tensor"
+}
+
+node {
+  calculator: "TensorRTExecuteCalculator"
+  input_side_packet: "EXEC_CTX:tensorrt_exec_ctx"
+  input_stream: "cuda_standardized_image_tensor"
+  output_stream: "cuda_scores_tensor"
+  node_options {
+    [type.googleapis.com/gml.gem.calculators.tensorrt.optionspb.TensorRTExecuteCalculatorOptions] {
+      input_onnx_name: "image"
+      output_onnx_name: "scores"
+    }
+  }
+}
+
+node {
+  calculator: "CUDATensorToCPUTensorCalculator"
+  input_side_packet: "EXEC_CTX:cpu_exec_ctx"
+  input_stream: "cuda_scores_tensor"
+  output_stream: "scores_tensor"
+}
+
+node {
+  calculator: "ScoresToLabelCalculator"
+  input_stream: "SCORES:scores_tensor"
+  input_stream: "DETECTION:detection_iter"
+  output_stream: "DETECTION:modified_detection"
+  node_options {
+    [type.googleapis.com/gml.gem.calculators.cpu_tensor.optionspb.ScoresToLabelCalculatorOptions] {
+      index_to_label: "Bertolli Extra Virgin Olive Oil 16.9 fl oz"
+      index_to_label: "BIG GREEN Organic Sweet Chestnuts - Shelled, 4.52oz"
+      index_to_label: "Popchips Potato Sea Salt 0.8 oz Bag"
+      index_to_label: "Ito En Oi Ocha Unsweetened Green Tea 16.9 Fl. Oz"
+      index_to_label: "Sanzo Lychee Sparkling Water - 12 fl oz Can"
+      index_to_label: "365 Organic Dried Mango Slices"
+      index_to_label: "Roasted Eggplant Spread - EA"
+      index_to_label: "Mahi Mahi Portion Previously Frozen - 6 Oz"
+      index_to_label: "Pacific Valley Tater Patties 10 Ct - 21.2 OZ"
+      index_to_label: "COVERGIRL Smoothwear Conditioning Moisturecoat - 0.06 Oz"
+      index_to_label: "Tolerant Pasta Elbow Green Lentil - 8 Oz"
+      index_to_label: "Himalania Ice Salt Himalayan Fine - 6 Oz"
+      index_to_label: "Tropical Strawberry Soda - 2 LT"
+      index_to_label: "Revlon C/S 2-In-1 Mu/Cnclr Buff - 0.04/0.38"
+      index_to_label: "Everyone Hand Sntzr Spray Lvndr Aloe - EA"
+      index_to_label: "Victoria Vogue Eye Applicator Cosmetic - Each"
+      index_to_label: "Jack Links Meat Sticks Beef & Cheese Jalapeno Sizzle - 1.2 Oz"
+      index_to_label: "Kauai Gourmet Roasters Coffee Hawaiian Supreme Grind - 8 Oz"
+      index_to_label: "Cedars Hommus Garlic - EA"
+      index_to_label: "The Great American Wine Company Red Blend Wine - 750 Ml"
+      index_to_label: "Go-gurt Mystery Low Fat Yogurt 16 Count - 2 LB"
+      index_to_label: "COVERGIRL Peacock Flr Masc Extrm Blck - Each"
+      index_to_label: "Cotton Ragg Sock Navy 9-11 - EA"
+      index_to_label: "COVERGIRL Exhst Lip Lnr Mauvlous - 0.012 Oz"
+      index_to_label: "Raos Entree Chickn Parmsn - 8.5 OZ"
+      index_to_label: "Voortman Bakery Peanut Butter Wafers - 10.6 Oz"
+      index_to_label: "Smirnoff Ica Malt Beverage Grape In Bottle - 24 Fl. Oz."
+      index_to_label: "Sally Hansen Color Therapy Nail Color Savasan Ahhh - 0.5 Fl. Oz."
+      index_to_label: "Desert Essence Oil Ttree - 0.5 Oz"
+      index_to_label: "Wallaby Organic Yogurt Lowfat Creamy Australian Style Vanilla - 27 Oz"
+      index_to_label: "Sensodyne Pronamel Fresh Wave Toothpaste 2pk - 2-4 Oz"
+      index_to_label: "Stirrings Peach Bellini Mix - 750 Ml"
+      index_to_label: "Cherries Skylar Rae - Lb"
+      index_to_label: "Cat Chow Complete Chicken Dry Cat Food - 20 Lbs"
+      index_to_label: "Tyson One Pan Dish Roasted Garlic Chicken With Parmesan Mushroom Risotto - 24 Oz"
+      index_to_label: "Dr Browns Vanilla Cream Soda - 33.8 Fl. Oz."
+      index_to_label: "Nature Gate Chamomile Hair Conditioner - 18.0 Oz"
+      index_to_label: "Eo Hand Liquid Soap Peppermint Teashing - 32 OZ"
+      index_to_label: "Morehouse Horseradish Cream Style - 6 Oz"
+      index_to_label: "Ko Hd Fnd 110w Hf741 Face - Each"
+      index_to_label: "Morton Sea Salt Rstd Garlic - 3 Oz"
+      index_to_label: "Robertos Of Santa Cruz Chipotle Salsa - 13 Oz"
+      index_to_label: "Baby Carrots Cup With Dip - 7 OZ"
+      index_to_label: "Signature SELECT Sauce Barbeque Honey - 18 Oz"
+      index_to_label: "Natures Own 12 Whole Grain Bread - 24 Oz"
+      index_to_label: "Mrs Thins Cookie Thins Apl Crumble - 26.76 Oz"
+      index_to_label: "Black Radiance Blush Baked Warm Berry - Each"
+      index_to_label: "Primary Color Bowl 24 Ounce - EA"
+      index_to_label: "Printed Shower Cap - Each"
+      index_to_label: "Pork Shoulder Steak Seasoned Bone In - 1.25 Lb"
+      index_to_label: "Peppers Bell Peppers Rainbow Prepacked - 3 Count"
+      index_to_label: "Betty Crocker Hamburger Helper Beef Stroganoff Deluxe Box - 5.5 Oz"
+      index_to_label: "Flyjy Bar Peanut Cacao Nib - 1.50 Oz"
+      index_to_label: "Revlon Matte Lipstick Sky Pink - .15 Oz"
+      index_to_label: "DeLallo Bruschetta Cup Artichoke - 7 Oz"
+      index_to_label: "Raisin Bran Muffins 4 Count - EA"
+      index_to_label: "Cantu Avocado Shampoo - 13.5 OZ"
+      index_to_label: "Jell-o Inst Pudding/pie Mx Lemon Sf/ff  Pudding & Pie Filling - 1 OZ"
+      index_to_label: "Mushrooms Jumbo Shiitake - 8 Oz"
+      index_to_label: "Suave Professionals Shampoo Moisturizing Almond + Shea Butter - 12.6 Fl. Oz."
+      index_to_label: "Tillamook Udderly Chocolate Ice Cream - 1.75Quart"
+      index_to_label: "Natures Way Echinacea Ester-C Tablets - 100 Count"
+      index_to_label: "New England Coffee French Vanilla Coffee - 22 OZ"
+      index_to_label: "Reeses Peanut Butter Cups Milk Chocolate Glow In The Dark Snack Size - 9.35 Oz"
+      index_to_label: "Happy Baby Organics Clearly Crafted Stage 2 Meals Zucchini Apples Peas Quinoa Basil Pouch - 4 Oz"
+      index_to_label: "Platinum Strength Hardener - 0.45 Fl. Oz."
+      index_to_label: "Nubian Heritage Body Wash Raw Shea Butter - 13 Oz"
+      index_to_label: "Natures Way Alive Lqd Fiber - 16 Oz"
+      index_to_label: "The Farmers Hen Free Range Plus Large Eggs - 12 CT"
+      index_to_label: "Gamesa Lonchera Assorted Cookies - 15.3 OZ"
+      index_to_label: "Life Cuisine Strawberry Banana Smoothie Bowl Frozen Entree Box - 8 Oz"
+      index_to_label: "Singer Astd Light Thread - 12 CT"
+      index_to_label: "Ian's Gluten Free Crispy Garlic Herb  Salmon Bites - 10 OZ"
+      index_to_label: "enjoy life Cookies Crunchy Handcrafted Vanilla Honey Graham - 6.3 Oz"
+      index_to_label: "Signature SELECT Tortilla Chips Nacho Cheese - 9 Oz"
+      index_to_label: "Kikkoman Takumi Collection Sauce Teriyaki Original - 20.5 Oz"
+      index_to_label: "Almay One Coat Length Marcara Blk/Brwn - .27 Oz"
+      index_to_label: "Bakery Old Fashioned Donut Holes 30 Count - Each"
+      index_to_label: "Guerrero Tortillas Corn White Maiz Blanco Gluten Free Bag 100 Count - 8.3 Oz"
+      index_to_label: "Bobs Red Mill Flour White Rice Stone Ground Gluten Free - 24 Oz"
+      index_to_label: "Fresh Baked Jumbo Croissants - 4 Ct"
+      index_to_label: "Badia Seasoning Complete - 1.75 Lb"
+      index_to_label: "Lakewood Brewing Seasonal  Btl - 6-12 FZ"
+      index_to_label: "Village Harvest Grain - 16 Oz"
+      index_to_label: "Sally Hansen Xtreme Wear Pink Punk Uncarded - 0.4 Fl. Oz."
+      index_to_label: "Good Cook Dinner Crystal Salt And Pepper - Each"
+      index_to_label: "Acure Rose Argan Oil - 1 OZ"
+      index_to_label: "Pillsbury Grands! Jr Biscuits Golden Layers Flaky Butter Tastin 5 Count - 6 Oz"
+      index_to_label: "Henry & Lisas Natural Seafood Sardines Wild in Extra Virgin Olive Oil - 4.25 oz"
+      index_to_label: "Wilton Sprinkles Pink Sugar & Jimmies Jar - 2.5 Oz"
+      index_to_label: "Postobon Kola Liter - 2 LT"
+      index_to_label: "Paul Mitchell Platnim Blonde Shampoo - 10.14 Fl. Oz."
+      index_to_label: "Ice Harbor Ipa - 6-12 Fl. Oz."
+      index_to_label: "New Barn Organic Coffee Almond Creme - 14 Fl. Oz."
+      index_to_label: "Head & Shoulders Classic Clean Conditioner - 10.9 FZ"
+      index_to_label: "Vaseline Cocoa Radiant Spray - 6.5 Oz"
+      index_to_label: "Cake Chocolate Patriotic Usa Bar"
+      index_to_label: "VOORTMAN Bakery Zero Sugar Chocolate Wafers - 9 Oz"
+      index_to_label: "Lofthouse Galaxy Frosted Sugar Cookie - 13.5 Oz"
+      index_to_label: "Bakery Cookies Sugar Holiday 36 Count - Each"
+    }
+  }
+}
+
+
+node {
+  calculator: "EndDetectionsLoopCalculator"
+  input_stream: "ITEM:modified_detection"
+  input_stream: "BATCH_END:iterable_ts"
+  output_stream: "ITERABLE:detections_w_classifications"
+}
