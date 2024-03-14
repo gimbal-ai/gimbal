@@ -27,6 +27,7 @@
 #include "src/api/corepb/v1/cp_edge.pb.h"
 #include "src/common/base/base.h"
 #include "src/common/system/hostname.h"
+#include "src/common/system/version.h"
 #include "src/common/uuid/uuid.h"
 #include "src/controlplane/egw/egwpb/v1/egwpb.grpc.pb.h"
 #include "src/controlplane/fleetmgr/fmpb/v1/fmpb.grpc.pb.h"
@@ -49,6 +50,7 @@ using gml::internal::api::core::v1::CPEdgeTopic;
 using gml::internal::controlplane::egw::v1::BridgeResponse;
 using gml::internal::controlplane::egw::v1::EGWService;
 using gml::internal::controlplane::fleetmgr::v1::FleetMgrEdgeService;
+using gml::internal::controlplane::fleetmgr::v1::OSKind;
 using gml::internal::controlplane::fleetmgr::v1::RegisterRequest;
 using gml::internal::controlplane::fleetmgr::v1::RegisterResponse;
 
@@ -90,6 +92,12 @@ Status Controller::Register() {
   req.set_device_serial(selected_serial);
   grpc::ClientContext ctx;
   ctx.AddMetadata("x-deploy-key", deploy_key_);
+
+  auto* os_info = req.mutable_os();
+  os_info->set_kind(OSKind::OS_KIND_LINUX);
+  std::string os_version;
+  GML_ASSIGN_OR_RETURN(os_version, system::GetUname());
+  os_info->set_version(os_version);
 
   RegisterResponse resp;
   auto s = fmstub_->Register(&ctx, req, &resp);
