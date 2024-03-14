@@ -113,7 +113,7 @@ void SystemMetricsReader::Scrape() {
   gml::system::ProcParser::SystemStats system_stats;
   GML_CHECK_OK(proc_parser_.ParseProcMemInfo(&system_stats));
   mem_stats_total_bytes_->Record(system_stats.mem_total_bytes, {{"state", "system"}}, {});
-  mem_stats_free_bytes_->Record(system_stats.mem_free_bytes, {{"state", "system"}}, {});
+  mem_stats_free_bytes_->Record(system_stats.mem_available_bytes, {{"state", "system"}}, {});
 
   std::vector<gml::system::ProcParser::NetworkStats> network_stats;
   auto s = proc_parser_.ParseProcHostNetDev(gml::system::Config::GetInstance().host_path(),
