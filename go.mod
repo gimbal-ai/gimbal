@@ -1,8 +1,6 @@
 module gimletlabs.ai/gimlet
 
-go 1.21.4
-
-toolchain go1.21.7
+go 1.22.1
 
 require (
 	cloud.google.com/go/storage v1.35.1

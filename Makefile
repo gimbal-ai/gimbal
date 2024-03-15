@@ -26,7 +26,7 @@ go: ## A simple go build that ensure that the go code compiles.
 
 .PHONY: go-mod-tidy
 go-mod-tidy: ## Ensure that go are cleaned up.
-	go mod tidy -compat=1.21
+	go mod tidy -compat=1.22
 
 .PHONY: gazelle
 gazelle: go-mod-tidy update-python-manifest ## Run gazelle.
