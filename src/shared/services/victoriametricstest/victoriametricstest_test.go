@@ -61,7 +61,6 @@ func TestSetupTestVictoriaMetrics_tSimpleImportExport(t *testing.T) {
 	err = backoff.Retry(func() error {
 		return victoriametricstest.IsMetricAvailable(context.Background(), conn, query)
 	}, bo)
-
 	if err != nil {
 		t.Fatalf("Could not fetch metric. backoff err: %s", err)
 	}

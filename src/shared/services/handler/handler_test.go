@@ -31,7 +31,7 @@ import (
 )
 
 func TestHandler_ServeHTTP(t *testing.T) {
-	testHandler := func(w http.ResponseWriter, r *http.Request) error {
+	testHandler := func(_ http.ResponseWriter, _ *http.Request) error {
 		return nil
 	}
 	h := handler.New(env.New("test", ""), testHandler)
@@ -45,7 +45,7 @@ func TestHandler_ServeHTTP(t *testing.T) {
 }
 
 func TestHandler_ServeHTTP_StatusError(t *testing.T) {
-	testHandler := func(w http.ResponseWriter, r *http.Request) error {
+	testHandler := func(_ http.ResponseWriter, _ *http.Request) error {
 		return &handler.StatusError{http.StatusUnauthorized, errors.New("badness")}
 	}
 	h := handler.New(env.New("test", ""), testHandler)
@@ -60,7 +60,7 @@ func TestHandler_ServeHTTP_StatusError(t *testing.T) {
 }
 
 func TestHandler_ServeHTTP_RegularError(t *testing.T) {
-	testHandler := func(w http.ResponseWriter, r *http.Request) error {
+	testHandler := func(_ http.ResponseWriter, _ *http.Request) error {
 		return errors.New("badness")
 	}
 	h := handler.New(env.New("test", ""), testHandler)

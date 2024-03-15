@@ -104,7 +104,7 @@ func startTestGRPCServer(t *testing.T, o *server.GRPCServerOptions) *bufconn.Lis
 }
 
 func createDialer(lis *bufconn.Listener) func(ctx context.Context, url string) (net.Conn, error) {
-	return func(ctx context.Context, url string) (net.Conn, error) {
+	return func(_ context.Context, _ string) (net.Conn, error) {
 		return lis.Dial()
 	}
 }

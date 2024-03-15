@@ -39,9 +39,9 @@ default["golang"]["sha256"] =
   "1241381b2843fae5a9707eec1f8fb2ef94d827990582c7c7c32f5bdfbfd420c8"
 
 default["golangci-lint"]["download_path"] =
-  "https://github.com/golangci/golangci-lint/releases/download/v1.55.2/golangci-lint-1.55.2-linux-amd64.tar.gz"
+  "https://github.com/golangci/golangci-lint/releases/download/v1.56.2/golangci-lint-1.56.2-linux-amd64.tar.gz"
 default["golangci-lint"]["sha256"] =
-  "ca21c961a33be3bc15e4292dc40c98c8dcc5463a7b6768a3afc123761630c09c"
+  "e1c313fb5fc85a33890fdee5dbb1777d1f5829c84d655a47a55688f3aad5e501"
 
 default["nodejs"]["download_path"] =
   "https://nodejs.org/dist/v20.9.0/node-v20.9.0-linux-x64.tar.xz"

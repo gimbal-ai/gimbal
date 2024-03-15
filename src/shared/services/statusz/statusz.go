@@ -43,7 +43,7 @@ func InstallPathHandler(mux mux, path string, statusChecker statusCheckFn) {
 }
 
 func registerStatuszCheck(statusChecker statusCheckFn) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		status := statusChecker()
 		if status == "" {
 			w.WriteHeader(http.StatusOK)

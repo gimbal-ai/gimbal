@@ -51,7 +51,7 @@ func MustConnectNATS() *nats.Conn {
 	} else if err != nil {
 		log.WithError(err).WithField("nats_url", natsURL).Fatal("Failed to connect to NATS")
 	}
-	nc.SetErrorHandler(func(conn *nats.Conn, subscription *nats.Subscription, err error) {
+	nc.SetErrorHandler(func(_ *nats.Conn, subscription *nats.Subscription, err error) {
 		log.WithField("Sub", subscription.Subject).
 			WithError(err).
 			Error("Error with NATS handler")

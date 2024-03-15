@@ -97,7 +97,7 @@ func InstallPathHandler(mux mux, path string, c ...Checker) {
 
 // adaptCheckToHandler returns an http.HandlerFunc that serves the provided checks.
 func adaptCheckToHandler(c func() error) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		err := c()
 		if err != nil {
 			http.Error(w, fmt.Sprintf("FAILED internal server error: %v", err), http.StatusInternalServerError)
@@ -121,7 +121,7 @@ func checkerNames(checks ...Checker) []string {
 }
 
 func registerRootHealthzChecks(checks ...Checker) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		failed := false
 		var verboseOut bytes.Buffer
 		for _, check := range checks {
