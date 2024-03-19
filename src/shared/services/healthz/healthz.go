@@ -30,6 +30,7 @@ import (
 	"bytes"
 	"fmt"
 	"net/http"
+	"net/url"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -91,7 +92,11 @@ func InstallPathHandler(mux mux, path string, c ...Checker) {
 	log.WithField("checkers", checkerNames(checks...)).Debug("Installing healthz checkers")
 	mux.Handle(path, registerRootHealthzChecks(checks...))
 	for _, check := range checks {
-		mux.Handle(fmt.Sprintf("%s/%v", path, check.Name()), adaptCheckToHandler(check.Check))
+		p, err := url.JoinPath(path, check.Name())
+		if err != nil {
+			log.WithError(err).Fatal("Failed to install check handler")
+		}
+		mux.Handle(p, adaptCheckToHandler(check.Check))
 	}
 }
 
