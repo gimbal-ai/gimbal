@@ -26,8 +26,8 @@ import "src/common/typespb/uuid.proto";
 import "src/api/corepb/v1/model_exec.proto";
 
 message LogicalPipelineInfo {
-  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID", (gogoproto.moretags) = 'db:"id"' ];
-  string name = 2 [ (gogoproto.moretags) = 'db:"name"' ];
+  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
+  string name = 2;
 }
 
 message ListLogicalPipelinesRequest {

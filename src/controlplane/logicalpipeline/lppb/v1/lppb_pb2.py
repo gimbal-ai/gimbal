@@ -16,7 +16,7 @@ from src.common.typespb import uuid_pb2 as src_dot_common_dot_typespb_dot_uuid__
 from src.api.corepb.v1 import model_exec_pb2 as src_dot_api_dot_corepb_dot_v1_dot_model__exec__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n3src/controlplane/logicalpipeline/lppb/v1/lppb.proto\x12,gml.internal.controlplane.logicalpipeline.v1\x1a\x14gogoproto/gogo.proto\x1a\x1dsrc/common/typespb/uuid.proto\x1a\"src/api/corepb/v1/model_exec.proto\"l\n\x13LogicalPipelineInfo\x12\x32\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x11\xe2\xde\x1f\x02ID\xf2\xde\x1f\x07\x64\x62:\"id\"R\x02id\x12!\n\x04name\x18\x02 \x01(\tB\r\xf2\xde\x1f\tdb:\"name\"R\x04name\"P\n\x1bListLogicalPipelinesRequest\x12\x31\n\x06org_id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\t\xe2\xde\x1f\x05OrgIDR\x05orgId\"\x7f\n\x1cListLogicalPipelinesResponse\x12_\n\tpipelines\x18\x01 \x03(\x0b\x32\x41.gml.internal.controlplane.logicalpipeline.v1.LogicalPipelineInfoR\tpipelines\"D\n\x19GetLogicalPipelineRequest\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\"\xc4\x01\n\x1aGetLogicalPipelineResponse\x12>\n\x08pipeline\x18\x01 \x01(\x0b\x32\".gml.internal.api.core.v1.PipelineR\x08pipeline\x12\x66\n\rpipeline_info\x18\x02 \x01(\x0b\x32\x41.gml.internal.controlplane.logicalpipeline.v1.LogicalPipelineInfoR\x0cpipelineInfo\"\xa5\x01\n\x1c\x43reateLogicalPipelineRequest\x12\x31\n\x06org_id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\t\xe2\xde\x1f\x05OrgIDR\x05orgId\x12\x12\n\x04name\x18\x02 \x01(\tR\x04name\x12>\n\x08pipeline\x18\x03 \x01(\x0b\x32\".gml.internal.api.core.v1.PipelineR\x08pipeline\"H\n\x1d\x43reateLogicalPipelineResponse\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id2\xa5\x04\n\x16LogicalPipelineService\x12\xad\x01\n\x14ListLogicalPipelines\x12I.gml.internal.controlplane.logicalpipeline.v1.ListLogicalPipelinesRequest\x1aJ.gml.internal.controlplane.logicalpipeline.v1.ListLogicalPipelinesResponse\x12\xa7\x01\n\x12GetLogicalPipeline\x12G.gml.internal.controlplane.logicalpipeline.v1.GetLogicalPipelineRequest\x1aH.gml.internal.controlplane.logicalpipeline.v1.GetLogicalPipelineResponse\x12\xb0\x01\n\x15\x43reateLogicalPipeline\x12J.gml.internal.controlplane.logicalpipeline.v1.CreateLogicalPipelineRequest\x1aK.gml.internal.controlplane.logicalpipeline.v1.CreateLogicalPipelineResponseBDZBgimletlabs.ai/gimlet/src/controlplane/logicalpipeline/lppb/v1;lppbb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n3src/controlplane/logicalpipeline/lppb/v1/lppb.proto\x12,gml.internal.controlplane.logicalpipeline.v1\x1a\x14gogoproto/gogo.proto\x1a\x1dsrc/common/typespb/uuid.proto\x1a\"src/api/corepb/v1/model_exec.proto\"R\n\x13LogicalPipelineInfo\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\x12\x12\n\x04name\x18\x02 \x01(\tR\x04name\"P\n\x1bListLogicalPipelinesRequest\x12\x31\n\x06org_id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\t\xe2\xde\x1f\x05OrgIDR\x05orgId\"\x7f\n\x1cListLogicalPipelinesResponse\x12_\n\tpipelines\x18\x01 \x03(\x0b\x32\x41.gml.internal.controlplane.logicalpipeline.v1.LogicalPipelineInfoR\tpipelines\"D\n\x19GetLogicalPipelineRequest\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id\"\xc4\x01\n\x1aGetLogicalPipelineResponse\x12>\n\x08pipeline\x18\x01 \x01(\x0b\x32\".gml.internal.api.core.v1.PipelineR\x08pipeline\x12\x66\n\rpipeline_info\x18\x02 \x01(\x0b\x32\x41.gml.internal.controlplane.logicalpipeline.v1.LogicalPipelineInfoR\x0cpipelineInfo\"\xa5\x01\n\x1c\x43reateLogicalPipelineRequest\x12\x31\n\x06org_id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\t\xe2\xde\x1f\x05OrgIDR\x05orgId\x12\x12\n\x04name\x18\x02 \x01(\tR\x04name\x12>\n\x08pipeline\x18\x03 \x01(\x0b\x32\".gml.internal.api.core.v1.PipelineR\x08pipeline\"H\n\x1d\x43reateLogicalPipelineResponse\x12\'\n\x02id\x18\x01 \x01(\x0b\x32\x0f.gml.types.UUIDB\x06\xe2\xde\x1f\x02IDR\x02id2\xa5\x04\n\x16LogicalPipelineService\x12\xad\x01\n\x14ListLogicalPipelines\x12I.gml.internal.controlplane.logicalpipeline.v1.ListLogicalPipelinesRequest\x1aJ.gml.internal.controlplane.logicalpipeline.v1.ListLogicalPipelinesResponse\x12\xa7\x01\n\x12GetLogicalPipeline\x12G.gml.internal.controlplane.logicalpipeline.v1.GetLogicalPipelineRequest\x1aH.gml.internal.controlplane.logicalpipeline.v1.GetLogicalPipelineResponse\x12\xb0\x01\n\x15\x43reateLogicalPipeline\x12J.gml.internal.controlplane.logicalpipeline.v1.CreateLogicalPipelineRequest\x1aK.gml.internal.controlplane.logicalpipeline.v1.CreateLogicalPipelineResponseBDZBgimletlabs.ai/gimlet/src/controlplane/logicalpipeline/lppb/v1;lppbb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'src.controlplane.logicalpipeline.lppb.v1.lppb_pb2', globals())
@@ -25,9 +25,7 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
   DESCRIPTOR._serialized_options = b'ZBgimletlabs.ai/gimlet/src/controlplane/logicalpipeline/lppb/v1;lppb'
   _LOGICALPIPELINEINFO.fields_by_name['id']._options = None
-  _LOGICALPIPELINEINFO.fields_by_name['id']._serialized_options = b'\342\336\037\002ID\362\336\037\007db:\"id\"'
-  _LOGICALPIPELINEINFO.fields_by_name['name']._options = None
-  _LOGICALPIPELINEINFO.fields_by_name['name']._serialized_options = b'\362\336\037\tdb:\"name\"'
+  _LOGICALPIPELINEINFO.fields_by_name['id']._serialized_options = b'\342\336\037\002ID'
   _LISTLOGICALPIPELINESREQUEST.fields_by_name['org_id']._options = None
   _LISTLOGICALPIPELINESREQUEST.fields_by_name['org_id']._serialized_options = b'\342\336\037\005OrgID'
   _GETLOGICALPIPELINEREQUEST.fields_by_name['id']._options = None
@@ -37,19 +35,19 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _CREATELOGICALPIPELINERESPONSE.fields_by_name['id']._options = None
   _CREATELOGICALPIPELINERESPONSE.fields_by_name['id']._serialized_options = b'\342\336\037\002ID'
   _LOGICALPIPELINEINFO._serialized_start=190
-  _LOGICALPIPELINEINFO._serialized_end=298
-  _LISTLOGICALPIPELINESREQUEST._serialized_start=300
-  _LISTLOGICALPIPELINESREQUEST._serialized_end=380
-  _LISTLOGICALPIPELINESRESPONSE._serialized_start=382
-  _LISTLOGICALPIPELINESRESPONSE._serialized_end=509
-  _GETLOGICALPIPELINEREQUEST._serialized_start=511
-  _GETLOGICALPIPELINEREQUEST._serialized_end=579
-  _GETLOGICALPIPELINERESPONSE._serialized_start=582
-  _GETLOGICALPIPELINERESPONSE._serialized_end=778
-  _CREATELOGICALPIPELINEREQUEST._serialized_start=781
-  _CREATELOGICALPIPELINEREQUEST._serialized_end=946
-  _CREATELOGICALPIPELINERESPONSE._serialized_start=948
-  _CREATELOGICALPIPELINERESPONSE._serialized_end=1020
-  _LOGICALPIPELINESERVICE._serialized_start=1023
-  _LOGICALPIPELINESERVICE._serialized_end=1572
+  _LOGICALPIPELINEINFO._serialized_end=272
+  _LISTLOGICALPIPELINESREQUEST._serialized_start=274
+  _LISTLOGICALPIPELINESREQUEST._serialized_end=354
+  _LISTLOGICALPIPELINESRESPONSE._serialized_start=356
+  _LISTLOGICALPIPELINESRESPONSE._serialized_end=483
+  _GETLOGICALPIPELINEREQUEST._serialized_start=485
+  _GETLOGICALPIPELINEREQUEST._serialized_end=553
+  _GETLOGICALPIPELINERESPONSE._serialized_start=556
+  _GETLOGICALPIPELINERESPONSE._serialized_end=752
+  _CREATELOGICALPIPELINEREQUEST._serialized_start=755
+  _CREATELOGICALPIPELINEREQUEST._serialized_end=920
+  _CREATELOGICALPIPELINERESPONSE._serialized_start=922
+  _CREATELOGICALPIPELINERESPONSE._serialized_end=994
+  _LOGICALPIPELINESERVICE._serialized_start=997
+  _LOGICALPIPELINESERVICE._serialized_end=1546
 # @@protoc_insertion_point(module_scope)

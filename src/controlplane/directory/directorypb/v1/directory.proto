@@ -63,13 +63,13 @@ message UserInfo {
   // The ID of the user.
   gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
   // The user's name.
-  string name = 2 [ (gogoproto.moretags) = 'db:"name"' ];
+  string name = 2;
   // The user's email.
-  string email = 3 [ (gogoproto.moretags) = 'db:"email"' ];
+  string email = 3;
   // The user's display picture.
   string display_picture = 4 [ (gogoproto.moretags) = 'db:"display_picture"' ];
   // The identity provider which the user has used to sign up.
-  string identity_provider = 5;
+  string identity_provider = 5 [ (gogoproto.moretags) = 'db:"identity_provider"' ];
   // The auth_provider_id is the user ID that an auth_provider uses for an ID of the corresponding
   // user.
   string auth_provider_id = 6

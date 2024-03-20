@@ -30,14 +30,14 @@ import "src/common/typespb/uuid.proto";
 
 message FleetInfo {
   // The ID of the fleet. Not filled in for create requests.
-  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID", (gogoproto.moretags) = 'db:"id"' ];
+  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
   // The Org owning the fleet.
   gml.types.UUID org_id = 2
       [ (gogoproto.customname) = "OrgID", (gogoproto.moretags) = 'db:"org_id"' ];
   // The name of the fleet.
-  string name = 3 [ (gogoproto.moretags) = 'db:"name"' ];
+  string name = 3;
   // The description of the fleet.
-  string description = 5 [ (gogoproto.moretags) = 'db:"description"' ];
+  string description = 5;
   // The timestamp when the fleet was created.
   google.protobuf.Timestamp created_at = 6 [ (gogoproto.moretags) = 'db:"created_at"' ];
   // A map of the default device tags associated with the fleet.
@@ -168,7 +168,7 @@ message OSInfo {
 
 message DeviceInfo {
   // The ID of the device. Not filled in for create requests.
-  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID", (gogoproto.moretags) = 'db:"id"' ];
+  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
   // The serial for the device.
   string serial = 2;
   // The hostname of the device.

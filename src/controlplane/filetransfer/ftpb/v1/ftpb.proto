@@ -36,9 +36,9 @@ message FileInfo {
   gml.types.UUID file_id = 1
       [ (gogoproto.customname) = "FileID", (gogoproto.moretags) = 'db:"id"' ];
   FileStatus status = 2;
-  string name = 3 [ (gogoproto.moretags) = 'db:"name"' ];
+  string name = 3;
   uint64 size_bytes = 4 [ (gogoproto.moretags) = 'db:"size_bytes"' ];
-  string sha256sum = 5 [ (gogoproto.moretags) = 'db:"sha256sum"' ];
+  string sha256sum = 5;
 }
 
 message CreateFileInfoRequest {
