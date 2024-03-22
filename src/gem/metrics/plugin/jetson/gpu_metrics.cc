@@ -114,7 +114,8 @@ Status JetsonGPUMetrics::InitUtilizationCollection() {
   static constexpr std::string_view kLoadRelPath = "devices/platform/gpu.0/load";
   static constexpr int kMaxLoadFileChars = 4;
 
-  auto load_path = gml::system::Config::GetInstance().sys_path() / kLoadRelPath;
+  auto load_path =
+      std::filesystem::path(gml::system::Config::GetInstance().sys_path()) / kLoadRelPath;
 
   load_file_.open(load_path);
   if (!load_file_.is_open()) {

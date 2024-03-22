@@ -89,7 +89,7 @@ Status ParseNVMapIOVMMClients(const std::filesystem::path& path, std::vector<IOV
 
 std::filesystem::path NVMapIOVMMPath() {
   const auto& sys_path = Config::GetInstance().sys_path();
-  return sys_path / "kernel/debug/nvmap/iovmm";
+  return std::filesystem::path(sys_path) / "kernel/debug/nvmap/iovmm";
 }
 
 }  // namespace gml::system

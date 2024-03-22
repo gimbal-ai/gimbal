@@ -36,7 +36,8 @@ DEFINE_string(host_path, gflags::StringFromEnv("GML_HOST_PATH", ""),
 
 #include <ctime>
 
-Config::Config() : host_path_(FLAGS_host_path), sys_path_(FLAGS_sys_path) {}
+const std::string& Config::host_path() const { return FLAGS_host_path; }
+const std::string& Config::sys_path() const { return FLAGS_sys_path; }
 
 int64_t Config::PageSizeBytes() const { return sysconf(_SC_PAGESIZE); }
 
