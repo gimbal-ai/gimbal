@@ -131,7 +131,12 @@ cmake(
         "WITH_PTHREADS_PF": "ON",
         "WITH_TIFF": "ON",
         "WITH_WEBP": "OFF",
-    },
+    } | select({
+        "@platforms//cpu:x86_64": {
+            "WITH_OPENEXR": "ON",
+        },
+        "//conditions:default": {},
+    }),
     includes = ["opencv4"],
     lib_source = ":all",
     out_shared_libs = [
@@ -142,11 +147,18 @@ cmake(
         "opencv4/3rdparty/liblibjpeg-turbo.a",
         "opencv4/3rdparty/liblibtiff.a",
         "opencv4/3rdparty/liblibopenjp2.a",
-        "opencv4/3rdparty/libIlmImf.a",
-    ] + [
+    ] + ([
         "libopencv_%s.a" % module
         for module in OPENCV_MODULES
-    ] if not OPENCV_SHARED_LIBS else None,
+    ] if not OPENCV_SHARED_LIBS else None) + select({
+        "@platforms//cpu:aarch64": [
+            "opencv4/3rdparty/libtegra_hal.a",
+        ],
+        "@platforms//cpu:x86_64": [
+            "opencv4/3rdparty/libIlmImf.a",
+        ],
+        "//conditions:default": [],
+    }),
     visibility = ["//visibility:public"],
     deps = [
         "@com_github_ffmpeg_ffmpeg//:ffmpeg_lib",

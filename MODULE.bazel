@@ -61,6 +61,7 @@ single_version_override(
     patches = [
         "//bazel/external:rules_foreign_cc.cache_entries_make_vars.patch",
         "//bazel/external:rules_foreign_cc.absolute_bazel_out.patch",
+        "//bazel/external:rules_foreign_cc.cross_compile_params.patch",
     ],
 )
 

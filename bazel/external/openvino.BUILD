@@ -37,6 +37,7 @@ cmake(
     ],
     cache_entries = {
         "BUILD_SHARED_LIBS": "OFF",
+        "CMAKE_FIND_ROOT_PATH_MODE_PACKAGE": "BOTH",
         "CMAKE_PREFIX_PATH": "$$EXT_BUILD_DEPS",
         "DNNL_INCLUDE_DIRS": "$$EXT_BUILD_DEPS/dnnl/include",
         "DNNL_LIBRARY_DIRS": "$$EXT_BUILD_DEPS/dnnl/lib",
@@ -54,7 +55,7 @@ cmake(
         # Plugins.
         "ENABLE_INTEL_CPU": "ON",
         "ENABLE_INTEL_GNA": "OFF",
-        "ENABLE_INTEL_GPU": "ON",
+        "ENABLE_INTEL_GPU": "OFF",
         "ENABLE_IR_V7_READER": "OFF",
         "ENABLE_MULTI": "ON",
         "ENABLE_NCC_STYLE": "OFF",
@@ -85,7 +86,7 @@ cmake(
         "ENABLE_WHEEL": "OFF",
         "MLAS_INCLUDE_DIRS": "$$EXT_BUILD_DEPS/libmlas/include",
         "MLAS_LIBRARY_DIRS": "$$EXT_BUILD_DEPS/libmlas/lib",
-        "ONNX_ROOT": "$$EXT_BUILD_DEPS/libonnx/lib/cmake",
+        "ONNX_ROOT": "$$EXT_BUILD_DEPS/onnx/lib/cmake/ONNX",
 
         # Other options.
         "OPENVINO_EXTRA_MODULES": "",
@@ -96,14 +97,22 @@ cmake(
         "Protobuf_LIBRARY": "$$EXT_BUILD_DEPS/lib/libprotobuf.a",
         "PugiXML_ROOT": "$$EXT_BUILD_DEPS/libpugixml/lib/cmake/pugixml",
         "TBBROOT": "$$EXT_BUILD_DEPS",
-    },
+    } | select({
+        "@platforms//cpu:x86_64": {
+            "ENABLE_INTEL_GPU": "ON",
+        },
+        "//conditions:default": {},
+    }),
     defines = [
         "OPENVINO_STATIC_LIBRARY",
     ],
     lib_name = "openvino",
     lib_source = ":source",
     out_include_dir = "runtime/include",
-    out_lib_dir = "runtime/lib/intel64",
+    out_lib_dir = select({
+        "@platforms//cpu:aarch64": "runtime/lib/aarch64",
+        "@platforms//cpu:x86_64": "runtime/lib/intel64",
+    }),
     out_static_libs = [
         "libopenvino.a",
         "libopenvino_auto_batch_plugin.a",
@@ -111,11 +120,6 @@ cmake(
         "libopenvino_builders.a",
         "libopenvino_c.a",
         "libopenvino_hetero_plugin.a",
-        "libopenvino_intel_cpu_plugin.a",
-        "libopenvino_intel_gpu_graph.a",
-        "libopenvino_intel_gpu_kernels.a",
-        "libopenvino_intel_gpu_plugin.a",
-        "libopenvino_intel_gpu_runtime.a",
         "libopenvino_itt.a",
         "libopenvino_onnx_common.a",
         "libopenvino_onnx_frontend.a",
@@ -129,7 +133,18 @@ cmake(
         #        "libopenvino_gapi_preproc.a",
         #        "libopenvino_ir_frontend.a",
         #        "libopenvino_onednn_cpu.a",
-    ],
+    ] + select({
+        "@platforms//cpu:aarch64": [
+            "libopenvino_arm_cpu_plugin.a",
+        ],
+        "@platforms//cpu:x86_64": [
+            "libopenvino_intel_cpu_plugin.a",
+            "libopenvino_intel_gpu_graph.a",
+            "libopenvino_intel_gpu_kernels.a",
+            "libopenvino_intel_gpu_plugin.a",
+            "libopenvino_intel_gpu_runtime.a",
+        ],
+    }),
     targets = [
         "openvino",
         "openvino_c",

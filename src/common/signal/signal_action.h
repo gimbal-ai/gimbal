@@ -26,6 +26,7 @@
 
 #include "src/common/base/base.h"
 #include "src/common/signal/fatal_handler.h"
+#include "src/common/system/config.h"
 
 namespace gml {
 
@@ -34,7 +35,7 @@ namespace gml {
 class SignalAction : public NotCopyable {
  public:
   SignalAction()
-      : guard_size_(kPageSizeBytes),
+      : guard_size_(system::Config::GetInstance().PageSizeBytes()),
         altstack_size_(std::max(
             guard_size_ * 4,
             (static_cast<size_t>(MINSIGSTKSZ) + guard_size_ - 1) / guard_size_ * guard_size_)) {
@@ -77,8 +78,6 @@ class SignalAction : public NotCopyable {
    * Signal handlers will be installed for these signals which have a fatal outcome.
    */
   static constexpr std::array kFatalSignals = {SIGABRT, SIGBUS, SIGFPE, SIGILL, SIGSEGV};
-
-  static constexpr int kPageSizeBytes = 4 * 1024;
   /**
    * Return the memory size we actually map including two guard pages.
    */

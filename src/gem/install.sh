@@ -65,23 +65,23 @@ function device_type() {
     fi
     echo "x86_64 Generic"
     return
-  fi
-  if [[ "$(uname -r)" != *"-tegra" ]]; then
-    echo "Unknown"
-    return
-  fi
+  elif [[ "$(uname -m)" == "aarch64" ]]; then
+    if [[ "$(uname -r)" != *"-tegra" ]]; then
+      echo "aarch64 Generic"
+      return
+    fi
 
-  if [[ ! -f /proc/device-tree/model ]]; then
-    echo "Unknown"
-    return
-  fi
+    if [[ ! -f /proc/device-tree/model ]]; then
+      echo "aarch64 Generic"
+      return
+    fi
 
-  read -r MODEL </proc/device-tree/model
-  if [[ "$MODEL" == "NVIDIA Orin Nano"* ]]; then
-    echo "NVIDIA Orin Nano"
-    return
+    read -r MODEL </proc/device-tree/model
+    if [[ "$MODEL" == "NVIDIA Orin Nano"* ]]; then
+      echo "aarch64 NVIDIA Orin Nano"
+      return
+    fi
   fi
-
   echo "Unknown"
   return
 }
@@ -120,7 +120,7 @@ cmdline_opts=(
   "--sys_class_net_path" "/host/sys/class/net"
 )
 
-if [[ "$(device_type)" == "NVIDIA Orin Nano"* ]]; then
+if [[ "$(device_type)" == "aarch64 NVIDIA Orin Nano"* ]]; then
   extra_docker_flags+=(
     --privileged
     --runtime nvidia
@@ -132,6 +132,11 @@ if [[ "$(device_type)" == "NVIDIA Orin Nano"* ]]; then
   DEFAULT_IMAGE_TAG=jetson-dev-latest
 elif [[ "$(device_type)" == "x86_64"* ]]; then
   DEFAULT_IMAGE_TAG=dev-latest
+  for vid in "/dev/video"*; do
+    extra_docker_flags+=("--device" "${vid}")
+  done
+elif [[ "$(device_type)" == "aarch64"* ]]; then
+  DEFAULT_IMAGE_TAG=aarch64-dev-latest
   for vid in "/dev/video"*; do
     extra_docker_flags+=("--device" "${vid}")
   done
