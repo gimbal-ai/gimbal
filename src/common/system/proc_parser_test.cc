@@ -171,6 +171,8 @@ TEST_F(ProcParserTest, ParseMemInfo) {
   EXPECT_EQ(67228110848, stats.mem_total_bytes);
   EXPECT_EQ(17634656256, stats.mem_free_bytes);
   EXPECT_EQ(51960180736, stats.mem_available_bytes);
+  EXPECT_EQ(170176512, stats.mem_shmem_bytes);
+  EXPECT_EQ(2860769280, stats.mem_sreclaimable_bytes);
 
   EXPECT_EQ(6654636032, stats.mem_buffer_bytes);
   EXPECT_EQ(25549463552, stats.mem_cached_bytes);

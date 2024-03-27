@@ -123,8 +123,10 @@ class ProcParser {
     int64_t mem_buffer_bytes = 0;
     int64_t mem_cached_bytes = 0;
     int64_t mem_swap_cached_bytes = 0;
+    int64_t mem_shmem_bytes = 0;
     int64_t mem_active_bytes = 0;
     int64_t mem_inactive_bytes = 0;
+    int64_t mem_sreclaimable_bytes = 0;
 
     void Clear() { *this = SystemStats(); }
   };

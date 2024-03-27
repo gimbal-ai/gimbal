@@ -449,7 +449,9 @@ Status ProcParser::ParseProcMemInfo(SystemStats* out) const {
       {"MemAvailable", offsetof(SystemStats, mem_available_bytes)},
       {"Buffers", offsetof(SystemStats, mem_buffer_bytes)},
       {"Cached", offsetof(SystemStats, mem_cached_bytes)},
+      {"SReclaimable", offsetof(SystemStats, mem_sreclaimable_bytes)},
       {"SwapCached", offsetof(SystemStats, mem_swap_cached_bytes)},
+      {"Shmem", offsetof(SystemStats, mem_shmem_bytes)},
       {"Active", offsetof(SystemStats, mem_active_bytes)},
       {"Inactive", offsetof(SystemStats, mem_inactive_bytes)},
   };

@@ -61,6 +61,8 @@ SystemMetricsReader::SystemMetricsReader(::gml::metrics::MetricsSystem* metrics_
   cpu_frequency_gauge_ = gml_meter->CreateInt64Gauge("gml.system.cpu.scaling_frequency_hertz");
   mem_stats_total_bytes_ = gml_meter->CreateInt64Gauge("gml.system.memory.total_bytes");
   mem_stats_free_bytes_ = gml_meter->CreateInt64Gauge("gml.system.memory.free_bytes");
+  mem_stats_buffered_bytes_ = gml_meter->CreateInt64Gauge("gml.system.memory.buffered_bytes");
+  mem_stats_cached_bytes_ = gml_meter->CreateInt64Gauge("gml.system.memory.cached_bytes");
 
   // Setup network counters.
   network_rx_bytes_counter_ =
@@ -113,7 +115,12 @@ void SystemMetricsReader::Scrape() {
   gml::system::ProcParser::SystemStats system_stats;
   GML_CHECK_OK(proc_parser_.ParseProcMemInfo(&system_stats));
   mem_stats_total_bytes_->Record(system_stats.mem_total_bytes, {{"state", "system"}}, {});
-  mem_stats_free_bytes_->Record(system_stats.mem_available_bytes, {{"state", "system"}}, {});
+  mem_stats_free_bytes_->Record(system_stats.mem_free_bytes, {{"state", "system"}}, {});
+  mem_stats_buffered_bytes_->Record(system_stats.mem_buffer_bytes, {{"state", "system"}}, {});
+  mem_stats_cached_bytes_->Record(system_stats.mem_cached_bytes +
+                                      system_stats.mem_sreclaimable_bytes -
+                                      system_stats.mem_shmem_bytes,
+                                  {{"state", "system"}}, {});
 
   std::vector<gml::system::ProcParser::NetworkStats> network_stats;
   auto s = proc_parser_.ParseProcHostNetDev(gml::system::Config::GetInstance().host_path(),
