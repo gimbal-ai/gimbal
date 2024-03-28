@@ -15,6 +15,7 @@ grequests==0.7.0
 groundingdino-gml==0.1.2
 jupyter==1.0.0
 mmcv==2.1.0
+nats-py==2.7.2
 numba==0.59.0
 numpy==1.26.2
 pandas==2.2.1

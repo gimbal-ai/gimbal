@@ -1371,6 +1371,9 @@ mypy-extensions==1.0.0 \
     --hash=sha256:4392f6c0eb8a5668a69e23d168ffa70f0be9ccfd32b5cc2d26a34ae5b844552d \
     --hash=sha256:75dbf8955dc00442a438fc4d0666508a9a97b6bd41aa2f0ffe9d2f2725af0782
     # via black
+nats-py==2.7.2 \
+    --hash=sha256:0c97b4a57bed0ef1ff9ae6c19bc115ec7ca8ede5ab3e001fd00a377056a547cf
+    # via -r bazel/python/requirements.in
 nbclient==0.9.0 \
     --hash=sha256:4b28c207877cf33ef3a9838cdc7a54c5ceff981194a82eac59d558f05487295e \
     --hash=sha256:a3a1ddfb34d4a9d17fc744d655962714a866639acd30130e9be84191cd97cd15

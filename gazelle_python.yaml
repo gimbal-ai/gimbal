@@ -3669,6 +3669,25 @@ manifest:
     murmurhash.tests.test_hash: murmurhash
     murmurhash.tests.test_import: murmurhash
     mypy_extensions: mypy_extensions
+    nats: nats_py
+    nats.aio: nats_py
+    nats.aio.client: nats_py
+    nats.aio.errors: nats_py
+    nats.aio.msg: nats_py
+    nats.aio.subscription: nats_py
+    nats.aio.transport: nats_py
+    nats.errors: nats_py
+    nats.js: nats_py
+    nats.js.api: nats_py
+    nats.js.client: nats_py
+    nats.js.errors: nats_py
+    nats.js.kv: nats_py
+    nats.js.manager: nats_py
+    nats.js.object_store: nats_py
+    nats.nuid: nats_py
+    nats.protocol: nats_py
+    nats.protocol.command: nats_py
+    nats.protocol.parser: nats_py
     nbclient: nbclient
     nbclient.cli: nbclient
     nbclient.client: nbclient
@@ -17478,4 +17497,4 @@ manifest:
     zope.interface.verify: zope.interface
   pip_repository:
     name: pip
-integrity: e071f758f6065c8c8d5d334a9c200ab948c4f2579a55258934b1983296d1e280
+integrity: 08d99988a9c6ee1621c911cabe30d0e06b1e35d23210be4e323e47170f7fd33c
