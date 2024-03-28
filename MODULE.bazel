@@ -43,6 +43,13 @@ bazel_dep(name = "rules_apple", version = "3.0.0", repo_name = "build_bazel_rule
 # mediapipe uses rules_nodejs so we pull it in at the top level despite it being pulled in by aspect_rules_js already.
 bazel_dep(name = "rules_nodejs", version = "5.8.2")
 
+node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
+
+# Switch to 20.9.0 once we upgrade rules_nodejs to one that has toolchain URLs for 20.9.0
+# Don't use versions in the [18.13.0, 18.15.0) range due to https://github.com/nodejs/node/issues/46123
+node.toolchain(node_version = "18.12.0")
+use_repo(node, "nodejs_toolchains")
+
 single_version_override(
     module_name = "aspect_rules_js",
     patch_strip = 1,
