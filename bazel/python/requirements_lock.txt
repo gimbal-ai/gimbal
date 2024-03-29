@@ -2711,6 +2711,10 @@ seaborn==0.13.2 \
     --hash=sha256:636f8336facf092165e27924f223d3c62ca560b1f2bb5dff7ab7fad265361987 \
     --hash=sha256:93e60a40988f4d65e9f4885df477e2fdaff6b73a9ded434c1ab356dd57eefff7
     # via -r bazel/python/requirements.in
+segment-anything-py==1.0 \
+    --hash=sha256:6b75f004c9ea1ad57dc03c6a5592306f758871dccb14fcaba5f25c571e2d8593 \
+    --hash=sha256:deea07eeb9f473015472a4bb0d196c327356b7d7224e0179da6a631f5ad3b707
+    # via -r bazel/python/requirements.in
 semantic-version==2.10.0 \
     --hash=sha256:bdabb6d336998cbb378d4b9db3a4b56a1e3235701dc05ea2690d9a997ed5041c \
     --hash=sha256:de78a3b8e0feda74cabc54aab2da702113e33ac9d9eb9d2389bcf1f58b7d9177
@@ -3064,6 +3068,7 @@ torch==2.1.2+cu121 \
     #   fairscale
     #   groundingdino-gml
     #   salesforce-lavis
+    #   segment-anything-py
     #   timm
     #   torchvision
 torchvision==0.16.2+cu121 \
@@ -3079,6 +3084,7 @@ torchvision==0.16.2+cu121 \
     #   -r bazel/python/requirements.in
     #   groundingdino-gml
     #   salesforce-lavis
+    #   segment-anything-py
     #   timm
 tornado==6.4 \
     --hash=sha256:02ccefc7d8211e5a7f9e8bc3f9e5b0ad6262ba2fbb683a6443ecc804e5224ce0 \

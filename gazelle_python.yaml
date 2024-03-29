@@ -10341,6 +10341,21 @@ manifest:
     seaborn.relational: seaborn
     seaborn.utils: seaborn
     seaborn.widgets: seaborn
+    segment_anything: segment_anything_py
+    segment_anything.automatic_mask_generator: segment_anything_py
+    segment_anything.build_sam: segment_anything_py
+    segment_anything.modeling: segment_anything_py
+    segment_anything.modeling.common: segment_anything_py
+    segment_anything.modeling.image_encoder: segment_anything_py
+    segment_anything.modeling.mask_decoder: segment_anything_py
+    segment_anything.modeling.prompt_encoder: segment_anything_py
+    segment_anything.modeling.sam: segment_anything_py
+    segment_anything.modeling.transformer: segment_anything_py
+    segment_anything.predictor: segment_anything_py
+    segment_anything.utils: segment_anything_py
+    segment_anything.utils.amg: segment_anything_py
+    segment_anything.utils.onnx: segment_anything_py
+    segment_anything.utils.transforms: segment_anything_py
     semantic_version: semantic_version
     semantic_version.base: semantic_version
     semantic_version.django_fields: semantic_version
@@ -17497,4 +17512,4 @@ manifest:
     zope.interface.verify: zope.interface
   pip_repository:
     name: pip
-integrity: 08d99988a9c6ee1621c911cabe30d0e06b1e35d23210be4e323e47170f7fd33c
+integrity: 4b4e27b549d8f8f27f7c5d737435e7c90aaf26f05bee877cf6a14db1f4e42a6c

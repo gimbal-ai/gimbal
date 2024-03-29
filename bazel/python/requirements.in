@@ -28,6 +28,7 @@ salesforce-lavis==1.0.2
 scikit-image==0.22.0
 scikit-learn==1.4.0
 seaborn==0.13.2
+segment-anything-py==1.0
 supervision==0.17.1
 tensorboard==2.15.1
 torch==2.1.2
