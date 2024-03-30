@@ -58,6 +58,7 @@ configure_make(
             "--enable-cuvid",
             "--enable-ffnvcodec",
             "--enable-libnpp",
+            "--enable-libvpx",
             "--enable-nonfree",
             "--enable-nvdec",
             "--nvcc=$$EXT_BUILD_ROOT/$(SYSROOT)/usr/local/cuda/bin/nvcc",

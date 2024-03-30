@@ -2550,6 +2550,30 @@ def deb_repos():
         deps = ["@debian12_libc6_x86_64//:all_files", "@debian12_libx11-6_x86_64//:all_files", "@debian12_libxext6_x86_64//:all_files"],
     )
     deb_archive_w_pkg_providers(
+        name = "debian12_libvpx-dev_aarch64",
+        sha256 = "921630c0e4d44073dbe930e59c944c5d2a0ce58586c94ab38b87ac9b2697dd6d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/921630c0e4d44073dbe930e59c944c5d2a0ce58586c94ab38b87ac9b2697dd6d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libvpx/libvpx-dev_1.12.0-1+deb12u2_arm64.deb"],
+        deps = ["@debian12_libvpx7_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libvpx-dev_x86_64",
+        sha256 = "5eaf2e9ec92e689c524322b9aaf7c3b8f23d2f863c03a09646abe5c07bde5c96",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/5eaf2e9ec92e689c524322b9aaf7c3b8f23d2f863c03a09646abe5c07bde5c96.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libvpx/libvpx-dev_1.12.0-1+deb12u2_amd64.deb"],
+        deps = ["@debian12_libvpx7_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libvpx7_aarch64",
+        sha256 = "99c0f4ecaf5308f2c00b9634ecafd8b833228dbda3f4717961b583d3a815361d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/99c0f4ecaf5308f2c00b9634ecafd8b833228dbda3f4717961b583d3a815361d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libvpx/libvpx7_1.12.0-1+deb12u2_arm64.deb"],
+        deps = ["@debian12_libc6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libvpx7_x86_64",
+        sha256 = "5ccc3485f9cd2eafa32d163e4368a96722fe18440fb28906e3073c31ce742d60",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/5ccc3485f9cd2eafa32d163e4368a96722fe18440fb28906e3073c31ce742d60.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libvpx/libvpx7_1.12.0-1+deb12u2_amd64.deb"],
+        deps = ["@debian12_libc6_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
         name = "debian12_libwayland-bin_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "02e9361617b43b130ff032873a910258884160c169e89a1ca45d34d1150a2615",

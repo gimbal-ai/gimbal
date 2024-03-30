@@ -10,6 +10,7 @@ repositories:
   download_prefix: https://snapshot.debian.org/archive/debian/20231209T111918Z/
 packages:
 - name: libvdpau1
+- name: libvpx-dev
 - name: nasm
 - name: python3.11
   extra_symlinks:
