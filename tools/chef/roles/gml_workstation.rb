@@ -21,5 +21,6 @@ description "The base workstation setup"
 run_list(
   "recipe[gml_dev]",
   "recipe[gml_dev_extras::linux_clang]",
-  "recipe[gml_dev_extras]"
+  "recipe[gml_dev_extras]",
+  "recipe[gml_server]"
 )
