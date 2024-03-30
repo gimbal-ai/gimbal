@@ -119,6 +119,7 @@ pkg_tar(
         "@platforms//cpu:aarch64": "/usr/lib/aarch64-linux-gnu",
         "@platforms//cpu:x86_64": "/usr/lib/x86_64-linux-gnu",
     }),
+    visibility = ["//visibility:public"],
 )
 
 pkg_tar(
@@ -128,6 +129,7 @@ pkg_tar(
         ":ffprobe_bin",
     ],
     package_dir = "/usr/local/bin",
+    visibility = ["//visibility:public"],
 )
 
 collect_shared_libs(
