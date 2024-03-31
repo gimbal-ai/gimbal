@@ -76,7 +76,7 @@ func TestCreateIdempotentTx(t *testing.T) {
 	rows1.Close()
 
 	rows2, err := db.Queryx("SELECT count(*) FROM test_idempotency_key")
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	defer rows2.Close()
 	require.True(t, rows2.Next())
 	count := 0

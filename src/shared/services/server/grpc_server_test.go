@@ -281,7 +281,7 @@ func TestGrpcServerUnary(t *testing.T) {
 				resp, err = makeTestRequest(ctx, t, lis)
 			}
 			if test.expectError {
-				assert.NotNil(t, err)
+				require.Error(t, err)
 				stat, ok := status.FromError(err)
 				assert.True(t, ok)
 				assert.Equal(t, codes.Unauthenticated, stat.Code())

@@ -266,5 +266,5 @@ func TestTokenToProto_FailNoAudience(t *testing.T) {
 	require.NoError(t, err)
 
 	_, err = utils.TokenToProto(token)
-	assert.Error(t, err)
+	require.Error(t, err)
 }

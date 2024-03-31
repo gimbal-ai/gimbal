@@ -148,7 +148,7 @@ func TestEdgeToCPNATSTopic(t *testing.T) {
 	for _, test := range tests {
 		actual, err := edgepartition.EdgeToCPNATSTopic(id, test.topic, test.durable)
 
-		require.Nil(t, err)
+		require.NoError(t, err)
 		assert.Equal(t, test.expected, actual)
 	}
 }
@@ -191,7 +191,7 @@ func TestEdgeToCPNATSPartitionTopic(t *testing.T) {
 	for _, test := range tests {
 		actual, err := edgepartition.EdgeToCPNATSPartitionTopic(partition, test.topic, test.durable)
 
-		require.Nil(t, err)
+		require.NoError(t, err)
 		assert.Equal(t, test.expected, actual)
 	}
 }
@@ -201,7 +201,7 @@ func TestCPToEdgeNATSTopicBase(t *testing.T) {
 	actual, err := edgepartition.CPToEdgeNATSTopicBase(id)
 	expected := "cp2e.6b.6ba7b810-9dad-11d1-80b4-00c04fd430c8"
 
-	require.Nil(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, expected, actual)
 }
 
@@ -210,7 +210,7 @@ func TestCPToEdgeNATSTopic(t *testing.T) {
 	actual, err := edgepartition.CPToEdgeNATSTopic(id, corepb.CP_EDGE_TOPIC_STATUS, false)
 	expected := "cp2e.6b.6ba7b810-9dad-11d1-80b4-00c04fd430c8.status"
 
-	require.Nil(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, expected, actual)
 }
 
@@ -219,6 +219,6 @@ func TestCPNATSTopic(t *testing.T) {
 	actual, err := edgepartition.CPNATSTopic(edgepartition.EdgeIDToPartition(id), id.String(), corepb.CP_TOPIC_DEVICE_CONNECTED, true)
 	expected := "cp2cp.6b.6ba7b810-9dad-11d1-80b4-00c04fd430c8.DurabledeviceConnected"
 
-	require.Nil(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, expected, actual)
 }

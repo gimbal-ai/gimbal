@@ -35,11 +35,11 @@ func TestDefaultDBURI(t *testing.T) {
 
 	t.Run("With SSL", func(t *testing.T) {
 		viper.Set("postgres_ssl", true)
-		assert.Equal(t, DefaultDBURI(), "postgres://user:pass@postgres-host:5000/thedb?sslmode=require")
+		assert.Equal(t, "postgres://user:pass@postgres-host:5000/thedb?sslmode=require", DefaultDBURI())
 	})
 
 	t.Run("Without SSL", func(t *testing.T) {
 		viper.Set("postgres_ssl", false)
-		assert.Equal(t, DefaultDBURI(), "postgres://user:pass@postgres-host:5000/thedb?sslmode=disable")
+		assert.Equal(t, "postgres://user:pass@postgres-host:5000/thedb?sslmode=disable", DefaultDBURI())
 	})
 }

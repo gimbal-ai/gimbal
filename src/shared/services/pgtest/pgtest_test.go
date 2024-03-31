@@ -23,7 +23,6 @@ import (
 	"embed"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
 	"gimletlabs.ai/gimlet/src/shared/services/pgtest"
@@ -37,7 +36,7 @@ func TestSetupTestDB(t *testing.T) {
 
 	require.NoError(t, err)
 	require.NotNil(t, db)
-	assert.Nil(t, db.Ping())
+	require.NoError(t, db.Ping())
 }
 
 func TestSetupTestDB_CustomSchema(t *testing.T) {
@@ -46,5 +45,5 @@ func TestSetupTestDB_CustomSchema(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, db)
 
-	assert.Nil(t, db.Ping())
+	require.NoError(t, db.Ping())
 }

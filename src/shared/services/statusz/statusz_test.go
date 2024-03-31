@@ -38,7 +38,7 @@ func TestInstallPathHandler_NotReady(t *testing.T) {
 	w := httptest.NewRecorder()
 	mux.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusServiceUnavailable, w.Code)
-	assert.Equal(t, w.Body.String(), "thisIsATest\n")
+	assert.Equal(t, "thisIsATest\n", w.Body.String())
 }
 
 func TestInstallPathHandler_OK(t *testing.T) {
@@ -51,5 +51,5 @@ func TestInstallPathHandler_OK(t *testing.T) {
 	w := httptest.NewRecorder()
 	mux.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, w.Body.String(), "\n")
+	assert.Equal(t, "\n", w.Body.String())
 }

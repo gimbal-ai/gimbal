@@ -80,7 +80,7 @@ func TestUUIDFromProto_BitsValidUUID(t *testing.T) {
 func TestUUIDFromProto_EmptyUUID(t *testing.T) {
 	proto := &typespb.UUID{}
 	_, err := utils.UUIDFromProto(proto)
-	assert.NotNil(t, err)
+	require.Error(t, err)
 	assert.Contains(t, err.Error(), "uuid data in proto is nil")
 }
 

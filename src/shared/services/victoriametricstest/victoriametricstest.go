@@ -86,7 +86,7 @@ func WaitForMetrics(t *testing.T, conn promv1.API, q string) {
 		return err
 	}, bo)
 
-	require.Nil(t, err)
+	require.NoError(t, err)
 }
 
 // SetupTestVictoriaMetrics sets up a test instance for victoriametrics.

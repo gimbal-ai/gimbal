@@ -34,7 +34,7 @@ import (
 func TestSetupTestVictoriaMetrics(t *testing.T) {
 	conn, err := victoriametricstest.SetupTestVictoriaMetrics(t)
 
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.NotNil(t, conn)
 }
 
