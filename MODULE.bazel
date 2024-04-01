@@ -80,12 +80,15 @@ single_version_override(
     ],
 )
 
-single_version_override(
+archive_override(
     module_name = "rules_python_gazelle_plugin",
+    integrity = "sha256-Ru+6YNMQVjEJJfYgBjdVgQ2l6IQWq7VVkDcpUJh5Q/4=",
     patch_strip = 2,
     patches = [
         "//bazel/external:rules_python_gazelle_plugin.proto_import.patch",
     ],
+    strip_prefix = "rules_python-bdb2aa2e5c0ca435918037aa3568c0b0c4c9c1ab/gazelle",
+    urls = ["https://github.com/bazelbuild/rules_python/archive/bdb2aa2e5c0ca435918037aa3568c0b0c4c9c1ab.tar.gz"],
 )
 
 # rules_go/gazelle setup

@@ -102,6 +102,7 @@ gml_oci_image(
 # gazelle:map_kind py_test gml_py_test @gml//bazel:gml_build_system.bzl
 
 # gazelle:python_generation_mode file
+# gazelle:python_default_visibility NONE
 
 exports_files([
     "LICENSE",
