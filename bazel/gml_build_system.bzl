@@ -43,7 +43,7 @@ def gml_copts():
     # Since abseil's BUILD.bazel doesn't provide any system 'includes', add them in manually here.
     # In contrast, libraries like googletest do provide includes, so no need to add those.
     manual_system_includes = [
-        "-isystemexternal/abseil-cpp~20230802.0",
+        "-isystemexternal/abseil-cpp~20230802.1",
         "-isystemexternal/org_tensorflow",
         "-isystemexternal/com_github_google_mediapipe",
     ]
