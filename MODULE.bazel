@@ -211,7 +211,7 @@ oci.pull(
 oci.pull(
     name = "victoria_metrics_1_93_6",
     digest = "sha256:d82583468b3f90dda5681b9a3496185ba1c2db6938e9dba36f3a05ebe6963f9c",  # v1.93.6 multiarch digest
-    image = "index.docker.io/victoriametrics/victoria-metrics",
+    image = "mirror.gcr.io/victoriametrics/victoria-metrics",
     platforms = [
         "linux/amd64",
         "linux/arm64",
@@ -220,7 +220,7 @@ oci.pull(
 oci.pull(
     name = "python_3_11_image",
     digest = "sha256:2a746e2b9dfd9c155e1218ee5bcaad64c3c8816258c0ee7d25f3893ed2252a1e",  # 3.11-slim-bookworm multiarch
-    image = "index.docker.io/library/python",
+    image = "mirror.gcr.io/library/python",
     platforms = [
         "linux/amd64",
         "linux/arm64/v8",
@@ -229,7 +229,7 @@ oci.pull(
 oci.pull(
     name = "pgvector_pg15",
     digest = "sha256:f6bbe84a8e61c58fa8f441b502cce01ec4055c78ce19467c4315cd62d4cdbb97",  # pg15 multiarch digest
-    image = "index.docker.io/pgvector/pgvector",
+    image = "mirror.gcr.io/pgvector/pgvector",
     platforms = [
         "linux/amd64",
         "linux/arm64",
