@@ -97,8 +97,10 @@ message ExecutionGraphStatus {
 
 // ApplyExecutionGraph is a request to apply the execution graph deployment to the edge device.
 message ApplyExecutionGraph {
-  // The ID of the physical pipeline which this execution graph is for.
+  // The ID of the physical pipeline that generated this graph.
   gml.types.UUID physical_pipeline_id = 1 [ (gogoproto.customname) = "PhysicalPipelineID" ];
+  // The ID of the logical pipeline that generated this graph.
+  gml.types.UUID logical_pipeline_id = 3 [ (gogoproto.customname) = "LogicalPipelineID" ];
   ExecutionGraphSpec spec = 2;
 }
 
