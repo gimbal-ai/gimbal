@@ -274,6 +274,7 @@ Status ModelExecHandler::HandleApplyExecutionGraph(const ApplyExecutionGraph& eg
 
   LOG(INFO) << "Starting model execution  " << id;
   queued_execution_graph_ = nullptr;
+  ctrl_exec_ctx_->SetLogicalPipelineID(ParseUUID(eg.logical_pipeline_id()));
 
   if (!eg.has_spec()) {
     LOG(ERROR) << "Missing spec in ApplyExecutionGraph msg";
