@@ -34,6 +34,18 @@ using ::opentelemetry::sdk::common::OwnedAttributeValue;
 
 static constexpr char kDetectionsSummaryNode[] = R"pbtxt(
 calculator: "DetectionsSummaryCalculator"
+node_options {
+  [type.googleapis.com/gml.gem.calculators.core.optionspb.DetectionsSummaryCalculatorOptions] {
+    metric_attributes {
+      key: "pipeline_id"
+      value: "test_pipeline"
+    }
+    metric_attributes {
+      key: "device_id"
+      value: "test_device"
+    }
+  }
+}
 input_stream: "detection_list"
 )pbtxt";
 
@@ -50,6 +62,20 @@ struct DetectionsSummaryTestCase {
 };
 
 class DetectionsSummaryTest : public ::testing::TestWithParam<DetectionsSummaryTestCase> {};
+
+auto MatchPointData(ExpectedHist expected) {
+  return ::testing::AllOf(
+      ::testing::Field(
+          &opentelemetry::sdk::metrics::PointDataAttributes::point_data,
+          ::testing::VariantWith<opentelemetry::sdk::metrics::HistogramPointData>(::testing::AllOf(
+              ::testing::Field(&opentelemetry::sdk::metrics::HistogramPointData::boundaries_,
+                               ::testing::ElementsAreArray(expected.bucket_bounds)),
+              ::testing::Field(&opentelemetry::sdk::metrics::HistogramPointData::counts_,
+                               ::testing::ElementsAreArray(expected.bucket_counts))))),
+      ::testing::Field(&opentelemetry::sdk::metrics::PointDataAttributes::attributes,
+                       ::testing::UnorderedElementsAreArray(expected.attributes.begin(),
+                                                            expected.attributes.end())));
+}
 
 TEST_P(DetectionsSummaryTest, CollectsStatsCorrectly) {
   auto test_case = GetParam();
@@ -80,18 +106,8 @@ TEST_P(DetectionsSummaryTest, CollectsStatsCorrectly) {
       const auto& expected_hists = test_case.expected_hists[name];
       const auto& point_data = metric_datum.point_data_attr_;
       ASSERT_EQ(expected_hists.size(), point_data.size());
-      for (const auto& [i, p] : Enumerate(point_data)) {
-        ASSERT_TRUE(
-            std::holds_alternative<opentelemetry::sdk::metrics::HistogramPointData>(p.point_data));
-        const auto& histogram_point_data =
-            std::get<opentelemetry::sdk::metrics::HistogramPointData>(p.point_data);
-        EXPECT_EQ(expected_hists[i].bucket_bounds, histogram_point_data.boundaries_);
-        EXPECT_EQ(expected_hists[i].bucket_counts, histogram_point_data.counts_);
-
-        EXPECT_THAT(p.attributes,
-                    ::testing::UnorderedElementsAreArray(expected_hists[i].attributes.begin(),
-                                                         expected_hists[i].attributes.end()));
-      }
+      EXPECT_THAT(point_data, ::testing::UnorderedElementsAre(MatchPointData(expected_hists[0]),
+                                                              MatchPointData(expected_hists[1])));
     }
   };
   auto results_cb =
@@ -150,12 +166,16 @@ bounding_box {
                     {
                         {0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0},
                         {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {{"class", "bottle"}},
+                        {{"pipeline_id", "test_pipeline"},
+                         {"device_id", "test_device"},
+                         {"class", "bottle"}},
                     },
                     {
                         {0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0},
                         {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {{"class", "person"}},
+                        {{"pipeline_id", "test_pipeline"},
+                         {"device_id", "test_device"},
+                         {"class", "person"}},
                     },
                 },
             },
@@ -165,12 +185,16 @@ bounding_box {
                     {
                         {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9},
                         {0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0},
-                        {{"class", "bottle"}},
+                        {{"pipeline_id", "test_pipeline"},
+                         {"device_id", "test_device"},
+                         {"class", "bottle"}},
                     },
                     {
                         {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9},
                         {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
-                        {{"class", "person"}},
+                        {{"pipeline_id", "test_pipeline"},
+                         {"device_id", "test_device"},
+                         {"class", "person"}},
                     },
                 },
             },

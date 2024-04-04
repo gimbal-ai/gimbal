@@ -21,14 +21,26 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 
 proto_library(
     name = "optionspb_proto",
-    srcs = ["packet_latency_metrics_sink_calculator_options.proto"],
+    srcs = [
+        "detections_summary_calculator_options.proto",
+        "image_quality_calculator_options.proto",
+        "packet_latency_metrics_sink_calculator_options.proto",
+    ],
     visibility = ["//visibility:public"],
 )
 
 proto_cc_library(
     name = "optionspb_cc_library",
-    srcs = ["packet_latency_metrics_sink_calculator_options.pb.cc"],
-    hdrs = ["packet_latency_metrics_sink_calculator_options.pb.h"],
+    srcs = [
+        "detections_summary_calculator_options.pb.cc",
+        "image_quality_calculator_options.pb.cc",
+        "packet_latency_metrics_sink_calculator_options.pb.cc",
+    ],
+    hdrs = [
+        "detections_summary_calculator_options.pb.h",
+        "image_quality_calculator_options.pb.h",
+        "packet_latency_metrics_sink_calculator_options.pb.h",
+    ],
     visibility = ["//visibility:public"],
     deps = ["@com_google_protobuf//:protobuf"],
 )
@@ -38,6 +50,10 @@ proto_compile(
     outputs = [
         "packet_latency_metrics_sink_calculator_options.pb.cc",
         "packet_latency_metrics_sink_calculator_options.pb.h",
+        "detections_summary_calculator_options.pb.cc",
+        "detections_summary_calculator_options.pb.h",
+        "image_quality_calculator_options.pb.cc",
+        "image_quality_calculator_options.pb.h",
     ],
     plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
     proto = "optionspb_proto",
@@ -46,8 +62,16 @@ proto_compile(
 
 proto_compile(
     name = "optionspb_go_compile",
-    output_mappings = ["packet_latency_metrics_sink_calculator_options.pb.go=gimletlabs.ai/gimlet/src/gem/calculators/core/optionspb/packet_latency_metrics_sink_calculator_options.pb.go"],
-    outputs = ["packet_latency_metrics_sink_calculator_options.pb.go"],
+    output_mappings = [
+        "packet_latency_metrics_sink_calculator_options.pb.go=gimletlabs.ai/gimlet/src/gem/calculators/core/optionspb/packet_latency_metrics_sink_calculator_options.pb.go",
+        "detections_summary_calculator_options.pb.go=gimletlabs.ai/gimlet/src/gem/calculators/core/optionspb/detections_summary_calculator_options.pb.go",
+        "image_quality_calculator_options.pb.go=gimletlabs.ai/gimlet/src/gem/calculators/core/optionspb/image_quality_calculator_options.pb.go",
+    ],
+    outputs = [
+        "packet_latency_metrics_sink_calculator_options.pb.go",
+        "detections_summary_calculator_options.pb.go",
+        "image_quality_calculator_options.pb.go",
+    ],
     plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
     proto = "optionspb_proto",
     visibility = ["//visibility:public"],
@@ -55,7 +79,11 @@ proto_compile(
 
 proto_go_library(
     name = "optionspb_go_proto",
-    srcs = ["packet_latency_metrics_sink_calculator_options.pb.go"],
+    srcs = [
+        "detections_summary_calculator_options.pb.go",
+        "image_quality_calculator_options.pb.go",
+        "packet_latency_metrics_sink_calculator_options.pb.go",
+    ],
     importpath = "gimletlabs.ai/gimlet/src/gem/calculators/core/optionspb",
     visibility = ["//visibility:public"],
     deps = [
@@ -71,7 +99,11 @@ proto_go_library(
 
 proto_compile(
     name = "optionspb_py_compile",
-    outputs = ["packet_latency_metrics_sink_calculator_options_pb2.py"],
+    outputs = [
+        "packet_latency_metrics_sink_calculator_options_pb2.py",
+        "detections_summary_calculator_options_pb2.py",
+        "image_quality_calculator_options_pb2.py",
+    ],
     plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
     proto = "optionspb_proto",
     visibility = ["//visibility:public"],
@@ -79,7 +111,11 @@ proto_compile(
 
 proto_py_library(
     name = "optionspb_py_library",
-    srcs = ["packet_latency_metrics_sink_calculator_options_pb2.py"],
+    srcs = [
+        "detections_summary_calculator_options_pb2.py",
+        "image_quality_calculator_options_pb2.py",
+        "packet_latency_metrics_sink_calculator_options_pb2.py",
+    ],
     visibility = ["//visibility:public"],
     deps = ["@pip//protobuf"],
 )

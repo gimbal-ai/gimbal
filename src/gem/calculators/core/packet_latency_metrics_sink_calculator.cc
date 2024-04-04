@@ -28,29 +28,24 @@
 
 namespace gml::gem::calculators::core {
 
-namespace {
-std::vector<double> MillisToSeconds(std::vector<double> in) {
-  for (double& i : in) {
-    i /= 1000.0;
-  }
-  return in;
-}
-}  // namespace
+const std::vector<double> kLatencyBucketBounds = {0.000, 0.005, 0.010, 0.015, 0.020, 0.025, 0.030,
+                                                  0.035, 0.040, 0.045, 0.050, 0.075, 0.100, 0.150};
 
 Status PacketLatencyMetricsSinkCalculator::BuildMetrics(mediapipe::CalculatorContext* cc) {
   const auto& options = cc->Options<optionspb::PacketLatencyMetricsSinkCalculatorOptions>();
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
-  // TODO(james): make the bounds configurable in CalculatorOptions.
+
   latency_hist_ = metrics_system.CreateHistogramWithBounds<double>(
-      absl::Substitute("gml_gem_$0_latency_seconds", options.name()),
-      MillisToSeconds({0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100, 150}));
+      absl::Substitute("gml_gem_$0_latency_seconds", options.name()), kLatencyBucketBounds);
   return Status::OK();
 }
 
 Status PacketLatencyMetricsSinkCalculator::RecordMetrics(mediapipe::CalculatorContext* cc) {
+  const auto& options = cc->Options<optionspb::PacketLatencyMetricsSinkCalculatorOptions>();
   auto& packet_latency = cc->Inputs().Index(0).Get<mediapipe::PacketLatency>();
-  latency_hist_->Record(static_cast<double>(packet_latency.current_latency_usec()) / 1000.0 /
-                        1000.0);
+  latency_hist_->Record(
+      static_cast<double>(packet_latency.current_latency_usec()) / 1000.0 / 1000.0,
+      options.metric_attributes());
   return Status::OK();
 }
 

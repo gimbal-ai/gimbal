@@ -21,8 +21,7 @@ package gml.gem.calculators.core.optionspb;
 
 option go_package = "gimletlabs.ai/gimlet/src/gem/calculators/core/optionspb;optionspb";
 
-message PacketLatencyMetricsSinkCalculatorOptions {
-  // Name of the part of the pipeline latency is being measured for.
-  string name = 1;
-  map<string, string> metric_attributes = 2;
+message ImageQualityCalculatorOptions {
+  // Additional attributes to add to the metrics.
+  map<string, string> metric_attributes = 1;
 }

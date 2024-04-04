@@ -30,6 +30,7 @@
 #include "src/common/base/error.h"
 #include "src/common/bazel/runfiles.h"
 #include "src/common/metrics/metrics_system.h"
+#include "src/gem/calculators/core/optionspb/image_quality_calculator_options.pb.h"
 
 namespace gml::gem::calculators::core {
 
@@ -132,6 +133,7 @@ Status ImageQualityCalculator::OpenImpl(mediapipe::CalculatorContext*) {
 
 Status ImageQualityCalculator::ProcessImpl(mediapipe::CalculatorContext* cc) {
   DEFER(frame_count++);
+  const auto& options = cc->Options<optionspb::ImageQualityCalculatorOptions>();
   const auto& image_frame = cc->Inputs().Tag(kImageFrameTag).Get<mediapipe::ImageFrame>();
   cv::Mat input_mat = mediapipe::formats::MatView(&image_frame);
 
@@ -165,8 +167,8 @@ Status ImageQualityCalculator::ProcessImpl(mediapipe::CalculatorContext* cc) {
   }
 
   // Record the otel metrics.
-  brisque_score_->Record(metrics_.brisque_score());
-  blurriness_score_->Record(metrics_.blurriness_score());
+  brisque_score_->Record(metrics_.brisque_score(), options.metric_attributes());
+  blurriness_score_->Record(metrics_.blurriness_score(), options.metric_attributes());
 
   // For the histograms we compute the R,G,B and grayscale histograms and store them
   // in the batch. We treat all pixels as normalized 0 - 1, although for computations we use the
