@@ -259,6 +259,10 @@ def _gml_minimal_py_image(name, binary, **kwargs):
 def gml_py_image(name, binary, **kwargs):
     default_arg(kwargs, "include_runfiles", True)
 
+    default_arg(kwargs, "tags", [])
+    if "manual" not in kwargs["tags"]:
+        kwargs["tags"] = kwargs["tags"] + ["manual"]
+
     _gml_fast_py_image(name + ".fast", binary, **kwargs)
     _gml_minimal_py_image(name, binary, **kwargs)
 
