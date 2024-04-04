@@ -39,8 +39,7 @@ class DetectionsSummaryCalculator
     : public MetricsSinkCalculator<std::vector<::gml::internal::api::core::v1::Detection>> {
  protected:
   Status BuildMetrics(mediapipe::CalculatorContext* cc) override;
-  Status RecordMetrics(
-      const std::vector<::gml::internal::api::core::v1::Detection>& detections) override;
+  Status RecordMetrics(mediapipe::CalculatorContext* cc) override;
 
  private:
   std::unique_ptr<opentelemetry::metrics::Histogram<uint64_t>> detection_hist_;

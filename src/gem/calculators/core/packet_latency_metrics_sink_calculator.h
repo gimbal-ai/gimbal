@@ -37,7 +37,7 @@ namespace gml::gem::calculators::core {
 class PacketLatencyMetricsSinkCalculator : public MetricsSinkCalculator<mediapipe::PacketLatency> {
  protected:
   Status BuildMetrics(mediapipe::CalculatorContext* cc) override;
-  Status RecordMetrics(const mediapipe::PacketLatency& detections) override;
+  Status RecordMetrics(mediapipe::CalculatorContext* cc) override;
 
  private:
   std::unique_ptr<opentelemetry::metrics::Histogram<double>> latency_hist_;

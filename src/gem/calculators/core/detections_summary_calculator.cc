@@ -38,7 +38,8 @@ Status DetectionsSummaryCalculator::BuildMetrics(mediapipe::CalculatorContext*) 
   return Status::OK();
 }
 
-Status DetectionsSummaryCalculator::RecordMetrics(const std::vector<Detection>& detections) {
+Status DetectionsSummaryCalculator::RecordMetrics(mediapipe::CalculatorContext* cc) {
+  auto& detections = cc->Inputs().Index(0).Get<std::vector<Detection>>();
   // If there are many labels in a detection, we don't want to send metrics for all of them, as the
   // metrics will not be useful after some point. Instead, only send metrics for the top N
   // classes.

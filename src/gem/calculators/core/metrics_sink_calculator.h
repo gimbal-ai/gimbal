@@ -44,14 +44,14 @@ class MetricsSinkCalculator : public mediapipe::CalculatorBase {
     return absl::OkStatus();
   }
   absl::Status Process(mediapipe::CalculatorContext* cc) override {
-    GML_ABSL_RETURN_IF_ERROR(RecordMetrics(cc->Inputs().Index(0).Get<T>()));
+    GML_ABSL_RETURN_IF_ERROR(RecordMetrics(cc));
     return absl::OkStatus();
   }
   absl::Status Close(mediapipe::CalculatorContext*) override { return absl::OkStatus(); }
 
  protected:
   virtual Status BuildMetrics(mediapipe::CalculatorContext*) { return Status::OK(); }
-  virtual Status RecordMetrics(const T& data) = 0;
+  virtual Status RecordMetrics(mediapipe::CalculatorContext*) = 0;
 };
 
 }  // namespace gml::gem::calculators::core

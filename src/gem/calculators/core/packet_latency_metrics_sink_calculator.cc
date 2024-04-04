@@ -47,8 +47,8 @@ Status PacketLatencyMetricsSinkCalculator::BuildMetrics(mediapipe::CalculatorCon
   return Status::OK();
 }
 
-Status PacketLatencyMetricsSinkCalculator::RecordMetrics(
-    const mediapipe::PacketLatency& packet_latency) {
+Status PacketLatencyMetricsSinkCalculator::RecordMetrics(mediapipe::CalculatorContext* cc) {
+  auto& packet_latency = cc->Inputs().Index(0).Get<mediapipe::PacketLatency>();
   latency_hist_->Record(static_cast<double>(packet_latency.current_latency_usec()) / 1000.0 /
                         1000.0);
   return Status::OK();
