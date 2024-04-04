@@ -219,7 +219,7 @@ oci.pull(
 )
 oci.pull(
     name = "python_3_11_image",
-    digest = "sha256:2a746e2b9dfd9c155e1218ee5bcaad64c3c8816258c0ee7d25f3893ed2252a1e",  # 3.11-slim-bookworm multiarch
+    digest = "sha256:90f8795536170fd08236d2ceb74fe7065dbf74f738d8b84bfbf263656654dc9b",  # 3.11.8-slim-bookworm multiarch
     image = "mirror.gcr.io/library/python",
     platforms = [
         "linux/amd64",
