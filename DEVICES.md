@@ -13,7 +13,7 @@
 # Ensure you set your KUBECONFIG to the right cluster ie
 # export KUBECONFIG=~/nuc_k3s.yaml
 
-export GML_CONTROLPLANE_ADDR=$USER.dev.app.gimletlabs.dev:443
+export GML_CONTROLPLANE_ADDR=app.$USER.gimletlabs.dev:443
 export GML_DEPLOY_KEY=<deploy-key> # replace with your deploy key
 
 helm install my-gem-release oci://us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/charts/gem -n gml \
@@ -31,7 +31,7 @@ If you need to get past a taint, you can use the `tolerations` option.
 For example, to run on `nuc-004` and get past the `recorded_video` taint, you can do:
 
 ```sh
-export GML_CONTROLPLANE_ADDR=$USER.dev.app.gimletlabs.dev:443
+export GML_CONTROLPLANE_ADDR=app.$USER.gimletlabs.dev:443
 export GML_DEPLOY_KEY=<deploy-key> # replace with your deploy key
 
 helm install my-gem-release oci://us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/charts/gem -n gml \
@@ -49,7 +49,7 @@ helm install my-gem-release oci://us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-dock
 To use the GPUs:
 
 ```sh
-export GML_CONTROLPLANE_ADDR=$USER.dev.app.gimletlabs.dev:443
+export GML_CONTROLPLANE_ADDR=app.$USER.gimletlabs.dev:443
 export GML_DEPLOY_KEY=<deploy-key> # replace with your deploy key
 
 helm install my-gem-release oci://us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/charts/gem -n gml \
@@ -76,7 +76,7 @@ scp ./src/gem/install.sh $USER@james-jetson:~/install.sh
 Then after ssh-ing
 
 ```sh
-export GML_CONTROLPLANE_ADDR=$USER.dev.app.gimletlabs.dev:443
+export GML_CONTROLPLANE_ADDR=app.$USER.gimletlabs.dev:443
 export GML_DEPLOY_KEY=<deploy-key> # replace with your deploy key
 # Optionally set. This will tail the logs and exit when you ctrl-c.
 # export GML_DEV_MODE="true"
@@ -90,7 +90,7 @@ This will be a common deployment pattern for devices that are not in a k8s clust
 Will deploy several GEMS with pre-recorded data to your k8s cluster.
 
 ```sh
-export GML_CONTROLPLANE_ADDR=$USER.dev.app.gimletlabs.dev:443
+export GML_CONTROLPLANE_ADDR=app.$USER.gimletlabs.dev:443
 export GML_NUM_RECORDED=5 # How many to deploy per recording
 export GML_API_KEY=<api-key> # replace with your api key
 export GML_DEPLOY_KEY=<deploy-key> # replace with your deploy key

@@ -23,6 +23,7 @@
   - [Python Development](#python-development)
     - [Fast python image builds](#fast-python-image-builds)
     - [Python gazelle](#python-gazelle)
+  - [C++ Development](#c-development)
 
 <!-- /TOC -->
 
@@ -118,7 +119,7 @@ We currently only support running control plane in GKE (support for Minikube com
 ### Accessing the UI in the browser
 
 We have ingress and LetsEncrypt signed certs automatically setup for the dev cluster. As long as you are on
-tailscale, you should be able to just navigate to `<YOUR_USERNAME>.dev.app.gimletlabs.dev` via your browser
+tailscale, you should be able to just navigate to `app.<YOUR_USERNAME>.gimletlabs.dev` via your browser
 to access the UI.
 
 ## Running a GEM with a fake camera
@@ -127,7 +128,7 @@ If you need a GEM that sends data to your controlplane for testing purposes, you
 
   ```sh
   export GML_DEPLOY_KEY=<DEPLOY_KEY>
-  export GML_CONTROLPLANE_ADDR=$USER.dev.app.gimletlabs.dev
+  export GML_CONTROLPLANE_ADDR=app.$USER.gimletlabs.dev
   skaffold run -f ./skaffold/skaffold_gem.yaml -n $USER
   ```
 
@@ -152,7 +153,7 @@ If you need a GEM that sends data to your controlplane for testing purposes, you
     sudo chmod g+r ${HOSTNAME}.beluga-snapper.ts.net.key
     ```
 
-1. To point to a backend that isn't yours, set the `BACKEND` env var. We default to `${USER}.dev.app.gimletlabs.dev`
+1. To point to a backend that isn't yours, set the `BACKEND` env var. We default to `app.${USER}.gimletlabs.dev`
 
 1. From the `src/ui` directory, run `pnpm dev`.
 
