@@ -10,7 +10,9 @@ opencv-python-headless==4.5.5.64
 # src/experimental/research/
 absl-py==2.0.0
 efficientvit-gml==0.1.7
+facenet_pytorch==2.5.3
 filetype==1.2.0
+google-cloud-videointelligence==2.13.3
 gradio==4.14.0
 grequests==0.7.0
 groundingdino-gml==0.1.2

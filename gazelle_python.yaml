@@ -970,6 +970,14 @@ manifest:
     executing: executing
     executing.executing: executing
     executing.version: executing
+    facenet_pytorch: facenet_pytorch
+    facenet_pytorch.models.inception_resnet_v1: facenet_pytorch
+    facenet_pytorch.models.mtcnn: facenet_pytorch
+    facenet_pytorch.models.utils.detect_face: facenet_pytorch
+    facenet_pytorch.models.utils.download: facenet_pytorch
+    facenet_pytorch.models.utils.tensorflow2pytorch: facenet_pytorch
+    facenet_pytorch.models.utils.training: facenet_pytorch
+    facenet_pytorch.test: facenet_pytorch
     fairscale: fairscale
     fairscale.experimental: fairscale
     fairscale.experimental.nn: fairscale
@@ -1747,6 +1755,88 @@ manifest:
     gitdb.util: gitdb
     gitdb.utils: gitdb
     gitdb.utils.encoding: gitdb
+    google.api.annotations_pb2: googleapis_common_protos
+    google.api.auth_pb2: googleapis_common_protos
+    google.api.backend_pb2: googleapis_common_protos
+    google.api.billing_pb2: googleapis_common_protos
+    google.api.client_pb2: googleapis_common_protos
+    google.api.config_change_pb2: googleapis_common_protos
+    google.api.consumer_pb2: googleapis_common_protos
+    google.api.context_pb2: googleapis_common_protos
+    google.api.control_pb2: googleapis_common_protos
+    google.api.distribution_pb2: googleapis_common_protos
+    google.api.documentation_pb2: googleapis_common_protos
+    google.api.endpoint_pb2: googleapis_common_protos
+    google.api.error_reason_pb2: googleapis_common_protos
+    google.api.field_behavior_pb2: googleapis_common_protos
+    google.api.field_info_pb2: googleapis_common_protos
+    google.api.http_pb2: googleapis_common_protos
+    google.api.httpbody_pb2: googleapis_common_protos
+    google.api.label_pb2: googleapis_common_protos
+    google.api.launch_stage_pb2: googleapis_common_protos
+    google.api.log_pb2: googleapis_common_protos
+    google.api.logging_pb2: googleapis_common_protos
+    google.api.metric_pb2: googleapis_common_protos
+    google.api.monitored_resource_pb2: googleapis_common_protos
+    google.api.monitoring_pb2: googleapis_common_protos
+    google.api.policy_pb2: googleapis_common_protos
+    google.api.quota_pb2: googleapis_common_protos
+    google.api.resource_pb2: googleapis_common_protos
+    google.api.routing_pb2: googleapis_common_protos
+    google.api.service_pb2: googleapis_common_protos
+    google.api.source_info_pb2: googleapis_common_protos
+    google.api.system_parameter_pb2: googleapis_common_protos
+    google.api.usage_pb2: googleapis_common_protos
+    google.api.visibility_pb2: googleapis_common_protos
+    google.api_core: google_api_core
+    google.api_core.bidi: google_api_core
+    google.api_core.client_info: google_api_core
+    google.api_core.client_options: google_api_core
+    google.api_core.datetime_helpers: google_api_core
+    google.api_core.exceptions: google_api_core
+    google.api_core.extended_operation: google_api_core
+    google.api_core.future: google_api_core
+    google.api_core.future.async_future: google_api_core
+    google.api_core.future.base: google_api_core
+    google.api_core.future.polling: google_api_core
+    google.api_core.gapic_v1: google_api_core
+    google.api_core.gapic_v1.client_info: google_api_core
+    google.api_core.gapic_v1.config: google_api_core
+    google.api_core.gapic_v1.config_async: google_api_core
+    google.api_core.gapic_v1.method: google_api_core
+    google.api_core.gapic_v1.method_async: google_api_core
+    google.api_core.gapic_v1.routing_header: google_api_core
+    google.api_core.general_helpers: google_api_core
+    google.api_core.grpc_helpers: google_api_core
+    google.api_core.grpc_helpers_async: google_api_core
+    google.api_core.iam: google_api_core
+    google.api_core.operation: google_api_core
+    google.api_core.operation_async: google_api_core
+    google.api_core.operations_v1: google_api_core
+    google.api_core.operations_v1.abstract_operations_client: google_api_core
+    google.api_core.operations_v1.operations_async_client: google_api_core
+    google.api_core.operations_v1.operations_client: google_api_core
+    google.api_core.operations_v1.operations_client_config: google_api_core
+    google.api_core.operations_v1.pagers: google_api_core
+    google.api_core.operations_v1.transports: google_api_core
+    google.api_core.operations_v1.transports.base: google_api_core
+    google.api_core.operations_v1.transports.rest: google_api_core
+    google.api_core.page_iterator: google_api_core
+    google.api_core.page_iterator_async: google_api_core
+    google.api_core.path_template: google_api_core
+    google.api_core.protobuf_helpers: google_api_core
+    google.api_core.rest_helpers: google_api_core
+    google.api_core.rest_streaming: google_api_core
+    google.api_core.retry: google_api_core
+    google.api_core.retry.retry_base: google_api_core
+    google.api_core.retry.retry_streaming: google_api_core
+    google.api_core.retry.retry_streaming_async: google_api_core
+    google.api_core.retry.retry_unary: google_api_core
+    google.api_core.retry.retry_unary_async: google_api_core
+    google.api_core.retry_async: google_api_core
+    google.api_core.timeout: google_api_core
+    google.api_core.universe: google_api_core
+    google.api_core.version: google_api_core
     google.auth: google_auth
     google.auth.api_key: google_auth
     google.auth.app_engine: google_auth
@@ -1775,6 +1865,90 @@ manifest:
     google.auth.transport.requests: google_auth
     google.auth.transport.urllib3: google_auth
     google.auth.version: google_auth
+    google.cloud.extended_operations_pb2: googleapis_common_protos
+    google.cloud.location.locations_pb2: googleapis_common_protos
+    google.cloud.videointelligence: google_cloud_videointelligence
+    google.cloud.videointelligence.gapic_version: google_cloud_videointelligence
+    google.cloud.videointelligence_v1: google_cloud_videointelligence
+    google.cloud.videointelligence_v1.gapic_version: google_cloud_videointelligence
+    google.cloud.videointelligence_v1.services: google_cloud_videointelligence
+    google.cloud.videointelligence_v1.services.video_intelligence_service: google_cloud_videointelligence
+    google.cloud.videointelligence_v1.services.video_intelligence_service.async_client: google_cloud_videointelligence
+    google.cloud.videointelligence_v1.services.video_intelligence_service.client: google_cloud_videointelligence
+    google.cloud.videointelligence_v1.services.video_intelligence_service.transports: google_cloud_videointelligence
+    google.cloud.videointelligence_v1.services.video_intelligence_service.transports.base: google_cloud_videointelligence
+    google.cloud.videointelligence_v1.services.video_intelligence_service.transports.grpc: google_cloud_videointelligence
+    google.cloud.videointelligence_v1.services.video_intelligence_service.transports.grpc_asyncio: google_cloud_videointelligence
+    google.cloud.videointelligence_v1.services.video_intelligence_service.transports.rest: google_cloud_videointelligence
+    google.cloud.videointelligence_v1.types: google_cloud_videointelligence
+    google.cloud.videointelligence_v1.types.video_intelligence: google_cloud_videointelligence
+    google.cloud.videointelligence_v1beta2: google_cloud_videointelligence
+    google.cloud.videointelligence_v1beta2.gapic_version: google_cloud_videointelligence
+    google.cloud.videointelligence_v1beta2.services: google_cloud_videointelligence
+    google.cloud.videointelligence_v1beta2.services.video_intelligence_service: google_cloud_videointelligence
+    google.cloud.videointelligence_v1beta2.services.video_intelligence_service.async_client: google_cloud_videointelligence
+    google.cloud.videointelligence_v1beta2.services.video_intelligence_service.client: google_cloud_videointelligence
+    google.cloud.videointelligence_v1beta2.services.video_intelligence_service.transports: google_cloud_videointelligence
+    google.cloud.videointelligence_v1beta2.services.video_intelligence_service.transports.base: google_cloud_videointelligence
+    google.cloud.videointelligence_v1beta2.services.video_intelligence_service.transports.grpc: google_cloud_videointelligence
+    google.cloud.videointelligence_v1beta2.services.video_intelligence_service.transports.grpc_asyncio: google_cloud_videointelligence
+    google.cloud.videointelligence_v1beta2.services.video_intelligence_service.transports.rest: google_cloud_videointelligence
+    google.cloud.videointelligence_v1beta2.types: google_cloud_videointelligence
+    google.cloud.videointelligence_v1beta2.types.video_intelligence: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p1beta1: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p1beta1.gapic_version: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p1beta1.services: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p1beta1.services.video_intelligence_service: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p1beta1.services.video_intelligence_service.async_client: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p1beta1.services.video_intelligence_service.client: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p1beta1.services.video_intelligence_service.transports: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p1beta1.services.video_intelligence_service.transports.base: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p1beta1.services.video_intelligence_service.transports.grpc: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p1beta1.services.video_intelligence_service.transports.grpc_asyncio: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p1beta1.services.video_intelligence_service.transports.rest: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p1beta1.types: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p1beta1.types.video_intelligence: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p2beta1: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p2beta1.gapic_version: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p2beta1.services: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p2beta1.services.video_intelligence_service: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p2beta1.services.video_intelligence_service.async_client: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p2beta1.services.video_intelligence_service.client: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p2beta1.services.video_intelligence_service.transports: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p2beta1.services.video_intelligence_service.transports.base: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p2beta1.services.video_intelligence_service.transports.grpc: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p2beta1.services.video_intelligence_service.transports.grpc_asyncio: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p2beta1.services.video_intelligence_service.transports.rest: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p2beta1.types: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p2beta1.types.video_intelligence: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1.gapic_version: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1.services: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1.services.streaming_video_intelligence_service: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1.services.streaming_video_intelligence_service.async_client: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1.services.streaming_video_intelligence_service.client: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1.services.streaming_video_intelligence_service.transports: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1.services.streaming_video_intelligence_service.transports.base: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1.services.streaming_video_intelligence_service.transports.grpc: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1.services.streaming_video_intelligence_service.transports.grpc_asyncio: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1.services.video_intelligence_service: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1.services.video_intelligence_service.async_client: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1.services.video_intelligence_service.client: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1.services.video_intelligence_service.transports: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1.services.video_intelligence_service.transports.base: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1.services.video_intelligence_service.transports.grpc: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1.services.video_intelligence_service.transports.grpc_asyncio: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1.types: google_cloud_videointelligence
+    google.cloud.videointelligence_v1p3beta1.types.video_intelligence: google_cloud_videointelligence
+    google.gapic.metadata.gapic_metadata_pb2: googleapis_common_protos
+    google.logging.type.http_request_pb2: googleapis_common_protos
+    google.logging.type.log_severity_pb2: googleapis_common_protos
+    google.longrunning.operations_grpc: googleapis_common_protos
+    google.longrunning.operations_grpc_pb2: googleapis_common_protos
+    google.longrunning.operations_pb2: googleapis_common_protos
+    google.longrunning.operations_pb2_grpc: googleapis_common_protos
+    google.longrunning.operations_proto: googleapis_common_protos
+    google.longrunning.operations_proto_pb2: googleapis_common_protos
     google.oauth2: google_auth
     google.oauth2.challenges: google_auth
     google.oauth2.credentials: google_auth
@@ -1830,6 +2004,29 @@ manifest:
     google.protobuf.unknown_fields: protobuf
     google.protobuf.util: protobuf
     google.protobuf.wrappers_pb2: protobuf
+    google.rpc.code_pb2: googleapis_common_protos
+    google.rpc.context.attribute_context_pb2: googleapis_common_protos
+    google.rpc.context.audit_context_pb2: googleapis_common_protos
+    google.rpc.error_details_pb2: googleapis_common_protos
+    google.rpc.http_pb2: googleapis_common_protos
+    google.rpc.status_pb2: googleapis_common_protos
+    google.type.calendar_period_pb2: googleapis_common_protos
+    google.type.color_pb2: googleapis_common_protos
+    google.type.date_pb2: googleapis_common_protos
+    google.type.datetime_pb2: googleapis_common_protos
+    google.type.dayofweek_pb2: googleapis_common_protos
+    google.type.decimal_pb2: googleapis_common_protos
+    google.type.expr_pb2: googleapis_common_protos
+    google.type.fraction_pb2: googleapis_common_protos
+    google.type.interval_pb2: googleapis_common_protos
+    google.type.latlng_pb2: googleapis_common_protos
+    google.type.localized_text_pb2: googleapis_common_protos
+    google.type.money_pb2: googleapis_common_protos
+    google.type.month_pb2: googleapis_common_protos
+    google.type.phone_number_pb2: googleapis_common_protos
+    google.type.postal_address_pb2: googleapis_common_protos
+    google.type.quaternion_pb2: googleapis_common_protos
+    google.type.timeofday_pb2: googleapis_common_protos
     google_auth_oauthlib: google_auth_oauthlib
     google_auth_oauthlib.flow: google_auth_oauthlib
     google_auth_oauthlib.helpers: google_auth_oauthlib
@@ -2055,6 +2252,8 @@ manifest:
     grpc.framework.interfaces.face: grpcio
     grpc.framework.interfaces.face.face: grpcio
     grpc.framework.interfaces.face.utilities: grpcio
+    grpc_status: grpcio_status
+    grpc_status.rpc_status: grpcio_status
     grpc_tools: grpcio_tools
     grpc_tools.command: grpcio_tools
     grpc_tools.protoc: grpcio_tools
@@ -9623,6 +9822,30 @@ manifest:
     prompt_toolkit.widgets.menus: prompt_toolkit
     prompt_toolkit.widgets.toolbars: prompt_toolkit
     prompt_toolkit.win32_types: prompt_toolkit
+    proto: proto_plus
+    proto.datetime_helpers: proto_plus
+    proto.enums: proto_plus
+    proto.fields: proto_plus
+    proto.marshal: proto_plus
+    proto.marshal.collections: proto_plus
+    proto.marshal.collections.maps: proto_plus
+    proto.marshal.collections.repeated: proto_plus
+    proto.marshal.compat: proto_plus
+    proto.marshal.marshal: proto_plus
+    proto.marshal.rules: proto_plus
+    proto.marshal.rules.bytes: proto_plus
+    proto.marshal.rules.dates: proto_plus
+    proto.marshal.rules.enums: proto_plus
+    proto.marshal.rules.field_mask: proto_plus
+    proto.marshal.rules.message: proto_plus
+    proto.marshal.rules.stringy_numbers: proto_plus
+    proto.marshal.rules.struct: proto_plus
+    proto.marshal.rules.wrappers: proto_plus
+    proto.message: proto_plus
+    proto.modules: proto_plus
+    proto.primitives: proto_plus
+    proto.utils: proto_plus
+    proto.version: proto_plus
     psutil: psutil
     psutil.tests: psutil
     psutil.tests.runner: psutil
@@ -18411,4 +18634,4 @@ manifest:
     zope.interface.verify: zope.interface
   pip_repository:
     name: pip
-integrity: a5494ed6df5ae0649162b706b9a4e54f4f679feab32ddddbc34ec1c56da10a3e
+integrity: 9ad0cd72cefaa5799e5f7b303995739b927f3fb784a625f66359ae55935ba6b9

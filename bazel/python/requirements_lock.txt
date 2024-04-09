@@ -522,6 +522,10 @@ executing==2.0.1 \
     --hash=sha256:35afe2ce3affba8ee97f2d69927fa823b08b472b7b994e36a52a964b93d16147 \
     --hash=sha256:eac49ca94516ccc753f9fb5ce82603156e590b27525a8bc32cce8ae302eb61bc
     # via stack-data
+facenet-pytorch==2.5.3 \
+    --hash=sha256:98cc5b42a48f837c023eb92f2a571cd4ac6a46687c5e71b9e99b491087273e2b \
+    --hash=sha256:b8002c3ee7a3af471c433cbda1fdcab9ae2d46a4aac43435ba08259c45ffc884
+    # via -r bazel/python/requirements.in
 fairscale==0.4.4 \
     --hash=sha256:7719898743dc58c04a2294c896ee6308c92ccb3af9e10632b2a62f77cb689357
     # via salesforce-lavis
@@ -663,16 +667,32 @@ gitpython==3.1.42 \
     --hash=sha256:1bf9cd7c9e7255f77778ea54359e54ac22a72a5b51288c457c881057b7bb9ecd \
     --hash=sha256:2d99869e0fef71a73cbd242528105af1d6c1b108c60dfabd994bf292f76c3ceb
     # via streamlit
+google-api-core[grpc]==2.18.0 \
+    --hash=sha256:5a63aa102e0049abe85b5b88cb9409234c1f70afcda21ce1e40b285b9629c1d6 \
+    --hash=sha256:62d97417bfc674d6cef251e5c4d639a9655e00c45528c4364fbfebb478ce72a9
+    # via google-cloud-videointelligence
 google-auth==2.28.1 \
     --hash=sha256:25141e2d7a14bfcba945f5e9827f98092716e99482562f15306e5b026e21aa72 \
     --hash=sha256:34fc3046c257cedcf1622fc4b31fc2be7923d9b4d44973d481125ecc50d83885
     # via
+    #   google-api-core
     #   google-auth-oauthlib
+    #   google-cloud-videointelligence
     #   tensorboard
 google-auth-oauthlib==1.2.0 \
     --hash=sha256:292d2d3783349f2b0734a0a0207b1e1e322ac193c2c09d8f7c613fb7cc501ea8 \
     --hash=sha256:297c1ce4cb13a99b5834c74a1fe03252e1e499716718b190f56bcb9c4abc4faf
     # via tensorboard
+google-cloud-videointelligence==2.13.3 \
+    --hash=sha256:1460721d8120661c477c01af0edd3db03845857f52146a4a39f16b4acfb36f6d \
+    --hash=sha256:2eddfc42c4ef60378b638a5f4dfe466fadefae5cd6b1134eee377b5937be2c9e
+    # via -r bazel/python/requirements.in
+googleapis-common-protos==1.63.0 \
+    --hash=sha256:17ad01b11d5f1d0171c06d3ba5c04c54474e883b66b949722b4938ee2694ef4e \
+    --hash=sha256:ae45f75702f7c08b541f750854a678bd8f534a1a6bace6afe975f1d0a82d6632
+    # via
+    #   google-api-core
+    #   grpcio-status
 gradio==4.14.0 \
     --hash=sha256:adb9cfa608ae7fb982d1eedab6ededa86949b257fbd3655a9e9594e8b6f12b72 \
     --hash=sha256:e52a3d54cb340473fea8681cd52a169faf45cd854a2da1f9dc52187868e2a74e
@@ -826,9 +846,15 @@ grpcio==1.62.0 \
     --hash=sha256:fc2836cb829895ee190813446dce63df67e6ed7b9bf76060262c55fcd097d270 \
     --hash=sha256:fcc98cff4084467839d0a20d16abc2a76005f3d1b38062464d088c07f500d170
     # via
+    #   google-api-core
+    #   grpcio-status
     #   grpcio-tools
     #   qdrant-client
     #   tensorboard
+grpcio-status==1.62.0 \
+    --hash=sha256:0d693e9c09880daeaac060d0c3dba1ae470a43c99e5d20dfeafd62cf7e08a85d \
+    --hash=sha256:3baac03fcd737310e67758c4082a188107f771d32855bce203331cd4c9aa687a
+    # via google-api-core
 grpcio-tools==1.62.0 \
     --hash=sha256:006ea0cc16e8bf8f307326e0556e1384f24abb402cc4e6a720aa1dfe8f268647 \
     --hash=sha256:0d9c9a4832f52c4597d6dc12d9ab3109c3bd0ee1686b8bf6d64f9eab4145e3cb \
@@ -1521,6 +1547,7 @@ numpy==1.26.2 \
     #   blis
     #   contourpy
     #   decord
+    #   facenet-pytorch
     #   gradio
     #   groundingdino-gml
     #   imageio
@@ -1876,6 +1903,7 @@ pillow==10.2.0 \
     --hash=sha256:fe4c15f6c9285dc54ce6553a3ce908ed37c8f3825b5a51a15c91442bb955b868
     # via
     #   -r bazel/python/requirements.in
+    #   facenet-pytorch
     #   gradio
     #   imageio
     #   matplotlib
@@ -1957,6 +1985,12 @@ prompt-toolkit==3.0.43 \
     # via
     #   ipython
     #   jupyter-console
+proto-plus==1.23.0 \
+    --hash=sha256:89075171ef11988b3fa157f5dbd8b9cf09d65fffee97e29ce403cd8defba19d2 \
+    --hash=sha256:a829c79e619e1cf632de091013a4173deed13a55f326ef84f05af6f50ff4c82c
+    # via
+    #   google-api-core
+    #   google-cloud-videointelligence
 protobuf==4.23.4 \
     --hash=sha256:0a5759f5696895de8cc913f084e27fd4125e8fb0914bb729a17816a33819f474 \
     --hash=sha256:351cc90f7d10839c480aeb9b870a211e322bf05f6ab3f55fcb2f51331f80a7d2 \
@@ -1972,9 +2006,14 @@ protobuf==4.23.4 \
     --hash=sha256:effeac51ab79332d44fba74660d40ae79985901ac21bca408f8dc335a81aa597 \
     --hash=sha256:fee88269a090ada09ca63551bf2f573eb2424035bcf2cb1b121895b01a46594a
     # via
+    #   google-api-core
+    #   google-cloud-videointelligence
+    #   googleapis-common-protos
+    #   grpcio-status
     #   grpcio-tools
     #   onnx
     #   onnxruntime
+    #   proto-plus
     #   streamlit
     #   tensorboard
 psutil==5.9.8 \
@@ -2591,6 +2630,8 @@ requests==2.31.0 \
     --hash=sha256:942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1
     # via
     #   -r bazel/python/requirements.in
+    #   facenet-pytorch
+    #   google-api-core
     #   grequests
     #   huggingface-hub
     #   jupyterlab-server
@@ -3222,6 +3263,7 @@ torchvision==0.16.2+cu121 \
     # via
     #   -r bazel/python/requirements.in
     #   efficientvit-gml
+    #   facenet-pytorch
     #   groundingdino-gml
     #   salesforce-lavis
     #   segment-anything-py
