@@ -9,6 +9,7 @@ opencv-python-headless==4.5.5.64
 
 # src/experimental/research/
 absl-py==2.0.0
+beit3-gml==0.1.1
 efficientvit-gml==0.1.7
 facenet_pytorch==2.5.3
 filetype==1.2.0
@@ -23,6 +24,7 @@ numba==0.59.0
 numpy==1.26.2
 pandas==2.2.1
 Pillow==10.2.0
+spacy>=3.0.7
 psycopg2-binary==2.9.9
 pycocotools==2.0.7
 qdrant_client==1.7.3
