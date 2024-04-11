@@ -38,3 +38,4 @@ supervision==0.17.1
 tensorboard==2.15.1
 torch==2.1.2
 torchvision==0.16.2
+x2vlm-gml==0.1.1
