@@ -1325,9 +1325,11 @@ jupyterlab-widgets==3.0.10 \
     --hash=sha256:04f2ac04976727e4f9d0fa91cdc2f1ab860f965e504c29dbd6a65c882c9d04c0 \
     --hash=sha256:dd61f3ae7a5a7f80299e14585ce6cf3d6925a96c9103c978eda293197730cb64
     # via ipywidgets
-kaggle==1.6.6 \
-    --hash=sha256:db88715cc0618af253b6afde21881ae9e8e6f64b310acfb273fd13f4a5752207
-    # via opendatasets
+kaggle==1.6.10 \
+    --hash=sha256:ee6bf7b5565cb43b66a58687f47acfa399d51b98722a22fe29fbfa5f978069d5
+    # via
+    #   -r bazel/python/requirements.in
+    #   opendatasets
 kiwisolver==1.4.5 \
     --hash=sha256:00bd361b903dc4bbf4eb165f24d1acbee754fce22ded24c3d56eec268658a5cf \
     --hash=sha256:040c1aebeda72197ef477a906782b5ab0d387642e93bda547336b8957c61022e \

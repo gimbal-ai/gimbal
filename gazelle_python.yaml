@@ -19625,4 +19625,4 @@ manifest:
     zope.interface.verify: zope.interface
   pip_repository:
     name: pip
-integrity: e5ab94b6cddf96677e176436ff9c98a08118e020d92c1d3de862a566f29c3a40
+integrity: 6c733345b83c0194c9e6262a48b0f0229f2eda476bec6ed794272504dd663246
