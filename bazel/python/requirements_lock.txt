@@ -604,7 +604,9 @@ decord==0.6.0 \
 defusedxml==0.7.1 \
     --hash=sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69 \
     --hash=sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61
-    # via nbconvert
+    # via
+    #   nbconvert
+    #   openvino-dev
 dill==0.3.8 \
     --hash=sha256:3ebe3c479ad625c4553aca177444d89b486b1d84982eeacded644afc0cf797ca \
     --hash=sha256:c36ca9ffb54365bdd2f8eb3eff7d2a21237f8452b57ace88b1ac615b7e815bd7
@@ -1903,10 +1905,11 @@ nest-asyncio==1.6.0 \
     --hash=sha256:6f172d5449aca15afd6c646851f4e31e02c598d553a667e38cafa997cfec55fe \
     --hash=sha256:87af6efd6b5e897c81050477ef65c62e2b2f35d51703cae01aff2905b1852e1c
     # via ipykernel
-networkx==3.2.1 \
-    --hash=sha256:9f1bb5cf3409bf324e0a722c20bdb4c20ee39bf1c30ce8ae499c8502b0b5e0c6 \
-    --hash=sha256:f18c69adc97877c42332c170849c96cefa91881c99a7cb3e95b7c659ebdc1ec2
+networkx==3.1 \
+    --hash=sha256:4f33f68cb2afcf86f28a45f43efc27a9386b535d567d2127f8f61d51dec58d36 \
+    --hash=sha256:de346335408f84de0eada6ff9fafafff9bcda11f0a0dfaa931133debb146ab61
     # via
+    #   openvino-dev
     #   scikit-image
     #   torch
 nodeenv==1.8.0 \
@@ -2004,6 +2007,8 @@ numpy==1.26.2 \
     #   onnxruntime
     #   opencv-python
     #   opencv-python-headless
+    #   openvino
+    #   openvino-dev
     #   pandas
     #   pyarrow
     #   pycocotools
@@ -2142,6 +2147,39 @@ opendatasets==0.1.22 \
     --hash=sha256:52b2e0c1cc80d9f44842e3373532d92683f7c0f5c3e72b3f1f3e2750d30da4db \
     --hash=sha256:8d85a6d32fd7831672eddcae366a2488b5b5b5837433c4db02152e38b50e70c9
     # via salesforce-lavis
+openvino==2024.0.0 \
+    --hash=sha256:154f6dbc297058ea14da17a012e508fdbffbfa88c1fdc17171daa76e4ccc6778 \
+    --hash=sha256:266e449c22f48a472cdef08bafc78a43b3fce1496ee7835e5b94b0a38fd948b7 \
+    --hash=sha256:2f3ad363873c8c714b5b11e6e74a8ff3ab1bf4fcc3f85914cbdbb6f9bd3c8a7d \
+    --hash=sha256:39f6b2c099fedc9fa99fdddf7305f85aefe9addbf9fe406f1a6d4bf01d37a13f \
+    --hash=sha256:48c889e004dbab400178ed7ca5140fb858f1ad48cd27a370a99715103c76beaf \
+    --hash=sha256:54b6bdeb08977a549851923c0a19ca81992ff8ca6d8a65c13c3a7482ec70720b \
+    --hash=sha256:5ef5d6b66488a728042c40317f0acd678f7a41bf51d5ec44727597e7e4a1ef99 \
+    --hash=sha256:6f10148cf0613cb3ea9c45ef4f13a25ffaf19cda82e02581354ba03fd5003008 \
+    --hash=sha256:787496063a743da4cfd12ac01b2ade441e1693ce6c9b0c6dacf55dacff418413 \
+    --hash=sha256:8fbdbfcb03984c173c9ff1f404384b6f10c5d1bc6d1b5191d5d652f7e0c01acf \
+    --hash=sha256:95b46e6cfcd655bd2dc72ce14f406d75717ccb1821db6611608ec4e538c21ccc \
+    --hash=sha256:984f27cb2973a62559d6e20c3c5577e1db9215cea84cbe31a18b6747681a190f \
+    --hash=sha256:a3df88deef01350f1600f53eb4e26f62d329df15674306dc910acb5c71d95bc1 \
+    --hash=sha256:ac4f3dd0269feb4b704b4c702cfda36e429f0376aa1c7199205304ae13be9655 \
+    --hash=sha256:c839e41a7e853581fa0aa8a7613db87004a8b6b0fda4c184b69b921b6f2db20b \
+    --hash=sha256:d4f8e4b5979bc13d21f330977ef3c3c762a78521fe641fa34e8cd47c1befc9f4 \
+    --hash=sha256:dae8bf67528f792e73f554653c37ade4fde0ef7e0e8ced74ecb06687b2bc0798 \
+    --hash=sha256:df12b97d25da5e1f7c339f3db390404dff1eda4eb115eaf78a011797a3267904 \
+    --hash=sha256:f66a4c9dab2521ee27b7792f185d5e35c7c48dc44b971f9778793dbe320e6bc0 \
+    --hash=sha256:feab016abb8fd4516d17f6b6a4ced59b0969338ade8ce0c9c4dfc8bc0eec16f3
+    # via
+    #   -r bazel/python/requirements.in
+    #   openvino-dev
+openvino-dev==2024.0.0 \
+    --hash=sha256:bf27ba90359d66997c51f91f49e99df5b942d474c3075723b13ce76e358ff475
+    # via -r bazel/python/requirements.in
+openvino-telemetry==2024.1.0 \
+    --hash=sha256:6df9a8f499e75d893d0bece3c272e798109f0bd40d1eb2488adca6a0da1d9b9f \
+    --hash=sha256:73ec3402a1bfb9050ee8885c7618dcb91456d6489dfa84cda7eed6cfa16a6c88
+    # via
+    #   openvino
+    #   openvino-dev
 orjson==3.9.15 \
     --hash=sha256:001f4eb0ecd8e9ebd295722d0cbedf0748680fb9998d3993abaed2f40587257a \
     --hash=sha256:05a1f57fb601c426635fcae9ddbe90dfc1ed42245eb4c75e4960440cac667262 \
@@ -2217,6 +2255,8 @@ packaging==23.2 \
     #   mmcv
     #   nbconvert
     #   onnxruntime
+    #   openvino
+    #   openvino-dev
     #   plotly
     #   pytest
     #   qtconsole
@@ -2910,6 +2950,7 @@ pyyaml==6.0.1 \
     #   mmcv
     #   mmengine
     #   omegaconf
+    #   openvino-dev
     #   pre-commit
     #   supervision
     #   transformers
@@ -3141,6 +3182,7 @@ requests==2.31.0 \
     #   huggingface-hub
     #   jupyterlab-server
     #   kaggle
+    #   openvino-dev
     #   requests-oauthlib
     #   spacy
     #   streamlit
