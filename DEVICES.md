@@ -92,6 +92,7 @@ Will deploy several GEMS with pre-recorded data to your k8s cluster.
 ```sh
 export GML_CONTROLPLANE_ADDR=app.$USER.gimletlabs.dev:443
 export GML_NUM_RECORDED=5 # How many to deploy per recording
+export GML_MAX_INIT_DELAY_S=30.0 # Max num seconds of random delay to inject into GEM startup so that timeseries data is staggered. Must be floating point number for helm templating to correctly interpret this env var as a string.
 export GML_API_KEY=<api-key> # replace with your api key
 export GML_DEPLOY_KEY=<deploy-key> # replace with your deploy key
 # These are the two recordings available as of time of writing. See `src/testutils/README.md`

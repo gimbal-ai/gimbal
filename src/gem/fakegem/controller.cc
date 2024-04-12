@@ -17,6 +17,10 @@
 
 #include "src/gem/fakegem/controller.h"
 
+#include <chrono>
+#include <random>
+#include <thread>
+
 #include "src/common/uuid/uuid.h"
 #include "src/gem/controller/controller.h"
 #include "src/gem/controller/device_info.h"
@@ -30,6 +34,9 @@ using internal::api::core::v1::CP_EDGE_TOPIC_INFO;
 using internal::api::core::v1::CP_EDGE_TOPIC_METRICS;
 using internal::api::core::v1::CP_EDGE_TOPIC_STATUS;
 using internal::api::core::v1::CP_EDGE_TOPIC_VIDEO;
+
+DEFINE_string(max_init_delay_seconds, gflags::StringFromEnv("GML_MAX_INIT_DELAY_S", "30"),
+              "The maximum number of seconds of random delay to inject into the initialization.");
 
 class FakeMessageHandlerWrapper : public controller::MessageHandler {
  public:
@@ -56,8 +63,16 @@ Status FakeController::Init() {
 
   fake_stream_writer_ = std::make_unique<StreamWriter>(bridge(), blob_store(), dispatcher());
 
+  // Inject a random amount of latency so that a fleet of fake GEMs have staggered timeseries data.
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<> distrib(0, std::stoi(FLAGS_max_init_delay_seconds));
+  int random_delay_seconds = distrib(gen);
+  LOG(INFO) << "Delaying video stream start by " << random_delay_seconds << " seconds.";
+  std::this_thread::sleep_for(std::chrono::seconds(random_delay_seconds));
+
   // Register message handlers.
-  // Ue the same handlers as real GEM for heartbeat and info
+  // Use the same handlers as real GEM for heartbeat and info
   auto hb_handler = std::make_shared<controller::HeartbeatHandler>(dispatcher(), info(), bridge());
 
   // Use fake handlers for info, exec, video, and metrics.
