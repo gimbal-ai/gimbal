@@ -76,3 +76,15 @@ TYPESCRIPT_PRETTIER_RULES_PATH: src/ui
 YAML_V8R_FILTER_REGEX_EXCLUDE: (.mega-linter.yml)
 YAML_YAMLLINT_ARGUMENTS: '--strict'
 REPOSITORY_LICENSE_CHECKER_FILTER_REGEX_EXCLUDE: "bazel\\/cc_toolchains\\/sysroots\\/packages\\/all_debs.bzl"
+
+PRE_COMMANDS:
+# Record UID/GID from .gitignore file into a temp file, so that we can restore the ownership of files after linting.
+- command: |-
+    echo $(stat -c "%u:%g" .gitignore) > .uid_gid_stash
+  cwd: "workspace"
+POST_COMMANDS:
+# Restore ownership of files
+- command: |-
+    find . -user root -group root -exec chown $(cat .uid_gid_stash) {} \;
+    rm .uid_gid_stash
+  cwd: "workspace"
