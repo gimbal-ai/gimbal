@@ -101,19 +101,19 @@ We currently only support running control plane in GKE (support for Minikube com
 
     ```sh
     helm dep update k8s/charts/controlplane_deps/
-    skaffold run -f skaffold/skaffold_controlplane_deps.yaml -n <YOUR_USERNAME> -p dev
+    skaffold run -f skaffold/skaffold_controlplane_deps.yaml -n $USER -p dev
     ```
 
 1. Run skaffold to build and deploy the services in your namespace:
 
     ```sh
-    skaffold run -f skaffold/skaffold_controlplane.yaml -n <YOUR_USERNAME> -p dev
+    skaffold run -f skaffold/skaffold_controlplane.yaml -n $USER -p dev
     ```
 
 1. (optional) Setup your kubectl config to only look at your namespace:
 
     ```sh
-    kubectl config set-context --current --namespace=<YOUR_USERNAME>
+    kubectl config set-context --current --namespace=$USER
     ```
 
 ### Accessing the UI in the browser
