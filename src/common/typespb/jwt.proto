@@ -68,8 +68,11 @@ message ServiceJWTClaims {
 
 // Claims for Device JWTs.
 message DeviceJWTClaims {
-  // The ID of the device.
+  // The ID of the device. This can be empty (e.g. device register message).
   string device_id = 1 [ (gogoproto.customname) = "DeviceID", (gogoproto.jsontag) = "deviceID" ];
   // The ID of the fleet that the device is in.
   string fleet_id = 2 [ (gogoproto.customname) = "FleetID", (gogoproto.jsontag) = "fleetID" ];
+  // The deploy key ID that the device is using. This can be empty (e.g. device heartbeat message).
+  string deploy_key_id = 3
+      [ (gogoproto.customname) = "DeployKeyID", (gogoproto.jsontag) = "deployKeyID" ];
 }

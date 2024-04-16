@@ -108,17 +108,22 @@ func GenerateJWTForService(serviceID string, audience string) *typespb.JWTClaims
 }
 
 // GenerateJWTForDevice creates a protobuf claims for the given device.
-func GenerateJWTForDevice(deviceID string, fleetID string, audience string) *typespb.JWTClaims {
+func GenerateJWTForDevice(deviceID string, fleetID string, deployKeyID string, audience string) *typespb.JWTClaims {
+	subject := deviceID
+	if deviceID == "" {
+		subject = deployKeyID
+	}
 	pbClaims := typespb.JWTClaims{
 		Audience:  audience,
-		Subject:   deviceID,
+		Subject:   subject,
 		Issuer:    "GML",
 		ExpiresAt: time.Now().Add(time.Minute * 10).Unix(),
 		Scopes:    []string{"device"},
 		CustomClaims: &typespb.JWTClaims_DeviceClaims{
 			DeviceClaims: &typespb.DeviceJWTClaims{
-				DeviceID: deviceID,
-				FleetID:  fleetID,
+				DeviceID:    deviceID,
+				FleetID:     fleetID,
+				DeployKeyID: deployKeyID,
 			},
 		},
 	}

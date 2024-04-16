@@ -148,8 +148,9 @@ func TestProtoToToken_Device(t *testing.T) {
 	p.Scopes = []string{"device"}
 	// Device claims.
 	deviceClaims := &typespb.DeviceJWTClaims{
-		DeviceID: "device_id",
-		FleetID:  "fleet_id",
+		DeviceID:    "device_id",
+		FleetID:     "fleet_id",
+		DeployKeyID: "deploy_key_id",
 	}
 	p.CustomClaims = &typespb.JWTClaims_DeviceClaims{
 		DeviceClaims: deviceClaims,
@@ -165,10 +166,13 @@ func TestProtoToToken_Device(t *testing.T) {
 	require.True(t, ok)
 	deviceID, ok := claims["DeviceID"]
 	require.True(t, ok)
+	deployKeyID, ok := claims["DeployKeyID"]
+	require.True(t, ok)
 
 	assert.Equal(t, "device", scopes.(string))
 	assert.Equal(t, "device_id", deviceID.(string))
 	assert.Equal(t, "fleet_id", fleetID.(string))
+	assert.Equal(t, "deploy_key_id", deployKeyID.(string))
 }
 
 func TestTokenToProto_Standard(t *testing.T) {

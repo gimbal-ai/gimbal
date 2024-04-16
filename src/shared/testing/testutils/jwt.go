@@ -60,8 +60,8 @@ func GenerateTestClaimsWithEmail(t *testing.T, email string) *typespb.JWTClaims 
 }
 
 // GenerateTestDeviceClaims generates valid test device claims.
-func GenerateTestDeviceClaims(_ *testing.T, deviceID string, fleetID string) *typespb.JWTClaims {
-	claims := utils.GenerateJWTForDevice(deviceID, fleetID, "gml.ai")
+func GenerateTestDeviceClaims(_ *testing.T, deviceID string, fleetID string, deployKeyID string) *typespb.JWTClaims {
+	claims := utils.GenerateJWTForDevice(deviceID, fleetID, deployKeyID, "gml.ai")
 	return claims
 }
 

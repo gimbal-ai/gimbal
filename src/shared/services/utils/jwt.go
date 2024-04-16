@@ -67,6 +67,7 @@ func ProtoToToken(pb *typespb.JWTClaims) (jwt.Token, error) {
 	case *typespb.JWTClaims_DeviceClaims:
 		builder.Claim("DeviceID", m.DeviceClaims.DeviceID)
 		builder.Claim("FleetID", m.DeviceClaims.FleetID)
+		builder.Claim("DeployKeyID", m.DeviceClaims.DeployKeyID)
 	default:
 		log.WithField("type", m).Error("Could not find claims type")
 	}
@@ -176,10 +177,17 @@ func deviceTokenToProto(token jwt.Token) *typespb.JWTClaims_DeviceClaims {
 		fleetID, _ = cFleetID.(string)
 	}
 
+	deployKeyID := ""
+	cDeployKeyID, ok := claims["DeployKeyID"]
+	if ok {
+		deployKeyID, _ = cDeployKeyID.(string)
+	}
+
 	return &typespb.JWTClaims_DeviceClaims{
 		DeviceClaims: &typespb.DeviceJWTClaims{
-			DeviceID: deviceID,
-			FleetID:  fleetID,
+			DeviceID:    deviceID,
+			FleetID:     fleetID,
+			DeployKeyID: deployKeyID,
 		},
 	}
 }
