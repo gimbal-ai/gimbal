@@ -306,6 +306,11 @@ class FleetMgrEdgeServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.AssociateTagsWithDeployKey = channel.unary_unary(
+                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/AssociateTagsWithDeployKey',
+                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyResponse.FromString,
+                )
         self.Register = channel.unary_unary(
                 '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/Register',
                 request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.RegisterRequest.SerializeToString,
@@ -360,6 +365,12 @@ class FleetMgrEdgeServiceStub(object):
 
 class FleetMgrEdgeServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
+
+    def AssociateTagsWithDeployKey(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def Register(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -424,6 +435,11 @@ class FleetMgrEdgeServiceServicer(object):
 
 def add_FleetMgrEdgeServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'AssociateTagsWithDeployKey': grpc.unary_unary_rpc_method_handler(
+                    servicer.AssociateTagsWithDeployKey,
+                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyRequest.FromString,
+                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyResponse.SerializeToString,
+            ),
             'Register': grpc.unary_unary_rpc_method_handler(
                     servicer.Register,
                     request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.RegisterRequest.FromString,
@@ -483,6 +499,23 @@ def add_FleetMgrEdgeServiceServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class FleetMgrEdgeService(object):
     """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def AssociateTagsWithDeployKey(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/AssociateTagsWithDeployKey',
+            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyRequest.SerializeToString,
+            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def Register(request,

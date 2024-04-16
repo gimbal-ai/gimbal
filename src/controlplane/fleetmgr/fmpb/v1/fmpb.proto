@@ -191,6 +191,20 @@ message DeviceInfo {
   reserved 7;
 }
 
+message AssociateTagsWithDeployKeyRequest {
+  // The deploy key ID.
+  gml.types.UUID deploy_key_id = 1 [ (gogoproto.customname) = "DeployKeyID" ];
+  // A map of the tags associated with the deploy key ID in the <key, value> format.
+  map<string, string> tags = 2;
+}
+
+message AssociateTagsWithDeployKeyResponse {
+  // The deploy key ID.
+  gml.types.UUID deploy_key_id = 1 [ (gogoproto.customname) = "DeployKeyID" ];
+  // A map of the tags associated with the deploy key ID in the <key, value> format.
+  map<string, string> tags = 2;
+}
+
 message RegisterRequest {
   // This is an opaque device serial for the device. It's nominally the MAC-address, GUID, or some
   // other serial number that is deemed to be globally unique. It must be at-least 32 characters. On
@@ -310,6 +324,10 @@ service FleetMgrService {
 
 // FleetMgrEdgeService is responsible for communicating with the devices about their state.
 service FleetMgrEdgeService {
+  // AssociateTagsWithDeployKey stores tags associated with a deploy key. These
+  // tags will be converted to device tags during device registration.
+  rpc AssociateTagsWithDeployKey(AssociateTagsWithDeployKeyRequest)
+      returns (AssociateTagsWithDeployKeyResponse);
   // Register adds a device as part of the fleet. If the device has already been registered it
   // simply returns with the existing config.
   rpc Register(RegisterRequest) returns (RegisterResponse);

@@ -366,6 +366,26 @@ func (m *MockFleetMgrEdgeServiceClient) EXPECT() *MockFleetMgrEdgeServiceClientM
 	return m.recorder
 }
 
+// AssociateTagsWithDeployKey mocks base method.
+func (m *MockFleetMgrEdgeServiceClient) AssociateTagsWithDeployKey(ctx context.Context, in *fmpb.AssociateTagsWithDeployKeyRequest, opts ...grpc.CallOption) (*fmpb.AssociateTagsWithDeployKeyResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "AssociateTagsWithDeployKey", varargs...)
+	ret0, _ := ret[0].(*fmpb.AssociateTagsWithDeployKeyResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// AssociateTagsWithDeployKey indicates an expected call of AssociateTagsWithDeployKey.
+func (mr *MockFleetMgrEdgeServiceClientMockRecorder) AssociateTagsWithDeployKey(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AssociateTagsWithDeployKey", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).AssociateTagsWithDeployKey), varargs...)
+}
+
 // DeleteDevices mocks base method.
 func (m *MockFleetMgrEdgeServiceClient) DeleteDevices(ctx context.Context, in *fmpb.DeleteDevicesRequest, opts ...grpc.CallOption) (*fmpb.DeleteDevicesResponse, error) {
 	m.ctrl.T.Helper()
@@ -587,6 +607,21 @@ func NewMockFleetMgrEdgeServiceServer(ctrl *gomock.Controller) *MockFleetMgrEdge
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockFleetMgrEdgeServiceServer) EXPECT() *MockFleetMgrEdgeServiceServerMockRecorder {
 	return m.recorder
+}
+
+// AssociateTagsWithDeployKey mocks base method.
+func (m *MockFleetMgrEdgeServiceServer) AssociateTagsWithDeployKey(arg0 context.Context, arg1 *fmpb.AssociateTagsWithDeployKeyRequest) (*fmpb.AssociateTagsWithDeployKeyResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AssociateTagsWithDeployKey", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.AssociateTagsWithDeployKeyResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// AssociateTagsWithDeployKey indicates an expected call of AssociateTagsWithDeployKey.
+func (mr *MockFleetMgrEdgeServiceServerMockRecorder) AssociateTagsWithDeployKey(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AssociateTagsWithDeployKey", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).AssociateTagsWithDeployKey), arg0, arg1)
 }
 
 // DeleteDevices mocks base method.
