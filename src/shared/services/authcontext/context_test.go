@@ -29,6 +29,12 @@ import (
 	"gimletlabs.ai/gimlet/src/shared/testing/testutils"
 )
 
+const (
+	testFleetID   = "8ba7b810-9dad-11d1-80b4-00c04fd430c8"
+	testDeviceID  = "1ba7b810-9dad-11d1-80b4-00c04fd430c8"
+	testDeployKey = "7ba7b810-9dad-11d1-80b4-00c04fd43123"
+)
+
 func TestSessionCtx_UseJWTAuth(t *testing.T) {
 	key := testutils.GenerateJWTSigningKey(t)
 	token := testutils.GenerateTestJWTToken(t, key)
@@ -81,6 +87,30 @@ func TestSessionCtx_ValidClaims(t *testing.T) {
 			isValid:       false,
 			claims:        testutils.GenerateTestServiceClaims(t, "api"),
 			expiryFromNow: -1 * time.Second,
+		},
+		{
+			name:          "valid device claims with deploy key",
+			isValid:       true,
+			claims:        testutils.GenerateTestDeviceClaims(t, "", testFleetID, testDeployKey),
+			expiryFromNow: time.Minute * 60,
+		},
+		{
+			name:          "valid device claims with device ID",
+			isValid:       true,
+			claims:        testutils.GenerateTestDeviceClaims(t, testDeviceID, testFleetID, ""),
+			expiryFromNow: time.Minute * 60,
+		},
+		{
+			name:          "invalid device claims is missing fleet ID",
+			isValid:       false,
+			claims:        testutils.GenerateTestDeviceClaims(t, "", "", testDeployKey),
+			expiryFromNow: time.Minute * 60,
+		},
+		{
+			name:          "invalid device claims is missing one of device ID or deploy key",
+			isValid:       false,
+			claims:        testutils.GenerateTestDeviceClaims(t, "", testFleetID, ""),
+			expiryFromNow: time.Minute * 60,
 		},
 		{
 			name:    "claims with no type",

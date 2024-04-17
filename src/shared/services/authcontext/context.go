@@ -90,7 +90,8 @@ func (s *AuthContext) ValidClaims() bool {
 		}
 		return true
 	case utils.DeviceClaimType:
-		return true
+		hasDeployKeyOrDeviceID := len(s.Claims.GetDeviceClaims().DeployKeyID) > 0 || len(s.Claims.GetDeviceClaims().DeviceID) > 0
+		return len(s.Claims.GetDeviceClaims().FleetID) > 0 && hasDeployKeyOrDeviceID
 	default:
 	}
 	return false
