@@ -202,7 +202,7 @@ message AssociateTagsWithDeployKeyResponse {
   // The deploy key ID.
   gml.types.UUID deploy_key_id = 1 [ (gogoproto.customname) = "DeployKeyID" ];
   // A map of the tags associated with the deploy key ID in the <key, value> format.
-  map<string, string> tags = 2;
+  map<string, Tag> tags = 2;
 }
 
 message RegisterRequest {
