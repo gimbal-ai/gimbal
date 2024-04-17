@@ -34,25 +34,61 @@ import (
 	"gimletlabs.ai/gimlet/src/testutils/dockertestutils"
 )
 
-type testDB struct {
+const (
+	migrationTable = "test_migrations"
+)
+
+type TestDB struct {
 	db                    *sqlx.DB
 	schemaSourceDirectory string
+	schemaSource          *embed.FS
 }
 
 // TestDBOpt is an option to the testing DB.
-type TestDBOpt func(*testDB)
+type TestDBOpt func(*TestDB)
 
 // WithSchemaDirectory allows configuration of the schema directory.
 func WithSchemaDirectory(dir string) TestDBOpt {
-	return func(d *testDB) {
+	return func(d *TestDB) {
 		d.schemaSourceDirectory = dir
 	}
 }
 
-// SetupTestDB sets up a test database instance and applies migrations.
-func SetupTestDB(t testing.TB, schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx.DB, error) {
-	d := &testDB{
+// MustSetupTestDB starts up a pgsql container and applies the given migrations.
+func MustSetupTestDB(schemaSource *embed.FS, opts ...TestDBOpt) (*TestDB, func()) {
+	d, cleanup, err := setupTestDB(schemaSource, opts...)
+	if err != nil {
+		log.WithError(err).Fatal("Could not start up test DB")
+	}
+	return d, cleanup
+}
+
+// DB returns the underlying DB instance.
+func (d *TestDB) DB() *sqlx.DB {
+	return d.db
+}
+
+// Reset clears out the database to its initial state by dropping all tables and reapplying the migrations.
+func (d *TestDB) Reset() error {
+	_, err := d.db.Exec("DROP SCHEMA public CASCADE; CREATE SCHEMA public;")
+	if err != nil {
+		return err
+	}
+
+	if d.schemaSource != nil {
+		err := pg.PerformMigrationsWithEmbed(d.db, migrationTable, d.schemaSource, d.schemaSourceDirectory)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func setupTestDB(schemaSource *embed.FS, opts ...TestDBOpt) (*TestDB, func(), error) {
+	d := &TestDB{
 		schemaSourceDirectory: ".",
+		schemaSource:          schemaSource,
 	}
 	for _, opt := range opts {
 		opt(d)
@@ -60,14 +96,14 @@ func SetupTestDB(t testing.TB, schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx
 
 	pool, err := dockertest.NewPool("")
 	if err != nil {
-		return nil, fmt.Errorf("connect to docker failed: %w", err)
+		return nil, nil, fmt.Errorf("connect to docker failed: %w", err)
 	}
 
 	imageRepo := "pgvector/pgvector"
 	imageTag := "pg15"
 	err = dockertestutils.LoadOrFetchImage(pool, imageRepo, imageTag)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	const dbName = "testdb"
@@ -95,12 +131,12 @@ func SetupTestDB(t testing.TB, schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx
 		},
 	)
 	if err != nil {
-		return nil, fmt.Errorf("failed to run docker pool: %w", err)
+		return nil, nil, fmt.Errorf("failed to run docker pool: %w", err)
 	}
 	// Set a 5 minute expiration on resources.
 	err = resource.Expire(300)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	viper.Set("postgres_port", resource.GetPort("5432/tcp"))
@@ -121,18 +157,18 @@ func SetupTestDB(t testing.TB, schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx
 		d.db = pg.MustCreateDefaultPostgresDB()
 		return d.db.Ping()
 	}); err != nil {
-		return nil, fmt.Errorf("failed to create postgres on docker: %w", err)
+		return nil, nil, fmt.Errorf("failed to create postgres on docker: %w", err)
 	}
 	log.SetLevel(log.InfoLevel)
 
-	if schemaSource != nil {
-		err := pg.PerformMigrationsWithEmbed(d.db, "test_migrations", schemaSource, d.schemaSourceDirectory)
+	if d.schemaSource != nil {
+		err := pg.PerformMigrationsWithEmbed(d.db, migrationTable, d.schemaSource, d.schemaSourceDirectory)
 		if err != nil {
-			return nil, fmt.Errorf("migrations failed: %w", err)
+			return nil, nil, fmt.Errorf("migrations failed: %w", err)
 		}
 	}
 
-	t.Cleanup(func() {
+	cleanup := func() {
 		if d.db != nil {
 			d.db.Close()
 		}
@@ -140,7 +176,19 @@ func SetupTestDB(t testing.TB, schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx
 		if err := pool.Purge(resource); err != nil {
 			log.WithError(err).Error("could not purge docker resource")
 		}
-	})
+	}
+
+	return d, cleanup, nil
+}
+
+// SetupTestDB sets up a test database instance and applies migrations.
+func SetupTestDB(t testing.TB, schemaSource *embed.FS, opts ...TestDBOpt) (*sqlx.DB, error) {
+	d, cleanup, err := setupTestDB(schemaSource, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	t.Cleanup(cleanup)
 
 	return d.db, nil
 }
