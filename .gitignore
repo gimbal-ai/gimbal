@@ -96,3 +96,6 @@ tools/chef/cookbooks/gml_nuc_cluster/templates/credentials
 .python-version
 
 *.egg-info
+
+# Used in the megalinter workflow to stash the uid/gid of the files in the workspace.
+.uid_gid_stash
