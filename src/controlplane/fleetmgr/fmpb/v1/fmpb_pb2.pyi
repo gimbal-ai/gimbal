@@ -251,6 +251,27 @@ class ListFleetsResponse(_message.Message):
     fleets: _containers.RepeatedCompositeFieldContainer[FleetInfo]
     def __init__(self, fleets: _Optional[_Iterable[_Union[FleetInfo, _Mapping]]] = ...) -> None: ...
 
+class ListTagsAssociatedWithDeployKeyRequest(_message.Message):
+    __slots__ = ["deploy_key_id"]
+    DEPLOY_KEY_ID_FIELD_NUMBER: _ClassVar[int]
+    deploy_key_id: _uuid_pb2.UUID
+    def __init__(self, deploy_key_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
+
+class ListTagsAssociatedWithDeployKeyResponse(_message.Message):
+    __slots__ = ["deploy_key_id", "tags"]
+    class TagsEntry(_message.Message):
+        __slots__ = ["key", "value"]
+        KEY_FIELD_NUMBER: _ClassVar[int]
+        VALUE_FIELD_NUMBER: _ClassVar[int]
+        key: str
+        value: Tag
+        def __init__(self, key: _Optional[str] = ..., value: _Optional[_Union[Tag, _Mapping]] = ...) -> None: ...
+    DEPLOY_KEY_ID_FIELD_NUMBER: _ClassVar[int]
+    TAGS_FIELD_NUMBER: _ClassVar[int]
+    deploy_key_id: _uuid_pb2.UUID
+    tags: _containers.MessageMap[str, Tag]
+    def __init__(self, deploy_key_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., tags: _Optional[_Mapping[str, Tag]] = ...) -> None: ...
+
 class OSInfo(_message.Message):
     __slots__ = ["kind", "version"]
     KIND_FIELD_NUMBER: _ClassVar[int]

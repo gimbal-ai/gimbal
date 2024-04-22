@@ -311,6 +311,11 @@ class FleetMgrEdgeServiceStub(object):
                 request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyRequest.SerializeToString,
                 response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyResponse.FromString,
                 )
+        self.ListTagsAssociatedWithDeployKey = channel.unary_unary(
+                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/ListTagsAssociatedWithDeployKey',
+                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyResponse.FromString,
+                )
         self.Register = channel.unary_unary(
                 '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/Register',
                 request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.RegisterRequest.SerializeToString,
@@ -367,6 +372,12 @@ class FleetMgrEdgeServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def AssociateTagsWithDeployKey(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListTagsAssociatedWithDeployKey(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -439,6 +450,11 @@ def add_FleetMgrEdgeServiceServicer_to_server(servicer, server):
                     servicer.AssociateTagsWithDeployKey,
                     request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyRequest.FromString,
                     response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyResponse.SerializeToString,
+            ),
+            'ListTagsAssociatedWithDeployKey': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListTagsAssociatedWithDeployKey,
+                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyRequest.FromString,
+                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyResponse.SerializeToString,
             ),
             'Register': grpc.unary_unary_rpc_method_handler(
                     servicer.Register,
@@ -514,6 +530,23 @@ class FleetMgrEdgeService(object):
         return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/AssociateTagsWithDeployKey',
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyRequest.SerializeToString,
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ListTagsAssociatedWithDeployKey(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/ListTagsAssociatedWithDeployKey',
+            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyRequest.SerializeToString,
+            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

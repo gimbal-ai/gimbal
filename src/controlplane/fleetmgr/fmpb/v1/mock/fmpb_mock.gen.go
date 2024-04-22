@@ -486,6 +486,26 @@ func (mr *MockFleetMgrEdgeServiceClientMockRecorder) ListDevices(ctx, in any, op
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDevices", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).ListDevices), varargs...)
 }
 
+// ListTagsAssociatedWithDeployKey mocks base method.
+func (m *MockFleetMgrEdgeServiceClient) ListTagsAssociatedWithDeployKey(ctx context.Context, in *fmpb.ListTagsAssociatedWithDeployKeyRequest, opts ...grpc.CallOption) (*fmpb.ListTagsAssociatedWithDeployKeyResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListTagsAssociatedWithDeployKey", varargs...)
+	ret0, _ := ret[0].(*fmpb.ListTagsAssociatedWithDeployKeyResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTagsAssociatedWithDeployKey indicates an expected call of ListTagsAssociatedWithDeployKey.
+func (mr *MockFleetMgrEdgeServiceClientMockRecorder) ListTagsAssociatedWithDeployKey(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTagsAssociatedWithDeployKey", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).ListTagsAssociatedWithDeployKey), varargs...)
+}
+
 // Register mocks base method.
 func (m *MockFleetMgrEdgeServiceClient) Register(ctx context.Context, in *fmpb.RegisterRequest, opts ...grpc.CallOption) (*fmpb.RegisterResponse, error) {
 	m.ctrl.T.Helper()
@@ -697,6 +717,21 @@ func (m *MockFleetMgrEdgeServiceServer) ListDevices(arg0 context.Context, arg1 *
 func (mr *MockFleetMgrEdgeServiceServerMockRecorder) ListDevices(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDevices", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).ListDevices), arg0, arg1)
+}
+
+// ListTagsAssociatedWithDeployKey mocks base method.
+func (m *MockFleetMgrEdgeServiceServer) ListTagsAssociatedWithDeployKey(arg0 context.Context, arg1 *fmpb.ListTagsAssociatedWithDeployKeyRequest) (*fmpb.ListTagsAssociatedWithDeployKeyResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListTagsAssociatedWithDeployKey", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.ListTagsAssociatedWithDeployKeyResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTagsAssociatedWithDeployKey indicates an expected call of ListTagsAssociatedWithDeployKey.
+func (mr *MockFleetMgrEdgeServiceServerMockRecorder) ListTagsAssociatedWithDeployKey(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTagsAssociatedWithDeployKey", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).ListTagsAssociatedWithDeployKey), arg0, arg1)
 }
 
 // Register mocks base method.

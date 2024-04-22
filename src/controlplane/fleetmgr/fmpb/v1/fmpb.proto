@@ -203,7 +203,19 @@ message AssociateTagsWithDeployKeyRequest {
 message AssociateTagsWithDeployKeyResponse {
   // The deploy key ID.
   gml.types.UUID deploy_key_id = 1 [ (gogoproto.customname) = "DeployKeyID" ];
-  // A map of the tags associated with the deploy key ID in the <key, value> format.
+  // A map of the tags associated with the deploy key ID in the <key, Tag> format.
+  map<string, Tag> tags = 2;
+}
+
+message ListTagsAssociatedWithDeployKeyRequest {
+  // The deploy key ID.
+  gml.types.UUID deploy_key_id = 1 [ (gogoproto.customname) = "DeployKeyID" ];
+}
+
+message ListTagsAssociatedWithDeployKeyResponse {
+  // The deploy key ID.
+  gml.types.UUID deploy_key_id = 1 [ (gogoproto.customname) = "DeployKeyID" ];
+  // A map of the tags associated with the deploy key ID in the <key, Tag> format.
   map<string, Tag> tags = 2;
 }
 
@@ -330,6 +342,9 @@ service FleetMgrEdgeService {
   // tags will be converted to device tags during device registration.
   rpc AssociateTagsWithDeployKey(AssociateTagsWithDeployKeyRequest)
       returns (AssociateTagsWithDeployKeyResponse);
+  // ListTagsAssociatedWithDeployKey returns the tags associated with a deploy key.
+  rpc ListTagsAssociatedWithDeployKey(ListTagsAssociatedWithDeployKeyRequest)
+      returns (ListTagsAssociatedWithDeployKeyResponse);
   // Register adds a device as part of the fleet. If the device has already been registered it
   // simply returns with the existing config.
   rpc Register(RegisterRequest) returns (RegisterResponse);
