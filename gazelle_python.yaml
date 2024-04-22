@@ -543,82 +543,6 @@ manifest:
     absl.testing.flagsaver: absl_py
     absl.testing.parameterized: absl_py
     absl.testing.xml_reporter: absl_py
-    accelerate: accelerate
-    accelerate.accelerator: accelerate
-    accelerate.big_modeling: accelerate
-    accelerate.checkpointing: accelerate
-    accelerate.commands: accelerate
-    accelerate.commands.accelerate_cli: accelerate
-    accelerate.commands.config: accelerate
-    accelerate.commands.config.cluster: accelerate
-    accelerate.commands.config.config: accelerate
-    accelerate.commands.config.config_args: accelerate
-    accelerate.commands.config.config_utils: accelerate
-    accelerate.commands.config.default: accelerate
-    accelerate.commands.config.sagemaker: accelerate
-    accelerate.commands.config.update: accelerate
-    accelerate.commands.env: accelerate
-    accelerate.commands.estimate: accelerate
-    accelerate.commands.launch: accelerate
-    accelerate.commands.menu: accelerate
-    accelerate.commands.menu.cursor: accelerate
-    accelerate.commands.menu.helpers: accelerate
-    accelerate.commands.menu.input: accelerate
-    accelerate.commands.menu.keymap: accelerate
-    accelerate.commands.menu.selection_menu: accelerate
-    accelerate.commands.test: accelerate
-    accelerate.commands.tpu: accelerate
-    accelerate.commands.utils: accelerate
-    accelerate.data_loader: accelerate
-    accelerate.hooks: accelerate
-    accelerate.inference: accelerate
-    accelerate.launchers: accelerate
-    accelerate.local_sgd: accelerate
-    accelerate.logging: accelerate
-    accelerate.memory_utils: accelerate
-    accelerate.optimizer: accelerate
-    accelerate.scheduler: accelerate
-    accelerate.state: accelerate
-    accelerate.test_utils: accelerate
-    accelerate.test_utils.examples: accelerate
-    accelerate.test_utils.scripts: accelerate
-    accelerate.test_utils.scripts.external_deps: accelerate
-    accelerate.test_utils.scripts.external_deps.test_checkpointing: accelerate
-    accelerate.test_utils.scripts.external_deps.test_metrics: accelerate
-    accelerate.test_utils.scripts.external_deps.test_peak_memory_usage: accelerate
-    accelerate.test_utils.scripts.external_deps.test_performance: accelerate
-    accelerate.test_utils.scripts.external_deps.test_pippy: accelerate
-    accelerate.test_utils.scripts.external_deps.test_zero3_integration: accelerate
-    accelerate.test_utils.scripts.test_cli: accelerate
-    accelerate.test_utils.scripts.test_distributed_data_loop: accelerate
-    accelerate.test_utils.scripts.test_notebook: accelerate
-    accelerate.test_utils.scripts.test_ops: accelerate
-    accelerate.test_utils.scripts.test_script: accelerate
-    accelerate.test_utils.scripts.test_sync: accelerate
-    accelerate.test_utils.testing: accelerate
-    accelerate.test_utils.training: accelerate
-    accelerate.tracking: accelerate
-    accelerate.utils: accelerate
-    accelerate.utils.bnb: accelerate
-    accelerate.utils.constants: accelerate
-    accelerate.utils.dataclasses: accelerate
-    accelerate.utils.deepspeed: accelerate
-    accelerate.utils.environment: accelerate
-    accelerate.utils.fsdp_utils: accelerate
-    accelerate.utils.imports: accelerate
-    accelerate.utils.launch: accelerate
-    accelerate.utils.megatron_lm: accelerate
-    accelerate.utils.memory: accelerate
-    accelerate.utils.modeling: accelerate
-    accelerate.utils.offload: accelerate
-    accelerate.utils.operations: accelerate
-    accelerate.utils.other: accelerate
-    accelerate.utils.random: accelerate
-    accelerate.utils.rich: accelerate
-    accelerate.utils.torch_xla: accelerate
-    accelerate.utils.tqdm: accelerate
-    accelerate.utils.transformer_engine: accelerate
-    accelerate.utils.versions: accelerate
     addict: addict
     addict.addict: addict
     aiofiles: aiofiles
@@ -631,53 +555,6 @@ manifest:
     aiofiles.threadpool.binary: aiofiles
     aiofiles.threadpool.text: aiofiles
     aiofiles.threadpool.utils: aiofiles
-    aiohttp: aiohttp
-    aiohttp.abc: aiohttp
-    aiohttp.base_protocol: aiohttp
-    aiohttp.client: aiohttp
-    aiohttp.client_exceptions: aiohttp
-    aiohttp.client_proto: aiohttp
-    aiohttp.client_reqrep: aiohttp
-    aiohttp.client_ws: aiohttp
-    aiohttp.compression_utils: aiohttp
-    aiohttp.connector: aiohttp
-    aiohttp.cookiejar: aiohttp
-    aiohttp.formdata: aiohttp
-    aiohttp.hdrs: aiohttp
-    aiohttp.helpers: aiohttp
-    aiohttp.http: aiohttp
-    aiohttp.http_exceptions: aiohttp
-    aiohttp.http_parser: aiohttp
-    aiohttp.http_websocket: aiohttp
-    aiohttp.http_writer: aiohttp
-    aiohttp.locks: aiohttp
-    aiohttp.log: aiohttp
-    aiohttp.multipart: aiohttp
-    aiohttp.payload: aiohttp
-    aiohttp.payload_streamer: aiohttp
-    aiohttp.pytest_plugin: aiohttp
-    aiohttp.resolver: aiohttp
-    aiohttp.streams: aiohttp
-    aiohttp.tcp_helpers: aiohttp
-    aiohttp.test_utils: aiohttp
-    aiohttp.tracing: aiohttp
-    aiohttp.typedefs: aiohttp
-    aiohttp.web: aiohttp
-    aiohttp.web_app: aiohttp
-    aiohttp.web_exceptions: aiohttp
-    aiohttp.web_fileresponse: aiohttp
-    aiohttp.web_log: aiohttp
-    aiohttp.web_middlewares: aiohttp
-    aiohttp.web_protocol: aiohttp
-    aiohttp.web_request: aiohttp
-    aiohttp.web_response: aiohttp
-    aiohttp.web_routedef: aiohttp
-    aiohttp.web_runner: aiohttp
-    aiohttp.web_server: aiohttp
-    aiohttp.web_urldispatcher: aiohttp
-    aiohttp.web_ws: aiohttp
-    aiohttp.worker: aiohttp
-    aiosignal: aiosignal
     altair: altair
     altair.expr: altair
     altair.expr.consts: altair
@@ -1092,128 +969,6 @@ manifest:
     cymem.cymem: cymem
     cymem.tests: cymem
     cymem.tests.test_import: cymem
-    datasets: datasets
-    datasets.arrow_dataset: datasets
-    datasets.arrow_reader: datasets
-    datasets.arrow_writer: datasets
-    datasets.builder: datasets
-    datasets.combine: datasets
-    datasets.commands: datasets
-    datasets.commands.convert: datasets
-    datasets.commands.datasets_cli: datasets
-    datasets.commands.dummy_data: datasets
-    datasets.commands.env: datasets
-    datasets.commands.run_beam: datasets
-    datasets.commands.test: datasets
-    datasets.config: datasets
-    datasets.data_files: datasets
-    datasets.dataset_dict: datasets
-    datasets.distributed: datasets
-    datasets.download: datasets
-    datasets.download.download_config: datasets
-    datasets.download.download_manager: datasets
-    datasets.download.mock_download_manager: datasets
-    datasets.download.streaming_download_manager: datasets
-    datasets.exceptions: datasets
-    datasets.features: datasets
-    datasets.features.audio: datasets
-    datasets.features.features: datasets
-    datasets.features.image: datasets
-    datasets.features.translation: datasets
-    datasets.filesystems: datasets
-    datasets.filesystems.compression: datasets
-    datasets.filesystems.s3filesystem: datasets
-    datasets.fingerprint: datasets
-    datasets.formatting: datasets
-    datasets.formatting.formatting: datasets
-    datasets.formatting.jax_formatter: datasets
-    datasets.formatting.np_formatter: datasets
-    datasets.formatting.tf_formatter: datasets
-    datasets.formatting.torch_formatter: datasets
-    datasets.info: datasets
-    datasets.inspect: datasets
-    datasets.io: datasets
-    datasets.io.abc: datasets
-    datasets.io.csv: datasets
-    datasets.io.generator: datasets
-    datasets.io.json: datasets
-    datasets.io.parquet: datasets
-    datasets.io.spark: datasets
-    datasets.io.sql: datasets
-    datasets.io.text: datasets
-    datasets.iterable_dataset: datasets
-    datasets.keyhash: datasets
-    datasets.load: datasets
-    datasets.metric: datasets
-    datasets.naming: datasets
-    datasets.packaged_modules: datasets
-    datasets.packaged_modules.arrow: datasets
-    datasets.packaged_modules.arrow.arrow: datasets
-    datasets.packaged_modules.audiofolder: datasets
-    datasets.packaged_modules.audiofolder.audiofolder: datasets
-    datasets.packaged_modules.cache: datasets
-    datasets.packaged_modules.cache.cache: datasets
-    datasets.packaged_modules.csv: datasets
-    datasets.packaged_modules.csv.csv: datasets
-    datasets.packaged_modules.folder_based_builder: datasets
-    datasets.packaged_modules.folder_based_builder.folder_based_builder: datasets
-    datasets.packaged_modules.generator: datasets
-    datasets.packaged_modules.generator.generator: datasets
-    datasets.packaged_modules.imagefolder: datasets
-    datasets.packaged_modules.imagefolder.imagefolder: datasets
-    datasets.packaged_modules.json: datasets
-    datasets.packaged_modules.json.json: datasets
-    datasets.packaged_modules.pandas: datasets
-    datasets.packaged_modules.pandas.pandas: datasets
-    datasets.packaged_modules.parquet: datasets
-    datasets.packaged_modules.parquet.parquet: datasets
-    datasets.packaged_modules.spark: datasets
-    datasets.packaged_modules.spark.spark: datasets
-    datasets.packaged_modules.sql: datasets
-    datasets.packaged_modules.sql.sql: datasets
-    datasets.packaged_modules.text: datasets
-    datasets.packaged_modules.text.text: datasets
-    datasets.packaged_modules.webdataset: datasets
-    datasets.packaged_modules.webdataset.webdataset: datasets
-    datasets.parallel: datasets
-    datasets.parallel.parallel: datasets
-    datasets.search: datasets
-    datasets.splits: datasets
-    datasets.streaming: datasets
-    datasets.table: datasets
-    datasets.tasks: datasets
-    datasets.tasks.audio_classification: datasets
-    datasets.tasks.automatic_speech_recognition: datasets
-    datasets.tasks.base: datasets
-    datasets.tasks.image_classification: datasets
-    datasets.tasks.language_modeling: datasets
-    datasets.tasks.question_answering: datasets
-    datasets.tasks.summarization: datasets
-    datasets.tasks.text_classification: datasets
-    datasets.utils: datasets
-    datasets.utils.beam_utils: datasets
-    datasets.utils.deprecation_utils: datasets
-    datasets.utils.doc_utils: datasets
-    datasets.utils.download_manager: datasets
-    datasets.utils.experimental: datasets
-    datasets.utils.extract: datasets
-    datasets.utils.file_utils: datasets
-    datasets.utils.filelock: datasets
-    datasets.utils.hub: datasets
-    datasets.utils.info_utils: datasets
-    datasets.utils.logging: datasets
-    datasets.utils.metadata: datasets
-    datasets.utils.patching: datasets
-    datasets.utils.py_utils: datasets
-    datasets.utils.readme: datasets
-    datasets.utils.resources: datasets
-    datasets.utils.sharding: datasets
-    datasets.utils.stratify: datasets
-    datasets.utils.tf_utils: datasets
-    datasets.utils.tqdm: datasets
-    datasets.utils.track: datasets
-    datasets.utils.typing: datasets
-    datasets.utils.version: datasets
     dateutil: python_dateutil
     dateutil.easter: python_dateutil
     dateutil.parser: python_dateutil
@@ -1312,44 +1067,6 @@ manifest:
     deployment.sam.onnx.inference: efficientvit_gml
     deployment.sam.tensorrt: efficientvit_gml
     deployment.sam.tensorrt.inference: efficientvit_gml
-    dill: dill
-    dill.detect: dill
-    dill.logger: dill
-    dill.objtypes: dill
-    dill.pointers: dill
-    dill.session: dill
-    dill.settings: dill
-    dill.source: dill
-    dill.temp: dill
-    dill.tests: dill
-    dill.tests.test_abc: dill
-    dill.tests.test_check: dill
-    dill.tests.test_classdef: dill
-    dill.tests.test_dataclasses: dill
-    dill.tests.test_detect: dill
-    dill.tests.test_dictviews: dill
-    dill.tests.test_diff: dill
-    dill.tests.test_extendpickle: dill
-    dill.tests.test_fglobals: dill
-    dill.tests.test_file: dill
-    dill.tests.test_functions: dill
-    dill.tests.test_functors: dill
-    dill.tests.test_logger: dill
-    dill.tests.test_mixins: dill
-    dill.tests.test_module: dill
-    dill.tests.test_moduledict: dill
-    dill.tests.test_nested: dill
-    dill.tests.test_objects: dill
-    dill.tests.test_properties: dill
-    dill.tests.test_pycapsule: dill
-    dill.tests.test_recursive: dill
-    dill.tests.test_registered: dill
-    dill.tests.test_restricted: dill
-    dill.tests.test_selected: dill
-    dill.tests.test_session: dill
-    dill.tests.test_source: dill
-    dill.tests.test_temp: dill
-    dill.tests.test_weakref: dill
     distlib: distlib
     distlib.compat: distlib
     distlib.database: distlib
@@ -1431,9 +1148,6 @@ manifest:
     einops.layers.torch: einops
     einops.packing: einops
     einops.parsing: einops
-    einops_exts: einops_exts
-    einops_exts.einops_exts: einops_exts
-    einops_exts.torch: einops_exts
     examples: torchscale_gml
     examples.fairseq: torchscale_gml
     examples.fairseq.criterions: torchscale_gml
@@ -1893,7 +1607,6 @@ manifest:
     fontTools.voltLib.parser: fonttools
     fontTools.voltLib.voltToFea: fonttools
     fqdn: fqdn
-    frozenlist: frozenlist
     fsspec: fsspec
     fsspec.archive: fsspec
     fsspec.asyn: fsspec
@@ -4485,53 +4198,10 @@ manifest:
     mpmath.tests.torture: mpmath
     mpmath.usertools: mpmath
     mpmath.visualization: mpmath
-    multidict: multidict
     multipart: python_multipart
     multipart.decoders: python_multipart
     multipart.exceptions: python_multipart
     multipart.multipart: python_multipart
-    multiprocess: multiprocess
-    multiprocess.connection: multiprocess
-    multiprocess.context: multiprocess
-    multiprocess.dummy: multiprocess
-    multiprocess.dummy.connection: multiprocess
-    multiprocess.forkserver: multiprocess
-    multiprocess.heap: multiprocess
-    multiprocess.managers: multiprocess
-    multiprocess.pool: multiprocess
-    multiprocess.popen_fork: multiprocess
-    multiprocess.popen_forkserver: multiprocess
-    multiprocess.popen_spawn_posix: multiprocess
-    multiprocess.popen_spawn_win32: multiprocess
-    multiprocess.process: multiprocess
-    multiprocess.queues: multiprocess
-    multiprocess.reduction: multiprocess
-    multiprocess.resource_sharer: multiprocess
-    multiprocess.resource_tracker: multiprocess
-    multiprocess.shared_memory: multiprocess
-    multiprocess.sharedctypes: multiprocess
-    multiprocess.spawn: multiprocess
-    multiprocess.synchronize: multiprocess
-    multiprocess.tests: multiprocess
-    multiprocess.tests.mp_fork_bomb: multiprocess
-    multiprocess.tests.mp_preload: multiprocess
-    multiprocess.tests.test_multiprocessing_fork: multiprocess
-    multiprocess.tests.test_multiprocessing_fork.test_manager: multiprocess
-    multiprocess.tests.test_multiprocessing_fork.test_misc: multiprocess
-    multiprocess.tests.test_multiprocessing_fork.test_processes: multiprocess
-    multiprocess.tests.test_multiprocessing_fork.test_threads: multiprocess
-    multiprocess.tests.test_multiprocessing_forkserver: multiprocess
-    multiprocess.tests.test_multiprocessing_forkserver.test_manager: multiprocess
-    multiprocess.tests.test_multiprocessing_forkserver.test_misc: multiprocess
-    multiprocess.tests.test_multiprocessing_forkserver.test_processes: multiprocess
-    multiprocess.tests.test_multiprocessing_forkserver.test_threads: multiprocess
-    multiprocess.tests.test_multiprocessing_main_handling: multiprocess
-    multiprocess.tests.test_multiprocessing_spawn: multiprocess
-    multiprocess.tests.test_multiprocessing_spawn.test_manager: multiprocess
-    multiprocess.tests.test_multiprocessing_spawn.test_misc: multiprocess
-    multiprocess.tests.test_multiprocessing_spawn.test_processes: multiprocess
-    multiprocess.tests.test_multiprocessing_spawn.test_threads: multiprocess
-    multiprocess.util: multiprocess
     murmurhash: murmurhash
     murmurhash.about: murmurhash
     murmurhash.mrmr: murmurhash
@@ -12099,7 +11769,6 @@ manifest:
     pyarrow.vendored: pyarrow
     pyarrow.vendored.docscrape: pyarrow
     pyarrow.vendored.version: pyarrow
-    pyarrow_hotfix: pyarrow_hotfix
     pyasn1: pyasn1
     pyasn1.codec: pyasn1
     pyasn1.codec.ber: pyasn1
@@ -13087,43 +12756,6 @@ manifest:
     rsa.randnum: rsa
     rsa.transform: rsa
     rsa.util: rsa
-    ruamel.yaml: ruamel.yaml
-    ruamel.yaml.anchor: ruamel.yaml
-    ruamel.yaml.comments: ruamel.yaml
-    ruamel.yaml.compat: ruamel.yaml
-    ruamel.yaml.composer: ruamel.yaml
-    ruamel.yaml.configobjwalker: ruamel.yaml
-    ruamel.yaml.constructor: ruamel.yaml
-    ruamel.yaml.cyaml: ruamel.yaml
-    ruamel.yaml.docinfo: ruamel.yaml
-    ruamel.yaml.dumper: ruamel.yaml
-    ruamel.yaml.emitter: ruamel.yaml
-    ruamel.yaml.error: ruamel.yaml
-    ruamel.yaml.events: ruamel.yaml
-    ruamel.yaml.loader: ruamel.yaml
-    ruamel.yaml.main: ruamel.yaml
-    ruamel.yaml.nodes: ruamel.yaml
-    ruamel.yaml.parser: ruamel.yaml
-    ruamel.yaml.reader: ruamel.yaml
-    ruamel.yaml.representer: ruamel.yaml
-    ruamel.yaml.resolver: ruamel.yaml
-    ruamel.yaml.scalarbool: ruamel.yaml
-    ruamel.yaml.scalarfloat: ruamel.yaml
-    ruamel.yaml.scalarint: ruamel.yaml
-    ruamel.yaml.scalarstring: ruamel.yaml
-    ruamel.yaml.scanner: ruamel.yaml
-    ruamel.yaml.serializer: ruamel.yaml
-    ruamel.yaml.tag: ruamel.yaml
-    ruamel.yaml.timestamp: ruamel.yaml
-    ruamel.yaml.tokens: ruamel.yaml
-    ruamel.yaml.util: ruamel.yaml
-    safetensors: safetensors
-    safetensors.flax: safetensors
-    safetensors.mlx: safetensors
-    safetensors.numpy: safetensors
-    safetensors.paddle: safetensors
-    safetensors.tensorflow: safetensors
-    safetensors.torch: safetensors
     scipy: scipy
     scipy.cluster: scipy
     scipy.cluster.hierarchy: scipy
@@ -20581,93 +20213,6 @@ manifest:
     wids.wids_mmtar: webdataset
     wids.wids_specs: webdataset
     wids.wids_tar: webdataset
-    x2vlm: x2vlm_gml
-    x2vlm.Captioning_MLM: x2vlm_gml
-    x2vlm.Grounding_bbox: x2vlm_gml
-    x2vlm.MARVL: x2vlm_gml
-    x2vlm.NLVR: x2vlm_gml
-    x2vlm.Pretrain: x2vlm_gml
-    x2vlm.Retrieval: x2vlm_gml
-    x2vlm.VQA: x2vlm_gml
-    x2vlm.VQA_msrvtt: x2vlm_gml
-    x2vlm.VQA_msvd: x2vlm_gml
-    x2vlm.WIT: x2vlm_gml
-    x2vlm.XGQA: x2vlm_gml
-    x2vlm.XRetrieval: x2vlm_gml
-    x2vlm.XVNLI: x2vlm_gml
-    x2vlm.accelerators: x2vlm_gml
-    x2vlm.accelerators.accelerator: x2vlm_gml
-    x2vlm.accelerators.apex_ddp_accelerator: x2vlm_gml
-    x2vlm.dataset: x2vlm_gml
-    x2vlm.dataset.captioning_dataset: x2vlm_gml
-    x2vlm.dataset.dist_dataset: x2vlm_gml
-    x2vlm.dataset.grounding_dataset: x2vlm_gml
-    x2vlm.dataset.nlvr_dataset: x2vlm_gml
-    x2vlm.dataset.pretrain_dataset: x2vlm_gml
-    x2vlm.dataset.pretrain_dataset_multilingual: x2vlm_gml
-    x2vlm.dataset.randaugment: x2vlm_gml
-    x2vlm.dataset.retrieval_dataset: x2vlm_gml
-    x2vlm.dataset.tokenizers: x2vlm_gml
-    x2vlm.dataset.tokenizers.bert_tokenizer_with_dropout: x2vlm_gml
-    x2vlm.dataset.utils: x2vlm_gml
-    x2vlm.dataset.vqa_dataset: x2vlm_gml
-    x2vlm.dataset.wit_dataset: x2vlm_gml
-    x2vlm.dataset.xflickrco_dataset: x2vlm_gml
-    x2vlm.dataset.xvnli_dataset: x2vlm_gml
-    x2vlm.models: x2vlm_gml
-    x2vlm.models.beit2: x2vlm_gml
-    x2vlm.models.box_ops: x2vlm_gml
-    x2vlm.models.clip_vit: x2vlm_gml
-    x2vlm.models.model_classification: x2vlm_gml
-    x2vlm.models.model_generation: x2vlm_gml
-    x2vlm.models.model_grounding: x2vlm_gml
-    x2vlm.models.model_pretrain: x2vlm_gml
-    x2vlm.models.model_retrieval: x2vlm_gml
-    x2vlm.models.resampler: x2vlm_gml
-    x2vlm.models.swin_transformer: x2vlm_gml
-    x2vlm.models.vit: x2vlm_gml
-    x2vlm.models.xbert: x2vlm_gml
-    x2vlm.models.xroberta: x2vlm_gml
-    x2vlm.models.xvlm: x2vlm_gml
-    x2vlm.optim: x2vlm_gml
-    x2vlm.refTools: x2vlm_gml
-    x2vlm.refTools.evaluation: x2vlm_gml
-    x2vlm.refTools.evaluation.bleu: x2vlm_gml
-    x2vlm.refTools.evaluation.bleu.bleu: x2vlm_gml
-    x2vlm.refTools.evaluation.bleu.bleu_scorer: x2vlm_gml
-    x2vlm.refTools.evaluation.cider: x2vlm_gml
-    x2vlm.refTools.evaluation.cider.cider: x2vlm_gml
-    x2vlm.refTools.evaluation.cider.cider_scorer: x2vlm_gml
-    x2vlm.refTools.evaluation.meteor: x2vlm_gml
-    x2vlm.refTools.evaluation.meteor.meteor: x2vlm_gml
-    x2vlm.refTools.evaluation.refEvaluation: x2vlm_gml
-    x2vlm.refTools.evaluation.rouge: x2vlm_gml
-    x2vlm.refTools.evaluation.rouge.rouge: x2vlm_gml
-    x2vlm.refTools.evaluation.tokenizer: x2vlm_gml
-    x2vlm.refTools.evaluation.tokenizer.ptbtokenizer: x2vlm_gml
-    x2vlm.refTools.refer_python3: x2vlm_gml
-    x2vlm.run: x2vlm_gml
-    x2vlm.scheduler: x2vlm_gml
-    x2vlm.utils: x2vlm_gml
-    x2vlm.utils.bleu: x2vlm_gml
-    x2vlm.utils.checkpointer: x2vlm_gml
-    x2vlm.utils.cider: x2vlm_gml
-    x2vlm.utils.cider.pyciderevalcap: x2vlm_gml
-    x2vlm.utils.cider.pyciderevalcap.cider: x2vlm_gml
-    x2vlm.utils.cider.pyciderevalcap.cider.cider: x2vlm_gml
-    x2vlm.utils.cider.pyciderevalcap.cider.cider_scorer: x2vlm_gml
-    x2vlm.utils.cider.pyciderevalcap.ciderD: x2vlm_gml
-    x2vlm.utils.cider.pyciderevalcap.ciderD.ciderD: x2vlm_gml
-    x2vlm.utils.cider.pyciderevalcap.ciderD.ciderD_scorer: x2vlm_gml
-    x2vlm.utils.hdfs_io: x2vlm_gml
-    x2vlm.utils.marvl_preproc: x2vlm_gml
-    x2vlm.utils.torch_io: x2vlm_gml
-    x2vlm.vqaTools: x2vlm_gml
-    x2vlm.vqaTools.vqa: x2vlm_gml
-    x2vlm.vqaTools.vqaEval: x2vlm_gml
-    x2vlm.xFlickrCO: x2vlm_gml
-    xxhash: xxhash
-    xxhash.version: xxhash
     yaml: PyYAML
     yaml.composer: PyYAML
     yaml.constructor: PyYAML
@@ -20740,7 +20285,6 @@ manifest:
     yapftests.utils: yapf
     yapftests.yapf_test: yapf
     yapftests.yapf_test_helper: yapf
-    yarl: yarl
     zipp: zipp
     zipp.glob: zipp
     zipp.py310compat: zipp
@@ -20899,4 +20443,4 @@ manifest:
     zope.interface.verify: zope.interface
   pip_repository:
     name: pip
-integrity: d983e84106dca18198cc9233005a61edf420454599c3768c2f585f47000cc43b
+integrity: aaf6f79bc222498741aeab162d376cc089bc7ca641309a83145edaf1177fe2b6
