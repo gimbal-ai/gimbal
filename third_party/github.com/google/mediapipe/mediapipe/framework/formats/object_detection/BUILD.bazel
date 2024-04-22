@@ -77,9 +77,18 @@ proto_go_library(
 
 proto_compile(
     name = "object_detection_py_compile",
-    output_mappings = ["anchor_pb2.py=/mediapipe/framework/formats/object_detection/anchor_pb2.py"],
-    outputs = ["anchor_pb2.py"],
-    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    output_mappings = [
+        "anchor_pb2.py=/mediapipe/framework/formats/object_detection/anchor_pb2.py",
+        "anchor_pb2.pyi=/mediapipe/framework/formats/object_detection/anchor_pb2.pyi",
+    ],
+    outputs = [
+        "anchor_pb2.py",
+        "anchor_pb2.pyi",
+    ],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
+    ],
     proto = "object_detection_proto",
     visibility = ["//visibility:public"],
 )

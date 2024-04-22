@@ -120,14 +120,17 @@ proto_compile(
     output_mappings = [
         "logs_service_pb2.py=/opentelemetry/proto/collector/logs/v1/logs_service_pb2.py",
         "logs_service_pb2_grpc.py=/opentelemetry/proto/collector/logs/v1/logs_service_pb2_grpc.py",
+        "logs_service_pb2.pyi=/opentelemetry/proto/collector/logs/v1/logs_service_pb2.pyi",
     ],
     outputs = [
         "logs_service_pb2.py",
         "logs_service_pb2_grpc.py",
+        "logs_service_pb2.pyi",
     ],
     plugins = [
         "@build_stack_rules_proto//plugin/builtin:python",
         "@build_stack_rules_proto//plugin/grpc/grpc:protoc-gen-grpc-python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
     ],
     proto = "v1_proto",
     visibility = ["//visibility:public"],

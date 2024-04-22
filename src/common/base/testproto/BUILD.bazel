@@ -71,8 +71,14 @@ proto_go_library(
 
 proto_compile(
     name = "testproto_py_compile",
-    outputs = ["test_pb2.py"],
-    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    outputs = [
+        "test_pb2.py",
+        "test_pb2.pyi",
+    ],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
+    ],
     proto = "testproto_proto",
     visibility = ["//visibility:public"],
 )

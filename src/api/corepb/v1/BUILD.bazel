@@ -132,8 +132,15 @@ proto_compile(
         "cp_edge_pb2.py",
         "mediastream_pb2.py",
         "model_exec_pb2.py",
+        "controlplane_pb2.pyi",
+        "cp_edge_pb2.pyi",
+        "mediastream_pb2.pyi",
+        "model_exec_pb2.pyi",
     ],
-    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
+    ],
     proto = "corepb_proto",
     visibility = ["//visibility:public"],
 )

@@ -77,9 +77,18 @@ proto_go_library(
 
 proto_compile(
     name = "motion_py_compile",
-    output_mappings = ["optical_flow_field_data_pb2.py=/mediapipe/framework/formats/motion/optical_flow_field_data_pb2.py"],
-    outputs = ["optical_flow_field_data_pb2.py"],
-    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    output_mappings = [
+        "optical_flow_field_data_pb2.py=/mediapipe/framework/formats/motion/optical_flow_field_data_pb2.py",
+        "optical_flow_field_data_pb2.pyi=/mediapipe/framework/formats/motion/optical_flow_field_data_pb2.pyi",
+    ],
+    outputs = [
+        "optical_flow_field_data_pb2.py",
+        "optical_flow_field_data_pb2.pyi",
+    ],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
+    ],
     proto = "motion_proto",
     visibility = ["//visibility:public"],
 )

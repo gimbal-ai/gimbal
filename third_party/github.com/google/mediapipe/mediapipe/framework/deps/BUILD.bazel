@@ -77,9 +77,18 @@ proto_go_library(
 
 proto_compile(
     name = "deps_py_compile",
-    output_mappings = ["proto_descriptor_pb2.py=/mediapipe/framework/deps/proto_descriptor_pb2.py"],
-    outputs = ["proto_descriptor_pb2.py"],
-    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    output_mappings = [
+        "proto_descriptor_pb2.py=/mediapipe/framework/deps/proto_descriptor_pb2.py",
+        "proto_descriptor_pb2.pyi=/mediapipe/framework/deps/proto_descriptor_pb2.pyi",
+    ],
+    outputs = [
+        "proto_descriptor_pb2.py",
+        "proto_descriptor_pb2.pyi",
+    ],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
+    ],
     proto = "deps_proto",
     visibility = ["//visibility:public"],
 )

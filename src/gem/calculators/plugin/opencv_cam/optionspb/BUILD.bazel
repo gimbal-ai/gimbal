@@ -86,8 +86,14 @@ mediapipe_options_library(
 
 proto_compile(
     name = "optionspb_py_compile",
-    outputs = ["opencv_cam_calculator_options_pb2.py"],
-    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    outputs = [
+        "opencv_cam_calculator_options_pb2.py",
+        "opencv_cam_calculator_options_pb2.pyi",
+    ],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
+    ],
     proto = "optionspb_proto",
     visibility = ["//visibility:public"],
 )

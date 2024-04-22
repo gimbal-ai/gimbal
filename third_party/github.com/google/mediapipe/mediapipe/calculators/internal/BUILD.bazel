@@ -82,9 +82,18 @@ proto_go_library(
 
 proto_compile(
     name = "internal_py_compile",
-    output_mappings = ["callback_packet_calculator_pb2.py=/mediapipe/calculators/internal/callback_packet_calculator_pb2.py"],
-    outputs = ["callback_packet_calculator_pb2.py"],
-    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    output_mappings = [
+        "callback_packet_calculator_pb2.py=/mediapipe/calculators/internal/callback_packet_calculator_pb2.py",
+        "callback_packet_calculator_pb2.pyi=/mediapipe/calculators/internal/callback_packet_calculator_pb2.pyi",
+    ],
+    outputs = [
+        "callback_packet_calculator_pb2.py",
+        "callback_packet_calculator_pb2.pyi",
+    ],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
+    ],
     proto = "internal_proto",
     visibility = ["//visibility:public"],
 )

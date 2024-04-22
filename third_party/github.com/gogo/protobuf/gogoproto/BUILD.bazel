@@ -79,9 +79,18 @@ proto_compile(
 
 proto_compile(
     name = "gogoproto_py_compile",
-    output_mappings = ["gogo_pb2.py=/gogoproto/gogo_pb2.py"],
-    outputs = ["gogo_pb2.py"],
-    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    output_mappings = [
+        "gogo_pb2.py=/gogoproto/gogo_pb2.py",
+        "gogo_pb2.pyi=/gogoproto/gogo_pb2.pyi",
+    ],
+    outputs = [
+        "gogo_pb2.py",
+        "gogo_pb2.pyi",
+    ],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
+    ],
     proto = "gogoproto_proto",
     visibility = ["//visibility:public"],
 )

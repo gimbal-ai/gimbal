@@ -117,10 +117,12 @@ proto_compile(
     outputs = [
         "directory_pb2.py",
         "directory_pb2_grpc.py",
+        "directory_pb2.pyi",
     ],
     plugins = [
         "@build_stack_rules_proto//plugin/builtin:python",
         "@build_stack_rules_proto//plugin/grpc/grpc:protoc-gen-grpc-python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
     ],
     proto = "directorypb_proto",
     visibility = ["//visibility:public"],

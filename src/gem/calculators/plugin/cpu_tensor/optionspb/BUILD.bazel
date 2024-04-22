@@ -103,8 +103,14 @@ proto_compile(
         "bounding_box_tensors_to_detections_options_pb2.py",
         "scores_to_label_calculator_options_pb2.py",
         "standardize_tensor_calculator_options_pb2.py",
+        "bounding_box_tensors_to_detections_options_pb2.pyi",
+        "scores_to_label_calculator_options_pb2.pyi",
+        "standardize_tensor_calculator_options_pb2.pyi",
     ],
-    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
+    ],
     proto = "optionspb_proto",
     visibility = ["//visibility:public"],
 )

@@ -71,8 +71,14 @@ proto_go_library(
 
 proto_compile(
     name = "optionspb_py_compile",
-    outputs = ["openvino_execute_calculator_options_pb2.py"],
-    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    outputs = [
+        "openvino_execute_calculator_options_pb2.py",
+        "openvino_execute_calculator_options_pb2.pyi",
+    ],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
+    ],
     proto = "optionspb_proto",
     visibility = ["//visibility:public"],
 )

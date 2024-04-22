@@ -124,10 +124,12 @@ proto_compile(
     outputs = [
         "fmpb_pb2.py",
         "fmpb_pb2_grpc.py",
+        "fmpb_pb2.pyi",
     ],
     plugins = [
         "@build_stack_rules_proto//plugin/builtin:python",
         "@build_stack_rules_proto//plugin/grpc/grpc:protoc-gen-grpc-python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
     ],
     proto = "fmpb_proto",
     visibility = ["//visibility:public"],

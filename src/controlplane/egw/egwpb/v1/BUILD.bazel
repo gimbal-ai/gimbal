@@ -114,10 +114,12 @@ proto_compile(
     outputs = [
         "egwpb_pb2.py",
         "egwpb_pb2_grpc.py",
+        "egwpb_pb2.pyi",
     ],
     plugins = [
         "@build_stack_rules_proto//plugin/builtin:python",
         "@build_stack_rules_proto//plugin/grpc/grpc:protoc-gen-grpc-python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
     ],
     proto = "egwpb_proto",
     visibility = ["//visibility:public"],

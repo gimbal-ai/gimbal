@@ -82,9 +82,18 @@ proto_go_library(
 
 proto_compile(
     name = "v1_py_compile",
-    output_mappings = ["resource_pb2.py=/opentelemetry/proto/resource/v1/resource_pb2.py"],
-    outputs = ["resource_pb2.py"],
-    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    output_mappings = [
+        "resource_pb2.py=/opentelemetry/proto/resource/v1/resource_pb2.py",
+        "resource_pb2.pyi=/opentelemetry/proto/resource/v1/resource_pb2.pyi",
+    ],
+    outputs = [
+        "resource_pb2.py",
+        "resource_pb2.pyi",
+    ],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
+    ],
     proto = "v1_proto",
     visibility = ["//visibility:public"],
 )

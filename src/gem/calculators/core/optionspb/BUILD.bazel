@@ -103,8 +103,14 @@ proto_compile(
         "packet_latency_metrics_sink_calculator_options_pb2.py",
         "detections_summary_calculator_options_pb2.py",
         "image_quality_calculator_options_pb2.py",
+        "detections_summary_calculator_options_pb2.pyi",
+        "image_quality_calculator_options_pb2.pyi",
+        "packet_latency_metrics_sink_calculator_options_pb2.pyi",
     ],
-    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
+    ],
     proto = "optionspb_proto",
     visibility = ["//visibility:public"],
 )

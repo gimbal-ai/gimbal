@@ -82,9 +82,18 @@ proto_go_library(
 
 proto_compile(
     name = "testdata_py_compile",
-    output_mappings = ["frozen_generator_pb2.py=/mediapipe/framework/tool/testdata/frozen_generator_pb2.py"],
-    outputs = ["frozen_generator_pb2.py"],
-    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    output_mappings = [
+        "frozen_generator_pb2.py=/mediapipe/framework/tool/testdata/frozen_generator_pb2.py",
+        "frozen_generator_pb2.pyi=/mediapipe/framework/tool/testdata/frozen_generator_pb2.pyi",
+    ],
+    outputs = [
+        "frozen_generator_pb2.py",
+        "frozen_generator_pb2.pyi",
+    ],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
+    ],
     proto = "testdata_proto",
     visibility = ["//visibility:public"],
 )

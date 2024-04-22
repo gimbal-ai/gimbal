@@ -102,12 +102,19 @@ proto_compile(
     output_mappings = [
         "locus_pb2.py=/mediapipe/framework/formats/annotation/locus_pb2.py",
         "rasterization_pb2.py=/mediapipe/framework/formats/annotation/rasterization_pb2.py",
+        "locus_pb2.pyi=/mediapipe/framework/formats/annotation/locus_pb2.pyi",
+        "rasterization_pb2.pyi=/mediapipe/framework/formats/annotation/rasterization_pb2.pyi",
     ],
     outputs = [
         "locus_pb2.py",
         "rasterization_pb2.py",
+        "locus_pb2.pyi",
+        "rasterization_pb2.pyi",
     ],
-    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
+    ],
     proto = "annotation_proto",
     visibility = ["//visibility:public"],
 )

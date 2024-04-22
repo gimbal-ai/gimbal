@@ -112,8 +112,14 @@ proto_compile(
         "jwt_pb2.py",
         "status_pb2.py",
         "uuid_pb2.py",
+        "jwt_pb2.pyi",
+        "status_pb2.pyi",
+        "uuid_pb2.pyi",
     ],
-    plugins = ["@build_stack_rules_proto//plugin/builtin:python"],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
+    ],
     proto = "typespb_proto",
     visibility = ["//visibility:public"],
 )

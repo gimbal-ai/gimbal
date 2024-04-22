@@ -105,10 +105,12 @@ proto_compile(
     outputs = [
         "testing_pb2.py",
         "testing_pb2_grpc.py",
+        "testing_pb2.pyi",
     ],
     plugins = [
         "@build_stack_rules_proto//plugin/builtin:python",
         "@build_stack_rules_proto//plugin/grpc/grpc:protoc-gen-grpc-python",
+        "@build_stack_rules_proto//plugin/builtin:pyi",
     ],
     proto = "testpb_proto",
     visibility = ["//visibility:public"],
