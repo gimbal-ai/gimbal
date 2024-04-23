@@ -75,13 +75,17 @@ func (d *TestDB) Reset() error {
 		return err
 	}
 
+	// There's some statefulness in the connection, so close the old one and recreate a new connection to the DB.
+	d.db.Close()
+
+	d.db = pg.MustCreateDefaultPostgresDB()
+
 	if d.schemaSource != nil {
 		err := pg.PerformMigrationsWithEmbed(d.db, migrationTable, d.schemaSource, d.schemaSourceDirectory)
 		if err != nil {
 			return err
 		}
 	}
-
 	return nil
 }
 
@@ -154,6 +158,7 @@ func setupTestDB(schemaSource *embed.FS, opts ...TestDBOpt) (*TestDB, func(), er
 	if err = pool.Retry(func() error {
 		log.SetLevel(log.WarnLevel)
 		log.Info("trying to connect")
+
 		d.db = pg.MustCreateDefaultPostgresDB()
 		return d.db.Ping()
 	}); err != nil {
