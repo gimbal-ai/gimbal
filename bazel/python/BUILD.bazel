@@ -13,26 +13,11 @@
 #
 # SPDX-License-Identifier: Proprietary
 
+load("@experimental_pip//:requirements.bzl", experimental_data_requirements = "all_data_requirements", experimental_requirements = "all_requirements")
 load("@pip//:requirements.bzl", "all_data_requirements", "all_requirements")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
-load("@rules_python//python:pip.bzl", "compile_pip_requirements")
-load("//bazel:gml_build_system.bzl", "no_sysroot")
 load("//bazel:images.bzl", "gml_oci_image", "gml_oci_push")
 load("//bazel/python:py_pkg_provider.bzl", "py_pkg_provider")
-
-exports_files(["requirements_lock.txt"])
-
-compile_pip_requirements(
-    name = "requirements",
-    timeout = "long",
-    extra_args = [
-        "--extra-index-url https://download.pytorch.org/whl/cu121",
-        "--find-links https://download.openmmlab.com/mmcv/dist/cu121/torch2.1/index.html",
-    ],
-    requirements_in = "requirements.in",
-    requirements_txt = "requirements_lock.txt",
-    target_compatible_with = no_sysroot(),
-)
 
 py_pkg_provider(
     name = "python_deps_files",
@@ -42,6 +27,16 @@ py_pkg_provider(
 pkg_tar(
     name = "python_deps_tar",
     srcs = [":python_deps_files"],
+)
+
+py_pkg_provider(
+    name = "experimental_deps_files",
+    srcs = experimental_requirements + experimental_data_requirements,
+)
+
+pkg_tar(
+    name = "experimental_deps_tar",
+    srcs = [":experimental_deps_files"],
 )
 
 # This is a workaround for the fact that OCI image and pkg_tar are really slow for large tars.
@@ -66,4 +61,22 @@ gml_oci_push(
     image = ":python_base_image",
     remote_tags = ["latest"],
     repository = "us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/python_base_image",
+)
+
+gml_oci_image(
+    name = "python_experimental_base_image",
+    base = "@python_3_11_image",
+    tars = [
+        ":experimental_deps_tar",
+        "@com_github_ffmpeg_ffmpeg//:ffmpeg_binaries",
+        "@com_github_ffmpeg_ffmpeg//:ffmpeg_libs",
+    ],
+    visibility = ["//src/experimental:__subpackages__"],
+)
+
+gml_oci_push(
+    name = "push_python_experimental_base_image",
+    image = ":python_experimental_base_image",
+    remote_tags = ["latest"],
+    repository = "us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/python_experimental_base_image",
 )

@@ -5,6 +5,7 @@
 *_pb2.py -diff linguist-generated=true
 *_pb2.pyi -diff linguist-generated=true
 *_pb2_grpc.py -diff linguist-generated=true
+requirements_lock.txt -diff linguist-generated=true
 src/ui/pnpm-lock.yaml -diff linguist-generated=true
 src/ui/app/graphql_schema.ts -diff linguist-generated=true
 src/ui/visspec/visspec_schema.ts -diff linguist-generated=true

@@ -222,7 +222,9 @@ _collect_runfiles = rule(
 )
 
 def _gml_fast_py_image(name, binary, **kwargs):
-    default_arg(kwargs, "base", "@gml//bazel/python:python_base_image")
+    default_base_image = "@gml//bazel/python:python_experimental_base_image" if native.package_name().startswith("src/experimental/") else "@gml//bazel/python:python_base_image"
+
+    default_arg(kwargs, "base", default_base_image)
     default_arg(kwargs, "runfiles_denylist", [])
     default_arg(kwargs, "tars", [])
 

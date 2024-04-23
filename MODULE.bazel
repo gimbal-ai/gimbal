@@ -197,9 +197,15 @@ pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 pip.parse(
     hub_name = "pip",
     python_version = "3.11",
-    requirements_lock = "//bazel/python:requirements_lock.txt",
+    requirements_lock = "//:requirements_lock.txt",
 )
 use_repo(pip, "pip")
+pip.parse(
+    hub_name = "experimental_pip",
+    python_version = "3.11",
+    requirements_lock = "//src/experimental:requirements_lock.txt",
+)
+use_repo(pip, "experimental_pip")
 
 # rules_oci setup
 oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")

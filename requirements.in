@@ -7,37 +7,18 @@ pytest==7.4.2
 opencv-python==4.5.5.64
 opencv-python-headless==4.5.5.64
 
-# src/experimental/research/
 absl-py==2.0.0
 beit3-gml==0.1.1
 efficientvit-gml==0.1.7
-facenet_pytorch==2.5.3
-filetype==1.2.0
-google-cloud-videointelligence==2.13.3
-gradio==4.14.0
-grequests==0.7.0
 groundingdino-gml==0.1.2
-jupyter==1.0.0
-mmcv==2.1.0
+grpcio==1.62.0
 nats-py==2.7.2
-numba==0.59.0
 numpy==1.26.2
-openvino==2024.0.0
-openvino-dev==2024.0.0
-pandas==2.2.1
 Pillow==10.2.0
-psycopg2-binary==2.9.9
-pycocotools==2.0.7
-qdrant_client==1.7.3
-requests==2.31.0
+protobuf==4.23.4
 salesforce-lavis==1.0.2
-scikit-image==0.22.0
-scikit-learn==1.4.0
-seaborn==0.13.2
 segment-anything-py==1.0
-spacy>=3.0.7
 supervision==0.17.1
-tensorboard==2.15.1
 torch==2.1.2
 torchvision==0.16.2
 

@@ -15,6 +15,7 @@
 
 load("@bazel_gazelle//:def.bzl", "DEFAULT_LANGUAGES", "gazelle_binary")
 load("@pip//:requirements.bzl", "all_whl_requirements")
+load("@rules_python//python:pip.bzl", "compile_pip_requirements")
 load("@rules_python_gazelle_plugin//manifest:defs.bzl", "gazelle_python_manifest")
 load("@rules_python_gazelle_plugin//modules_mapping:def.bzl", "modules_mapping")
 load("//bazel:gazelle.bzl", "gazelle_runners")
@@ -22,6 +23,23 @@ load("//bazel:gml_build_system.bzl", "no_sysroot")
 load("//bazel:images.bzl", "gml_oci_image")
 load("//bazel:repositories.bzl", "list_gml_deps")
 load("//bazel/cc_toolchains/sysroots:tars.bzl", "sysroot_runtime_tar", "sysroot_test_tar")
+
+exports_files([
+    "requirements.in",
+    "requirements_lock.txt",
+])
+
+compile_pip_requirements(
+    name = "requirements",
+    timeout = "long",
+    src = "requirements.in",
+    extra_args = [
+        "--extra-index-url https://download.pytorch.org/whl/cu121",
+        "--find-links https://download.openmmlab.com/mmcv/dist/cu121/torch2.1/index.html",
+    ],
+    requirements_txt = "requirements_lock.txt",
+    target_compatible_with = no_sysroot(),
+)
 
 modules_mapping(
     name = "modules_map",
@@ -32,7 +50,7 @@ gazelle_python_manifest(
     name = "gazelle_python_manifest",
     modules_mapping = ":modules_map",
     pip_repository_name = "pip",
-    requirements = "//bazel/python:requirements_lock.txt",
+    requirements = ":requirements_lock.txt",
     target_compatible_with = no_sysroot(),
 )
 
