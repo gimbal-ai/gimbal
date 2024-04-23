@@ -46,12 +46,14 @@ func CreateIdempotentTx(ctx context.Context, db *sqlx.DB, svc string) (*sqlx.Tx,
 	md, _ := metadata.FromIncomingContext(ctx)
 	idempotencyKeys := md.Get("x-idempotency-key")
 	if len(idempotencyKeys) == 0 {
+		tx.Rollback()
 		return tx, ErrIdempotencyKeyMissing
 	}
 	idempotencyKey := idempotencyKeys[0]
 	// Will fail if unique key already exists.
 	_, err = tx.ExecContext(ctx, fmt.Sprintf("INSERT INTO %s_idempotency_key (idempotency_key) VALUES ($1)", svc), idempotencyKey)
 	if err != nil {
+		tx.Rollback()
 		return tx, ErrIdempotencyTxFailed
 	}
 	return tx, nil

@@ -19,6 +19,7 @@ package pg_test
 
 import (
 	"context"
+	"database/sql"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -50,7 +51,7 @@ func TestCreateIdempotentTx(t *testing.T) {
 	ctx1 := metadata.NewIncomingContext(context.Background(), md1)
 	tx1, err := pg.CreateIdempotentTx(ctx1, db, "test")
 	require.ErrorIs(t, err, pg.ErrIdempotencyTxFailed)
-	require.NoError(t, tx1.Rollback())
+	require.ErrorIs(t, tx1.Rollback(), sql.ErrTxDone)
 
 	md2 := map[string][]string{
 		"x-idempotency-key": {"new-key"},
@@ -88,5 +89,5 @@ func TestCreateIdempotentTx(t *testing.T) {
 
 	tx3, err := pg.CreateIdempotentTx(context.Background(), db, "test")
 	require.ErrorIs(t, err, pg.ErrIdempotencyKeyMissing)
-	require.NoError(t, tx3.Rollback())
+	require.ErrorIs(t, tx3.Rollback(), sql.ErrTxDone)
 }
