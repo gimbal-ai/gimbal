@@ -328,6 +328,16 @@ class TagMetadata(_message.Message):
     updated_at: _timestamp_pb2.Timestamp
     def __init__(self, is_inherited: bool = ..., updated_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
+class UnassociateTagsWithDeployKeyRequest(_message.Message):
+    __slots__ = ["deploy_key_id"]
+    DEPLOY_KEY_ID_FIELD_NUMBER: _ClassVar[int]
+    deploy_key_id: _uuid_pb2.UUID
+    def __init__(self, deploy_key_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
+
+class UnassociateTagsWithDeployKeyResponse(_message.Message):
+    __slots__ = []
+    def __init__(self) -> None: ...
+
 class UpdateDeviceRequest(_message.Message):
     __slots__ = ["deleted_tag_keys", "device"]
     DELETED_TAG_KEYS_FIELD_NUMBER: _ClassVar[int]

@@ -191,6 +191,13 @@ message DeviceInfo {
   reserved 7;
 }
 
+message UnassociateTagsWithDeployKeyRequest {
+  // The deploy key ID.
+  gml.types.UUID deploy_key_id = 1 [ (gogoproto.customname) = "DeployKeyID" ];
+}
+
+message UnassociateTagsWithDeployKeyResponse {}
+
 message AssociateTagsWithDeployKeyRequest {
   // The deploy key ID.
   gml.types.UUID deploy_key_id = 1 [ (gogoproto.customname) = "DeployKeyID" ];
@@ -342,6 +349,9 @@ service FleetMgrEdgeService {
   // tags will be converted to device tags during device registration.
   rpc AssociateTagsWithDeployKey(AssociateTagsWithDeployKeyRequest)
       returns (AssociateTagsWithDeployKeyResponse);
+  // UnassociateTagsWithDeployKey removes tags associated with a deploy key.
+  rpc UnassociateTagsWithDeployKey(UnassociateTagsWithDeployKeyRequest)
+      returns (UnassociateTagsWithDeployKeyResponse);
   // ListTagsAssociatedWithDeployKey returns the tags associated with a deploy key.
   rpc ListTagsAssociatedWithDeployKey(ListTagsAssociatedWithDeployKeyRequest)
       returns (ListTagsAssociatedWithDeployKeyResponse);

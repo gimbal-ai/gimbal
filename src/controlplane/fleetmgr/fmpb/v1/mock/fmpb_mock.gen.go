@@ -546,6 +546,26 @@ func (mr *MockFleetMgrEdgeServiceClientMockRecorder) SetDeviceCapabilities(ctx, 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDeviceCapabilities", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).SetDeviceCapabilities), varargs...)
 }
 
+// UnassociateTagsWithDeployKey mocks base method.
+func (m *MockFleetMgrEdgeServiceClient) UnassociateTagsWithDeployKey(ctx context.Context, in *fmpb.UnassociateTagsWithDeployKeyRequest, opts ...grpc.CallOption) (*fmpb.UnassociateTagsWithDeployKeyResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnassociateTagsWithDeployKey", varargs...)
+	ret0, _ := ret[0].(*fmpb.UnassociateTagsWithDeployKeyResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UnassociateTagsWithDeployKey indicates an expected call of UnassociateTagsWithDeployKey.
+func (mr *MockFleetMgrEdgeServiceClientMockRecorder) UnassociateTagsWithDeployKey(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnassociateTagsWithDeployKey", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).UnassociateTagsWithDeployKey), varargs...)
+}
+
 // UpdateDevice mocks base method.
 func (m *MockFleetMgrEdgeServiceClient) UpdateDevice(ctx context.Context, in *fmpb.UpdateDeviceRequest, opts ...grpc.CallOption) (*fmpb.UpdateDeviceResponse, error) {
 	m.ctrl.T.Helper()
@@ -762,6 +782,21 @@ func (m *MockFleetMgrEdgeServiceServer) SetDeviceCapabilities(arg0 context.Conte
 func (mr *MockFleetMgrEdgeServiceServerMockRecorder) SetDeviceCapabilities(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDeviceCapabilities", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).SetDeviceCapabilities), arg0, arg1)
+}
+
+// UnassociateTagsWithDeployKey mocks base method.
+func (m *MockFleetMgrEdgeServiceServer) UnassociateTagsWithDeployKey(arg0 context.Context, arg1 *fmpb.UnassociateTagsWithDeployKeyRequest) (*fmpb.UnassociateTagsWithDeployKeyResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UnassociateTagsWithDeployKey", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.UnassociateTagsWithDeployKeyResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UnassociateTagsWithDeployKey indicates an expected call of UnassociateTagsWithDeployKey.
+func (mr *MockFleetMgrEdgeServiceServerMockRecorder) UnassociateTagsWithDeployKey(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnassociateTagsWithDeployKey", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).UnassociateTagsWithDeployKey), arg0, arg1)
 }
 
 // UpdateDevice mocks base method.
