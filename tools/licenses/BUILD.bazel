@@ -93,23 +93,17 @@ genrule(
     visibility = ["//visibility:public"],
 )
 
+py_binary(
+    name = "combine_licenses",
+    srcs = ["combine_licenses.py"],
+    visibility = ["//:__subpackages__"],
+)
+
 py_library(
     name = "licenses",
     srcs = [
         "checker.py",
         "combine_licenses.py",
     ],
-    visibility = ["//:__subpackages__"],
-)
-
-py_binary(
-    name = "checker",
-    srcs = ["checker.py"],
-    visibility = ["//:__subpackages__"],
-)
-
-py_binary(
-    name = "combine_licenses",
-    srcs = ["combine_licenses.py"],
     visibility = ["//:__subpackages__"],
 )
