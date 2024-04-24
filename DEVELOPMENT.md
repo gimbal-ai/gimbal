@@ -222,15 +222,22 @@ These bazel options can also help speed up the python image builds:
 
 When adding a new python dependency, we need multiple steps before gazelle can be run.
 
-1. Add the dependency to `bazel/python/requirements.in`.
+Note that python deps for `src/experimental` are in `src/experimental/requirements.in`.
+For all other python deps, they are in `requirements.in` at top of tree.
+Experimental also recursively pulls in all the top level deps.
 
-1. Run the `compile_pip_requirements` target to generate the `requirements_lock.txt` file.
+There's also a generated `requirements_lock.txt` file in `src/experimental` and also a `gazelle_python.yaml` file in `src/experimental`.
+When gazelle adds in pip deps, it walks up the tree from the file location to find the nearest `gazelle_python.yaml`, so experimental code will use the experimental deps and everything else will use the deps at top of tree.
+
+1. Add the dependency to `requirements.in` or `src/experiemental/requirements.in`.
+
+1. Run the `compile_pip_requirements` target to generate the relevant `requirements_lock.txt` file.
 
     ```bash
     make update-python-requirements
     ```
 
-1. Finally run the `gazelle_python_manifest` target to generate the `gazelle_python.yaml` file.
+1. Finally run the `gazelle_python_manifest` target to generate the relevant `gazelle_python.yaml` file.
 
     ```bash
     make update-python-manifest
