@@ -7902,6 +7902,14 @@ manifest:
     prompt_toolkit.widgets.menus: prompt_toolkit
     prompt_toolkit.widgets.toolbars: prompt_toolkit
     prompt_toolkit.win32_types: prompt_toolkit
+    psycopg2: psycopg2_binary
+    psycopg2.errorcodes: psycopg2_binary
+    psycopg2.errors: psycopg2_binary
+    psycopg2.extensions: psycopg2_binary
+    psycopg2.extras: psycopg2_binary
+    psycopg2.pool: psycopg2_binary
+    psycopg2.sql: psycopg2_binary
+    psycopg2.tz: psycopg2_binary
     ptyprocess: ptyprocess
     ptyprocess.ptyprocess: ptyprocess
     ptyprocess.util: ptyprocess
@@ -15386,4 +15394,4 @@ manifest:
     zipp.py310compat: zipp
   pip_repository:
     name: pip
-integrity: ce0844cb0e4d409e0a0c40bc820f925acbb8c978989e9cc0093fd5272c7a4e46
+integrity: 03b7744b4a83597888dea2df2066463f646862f7a23f9b7834acea8f56100189

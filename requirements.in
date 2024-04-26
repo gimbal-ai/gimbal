@@ -10,12 +10,15 @@ opencv-python-headless==4.5.5.64
 absl-py==2.0.0
 beit3-gml==0.1.1
 efficientvit-gml==0.1.7
+gradio==4.14.0
 groundingdino-gml==0.1.2
 grpcio==1.62.0
 nats-py==2.7.2
 numpy==1.26.2
+pandas==2.2.1
 Pillow==10.2.0
 protobuf==4.23.4
+psycopg2-binary==2.9.9
 salesforce-lavis==1.0.2
 segment-anything-py==1.0
 supervision==0.17.1
