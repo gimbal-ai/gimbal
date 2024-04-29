@@ -9,6 +9,9 @@ dependencies = {file = "bazel/python/requirements.in"}
 [tool.setuptools.packages.find]
 include = ["src*"]
 
+[tool.isort]
+profile = "black"
+
 [tool.pyright]
 include = ["src"]
 reportUnusedImport = true

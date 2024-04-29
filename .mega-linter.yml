@@ -72,6 +72,7 @@ TYPESCRIPT_ES_FILE_EXTENSIONS: [".js", ".cjs", ".mjs", ".ts", ".jsx", ".tsx"]
 TYPESCRIPT_PRETTIER_CONFIG_FILE: src/ui/.prettierrc.json
 TYPESCRIPT_PRETTIER_FILE_EXTENSIONS: [".js", ".cjs", ".mjs", ".jsx", ".ts", ".tsx"]
 TYPESCRIPT_PRETTIER_RULES_PATH: src/ui
+PYTHON_ISORT_CONFIG_FILE: pyproject.toml
 # The mega-linter json schema is broken with plugins, so don't check the schema.
 YAML_V8R_FILTER_REGEX_EXCLUDE: (.mega-linter.yml)
 YAML_YAMLLINT_ARGUMENTS: '--strict'
