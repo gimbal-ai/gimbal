@@ -1,0 +1,39 @@
+diff --git a/python/pip_install/requirements.bzl b/python/pip_install/requirements.bzl
+index 5caf762..d6499ee 100644
+--- a/python/pip_install/requirements.bzl
++++ b/python/pip_install/requirements.bzl
+@@ -32,6 +32,7 @@ def compile_pip_requirements(
+         requirements_windows = None,
+         visibility = ["//visibility:private"],
+         tags = None,
++        constraints = None,
+         **kwargs):
+     """Generates targets for managing pip dependencies with pip-compile.
+ 
+@@ -66,6 +67,7 @@ def compile_pip_requirements(
+         requirements_windows: File of windows specific resolve output to check validate if requirement.in has changes.
+         tags: tagging attribute common to all build rules, passed to both the _test and .update rules.
+         visibility: passed to both the _test and .update rules.
++        constraints: constraints file to pass to pip with `-c`.
+         **kwargs: other bazel attributes passed to the "_test" rule.
+     """
+     if requirements_in and src:
+@@ -84,7 +86,7 @@ def compile_pip_requirements(
+         visibility = visibility,
+     )
+ 
+-    data = [name, requirements_txt, src] + [f for f in (requirements_linux, requirements_darwin, requirements_windows) if f != None]
++    data = [name, requirements_txt, src] + [f for f in (requirements_linux, requirements_darwin, requirements_windows) if f != None] + ([constraints] if constraints else [])
+ 
+     # Use the Label constructor so this is expanded in the context of the file
+     # where it appears, which is to say, in @rules_python
+@@ -107,6 +109,9 @@ def compile_pip_requirements(
+         args.append("--requirements-darwin={}".format(loc.format(requirements_darwin)))
+     if requirements_windows:
+         args.append("--requirements-windows={}".format(loc.format(requirements_windows)))
++    if constraints:
++        args.append("-c")
++        args.append("$(location {})".format(constraints))
+     args.extend(extra_args)
+ 
+     deps = [

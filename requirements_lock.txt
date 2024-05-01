@@ -48,8 +48,8 @@ attrs==23.2.0 \
     # via
     #   jsonschema
     #   referencing
-beit3-gml==0.1.1 \
-    --hash=sha256:441390cd4d9dd2535387bbcadc47c950c74abe026294cf33b4f2ca7280f8644f
+beit3-gml==0.1.2 \
+    --hash=sha256:60becdcacf8c05c1ab99b08ad86dbfc21413aad81b04ead129623b3e29bb4aea
     # via -r requirements.in
 black==23.12.1 \
     --hash=sha256:0808494f2b2df923ffc5723ed3c7b096bd76341f6213989759287611e9837d50 \
@@ -375,8 +375,8 @@ distlib==0.3.8 \
     --hash=sha256:034db59a0b96f8ca18035f36290806a9a6e6bd9d1ff91e45a7f172eb17e51784 \
     --hash=sha256:1530ea13e350031b6312d8580ddb6b27a104275a31106523b8f123787f494f64
     # via virtualenv
-efficientvit-gml==0.1.7 \
-    --hash=sha256:65d4f4a66a0f4133ff18a0b0d132e71a286d171c6b0cdb74ff21630894646d1c
+efficientvit-gml==0.1.8 \
+    --hash=sha256:745a8efd3e909e5841e1bb41099c5c2ddbbd6b4707b5fbb1ae303a8129901f99
     # via -r requirements.in
 einops==0.7.0 \
     --hash=sha256:0f3096f26b914f465f6ff3c66f5478f9a5e380bb367ffc6493a68143fbbf1fd1 \
@@ -1118,7 +1118,6 @@ numpy==1.26.2 \
     #   matplotlib
     #   onnx
     #   onnxruntime
-    #   opencv-python
     #   opencv-python-headless
     #   pandas
     #   pyarrow
@@ -1218,18 +1217,6 @@ onnxsim==0.4.36 \
     --hash=sha256:f92bec8c6c0d4f8463e10021277711d2faac900e4eb890238001b3eadb5c03bc \
     --hash=sha256:fa7596e6b806ed19077f7652788a50ee576c172b4d16d421f0593aef1a6fa4c4
     # via efficientvit-gml
-opencv-python==4.5.5.64 \
-    --hash=sha256:408d5332550287aa797fd06bef47b2dfed163c6787668cc82ef9123a9484b56a \
-    --hash=sha256:6247e584813c00c3b9ed69a795da40d2c153dc923d0182e957e1c2f00a554ac2 \
-    --hash=sha256:7787bb017ae93d5f9bb1b817ac8e13e45dd193743cb648498fcab21d00cf20a3 \
-    --hash=sha256:a512a0c59b6fec0fac3844b2f47d6ecb1a9d18d235e6c5491ce8dbbe0663eae8 \
-    --hash=sha256:b293ced62f4360d9f11cf72ae7e9df95320ff7bf5b834d87546f844e838c0c35 \
-    --hash=sha256:ca6138b6903910e384067d001763d40f97656875487381aed32993b076f44375 \
-    --hash=sha256:f65de0446a330c3b773cd04ba10345d8ce1b15dcac3f49770204e37602d0b3f7
-    # via
-    #   -r requirements.in
-    #   beit3-gml
-    #   efficientvit-gml
 opencv-python-headless==4.5.5.64 \
     --hash=sha256:3f330468c29882dbbec5af25695c5e575572c6b855cb0f9fe53e14116fd46bfc \
     --hash=sha256:4bdf982574bf2fefc5f82c86df7cb42e56ad627874c7c0f4d94ecf4ae8885304 \
@@ -1240,6 +1227,8 @@ opencv-python-headless==4.5.5.64 \
     --hash=sha256:ca4f013fa958f60fb2327fe87e6127c1ac0ab536890b1d4b00847f417b7af1ba
     # via
     #   -r requirements.in
+    #   beit3-gml
+    #   efficientvit-gml
     #   groundingdino-gml
     #   salesforce-lavis
     #   supervision

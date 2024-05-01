@@ -1,0 +1,2 @@
+# Never install non-headless opencv.
+opencv-python<0.0.0

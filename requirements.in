@@ -2,14 +2,11 @@
 black==23.12.1
 pytest==7.4.2
 
-# Some deps use opencv-python-headless, some use opencv-python
-# we need to keep both versions in sync to avoid issues.
-opencv-python==4.5.5.64
 opencv-python-headless==4.5.5.64
 
 absl-py==2.0.0
-beit3-gml==0.1.1
-efficientvit-gml==0.1.7
+beit3-gml==0.1.2
+efficientvit-gml==0.1.8
 gradio==4.14.0
 groundingdino-gml==0.1.2
 grpcio==1.62.0

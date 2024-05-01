@@ -882,7 +882,6 @@ manifest:
     cv2.mat_wrapper: opencv_python_headless
     cv2.misc: opencv_python_headless
     cv2.misc.version: opencv_python_headless
-    cv2.qt.plugins.platforms.libqxcb: opencv_python
     cv2.utils: opencv_python_headless
     cv2.version: opencv_python_headless
     cycler: cycler
@@ -4797,7 +4796,6 @@ manifest:
     onnxsim.onnx_simplifier: onnxsim
     onnxsim.onnxsim_cpp2py_export: onnxsim
     onnxsim.version: onnxsim
-    opencv_python.libs.libopenblas-r0-f650aae0: opencv_python
     opencv_python_headless.libs.libopenblas-r0-f650aae0: opencv_python_headless
     opendatasets: opendatasets
     opendatasets.datasets: opendatasets
@@ -15394,4 +15392,4 @@ manifest:
     zipp.py310compat: zipp
   pip_repository:
     name: pip
-integrity: 03b7744b4a83597888dea2df2066463f646862f7a23f9b7834acea8f56100189
+integrity: 452e01a241491aefa6af29bd194c89166e153d840bf45840da504473ee8a7ef5

@@ -33,6 +33,7 @@ compile_pip_requirements(
     name = "requirements",
     timeout = "long",
     src = "requirements.in",
+    constraints = "constraints.txt",
     extra_args = [
         "--extra-index-url https://download.pytorch.org/whl/cu121",
         "--find-links https://download.openmmlab.com/mmcv/dist/cu121/torch2.1/index.html",

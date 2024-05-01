@@ -77,6 +77,7 @@ single_version_override(
     patch_strip = 1,
     patches = [
         "//bazel/external:rules_python.binaries.patch",
+        "//bazel/external:rules_python.constraints.patch",
     ],
 )
 
