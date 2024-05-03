@@ -33,7 +33,11 @@ linters:
   - whitespace
 linters-settings:
   errcheck:
-    ignore: database/sql:Rollback,nhooyr.io/websocket:CloseNow,github.com/nats-io/nats.go/jetstream:(Na|Ac)k
+    exclude-functions:
+    - (*database/sql.Tx).Rollback
+    - (*nhooyr.io/websocket.Conn).CloseNow
+    - (github.com/nats-io/nats.go/jetstream.Msg).Ack
+    - (github.com/nats-io/nats.go/jetstream.Msg).Nak
   gci:
     sections:
     - standard
