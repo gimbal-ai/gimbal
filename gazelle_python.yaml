@@ -8459,6 +8459,8 @@ manifest:
     pyparsing.unicode: pyparsing
     pyparsing.util: pyparsing
     pytest: pytest
+    pytest_mock: pytest_mock
+    pytest_mock.plugin: pytest_mock
     pytz: pytz
     pytz.exceptions: pytz
     pytz.lazy: pytz
@@ -15392,4 +15394,4 @@ manifest:
     zipp.py310compat: zipp
   pip_repository:
     name: pip
-integrity: 452e01a241491aefa6af29bd194c89166e153d840bf45840da504473ee8a7ef5
+integrity: 50b761e4ccb6f44ecaac6d2a76053ec7094465d604e484294df9136bf4ac859d

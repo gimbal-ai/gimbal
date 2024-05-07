@@ -1,6 +1,7 @@
 # Projectwide requirements for common tooling
 black==23.12.1
 pytest==7.4.2
+pytest_mock==3.14.0
 
 opencv-python-headless==4.5.5.64
 
