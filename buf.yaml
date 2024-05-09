@@ -6,6 +6,7 @@ build:
   - bazel-gimlet
   - bazel-out
   - bazel-testlogs
+  - src/ui/node_modules
   - third_party
 breaking:
   use:
