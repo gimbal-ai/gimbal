@@ -36,7 +36,6 @@ compile_pip_requirements(
     constraints = "constraints.txt",
     extra_args = [
         "--extra-index-url https://download.pytorch.org/whl/cu121",
-        "--find-links https://download.openmmlab.com/mmcv/dist/cu121/torch2.1/index.html",
     ],
     requirements_txt = "requirements_lock.txt",
     target_compatible_with = no_sysroot(),

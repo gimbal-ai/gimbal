@@ -15396,4 +15396,4 @@ manifest:
     zipp.py310compat: zipp
   pip_repository:
     name: pip
-integrity: 930ba7653a4a531321cbd867419b975888e2914bca3145524b07ff00959ef57d
+integrity: 3b206b1c170ef33443207d44f26eabe579c591ca10cb7edef6254509c0d17ae8
