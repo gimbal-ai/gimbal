@@ -22,8 +22,3 @@ segment-anything-py==1.0
 supervision==0.17.1
 torch==2.1.2
 torchvision==0.16.2
-
-# Fix for bug caused by kaggle packaging in 1.6.11: https://github.com/Kaggle/kaggle-api/issues/567
-# This comes from salesforce-lavis via its dep on opendatasets. We don't use the codepath that relies on
-# this dep so I'm not in a rush to upgrade.
-kaggle==1.6.10

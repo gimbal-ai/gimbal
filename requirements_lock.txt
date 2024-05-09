@@ -654,10 +654,10 @@ jsonschema-specifications==2023.12.1 \
     --hash=sha256:48a76787b3e70f5ed53f1160d2b81f586e4ca6d1548c5de7085d1682674764cc \
     --hash=sha256:87e4fdf3a94858b8a2ba2778d9ba57d8a9cafca7c7489c46ba0d30a8bc6a9c3c
     # via jsonschema
-kaggle==1.6.10 \
-    --hash=sha256:ee6bf7b5565cb43b66a58687f47acfa399d51b98722a22fe29fbfa5f978069d5
+kaggle==1.6.12 \
+    --hash=sha256:f12a05b82d2afb10a74adc69a5f8a736c64bd9934d0b5acfb4fe4f97357530b4
     # via
-    #   -r requirements.in
+    #   -c ./constraints.txt
     #   opendatasets
 kiwisolver==1.4.5 \
     --hash=sha256:00bd361b903dc4bbf4eb165f24d1acbee754fce22ded24c3d56eec268658a5cf \

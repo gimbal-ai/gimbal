@@ -1,2 +1,6 @@
 # Never install non-headless opencv.
 opencv-python<0.0.0
+
+# There's a bug caused by kaggle packaging in 1.6.11: https://github.com/Kaggle/kaggle-api/issues/567
+# Newer or older versions are fine.
+kaggle!=1.6.11
