@@ -2317,7 +2317,9 @@ spacy==3.7.4 \
     --hash=sha256:ef59db99b12a72d2646be3888d87f94c59e11cd07adc2f50a8130e83f07eb1cf \
     --hash=sha256:f07477a4027711c22b3865e78dc9076335c03fcf318a6736159bf07e2a923125 \
     --hash=sha256:f5b930753027ac599f70bb7e77d6a2256191fe582e6f3f0cd624d88f6c279fa4
-    # via salesforce-lavis
+    # via
+    #   -c ./constraints.txt
+    #   salesforce-lavis
 spacy-legacy==3.0.12 \
     --hash=sha256:476e3bd0d05f8c339ed60f40986c07387c0a71479245d6d0f4298dbd52cda55f \
     --hash=sha256:b37d6e0c9b6e1d7ca1cf5bc7152ab64a4c4671f59c85adaf7a3fcb870357a774
