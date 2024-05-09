@@ -3,8 +3,7 @@ black==24.4.2
 pytest==7.4.2
 pytest_mock==3.14.0
 
-opencv-python-headless==4.5.5.64
-
+# Deps for the project
 absl-py==2.0.0
 beit3-gml==0.1.2
 efficientvit-gml==0.1.8

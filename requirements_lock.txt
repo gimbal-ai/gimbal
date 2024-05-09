@@ -1226,7 +1226,7 @@ opencv-python-headless==4.5.5.64 \
     --hash=sha256:c3c2dda44d601757a508b07d628537c49f31223ad4edd0f747a70d4c852a7b98 \
     --hash=sha256:ca4f013fa958f60fb2327fe87e6127c1ac0ab536890b1d4b00847f417b7af1ba
     # via
-    #   -r requirements.in
+    #   -c ./constraints.txt
     #   beit3-gml
     #   efficientvit-gml
     #   groundingdino-gml
