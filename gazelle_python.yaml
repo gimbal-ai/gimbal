@@ -2069,30 +2069,30 @@ manifest:
     jedi.plugins.stdlib: jedi
     jedi.settings: jedi
     jedi.utils: jedi
-    jinja2: Jinja2
-    jinja2.async_utils: Jinja2
-    jinja2.bccache: Jinja2
-    jinja2.compiler: Jinja2
-    jinja2.constants: Jinja2
-    jinja2.debug: Jinja2
-    jinja2.defaults: Jinja2
-    jinja2.environment: Jinja2
-    jinja2.exceptions: Jinja2
-    jinja2.ext: Jinja2
-    jinja2.filters: Jinja2
-    jinja2.idtracking: Jinja2
-    jinja2.lexer: Jinja2
-    jinja2.loaders: Jinja2
-    jinja2.meta: Jinja2
-    jinja2.nativetypes: Jinja2
-    jinja2.nodes: Jinja2
-    jinja2.optimizer: Jinja2
-    jinja2.parser: Jinja2
-    jinja2.runtime: Jinja2
-    jinja2.sandbox: Jinja2
-    jinja2.tests: Jinja2
-    jinja2.utils: Jinja2
-    jinja2.visitor: Jinja2
+    jinja2: jinja2
+    jinja2.async_utils: jinja2
+    jinja2.bccache: jinja2
+    jinja2.compiler: jinja2
+    jinja2.constants: jinja2
+    jinja2.debug: jinja2
+    jinja2.defaults: jinja2
+    jinja2.environment: jinja2
+    jinja2.exceptions: jinja2
+    jinja2.ext: jinja2
+    jinja2.filters: jinja2
+    jinja2.idtracking: jinja2
+    jinja2.lexer: jinja2
+    jinja2.loaders: jinja2
+    jinja2.meta: jinja2
+    jinja2.nativetypes: jinja2
+    jinja2.nodes: jinja2
+    jinja2.optimizer: jinja2
+    jinja2.parser: jinja2
+    jinja2.runtime: jinja2
+    jinja2.sandbox: jinja2
+    jinja2.tests: jinja2
+    jinja2.utils: jinja2
+    jinja2.visitor: jinja2
     jsonschema: jsonschema
     jsonschema.benchmarks: jsonschema
     jsonschema.benchmarks.contains: jsonschema
@@ -15396,4 +15396,4 @@ manifest:
     zipp.py310compat: zipp
   pip_repository:
     name: pip
-integrity: 1d07a20501daccc1c08bf7d6f491175161075b9c066c6af55c64023d3e5ecb13
+integrity: 0668c00fbf30d2551e02533cb871367f233a30b6d314782fe1acefae476483a4
