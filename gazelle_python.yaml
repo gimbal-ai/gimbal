@@ -5,7 +5,7 @@
 
 manifest:
   modules_mapping:
-    629853fdff261ed89b74__mypyc: black
+    30fcd23745efe32ce681__mypyc: black
     6c7190bc8b55ffe67f57__mypyc: mypy
     Cryptodome: pycryptodomex
     Cryptodome.Cipher: pycryptodomex
@@ -736,7 +736,9 @@ manifest:
     black.parsing: black
     black.ranges: black
     black.report: black
+    black.resources: black
     black.rusty: black
+    black.schema: black
     black.strings: black
     black.trans: black
     blackd: black
@@ -15394,4 +15396,4 @@ manifest:
     zipp.py310compat: zipp
   pip_repository:
     name: pip
-integrity: 50b761e4ccb6f44ecaac6d2a76053ec7094465d604e484294df9136bf4ac859d
+integrity: 1d07a20501daccc1c08bf7d6f491175161075b9c066c6af55c64023d3e5ecb13
