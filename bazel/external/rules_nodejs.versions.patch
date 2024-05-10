@@ -1,0 +1,33 @@
+diff --git a/nodejs/private/node_versions.bzl b/nodejs/private/node_versions.bzl
+index 4a5f06e6..97bd908f 100644
+--- a/nodejs/private/node_versions.bzl
++++ b/nodejs/private/node_versions.bzl
+@@ -2279,4 +2279,28 @@ NODE_VERSIONS = {
+     "18.15.0-linux_s390x": ("node-v18.15.0-linux-s390x.tar.xz", "node-v18.15.0-linux-s390x", "029216909814bc66caf64f3bb2dbdb961f10db0c6ec95f6039912248da15cfec"),
+     "18.15.0-linux_amd64": ("node-v18.15.0-linux-x64.tar.xz", "node-v18.15.0-linux-x64", "c8c5fa53ce0c0f248e45983e86368e0b1daf84b77e88b310f769c3cfc12682ef"),
+     "18.15.0-windows_amd64": ("node-v18.15.0-win-x64.zip", "node-v18.15.0-win-x64", "118fbcae58bc8c53cbe97a10c019734ed90685da8dda98aa0b0f4aeead42a647"),
++    # 18.17.0
++    "18.17.0-darwin_arm64": ("node-v18.17.0-darwin-arm64.tar.gz", "node-v18.17.0-darwin-arm64", "19731ef427e77ad9c5f476eb62bfb02a7f179d3012feed0bbded62e45f23e679"),
++    "18.17.0-darwin_amd64": ("node-v18.17.0-darwin-x64.tar.gz", "node-v18.17.0-darwin-x64", "2f381442381f7fbde2ca644c3275bec9c9c2a8d361f467b40e39428acdd6ccff"),
++    "18.17.0-linux_arm64": ("node-v18.17.0-linux-arm64.tar.xz", "node-v18.17.0-linux-arm64", "fbd2904178ee47da6e0386bc9704a12b1f613da6ad194878a517d4a69ba56544"),
++    "18.17.0-linux_ppc64le": ("node-v18.17.0-linux-ppc64le.tar.xz", "node-v18.17.0-linux-ppc64le", "9fd9c215be8e54dcf8bbc42ba9e1342b05136be4bc12594ee40a29cedfaeaffd"),
++    "18.17.0-linux_s390x": ("node-v18.17.0-linux-s390x.tar.xz", "node-v18.17.0-linux-s390x", "876ca54c246d24e346d0c740fbb72c9fb7353369127f20492bc923ee6d0121db"),
++    "18.17.0-linux_amd64": ("node-v18.17.0-linux-x64.tar.xz", "node-v18.17.0-linux-x64", "f36facda28c4d5ce76b3a1b4344e688d29d9254943a47f2f1909b1a10acb1959"),
++    "18.17.0-windows_amd64": ("node-v18.17.0-win-x64.zip", "node-v18.17.0-win-x64", "06e30b4e70b18d794651ef132c39080e5eaaa1187f938721d57edae2824f4e96"),
++    # 18.20.2
++    "18.20.2-darwin_arm64": ("node-v18.20.2-darwin-arm64.tar.gz", "node-v18.20.2-darwin-arm64", "2647d831f16b3dc7857ed4ee721d3c378194918ecda80b9471590250d328fa3c"),
++    "18.20.2-darwin_amd64": ("node-v18.20.2-darwin-x64.tar.gz", "node-v18.20.2-darwin-x64", "e26d8074da6d22ed23140e0ba964cba9c694f9b839ce48835d692a7a7e36421e"),
++    "18.20.2-linux_arm64": ("node-v18.20.2-linux-arm64.tar.xz", "node-v18.20.2-linux-arm64", "be36d2ad5842a7a9456b7de32fcc9656a6e0a79edab5f14ac05479d2eef2aa0e"),
++    "18.20.2-linux_ppc64le": ("node-v18.20.2-linux-ppc64le.tar.xz", "node-v18.20.2-linux-ppc64le", "7844f4d19174826b3c5162a92a0f6c7f028d324df4d59684e3e7ae40980358ed"),
++    "18.20.2-linux_s390x": ("node-v18.20.2-linux-s390x.tar.xz", "node-v18.20.2-linux-s390x", "08cb2f45228d9d812b107a15656316da99a79b0b4e69c7b33635ed96b5565647"),
++    "18.20.2-linux_amd64": ("node-v18.20.2-linux-x64.tar.xz", "node-v18.20.2-linux-x64", "d0584a21d83d710f947b210434449f6d2a65d14975d6fe9aaf430aae79dc312b"),
++    "18.20.2-windows_amd64": ("node-v18.20.2-win-x64.zip", "node-v18.20.2-win-x64", "1b7dde318fad3110db1d597184e78d327816e61eef340323765d86f7481babe6"),
++    # 20.9.0
++    "20.9.0-darwin_arm64": ("node-v20.9.0-darwin-arm64.tar.gz", "node-v20.9.0-darwin-arm64", "31d2d46ae8d8a3982f54e2ff1e60c2e4a8e80bf78a3e8b46dcaac95ac5d7ce6a"),
++    "20.9.0-darwin_amd64": ("node-v20.9.0-darwin-x64.tar.gz", "node-v20.9.0-darwin-x64", "fc5b73f2a78c17bbe926cdb1447d652f9f094c79582f1be6471b4b38a2e1ccc8"),
++    "20.9.0-linux_arm64": ("node-v20.9.0-linux-arm64.tar.xz", "node-v20.9.0-linux-arm64", "ced3ecece4b7c3a664bca3d9e34a0e3b9a31078525283a6fdb7ea2de8ca5683b"),
++    "20.9.0-linux_ppc64le": ("node-v20.9.0-linux-ppc64le.tar.xz", "node-v20.9.0-linux-ppc64le", "3c6cea5d614cfbb95d92de43fbc2f8ecd66e431502fe5efc4f3c02637897bd45"),
++    "20.9.0-linux_s390x": ("node-v20.9.0-linux-s390x.tar.xz", "node-v20.9.0-linux-s390x", "af1f4e63756ff685d452166c4d5ba93a308e816ee7c46015b5e086163d9f011b"),
++    "20.9.0-linux_amd64": ("node-v20.9.0-linux-x64.tar.xz", "node-v20.9.0-linux-x64", "9033989810bf86220ae46b1381bdcdc6c83a0294869ba2ad39e1061f1e69217a"),
++    "20.9.0-windows_amd64": ("node-v20.9.0-win-x64.zip", "node-v20.9.0-win-x64", "70d87dad2378c63216ff83d5a754c61d2886fc39d32ce0d2ea6de763a22d3780"),
+ }
