@@ -56,6 +56,8 @@ service OrgUserManagementService {
   rpc RevokeUserScopes(RevokeUserScopesRequest) returns (RevokeUserScopesResponse);
   // List the orgs that a user has access to.
   rpc ListOrgs(ListOrgsRequest) returns (ListOrgsResponse);
+  // Gets information about the users of the given org.
+  rpc GetUsers(GetUsersRequest) returns (GetUsersResponse);
 }
 
 // UserInfo contains standard information about a user in the system.
@@ -186,4 +188,23 @@ message ListOrgsRequest {
 message ListOrgsResponse {
   // The IDs of the org which the user is in.
   repeated gml.types.UUID org_ids = 1 [ (gogoproto.customname) = "OrgIDs" ];
+}
+
+message UserRoleInfo {
+  // The user's info.
+  UserInfo user_info = 1;
+  // The name of the user's role.
+  string role_name = 2;
+}
+
+// Request to list an org's users.
+message GetUsersRequest {
+  // The ID of the org.
+  gml.types.UUID org_id = 1 [ (gogoproto.customname) = "OrgID" ];
+}
+
+// Response to list an org's users.
+message GetUsersResponse {
+  // The list of user roles.
+  repeated UserRoleInfo user_roles = 1;
 }

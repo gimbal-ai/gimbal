@@ -316,6 +316,11 @@ class OrgUserManagementServiceStub(object):
                 request_serializer=src_dot_controlplane_dot_directory_dot_directorypb_dot_v1_dot_directory__pb2.ListOrgsRequest.SerializeToString,
                 response_deserializer=src_dot_controlplane_dot_directory_dot_directorypb_dot_v1_dot_directory__pb2.ListOrgsResponse.FromString,
                 )
+        self.GetUsers = channel.unary_unary(
+                '/gml.internal.controlplane.directory.v1.OrgUserManagementService/GetUsers',
+                request_serializer=src_dot_controlplane_dot_directory_dot_directorypb_dot_v1_dot_directory__pb2.GetUsersRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_directory_dot_directorypb_dot_v1_dot_directory__pb2.GetUsersResponse.FromString,
+                )
 
 
 class OrgUserManagementServiceServicer(object):
@@ -339,6 +344,12 @@ class OrgUserManagementServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetUsers(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_OrgUserManagementServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -356,6 +367,11 @@ def add_OrgUserManagementServiceServicer_to_server(servicer, server):
                     servicer.ListOrgs,
                     request_deserializer=src_dot_controlplane_dot_directory_dot_directorypb_dot_v1_dot_directory__pb2.ListOrgsRequest.FromString,
                     response_serializer=src_dot_controlplane_dot_directory_dot_directorypb_dot_v1_dot_directory__pb2.ListOrgsResponse.SerializeToString,
+            ),
+            'GetUsers': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetUsers,
+                    request_deserializer=src_dot_controlplane_dot_directory_dot_directorypb_dot_v1_dot_directory__pb2.GetUsersRequest.FromString,
+                    response_serializer=src_dot_controlplane_dot_directory_dot_directorypb_dot_v1_dot_directory__pb2.GetUsersResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -415,5 +431,22 @@ class OrgUserManagementService(object):
         return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.directory.v1.OrgUserManagementService/ListOrgs',
             src_dot_controlplane_dot_directory_dot_directorypb_dot_v1_dot_directory__pb2.ListOrgsRequest.SerializeToString,
             src_dot_controlplane_dot_directory_dot_directorypb_dot_v1_dot_directory__pb2.ListOrgsResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetUsers(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.directory.v1.OrgUserManagementService/GetUsers',
+            src_dot_controlplane_dot_directory_dot_directorypb_dot_v1_dot_directory__pb2.GetUsersRequest.SerializeToString,
+            src_dot_controlplane_dot_directory_dot_directorypb_dot_v1_dot_directory__pb2.GetUsersResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

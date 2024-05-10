@@ -377,6 +377,26 @@ func (m *MockOrgUserManagementServiceClient) EXPECT() *MockOrgUserManagementServ
 	return m.recorder
 }
 
+// GetUsers mocks base method.
+func (m *MockOrgUserManagementServiceClient) GetUsers(ctx context.Context, in *directorypb.GetUsersRequest, opts ...grpc.CallOption) (*directorypb.GetUsersResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetUsers", varargs...)
+	ret0, _ := ret[0].(*directorypb.GetUsersResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUsers indicates an expected call of GetUsers.
+func (mr *MockOrgUserManagementServiceClientMockRecorder) GetUsers(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUsers", reflect.TypeOf((*MockOrgUserManagementServiceClient)(nil).GetUsers), varargs...)
+}
+
 // GrantUserScopes mocks base method.
 func (m *MockOrgUserManagementServiceClient) GrantUserScopes(ctx context.Context, in *directorypb.GrantUserScopesRequest, opts ...grpc.CallOption) (*directorypb.GrantUserScopesResponse, error) {
 	m.ctrl.T.Helper()
@@ -458,6 +478,21 @@ func NewMockOrgUserManagementServiceServer(ctrl *gomock.Controller) *MockOrgUser
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockOrgUserManagementServiceServer) EXPECT() *MockOrgUserManagementServiceServerMockRecorder {
 	return m.recorder
+}
+
+// GetUsers mocks base method.
+func (m *MockOrgUserManagementServiceServer) GetUsers(arg0 context.Context, arg1 *directorypb.GetUsersRequest) (*directorypb.GetUsersResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUsers", arg0, arg1)
+	ret0, _ := ret[0].(*directorypb.GetUsersResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUsers indicates an expected call of GetUsers.
+func (mr *MockOrgUserManagementServiceServerMockRecorder) GetUsers(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUsers", reflect.TypeOf((*MockOrgUserManagementServiceServer)(nil).GetUsers), arg0, arg1)
 }
 
 // GrantUserScopes mocks base method.

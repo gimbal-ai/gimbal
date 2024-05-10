@@ -68,6 +68,18 @@ class GetUserResponse(_message.Message):
     user_info: UserInfo
     def __init__(self, user_info: _Optional[_Union[UserInfo, _Mapping]] = ...) -> None: ...
 
+class GetUsersRequest(_message.Message):
+    __slots__ = ["org_id"]
+    ORG_ID_FIELD_NUMBER: _ClassVar[int]
+    org_id: _uuid_pb2.UUID
+    def __init__(self, org_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
+
+class GetUsersResponse(_message.Message):
+    __slots__ = ["user_roles"]
+    USER_ROLES_FIELD_NUMBER: _ClassVar[int]
+    user_roles: _containers.RepeatedCompositeFieldContainer[UserRoleInfo]
+    def __init__(self, user_roles: _Optional[_Iterable[_Union[UserRoleInfo, _Mapping]]] = ...) -> None: ...
+
 class GrantUserScopesRequest(_message.Message):
     __slots__ = []
     def __init__(self) -> None: ...
@@ -145,3 +157,11 @@ class UserInfo(_message.Message):
     identity_provider: str
     name: str
     def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., name: _Optional[str] = ..., email: _Optional[str] = ..., display_picture: _Optional[str] = ..., identity_provider: _Optional[str] = ..., auth_provider_id: _Optional[str] = ...) -> None: ...
+
+class UserRoleInfo(_message.Message):
+    __slots__ = ["role_name", "user_info"]
+    ROLE_NAME_FIELD_NUMBER: _ClassVar[int]
+    USER_INFO_FIELD_NUMBER: _ClassVar[int]
+    role_name: str
+    user_info: UserInfo
+    def __init__(self, user_info: _Optional[_Union[UserInfo, _Mapping]] = ..., role_name: _Optional[str] = ...) -> None: ...
