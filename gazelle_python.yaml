@@ -795,19 +795,6 @@ manifest:
     click.testing: click
     click.types: click
     click.utils: click
-    colorama: colorama
-    colorama.ansi: colorama
-    colorama.ansitowin32: colorama
-    colorama.initialise: colorama
-    colorama.tests: colorama
-    colorama.tests.ansi_test: colorama
-    colorama.tests.ansitowin32_test: colorama
-    colorama.tests.initialise_test: colorama
-    colorama.tests.isatty_test: colorama
-    colorama.tests.utils: colorama
-    colorama.tests.winterm_test: colorama
-    colorama.win32: colorama
-    colorama.winterm: colorama
     coloredlogs: coloredlogs
     coloredlogs.cli: coloredlogs
     coloredlogs.converter: coloredlogs
@@ -1609,6 +1596,7 @@ manifest:
     gradio.cli.commands.components.build: gradio
     gradio.cli.commands.components.create: gradio
     gradio.cli.commands.components.dev: gradio
+    gradio.cli.commands.components.docs: gradio
     gradio.cli.commands.components.install_component: gradio
     gradio.cli.commands.components.publish: gradio
     gradio.cli.commands.components.show: gradio
@@ -1631,6 +1619,7 @@ manifest:
     gradio.components.color_picker: gradio
     gradio.components.dataframe: gradio
     gradio.components.dataset: gradio
+    gradio.components.download_button: gradio
     gradio.components.dropdown: gradio
     gradio.components.duplicate_button: gradio
     gradio.components.fallback: gradio
@@ -1648,7 +1637,9 @@ manifest:
     gradio.components.logout_button: gradio
     gradio.components.markdown: gradio
     gradio.components.model3d: gradio
+    gradio.components.multimodal_textbox: gradio
     gradio.components.number: gradio
+    gradio.components.paramviewer: gradio
     gradio.components.plot: gradio
     gradio.components.radio: gradio
     gradio.components.scatter_plot: gradio
@@ -1665,6 +1656,7 @@ manifest:
     gradio.external_utils: gradio
     gradio.flagging: gradio
     gradio.helpers: gradio
+    gradio.http_server: gradio
     gradio.image_utils: gradio
     gradio.interface: gradio
     gradio.ipython_ext: gradio
@@ -1676,14 +1668,15 @@ manifest:
     gradio.layouts.row: gradio
     gradio.layouts.tabs: gradio
     gradio.networking: gradio
-    gradio.node.examine: gradio
     gradio.oauth: gradio
     gradio.pipelines: gradio
+    gradio.pipelines_utils: gradio
     gradio.processing_utils: gradio
     gradio.queueing: gradio
     gradio.ranged_response: gradio
     gradio.route_utils: gradio
     gradio.routes: gradio
+    gradio.server_messages: gradio
     gradio.state_holder: gradio
     gradio.strings: gradio
     gradio.templates: gradio
@@ -1716,6 +1709,7 @@ manifest:
     gradio_client.cli: gradio_client
     gradio_client.cli.deploy_discord: gradio_client
     gradio_client.client: gradio_client
+    gradio_client.compatibility: gradio_client
     gradio_client.data_classes: gradio_client
     gradio_client.documentation: gradio_client
     gradio_client.exceptions: gradio_client
@@ -1910,9 +1904,18 @@ manifest:
     importlib_metadata.diagnose: importlib_metadata
     importlib_resources: importlib_resources
     importlib_resources.abc: importlib_resources
+    importlib_resources.compat: importlib_resources
+    importlib_resources.compat.py38: importlib_resources
+    importlib_resources.compat.py39: importlib_resources
+    importlib_resources.functional: importlib_resources
+    importlib_resources.future: importlib_resources
+    importlib_resources.future.adapters: importlib_resources
     importlib_resources.readers: importlib_resources
     importlib_resources.simple: importlib_resources
     importlib_resources.tests: importlib_resources
+    importlib_resources.tests.compat: importlib_resources
+    importlib_resources.tests.compat.py312: importlib_resources
+    importlib_resources.tests.compat.py39: importlib_resources
     importlib_resources.tests.data01: importlib_resources
     importlib_resources.tests.data01.subdirectory: importlib_resources
     importlib_resources.tests.data02: importlib_resources
@@ -1922,6 +1925,7 @@ manifest:
     importlib_resources.tests.test_contents: importlib_resources
     importlib_resources.tests.test_custom: importlib_resources
     importlib_resources.tests.test_files: importlib_resources
+    importlib_resources.tests.test_functional: importlib_resources
     importlib_resources.tests.test_open: importlib_resources
     importlib_resources.tests.test_path: importlib_resources
     importlib_resources.tests.test_read: importlib_resources
@@ -8496,6 +8500,7 @@ manifest:
     rich.tree: rich
     rpds: rpds_py
     rpds.rpds: rpds_py
+    ruff: ruff
     scipy: scipy
     scipy.cluster: scipy
     scipy.cluster.hierarchy: scipy
@@ -13687,6 +13692,7 @@ manifest:
     triton.tools.disasm: triton
     triton.tools.link: triton
     typer: typer
+    typer.cli: typer
     typer.colors: typer
     typer.completion: typer
     typer.core: typer
@@ -14095,4 +14101,4 @@ manifest:
     zipp.py310compat: zipp
   pip_repository:
     name: pip
-integrity: 9931c878097430961774406372b65306616c7abfbe9bc3a0588352957d6d6451
+integrity: 8d425b4617f99222d932244cc4c70ee01ed9a5ac3d03edf2fab22647aa4ab89c
