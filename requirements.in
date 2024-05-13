@@ -14,7 +14,7 @@ lavis-gml==1.0.2.post3
 nats-py==2.7.2
 numpy==1.26.2
 pandas==2.2.1
-Pillow==10.2.0
+Pillow==10.3.0
 protobuf==4.23.4
 psycopg2-binary==2.9.9
 segment-anything-py==1.0

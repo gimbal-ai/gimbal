@@ -531,6 +531,7 @@ manifest:
     PIL.XbmImagePlugin: pillow
     PIL.XpmImagePlugin: pillow
     PIL.features: pillow
+    PIL.report: pillow
     absl: absl_py
     absl.app: absl_py
     absl.command_name: absl_py
@@ -6163,6 +6164,7 @@ manifest:
     pexpect.socket_pexpect: pexpect
     pexpect.spawnbase: pexpect
     pexpect.utils: pexpect
+    pillow.libs.libopenjp2-05423b53: pillow
     pkg_resources: setuptools
     pkg_resources.extern: setuptools
     platformdirs: platformdirs
@@ -14101,4 +14103,4 @@ manifest:
     zipp.py310compat: zipp
   pip_repository:
     name: pip
-integrity: 8d425b4617f99222d932244cc4c70ee01ed9a5ac3d03edf2fab22647aa4ab89c
+integrity: 77f97873a8e8f4288e6917711d8e5b6fee527234d489be9ecca80db3aedbe395
