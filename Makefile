@@ -68,7 +68,7 @@ devui: src/ui/node_modules
 
 .PHONY: storybook
 storybook: src/ui/node_modules
-	cd src/ui && pnpm storybook
+	cd src/ui && pnpm storybook-dev
 
 .PHONY: genfiles
 genfiles:

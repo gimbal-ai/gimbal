@@ -16,7 +16,6 @@
 load("@aspect_rules_jest//jest:defs.bzl", aspect_jest_test = "jest_test")
 load("@aspect_rules_js//js:defs.bzl", "js_run_binary", aspect_js_library = "js_library")
 load("@aspect_rules_ts//ts:defs.bzl", aspect_ts_project = "ts_project")
-load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("//bazel:gml_build_system.bzl", "no_sysroot")
 load("//bazel:lib.bzl", "default_arg")
 
@@ -65,68 +64,36 @@ def _jest_test(name = "", srcs = [], deps = [], data = [], **kwargs):
 def _web_assets(name, **kwargs):
     aspect_js_library(name = name, **kwargs)
 
-def _next_export(name, **kwargs):
-    default_arg(kwargs, "out_dirs", ["out"])
-    default_arg(kwargs, "tool", "//bazel/ui:next_js_binary")
-    default_arg(kwargs, "args", ["build"])
-    default_arg(kwargs, "copy_srcs_to_bin", True)
-    default_arg(kwargs, "chdir", native.package_name())
-
-    js_run_binary(name = name + "_next_build", **kwargs)
-
-    pkg_tar(
-        name = name,
-        srcs = [
-            ":" + name + "_next_build",
-        ],
-        strip_prefix = "out",
-    )
+NEXTJS_STANDALONE_SCRIPT = """
+set -e;
+export PATH="$$PATH:/opt/gml_dev/tools/node/bin";
+pushd src/ui &> /dev/null;
+pnpm install --frozen-lockfile &> /dev/null;
+pnpm build &> /dev/null;
+out="$$(mktemp -d)";
+mkdir -p "$${out}/app"
+cp -r .next/standalone/* "$${out}/app";
+cp -r .next/standalone/.next "$${out}/app";
+cp -r .next/static "$${out}/app/.next/static";
+popd &> /dev/null;
+tar --mtime="2023-01-01 00:00:00 UTC" -C "$${out}" -cf "$(location standalone.tar)" .;
+rm -rf "$${out}";
+"""
 
 def _next_standalone(name, **kwargs):
-    default_arg(kwargs, "outs", ["standalone.tar"])
-    default_arg(kwargs, "tool", "//bazel/ui:next_js_binary")
-    default_arg(kwargs, "args", ["build"])
     default_arg(kwargs, "srcs", [])
-    default_arg(kwargs, "copy_srcs_to_bin", True)
-    default_arg(kwargs, "chdir", native.package_name())
+    default_arg(kwargs, "outs", ["standalone.tar"])
 
+    # We use a genrule with sandboxing disabled since the nextjs tracing for standalone builds
+    # broke in next v13.5.4
+    # Once this is fixed, we can go back to building in the sandbox.
+    # See https://github.com/vercel/next.js/issues/62591
     native.genrule(
-        name = "empty_pnpm_lock",
-        srcs = [],
-        outs = ["pnpm-lock.yaml"],
-        cmd = "touch $@",
+        name = name,
+        cmd = NEXTJS_STANDALONE_SCRIPT,
+        local = True,
+        **kwargs
     )
-
-    kwargs["srcs"] = kwargs["srcs"] + [":empty_pnpm_lock"]
-
-    js_run_binary(name = name, **kwargs)
-
-NEXT_STANDALONE_CLEANUP = """
-if [[ -d .next/standalone ]]; then
-    set -e
-    find .next/standalone/node_modules/.aspect_rules_js -type l | while read line; do
-        resolved="$(readlink -f "$line")"
-        path_from_store="${resolved#*/.aspect_rules_js/}"
-        rel="$(echo "$path_from_store" | sed 's|[^/]||g;s|/|../|g')"
-        relative_symlink="${rel}${path_from_store}"
-        ln -snf "$relative_symlink" "$line"
-    done
-
-    find .next/standalone/node_modules -type l -maxdepth 1 -not -path '*/.aspect_rules_js' | while read line; do
-        resolved="$(readlink -f "$line")"
-        relative_symlink=".aspect_rules_js/${resolved#*/.aspect_rules_js/}"
-        ln -snf "$relative_symlink" "$line"
-    done
-
-    # pkg_tar doesn't support preserving symlinks so we create the tar here.
-    mkdir out
-    mkdir out/app
-    mv .next/standalone/* out/app
-    mv .next/standalone/.next out/app
-    mv .next/static out/app/.next/static
-    tar -C out -cf standalone.tar .
-fi
-"""
 
 def _storybook_export(name, **kwargs):
     default_arg(kwargs, "outs", ["storybook.tar"])
@@ -146,13 +113,12 @@ def _storybook_export(name, **kwargs):
 # issue
 STORYBOOK_CLEANUP = """
 if [[ -d storybook-static ]]; then
-    tar -C storybook-static -cf storybook.tar .
+    tar --mtime="2023-01-01 00:00:00 UTC" -C storybook-static -cf storybook.tar .
 fi
 """
 
 ts_project = _ts_project
 web_assets = _web_assets
-next_export = _next_export
 next_standalone = _next_standalone
 jest_test = _jest_test
 storybook_export = _storybook_export
