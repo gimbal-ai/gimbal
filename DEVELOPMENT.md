@@ -206,6 +206,12 @@ These instructions use `pyenv` and `pyenv-virtualenv` to create the virtualenv, 
     pip install -e .
     ```
 
+1. (Optional) To install the research requirements, run:
+
+    ```bash
+    pip install -r src/experimental/requirements.in
+    ```
+
 ### Fast python image builds
 
 Python image builds can be very slow. The default `gml_py_image` rule will build a normal minimal python image.
