@@ -216,8 +216,12 @@ use_repo(pip, "experimental_pip")
 oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
 oci.pull(
     name = "distroless_nodejs",
-    digest = "sha256:d3b3e2272621ed6ac35bd7b95aeb3c703301ba5b0a20b3f14a9504ca96a8f086",
+    digest = "sha256:a69b487c1d156e3aeaab0ffb587f46248c8e891e289081a3c28f7104a69c4515",  # latest (2024-05-07) multiarch digest
     image = "gcr.io/distroless/nodejs20-debian12",
+    platforms = [
+        "linux/amd64",
+        "linux/arm64/v8",
+    ],
 )
 oci.pull(
     name = "victoria_metrics_1_93_6",
