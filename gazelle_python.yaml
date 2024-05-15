@@ -8503,6 +8503,13 @@ manifest:
     rpds: rpds_py
     rpds.rpds: rpds_py
     ruff: ruff
+    safetensors: safetensors
+    safetensors.flax: safetensors
+    safetensors.mlx: safetensors
+    safetensors.numpy: safetensors
+    safetensors.paddle: safetensors
+    safetensors.tensorflow: safetensors
+    safetensors.torch: safetensors
     scipy: scipy
     scipy.cluster: scipy
     scipy.cluster.hierarchy: scipy
@@ -12497,6 +12504,7 @@ manifest:
     transformers: transformers
     transformers.activations: transformers
     transformers.activations_tf: transformers
+    transformers.audio_utils: transformers
     transformers.benchmark: transformers
     transformers.benchmark.benchmark: transformers
     transformers.benchmark.benchmark_args: transformers
@@ -12504,6 +12512,7 @@ manifest:
     transformers.benchmark.benchmark_args_utils: transformers
     transformers.benchmark.benchmark_tf: transformers
     transformers.benchmark.benchmark_utils: transformers
+    transformers.cache_utils: transformers
     transformers.commands: transformers
     transformers.commands.add_new_model: transformers
     transformers.commands.add_new_model_like: transformers
@@ -12536,7 +12545,6 @@ manifest:
     transformers.data.processors.squad: transformers
     transformers.data.processors.utils: transformers
     transformers.data.processors.xnli: transformers
-    transformers.data.test_generation_utils: transformers
     transformers.debug_utils: transformers
     transformers.deepspeed: transformers
     transformers.dependency_versions_check: transformers
@@ -12548,24 +12556,33 @@ manifest:
     transformers.generation: transformers
     transformers.generation.beam_constraints: transformers
     transformers.generation.beam_search: transformers
+    transformers.generation.candidate_generator: transformers
     transformers.generation.configuration_utils: transformers
     transformers.generation.flax_logits_process: transformers
     transformers.generation.flax_utils: transformers
     transformers.generation.logits_process: transformers
     transformers.generation.stopping_criteria: transformers
+    transformers.generation.streamers: transformers
     transformers.generation.tf_logits_process: transformers
     transformers.generation.tf_utils: transformers
     transformers.generation.utils: transformers
-    transformers.generation_flax_utils: transformers
-    transformers.generation_tf_utils: transformers
-    transformers.generation_utils: transformers
     transformers.hf_argparser: transformers
+    transformers.hyperparameter_search: transformers
     transformers.image_processing_utils: transformers
     transformers.image_transforms: transformers
     transformers.image_utils: transformers
     transformers.integrations: transformers
+    transformers.integrations.aqlm: transformers
+    transformers.integrations.awq: transformers
+    transformers.integrations.bitsandbytes: transformers
+    transformers.integrations.deepspeed: transformers
+    transformers.integrations.integration_utils: transformers
+    transformers.integrations.peft: transformers
+    transformers.integrations.quanto: transformers
+    transformers.integrations.tpu: transformers
     transformers.keras_callbacks: transformers
     transformers.modelcard: transformers
+    transformers.modeling_attn_mask_utils: transformers
     transformers.modeling_flax_outputs: transformers
     transformers.modeling_flax_pytorch_utils: transformers
     transformers.modeling_flax_utils: transformers
@@ -12583,6 +12600,11 @@ manifest:
     transformers.models.albert.modeling_tf_albert: transformers
     transformers.models.albert.tokenization_albert: transformers
     transformers.models.albert.tokenization_albert_fast: transformers
+    transformers.models.align: transformers
+    transformers.models.align.configuration_align: transformers
+    transformers.models.align.convert_align_tf_to_hf: transformers
+    transformers.models.align.modeling_align: transformers
+    transformers.models.align.processing_align: transformers
     transformers.models.altclip: transformers
     transformers.models.altclip.configuration_altclip: transformers
     transformers.models.altclip.modeling_altclip: transformers
@@ -12602,6 +12624,15 @@ manifest:
     transformers.models.auto.modeling_tf_auto: transformers
     transformers.models.auto.processing_auto: transformers
     transformers.models.auto.tokenization_auto: transformers
+    transformers.models.autoformer: transformers
+    transformers.models.autoformer.configuration_autoformer: transformers
+    transformers.models.autoformer.modeling_autoformer: transformers
+    transformers.models.bark: transformers
+    transformers.models.bark.configuration_bark: transformers
+    transformers.models.bark.convert_suno_to_hf: transformers
+    transformers.models.bark.generation_configuration_bark: transformers
+    transformers.models.bark.modeling_bark: transformers
+    transformers.models.bark.processing_bark: transformers
     transformers.models.bart: transformers
     transformers.models.bart.configuration_bart: transformers
     transformers.models.bart.convert_bart_original_pytorch_checkpoint_to_pytorch: transformers
@@ -12684,14 +12715,30 @@ manifest:
     transformers.models.blip.image_processing_blip: transformers
     transformers.models.blip.modeling_blip: transformers
     transformers.models.blip.modeling_blip_text: transformers
+    transformers.models.blip.modeling_tf_blip: transformers
+    transformers.models.blip.modeling_tf_blip_text: transformers
     transformers.models.blip.processing_blip: transformers
+    transformers.models.blip_2: transformers
+    transformers.models.blip_2.configuration_blip_2: transformers
+    transformers.models.blip_2.convert_blip_2_original_to_pytorch: transformers
+    transformers.models.blip_2.modeling_blip_2: transformers
+    transformers.models.blip_2.processing_blip_2: transformers
     transformers.models.bloom: transformers
     transformers.models.bloom.configuration_bloom: transformers
     transformers.models.bloom.convert_bloom_original_checkpoint_to_pytorch: transformers
     transformers.models.bloom.modeling_bloom: transformers
+    transformers.models.bloom.modeling_flax_bloom: transformers
     transformers.models.bloom.tokenization_bloom_fast: transformers
-    transformers.models.bort: transformers
-    transformers.models.bort.convert_bort_original_gluonnlp_checkpoint_to_pytorch: transformers
+    transformers.models.bridgetower: transformers
+    transformers.models.bridgetower.configuration_bridgetower: transformers
+    transformers.models.bridgetower.image_processing_bridgetower: transformers
+    transformers.models.bridgetower.modeling_bridgetower: transformers
+    transformers.models.bridgetower.processing_bridgetower: transformers
+    transformers.models.bros: transformers
+    transformers.models.bros.configuration_bros: transformers
+    transformers.models.bros.convert_bros_to_pytorch: transformers
+    transformers.models.bros.modeling_bros: transformers
+    transformers.models.bros.processing_bros: transformers
     transformers.models.byt5: transformers
     transformers.models.byt5.convert_byt5_original_tf_checkpoint_to_pytorch: transformers
     transformers.models.byt5.tokenization_byt5: transformers
@@ -12713,6 +12760,12 @@ manifest:
     transformers.models.chinese_clip.image_processing_chinese_clip: transformers
     transformers.models.chinese_clip.modeling_chinese_clip: transformers
     transformers.models.chinese_clip.processing_chinese_clip: transformers
+    transformers.models.clap: transformers
+    transformers.models.clap.configuration_clap: transformers
+    transformers.models.clap.convert_clap_original_pytorch_to_hf: transformers
+    transformers.models.clap.feature_extraction_clap: transformers
+    transformers.models.clap.modeling_clap: transformers
+    transformers.models.clap.processing_clap: transformers
     transformers.models.clip: transformers
     transformers.models.clip.configuration_clip: transformers
     transformers.models.clip.convert_clip_original_pytorch_to_hf: transformers
@@ -12729,11 +12782,26 @@ manifest:
     transformers.models.clipseg.convert_clipseg_original_pytorch_to_hf: transformers
     transformers.models.clipseg.modeling_clipseg: transformers
     transformers.models.clipseg.processing_clipseg: transformers
+    transformers.models.clvp: transformers
+    transformers.models.clvp.configuration_clvp: transformers
+    transformers.models.clvp.convert_clvp_to_hf: transformers
+    transformers.models.clvp.feature_extraction_clvp: transformers
+    transformers.models.clvp.modeling_clvp: transformers
+    transformers.models.clvp.number_normalizer: transformers
+    transformers.models.clvp.processing_clvp: transformers
+    transformers.models.clvp.tokenization_clvp: transformers
+    transformers.models.code_llama: transformers
+    transformers.models.code_llama.tokenization_code_llama: transformers
+    transformers.models.code_llama.tokenization_code_llama_fast: transformers
     transformers.models.codegen: transformers
     transformers.models.codegen.configuration_codegen: transformers
     transformers.models.codegen.modeling_codegen: transformers
     transformers.models.codegen.tokenization_codegen: transformers
     transformers.models.codegen.tokenization_codegen_fast: transformers
+    transformers.models.cohere: transformers
+    transformers.models.cohere.configuration_cohere: transformers
+    transformers.models.cohere.modeling_cohere: transformers
+    transformers.models.cohere.tokenization_cohere_fast: transformers
     transformers.models.conditional_detr: transformers
     transformers.models.conditional_detr.configuration_conditional_detr: transformers
     transformers.models.conditional_detr.convert_conditional_detr_original_pytorch_checkpoint_to_pytorch: transformers
@@ -12754,9 +12822,18 @@ manifest:
     transformers.models.convnext.image_processing_convnext: transformers
     transformers.models.convnext.modeling_convnext: transformers
     transformers.models.convnext.modeling_tf_convnext: transformers
+    transformers.models.convnextv2: transformers
+    transformers.models.convnextv2.configuration_convnextv2: transformers
+    transformers.models.convnextv2.convert_convnextv2_to_pytorch: transformers
+    transformers.models.convnextv2.modeling_convnextv2: transformers
+    transformers.models.convnextv2.modeling_tf_convnextv2: transformers
     transformers.models.cpm: transformers
     transformers.models.cpm.tokenization_cpm: transformers
     transformers.models.cpm.tokenization_cpm_fast: transformers
+    transformers.models.cpmant: transformers
+    transformers.models.cpmant.configuration_cpmant: transformers
+    transformers.models.cpmant.modeling_cpmant: transformers
+    transformers.models.cpmant.tokenization_cpmant: transformers
     transformers.models.ctrl: transformers
     transformers.models.ctrl.configuration_ctrl: transformers
     transformers.models.ctrl.modeling_ctrl: transformers
@@ -12778,6 +12855,9 @@ manifest:
     transformers.models.data2vec.modeling_data2vec_text: transformers
     transformers.models.data2vec.modeling_data2vec_vision: transformers
     transformers.models.data2vec.modeling_tf_data2vec_vision: transformers
+    transformers.models.dbrx: transformers
+    transformers.models.dbrx.configuration_dbrx: transformers
+    transformers.models.dbrx.modeling_dbrx: transformers
     transformers.models.deberta: transformers
     transformers.models.deberta.configuration_deberta: transformers
     transformers.models.deberta.modeling_deberta: transformers
@@ -12807,6 +12887,53 @@ manifest:
     transformers.models.deit.image_processing_deit: transformers
     transformers.models.deit.modeling_deit: transformers
     transformers.models.deit.modeling_tf_deit: transformers
+    transformers.models.deprecated: transformers
+    transformers.models.deprecated.bort: transformers
+    transformers.models.deprecated.bort.convert_bort_original_gluonnlp_checkpoint_to_pytorch: transformers
+    transformers.models.deprecated.mctct: transformers
+    transformers.models.deprecated.mctct.configuration_mctct: transformers
+    transformers.models.deprecated.mctct.feature_extraction_mctct: transformers
+    transformers.models.deprecated.mctct.modeling_mctct: transformers
+    transformers.models.deprecated.mctct.processing_mctct: transformers
+    transformers.models.deprecated.mmbt: transformers
+    transformers.models.deprecated.mmbt.configuration_mmbt: transformers
+    transformers.models.deprecated.mmbt.modeling_mmbt: transformers
+    transformers.models.deprecated.open_llama: transformers
+    transformers.models.deprecated.open_llama.configuration_open_llama: transformers
+    transformers.models.deprecated.open_llama.modeling_open_llama: transformers
+    transformers.models.deprecated.retribert: transformers
+    transformers.models.deprecated.retribert.configuration_retribert: transformers
+    transformers.models.deprecated.retribert.modeling_retribert: transformers
+    transformers.models.deprecated.retribert.tokenization_retribert: transformers
+    transformers.models.deprecated.retribert.tokenization_retribert_fast: transformers
+    transformers.models.deprecated.tapex: transformers
+    transformers.models.deprecated.tapex.tokenization_tapex: transformers
+    transformers.models.deprecated.trajectory_transformer: transformers
+    transformers.models.deprecated.trajectory_transformer.configuration_trajectory_transformer: transformers
+    transformers.models.deprecated.trajectory_transformer.convert_trajectory_transformer_original_pytorch_checkpoint_to_pytorch: transformers
+    transformers.models.deprecated.trajectory_transformer.modeling_trajectory_transformer: transformers
+    transformers.models.deprecated.transfo_xl: transformers
+    transformers.models.deprecated.transfo_xl.configuration_transfo_xl: transformers
+    transformers.models.deprecated.transfo_xl.convert_transfo_xl_original_tf_checkpoint_to_pytorch: transformers
+    transformers.models.deprecated.transfo_xl.modeling_tf_transfo_xl: transformers
+    transformers.models.deprecated.transfo_xl.modeling_tf_transfo_xl_utilities: transformers
+    transformers.models.deprecated.transfo_xl.modeling_transfo_xl: transformers
+    transformers.models.deprecated.transfo_xl.modeling_transfo_xl_utilities: transformers
+    transformers.models.deprecated.transfo_xl.tokenization_transfo_xl: transformers
+    transformers.models.deprecated.van: transformers
+    transformers.models.deprecated.van.configuration_van: transformers
+    transformers.models.deprecated.van.convert_van_to_pytorch: transformers
+    transformers.models.deprecated.van.modeling_van: transformers
+    transformers.models.depth_anything: transformers
+    transformers.models.depth_anything.configuration_depth_anything: transformers
+    transformers.models.depth_anything.convert_depth_anything_to_hf: transformers
+    transformers.models.depth_anything.modeling_depth_anything: transformers
+    transformers.models.deta: transformers
+    transformers.models.deta.configuration_deta: transformers
+    transformers.models.deta.convert_deta_resnet_to_pytorch: transformers
+    transformers.models.deta.convert_deta_swin_to_pytorch: transformers
+    transformers.models.deta.image_processing_deta: transformers
+    transformers.models.deta.modeling_deta: transformers
     transformers.models.detr: transformers
     transformers.models.detr.configuration_detr: transformers
     transformers.models.detr.convert_detr_original_pytorch_checkpoint_to_pytorch: transformers
@@ -12819,6 +12946,10 @@ manifest:
     transformers.models.dinat: transformers
     transformers.models.dinat.configuration_dinat: transformers
     transformers.models.dinat.modeling_dinat: transformers
+    transformers.models.dinov2: transformers
+    transformers.models.dinov2.configuration_dinov2: transformers
+    transformers.models.dinov2.convert_dinov2_to_hf: transformers
+    transformers.models.dinov2.modeling_dinov2: transformers
     transformers.models.distilbert: transformers
     transformers.models.distilbert.configuration_distilbert: transformers
     transformers.models.distilbert.modeling_distilbert: transformers
@@ -12844,7 +12975,10 @@ manifest:
     transformers.models.dpr.tokenization_dpr_fast: transformers
     transformers.models.dpt: transformers
     transformers.models.dpt.configuration_dpt: transformers
+    transformers.models.dpt.convert_dinov2_depth_to_hf: transformers
+    transformers.models.dpt.convert_dpt_beit_to_hf: transformers
     transformers.models.dpt.convert_dpt_hybrid_to_pytorch: transformers
+    transformers.models.dpt.convert_dpt_swinv2_to_hf: transformers
     transformers.models.dpt.convert_dpt_to_pytorch: transformers
     transformers.models.dpt.feature_extraction_dpt: transformers
     transformers.models.dpt.image_processing_dpt: transformers
@@ -12854,6 +12988,12 @@ manifest:
     transformers.models.efficientformer.convert_efficientformer_original_pytorch_checkpoint_to_pytorch: transformers
     transformers.models.efficientformer.image_processing_efficientformer: transformers
     transformers.models.efficientformer.modeling_efficientformer: transformers
+    transformers.models.efficientformer.modeling_tf_efficientformer: transformers
+    transformers.models.efficientnet: transformers
+    transformers.models.efficientnet.configuration_efficientnet: transformers
+    transformers.models.efficientnet.convert_efficientnet_to_pytorch: transformers
+    transformers.models.efficientnet.image_processing_efficientnet: transformers
+    transformers.models.efficientnet.modeling_efficientnet: transformers
     transformers.models.electra: transformers
     transformers.models.electra.configuration_electra: transformers
     transformers.models.electra.convert_electra_original_tf_checkpoint_to_pytorch: transformers
@@ -12862,6 +13002,11 @@ manifest:
     transformers.models.electra.modeling_tf_electra: transformers
     transformers.models.electra.tokenization_electra: transformers
     transformers.models.electra.tokenization_electra_fast: transformers
+    transformers.models.encodec: transformers
+    transformers.models.encodec.configuration_encodec: transformers
+    transformers.models.encodec.convert_encodec_checkpoint_to_pytorch: transformers
+    transformers.models.encodec.feature_extraction_encodec: transformers
+    transformers.models.encodec.modeling_encodec: transformers
     transformers.models.encoder_decoder: transformers
     transformers.models.encoder_decoder.configuration_encoder_decoder: transformers
     transformers.models.encoder_decoder.modeling_encoder_decoder: transformers
@@ -12870,6 +13015,10 @@ manifest:
     transformers.models.ernie: transformers
     transformers.models.ernie.configuration_ernie: transformers
     transformers.models.ernie.modeling_ernie: transformers
+    transformers.models.ernie_m: transformers
+    transformers.models.ernie_m.configuration_ernie_m: transformers
+    transformers.models.ernie_m.modeling_ernie_m: transformers
+    transformers.models.ernie_m.tokenization_ernie_m: transformers
     transformers.models.esm: transformers
     transformers.models.esm.configuration_esm: transformers
     transformers.models.esm.convert_esm: transformers
@@ -12886,6 +13035,17 @@ manifest:
     transformers.models.esm.openfold_utils.rigid_utils: transformers
     transformers.models.esm.openfold_utils.tensor_utils: transformers
     transformers.models.esm.tokenization_esm: transformers
+    transformers.models.falcon: transformers
+    transformers.models.falcon.configuration_falcon: transformers
+    transformers.models.falcon.convert_custom_code_checkpoint: transformers
+    transformers.models.falcon.modeling_falcon: transformers
+    transformers.models.fastspeech2_conformer: transformers
+    transformers.models.fastspeech2_conformer.configuration_fastspeech2_conformer: transformers
+    transformers.models.fastspeech2_conformer.convert_fastspeech2_conformer_original_pytorch_checkpoint_to_pytorch: transformers
+    transformers.models.fastspeech2_conformer.convert_hifigan: transformers
+    transformers.models.fastspeech2_conformer.convert_model_with_hifigan: transformers
+    transformers.models.fastspeech2_conformer.modeling_fastspeech2_conformer: transformers
+    transformers.models.fastspeech2_conformer.tokenization_fastspeech2_conformer: transformers
     transformers.models.flaubert: transformers
     transformers.models.flaubert.configuration_flaubert: transformers
     transformers.models.flaubert.modeling_flaubert: transformers
@@ -12905,6 +13065,10 @@ manifest:
     transformers.models.fnet.modeling_fnet: transformers
     transformers.models.fnet.tokenization_fnet: transformers
     transformers.models.fnet.tokenization_fnet_fast: transformers
+    transformers.models.focalnet: transformers
+    transformers.models.focalnet.configuration_focalnet: transformers
+    transformers.models.focalnet.convert_focalnet_to_hf_format: transformers
+    transformers.models.focalnet.modeling_focalnet: transformers
     transformers.models.fsmt: transformers
     transformers.models.fsmt.configuration_fsmt: transformers
     transformers.models.fsmt.convert_fsmt_original_pytorch_checkpoint_to_pytorch: transformers
@@ -12917,6 +13081,19 @@ manifest:
     transformers.models.funnel.modeling_tf_funnel: transformers
     transformers.models.funnel.tokenization_funnel: transformers
     transformers.models.funnel.tokenization_funnel_fast: transformers
+    transformers.models.fuyu: transformers
+    transformers.models.fuyu.configuration_fuyu: transformers
+    transformers.models.fuyu.convert_fuyu_model_weights_to_hf: transformers
+    transformers.models.fuyu.image_processing_fuyu: transformers
+    transformers.models.fuyu.modeling_fuyu: transformers
+    transformers.models.fuyu.processing_fuyu: transformers
+    transformers.models.gemma: transformers
+    transformers.models.gemma.configuration_gemma: transformers
+    transformers.models.gemma.convert_gemma_weights_to_hf: transformers
+    transformers.models.gemma.modeling_flax_gemma: transformers
+    transformers.models.gemma.modeling_gemma: transformers
+    transformers.models.gemma.tokenization_gemma: transformers
+    transformers.models.gemma.tokenization_gemma_fast: transformers
     transformers.models.git: transformers
     transformers.models.git.configuration_git: transformers
     transformers.models.git.convert_git_to_pytorch: transformers
@@ -12937,6 +13114,9 @@ manifest:
     transformers.models.gpt2.tokenization_gpt2: transformers
     transformers.models.gpt2.tokenization_gpt2_fast: transformers
     transformers.models.gpt2.tokenization_gpt2_tf: transformers
+    transformers.models.gpt_bigcode: transformers
+    transformers.models.gpt_bigcode.configuration_gpt_bigcode: transformers
+    transformers.models.gpt_bigcode.modeling_gpt_bigcode: transformers
     transformers.models.gpt_neo: transformers
     transformers.models.gpt_neo.configuration_gpt_neo: transformers
     transformers.models.gpt_neo.convert_gpt_neo_mesh_tf_to_pytorch: transformers
@@ -12958,10 +13138,21 @@ manifest:
     transformers.models.gptj.modeling_flax_gptj: transformers
     transformers.models.gptj.modeling_gptj: transformers
     transformers.models.gptj.modeling_tf_gptj: transformers
+    transformers.models.gptsan_japanese: transformers
+    transformers.models.gptsan_japanese.configuration_gptsan_japanese: transformers
+    transformers.models.gptsan_japanese.convert_gptsan_tf_checkpoint_to_pytorch: transformers
+    transformers.models.gptsan_japanese.modeling_gptsan_japanese: transformers
+    transformers.models.gptsan_japanese.tokenization_gptsan_japanese: transformers
     transformers.models.graphormer: transformers
     transformers.models.graphormer.collating_graphormer: transformers
     transformers.models.graphormer.configuration_graphormer: transformers
     transformers.models.graphormer.modeling_graphormer: transformers
+    transformers.models.grounding_dino: transformers
+    transformers.models.grounding_dino.configuration_grounding_dino: transformers
+    transformers.models.grounding_dino.convert_grounding_dino_to_hf: transformers
+    transformers.models.grounding_dino.image_processing_grounding_dino: transformers
+    transformers.models.grounding_dino.modeling_grounding_dino: transformers
+    transformers.models.grounding_dino.processing_grounding_dino: transformers
     transformers.models.groupvit: transformers
     transformers.models.groupvit.configuration_groupvit: transformers
     transformers.models.groupvit.convert_groupvit_nvlab_to_hf: transformers
@@ -12981,17 +13172,46 @@ manifest:
     transformers.models.ibert.configuration_ibert: transformers
     transformers.models.ibert.modeling_ibert: transformers
     transformers.models.ibert.quant_modules: transformers
+    transformers.models.idefics: transformers
+    transformers.models.idefics.configuration_idefics: transformers
+    transformers.models.idefics.image_processing_idefics: transformers
+    transformers.models.idefics.modeling_idefics: transformers
+    transformers.models.idefics.perceiver: transformers
+    transformers.models.idefics.processing_idefics: transformers
+    transformers.models.idefics.vision: transformers
+    transformers.models.idefics2: transformers
+    transformers.models.idefics2.configuration_idefics2: transformers
+    transformers.models.idefics2.convert_idefics2_weights_to_hf: transformers
+    transformers.models.idefics2.image_processing_idefics2: transformers
+    transformers.models.idefics2.modeling_idefics2: transformers
+    transformers.models.idefics2.processing_idefics2: transformers
     transformers.models.imagegpt: transformers
     transformers.models.imagegpt.configuration_imagegpt: transformers
     transformers.models.imagegpt.convert_imagegpt_original_tf2_to_pytorch: transformers
     transformers.models.imagegpt.feature_extraction_imagegpt: transformers
     transformers.models.imagegpt.image_processing_imagegpt: transformers
     transformers.models.imagegpt.modeling_imagegpt: transformers
+    transformers.models.informer: transformers
+    transformers.models.informer.configuration_informer: transformers
+    transformers.models.informer.modeling_informer: transformers
+    transformers.models.instructblip: transformers
+    transformers.models.instructblip.configuration_instructblip: transformers
+    transformers.models.instructblip.convert_instructblip_original_to_pytorch: transformers
+    transformers.models.instructblip.modeling_instructblip: transformers
+    transformers.models.instructblip.processing_instructblip: transformers
+    transformers.models.jamba: transformers
+    transformers.models.jamba.configuration_jamba: transformers
+    transformers.models.jamba.modeling_jamba: transformers
     transformers.models.jukebox: transformers
     transformers.models.jukebox.configuration_jukebox: transformers
     transformers.models.jukebox.convert_jukebox: transformers
     transformers.models.jukebox.modeling_jukebox: transformers
     transformers.models.jukebox.tokenization_jukebox: transformers
+    transformers.models.kosmos2: transformers
+    transformers.models.kosmos2.configuration_kosmos2: transformers
+    transformers.models.kosmos2.convert_kosmos2_original_pytorch_checkpoint_to_pytorch: transformers
+    transformers.models.kosmos2.modeling_kosmos2: transformers
+    transformers.models.kosmos2.processing_kosmos2: transformers
     transformers.models.layoutlm: transformers
     transformers.models.layoutlm.configuration_layoutlm: transformers
     transformers.models.layoutlm.modeling_layoutlm: transformers
@@ -13034,6 +13254,24 @@ manifest:
     transformers.models.lilt: transformers
     transformers.models.lilt.configuration_lilt: transformers
     transformers.models.lilt.modeling_lilt: transformers
+    transformers.models.llama: transformers
+    transformers.models.llama.configuration_llama: transformers
+    transformers.models.llama.convert_llama_weights_to_hf: transformers
+    transformers.models.llama.modeling_flax_llama: transformers
+    transformers.models.llama.modeling_llama: transformers
+    transformers.models.llama.tokenization_llama: transformers
+    transformers.models.llama.tokenization_llama_fast: transformers
+    transformers.models.llava: transformers
+    transformers.models.llava.configuration_llava: transformers
+    transformers.models.llava.convert_llava_weights_to_hf: transformers
+    transformers.models.llava.modeling_llava: transformers
+    transformers.models.llava.processing_llava: transformers
+    transformers.models.llava_next: transformers
+    transformers.models.llava_next.configuration_llava_next: transformers
+    transformers.models.llava_next.convert_llava_next_weights_to_hf: transformers
+    transformers.models.llava_next.image_processing_llava_next: transformers
+    transformers.models.llava_next.modeling_llava_next: transformers
+    transformers.models.llava_next.processing_llava_next: transformers
     transformers.models.longformer: transformers
     transformers.models.longformer.configuration_longformer: transformers
     transformers.models.longformer.convert_longformer_original_pytorch_lightning_to_pytorch: transformers
@@ -13063,6 +13301,10 @@ manifest:
     transformers.models.m2m_100.convert_m2m100_original_checkpoint_to_pytorch: transformers
     transformers.models.m2m_100.modeling_m2m_100: transformers
     transformers.models.m2m_100.tokenization_m2m_100: transformers
+    transformers.models.mamba: transformers
+    transformers.models.mamba.configuration_mamba: transformers
+    transformers.models.mamba.convert_mamba_ssm_checkpoint_to_pytorch: transformers
+    transformers.models.mamba.modeling_mamba: transformers
     transformers.models.marian: transformers
     transformers.models.marian.configuration_marian: transformers
     transformers.models.marian.convert_marian_tatoeba_to_pytorch: transformers
@@ -13104,11 +13346,10 @@ manifest:
     transformers.models.mbart50: transformers
     transformers.models.mbart50.tokenization_mbart50: transformers
     transformers.models.mbart50.tokenization_mbart50_fast: transformers
-    transformers.models.mctct: transformers
-    transformers.models.mctct.configuration_mctct: transformers
-    transformers.models.mctct.feature_extraction_mctct: transformers
-    transformers.models.mctct.modeling_mctct: transformers
-    transformers.models.mctct.processing_mctct: transformers
+    transformers.models.mega: transformers
+    transformers.models.mega.configuration_mega: transformers
+    transformers.models.mega.convert_mega_original_pytorch_checkpoint_to_pytorch: transformers
+    transformers.models.mega.modeling_mega: transformers
     transformers.models.megatron_bert: transformers
     transformers.models.megatron_bert.configuration_megatron_bert: transformers
     transformers.models.megatron_bert.convert_megatron_bert_checkpoint: transformers
@@ -13116,12 +13357,23 @@ manifest:
     transformers.models.megatron_gpt2: transformers
     transformers.models.megatron_gpt2.checkpoint_reshaping_and_interoperability: transformers
     transformers.models.megatron_gpt2.convert_megatron_gpt2_checkpoint: transformers
+    transformers.models.mgp_str: transformers
+    transformers.models.mgp_str.configuration_mgp_str: transformers
+    transformers.models.mgp_str.modeling_mgp_str: transformers
+    transformers.models.mgp_str.processing_mgp_str: transformers
+    transformers.models.mgp_str.tokenization_mgp_str: transformers
+    transformers.models.mistral: transformers
+    transformers.models.mistral.configuration_mistral: transformers
+    transformers.models.mistral.convert_mistral_weights_to_hf: transformers
+    transformers.models.mistral.modeling_flax_mistral: transformers
+    transformers.models.mistral.modeling_mistral: transformers
+    transformers.models.mixtral: transformers
+    transformers.models.mixtral.configuration_mixtral: transformers
+    transformers.models.mixtral.convert_mixtral_weights_to_hf: transformers
+    transformers.models.mixtral.modeling_mixtral: transformers
     transformers.models.mluke: transformers
     transformers.models.mluke.convert_mluke_original_pytorch_checkpoint_to_pytorch: transformers
     transformers.models.mluke.tokenization_mluke: transformers
-    transformers.models.mmbt: transformers
-    transformers.models.mmbt.configuration_mmbt: transformers
-    transformers.models.mmbt.modeling_mmbt: transformers
     transformers.models.mobilebert: transformers
     transformers.models.mobilebert.configuration_mobilebert: transformers
     transformers.models.mobilebert.convert_mobilebert_original_tf_checkpoint_to_pytorch: transformers
@@ -13148,17 +13400,39 @@ manifest:
     transformers.models.mobilevit.image_processing_mobilevit: transformers
     transformers.models.mobilevit.modeling_mobilevit: transformers
     transformers.models.mobilevit.modeling_tf_mobilevit: transformers
+    transformers.models.mobilevitv2: transformers
+    transformers.models.mobilevitv2.configuration_mobilevitv2: transformers
+    transformers.models.mobilevitv2.convert_mlcvnets_to_pytorch: transformers
+    transformers.models.mobilevitv2.modeling_mobilevitv2: transformers
     transformers.models.mpnet: transformers
     transformers.models.mpnet.configuration_mpnet: transformers
     transformers.models.mpnet.modeling_mpnet: transformers
     transformers.models.mpnet.modeling_tf_mpnet: transformers
     transformers.models.mpnet.tokenization_mpnet: transformers
     transformers.models.mpnet.tokenization_mpnet_fast: transformers
+    transformers.models.mpt: transformers
+    transformers.models.mpt.configuration_mpt: transformers
+    transformers.models.mpt.modeling_mpt: transformers
+    transformers.models.mra: transformers
+    transformers.models.mra.configuration_mra: transformers
+    transformers.models.mra.convert_mra_pytorch_to_pytorch: transformers
+    transformers.models.mra.modeling_mra: transformers
     transformers.models.mt5: transformers
     transformers.models.mt5.configuration_mt5: transformers
     transformers.models.mt5.modeling_flax_mt5: transformers
     transformers.models.mt5.modeling_mt5: transformers
     transformers.models.mt5.modeling_tf_mt5: transformers
+    transformers.models.musicgen: transformers
+    transformers.models.musicgen.configuration_musicgen: transformers
+    transformers.models.musicgen.convert_musicgen_transformers: transformers
+    transformers.models.musicgen.modeling_musicgen: transformers
+    transformers.models.musicgen.processing_musicgen: transformers
+    transformers.models.musicgen_melody: transformers
+    transformers.models.musicgen_melody.configuration_musicgen_melody: transformers
+    transformers.models.musicgen_melody.convert_musicgen_melody_transformers: transformers
+    transformers.models.musicgen_melody.feature_extraction_musicgen_melody: transformers
+    transformers.models.musicgen_melody.modeling_musicgen_melody: transformers
+    transformers.models.musicgen_melody.processing_musicgen_melody: transformers
     transformers.models.mvp: transformers
     transformers.models.mvp.configuration_mvp: transformers
     transformers.models.mvp.modeling_mvp: transformers
@@ -13173,10 +13447,23 @@ manifest:
     transformers.models.nllb: transformers
     transformers.models.nllb.tokenization_nllb: transformers
     transformers.models.nllb.tokenization_nllb_fast: transformers
+    transformers.models.nllb_moe: transformers
+    transformers.models.nllb_moe.configuration_nllb_moe: transformers
+    transformers.models.nllb_moe.convert_nllb_moe_sharded_original_checkpoint_to_pytorch: transformers
+    transformers.models.nllb_moe.modeling_nllb_moe: transformers
+    transformers.models.nougat: transformers
+    transformers.models.nougat.convert_nougat_to_hf: transformers
+    transformers.models.nougat.image_processing_nougat: transformers
+    transformers.models.nougat.processing_nougat: transformers
+    transformers.models.nougat.tokenization_nougat_fast: transformers
     transformers.models.nystromformer: transformers
     transformers.models.nystromformer.configuration_nystromformer: transformers
     transformers.models.nystromformer.convert_nystromformer_original_pytorch_checkpoint_to_pytorch: transformers
     transformers.models.nystromformer.modeling_nystromformer: transformers
+    transformers.models.olmo: transformers
+    transformers.models.olmo.configuration_olmo: transformers
+    transformers.models.olmo.convert_olmo_weights_to_hf: transformers
+    transformers.models.olmo.modeling_olmo: transformers
     transformers.models.oneformer: transformers
     transformers.models.oneformer.configuration_oneformer: transformers
     transformers.models.oneformer.convert_to_hf_oneformer: transformers
@@ -13196,6 +13483,12 @@ manifest:
     transformers.models.opt.modeling_flax_opt: transformers
     transformers.models.opt.modeling_opt: transformers
     transformers.models.opt.modeling_tf_opt: transformers
+    transformers.models.owlv2: transformers
+    transformers.models.owlv2.configuration_owlv2: transformers
+    transformers.models.owlv2.convert_owlv2_to_hf: transformers
+    transformers.models.owlv2.image_processing_owlv2: transformers
+    transformers.models.owlv2.modeling_owlv2: transformers
+    transformers.models.owlv2.processing_owlv2: transformers
     transformers.models.owlvit: transformers
     transformers.models.owlvit.configuration_owlvit: transformers
     transformers.models.owlvit.convert_owlvit_original_flax_to_hf: transformers
@@ -13203,6 +13496,12 @@ manifest:
     transformers.models.owlvit.image_processing_owlvit: transformers
     transformers.models.owlvit.modeling_owlvit: transformers
     transformers.models.owlvit.processing_owlvit: transformers
+    transformers.models.patchtsmixer: transformers
+    transformers.models.patchtsmixer.configuration_patchtsmixer: transformers
+    transformers.models.patchtsmixer.modeling_patchtsmixer: transformers
+    transformers.models.patchtst: transformers
+    transformers.models.patchtst.configuration_patchtst: transformers
+    transformers.models.patchtst.modeling_patchtst: transformers
     transformers.models.pegasus: transformers
     transformers.models.pegasus.configuration_pegasus: transformers
     transformers.models.pegasus.convert_pegasus_tf_to_pytorch: transformers
@@ -13221,8 +13520,22 @@ manifest:
     transformers.models.perceiver.image_processing_perceiver: transformers
     transformers.models.perceiver.modeling_perceiver: transformers
     transformers.models.perceiver.tokenization_perceiver: transformers
+    transformers.models.persimmon: transformers
+    transformers.models.persimmon.configuration_persimmon: transformers
+    transformers.models.persimmon.convert_persimmon_weights_to_hf: transformers
+    transformers.models.persimmon.modeling_persimmon: transformers
+    transformers.models.phi: transformers
+    transformers.models.phi.configuration_phi: transformers
+    transformers.models.phi.convert_phi_weights_to_hf: transformers
+    transformers.models.phi.modeling_phi: transformers
     transformers.models.phobert: transformers
     transformers.models.phobert.tokenization_phobert: transformers
+    transformers.models.pix2struct: transformers
+    transformers.models.pix2struct.configuration_pix2struct: transformers
+    transformers.models.pix2struct.convert_pix2struct_original_pytorch_to_hf: transformers
+    transformers.models.pix2struct.image_processing_pix2struct: transformers
+    transformers.models.pix2struct.modeling_pix2struct: transformers
+    transformers.models.pix2struct.processing_pix2struct: transformers
     transformers.models.plbart: transformers
     transformers.models.plbart.configuration_plbart: transformers
     transformers.models.plbart.convert_plbart_original_checkpoint_to_torch: transformers
@@ -13234,14 +13547,38 @@ manifest:
     transformers.models.poolformer.feature_extraction_poolformer: transformers
     transformers.models.poolformer.image_processing_poolformer: transformers
     transformers.models.poolformer.modeling_poolformer: transformers
+    transformers.models.pop2piano: transformers
+    transformers.models.pop2piano.configuration_pop2piano: transformers
+    transformers.models.pop2piano.convert_pop2piano_weights_to_hf: transformers
+    transformers.models.pop2piano.feature_extraction_pop2piano: transformers
+    transformers.models.pop2piano.modeling_pop2piano: transformers
+    transformers.models.pop2piano.processing_pop2piano: transformers
+    transformers.models.pop2piano.tokenization_pop2piano: transformers
     transformers.models.prophetnet: transformers
     transformers.models.prophetnet.configuration_prophetnet: transformers
     transformers.models.prophetnet.convert_prophetnet_original_pytorch_checkpoint_to_pytorch: transformers
     transformers.models.prophetnet.modeling_prophetnet: transformers
     transformers.models.prophetnet.tokenization_prophetnet: transformers
+    transformers.models.pvt: transformers
+    transformers.models.pvt.configuration_pvt: transformers
+    transformers.models.pvt.convert_pvt_to_pytorch: transformers
+    transformers.models.pvt.image_processing_pvt: transformers
+    transformers.models.pvt.modeling_pvt: transformers
+    transformers.models.pvt_v2: transformers
+    transformers.models.pvt_v2.configuration_pvt_v2: transformers
+    transformers.models.pvt_v2.convert_pvt_v2_to_pytorch: transformers
+    transformers.models.pvt_v2.modeling_pvt_v2: transformers
     transformers.models.qdqbert: transformers
     transformers.models.qdqbert.configuration_qdqbert: transformers
     transformers.models.qdqbert.modeling_qdqbert: transformers
+    transformers.models.qwen2: transformers
+    transformers.models.qwen2.configuration_qwen2: transformers
+    transformers.models.qwen2.modeling_qwen2: transformers
+    transformers.models.qwen2.tokenization_qwen2: transformers
+    transformers.models.qwen2.tokenization_qwen2_fast: transformers
+    transformers.models.qwen2_moe: transformers
+    transformers.models.qwen2_moe.configuration_qwen2_moe: transformers
+    transformers.models.qwen2_moe.modeling_qwen2_moe: transformers
     transformers.models.rag: transformers
     transformers.models.rag.configuration_rag: transformers
     transformers.models.rag.modeling_rag: transformers
@@ -13254,6 +13591,10 @@ manifest:
     transformers.models.realm.retrieval_realm: transformers
     transformers.models.realm.tokenization_realm: transformers
     transformers.models.realm.tokenization_realm_fast: transformers
+    transformers.models.recurrent_gemma: transformers
+    transformers.models.recurrent_gemma.configuration_recurrent_gemma: transformers
+    transformers.models.recurrent_gemma.convert_recurrent_gemma_to_hf: transformers
+    transformers.models.recurrent_gemma.modeling_recurrent_gemma: transformers
     transformers.models.reformer: transformers
     transformers.models.reformer.configuration_reformer: transformers
     transformers.models.reformer.convert_reformer_trax_checkpoint_to_pytorch: transformers
@@ -13264,6 +13605,7 @@ manifest:
     transformers.models.regnet.configuration_regnet: transformers
     transformers.models.regnet.convert_regnet_seer_10b_to_pytorch: transformers
     transformers.models.regnet.convert_regnet_to_pytorch: transformers
+    transformers.models.regnet.modeling_flax_regnet: transformers
     transformers.models.regnet.modeling_regnet: transformers
     transformers.models.regnet.modeling_tf_regnet: transformers
     transformers.models.rembert: transformers
@@ -13276,13 +13618,9 @@ manifest:
     transformers.models.resnet: transformers
     transformers.models.resnet.configuration_resnet: transformers
     transformers.models.resnet.convert_resnet_to_pytorch: transformers
+    transformers.models.resnet.modeling_flax_resnet: transformers
     transformers.models.resnet.modeling_resnet: transformers
     transformers.models.resnet.modeling_tf_resnet: transformers
-    transformers.models.retribert: transformers
-    transformers.models.retribert.configuration_retribert: transformers
-    transformers.models.retribert.modeling_retribert: transformers
-    transformers.models.retribert.tokenization_retribert: transformers
-    transformers.models.retribert.tokenization_retribert_fast: transformers
     transformers.models.roberta: transformers
     transformers.models.roberta.configuration_roberta: transformers
     transformers.models.roberta.convert_roberta_original_pytorch_checkpoint_to_pytorch: transformers
@@ -13310,6 +13648,29 @@ manifest:
     transformers.models.roformer.tokenization_roformer: transformers
     transformers.models.roformer.tokenization_roformer_fast: transformers
     transformers.models.roformer.tokenization_utils: transformers
+    transformers.models.rwkv: transformers
+    transformers.models.rwkv.configuration_rwkv: transformers
+    transformers.models.rwkv.convert_rwkv_checkpoint_to_hf: transformers
+    transformers.models.rwkv.modeling_rwkv: transformers
+    transformers.models.sam: transformers
+    transformers.models.sam.configuration_sam: transformers
+    transformers.models.sam.convert_sam_to_hf: transformers
+    transformers.models.sam.image_processing_sam: transformers
+    transformers.models.sam.modeling_sam: transformers
+    transformers.models.sam.modeling_tf_sam: transformers
+    transformers.models.sam.processing_sam: transformers
+    transformers.models.seamless_m4t: transformers
+    transformers.models.seamless_m4t.configuration_seamless_m4t: transformers
+    transformers.models.seamless_m4t.convert_fairseq2_to_hf: transformers
+    transformers.models.seamless_m4t.feature_extraction_seamless_m4t: transformers
+    transformers.models.seamless_m4t.modeling_seamless_m4t: transformers
+    transformers.models.seamless_m4t.processing_seamless_m4t: transformers
+    transformers.models.seamless_m4t.tokenization_seamless_m4t: transformers
+    transformers.models.seamless_m4t.tokenization_seamless_m4t_fast: transformers
+    transformers.models.seamless_m4t_v2: transformers
+    transformers.models.seamless_m4t_v2.configuration_seamless_m4t_v2: transformers
+    transformers.models.seamless_m4t_v2.convert_fairseq2_to_hf: transformers
+    transformers.models.seamless_m4t_v2.modeling_seamless_m4t_v2: transformers
     transformers.models.segformer: transformers
     transformers.models.segformer.configuration_segformer: transformers
     transformers.models.segformer.convert_segformer_original_to_pytorch: transformers
@@ -13317,6 +13678,11 @@ manifest:
     transformers.models.segformer.image_processing_segformer: transformers
     transformers.models.segformer.modeling_segformer: transformers
     transformers.models.segformer.modeling_tf_segformer: transformers
+    transformers.models.seggpt: transformers
+    transformers.models.seggpt.configuration_seggpt: transformers
+    transformers.models.seggpt.convert_seggpt_to_hf: transformers
+    transformers.models.seggpt.image_processing_seggpt: transformers
+    transformers.models.seggpt.modeling_seggpt: transformers
     transformers.models.sew: transformers
     transformers.models.sew.configuration_sew: transformers
     transformers.models.sew.convert_sew_original_pytorch_checkpoint_to_pytorch: transformers
@@ -13325,6 +13691,13 @@ manifest:
     transformers.models.sew_d.configuration_sew_d: transformers
     transformers.models.sew_d.convert_sew_d_original_pytorch_checkpoint_to_pytorch: transformers
     transformers.models.sew_d.modeling_sew_d: transformers
+    transformers.models.siglip: transformers
+    transformers.models.siglip.configuration_siglip: transformers
+    transformers.models.siglip.convert_siglip_to_hf: transformers
+    transformers.models.siglip.image_processing_siglip: transformers
+    transformers.models.siglip.modeling_siglip: transformers
+    transformers.models.siglip.processing_siglip: transformers
+    transformers.models.siglip.tokenization_siglip: transformers
     transformers.models.speech_encoder_decoder: transformers
     transformers.models.speech_encoder_decoder.configuration_speech_encoder_decoder: transformers
     transformers.models.speech_encoder_decoder.convert_mbart_wav2vec2_seq2seq_original_to_pytorch: transformers
@@ -13344,6 +13717,15 @@ manifest:
     transformers.models.speech_to_text_2.modeling_speech_to_text_2: transformers
     transformers.models.speech_to_text_2.processing_speech_to_text_2: transformers
     transformers.models.speech_to_text_2.tokenization_speech_to_text_2: transformers
+    transformers.models.speecht5: transformers
+    transformers.models.speecht5.configuration_speecht5: transformers
+    transformers.models.speecht5.convert_hifigan: transformers
+    transformers.models.speecht5.convert_speecht5_original_pytorch_checkpoint_to_pytorch: transformers
+    transformers.models.speecht5.feature_extraction_speecht5: transformers
+    transformers.models.speecht5.modeling_speecht5: transformers
+    transformers.models.speecht5.number_normalizer: transformers
+    transformers.models.speecht5.processing_speecht5: transformers
+    transformers.models.speecht5.tokenization_speecht5: transformers
     transformers.models.splinter: transformers
     transformers.models.splinter.configuration_splinter: transformers
     transformers.models.splinter.modeling_splinter: transformers
@@ -13354,6 +13736,21 @@ manifest:
     transformers.models.squeezebert.modeling_squeezebert: transformers
     transformers.models.squeezebert.tokenization_squeezebert: transformers
     transformers.models.squeezebert.tokenization_squeezebert_fast: transformers
+    transformers.models.stablelm: transformers
+    transformers.models.stablelm.configuration_stablelm: transformers
+    transformers.models.stablelm.modeling_stablelm: transformers
+    transformers.models.starcoder2: transformers
+    transformers.models.starcoder2.configuration_starcoder2: transformers
+    transformers.models.starcoder2.modeling_starcoder2: transformers
+    transformers.models.superpoint: transformers
+    transformers.models.superpoint.configuration_superpoint: transformers
+    transformers.models.superpoint.convert_superpoint_to_pytorch: transformers
+    transformers.models.superpoint.image_processing_superpoint: transformers
+    transformers.models.superpoint.modeling_superpoint: transformers
+    transformers.models.swiftformer: transformers
+    transformers.models.swiftformer.configuration_swiftformer: transformers
+    transformers.models.swiftformer.convert_swiftformer_original_to_hf: transformers
+    transformers.models.swiftformer.modeling_swiftformer: transformers
     transformers.models.swin: transformers
     transformers.models.swin.configuration_swin: transformers
     transformers.models.swin.convert_swin_simmim_to_pytorch: transformers
@@ -13386,7 +13783,8 @@ manifest:
     transformers.models.t5.tokenization_t5_fast: transformers
     transformers.models.table_transformer: transformers
     transformers.models.table_transformer.configuration_table_transformer: transformers
-    transformers.models.table_transformer.convert_table_transformer_original_pytorch_checkpoint_to_pytorch: transformers
+    transformers.models.table_transformer.convert_table_transformer_to_hf: transformers
+    transformers.models.table_transformer.convert_table_transformer_to_hf_no_timm: transformers
     transformers.models.table_transformer.modeling_table_transformer: transformers
     transformers.models.tapas: transformers
     transformers.models.tapas.configuration_tapas: transformers
@@ -13394,8 +13792,6 @@ manifest:
     transformers.models.tapas.modeling_tapas: transformers
     transformers.models.tapas.modeling_tf_tapas: transformers
     transformers.models.tapas.tokenization_tapas: transformers
-    transformers.models.tapex: transformers
-    transformers.models.tapex.tokenization_tapex: transformers
     transformers.models.time_series_transformer: transformers
     transformers.models.time_series_transformer.configuration_time_series_transformer: transformers
     transformers.models.time_series_transformer.modeling_time_series_transformer: transformers
@@ -13403,23 +13799,36 @@ manifest:
     transformers.models.timesformer.configuration_timesformer: transformers
     transformers.models.timesformer.convert_timesformer_to_pytorch: transformers
     transformers.models.timesformer.modeling_timesformer: transformers
-    transformers.models.trajectory_transformer: transformers
-    transformers.models.trajectory_transformer.configuration_trajectory_transformer: transformers
-    transformers.models.trajectory_transformer.convert_trajectory_transformer_original_pytorch_checkpoint_to_pytorch: transformers
-    transformers.models.trajectory_transformer.modeling_trajectory_transformer: transformers
-    transformers.models.transfo_xl: transformers
-    transformers.models.transfo_xl.configuration_transfo_xl: transformers
-    transformers.models.transfo_xl.convert_transfo_xl_original_tf_checkpoint_to_pytorch: transformers
-    transformers.models.transfo_xl.modeling_tf_transfo_xl: transformers
-    transformers.models.transfo_xl.modeling_tf_transfo_xl_utilities: transformers
-    transformers.models.transfo_xl.modeling_transfo_xl: transformers
-    transformers.models.transfo_xl.modeling_transfo_xl_utilities: transformers
-    transformers.models.transfo_xl.tokenization_transfo_xl: transformers
+    transformers.models.timm_backbone: transformers
+    transformers.models.timm_backbone.configuration_timm_backbone: transformers
+    transformers.models.timm_backbone.modeling_timm_backbone: transformers
     transformers.models.trocr: transformers
     transformers.models.trocr.configuration_trocr: transformers
     transformers.models.trocr.convert_trocr_unilm_to_pytorch: transformers
     transformers.models.trocr.modeling_trocr: transformers
     transformers.models.trocr.processing_trocr: transformers
+    transformers.models.tvlt: transformers
+    transformers.models.tvlt.configuration_tvlt: transformers
+    transformers.models.tvlt.feature_extraction_tvlt: transformers
+    transformers.models.tvlt.image_processing_tvlt: transformers
+    transformers.models.tvlt.modeling_tvlt: transformers
+    transformers.models.tvlt.processing_tvlt: transformers
+    transformers.models.tvp: transformers
+    transformers.models.tvp.configuration_tvp: transformers
+    transformers.models.tvp.image_processing_tvp: transformers
+    transformers.models.tvp.modeling_tvp: transformers
+    transformers.models.tvp.processing_tvp: transformers
+    transformers.models.udop: transformers
+    transformers.models.udop.configuration_udop: transformers
+    transformers.models.udop.convert_udop_to_hf: transformers
+    transformers.models.udop.modeling_udop: transformers
+    transformers.models.udop.processing_udop: transformers
+    transformers.models.udop.tokenization_udop: transformers
+    transformers.models.udop.tokenization_udop_fast: transformers
+    transformers.models.umt5: transformers
+    transformers.models.umt5.configuration_umt5: transformers
+    transformers.models.umt5.convert_umt5_checkpoint_to_pytorch: transformers
+    transformers.models.umt5.modeling_umt5: transformers
     transformers.models.unispeech: transformers
     transformers.models.unispeech.configuration_unispeech: transformers
     transformers.models.unispeech.convert_unispeech_original_pytorch_checkpoint_to_pytorch: transformers
@@ -13429,15 +13838,16 @@ manifest:
     transformers.models.unispeech_sat.convert_unispeech_original_s3prl_checkpoint_to_pytorch: transformers
     transformers.models.unispeech_sat.convert_unispeech_sat_original_pytorch_checkpoint_to_pytorch: transformers
     transformers.models.unispeech_sat.modeling_unispeech_sat: transformers
+    transformers.models.univnet: transformers
+    transformers.models.univnet.configuration_univnet: transformers
+    transformers.models.univnet.convert_univnet: transformers
+    transformers.models.univnet.feature_extraction_univnet: transformers
+    transformers.models.univnet.modeling_univnet: transformers
     transformers.models.upernet: transformers
     transformers.models.upernet.configuration_upernet: transformers
     transformers.models.upernet.convert_convnext_upernet_to_pytorch: transformers
     transformers.models.upernet.convert_swin_upernet_to_pytorch: transformers
     transformers.models.upernet.modeling_upernet: transformers
-    transformers.models.van: transformers
-    transformers.models.van.configuration_van: transformers
-    transformers.models.van.convert_van_to_pytorch: transformers
-    transformers.models.van.modeling_van: transformers
     transformers.models.videomae: transformers
     transformers.models.videomae.configuration_videomae: transformers
     transformers.models.videomae.convert_videomae_to_pytorch: transformers
@@ -13451,6 +13861,10 @@ manifest:
     transformers.models.vilt.image_processing_vilt: transformers
     transformers.models.vilt.modeling_vilt: transformers
     transformers.models.vilt.processing_vilt: transformers
+    transformers.models.vipllava: transformers
+    transformers.models.vipllava.configuration_vipllava: transformers
+    transformers.models.vipllava.convert_vipllava_weights_to_hf: transformers
+    transformers.models.vipllava.modeling_vipllava: transformers
     transformers.models.vision_encoder_decoder: transformers
     transformers.models.vision_encoder_decoder.configuration_vision_encoder_decoder: transformers
     transformers.models.vision_encoder_decoder.modeling_flax_vision_encoder_decoder: transformers
@@ -13459,6 +13873,7 @@ manifest:
     transformers.models.vision_text_dual_encoder: transformers
     transformers.models.vision_text_dual_encoder.configuration_vision_text_dual_encoder: transformers
     transformers.models.vision_text_dual_encoder.modeling_flax_vision_text_dual_encoder: transformers
+    transformers.models.vision_text_dual_encoder.modeling_tf_vision_text_dual_encoder: transformers
     transformers.models.vision_text_dual_encoder.modeling_vision_text_dual_encoder: transformers
     transformers.models.vision_text_dual_encoder.processing_vision_text_dual_encoder: transformers
     transformers.models.visual_bert: transformers
@@ -13488,6 +13903,24 @@ manifest:
     transformers.models.vit_msn.configuration_vit_msn: transformers
     transformers.models.vit_msn.convert_msn_to_pytorch: transformers
     transformers.models.vit_msn.modeling_vit_msn: transformers
+    transformers.models.vitdet: transformers
+    transformers.models.vitdet.configuration_vitdet: transformers
+    transformers.models.vitdet.modeling_vitdet: transformers
+    transformers.models.vitmatte: transformers
+    transformers.models.vitmatte.configuration_vitmatte: transformers
+    transformers.models.vitmatte.convert_vitmatte_to_hf: transformers
+    transformers.models.vitmatte.image_processing_vitmatte: transformers
+    transformers.models.vitmatte.modeling_vitmatte: transformers
+    transformers.models.vits: transformers
+    transformers.models.vits.configuration_vits: transformers
+    transformers.models.vits.convert_original_checkpoint: transformers
+    transformers.models.vits.modeling_vits: transformers
+    transformers.models.vits.tokenization_vits: transformers
+    transformers.models.vivit: transformers
+    transformers.models.vivit.configuration_vivit: transformers
+    transformers.models.vivit.convert_vivit_flax_to_pytorch: transformers
+    transformers.models.vivit.image_processing_vivit: transformers
+    transformers.models.vivit.modeling_vivit: transformers
     transformers.models.wav2vec2: transformers
     transformers.models.wav2vec2.configuration_wav2vec2: transformers
     transformers.models.wav2vec2.convert_wav2vec2_original_pytorch_checkpoint_to_pytorch: transformers
@@ -13498,6 +13931,11 @@ manifest:
     transformers.models.wav2vec2.modeling_wav2vec2: transformers
     transformers.models.wav2vec2.processing_wav2vec2: transformers
     transformers.models.wav2vec2.tokenization_wav2vec2: transformers
+    transformers.models.wav2vec2_bert: transformers
+    transformers.models.wav2vec2_bert.configuration_wav2vec2_bert: transformers
+    transformers.models.wav2vec2_bert.convert_wav2vec2_seamless_checkpoint: transformers
+    transformers.models.wav2vec2_bert.modeling_wav2vec2_bert: transformers
+    transformers.models.wav2vec2_bert.processing_wav2vec2_bert: transformers
     transformers.models.wav2vec2_conformer: transformers
     transformers.models.wav2vec2_conformer.configuration_wav2vec2_conformer: transformers
     transformers.models.wav2vec2_conformer.convert_wav2vec2_conformer_original_pytorch_checkpoint_to_pytorch: transformers
@@ -13516,10 +13954,13 @@ manifest:
     transformers.models.whisper.convert_openai_to_hf: transformers
     transformers.models.whisper.english_normalizer: transformers
     transformers.models.whisper.feature_extraction_whisper: transformers
+    transformers.models.whisper.generation_whisper: transformers
+    transformers.models.whisper.modeling_flax_whisper: transformers
     transformers.models.whisper.modeling_tf_whisper: transformers
     transformers.models.whisper.modeling_whisper: transformers
     transformers.models.whisper.processing_whisper: transformers
     transformers.models.whisper.tokenization_whisper: transformers
+    transformers.models.whisper.tokenization_whisper_fast: transformers
     transformers.models.x_clip: transformers
     transformers.models.x_clip.configuration_x_clip: transformers
     transformers.models.x_clip.convert_x_clip_original_pytorch_to_hf: transformers
@@ -13561,6 +14002,10 @@ manifest:
     transformers.models.xlnet.modeling_xlnet: transformers
     transformers.models.xlnet.tokenization_xlnet: transformers
     transformers.models.xlnet.tokenization_xlnet_fast: transformers
+    transformers.models.xmod: transformers
+    transformers.models.xmod.configuration_xmod: transformers
+    transformers.models.xmod.convert_xmod_original_pytorch_checkpoint_to_pytorch: transformers
+    transformers.models.xmod.modeling_xmod: transformers
     transformers.models.yolos: transformers
     transformers.models.yolos.configuration_yolos: transformers
     transformers.models.yolos.convert_yolos_to_pytorch: transformers
@@ -13589,8 +14034,11 @@ manifest:
     transformers.pipelines.feature_extraction: transformers
     transformers.pipelines.fill_mask: transformers
     transformers.pipelines.image_classification: transformers
+    transformers.pipelines.image_feature_extraction: transformers
     transformers.pipelines.image_segmentation: transformers
+    transformers.pipelines.image_to_image: transformers
     transformers.pipelines.image_to_text: transformers
+    transformers.pipelines.mask_generation: transformers
     transformers.pipelines.object_detection: transformers
     transformers.pipelines.pt_utils: transformers
     transformers.pipelines.question_answering: transformers
@@ -13598,47 +14046,79 @@ manifest:
     transformers.pipelines.text2text_generation: transformers
     transformers.pipelines.text_classification: transformers
     transformers.pipelines.text_generation: transformers
+    transformers.pipelines.text_to_audio: transformers
     transformers.pipelines.token_classification: transformers
     transformers.pipelines.video_classification: transformers
     transformers.pipelines.visual_question_answering: transformers
+    transformers.pipelines.zero_shot_audio_classification: transformers
     transformers.pipelines.zero_shot_classification: transformers
     transformers.pipelines.zero_shot_image_classification: transformers
     transformers.pipelines.zero_shot_object_detection: transformers
     transformers.processing_utils: transformers
     transformers.pytorch_utils: transformers
+    transformers.quantizers: transformers
+    transformers.quantizers.auto: transformers
+    transformers.quantizers.base: transformers
+    transformers.quantizers.quantizer_aqlm: transformers
+    transformers.quantizers.quantizer_awq: transformers
+    transformers.quantizers.quantizer_bnb_4bit: transformers
+    transformers.quantizers.quantizer_bnb_8bit: transformers
+    transformers.quantizers.quantizer_gptq: transformers
+    transformers.quantizers.quantizer_quanto: transformers
+    transformers.quantizers.quantizers_utils: transformers
+    transformers.safetensors_conversion: transformers
     transformers.sagemaker: transformers
     transformers.sagemaker.trainer_sm: transformers
     transformers.sagemaker.training_args_sm: transformers
     transformers.testing_utils: transformers
     transformers.tf_utils: transformers
+    transformers.time_series_utils: transformers
     transformers.tokenization_utils: transformers
     transformers.tokenization_utils_base: transformers
     transformers.tokenization_utils_fast: transformers
+    transformers.tools: transformers
+    transformers.tools.agent_types: transformers
+    transformers.tools.agents: transformers
+    transformers.tools.base: transformers
+    transformers.tools.document_question_answering: transformers
+    transformers.tools.evaluate_agent: transformers
+    transformers.tools.image_captioning: transformers
+    transformers.tools.image_question_answering: transformers
+    transformers.tools.image_segmentation: transformers
+    transformers.tools.prompts: transformers
+    transformers.tools.python_interpreter: transformers
+    transformers.tools.speech_to_text: transformers
+    transformers.tools.text_classification: transformers
+    transformers.tools.text_question_answering: transformers
+    transformers.tools.text_summarization: transformers
+    transformers.tools.text_to_speech: transformers
+    transformers.tools.translation: transformers
     transformers.trainer: transformers
     transformers.trainer_callback: transformers
     transformers.trainer_pt_utils: transformers
     transformers.trainer_seq2seq: transformers
-    transformers.trainer_tf: transformers
     transformers.trainer_utils: transformers
     transformers.training_args: transformers
     transformers.training_args_seq2seq: transformers
     transformers.training_args_tf: transformers
     transformers.utils: transformers
+    transformers.utils.backbone_utils: transformers
     transformers.utils.bitsandbytes: transformers
     transformers.utils.constants: transformers
     transformers.utils.doc: transformers
     transformers.utils.dummy_detectron2_objects: transformers
+    transformers.utils.dummy_essentia_and_librosa_and_pretty_midi_and_scipy_and_torch_objects: transformers
     transformers.utils.dummy_flax_objects: transformers
     transformers.utils.dummy_keras_nlp_objects: transformers
+    transformers.utils.dummy_music_objects: transformers
     transformers.utils.dummy_pt_objects: transformers
-    transformers.utils.dummy_sentencepiece_and_speech_objects: transformers
     transformers.utils.dummy_sentencepiece_and_tokenizers_objects: transformers
     transformers.utils.dummy_sentencepiece_objects: transformers
     transformers.utils.dummy_speech_objects: transformers
     transformers.utils.dummy_tensorflow_text_objects: transformers
     transformers.utils.dummy_tf_objects: transformers
-    transformers.utils.dummy_timm_and_vision_objects: transformers
     transformers.utils.dummy_tokenizers_objects: transformers
+    transformers.utils.dummy_torchaudio_objects: transformers
     transformers.utils.dummy_vision_objects: transformers
     transformers.utils.fx: transformers
     transformers.utils.generic: transformers
@@ -13648,7 +14128,10 @@ manifest:
     transformers.utils.logging: transformers
     transformers.utils.model_parallel_utils: transformers
     transformers.utils.notebook: transformers
+    transformers.utils.peft_utils: transformers
+    transformers.utils.quantization_config: transformers
     transformers.utils.sentencepiece_model_pb2: transformers
+    transformers.utils.sentencepiece_model_pb2_new: transformers
     transformers.utils.versions: transformers
     triton: triton
     triton.common: triton
@@ -14103,4 +14586,4 @@ manifest:
     zipp.py310compat: zipp
   pip_repository:
     name: pip
-integrity: 77f97873a8e8f4288e6917711d8e5b6fee527234d489be9ecca80db3aedbe395
+integrity: 223ff8d6d5f3efae98e28b7dc56b994fff98c543aa2ee63244efdfe9587d19ed

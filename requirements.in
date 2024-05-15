@@ -10,7 +10,7 @@ efficientvit-gml==0.1.8
 gradio==4.29.0
 groundingdino-gml==0.1.2
 grpcio==1.62.0
-lavis-gml==1.0.2.post3
+lavis-gml==1.0.2.post4
 nats-py==2.7.2
 numpy==1.26.2
 pandas==2.2.1
