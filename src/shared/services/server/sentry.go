@@ -21,7 +21,6 @@ package server
 
 import (
 	"os"
-	"runtime"
 	"time"
 
 	"github.com/getsentry/sentry-go"
@@ -35,18 +34,15 @@ import (
 
 func init() {
 	pflag.String("sentry_dsn", "", "The sentry DSN. Empty disables sentry")
+	pflag.String("sentry_environment", "dev", "The sentry DSN. Typically prod, staging, or dev.")
 }
 
 // InitDefaultSentry initialize sentry with default options. The options are set based on values
 // from viper.
 func InitDefaultSentry() func() {
 	dsn := viper.GetString("sentry_dsn")
+	environment := viper.GetString("sentry_environment")
 
-	return InitSentryWithDSN("", dsn)
-}
-
-// InitSentryWithDSN initializes sentry with the given DSN.
-func InitSentryWithDSN(id, dsn string) func() {
 	podName := viper.GetString("pod_name")
 	executable, _ := os.Executable()
 
@@ -54,7 +50,7 @@ func InitSentryWithDSN(id, dsn string) func() {
 		Dsn:              dsn,
 		AttachStacktrace: true,
 		Release:          version.GetVersion().ToString(),
-		Environment:      runtime.GOOS,
+		Environment:      environment,
 		MaxBreadcrumbs:   10,
 	})
 	if err != nil {
@@ -64,9 +60,6 @@ func InitSentryWithDSN(id, dsn string) func() {
 			"version":    version.GetVersion().ToString(),
 			"executable": executable,
 			"pod_name":   podName,
-		}
-		if id != "" {
-			tags["ID"] = id
 		}
 		hook := sentryhook.New([]log.Level{
 			log.ErrorLevel, log.PanicLevel, log.FatalLevel,
