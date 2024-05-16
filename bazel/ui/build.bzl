@@ -66,6 +66,7 @@ def _web_assets(name, **kwargs):
 
 NEXTJS_STANDALONE_SCRIPT = """
 set -e;
+export BUILD_ID="$$(cat $(location //src/shared/version:gen_version_txt))";
 export PATH="$$PATH:/opt/gml_dev/tools/node/bin";
 pushd src/ui &> /dev/null;
 pnpm install --frozen-lockfile &> /dev/null;
@@ -83,6 +84,10 @@ rm -rf "$${out}";
 def _next_standalone(name, **kwargs):
     default_arg(kwargs, "srcs", [])
     default_arg(kwargs, "outs", ["standalone.tar"])
+
+    kwargs["srcs"] = kwargs["srcs"] + [
+        "//src/shared/version:gen_version_txt",
+    ]
 
     # We use a genrule with sandboxing disabled since the nextjs tracing for standalone builds
     # broke in next v13.5.4
