@@ -58,11 +58,6 @@ default["kustomize"]["download_path"] =
 default["kustomize"]["sha256"] =
   "c627b1575c3fecbc7ad1c181c23a7adcacf19732dab627eb57e89a7bc4c1e929"
 
-default["ksops"]["download_path"] =
-  "https://github.com/viaduct-ai/kustomize-sops/releases/download/v4.2.3/ksops_4.2.3_Linux_x86_64.tar.gz"
-default["ksops"]["sha256"] =
-  "1311508fe4d9461e11df6ebddad47949be9216583c024baf15c24ed5b9359cf8"
-
 default["lego"]["download_path"] =
   "https://github.com/go-acme/lego/releases/download/v4.5.3/lego_v4.5.3_linux_amd64.tar.gz"
 default["lego"]["sha256"] =
@@ -99,9 +94,9 @@ default["terraform"]["download_path"] =
   "c0ed7bc32ee52ae255af9982c8c88a7a4c610485cf1d55feeb037eab75fa082c"
 
 default["trivy"]["download_path"] =
-  "https://github.com/aquasecurity/trivy/releases/download/v0.39.0/trivy_0.39.0_Linux-64bit.tar.gz"
+  "https://github.com/aquasecurity/trivy/releases/download/v0.51.2/trivy_0.51.2_Linux-64bit.tar.gz"
 default["trivy"]["sha256"] =
-  "77cfe88b6b803909982e2dd41149c042fd9e6a58e1f55103f27e7bab2d2fb6d2"
+  "612f36e776cfbde22e7134663a0963eb2af5d253cd3589f4dbf46f41214a8b3b"
 
 default["yq"]["download_path"] =
   "https://github.com/mikefarah/yq/releases/download/v4.30.8/yq_linux_amd64"

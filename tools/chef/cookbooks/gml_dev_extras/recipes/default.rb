@@ -46,14 +46,14 @@ remote_file "/usr/local/share/zsh/site-functions/_bazel" do
   checksum node["bazel"]["zcomp_sha256"]
 end
 
+common_remote_bin "envoy"
 common_remote_bin "kubectl"
 common_remote_tar_bin "kustomize"
-common_remote_tar_bin "ksops"
 common_remote_bin "minikube"
 common_remote_bin "skaffold"
 common_remote_bin "sops"
+common_remote_tar_bin "trivy"
 common_remote_bin "yq"
-common_remote_bin "envoy"
 
 common_remote_tar_bin "gh" do
   tool_loc "bin/gh"
