@@ -1,5 +1,5 @@
 # Global bazelrc file, see https://docs.bazel.build/versions/master/guide.html#bazelrc.
-common --enable_bzlmod
+common --enable_bzlmod --lockfile_mode=error
 common --experimental_build_transitive_python_runfiles
 common --experimental_remote_cache_compression
 common --nolegacy_important_outputs
