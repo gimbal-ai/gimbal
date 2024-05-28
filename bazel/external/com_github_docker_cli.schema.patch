@@ -1,0 +1,46 @@
+diff --git a/cli/compose/schema/BUILD.bazel b/cli/compose/schema/BUILD.bazel
+index 458acd954..e140509df 100644
+--- a/cli/compose/schema/BUILD.bazel
++++ b/cli/compose/schema/BUILD.bazel
+@@ -4,6 +4,7 @@ go_library(
+     name = "schema",
+     srcs = ["schema.go"],
+     importpath = "github.com/docker/cli/cli/compose/schema",
++    embedsrcs = glob(["data/config_schema_v*.json"]),
+     visibility = ["//visibility:public"],
+     deps = [
+         "@com_github_pkg_errors//:errors",
+diff --git a/cli/compose/schema/data/BUILD.bazel b/cli/compose/schema/data/BUILD.bazel
+deleted file mode 100644
+index 444c30aba..000000000
+--- a/cli/compose/schema/data/BUILD.bazel
++++ /dev/null
+@@ -1,14 +0,0 @@
+-load("@io_bazel_rules_go//go:def.bzl", "go_library")
+-
+-go_library(
+-    name = "data",
+-    srcs = ["doc.go"],
+-    importpath = "github.com/docker/cli/cli/compose/schema/data",
+-    visibility = ["//visibility:public"],
+-)
+-
+-alias(
+-    name = "go_default_library",
+-    actual = ":data",
+-    visibility = ["//visibility:public"],
+-)
+diff --git a/cli/compose/schema/data/doc.go b/cli/compose/schema/data/doc.go
+deleted file mode 100644
+index f8ddd0091..000000000
+--- a/cli/compose/schema/data/doc.go
++++ /dev/null
+@@ -1,8 +0,0 @@
+-/*
+-	Package data contains all the Compose file JSON schemas, starting from v3.0.
+-*/
+-
+-//
+-// +domain=docker.com
+-
+-package data

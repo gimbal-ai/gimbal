@@ -110,6 +110,13 @@ go_deps.gazelle_override(
     ],
     path = "google.golang.org/protobuf",
 )
+go_deps.module_override(
+    patch_strip = 1,
+    patches = [
+        "//bazel/external:com_github_docker_cli.schema.patch",
+    ],
+    path = "github.com/docker/cli",
+)
 use_repo(
     go_deps,
     "ag_pault_go_debian",

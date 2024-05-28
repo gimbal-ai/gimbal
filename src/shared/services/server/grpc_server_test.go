@@ -111,7 +111,7 @@ func createDialer(lis *bufconn.Listener) func(ctx context.Context, url string) (
 
 func makeTestRequest(ctx context.Context, t *testing.T, lis *bufconn.Listener) (*ping.PingResponse, error) {
 	grpc.WithContextDialer(createDialer(lis))
-	conn, err := grpc.DialContext(ctx, "bufnet", grpc.WithContextDialer(createDialer(lis)), grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient("passthrough://bufnet", grpc.WithContextDialer(createDialer(lis)), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		t.Fatalf("did not connect: %v", err)
 	}
@@ -121,7 +121,7 @@ func makeTestRequest(ctx context.Context, t *testing.T, lis *bufconn.Listener) (
 }
 
 func makeTestClientStreamRequest(ctx context.Context, t *testing.T, lis *bufconn.Listener) (*ping.PingClientStreamResponse, error) {
-	conn, err := grpc.DialContext(ctx, "bufnet", grpc.WithContextDialer(createDialer(lis)), grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient("passthrough://bufnet", grpc.WithContextDialer(createDialer(lis)), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		t.Fatalf("did not connect: %v", err)
 	}
@@ -142,7 +142,7 @@ func makeTestClientStreamRequest(ctx context.Context, t *testing.T, lis *bufconn
 }
 
 func makeTestServerStreamRequest(ctx context.Context, t *testing.T, lis *bufconn.Listener) (*ping.PingServerStreamResponse, error) {
-	conn, err := grpc.DialContext(ctx, "bufnet", grpc.WithContextDialer(createDialer(lis)), grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient("passthrough://bufnet", grpc.WithContextDialer(createDialer(lis)), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		t.Fatalf("did not connect: %v", err)
 	}
