@@ -72,11 +72,15 @@ pushd src/ui &> /dev/null;
 pnpm install --frozen-lockfile &> /dev/null;
 pnpm build &> /dev/null;
 out="$$(mktemp -d)";
-mkdir -p "$${out}/app"
+mkdir -p "$${out}/app";
 cp -r .next/standalone/* "$${out}/app";
 cp -r .next/standalone/.next "$${out}/app";
 cp -r .next/static "$${out}/app/.next/static";
 popd &> /dev/null;
+# The following should be grabbed by the nextjs file tracing but seems to not be.
+# Copy it manually for now.
+mkdir -p "$${out}/app/public";
+cp $(location //src/ui:install_sh) "$${out}/app/public/install.sh.tmpl";
 tar --mtime="2023-01-01 00:00:00 UTC" -C "$${out}" -cf "$(location standalone.tar)" .;
 rm -rf "$${out}";
 """
