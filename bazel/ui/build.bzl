@@ -80,7 +80,7 @@ popd &> /dev/null;
 # The following should be grabbed by the nextjs file tracing but seems to not be.
 # Copy it manually for now.
 mkdir -p "$${out}/app/public";
-cp $(location //src/ui:install_sh) "$${out}/app/public/install.sh.tmpl";
+cp $(location //src/ui/public:install_sh) "$${out}/app/public/install.sh.tmpl";
 tar --mtime="2023-01-01 00:00:00 UTC" -C "$${out}" -cf "$(location standalone.tar)" .;
 rm -rf "$${out}";
 """
