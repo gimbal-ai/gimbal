@@ -25,6 +25,88 @@ import "gogoproto/gogo.proto";
 import "mediapipe/framework/calculator.proto";
 import "src/common/typespb/uuid.proto";
 
+// All supported logical pipeline nodes.
+enum LogicalPipelineNodeKind {
+  LOGICAL_PIPELINE_NODE_KIND_UNKNOWN = 0;
+  // Source nodes
+  LOGICAL_PIPELINE_NODE_KIND_CAMERA_SOURCE = 1;
+  // Model nodes
+  LOGICAL_PIPELINE_NODE_KIND_DETECTION_MODEL = 1000;
+  // Sink nodes
+  LOGICAL_PIPELINE_NODE_KIND_VIDEO_STREAM_SINK = 2000;
+  LOGICAL_PIPELINE_NODE_KIND_DETECTIONS_METRICS_SINK = 2001;
+}
+
+// A node in a logical pipeline graph.
+message Node {
+  // Unique name for the node in the logical pipeline.
+  string name = 1;
+  LogicalPipelineNodeKind kind = 2;
+  repeated NodeInput inputs = 3;
+  repeated NodeOutput outputs = 4;
+}
+
+// Input values for a node.
+message NodeInput {
+  // A reference to an output field of another node in the logical pipeline.
+  message NodeOutputRef {
+    // Name of the node that produced this output.
+    int64 node_name = 1;
+    // Name of the node's output field.
+    string name = 2;
+  }
+
+  message ModelInput {
+    // Name of the model which the user has uploaded to their org.
+    string model_name = 1;
+  }
+
+  message ParamInput {
+    // Name of the global param.
+    string param_name = 1;
+  }
+
+  // Name of the input.
+  string name = 1;
+  oneof value {
+    // The name of a global param.
+    ParamInput param_value = 2;
+    // Name of the model which the user has uploaded to their org.
+    ModelInput model_value = 3;
+    // Input value is another node's output.
+    NodeOutputRef node_output_value = 4;
+  }
+}
+
+// Output values for a node.
+message NodeOutput {
+  // Name of the output field. This must be unique within the logical pipeline, as other nodes may
+  // reference it.
+  string name = 1;
+}
+
+// Global params that are used to configure the pipeline.
+message GlobalParam {
+  // Name of the global param.
+  string name = 1;
+  // Default value for the param. This also defines the type we expect the param to be.
+  oneof default_value {
+    string string_value = 2;
+    int64 int64_value = 3;
+    double double_value = 4;
+    bool bool_value = 5;
+  }
+}
+
+// A logical pipeline represents the high level steps of an execution graph. Users specify their
+// pipeline YAML which is converted into this proto format.
+message LogicalPipeline {
+  // Global params that are used to configure the pipeline.
+  repeated GlobalParam global_params = 1;
+  // The nodes in the logical pipeline.
+  repeated Node nodes = 2;
+}
+
 // Pipeline is a high-level representation of an execution graph.
 message Pipeline {
   // List of nodes in the pipeline.

@@ -3,11 +3,17 @@ from mediapipe.framework import calculator_pb2 as _calculator_pb2
 from mediapipe.framework import calculator_options_pb2 as _calculator_options_pb2
 from src.common.typespb import uuid_pb2 as _uuid_pb2
 from google.protobuf.internal import containers as _containers
+from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
+LOGICAL_PIPELINE_NODE_KIND_CAMERA_SOURCE: LogicalPipelineNodeKind
+LOGICAL_PIPELINE_NODE_KIND_DETECTIONS_METRICS_SINK: LogicalPipelineNodeKind
+LOGICAL_PIPELINE_NODE_KIND_DETECTION_MODEL: LogicalPipelineNodeKind
+LOGICAL_PIPELINE_NODE_KIND_UNKNOWN: LogicalPipelineNodeKind
+LOGICAL_PIPELINE_NODE_KIND_VIDEO_STREAM_SINK: LogicalPipelineNodeKind
 
 class ExecutionSpec(_message.Message):
     __slots__ = ["graph", "model_spec"]
@@ -27,6 +33,28 @@ class FileResource(_message.Message):
     size_bytes: int
     def __init__(self, file_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., size_bytes: _Optional[int] = ..., sha256_hash: _Optional[str] = ...) -> None: ...
 
+class GlobalParam(_message.Message):
+    __slots__ = ["bool_value", "double_value", "int64_value", "name", "string_value"]
+    BOOL_VALUE_FIELD_NUMBER: _ClassVar[int]
+    DOUBLE_VALUE_FIELD_NUMBER: _ClassVar[int]
+    INT64_VALUE_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    STRING_VALUE_FIELD_NUMBER: _ClassVar[int]
+    bool_value: bool
+    double_value: float
+    int64_value: int
+    name: str
+    string_value: str
+    def __init__(self, name: _Optional[str] = ..., string_value: _Optional[str] = ..., int64_value: _Optional[int] = ..., double_value: _Optional[float] = ..., bool_value: bool = ...) -> None: ...
+
+class LogicalPipeline(_message.Message):
+    __slots__ = ["global_params", "nodes"]
+    GLOBAL_PARAMS_FIELD_NUMBER: _ClassVar[int]
+    NODES_FIELD_NUMBER: _ClassVar[int]
+    global_params: _containers.RepeatedCompositeFieldContainer[GlobalParam]
+    nodes: _containers.RepeatedCompositeFieldContainer[Node]
+    def __init__(self, global_params: _Optional[_Iterable[_Union[GlobalParam, _Mapping]]] = ..., nodes: _Optional[_Iterable[_Union[Node, _Mapping]]] = ...) -> None: ...
+
 class ModelSpec(_message.Message):
     __slots__ = ["name", "onnx_blob_key", "onnx_file", "openvino_spec", "runtime", "tensorrt_spec"]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -42,6 +70,53 @@ class ModelSpec(_message.Message):
     runtime: str
     tensorrt_spec: TensorRTModelSpec
     def __init__(self, name: _Optional[str] = ..., onnx_blob_key: _Optional[str] = ..., onnx_file: _Optional[_Union[FileResource, _Mapping]] = ..., runtime: _Optional[str] = ..., tensorrt_spec: _Optional[_Union[TensorRTModelSpec, _Mapping]] = ..., openvino_spec: _Optional[_Union[OpenVINOModelSpec, _Mapping]] = ...) -> None: ...
+
+class Node(_message.Message):
+    __slots__ = ["inputs", "kind", "name", "outputs"]
+    INPUTS_FIELD_NUMBER: _ClassVar[int]
+    KIND_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    OUTPUTS_FIELD_NUMBER: _ClassVar[int]
+    inputs: _containers.RepeatedCompositeFieldContainer[NodeInput]
+    kind: LogicalPipelineNodeKind
+    name: str
+    outputs: _containers.RepeatedCompositeFieldContainer[NodeOutput]
+    def __init__(self, name: _Optional[str] = ..., kind: _Optional[_Union[LogicalPipelineNodeKind, str]] = ..., inputs: _Optional[_Iterable[_Union[NodeInput, _Mapping]]] = ..., outputs: _Optional[_Iterable[_Union[NodeOutput, _Mapping]]] = ...) -> None: ...
+
+class NodeInput(_message.Message):
+    __slots__ = ["model_value", "name", "node_output_value", "param_value"]
+    class ModelInput(_message.Message):
+        __slots__ = ["model_name"]
+        MODEL_NAME_FIELD_NUMBER: _ClassVar[int]
+        model_name: str
+        def __init__(self, model_name: _Optional[str] = ...) -> None: ...
+    class NodeOutputRef(_message.Message):
+        __slots__ = ["name", "node_name"]
+        NAME_FIELD_NUMBER: _ClassVar[int]
+        NODE_NAME_FIELD_NUMBER: _ClassVar[int]
+        name: str
+        node_name: int
+        def __init__(self, node_name: _Optional[int] = ..., name: _Optional[str] = ...) -> None: ...
+    class ParamInput(_message.Message):
+        __slots__ = ["param_name"]
+        PARAM_NAME_FIELD_NUMBER: _ClassVar[int]
+        param_name: str
+        def __init__(self, param_name: _Optional[str] = ...) -> None: ...
+    MODEL_VALUE_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    NODE_OUTPUT_VALUE_FIELD_NUMBER: _ClassVar[int]
+    PARAM_VALUE_FIELD_NUMBER: _ClassVar[int]
+    model_value: NodeInput.ModelInput
+    name: str
+    node_output_value: NodeInput.NodeOutputRef
+    param_value: NodeInput.ParamInput
+    def __init__(self, name: _Optional[str] = ..., param_value: _Optional[_Union[NodeInput.ParamInput, _Mapping]] = ..., model_value: _Optional[_Union[NodeInput.ModelInput, _Mapping]] = ..., node_output_value: _Optional[_Union[NodeInput.NodeOutputRef, _Mapping]] = ...) -> None: ...
+
+class NodeOutput(_message.Message):
+    __slots__ = ["name"]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    name: str
+    def __init__(self, name: _Optional[str] = ...) -> None: ...
 
 class OpenVINOModelSpec(_message.Message):
     __slots__ = ["input_shape"]
@@ -118,3 +193,6 @@ class TensorRTTensorShapeRange(_message.Message):
     dim: _containers.RepeatedScalarFieldContainer[int]
     tensor_name: str
     def __init__(self, tensor_name: _Optional[str] = ..., dim: _Optional[_Iterable[int]] = ...) -> None: ...
+
+class LogicalPipelineNodeKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = []

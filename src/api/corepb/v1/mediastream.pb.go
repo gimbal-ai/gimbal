@@ -451,6 +451,7 @@ type ImageOverlayChunk struct {
 	FrameTS int64 `protobuf:"varint,1,opt,name=frame_ts,json=frameTS,proto3" json:"frameTS"`
 	EOF     bool  `protobuf:"varint,2,opt,name=eof,proto3" json:"eof,omitempty"`
 	// Types that are valid to be assigned to Overlay:
+	//
 	//	*ImageOverlayChunk_Detections
 	//	*ImageOverlayChunk_Histograms
 	//	*ImageOverlayChunk_ImageQuality
