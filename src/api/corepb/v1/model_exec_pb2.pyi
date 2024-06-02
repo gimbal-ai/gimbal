@@ -2,6 +2,7 @@ from gogoproto import gogo_pb2 as _gogo_pb2
 from mediapipe.framework import calculator_pb2 as _calculator_pb2
 from mediapipe.framework import calculator_options_pb2 as _calculator_options_pb2
 from src.common.typespb import uuid_pb2 as _uuid_pb2
+from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
@@ -14,6 +15,13 @@ LOGICAL_PIPELINE_NODE_KIND_DETECTIONS_METRICS_SINK: LogicalPipelineNodeKind
 LOGICAL_PIPELINE_NODE_KIND_DETECTION_MODEL: LogicalPipelineNodeKind
 LOGICAL_PIPELINE_NODE_KIND_UNKNOWN: LogicalPipelineNodeKind
 LOGICAL_PIPELINE_NODE_KIND_VIDEO_STREAM_SINK: LogicalPipelineNodeKind
+PIPELINE_STATE_FAILED: PipelineState
+PIPELINE_STATE_PENDING: PipelineState
+PIPELINE_STATE_READY: PipelineState
+PIPELINE_STATE_RUNNING: PipelineState
+PIPELINE_STATE_TERMINATED: PipelineState
+PIPELINE_STATE_TERMINATING: PipelineState
+PIPELINE_STATE_UNKNOWN: PipelineState
 
 class ExecutionSpec(_message.Message):
     __slots__ = ["graph", "model_spec"]
@@ -135,6 +143,38 @@ class Pipeline(_message.Message):
     nodes: _containers.RepeatedCompositeFieldContainer[PipelineNode]
     def __init__(self, nodes: _Optional[_Iterable[_Union[PipelineNode, _Mapping]]] = ...) -> None: ...
 
+class PipelineDeployment(_message.Message):
+    __slots__ = ["created_at", "fleet_id", "id", "logical_pipeline_id", "resource_version", "spec", "state", "updated_at"]
+    CREATED_AT_FIELD_NUMBER: _ClassVar[int]
+    FLEET_ID_FIELD_NUMBER: _ClassVar[int]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    LOGICAL_PIPELINE_ID_FIELD_NUMBER: _ClassVar[int]
+    RESOURCE_VERSION_FIELD_NUMBER: _ClassVar[int]
+    SPEC_FIELD_NUMBER: _ClassVar[int]
+    STATE_FIELD_NUMBER: _ClassVar[int]
+    UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
+    created_at: _timestamp_pb2.Timestamp
+    fleet_id: _uuid_pb2.UUID
+    id: _uuid_pb2.UUID
+    logical_pipeline_id: _uuid_pb2.UUID
+    resource_version: int
+    spec: PipelineDeploymentSpec
+    state: PipelineDeploymentState
+    updated_at: _timestamp_pb2.Timestamp
+    def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., logical_pipeline_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., fleet_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., resource_version: _Optional[int] = ..., spec: _Optional[_Union[PipelineDeploymentSpec, _Mapping]] = ..., state: _Optional[_Union[PipelineDeploymentState, _Mapping]] = ...) -> None: ...
+
+class PipelineDeploymentSpec(_message.Message):
+    __slots__ = ["state"]
+    STATE_FIELD_NUMBER: _ClassVar[int]
+    state: PipelineState
+    def __init__(self, state: _Optional[_Union[PipelineState, str]] = ...) -> None: ...
+
+class PipelineDeploymentState(_message.Message):
+    __slots__ = ["state"]
+    STATE_FIELD_NUMBER: _ClassVar[int]
+    state: PipelineState
+    def __init__(self, state: _Optional[_Union[PipelineState, str]] = ...) -> None: ...
+
 class PipelineNode(_message.Message):
     __slots__ = ["attr", "id", "inputs", "outputs", "type"]
     class AttrEntry(_message.Message):
@@ -195,4 +235,7 @@ class TensorRTTensorShapeRange(_message.Message):
     def __init__(self, tensor_name: _Optional[str] = ..., dim: _Optional[_Iterable[int]] = ...) -> None: ...
 
 class LogicalPipelineNodeKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = []
+
+class PipelineState(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = []

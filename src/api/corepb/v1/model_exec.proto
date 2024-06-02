@@ -24,6 +24,11 @@ option go_package = "gimletlabs.ai/gimlet/src/api/corepb/v1;corepb";
 import "gogoproto/gogo.proto";
 import "mediapipe/framework/calculator.proto";
 import "src/common/typespb/uuid.proto";
+import "google/protobuf/timestamp.proto";
+
+/****************************************************************************
+ * Logical Pipeline definitions.
+ *****************************************************************************/
 
 // All supported logical pipeline nodes.
 enum LogicalPipelineNodeKind {
@@ -106,6 +111,55 @@ message LogicalPipeline {
   // The nodes in the logical pipeline.
   repeated Node nodes = 2;
 }
+
+/****************************************************************************
+ * Pipeline deployment definitions.
+ *****************************************************************************/
+
+enum PipelineState {
+  PIPELINE_STATE_UNKNOWN = 0;
+  PIPELINE_STATE_PENDING = 1;
+  PIPELINE_STATE_READY = 2;
+  PIPELINE_STATE_RUNNING = 3;
+  PIPELINE_STATE_TERMINATING = 4;
+  PIPELINE_STATE_TERMINATED = 5;
+  PIPELINE_STATE_FAILED = 6;
+}
+
+// A pipeline deployment represents the instance of a logical pipeline deployed to a fleet.
+message PipelineDeployment {
+  // The ID of the deployment.
+  gml.types.UUID id = 1;
+  // The ID of the logical pipeline this deployment is for.
+  gml.types.UUID logical_pipeline_id = 2;
+  // The ID of the fleet this pipeline should be deployed to.
+  gml.types.UUID fleet_id = 3;
+  // The time this deployment was created.
+  google.protobuf.Timestamp created_at = 4;
+  // The time this deployment was last updated.
+  google.protobuf.Timestamp updated_at = 5;
+  // The resource version of the deployment.
+  int64 resource_version = 6;
+  PipelineDeploymentSpec spec = 7;
+  PipelineDeploymentState state = 8;
+}
+
+// The spec represents the desired state of the deployment.
+message PipelineDeploymentSpec {
+  // The state that we would like the deployment to be in.
+  PipelineState state = 1;
+}
+
+// The state represents the actual state of the deployment.
+message PipelineDeploymentState {
+  // The state that the deployment is currently in.
+  PipelineState state = 2;
+}
+
+/****************************************************************************
+ * Older pipeline definitions. We should clean these up as we refactor our
+ * logical pipelines/graph representation.
+ *****************************************************************************/
 
 // Pipeline is a high-level representation of an execution graph.
 message Pipeline {
