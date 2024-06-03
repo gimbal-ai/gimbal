@@ -89,7 +89,6 @@ function device_type() {
 GML_CACHE_DIR=${GML_CACHE_DIR:-"$HOME/.cache/gml"}
 
 common_docker_flags=(
-  --rm
   --network=host
   -v "$GML_CACHE_DIR:/gml"
   -v /usr/lib:/host_lib
@@ -183,13 +182,33 @@ IMAGE_TAG=${GML_IMAGE_TAG:-${DEFAULT_IMAGE_TAG}}
 IMAGE_REPO=${GML_IMAGE_REPO:-${DEFAULT_IMAGE_REPO}}
 echo "Running container: $IMAGE_REPO:$IMAGE_TAG"
 
-docker run \
+container_id=$(docker run \
   "${common_docker_flags[@]}" \
   "${extra_docker_flags[@]}" \
   "$IMAGE_REPO:$IMAGE_TAG" \
-  "${cmdline_opts[@]}"
+  "${cmdline_opts[@]}")
 
-cat <<EOS
+function success() {
+  cat <<EOS
 ${tty_bold}${tty_green}Gimlet has been successfully installed!${tty_reset}
 Please visit ${tty_underline}https://${USE_CONTROLPLANE_ADDR}${tty_reset} to deploy your first model.
 EOS
+  exit 0
+}
+
+start_time=$(date +%s)
+while true; do
+  curr_time=$(date +%s)
+  if docker logs "$container_id" 2>&1 | grep -q "Starting GRPC Bridge"; then
+    success
+  fi
+  if [[ $(docker container inspect -f '{{.State.Running}}' "${container_id}") == "false" ]]; then
+    docker logs "$container_id"
+    fatal "Gimlet Edge Module failed to start."
+  fi
+  if [[ $((curr_time - start_time)) -gt 120 ]]; then
+    docker logs "$container_id"
+    fatal "Timed out waiting for Gimlet Edge Module to start."
+  fi
+  sleep 5
+done
