@@ -49,6 +49,20 @@ message Node {
   LogicalPipelineNodeKind kind = 2;
   repeated NodeInput inputs = 3;
   repeated NodeOutput outputs = 4;
+  repeated NodeInitArgs init_args = 5;
+}
+
+// Node Init args are constants that are used in node init.
+message NodeInitArgs {
+  // Name of the init arg.
+  string name = 1;
+  // Value for the arg. This also defines the type we expect the param to be.
+  oneof default_value {
+    string string_value = 2;
+    int64 int64_value = 3;
+    double double_value = 4;
+    bool bool_value = 5;
+  }
 }
 
 // Input values for a node.

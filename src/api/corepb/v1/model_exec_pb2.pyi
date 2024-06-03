@@ -80,16 +80,32 @@ class ModelSpec(_message.Message):
     def __init__(self, name: _Optional[str] = ..., onnx_blob_key: _Optional[str] = ..., onnx_file: _Optional[_Union[FileResource, _Mapping]] = ..., runtime: _Optional[str] = ..., tensorrt_spec: _Optional[_Union[TensorRTModelSpec, _Mapping]] = ..., openvino_spec: _Optional[_Union[OpenVINOModelSpec, _Mapping]] = ...) -> None: ...
 
 class Node(_message.Message):
-    __slots__ = ["inputs", "kind", "name", "outputs"]
+    __slots__ = ["init_args", "inputs", "kind", "name", "outputs"]
+    INIT_ARGS_FIELD_NUMBER: _ClassVar[int]
     INPUTS_FIELD_NUMBER: _ClassVar[int]
     KIND_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     OUTPUTS_FIELD_NUMBER: _ClassVar[int]
+    init_args: _containers.RepeatedCompositeFieldContainer[NodeInitArgs]
     inputs: _containers.RepeatedCompositeFieldContainer[NodeInput]
     kind: LogicalPipelineNodeKind
     name: str
     outputs: _containers.RepeatedCompositeFieldContainer[NodeOutput]
-    def __init__(self, name: _Optional[str] = ..., kind: _Optional[_Union[LogicalPipelineNodeKind, str]] = ..., inputs: _Optional[_Iterable[_Union[NodeInput, _Mapping]]] = ..., outputs: _Optional[_Iterable[_Union[NodeOutput, _Mapping]]] = ...) -> None: ...
+    def __init__(self, name: _Optional[str] = ..., kind: _Optional[_Union[LogicalPipelineNodeKind, str]] = ..., inputs: _Optional[_Iterable[_Union[NodeInput, _Mapping]]] = ..., outputs: _Optional[_Iterable[_Union[NodeOutput, _Mapping]]] = ..., init_args: _Optional[_Iterable[_Union[NodeInitArgs, _Mapping]]] = ...) -> None: ...
+
+class NodeInitArgs(_message.Message):
+    __slots__ = ["bool_value", "double_value", "int64_value", "name", "string_value"]
+    BOOL_VALUE_FIELD_NUMBER: _ClassVar[int]
+    DOUBLE_VALUE_FIELD_NUMBER: _ClassVar[int]
+    INT64_VALUE_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    STRING_VALUE_FIELD_NUMBER: _ClassVar[int]
+    bool_value: bool
+    double_value: float
+    int64_value: int
+    name: str
+    string_value: str
+    def __init__(self, name: _Optional[str] = ..., string_value: _Optional[str] = ..., int64_value: _Optional[int] = ..., double_value: _Optional[float] = ..., bool_value: bool = ...) -> None: ...
 
 class NodeInput(_message.Message):
     __slots__ = ["model_value", "name", "node_output_value", "param_value"]
