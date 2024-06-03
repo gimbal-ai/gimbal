@@ -143,17 +143,17 @@ enum PipelineState {
 // A pipeline deployment represents the instance of a logical pipeline deployed to a fleet.
 message PipelineDeployment {
   // The ID of the deployment.
-  gml.types.UUID id = 1;
+  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
   // The ID of the logical pipeline this deployment is for.
-  gml.types.UUID logical_pipeline_id = 2;
+  gml.types.UUID logical_pipeline_id = 2 [ (gogoproto.customname) = "LogicalPipelineID" ];
   // The ID of the fleet this pipeline should be deployed to.
-  gml.types.UUID fleet_id = 3;
+  gml.types.UUID fleet_id = 3 [ (gogoproto.customname) = "FleetID" ];
   // The time this deployment was created.
   google.protobuf.Timestamp created_at = 4;
   // The time this deployment was last updated.
   google.protobuf.Timestamp updated_at = 5;
-  // The resource version of the deployment.
-  int64 resource_version = 6;
+  // The version of the deployment.
+  int64 version = 6;
   PipelineDeploymentSpec spec = 7;
   PipelineDeploymentState state = 8;
 }
@@ -168,6 +168,39 @@ message PipelineDeploymentSpec {
 message PipelineDeploymentState {
   // The state that the deployment is currently in.
   PipelineState state = 2;
+}
+
+// A physical pipeline represents the deployment of a pipeline to a specific device.
+message PhysicalPipeline {
+  // The ID of the physical pipeline.
+  gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
+  ;
+  // The ID of the pipeline deployment this physical pipeline is for.
+  gml.types.UUID pipeline_deployment_id = 2 [ (gogoproto.customname) = "PipelineDeploymentID" ];
+  // The ID of the device this physical pipeline is for.
+  gml.types.UUID device_id = 3 [ (gogoproto.customname) = "DeviceID" ];
+  // The time this physical pipeline was created.
+  google.protobuf.Timestamp created_at = 4;
+  // The time this physical pipeline was last updated.
+  google.protobuf.Timestamp updated_at = 5;
+  // The version of the physical pipeline.
+  int64 version = 6;
+  // The spec of the deployment.
+  PhysicalPipelineSpec spec = 7;
+  // The state of the deployment.
+  PhysicalPipelineStatus status = 8;
+}
+
+// The spec represents the desired state of the deployment.
+message PhysicalPipelineSpec {
+  // The state that we would like the pipeline to be in.
+  PipelineState state = 1;
+}
+
+// The state represents the actual state of the deployment.
+message PhysicalPipelineStatus {
+  // The state that the pipeline is currently in.
+  PipelineState state = 1;
 }
 
 /****************************************************************************

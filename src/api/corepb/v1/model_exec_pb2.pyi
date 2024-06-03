@@ -153,6 +153,38 @@ class OpenVINOModelSpec(_message.Message):
     input_shape: _containers.RepeatedCompositeFieldContainer[OpenVINOModelSpec.TensorShape]
     def __init__(self, input_shape: _Optional[_Iterable[_Union[OpenVINOModelSpec.TensorShape, _Mapping]]] = ...) -> None: ...
 
+class PhysicalPipeline(_message.Message):
+    __slots__ = ["created_at", "device_id", "id", "pipeline_deployment_id", "spec", "status", "updated_at", "version"]
+    CREATED_AT_FIELD_NUMBER: _ClassVar[int]
+    DEVICE_ID_FIELD_NUMBER: _ClassVar[int]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    PIPELINE_DEPLOYMENT_ID_FIELD_NUMBER: _ClassVar[int]
+    SPEC_FIELD_NUMBER: _ClassVar[int]
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
+    VERSION_FIELD_NUMBER: _ClassVar[int]
+    created_at: _timestamp_pb2.Timestamp
+    device_id: _uuid_pb2.UUID
+    id: _uuid_pb2.UUID
+    pipeline_deployment_id: _uuid_pb2.UUID
+    spec: PhysicalPipelineSpec
+    status: PhysicalPipelineStatus
+    updated_at: _timestamp_pb2.Timestamp
+    version: int
+    def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., pipeline_deployment_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., device_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., version: _Optional[int] = ..., spec: _Optional[_Union[PhysicalPipelineSpec, _Mapping]] = ..., status: _Optional[_Union[PhysicalPipelineStatus, _Mapping]] = ...) -> None: ...
+
+class PhysicalPipelineSpec(_message.Message):
+    __slots__ = ["state"]
+    STATE_FIELD_NUMBER: _ClassVar[int]
+    state: PipelineState
+    def __init__(self, state: _Optional[_Union[PipelineState, str]] = ...) -> None: ...
+
+class PhysicalPipelineStatus(_message.Message):
+    __slots__ = ["state"]
+    STATE_FIELD_NUMBER: _ClassVar[int]
+    state: PipelineState
+    def __init__(self, state: _Optional[_Union[PipelineState, str]] = ...) -> None: ...
+
 class Pipeline(_message.Message):
     __slots__ = ["nodes"]
     NODES_FIELD_NUMBER: _ClassVar[int]
@@ -160,24 +192,24 @@ class Pipeline(_message.Message):
     def __init__(self, nodes: _Optional[_Iterable[_Union[PipelineNode, _Mapping]]] = ...) -> None: ...
 
 class PipelineDeployment(_message.Message):
-    __slots__ = ["created_at", "fleet_id", "id", "logical_pipeline_id", "resource_version", "spec", "state", "updated_at"]
+    __slots__ = ["created_at", "fleet_id", "id", "logical_pipeline_id", "spec", "state", "updated_at", "version"]
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     FLEET_ID_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     LOGICAL_PIPELINE_ID_FIELD_NUMBER: _ClassVar[int]
-    RESOURCE_VERSION_FIELD_NUMBER: _ClassVar[int]
     SPEC_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
+    VERSION_FIELD_NUMBER: _ClassVar[int]
     created_at: _timestamp_pb2.Timestamp
     fleet_id: _uuid_pb2.UUID
     id: _uuid_pb2.UUID
     logical_pipeline_id: _uuid_pb2.UUID
-    resource_version: int
     spec: PipelineDeploymentSpec
     state: PipelineDeploymentState
     updated_at: _timestamp_pb2.Timestamp
-    def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., logical_pipeline_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., fleet_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., resource_version: _Optional[int] = ..., spec: _Optional[_Union[PipelineDeploymentSpec, _Mapping]] = ..., state: _Optional[_Union[PipelineDeploymentState, _Mapping]] = ...) -> None: ...
+    version: int
+    def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., logical_pipeline_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., fleet_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., version: _Optional[int] = ..., spec: _Optional[_Union[PipelineDeploymentSpec, _Mapping]] = ..., state: _Optional[_Union[PipelineDeploymentState, _Mapping]] = ...) -> None: ...
 
 class PipelineDeploymentSpec(_message.Message):
     __slots__ = ["state"]
