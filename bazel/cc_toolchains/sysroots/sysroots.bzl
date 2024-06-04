@@ -72,6 +72,8 @@ _DEBIAN12_TEST_PKGS = [
     # Useful for "debug" containers that want to do basic file manipulation
     "debian12_coreutils",
     "debian12_tar",
+    # Include python in the test sysroot.
+    "debian12_python3.11",
 ]
 
 def _debian12_sysroots():

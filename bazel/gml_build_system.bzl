@@ -340,11 +340,6 @@ def _add_test_runner(kwargs):
         kwargs["data"] = []
     kwargs["data"].append("//bazel/test_runners:test_runner_dep")
 
-def _add_no_sysroot(kwargs):
-    if "target_compatible_with" not in kwargs:
-        kwargs["target_compatible_with"] = []
-    kwargs["target_compatible_with"] = kwargs["target_compatible_with"] + _no_sysroot()
-
 def _no_sysroot():
     return select({
         "@gml//bazel/cc_toolchains:libc_version_glibc_host": [],
@@ -389,7 +384,6 @@ def gml_go_binary(**kwargs):
 
 def gml_py_test(**kwargs):
     _add_test_runner(kwargs)
-    _add_no_sysroot(kwargs)
     py_test(**kwargs)
 
 def gml_sh_test(**kwargs):

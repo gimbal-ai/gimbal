@@ -205,3 +205,6 @@ common --experimental_repo_remote_exec
 common --define OPENCV=source
 build --copt -DMESA_EGL_NO_X11_HEADERS
 build --copt -DEGL_NO_X11
+
+# This avoids 'Argument list too long' errors with `py_test`/`py_binary`.
+common --noexperimental_python_import_all_repositories
