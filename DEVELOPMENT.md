@@ -80,7 +80,7 @@ We currently only support running control plane in GKE (support for Minikube com
 1. Add the dev cluster to your Kubeconfig:
 
     ```sh
-    gcloud container clusters get-credentials dev-cluster --zone us-west1-a --project gimlet-dev-0
+    gcloud container clusters get-credentials shared-dev-cluster --zone us-west1-a --project gimlet-dev-infra-0
     ```
 
 1. Set the default repo for skaffold. This specifies the registry it should push images to.
