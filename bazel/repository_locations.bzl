@@ -224,9 +224,9 @@ REPOSITORY_LOCATIONS = dict(
         manual_license_name = "llvm/llvm-project",
     ),
     org_tensorflow = dict(
-        sha256 = "bb214c50587bb1b09cba4450af9479375cba04a71053859b9f9189f890b7d04a",
-        strip_prefix = "tensorflow-ae064a72f338926ccf437f8e16d634c6ddf61922",
-        urls = ["https://github.com/gimletlabs/tensorflow/archive/ae064a72f338926ccf437f8e16d634c6ddf61922.tar.gz"],
+        sha256 = "b0dac36faf6d8da9dbadccb6c058716214562e1b100fbc829d96f89fd5a7d99a",
+        strip_prefix = "tensorflow-49e79ddefccfbce482bd85db1628f8fc50e5f912",
+        urls = ["https://github.com/gimletlabs/tensorflow/archive/49e79ddefccfbce482bd85db1628f8fc50e5f912.tar.gz"],
     ),
     unix_cc_toolchain_config = dict(
         sha256 = "2c1d60ef4d586909f138c28409780e102e2ebd619e7d462ded26dce43a8f9ffb",
@@ -280,9 +280,9 @@ REPOSITORY_LOCATIONS = dict(
         urls = ["https://github.com/pytorch/cpuinfo/archive/87d8234510367db49a65535021af5e1838a65ac2.tar.gz"],
     ),
     XNNPACK = dict(
-        sha256 = "104d3ef9efa30e97bf036194b43b5d4404d8522b960634424aa98ac4116b5a7d",
-        strip_prefix = "XNNPACK-b9d4073a6913891ce9cbd8965c8d506075d2a45a",
-        urls = ["https://github.com/google/XNNPACK/archive/b9d4073a6913891ce9cbd8965c8d506075d2a45a.tar.gz"],
+        sha256 = "4c85e07f3bc5602266e490ff9cea4f29daef9865ef57cf561d3f32fbf9ee51fc",
+        strip_prefix = "XNNPACK-7f3e8aa632ab976b8a195c8d3d17e2f5831dde0e",
+        urls = ["https://github.com/google/XNNPACK/archive/7f3e8aa632ab976b8a195c8d3d17e2f5831dde0e.tar.gz"],
     ),
     # Pull in a newer version of bazel toolchains for tensorflow.
     bazel_toolchains = dict(

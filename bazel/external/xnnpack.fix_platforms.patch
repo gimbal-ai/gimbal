@@ -1,8 +1,8 @@
-diff --git a/BUILD.bazel b/BUILD.bazel
-index 9719e8f87..5ba726b40 100644
---- a/BUILD.bazel
-+++ b/BUILD.bazel
-@@ -11490,17 +11490,26 @@ config_setting(
+diff --git a/build_config/BUILD.bazel b/build_config/BUILD.bazel
+index 53525a19b..014487537 100644
+--- a/build_config/BUILD.bazel
++++ b/build_config/BUILD.bazel
+@@ -16,17 +16,26 @@ package(
  
  config_setting(
      name = "linux_arm64",
