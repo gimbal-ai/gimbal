@@ -1,0 +1,50 @@
+diff --git a/bazel/grpc_build_system.bzl b/bazel/grpc_build_system.bzl
+index fdfbf94ab4..89999cfd05 100644
+--- a/bazel/grpc_build_system.bzl
++++ b/bazel/grpc_build_system.bzl
+@@ -57,7 +57,9 @@ def if_windows(a):
+ def _get_external_deps(external_deps):
+     ret = []
+     for dep in external_deps:
+-        if dep == "address_sorting":
++        if dep == "re2":
++            ret.append("@com_googlesource_code_re2//:re2")
++        elif dep == "address_sorting":
+             ret.append("//third_party/address_sorting")
+         elif dep == "xxhash":
+             ret.append("//third_party/xxhash")
+diff --git a/bazel/grpc_deps.bzl b/bazel/grpc_deps.bzl
+index dceeace99b..93be1c0a60 100644
+--- a/bazel/grpc_deps.bzl
++++ b/bazel/grpc_deps.bzl
+@@ -105,11 +105,6 @@ def grpc_deps():
+         actual = "@com_github_google_benchmark//:benchmark",
+     )
+ 
+-    native.bind(
+-        name = "re2",
+-        actual = "@com_googlesource_code_re2//:re2",
+-    )
+-
+     native.bind(
+         name = "grpc_cpp_plugin",
+         actual = "@com_github_grpc_grpc//src/compiler:grpc_cpp_plugin",
+@@ -272,18 +267,6 @@ def grpc_deps():
+             ],
+         )
+ 
+-    if "com_googlesource_code_re2" not in native.existing_rules():
+-        http_archive(
+-            name = "com_googlesource_code_re2",
+-            sha256 = "319a58a58d8af295db97dfeecc4e250179c5966beaa2d842a82f0a013b6a239b",
+-            # Release 2021-09-01
+-            strip_prefix = "re2-8e08f47b11b413302749c0d8b17a1c94777495d5",
+-            urls = [
+-                "https://storage.googleapis.com/grpc-bazel-mirror/github.com/google/re2/archive/8e08f47b11b413302749c0d8b17a1c94777495d5.tar.gz",
+-                "https://github.com/google/re2/archive/8e08f47b11b413302749c0d8b17a1c94777495d5.tar.gz",
+-            ],
+-        )
+-
+     if "com_github_cares_cares" not in native.existing_rules():
+         http_archive(
+             name = "com_github_cares_cares",

@@ -133,7 +133,18 @@ def _cc_deps():
 
     # Dependencies with native bazel build files.
     _bazel_repo("com_google_protobuf", patches = ["//bazel/external:protobuf_gogo_hack.patch", "//bazel/external:protobuf_warning.patch"], patch_args = ["-p1"])
-    _bazel_repo("com_github_grpc_grpc", patches = ["//bazel/external:grpc.patch"], patch_args = ["-p1"])
+    _bazel_repo(
+        "com_github_grpc_grpc",
+        patches = [
+            # Ensure that grpc uses the version of re2 imported in MODULE.bazel.
+            "//bazel/external:grpc.re2.patch",
+            "//bazel/external:grpc.patch",
+        ],
+        patch_args = ["-p1"],
+        repo_mapping = {
+            "@com_googlesource_code_re2": "@re2~2023-11-01",
+        },
+    )
     _bazel_repo("boringssl")
 
     _bazel_repo("com_github_gflags_gflags")
