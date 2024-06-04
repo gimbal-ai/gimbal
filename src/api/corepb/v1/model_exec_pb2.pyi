@@ -206,13 +206,13 @@ class Pipeline(_message.Message):
     def __init__(self, nodes: _Optional[_Iterable[_Union[PipelineNode, _Mapping]]] = ...) -> None: ...
 
 class PipelineDeployment(_message.Message):
-    __slots__ = ["created_at", "fleet_id", "id", "logical_pipeline_id", "spec", "state", "updated_at", "version"]
+    __slots__ = ["created_at", "fleet_id", "id", "logical_pipeline_id", "spec", "status", "updated_at", "version"]
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     FLEET_ID_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     LOGICAL_PIPELINE_ID_FIELD_NUMBER: _ClassVar[int]
     SPEC_FIELD_NUMBER: _ClassVar[int]
-    STATE_FIELD_NUMBER: _ClassVar[int]
+    STATUS_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
     VERSION_FIELD_NUMBER: _ClassVar[int]
     created_at: _timestamp_pb2.Timestamp
@@ -220,10 +220,10 @@ class PipelineDeployment(_message.Message):
     id: _uuid_pb2.UUID
     logical_pipeline_id: _uuid_pb2.UUID
     spec: PipelineDeploymentSpec
-    state: PipelineDeploymentState
+    status: PipelineDeploymentStatus
     updated_at: _timestamp_pb2.Timestamp
     version: int
-    def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., logical_pipeline_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., fleet_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., version: _Optional[int] = ..., spec: _Optional[_Union[PipelineDeploymentSpec, _Mapping]] = ..., state: _Optional[_Union[PipelineDeploymentState, _Mapping]] = ...) -> None: ...
+    def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., logical_pipeline_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., fleet_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., version: _Optional[int] = ..., spec: _Optional[_Union[PipelineDeploymentSpec, _Mapping]] = ..., status: _Optional[_Union[PipelineDeploymentStatus, _Mapping]] = ...) -> None: ...
 
 class PipelineDeploymentSpec(_message.Message):
     __slots__ = ["state"]
@@ -231,7 +231,7 @@ class PipelineDeploymentSpec(_message.Message):
     state: PipelineState
     def __init__(self, state: _Optional[_Union[PipelineState, str]] = ...) -> None: ...
 
-class PipelineDeploymentState(_message.Message):
+class PipelineDeploymentStatus(_message.Message):
     __slots__ = ["state"]
     STATE_FIELD_NUMBER: _ClassVar[int]
     state: PipelineState

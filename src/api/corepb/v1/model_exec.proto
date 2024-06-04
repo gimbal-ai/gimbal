@@ -169,7 +169,7 @@ message PipelineDeployment {
   // The version of the deployment.
   int64 version = 6;
   PipelineDeploymentSpec spec = 7;
-  PipelineDeploymentState state = 8;
+  PipelineDeploymentStatus status = 8;
 }
 
 // The spec represents the desired state of the deployment.
@@ -179,9 +179,9 @@ message PipelineDeploymentSpec {
 }
 
 // The state represents the actual state of the deployment.
-message PipelineDeploymentState {
+message PipelineDeploymentStatus {
   // The state that the deployment is currently in.
-  PipelineState state = 2;
+  PipelineState state = 1;
 }
 
 // A physical pipeline represents the deployment of a pipeline to a specific device.
