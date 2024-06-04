@@ -59,7 +59,7 @@ cmake(
         "ENABLE_IR_V7_READER": "OFF",
         "ENABLE_MULTI": "ON",
         "ENABLE_NCC_STYLE": "OFF",
-        "ENABLE_OV_IR_FRONTEND": "OFF",
+        "ENABLE_OV_IR_FRONTEND": "ON",
 
         # Front-ends.
         "ENABLE_OV_ONNX_FRONTEND": "ON",
@@ -129,9 +129,9 @@ cmake(
         "libopenvino_template_plugin.a",
         "libopenvino_util.a",
         "libinterpreter_backend.a",
+        "libopenvino_ir_frontend.a",
         # Some interesting libraries that are controlled by build options.
         #        "libopenvino_gapi_preproc.a",
-        #        "libopenvino_ir_frontend.a",
         #        "libopenvino_onednn_cpu.a",
     ] + select({
         "@platforms//cpu:aarch64": [
