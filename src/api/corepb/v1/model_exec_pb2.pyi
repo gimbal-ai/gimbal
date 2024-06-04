@@ -55,6 +55,12 @@ class GlobalParam(_message.Message):
     string_value: str
     def __init__(self, name: _Optional[str] = ..., string_value: _Optional[str] = ..., int64_value: _Optional[int] = ..., double_value: _Optional[float] = ..., bool_value: bool = ...) -> None: ...
 
+class Lambda(_message.Message):
+    __slots__ = ["nodes"]
+    NODES_FIELD_NUMBER: _ClassVar[int]
+    nodes: _containers.RepeatedCompositeFieldContainer[Node]
+    def __init__(self, nodes: _Optional[_Iterable[_Union[Node, _Mapping]]] = ...) -> None: ...
+
 class LogicalPipeline(_message.Message):
     __slots__ = ["global_params", "nodes"]
     GLOBAL_PARAMS_FIELD_NUMBER: _ClassVar[int]
@@ -94,18 +100,20 @@ class Node(_message.Message):
     def __init__(self, name: _Optional[str] = ..., kind: _Optional[_Union[LogicalPipelineNodeKind, str]] = ..., inputs: _Optional[_Iterable[_Union[NodeInput, _Mapping]]] = ..., outputs: _Optional[_Iterable[_Union[NodeOutput, _Mapping]]] = ..., init_args: _Optional[_Iterable[_Union[NodeInitArgs, _Mapping]]] = ...) -> None: ...
 
 class NodeInitArgs(_message.Message):
-    __slots__ = ["bool_value", "double_value", "int64_value", "name", "string_value"]
+    __slots__ = ["bool_value", "double_value", "int64_value", "lambda_value", "name", "string_value"]
     BOOL_VALUE_FIELD_NUMBER: _ClassVar[int]
     DOUBLE_VALUE_FIELD_NUMBER: _ClassVar[int]
     INT64_VALUE_FIELD_NUMBER: _ClassVar[int]
+    LAMBDA_VALUE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     STRING_VALUE_FIELD_NUMBER: _ClassVar[int]
     bool_value: bool
     double_value: float
     int64_value: int
+    lambda_value: Lambda
     name: str
     string_value: str
-    def __init__(self, name: _Optional[str] = ..., string_value: _Optional[str] = ..., int64_value: _Optional[int] = ..., double_value: _Optional[float] = ..., bool_value: bool = ...) -> None: ...
+    def __init__(self, name: _Optional[str] = ..., string_value: _Optional[str] = ..., int64_value: _Optional[int] = ..., double_value: _Optional[float] = ..., bool_value: bool = ..., lambda_value: _Optional[_Union[Lambda, _Mapping]] = ...) -> None: ...
 
 class NodeInput(_message.Message):
     __slots__ = ["model_value", "name", "node_output_value", "param_value"]

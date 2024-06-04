@@ -62,7 +62,12 @@ message NodeInitArgs {
     int64 int64_value = 3;
     double double_value = 4;
     bool bool_value = 5;
+    Lambda lambda_value = 6;
   }
+}
+
+message Lambda {
+  repeated Node nodes = 1;
 }
 
 // Input values for a node.
