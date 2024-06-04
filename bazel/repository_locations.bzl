@@ -374,6 +374,22 @@ REPOSITORY_LOCATIONS = dict(
         strip_prefix = "level-zero-1.16.1",
         urls = ["https://github.com/oneapi-src/level-zero/archive/refs/tags/v1.16.1.tar.gz"],
     ),
+    com_github_llvm_llvm_project = dict(
+        sha256 = "cb6f82a8413bd518499c3081a5c396f8a140a7c650201c201892cb6ce4f4f397",
+        strip_prefix = "llvm-project-676d3bafc09d0c331a04b813804407334de12917",
+        urls = ["https://github.com/llvm/llvm-project/archive/676d3bafc09d0c331a04b813804407334de12917.tar.gz"],
+        manual_license_name = "llvm/llvm-project",
+    ),
+    llvm_zstd = dict(
+        sha256 = "7c42d56fac126929a6a85dbc73ff1db2411d04f104fae9bdea51305663a83fd0",
+        strip_prefix = "zstd-1.5.2",
+        urls = ["https://github.com/facebook/zstd/releases/download/v1.5.2/zstd-1.5.2.tar.gz"],
+    ),
+    llvm_zlib = dict(
+        sha256 = "e36bb346c00472a1f9ff2a0a4643e590a254be6379da7cddd9daeb9a7f296731",
+        strip_prefix = "zlib-ng-2.0.7",
+        urls = ["https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.0.7.zip"],
+    ),
 )
 
 # To use a local repo for local development, simply add a `local_path` key to the relevant

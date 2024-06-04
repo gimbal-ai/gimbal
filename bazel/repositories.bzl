@@ -24,9 +24,11 @@ load(":repository_locations.bzl", "REPOSITORY_LOCATIONS")
 # Used for external HTTP archives, e.g. cares.
 BUILD_ALL_CONTENT = """filegroup(name = "all", srcs = glob(["**"]), visibility = ["//visibility:public"])"""
 
-def _get_location(name, **kwargs):
+def _get_location(name, kwargs, pop = False):
     if "location_name" in kwargs:
         name = kwargs["location_name"]
+        if pop:
+            kwargs.pop("location_name")
     return REPOSITORY_LOCATIONS[name]
 
 def _http_archive_repo_impl(name, **kwargs):
@@ -40,7 +42,7 @@ def _http_archive_repo_impl(name, **kwargs):
         # wants to override the version. Do nothing.
         return
 
-    location = _get_location(name, **kwargs)
+    location = _get_location(name, kwargs, pop = True)
 
     # HTTP tarball at a given URL. Add a BUILD file if requested.
     http_archive(
@@ -53,7 +55,7 @@ def _http_archive_repo_impl(name, **kwargs):
 
 # For bazel repos do not require customization.
 def _bazel_repo(name, **kwargs):
-    if "local_path" in _get_location(name, **kwargs):
+    if "local_path" in _get_location(name, kwargs):
         _local_repo(name, **kwargs)
     else:
         _http_archive_repo_impl(name, **kwargs)
@@ -72,7 +74,7 @@ def _deb_repo(name, **kwargs):
         # wants to override the version. Do nothing.
         return
 
-    location = _get_location(name, **kwargs)
+    location = _get_location(name, kwargs, pop = True)
 
     deb_archive(
         name = name,
@@ -94,7 +96,7 @@ def _local_repo(name, **kwargs):  # buildifier: disable=unused-variable
         # wants to override the version. Do nothing.
         return
 
-    location = _get_location(name, **kwargs)
+    location = _get_location(name, kwargs, pop = True)
 
     native.new_local_repository(
         name = name,
@@ -226,6 +228,12 @@ def _cc_deps():
 
     _bazel_repo("com_github_oneapi_level_zero", build_file = "//bazel/external:level_zero.BUILD")
 
+    _bazel_repo(
+        "llvm-raw",
+        location_name = "com_github_llvm_llvm_project",
+        build_file_content = "# empty",
+    )
+
 def _list_gml_deps(name):
     modules = dict()
     for _, repo_config in REPOSITORY_LOCATIONS.items():
@@ -260,6 +268,11 @@ def _gml_deps():
     _com_llvm_lib()
     _cc_deps()
 
+def _llvm_deps():
+    _bazel_repo("llvm_zstd", build_file = "@llvm-raw//utils/bazel/third_party_build:zstd.BUILD")
+    _bazel_repo("llvm_zlib", build_file = "@llvm-raw//utils/bazel/third_party_build:zlib-ng.BUILD")
+
 list_gml_deps = _list_gml_deps
 gml_deps = _gml_deps
 gml_cc_toolchain_deps = _gml_cc_toolchain_deps
+llvm_deps = _llvm_deps

@@ -4,7 +4,7 @@ load("//:workspace.bzl", "check_min_bazel_version")
 
 check_min_bazel_version("6.3.2")
 
-load("//bazel:repositories.bzl", "gml_cc_toolchain_deps", "gml_deps")
+load("//bazel:repositories.bzl", "gml_cc_toolchain_deps", "gml_deps", "llvm_deps")
 
 gml_cc_toolchain_deps()
 
@@ -21,6 +21,8 @@ load("//bazel/cc_toolchains:toolchains.bzl", "gml_cc_toolchains")
 gml_cc_toolchains()
 
 gml_deps()
+
+llvm_deps()
 
 load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
 
@@ -72,6 +74,15 @@ load("@build_stack_rules_proto//deps:protobuf_core_deps.bzl", "protobuf_core_dep
 protobuf_core_deps()
 
 register_toolchains("@build_stack_rules_proto//toolchain:standard")
+
+load("@llvm-raw//utils/bazel:configure.bzl", "llvm_configure")
+
+llvm_configure(
+    name = "llvm-project",
+    repo_mapping = {
+        "@python_runtime": "@python",
+    },
+)
 
 # mediapipe dependencies
 load("@org_tensorflow//tensorflow:workspace3.bzl", "tf_workspace3")
