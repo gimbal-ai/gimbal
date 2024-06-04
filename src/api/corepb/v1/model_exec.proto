@@ -33,13 +33,22 @@ import "google/protobuf/timestamp.proto";
 // All supported logical pipeline nodes.
 enum LogicalPipelineNodeKind {
   LOGICAL_PIPELINE_NODE_KIND_UNKNOWN = 0;
+  // Declares vars that are inputs to the graph (if any).
+  LOGICAL_PIPELINE_NODE_KIND_INPUT = 1;
+  // Declares vars that are output from the graph (if any).
+  LOGICAL_PIPELINE_NODE_KIND_OUTPUT = 2;
   // Source nodes
-  LOGICAL_PIPELINE_NODE_KIND_CAMERA_SOURCE = 1;
+  LOGICAL_PIPELINE_NODE_KIND_CAMERA_SOURCE = 10;
   // Model nodes
-  LOGICAL_PIPELINE_NODE_KIND_DETECTION_MODEL = 1000;
+  LOGICAL_PIPELINE_NODE_KIND_DETECT = 1000;
+  LOGICAL_PIPELINE_NODE_KIND_CLASSIFY = 1001;
+  // Processing nodes
+  LOGICAL_PIPELINE_NODE_KIND_FOR_EACH_ROI = 1503;
   // Sink nodes
   LOGICAL_PIPELINE_NODE_KIND_VIDEO_STREAM_SINK = 2000;
   LOGICAL_PIPELINE_NODE_KIND_DETECTIONS_METRICS_SINK = 2001;
+  LOGICAL_PIPELINE_NODE_KIND_LATENCY_METRICS_SINK = 2002;
+  LOGICAL_PIPELINE_NODE_KIND_FRAME_METRICS_SINK = 2003;
 }
 
 // A node in a logical pipeline graph.
