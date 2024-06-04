@@ -24,6 +24,11 @@ load(":repository_locations.bzl", "REPOSITORY_LOCATIONS")
 # Used for external HTTP archives, e.g. cares.
 BUILD_ALL_CONTENT = """filegroup(name = "all", srcs = glob(["**"]), visibility = ["//visibility:public"])"""
 
+def _get_location(name, **kwargs):
+    if "location_name" in kwargs:
+        name = kwargs["location_name"]
+    return REPOSITORY_LOCATIONS[name]
+
 def _http_archive_repo_impl(name, **kwargs):
     # `existing_rule_keys` contains the names of repositories that have already
     # been defined in the Bazel workspace. By skipping repos with existing keys,
@@ -35,7 +40,7 @@ def _http_archive_repo_impl(name, **kwargs):
         # wants to override the version. Do nothing.
         return
 
-    location = REPOSITORY_LOCATIONS[name]
+    location = _get_location(name, **kwargs)
 
     # HTTP tarball at a given URL. Add a BUILD file if requested.
     http_archive(
@@ -48,7 +53,7 @@ def _http_archive_repo_impl(name, **kwargs):
 
 # For bazel repos do not require customization.
 def _bazel_repo(name, **kwargs):
-    if "local_path" in REPOSITORY_LOCATIONS[name]:
+    if "local_path" in _get_location(name, **kwargs):
         _local_repo(name, **kwargs)
     else:
         _http_archive_repo_impl(name, **kwargs)
@@ -67,7 +72,7 @@ def _deb_repo(name, **kwargs):
         # wants to override the version. Do nothing.
         return
 
-    location = REPOSITORY_LOCATIONS[name]
+    location = _get_location(name, **kwargs)
 
     deb_archive(
         name = name,
@@ -89,7 +94,7 @@ def _local_repo(name, **kwargs):  # buildifier: disable=unused-variable
         # wants to override the version. Do nothing.
         return
 
-    location = REPOSITORY_LOCATIONS[name]
+    location = _get_location(name, **kwargs)
 
     native.new_local_repository(
         name = name,
