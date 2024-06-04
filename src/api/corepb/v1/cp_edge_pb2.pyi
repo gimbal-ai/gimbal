@@ -198,6 +198,26 @@ class FileTransferResponse(_message.Message):
     status: _status_pb2.Status
     def __init__(self, status: _Optional[_Union[_status_pb2.Status, _Mapping]] = ..., chunk: _Optional[_Union[FileTransferResponse.FileChunk, _Mapping]] = ..., file_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
 
+class PhysicalPipelineSpecUpdate(_message.Message):
+    __slots__ = ["physical_pipeline_id", "spec", "version"]
+    PHYSICAL_PIPELINE_ID_FIELD_NUMBER: _ClassVar[int]
+    SPEC_FIELD_NUMBER: _ClassVar[int]
+    VERSION_FIELD_NUMBER: _ClassVar[int]
+    physical_pipeline_id: _uuid_pb2.UUID
+    spec: _model_exec_pb2.PhysicalPipelineSpec
+    version: int
+    def __init__(self, physical_pipeline_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., version: _Optional[int] = ..., spec: _Optional[_Union[_model_exec_pb2.PhysicalPipelineSpec, _Mapping]] = ...) -> None: ...
+
+class PhysicalPipelineStatusUpdate(_message.Message):
+    __slots__ = ["physical_pipeline_id", "status", "version"]
+    PHYSICAL_PIPELINE_ID_FIELD_NUMBER: _ClassVar[int]
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    VERSION_FIELD_NUMBER: _ClassVar[int]
+    physical_pipeline_id: _uuid_pb2.UUID
+    status: _model_exec_pb2.PhysicalPipelineStatus
+    version: int
+    def __init__(self, physical_pipeline_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., version: _Optional[int] = ..., status: _Optional[_Union[_model_exec_pb2.PhysicalPipelineStatus, _Mapping]] = ...) -> None: ...
+
 class VideoStreamKeepAlive(_message.Message):
     __slots__ = []
     def __init__(self) -> None: ...

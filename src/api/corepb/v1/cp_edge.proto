@@ -56,6 +56,27 @@ message EdgeHeartbeatAck {
  * These should be sent on the .EXEC topic.
  *****************************************************************************/
 
+// PhysicalPipelineUpdate is a message from the control plane to edge to indicate requested updates
+// to the device's physical pipeline.
+message PhysicalPipelineSpecUpdate {
+  // The ID of the physical pipeline.
+  gml.types.UUID physical_pipeline_id = 1 [ (gogoproto.customname) = "PhysicalPipelineID" ];
+  int64 version = 2;
+  // The spec of the physical pipeline. This will contain the execution graph and other
+  // configurations.
+  gml.internal.api.core.v1.PhysicalPipelineSpec spec = 3;
+}
+
+// PhysicalPipelineUpdate is a message from the edge to control plane to indicate changes with the
+// device's actual state.
+message PhysicalPipelineStatusUpdate {
+  // The ID of the physical pipeline.
+  gml.types.UUID physical_pipeline_id = 1 [ (gogoproto.customname) = "PhysicalPipelineID" ];
+  int64 version = 2;
+  // The status of the physical pipeline on the device.
+  gml.internal.api.core.v1.PhysicalPipelineStatus status = 3;
+}
+
 // CPRunModel is a temporary message sent from the control plane to the edge device  to signal
 // starting of the model/mediapipe graph on the edge. In the future, this will be separated into
 // separate Setup and Run phases.

@@ -67,3 +67,12 @@ message PhysicalPipelineReconciliation {
   // all pipelines.
   bool force_apply = 3;
 }
+
+// PipelineDeploymentReconciliation is triggered whenever there is a change in spec/status of a
+// device or pipeline.
+message PipelineDeploymentReconciliation {
+  // The pipeline deployment that should be reconciled.
+  gml.types.UUID pipeline_deployment_id = 1 [ (gogoproto.customname) = "PipelineDeploymentID" ];
+  // The fleet ID that the pipeline deployment is for.
+  gml.types.UUID fleet_id = 2 [ (gogoproto.customname) = "FleetID" ];
+}

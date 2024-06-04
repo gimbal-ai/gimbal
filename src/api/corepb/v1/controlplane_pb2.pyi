@@ -46,5 +46,13 @@ class PhysicalPipelineReconciliation(_message.Message):
     physical_pipeline_id: _uuid_pb2.UUID
     def __init__(self, device_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., physical_pipeline_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., force_apply: bool = ...) -> None: ...
 
+class PipelineDeploymentReconciliation(_message.Message):
+    __slots__ = ["fleet_id", "pipeline_deployment_id"]
+    FLEET_ID_FIELD_NUMBER: _ClassVar[int]
+    PIPELINE_DEPLOYMENT_ID_FIELD_NUMBER: _ClassVar[int]
+    fleet_id: _uuid_pb2.UUID
+    pipeline_deployment_id: _uuid_pb2.UUID
+    def __init__(self, pipeline_deployment_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., fleet_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
+
 class CPTopic(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = []
