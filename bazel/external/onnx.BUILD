@@ -37,6 +37,7 @@ cmake(
         "ONNX_BUILD_TESTS": "OFF",
         "ONNX_DISABLE_EXCEPTIONS": "ON",
         "ONNX_GEN_PB_TYPE_STUBS": "OFF",
+        "ONNX_ML": "OFF",
         "ONNX_USE_PROTOBUF_SHARED_LIBS": "OFF",
         "Protobuf_FOUND": "TRUE",
         "Protobuf_INCLUDE_DIR": "$$EXT_BUILD_DEPS/include",
@@ -46,6 +47,7 @@ cmake(
         # Use our own protobuf library.
         "Protobuf_USE_STATIC_LIBS": "ON",
     },
+    defines = ["ONNX_NAMESPACE=onnx"],
     lib_source = ":source",
     out_data_dirs = ["lib/cmake"],
     out_static_libs = [
