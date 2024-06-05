@@ -35,8 +35,6 @@ type LogicalPipelineNodeKind int32
 
 const (
 	LOGICAL_PIPELINE_NODE_KIND_UNKNOWN                 LogicalPipelineNodeKind = 0
-	LOGICAL_PIPELINE_NODE_KIND_INPUT                   LogicalPipelineNodeKind = 1
-	LOGICAL_PIPELINE_NODE_KIND_OUTPUT                  LogicalPipelineNodeKind = 2
 	LOGICAL_PIPELINE_NODE_KIND_CAMERA_SOURCE           LogicalPipelineNodeKind = 10
 	LOGICAL_PIPELINE_NODE_KIND_DETECT                  LogicalPipelineNodeKind = 1000
 	LOGICAL_PIPELINE_NODE_KIND_CLASSIFY                LogicalPipelineNodeKind = 1001
@@ -49,8 +47,6 @@ const (
 
 var LogicalPipelineNodeKind_name = map[int32]string{
 	0:    "LOGICAL_PIPELINE_NODE_KIND_UNKNOWN",
-	1:    "LOGICAL_PIPELINE_NODE_KIND_INPUT",
-	2:    "LOGICAL_PIPELINE_NODE_KIND_OUTPUT",
 	10:   "LOGICAL_PIPELINE_NODE_KIND_CAMERA_SOURCE",
 	1000: "LOGICAL_PIPELINE_NODE_KIND_DETECT",
 	1001: "LOGICAL_PIPELINE_NODE_KIND_CLASSIFY",
@@ -63,8 +59,6 @@ var LogicalPipelineNodeKind_name = map[int32]string{
 
 var LogicalPipelineNodeKind_value = map[string]int32{
 	"LOGICAL_PIPELINE_NODE_KIND_UNKNOWN":                 0,
-	"LOGICAL_PIPELINE_NODE_KIND_INPUT":                   1,
-	"LOGICAL_PIPELINE_NODE_KIND_OUTPUT":                  2,
 	"LOGICAL_PIPELINE_NODE_KIND_CAMERA_SOURCE":           10,
 	"LOGICAL_PIPELINE_NODE_KIND_DETECT":                  1000,
 	"LOGICAL_PIPELINE_NODE_KIND_CLASSIFY":                1001,
@@ -116,11 +110,11 @@ func (PipelineState) EnumDescriptor() ([]byte, []int) {
 }
 
 type Node struct {
-	Name     string                  `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Kind     LogicalPipelineNodeKind `protobuf:"varint,2,opt,name=kind,proto3,enum=gml.internal.api.core.v1.LogicalPipelineNodeKind" json:"kind,omitempty"`
-	Inputs   []*NodeInput            `protobuf:"bytes,3,rep,name=inputs,proto3" json:"inputs,omitempty"`
-	Outputs  []*NodeOutput           `protobuf:"bytes,4,rep,name=outputs,proto3" json:"outputs,omitempty"`
-	InitArgs []*NodeInitArgs         `protobuf:"bytes,5,rep,name=init_args,json=initArgs,proto3" json:"init_args,omitempty"`
+	Name       string                  `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Kind       LogicalPipelineNodeKind `protobuf:"varint,2,opt,name=kind,proto3,enum=gml.internal.api.core.v1.LogicalPipelineNodeKind" json:"kind,omitempty"`
+	Attributes []*NodeAttributes       `protobuf:"bytes,3,rep,name=attributes,proto3" json:"attributes,omitempty"`
+	Inputs     []*NodeInput            `protobuf:"bytes,4,rep,name=inputs,proto3" json:"inputs,omitempty"`
+	Outputs    []*NodeOutput           `protobuf:"bytes,5,rep,name=outputs,proto3" json:"outputs,omitempty"`
 }
 
 func (m *Node) Reset()      { *m = Node{} }
@@ -169,6 +163,13 @@ func (m *Node) GetKind() LogicalPipelineNodeKind {
 	return LOGICAL_PIPELINE_NODE_KIND_UNKNOWN
 }
 
+func (m *Node) GetAttributes() []*NodeAttributes {
+	if m != nil {
+		return m.Attributes
+	}
+	return nil
+}
+
 func (m *Node) GetInputs() []*NodeInput {
 	if m != nil {
 		return m.Inputs
@@ -183,35 +184,28 @@ func (m *Node) GetOutputs() []*NodeOutput {
 	return nil
 }
 
-func (m *Node) GetInitArgs() []*NodeInitArgs {
-	if m != nil {
-		return m.InitArgs
-	}
-	return nil
+type Value struct {
+	// Types that are valid to be assigned to Data:
+	//	*Value_StringData
+	//	*Value_Int64Data
+	//	*Value_DoubleData
+	//	*Value_BoolData
+	//	*Value_LambdaData
+	//	*Value_ModelData
+	Data isValue_Data `protobuf_oneof:"data"`
 }
 
-type NodeInitArgs struct {
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// Types that are valid to be assigned to DefaultValue:
-	//	*NodeInitArgs_StringValue
-	//	*NodeInitArgs_Int64Value
-	//	*NodeInitArgs_DoubleValue
-	//	*NodeInitArgs_BoolValue
-	//	*NodeInitArgs_LambdaValue
-	DefaultValue isNodeInitArgs_DefaultValue `protobuf_oneof:"default_value"`
-}
-
-func (m *NodeInitArgs) Reset()      { *m = NodeInitArgs{} }
-func (*NodeInitArgs) ProtoMessage() {}
-func (*NodeInitArgs) Descriptor() ([]byte, []int) {
+func (m *Value) Reset()      { *m = Value{} }
+func (*Value) ProtoMessage() {}
+func (*Value) Descriptor() ([]byte, []int) {
 	return fileDescriptor_2eacf87cbdc6b8b6, []int{1}
 }
-func (m *NodeInitArgs) XXX_Unmarshal(b []byte) error {
+func (m *Value) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *NodeInitArgs) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *Value) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_NodeInitArgs.Marshal(b, m, deterministic)
+		return xxx_messageInfo_Value.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -221,122 +215,172 @@ func (m *NodeInitArgs) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return b[:n], nil
 	}
 }
-func (m *NodeInitArgs) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_NodeInitArgs.Merge(m, src)
+func (m *Value) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Value.Merge(m, src)
 }
-func (m *NodeInitArgs) XXX_Size() int {
+func (m *Value) XXX_Size() int {
 	return m.Size()
 }
-func (m *NodeInitArgs) XXX_DiscardUnknown() {
-	xxx_messageInfo_NodeInitArgs.DiscardUnknown(m)
+func (m *Value) XXX_DiscardUnknown() {
+	xxx_messageInfo_Value.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_NodeInitArgs proto.InternalMessageInfo
+var xxx_messageInfo_Value proto.InternalMessageInfo
 
-type isNodeInitArgs_DefaultValue interface {
-	isNodeInitArgs_DefaultValue()
+type isValue_Data interface {
+	isValue_Data()
 	Equal(interface{}) bool
 	MarshalTo([]byte) (int, error)
 	Size() int
 }
 
-type NodeInitArgs_StringValue struct {
-	StringValue string `protobuf:"bytes,2,opt,name=string_value,json=stringValue,proto3,oneof" json:"string_value,omitempty"`
+type Value_StringData struct {
+	StringData string `protobuf:"bytes,1,opt,name=string_data,json=stringData,proto3,oneof" json:"string_data,omitempty"`
 }
-type NodeInitArgs_Int64Value struct {
-	Int64Value int64 `protobuf:"varint,3,opt,name=int64_value,json=int64Value,proto3,oneof" json:"int64_value,omitempty"`
+type Value_Int64Data struct {
+	Int64Data int64 `protobuf:"varint,2,opt,name=int64_data,json=int64Data,proto3,oneof" json:"int64_data,omitempty"`
 }
-type NodeInitArgs_DoubleValue struct {
-	DoubleValue float64 `protobuf:"fixed64,4,opt,name=double_value,json=doubleValue,proto3,oneof" json:"double_value,omitempty"`
+type Value_DoubleData struct {
+	DoubleData float64 `protobuf:"fixed64,3,opt,name=double_data,json=doubleData,proto3,oneof" json:"double_data,omitempty"`
 }
-type NodeInitArgs_BoolValue struct {
-	BoolValue bool `protobuf:"varint,5,opt,name=bool_value,json=boolValue,proto3,oneof" json:"bool_value,omitempty"`
+type Value_BoolData struct {
+	BoolData bool `protobuf:"varint,4,opt,name=bool_data,json=boolData,proto3,oneof" json:"bool_data,omitempty"`
 }
-type NodeInitArgs_LambdaValue struct {
-	LambdaValue *Lambda `protobuf:"bytes,6,opt,name=lambda_value,json=lambdaValue,proto3,oneof" json:"lambda_value,omitempty"`
+type Value_LambdaData struct {
+	LambdaData *Value_Lambda `protobuf:"bytes,5,opt,name=lambda_data,json=lambdaData,proto3,oneof" json:"lambda_data,omitempty"`
+}
+type Value_ModelData struct {
+	ModelData *Value_ModelRef `protobuf:"bytes,6,opt,name=model_data,json=modelData,proto3,oneof" json:"model_data,omitempty"`
 }
 
-func (*NodeInitArgs_StringValue) isNodeInitArgs_DefaultValue() {}
-func (*NodeInitArgs_Int64Value) isNodeInitArgs_DefaultValue()  {}
-func (*NodeInitArgs_DoubleValue) isNodeInitArgs_DefaultValue() {}
-func (*NodeInitArgs_BoolValue) isNodeInitArgs_DefaultValue()   {}
-func (*NodeInitArgs_LambdaValue) isNodeInitArgs_DefaultValue() {}
+func (*Value_StringData) isValue_Data() {}
+func (*Value_Int64Data) isValue_Data()  {}
+func (*Value_DoubleData) isValue_Data() {}
+func (*Value_BoolData) isValue_Data()   {}
+func (*Value_LambdaData) isValue_Data() {}
+func (*Value_ModelData) isValue_Data()  {}
 
-func (m *NodeInitArgs) GetDefaultValue() isNodeInitArgs_DefaultValue {
+func (m *Value) GetData() isValue_Data {
 	if m != nil {
-		return m.DefaultValue
+		return m.Data
 	}
 	return nil
 }
 
-func (m *NodeInitArgs) GetName() string {
+func (m *Value) GetStringData() string {
+	if x, ok := m.GetData().(*Value_StringData); ok {
+		return x.StringData
+	}
+	return ""
+}
+
+func (m *Value) GetInt64Data() int64 {
+	if x, ok := m.GetData().(*Value_Int64Data); ok {
+		return x.Int64Data
+	}
+	return 0
+}
+
+func (m *Value) GetDoubleData() float64 {
+	if x, ok := m.GetData().(*Value_DoubleData); ok {
+		return x.DoubleData
+	}
+	return 0
+}
+
+func (m *Value) GetBoolData() bool {
+	if x, ok := m.GetData().(*Value_BoolData); ok {
+		return x.BoolData
+	}
+	return false
+}
+
+func (m *Value) GetLambdaData() *Value_Lambda {
+	if x, ok := m.GetData().(*Value_LambdaData); ok {
+		return x.LambdaData
+	}
+	return nil
+}
+
+func (m *Value) GetModelData() *Value_ModelRef {
+	if x, ok := m.GetData().(*Value_ModelData); ok {
+		return x.ModelData
+	}
+	return nil
+}
+
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*Value) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
+		(*Value_StringData)(nil),
+		(*Value_Int64Data)(nil),
+		(*Value_DoubleData)(nil),
+		(*Value_BoolData)(nil),
+		(*Value_LambdaData)(nil),
+		(*Value_ModelData)(nil),
+	}
+}
+
+type Value_ModelRef struct {
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+}
+
+func (m *Value_ModelRef) Reset()      { *m = Value_ModelRef{} }
+func (*Value_ModelRef) ProtoMessage() {}
+func (*Value_ModelRef) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2eacf87cbdc6b8b6, []int{1, 0}
+}
+func (m *Value_ModelRef) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Value_ModelRef) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Value_ModelRef.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Value_ModelRef) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Value_ModelRef.Merge(m, src)
+}
+func (m *Value_ModelRef) XXX_Size() int {
+	return m.Size()
+}
+func (m *Value_ModelRef) XXX_DiscardUnknown() {
+	xxx_messageInfo_Value_ModelRef.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Value_ModelRef proto.InternalMessageInfo
+
+func (m *Value_ModelRef) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-func (m *NodeInitArgs) GetStringValue() string {
-	if x, ok := m.GetDefaultValue().(*NodeInitArgs_StringValue); ok {
-		return x.StringValue
-	}
-	return ""
+type Value_Lambda struct {
+	Inputs  []string `protobuf:"bytes,1,rep,name=inputs,proto3" json:"inputs,omitempty"`
+	Outputs []string `protobuf:"bytes,2,rep,name=outputs,proto3" json:"outputs,omitempty"`
+	Nodes   []*Node  `protobuf:"bytes,3,rep,name=nodes,proto3" json:"nodes,omitempty"`
 }
 
-func (m *NodeInitArgs) GetInt64Value() int64 {
-	if x, ok := m.GetDefaultValue().(*NodeInitArgs_Int64Value); ok {
-		return x.Int64Value
-	}
-	return 0
+func (m *Value_Lambda) Reset()      { *m = Value_Lambda{} }
+func (*Value_Lambda) ProtoMessage() {}
+func (*Value_Lambda) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2eacf87cbdc6b8b6, []int{1, 1}
 }
-
-func (m *NodeInitArgs) GetDoubleValue() float64 {
-	if x, ok := m.GetDefaultValue().(*NodeInitArgs_DoubleValue); ok {
-		return x.DoubleValue
-	}
-	return 0
-}
-
-func (m *NodeInitArgs) GetBoolValue() bool {
-	if x, ok := m.GetDefaultValue().(*NodeInitArgs_BoolValue); ok {
-		return x.BoolValue
-	}
-	return false
-}
-
-func (m *NodeInitArgs) GetLambdaValue() *Lambda {
-	if x, ok := m.GetDefaultValue().(*NodeInitArgs_LambdaValue); ok {
-		return x.LambdaValue
-	}
-	return nil
-}
-
-// XXX_OneofWrappers is for the internal use of the proto package.
-func (*NodeInitArgs) XXX_OneofWrappers() []interface{} {
-	return []interface{}{
-		(*NodeInitArgs_StringValue)(nil),
-		(*NodeInitArgs_Int64Value)(nil),
-		(*NodeInitArgs_DoubleValue)(nil),
-		(*NodeInitArgs_BoolValue)(nil),
-		(*NodeInitArgs_LambdaValue)(nil),
-	}
-}
-
-type Lambda struct {
-	Nodes []*Node `protobuf:"bytes,1,rep,name=nodes,proto3" json:"nodes,omitempty"`
-}
-
-func (m *Lambda) Reset()      { *m = Lambda{} }
-func (*Lambda) ProtoMessage() {}
-func (*Lambda) Descriptor() ([]byte, []int) {
-	return fileDescriptor_2eacf87cbdc6b8b6, []int{2}
-}
-func (m *Lambda) XXX_Unmarshal(b []byte) error {
+func (m *Value_Lambda) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Lambda) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *Value_Lambda) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Lambda.Marshal(b, m, deterministic)
+		return xxx_messageInfo_Value_Lambda.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -346,21 +390,86 @@ func (m *Lambda) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *Lambda) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Lambda.Merge(m, src)
+func (m *Value_Lambda) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Value_Lambda.Merge(m, src)
 }
-func (m *Lambda) XXX_Size() int {
+func (m *Value_Lambda) XXX_Size() int {
 	return m.Size()
 }
-func (m *Lambda) XXX_DiscardUnknown() {
-	xxx_messageInfo_Lambda.DiscardUnknown(m)
+func (m *Value_Lambda) XXX_DiscardUnknown() {
+	xxx_messageInfo_Value_Lambda.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Lambda proto.InternalMessageInfo
+var xxx_messageInfo_Value_Lambda proto.InternalMessageInfo
 
-func (m *Lambda) GetNodes() []*Node {
+func (m *Value_Lambda) GetInputs() []string {
+	if m != nil {
+		return m.Inputs
+	}
+	return nil
+}
+
+func (m *Value_Lambda) GetOutputs() []string {
+	if m != nil {
+		return m.Outputs
+	}
+	return nil
+}
+
+func (m *Value_Lambda) GetNodes() []*Node {
 	if m != nil {
 		return m.Nodes
+	}
+	return nil
+}
+
+type NodeAttributes struct {
+	Name  string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Value *Value `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+}
+
+func (m *NodeAttributes) Reset()      { *m = NodeAttributes{} }
+func (*NodeAttributes) ProtoMessage() {}
+func (*NodeAttributes) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2eacf87cbdc6b8b6, []int{2}
+}
+func (m *NodeAttributes) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *NodeAttributes) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_NodeAttributes.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *NodeAttributes) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_NodeAttributes.Merge(m, src)
+}
+func (m *NodeAttributes) XXX_Size() int {
+	return m.Size()
+}
+func (m *NodeAttributes) XXX_DiscardUnknown() {
+	xxx_messageInfo_NodeAttributes.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_NodeAttributes proto.InternalMessageInfo
+
+func (m *NodeAttributes) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *NodeAttributes) GetValue() *Value {
+	if m != nil {
+		return m.Value
 	}
 	return nil
 }
@@ -369,7 +478,6 @@ type NodeInput struct {
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Types that are valid to be assigned to Value:
 	//	*NodeInput_ParamValue
-	//	*NodeInput_ModelValue
 	//	*NodeInput_NodeOutputValue
 	Value isNodeInput_Value `protobuf_oneof:"value"`
 }
@@ -414,17 +522,13 @@ type isNodeInput_Value interface {
 }
 
 type NodeInput_ParamValue struct {
-	ParamValue *NodeInput_ParamInput `protobuf:"bytes,2,opt,name=param_value,json=paramValue,proto3,oneof" json:"param_value,omitempty"`
-}
-type NodeInput_ModelValue struct {
-	ModelValue *NodeInput_ModelInput `protobuf:"bytes,3,opt,name=model_value,json=modelValue,proto3,oneof" json:"model_value,omitempty"`
+	ParamValue *NodeInput_ParamRef `protobuf:"bytes,2,opt,name=param_value,json=paramValue,proto3,oneof" json:"param_value,omitempty"`
 }
 type NodeInput_NodeOutputValue struct {
-	NodeOutputValue *NodeInput_NodeOutputRef `protobuf:"bytes,4,opt,name=node_output_value,json=nodeOutputValue,proto3,oneof" json:"node_output_value,omitempty"`
+	NodeOutputValue *NodeInput_NodeOutputRef `protobuf:"bytes,3,opt,name=node_output_value,json=nodeOutputValue,proto3,oneof" json:"node_output_value,omitempty"`
 }
 
 func (*NodeInput_ParamValue) isNodeInput_Value()      {}
-func (*NodeInput_ModelValue) isNodeInput_Value()      {}
 func (*NodeInput_NodeOutputValue) isNodeInput_Value() {}
 
 func (m *NodeInput) GetValue() isNodeInput_Value {
@@ -441,16 +545,9 @@ func (m *NodeInput) GetName() string {
 	return ""
 }
 
-func (m *NodeInput) GetParamValue() *NodeInput_ParamInput {
+func (m *NodeInput) GetParamValue() *NodeInput_ParamRef {
 	if x, ok := m.GetValue().(*NodeInput_ParamValue); ok {
 		return x.ParamValue
-	}
-	return nil
-}
-
-func (m *NodeInput) GetModelValue() *NodeInput_ModelInput {
-	if x, ok := m.GetValue().(*NodeInput_ModelValue); ok {
-		return x.ModelValue
 	}
 	return nil
 }
@@ -466,9 +563,51 @@ func (m *NodeInput) GetNodeOutputValue() *NodeInput_NodeOutputRef {
 func (*NodeInput) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
 		(*NodeInput_ParamValue)(nil),
-		(*NodeInput_ModelValue)(nil),
 		(*NodeInput_NodeOutputValue)(nil),
 	}
+}
+
+type NodeInput_ParamRef struct {
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+}
+
+func (m *NodeInput_ParamRef) Reset()      { *m = NodeInput_ParamRef{} }
+func (*NodeInput_ParamRef) ProtoMessage() {}
+func (*NodeInput_ParamRef) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2eacf87cbdc6b8b6, []int{3, 0}
+}
+func (m *NodeInput_ParamRef) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *NodeInput_ParamRef) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_NodeInput_ParamRef.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *NodeInput_ParamRef) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_NodeInput_ParamRef.Merge(m, src)
+}
+func (m *NodeInput_ParamRef) XXX_Size() int {
+	return m.Size()
+}
+func (m *NodeInput_ParamRef) XXX_DiscardUnknown() {
+	xxx_messageInfo_NodeInput_ParamRef.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_NodeInput_ParamRef proto.InternalMessageInfo
+
+func (m *NodeInput_ParamRef) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
 }
 
 type NodeInput_NodeOutputRef struct {
@@ -479,7 +618,7 @@ type NodeInput_NodeOutputRef struct {
 func (m *NodeInput_NodeOutputRef) Reset()      { *m = NodeInput_NodeOutputRef{} }
 func (*NodeInput_NodeOutputRef) ProtoMessage() {}
 func (*NodeInput_NodeOutputRef) Descriptor() ([]byte, []int) {
-	return fileDescriptor_2eacf87cbdc6b8b6, []int{3, 0}
+	return fileDescriptor_2eacf87cbdc6b8b6, []int{3, 1}
 }
 func (m *NodeInput_NodeOutputRef) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -518,92 +657,6 @@ func (m *NodeInput_NodeOutputRef) GetNodeName() int64 {
 func (m *NodeInput_NodeOutputRef) GetName() string {
 	if m != nil {
 		return m.Name
-	}
-	return ""
-}
-
-type NodeInput_ModelInput struct {
-	ModelName string `protobuf:"bytes,1,opt,name=model_name,json=modelName,proto3" json:"model_name,omitempty"`
-}
-
-func (m *NodeInput_ModelInput) Reset()      { *m = NodeInput_ModelInput{} }
-func (*NodeInput_ModelInput) ProtoMessage() {}
-func (*NodeInput_ModelInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_2eacf87cbdc6b8b6, []int{3, 1}
-}
-func (m *NodeInput_ModelInput) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *NodeInput_ModelInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_NodeInput_ModelInput.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *NodeInput_ModelInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_NodeInput_ModelInput.Merge(m, src)
-}
-func (m *NodeInput_ModelInput) XXX_Size() int {
-	return m.Size()
-}
-func (m *NodeInput_ModelInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_NodeInput_ModelInput.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_NodeInput_ModelInput proto.InternalMessageInfo
-
-func (m *NodeInput_ModelInput) GetModelName() string {
-	if m != nil {
-		return m.ModelName
-	}
-	return ""
-}
-
-type NodeInput_ParamInput struct {
-	ParamName string `protobuf:"bytes,1,opt,name=param_name,json=paramName,proto3" json:"param_name,omitempty"`
-}
-
-func (m *NodeInput_ParamInput) Reset()      { *m = NodeInput_ParamInput{} }
-func (*NodeInput_ParamInput) ProtoMessage() {}
-func (*NodeInput_ParamInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_2eacf87cbdc6b8b6, []int{3, 2}
-}
-func (m *NodeInput_ParamInput) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *NodeInput_ParamInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_NodeInput_ParamInput.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *NodeInput_ParamInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_NodeInput_ParamInput.Merge(m, src)
-}
-func (m *NodeInput_ParamInput) XXX_Size() int {
-	return m.Size()
-}
-func (m *NodeInput_ParamInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_NodeInput_ParamInput.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_NodeInput_ParamInput proto.InternalMessageInfo
-
-func (m *NodeInput_ParamInput) GetParamName() string {
-	if m != nil {
-		return m.ParamName
 	}
 	return ""
 }
@@ -651,27 +704,22 @@ func (m *NodeOutput) GetName() string {
 	return ""
 }
 
-type GlobalParam struct {
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// Types that are valid to be assigned to DefaultValue:
-	//	*GlobalParam_StringValue
-	//	*GlobalParam_Int64Value
-	//	*GlobalParam_DoubleValue
-	//	*GlobalParam_BoolValue
-	DefaultValue isGlobalParam_DefaultValue `protobuf_oneof:"default_value"`
+type Param struct {
+	Name         string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	DefaultValue *Value `protobuf:"bytes,2,opt,name=default_value,json=defaultValue,proto3" json:"default_value,omitempty"`
 }
 
-func (m *GlobalParam) Reset()      { *m = GlobalParam{} }
-func (*GlobalParam) ProtoMessage() {}
-func (*GlobalParam) Descriptor() ([]byte, []int) {
+func (m *Param) Reset()      { *m = Param{} }
+func (*Param) ProtoMessage() {}
+func (*Param) Descriptor() ([]byte, []int) {
 	return fileDescriptor_2eacf87cbdc6b8b6, []int{5}
 }
-func (m *GlobalParam) XXX_Unmarshal(b []byte) error {
+func (m *Param) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *GlobalParam) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *Param) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_GlobalParam.Marshal(b, m, deterministic)
+		return xxx_messageInfo_Param.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -681,98 +729,35 @@ func (m *GlobalParam) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return b[:n], nil
 	}
 }
-func (m *GlobalParam) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GlobalParam.Merge(m, src)
+func (m *Param) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Param.Merge(m, src)
 }
-func (m *GlobalParam) XXX_Size() int {
+func (m *Param) XXX_Size() int {
 	return m.Size()
 }
-func (m *GlobalParam) XXX_DiscardUnknown() {
-	xxx_messageInfo_GlobalParam.DiscardUnknown(m)
+func (m *Param) XXX_DiscardUnknown() {
+	xxx_messageInfo_Param.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GlobalParam proto.InternalMessageInfo
+var xxx_messageInfo_Param proto.InternalMessageInfo
 
-type isGlobalParam_DefaultValue interface {
-	isGlobalParam_DefaultValue()
-	Equal(interface{}) bool
-	MarshalTo([]byte) (int, error)
-	Size() int
-}
-
-type GlobalParam_StringValue struct {
-	StringValue string `protobuf:"bytes,2,opt,name=string_value,json=stringValue,proto3,oneof" json:"string_value,omitempty"`
-}
-type GlobalParam_Int64Value struct {
-	Int64Value int64 `protobuf:"varint,3,opt,name=int64_value,json=int64Value,proto3,oneof" json:"int64_value,omitempty"`
-}
-type GlobalParam_DoubleValue struct {
-	DoubleValue float64 `protobuf:"fixed64,4,opt,name=double_value,json=doubleValue,proto3,oneof" json:"double_value,omitempty"`
-}
-type GlobalParam_BoolValue struct {
-	BoolValue bool `protobuf:"varint,5,opt,name=bool_value,json=boolValue,proto3,oneof" json:"bool_value,omitempty"`
-}
-
-func (*GlobalParam_StringValue) isGlobalParam_DefaultValue() {}
-func (*GlobalParam_Int64Value) isGlobalParam_DefaultValue()  {}
-func (*GlobalParam_DoubleValue) isGlobalParam_DefaultValue() {}
-func (*GlobalParam_BoolValue) isGlobalParam_DefaultValue()   {}
-
-func (m *GlobalParam) GetDefaultValue() isGlobalParam_DefaultValue {
-	if m != nil {
-		return m.DefaultValue
-	}
-	return nil
-}
-
-func (m *GlobalParam) GetName() string {
+func (m *Param) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-func (m *GlobalParam) GetStringValue() string {
-	if x, ok := m.GetDefaultValue().(*GlobalParam_StringValue); ok {
-		return x.StringValue
+func (m *Param) GetDefaultValue() *Value {
+	if m != nil {
+		return m.DefaultValue
 	}
-	return ""
-}
-
-func (m *GlobalParam) GetInt64Value() int64 {
-	if x, ok := m.GetDefaultValue().(*GlobalParam_Int64Value); ok {
-		return x.Int64Value
-	}
-	return 0
-}
-
-func (m *GlobalParam) GetDoubleValue() float64 {
-	if x, ok := m.GetDefaultValue().(*GlobalParam_DoubleValue); ok {
-		return x.DoubleValue
-	}
-	return 0
-}
-
-func (m *GlobalParam) GetBoolValue() bool {
-	if x, ok := m.GetDefaultValue().(*GlobalParam_BoolValue); ok {
-		return x.BoolValue
-	}
-	return false
-}
-
-// XXX_OneofWrappers is for the internal use of the proto package.
-func (*GlobalParam) XXX_OneofWrappers() []interface{} {
-	return []interface{}{
-		(*GlobalParam_StringValue)(nil),
-		(*GlobalParam_Int64Value)(nil),
-		(*GlobalParam_DoubleValue)(nil),
-		(*GlobalParam_BoolValue)(nil),
-	}
+	return nil
 }
 
 type LogicalPipeline struct {
-	GlobalParams []*GlobalParam `protobuf:"bytes,1,rep,name=global_params,json=globalParams,proto3" json:"global_params,omitempty"`
-	Nodes        []*Node        `protobuf:"bytes,2,rep,name=nodes,proto3" json:"nodes,omitempty"`
+	Params []*Param `protobuf:"bytes,1,rep,name=params,proto3" json:"params,omitempty"`
+	Nodes  []*Node  `protobuf:"bytes,2,rep,name=nodes,proto3" json:"nodes,omitempty"`
 }
 
 func (m *LogicalPipeline) Reset()      { *m = LogicalPipeline{} }
@@ -807,9 +792,9 @@ func (m *LogicalPipeline) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_LogicalPipeline proto.InternalMessageInfo
 
-func (m *LogicalPipeline) GetGlobalParams() []*GlobalParam {
+func (m *LogicalPipeline) GetParams() []*Param {
 	if m != nil {
-		return m.GlobalParams
+		return m.Params
 	}
 	return nil
 }
@@ -1839,14 +1824,15 @@ func init() {
 	proto.RegisterEnum("gml.internal.api.core.v1.LogicalPipelineNodeKind", LogicalPipelineNodeKind_name, LogicalPipelineNodeKind_value)
 	proto.RegisterEnum("gml.internal.api.core.v1.PipelineState", PipelineState_name, PipelineState_value)
 	proto.RegisterType((*Node)(nil), "gml.internal.api.core.v1.Node")
-	proto.RegisterType((*NodeInitArgs)(nil), "gml.internal.api.core.v1.NodeInitArgs")
-	proto.RegisterType((*Lambda)(nil), "gml.internal.api.core.v1.Lambda")
+	proto.RegisterType((*Value)(nil), "gml.internal.api.core.v1.Value")
+	proto.RegisterType((*Value_ModelRef)(nil), "gml.internal.api.core.v1.Value.ModelRef")
+	proto.RegisterType((*Value_Lambda)(nil), "gml.internal.api.core.v1.Value.Lambda")
+	proto.RegisterType((*NodeAttributes)(nil), "gml.internal.api.core.v1.NodeAttributes")
 	proto.RegisterType((*NodeInput)(nil), "gml.internal.api.core.v1.NodeInput")
+	proto.RegisterType((*NodeInput_ParamRef)(nil), "gml.internal.api.core.v1.NodeInput.ParamRef")
 	proto.RegisterType((*NodeInput_NodeOutputRef)(nil), "gml.internal.api.core.v1.NodeInput.NodeOutputRef")
-	proto.RegisterType((*NodeInput_ModelInput)(nil), "gml.internal.api.core.v1.NodeInput.ModelInput")
-	proto.RegisterType((*NodeInput_ParamInput)(nil), "gml.internal.api.core.v1.NodeInput.ParamInput")
 	proto.RegisterType((*NodeOutput)(nil), "gml.internal.api.core.v1.NodeOutput")
-	proto.RegisterType((*GlobalParam)(nil), "gml.internal.api.core.v1.GlobalParam")
+	proto.RegisterType((*Param)(nil), "gml.internal.api.core.v1.Param")
 	proto.RegisterType((*LogicalPipeline)(nil), "gml.internal.api.core.v1.LogicalPipeline")
 	proto.RegisterType((*PipelineDeployment)(nil), "gml.internal.api.core.v1.PipelineDeployment")
 	proto.RegisterType((*PipelineDeploymentSpec)(nil), "gml.internal.api.core.v1.PipelineDeploymentSpec")
@@ -1874,133 +1860,132 @@ func init() {
 }
 
 var fileDescriptor_2eacf87cbdc6b8b6 = []byte{
-	// 2006 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x58, 0xcb, 0x93, 0x1b, 0x47,
-	0x19, 0xd7, 0x48, 0xda, 0x87, 0x3e, 0x49, 0x91, 0xdc, 0x59, 0x1b, 0x65, 0x83, 0x25, 0x45, 0x76,
-	0xec, 0xad, 0xc4, 0x91, 0x6c, 0xc5, 0x8f, 0x90, 0x40, 0x0a, 0x3d, 0xc6, 0xde, 0x89, 0x77, 0x47,
-	0x72, 0x4b, 0x6b, 0xc7, 0x5c, 0x86, 0x91, 0xa6, 0x57, 0x3b, 0xe5, 0x79, 0xd5, 0xcc, 0x68, 0xe3,
-	0xcd, 0x05, 0x0e, 0x1c, 0xa0, 0xa8, 0xa2, 0x28, 0xf8, 0x13, 0x72, 0xe1, 0xcf, 0xe0, 0x48, 0x15,
-	0x17, 0x03, 0x07, 0x72, 0x5a, 0xb0, 0x7c, 0x09, 0x37, 0x9f, 0x38, 0x52, 0x54, 0x77, 0x8f, 0x1e,
-	0xab, 0xa7, 0x5d, 0xbe, 0xe4, 0xa4, 0x9e, 0xaf, 0x7f, 0xbf, 0xdf, 0xd7, 0xfd, 0x3d, 0x7a, 0x7a,
-	0x04, 0x05, 0xcf, 0xed, 0x96, 0x54, 0x47, 0x2f, 0x75, 0x6d, 0x97, 0x38, 0x9d, 0xd2, 0xf1, 0x8d,
-	0x92, 0x69, 0x6b, 0xc4, 0x50, 0xc8, 0x53, 0xd2, 0x2d, 0x3a, 0xae, 0xed, 0xdb, 0x28, 0xd3, 0x33,
-	0x8d, 0xa2, 0x6e, 0xf9, 0xc4, 0xb5, 0x54, 0xa3, 0xa8, 0x3a, 0x7a, 0x91, 0x82, 0x8b, 0xc7, 0x37,
-	0xb6, 0xb7, 0x7a, 0x76, 0xcf, 0x66, 0xa0, 0x12, 0x1d, 0x71, 0xfc, 0xf6, 0x65, 0x93, 0x68, 0xba,
-	0xea, 0xe8, 0x0e, 0x29, 0x1d, 0xba, 0xaa, 0x49, 0xbe, 0xb2, 0xdd, 0x27, 0xa5, 0xae, 0x6a, 0x74,
-	0xfb, 0x86, 0xea, 0xdb, 0x6e, 0x80, 0xba, 0x48, 0x3d, 0x77, 0x6d, 0xd3, 0xb4, 0xad, 0x92, 0x7f,
-	0xe2, 0x10, 0xcf, 0xe9, 0x94, 0xfa, 0x7d, 0x5d, 0x0b, 0xa6, 0x73, 0x3d, 0xdb, 0xee, 0x19, 0xa4,
-	0xc4, 0x9e, 0x3a, 0xfd, 0xc3, 0x92, 0xaf, 0x9b, 0xc4, 0xf3, 0x55, 0xd3, 0xe1, 0x80, 0xc2, 0x37,
-	0x61, 0x88, 0xca, 0xb6, 0x46, 0x10, 0x82, 0xa8, 0xa5, 0x9a, 0x24, 0x23, 0xe4, 0x85, 0x9d, 0x18,
-	0x66, 0x63, 0x24, 0x42, 0xf4, 0x89, 0x6e, 0x69, 0x99, 0x70, 0x5e, 0xd8, 0x79, 0xab, 0x7c, 0xa3,
-	0xb8, 0x68, 0x07, 0xc5, 0x3d, 0xbb, 0xa7, 0x77, 0x55, 0xa3, 0xa9, 0x3b, 0xc4, 0xd0, 0x2d, 0x42,
-	0x05, 0xef, 0xeb, 0x96, 0x86, 0x19, 0x1d, 0x7d, 0x06, 0xeb, 0xba, 0xe5, 0xf4, 0x7d, 0x2f, 0x13,
-	0xc9, 0x47, 0x76, 0xe2, 0xe5, 0x4b, 0x8b, 0x85, 0x28, 0x53, 0xa2, 0x58, 0x1c, 0x50, 0xd0, 0xe7,
-	0xb0, 0x61, 0xf7, 0x7d, 0xc6, 0x8e, 0x32, 0xf6, 0xe5, 0xe5, 0xec, 0x06, 0x03, 0xe3, 0x21, 0x09,
-	0xd5, 0x20, 0xa6, 0x5b, 0xba, 0xaf, 0xa8, 0x6e, 0xcf, 0xcb, 0xac, 0x31, 0x85, 0x2b, 0xab, 0xfc,
-	0xeb, 0x7e, 0xc5, 0xed, 0x79, 0x78, 0x53, 0x0f, 0x46, 0x85, 0x5f, 0x87, 0x21, 0x31, 0x39, 0x35,
-	0x37, 0x5a, 0x97, 0x20, 0xe1, 0xf9, 0xae, 0x6e, 0xf5, 0x94, 0x63, 0xd5, 0xe8, 0x13, 0x16, 0xb5,
-	0xd8, 0x6e, 0x08, 0xc7, 0xb9, 0xf5, 0x21, 0x35, 0xa2, 0xf7, 0x20, 0xae, 0x5b, 0xfe, 0xed, 0x9b,
-	0x01, 0x26, 0x92, 0x17, 0x76, 0x22, 0xbb, 0x21, 0x0c, 0xcc, 0xc8, 0x21, 0x97, 0x20, 0xa1, 0xd9,
-	0xfd, 0x8e, 0x41, 0x02, 0x4c, 0x34, 0x2f, 0xec, 0x08, 0x54, 0x87, 0x5b, 0x39, 0x28, 0x07, 0xd0,
-	0xb1, 0x6d, 0x23, 0x80, 0xac, 0xe5, 0x85, 0x9d, 0xcd, 0xdd, 0x10, 0x8e, 0x51, 0x1b, 0x07, 0x88,
-	0x90, 0x30, 0x54, 0xb3, 0xa3, 0xa9, 0x01, 0x64, 0x3d, 0x2f, 0xec, 0xc4, 0xcb, 0xf9, 0x25, 0x39,
-	0x64, 0x68, 0xea, 0x87, 0xf3, 0x98, 0x4c, 0x35, 0x05, 0x49, 0x8d, 0x1c, 0xaa, 0x7d, 0xc3, 0xe7,
-	0x3a, 0x85, 0xcf, 0x61, 0x9d, 0x23, 0xd1, 0x4d, 0x58, 0xb3, 0x6c, 0x8d, 0x78, 0x19, 0x81, 0x45,
-	0x35, 0xbb, 0x3c, 0xaa, 0x98, 0x83, 0x0b, 0x7f, 0x8d, 0x40, 0x6c, 0x94, 0xe5, 0xb9, 0x71, 0x7c,
-	0x00, 0x71, 0x47, 0x75, 0x55, 0x73, 0x22, 0x8c, 0xf1, 0x72, 0xf1, 0x15, 0x6a, 0xa6, 0xd8, 0xa4,
-	0x34, 0x36, 0xa4, 0x21, 0x65, 0x22, 0x3c, 0x18, 0x0f, 0x20, 0xce, 0xfb, 0x71, 0x1c, 0xf5, 0x57,
-	0x94, 0xdc, 0xa7, 0xb4, 0x91, 0x24, 0x13, 0xe1, 0x92, 0x0a, 0x9c, 0xa3, 0x1b, 0x52, 0x78, 0x9d,
-	0x4d, 0xa4, 0x2a, 0xbe, 0xac, 0x51, 0xc6, 0xc2, 0x13, 0xb5, 0x4a, 0x0e, 0x77, 0x43, 0x38, 0x65,
-	0x8d, 0x0c, 0xcc, 0xc1, 0xf6, 0x4f, 0x21, 0x79, 0x06, 0x83, 0xde, 0x85, 0x18, 0xf3, 0x38, 0x0a,
-	0x58, 0x04, 0x6f, 0x52, 0x83, 0x4c, 0x83, 0x36, 0x0c, 0x64, 0x78, 0x1c, 0xc8, 0xed, 0x0f, 0x01,
-	0xc6, 0xcb, 0x47, 0x17, 0x81, 0x2f, 0x5f, 0x99, 0x08, 0x78, 0x8c, 0x59, 0xe4, 0x00, 0x3c, 0x0e,
-	0x1f, 0x05, 0xf3, 0x1c, 0x4c, 0x82, 0x99, 0x85, 0x82, 0xab, 0x1b, 0xb0, 0xc6, 0xab, 0x21, 0x0f,
-	0x30, 0x5e, 0xe4, 0xbc, 0x6c, 0x16, 0xfe, 0x2c, 0x40, 0xfc, 0x9e, 0x61, 0x77, 0x54, 0x83, 0xc9,
-	0x7f, 0xff, 0x3b, 0x67, 0xb6, 0xe4, 0xff, 0x28, 0x40, 0x6a, 0xea, 0x84, 0x43, 0x5f, 0x40, 0xb2,
-	0xc7, 0x76, 0xa5, 0xb0, 0xa8, 0x0c, 0x9b, 0xe0, 0xfd, 0xc5, 0xa9, 0x9f, 0x08, 0x02, 0x4e, 0xf4,
-	0xc6, 0x0f, 0xde, 0xb8, 0x91, 0xc2, 0xaf, 0xd3, 0x48, 0x2f, 0x23, 0x80, 0x86, 0xcb, 0xa9, 0x13,
-	0xc7, 0xb0, 0x4f, 0x4c, 0x62, 0xf9, 0xe8, 0x2a, 0x84, 0x75, 0x8d, 0x45, 0x37, 0x5e, 0x4e, 0x31,
-	0x25, 0xf6, 0x5a, 0x28, 0x1e, 0x1c, 0x48, 0xf5, 0xea, 0xfa, 0xe0, 0x34, 0x17, 0x96, 0xea, 0x38,
-	0xac, 0x6b, 0xe8, 0x21, 0xbc, 0x6d, 0xf0, 0x4d, 0x29, 0x4e, 0x20, 0xa3, 0xe8, 0x5a, 0xd0, 0x6e,
-	0x33, 0xcc, 0xf3, 0x83, 0xd3, 0xdc, 0xb9, 0xa9, 0x20, 0x48, 0x75, 0x7c, 0xce, 0x98, 0x32, 0x69,
-	0xe8, 0x0e, 0x6c, 0x1e, 0x1a, 0x84, 0xf8, 0x54, 0x2c, 0x32, 0x5f, 0x2c, 0x3e, 0x38, 0xcd, 0x6d,
-	0xdc, 0xa5, 0x20, 0xa9, 0x8e, 0x37, 0x18, 0x5a, 0xd2, 0xd0, 0x8f, 0x00, 0xba, 0x2e, 0x51, 0x7d,
-	0xa2, 0x29, 0xaa, 0x1f, 0xb4, 0xd2, 0x76, 0x91, 0xbf, 0xc0, 0x8a, 0xc3, 0x17, 0x58, 0xb1, 0x3d,
-	0x7c, 0x81, 0xe1, 0x58, 0x80, 0xae, 0xf8, 0x94, 0xda, 0x77, 0xb4, 0x21, 0x75, 0x6d, 0x35, 0x35,
-	0x40, 0x57, 0x7c, 0x94, 0x81, 0x8d, 0x63, 0xe2, 0x7a, 0xba, 0x6d, 0xb1, 0x23, 0x32, 0x82, 0x87,
-	0x8f, 0xa8, 0x0e, 0x51, 0xcf, 0x21, 0xdd, 0xcc, 0x06, 0x93, 0xbb, 0xbe, 0x38, 0x2b, 0xb3, 0x59,
-	0x68, 0x39, 0xa4, 0x8b, 0x19, 0x1b, 0x7d, 0x01, 0xeb, 0x9e, 0xaf, 0xfa, 0x7d, 0x2f, 0xb3, 0xc9,
-	0x74, 0xca, 0xaf, 0xa5, 0xc3, 0x98, 0x38, 0x50, 0x28, 0x3c, 0x82, 0x0b, 0xf3, 0x7d, 0xa1, 0x9f,
-	0xc0, 0x1a, 0xc5, 0xf0, 0xb6, 0x7a, 0xab, 0x7c, 0x75, 0xb5, 0x13, 0x2a, 0x4d, 0x30, 0x67, 0x15,
-	0x1e, 0x43, 0x66, 0x91, 0xf3, 0x37, 0x95, 0xfe, 0x6f, 0x04, 0xd2, 0xcd, 0xa3, 0x13, 0xef, 0x4c,
-	0xf7, 0xbc, 0x72, 0x91, 0x2a, 0x70, 0x61, 0x54, 0x9c, 0xda, 0x68, 0x65, 0x4b, 0xea, 0x34, 0x33,
-	0x38, 0xcd, 0x6d, 0xcd, 0xee, 0x45, 0xaa, 0xe3, 0x2d, 0x67, 0xd6, 0xaa, 0xa1, 0x4f, 0x21, 0xa6,
-	0x91, 0x63, 0xbd, 0x4b, 0x96, 0x94, 0x6b, 0x62, 0x70, 0x9a, 0xdb, 0xac, 0x33, 0x94, 0x54, 0xc7,
-	0x9b, 0x1c, 0xff, 0x3d, 0x2c, 0xd8, 0xea, 0x99, 0x82, 0x5d, 0xf2, 0x7a, 0x9b, 0xce, 0xc7, 0x44,
-	0xb9, 0xee, 0x4e, 0x95, 0xeb, 0xf5, 0xd7, 0x50, 0x39, 0x5b, 0xac, 0x07, 0xb0, 0x35, 0xcf, 0xcf,
-	0x9b, 0xd6, 0x13, 0xed, 0x81, 0xb9, 0x8e, 0xdf, 0x54, 0x78, 0x17, 0x36, 0x47, 0xf5, 0xf9, 0xe3,
-	0xb3, 0x27, 0xf2, 0x95, 0xd5, 0x52, 0x93, 0x27, 0xf3, 0x37, 0x61, 0x48, 0x4c, 0xda, 0xd1, 0x5b,
-	0xa3, 0x72, 0x8f, 0xb2, 0xaa, 0x46, 0x10, 0xa5, 0xe5, 0x35, 0x7c, 0x59, 0xd3, 0x31, 0xba, 0x3d,
-	0x75, 0x49, 0x5e, 0xf2, 0x16, 0x68, 0xda, 0xee, 0xf8, 0x7e, 0xfc, 0xc9, 0xf4, 0xfd, 0x78, 0x15,
-	0x71, 0x74, 0x33, 0xae, 0x43, 0x54, 0xf5, 0x7d, 0x37, 0xb8, 0x14, 0x5f, 0x7f, 0xb5, 0x3d, 0x16,
-	0x2b, 0xbe, 0xef, 0x8a, 0x96, 0xef, 0x9e, 0x60, 0xc6, 0xde, 0xbe, 0x03, 0xb1, 0x91, 0x09, 0xa5,
-	0x21, 0xf2, 0x84, 0x9c, 0x04, 0xef, 0x76, 0x3a, 0x44, 0x5b, 0xc1, 0x4d, 0x21, 0xd8, 0x2b, 0x7f,
-	0xf8, 0x34, 0xfc, 0x89, 0x50, 0xb8, 0x06, 0x51, 0xba, 0x9e, 0xb9, 0x17, 0x82, 0x34, 0x44, 0x2c,
-	0xe2, 0x07, 0x1c, 0x3a, 0x2c, 0xfc, 0x4a, 0x80, 0xc4, 0x5d, 0xdd, 0x20, 0x98, 0x78, 0x76, 0xdf,
-	0xed, 0x12, 0x74, 0x13, 0x36, 0x0e, 0x75, 0x83, 0xb5, 0xed, 0x82, 0x73, 0x04, 0x06, 0xa7, 0xb9,
-	0x75, 0xca, 0x91, 0xea, 0x78, 0x9d, 0x62, 0x25, 0x8d, 0xde, 0x6b, 0x3c, 0xfd, 0x6b, 0xa2, 0x74,
-	0x4e, 0x7c, 0x96, 0x5d, 0x9a, 0x91, 0x18, 0xb5, 0x54, 0xa9, 0x01, 0xe5, 0x20, 0xee, 0x1d, 0xa9,
-	0xe5, 0x5b, 0xb7, 0x95, 0x23, 0xd5, 0x3b, 0x62, 0xe7, 0x41, 0x0c, 0x03, 0x37, 0xed, 0xaa, 0xde,
-	0x51, 0xe1, 0xb7, 0x02, 0x24, 0xc5, 0xa7, 0xa4, 0xdb, 0xf7, 0x75, 0xdb, 0x62, 0xe5, 0x7c, 0x1b,
-	0xd6, 0x7a, 0xae, 0xea, 0x1c, 0x05, 0xab, 0xc8, 0x17, 0x47, 0x9f, 0x6d, 0xc5, 0xda, 0xe8, 0x63,
-	0xed, 0x1e, 0x45, 0xd4, 0x6c, 0xeb, 0x50, 0xef, 0x61, 0x0e, 0x47, 0xd5, 0xe1, 0x75, 0x8c, 0xb5,
-	0x6c, 0x78, 0xd5, 0x87, 0x11, 0xbb, 0xc8, 0xb1, 0x3e, 0xe5, 0x77, 0x36, 0x3a, 0x2c, 0xfc, 0x26,
-	0x02, 0xb1, 0xd1, 0xc4, 0xdc, 0x40, 0x7e, 0x0c, 0x49, 0xdb, 0xb2, 0x9e, 0x2a, 0x1d, 0xc3, 0xee,
-	0x28, 0x34, 0x35, 0x2c, 0xa4, 0xd5, 0xd4, 0xe0, 0x34, 0x17, 0x6f, 0xc8, 0xf2, 0x97, 0x55, 0xc3,
-	0xee, 0xdc, 0x27, 0x27, 0x38, 0x4e, 0x51, 0xc1, 0x03, 0x7a, 0x00, 0x31, 0x46, 0xa2, 0x31, 0x0b,
-	0xce, 0xc4, 0x25, 0x1d, 0x30, 0x99, 0x15, 0x7e, 0x54, 0x52, 0x61, 0x66, 0xdd, 0xa4, 0x32, 0x74,
-	0x44, 0x0f, 0x2d, 0xb7, 0x6f, 0xd1, 0x8f, 0xcf, 0x4c, 0x99, 0x2d, 0x6f, 0xf8, 0x88, 0x3a, 0x90,
-	0xf4, 0x89, 0xe5, 0xd9, 0xae, 0xeb, 0xf3, 0x50, 0x68, 0xcc, 0xe1, 0x87, 0x8b, 0x1d, 0xb6, 0x19,
-	0x1c, 0xb7, 0x47, 0x3b, 0xaf, 0xa6, 0x07, 0xa7, 0xb9, 0xc4, 0xd0, 0xcc, 0x82, 0x94, 0x18, 0x6a,
-	0xb2, 0xc8, 0x74, 0x20, 0x69, 0x3b, 0xc4, 0x3a, 0xd6, 0x2d, 0x9b, 0xfb, 0x20, 0xab, 0x7c, 0x34,
-	0x1c, 0x62, 0x3d, 0x94, 0xe4, 0xc6, 0x94, 0x8f, 0xa1, 0x99, 0xfb, 0x18, 0x6a, 0xb2, 0x5c, 0xfc,
-	0x4f, 0x80, 0x73, 0x33, 0x2b, 0x43, 0x47, 0xb0, 0x65, 0x3b, 0xbe, 0x6e, 0xea, 0x5f, 0xab, 0xb4,
-	0x62, 0x14, 0xc7, 0xb5, 0x59, 0x54, 0xf9, 0x6d, 0xf1, 0xd6, 0xea, 0x4d, 0x36, 0x26, 0xd8, 0x4d,
-	0x4e, 0xc6, 0x6f, 0xdb, 0xb3, 0x46, 0x74, 0x05, 0x52, 0xc4, 0xea, 0xd1, 0xf7, 0xe4, 0xd9, 0x5c,
-	0xe3, 0x24, 0x37, 0x0f, 0x93, 0xfb, 0x08, 0x52, 0x26, 0x31, 0x15, 0x87, 0x5e, 0x81, 0x0d, 0xdd,
-	0xd4, 0xd9, 0x81, 0x43, 0xa3, 0x51, 0x7a, 0x85, 0x88, 0x13, 0xb3, 0x69, 0xdb, 0xc6, 0x1e, 0xa3,
-	0xe1, 0xa4, 0x39, 0xf9, 0x58, 0xf8, 0x05, 0xbc, 0xbb, 0x64, 0xd1, 0xe8, 0xe7, 0x80, 0x78, 0x4e,
-	0x14, 0xef, 0x48, 0x75, 0x88, 0xe2, 0xaa, 0x56, 0x6f, 0x18, 0x87, 0xf2, 0x6a, 0xd7, 0xfc, 0xb7,
-	0x45, 0xa9, 0x98, 0x32, 0x71, 0xda, 0x9f, 0xb2, 0x14, 0xf6, 0x21, 0xb3, 0x08, 0x4d, 0x1b, 0x3b,
-	0xf0, 0x3e, 0xd1, 0x22, 0xc0, 0x4d, 0x72, 0x70, 0xe2, 0x68, 0xba, 0xc9, 0xfa, 0x70, 0x0d, 0xd3,
-	0x61, 0xe1, 0x16, 0x9c, 0x9f, 0xbb, 0x6f, 0xf4, 0x43, 0x88, 0x7d, 0x65, 0xbb, 0x4f, 0x3c, 0x47,
-	0xed, 0x0e, 0xbf, 0xc3, 0xc6, 0x86, 0xc2, 0xef, 0x04, 0x38, 0x37, 0x53, 0x3d, 0xe8, 0x4b, 0xfa,
-	0xf1, 0x42, 0xbf, 0x13, 0xd9, 0xe6, 0x83, 0x6d, 0xdf, 0x79, 0x8d, 0xfa, 0x2b, 0x4e, 0x6e, 0x09,
-	0x98, 0x16, 0x1b, 0x6f, 0xe7, 0x20, 0x3e, 0x31, 0x35, 0xdc, 0x87, 0x30, 0xda, 0xc7, 0x07, 0x7f,
-	0x88, 0xc2, 0x0f, 0x16, 0xfc, 0x3f, 0x83, 0xae, 0x40, 0x61, 0xaf, 0x71, 0x4f, 0xaa, 0x55, 0xf6,
-	0x94, 0xa6, 0xd4, 0x14, 0xf7, 0x24, 0x59, 0x54, 0xe4, 0x46, 0x5d, 0x54, 0xee, 0x4b, 0x72, 0x5d,
-	0x39, 0x90, 0xef, 0xcb, 0x8d, 0x47, 0x72, 0x3a, 0x84, 0x2e, 0x43, 0x7e, 0x09, 0x4e, 0x92, 0x9b,
-	0x07, 0xed, 0xb4, 0x80, 0xde, 0x87, 0xf7, 0x96, 0xa0, 0x1a, 0x07, 0x6d, 0x0a, 0x0b, 0xa3, 0x6b,
-	0xb0, 0xb3, 0x04, 0x56, 0xab, 0xec, 0x8b, 0xb8, 0xa2, 0xb4, 0x1a, 0x07, 0xb8, 0x26, 0xa6, 0x01,
-	0x5d, 0x59, 0x2a, 0x5a, 0x17, 0xdb, 0x62, 0xad, 0x9d, 0xfe, 0x6e, 0x03, 0xed, 0xc0, 0xa5, 0x65,
-	0xaa, 0x7b, 0x95, 0x56, 0x4b, 0xba, 0xfb, 0x38, 0xfd, 0x9f, 0x0d, 0x74, 0x0d, 0xae, 0x2e, 0x41,
-	0xde, 0x6d, 0x60, 0x45, 0xac, 0xd4, 0x76, 0x15, 0xdc, 0x90, 0xd2, 0xff, 0x8a, 0xa3, 0x1b, 0x70,
-	0x6d, 0x09, 0xfa, 0xa1, 0x54, 0x17, 0x1b, 0x4a, 0xab, 0x8d, 0xc5, 0xca, 0xbe, 0xd2, 0x92, 0xe4,
-	0xfb, 0xe9, 0x67, 0x29, 0x74, 0x07, 0xca, 0x2b, 0x97, 0x2c, 0x35, 0xe4, 0x96, 0xb2, 0x2f, 0xb6,
-	0xb1, 0x54, 0x6b, 0x71, 0xe2, 0xdf, 0x52, 0xe8, 0x26, 0x94, 0x96, 0x10, 0xf7, 0x2a, 0x6d, 0x51,
-	0xae, 0x3d, 0x3e, 0xcb, 0xfa, 0x7b, 0x0a, 0x95, 0xe1, 0xa3, 0x65, 0xfb, 0xc1, 0x95, 0x7d, 0xf1,
-	0x2c, 0xe7, 0x1f, 0xa9, 0x0f, 0xfe, 0x29, 0x40, 0xf2, 0xcc, 0x2d, 0x08, 0x6d, 0xc3, 0x85, 0x11,
-	0xbb, 0xd5, 0xae, 0xb4, 0xc5, 0x89, 0xf4, 0xcf, 0xce, 0x35, 0x45, 0xb9, 0x2e, 0xc9, 0xf7, 0xd2,
-	0x02, 0xca, 0xc0, 0xd6, 0xd4, 0x1c, 0x16, 0x2b, 0xf5, 0xc7, 0xe9, 0xf0, 0x1c, 0x16, 0x3e, 0x90,
-	0x65, 0xca, 0x8a, 0xa0, 0x2c, 0x6c, 0x4f, 0xcd, 0xb5, 0x45, 0xbc, 0x2f, 0xc9, 0x95, 0x36, 0x9d,
-	0x8f, 0xa2, 0x8b, 0xf0, 0xce, 0x82, 0x79, 0xb1, 0x9e, 0x5e, 0x43, 0xef, 0xc0, 0xf9, 0xa9, 0xe9,
-	0xbb, 0x15, 0x69, 0x4f, 0xac, 0xa7, 0xd7, 0xab, 0xdd, 0x67, 0xcf, 0xb3, 0xa1, 0x6f, 0x9f, 0x67,
-	0x43, 0x2f, 0x9f, 0x67, 0x85, 0x5f, 0x0e, 0xb2, 0xc2, 0x9f, 0x06, 0x59, 0xe1, 0x2f, 0x83, 0xac,
-	0xf0, 0x6c, 0x90, 0x15, 0xfe, 0x3d, 0xc8, 0x0a, 0xdf, 0x0d, 0xb2, 0xa1, 0x97, 0x83, 0xac, 0xf0,
-	0xfb, 0x17, 0xd9, 0xd0, 0xb3, 0x17, 0xd9, 0xd0, 0xb7, 0x2f, 0xb2, 0xa1, 0x9f, 0x7d, 0xd4, 0xd3,
-	0x4d, 0x83, 0xf8, 0x86, 0xda, 0xf1, 0x8a, 0xaa, 0x5e, 0xe2, 0x4f, 0xa5, 0x99, 0x7f, 0x75, 0x3f,
-	0xe3, 0xa3, 0xce, 0x3a, 0xbb, 0xa2, 0x7f, 0xfc, 0xff, 0x00, 0x00, 0x00, 0xff, 0xff, 0xed, 0x4d,
-	0xd4, 0x23, 0xf8, 0x15, 0x00, 0x00,
+	// 1993 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x58, 0x4d, 0x73, 0xdb, 0xc6,
+	0x19, 0x16, 0xf8, 0x25, 0xf1, 0xa5, 0x64, 0xd1, 0x1b, 0xd9, 0x65, 0x94, 0x9a, 0x94, 0x91, 0x8c,
+	0xcd, 0x49, 0x1d, 0xd2, 0x66, 0xfc, 0x91, 0x26, 0x6d, 0xa7, 0x94, 0x00, 0x5b, 0xa8, 0x25, 0x50,
+	0x5d, 0x51, 0x76, 0xdc, 0x1e, 0x50, 0x90, 0x58, 0x51, 0x18, 0xe3, 0x6b, 0x00, 0x50, 0xb1, 0x72,
+	0x69, 0x0e, 0xbd, 0x74, 0x3a, 0xd3, 0xe9, 0x7f, 0xe8, 0x25, 0x3f, 0xa2, 0x3d, 0x76, 0xa6, 0x47,
+	0xb7, 0x3d, 0x34, 0x27, 0xb5, 0xa6, 0x2f, 0xe9, 0xcd, 0xa7, 0x1e, 0x3b, 0x9d, 0xdd, 0x05, 0x20,
+	0x92, 0xa2, 0x48, 0x69, 0x7c, 0xc9, 0x89, 0x8b, 0x77, 0x9f, 0xe7, 0x79, 0xf7, 0xfd, 0xd8, 0xc5,
+	0x82, 0x20, 0x06, 0x7e, 0xb7, 0xae, 0x7b, 0x66, 0xbd, 0xeb, 0xfa, 0xc4, 0xeb, 0xd4, 0x0f, 0xef,
+	0xd4, 0x6d, 0xd7, 0x20, 0x96, 0x46, 0x5e, 0x90, 0x6e, 0xcd, 0xf3, 0xdd, 0xd0, 0x45, 0xa5, 0x9e,
+	0x6d, 0xd5, 0x4c, 0x27, 0x24, 0xbe, 0xa3, 0x5b, 0x35, 0xdd, 0x33, 0x6b, 0x14, 0x5c, 0x3b, 0xbc,
+	0xb3, 0xba, 0xd2, 0x73, 0x7b, 0x2e, 0x03, 0xd5, 0xe9, 0x88, 0xe3, 0x57, 0x3f, 0xb0, 0x89, 0x61,
+	0xea, 0x9e, 0xe9, 0x91, 0xfa, 0xbe, 0xaf, 0xdb, 0xe4, 0x0b, 0xd7, 0x7f, 0x5e, 0xef, 0xea, 0x56,
+	0xb7, 0x6f, 0xe9, 0xa1, 0xeb, 0x47, 0xa8, 0x6b, 0xd4, 0x73, 0xd7, 0xb5, 0x6d, 0xd7, 0xa9, 0x87,
+	0x47, 0x1e, 0x09, 0xbc, 0x4e, 0xbd, 0xdf, 0x37, 0x8d, 0x68, 0xba, 0xd2, 0x73, 0xdd, 0x9e, 0x45,
+	0xea, 0xec, 0xa9, 0xd3, 0xdf, 0xaf, 0x87, 0xa6, 0x4d, 0x82, 0x50, 0xb7, 0x3d, 0x0e, 0x10, 0xbf,
+	0x4e, 0x41, 0x46, 0x75, 0x0d, 0x82, 0x10, 0x64, 0x1c, 0xdd, 0x26, 0x25, 0x61, 0x4d, 0xa8, 0xe6,
+	0x31, 0x1b, 0x23, 0x19, 0x32, 0xcf, 0x4d, 0xc7, 0x28, 0xa5, 0xd6, 0x84, 0xea, 0xa5, 0xc6, 0x9d,
+	0xda, 0x59, 0x11, 0xd4, 0xb6, 0xdc, 0x9e, 0xd9, 0xd5, 0xad, 0x1d, 0xd3, 0x23, 0x96, 0xe9, 0x10,
+	0x2a, 0xf8, 0xd8, 0x74, 0x0c, 0xcc, 0xe8, 0x68, 0x13, 0x40, 0x0f, 0x43, 0xdf, 0xec, 0xf4, 0x43,
+	0x12, 0x94, 0xd2, 0x6b, 0xe9, 0x6a, 0xa1, 0x51, 0x3d, 0x5b, 0x8c, 0xb2, 0x9b, 0x09, 0x1e, 0x0f,
+	0x71, 0xd1, 0x67, 0x90, 0x33, 0x1d, 0xaf, 0x1f, 0x06, 0xa5, 0x0c, 0x53, 0x79, 0x7f, 0xba, 0x8a,
+	0x42, 0xb1, 0x38, 0xa2, 0xa0, 0x9f, 0xc0, 0xbc, 0xdb, 0x0f, 0x19, 0x3b, 0xcb, 0xd8, 0x1f, 0x4c,
+	0x67, 0xb7, 0x18, 0x18, 0xc7, 0x24, 0xf1, 0xcf, 0x69, 0xc8, 0x3e, 0xd1, 0xad, 0x3e, 0x41, 0xd7,
+	0xa1, 0x10, 0x84, 0xbe, 0xe9, 0xf4, 0x34, 0x43, 0x0f, 0x75, 0x9e, 0xb2, 0xcd, 0x39, 0x0c, 0xdc,
+	0x28, 0xe9, 0xa1, 0x8e, 0x2a, 0x00, 0xa6, 0x13, 0xde, 0xbf, 0xcb, 0x11, 0x34, 0x81, 0xe9, 0xcd,
+	0x39, 0x9c, 0x67, 0x36, 0x06, 0xb8, 0x0e, 0x05, 0xc3, 0xed, 0x77, 0x2c, 0xc2, 0x11, 0xe9, 0x35,
+	0xa1, 0x2a, 0x50, 0x0d, 0x6e, 0x64, 0x90, 0x6b, 0x90, 0xef, 0xb8, 0xae, 0xc5, 0x01, 0x99, 0x35,
+	0xa1, 0xba, 0xb0, 0x39, 0x87, 0x17, 0xa8, 0x89, 0x4d, 0x2b, 0x50, 0xb0, 0x74, 0xbb, 0x63, 0xe8,
+	0x1c, 0x90, 0x5d, 0x13, 0xaa, 0x85, 0xc6, 0x8d, 0xb3, 0x63, 0x62, 0x6b, 0xaf, 0x6d, 0x31, 0x0a,
+	0xf5, 0xc4, 0xc9, 0x91, 0x14, 0xf0, 0x7e, 0x65, 0x4a, 0x39, 0xa6, 0x54, 0x9d, 0xa5, 0xb4, 0x4d,
+	0x19, 0x98, 0xec, 0xd3, 0xb8, 0x18, 0x9b, 0x4a, 0xad, 0x96, 0x61, 0x21, 0x9e, 0x98, 0xd4, 0x53,
+	0xab, 0x1e, 0xe4, 0xf8, 0x12, 0xd0, 0xd5, 0xa4, 0x98, 0xc2, 0x5a, 0xba, 0x9a, 0x4f, 0xea, 0x54,
+	0x3a, 0xa9, 0x53, 0x8a, 0x4d, 0xc4, 0x8f, 0xe8, 0x2e, 0x64, 0x1d, 0xd7, 0x48, 0x7a, 0xa8, 0x3c,
+	0xbd, 0x7e, 0x98, 0x83, 0xd7, 0x73, 0x90, 0xa1, 0x61, 0x89, 0xbf, 0x84, 0x4b, 0xa3, 0xad, 0x35,
+	0xb1, 0xe7, 0xef, 0x41, 0xf6, 0x90, 0x86, 0xc7, 0x6a, 0x56, 0x68, 0x54, 0x66, 0x64, 0x01, 0x73,
+	0xb4, 0xf8, 0xa7, 0x14, 0xe4, 0x93, 0x96, 0x9b, 0x28, 0xdc, 0x82, 0x82, 0xa7, 0xfb, 0xba, 0xad,
+	0x0d, 0xcb, 0xdf, 0x3a, 0x47, 0x03, 0xd7, 0x76, 0x28, 0x8d, 0x27, 0x1a, 0x98, 0x04, 0xef, 0x42,
+	0x0d, 0x2e, 0xd3, 0x00, 0x35, 0x9e, 0x9d, 0x48, 0x36, 0xcd, 0x64, 0xef, 0x9c, 0x47, 0x76, 0xa8,
+	0xc7, 0x99, 0xf6, 0xb2, 0x93, 0x18, 0x98, 0x03, 0x5a, 0xca, 0xd8, 0xf5, 0xc4, 0x52, 0xfe, 0x14,
+	0x96, 0x46, 0x34, 0xd0, 0x7b, 0x90, 0x67, 0x2b, 0x4a, 0x90, 0x69, 0xbc, 0x40, 0x0d, 0x2a, 0x8d,
+	0x3f, 0x56, 0x48, 0x9d, 0x28, 0xac, 0xcf, 0x47, 0xc9, 0x16, 0xd7, 0x00, 0x4e, 0xa4, 0x26, 0x39,
+	0x13, 0x75, 0xc8, 0xb2, 0xc5, 0x4c, 0xcc, 0xad, 0x04, 0x4b, 0x06, 0xd9, 0xd7, 0xfb, 0x56, 0xa8,
+	0x5d, 0xa8, 0x78, 0x8b, 0x11, 0x8b, 0x3d, 0x89, 0x5f, 0x09, 0xb0, 0x3c, 0x76, 0x92, 0xa1, 0x07,
+	0x90, 0x63, 0x29, 0xe7, 0x4d, 0x3a, 0x55, 0x92, 0xe7, 0x2a, 0x82, 0x9f, 0xf4, 0x6a, 0xea, 0x02,
+	0xbd, 0x2a, 0xbe, 0x49, 0x03, 0x8a, 0x7d, 0x4b, 0xc4, 0xb3, 0xdc, 0x23, 0x9b, 0x38, 0x21, 0xba,
+	0x09, 0x29, 0xd3, 0x60, 0x11, 0x17, 0x1a, 0xcb, 0x4c, 0x89, 0x9d, 0xf5, 0xb5, 0xbd, 0x3d, 0x45,
+	0x5a, 0xcf, 0x0d, 0x8e, 0x2b, 0x29, 0x45, 0xc2, 0x29, 0xd3, 0x40, 0x4f, 0xe0, 0x1d, 0x8b, 0x47,
+	0xa0, 0x79, 0x91, 0x8c, 0x66, 0x1a, 0x51, 0x3a, 0x4e, 0x31, 0xaf, 0x0c, 0x8e, 0x2b, 0x97, 0xc7,
+	0x22, 0x56, 0x24, 0x7c, 0xd9, 0x1a, 0x33, 0x19, 0xe8, 0x01, 0x2c, 0xec, 0x5b, 0x84, 0x84, 0x54,
+	0x2c, 0x3d, 0x59, 0xac, 0x30, 0x38, 0xae, 0xcc, 0x3f, 0xa4, 0x20, 0x45, 0xc2, 0xf3, 0x0c, 0xad,
+	0x18, 0xe8, 0x87, 0x00, 0x5d, 0x9f, 0xe8, 0x21, 0x31, 0x34, 0x3d, 0x64, 0x87, 0x58, 0xa1, 0xb1,
+	0x5a, 0xe3, 0x6f, 0xa5, 0x5a, 0xfc, 0x56, 0xaa, 0xb5, 0xe3, 0xb7, 0x12, 0xce, 0x47, 0xe8, 0x66,
+	0x48, 0xa9, 0x7d, 0xcf, 0x88, 0xa9, 0xd9, 0xd9, 0xd4, 0x08, 0xdd, 0x0c, 0xe9, 0x11, 0x72, 0x48,
+	0xfc, 0xc0, 0x74, 0x1d, 0x76, 0x98, 0xa5, 0x71, 0xfc, 0x88, 0x24, 0xc8, 0x04, 0x1e, 0xe9, 0x96,
+	0xe6, 0x99, 0xdc, 0xed, 0x29, 0xd5, 0x3c, 0x55, 0x85, 0x5d, 0x8f, 0x74, 0x31, 0x63, 0xa3, 0x9f,
+	0x41, 0x2e, 0x08, 0xf5, 0xb0, 0x1f, 0x94, 0x16, 0x98, 0x4e, 0xe3, 0x42, 0x3a, 0x8c, 0x89, 0x23,
+	0x05, 0xf1, 0x29, 0x5c, 0x9d, 0xec, 0x0b, 0xfd, 0x18, 0xb2, 0x14, 0xc3, 0x5b, 0xfd, 0x52, 0xe3,
+	0xe6, 0x6c, 0x27, 0x54, 0x9a, 0x60, 0xce, 0x12, 0x9f, 0x41, 0xe9, 0x2c, 0xe7, 0x6f, 0x2b, 0xfd,
+	0xdf, 0x34, 0x14, 0x77, 0x0e, 0x8e, 0x82, 0x91, 0xad, 0x72, 0xee, 0x26, 0xd5, 0xe0, 0x6a, 0xd2,
+	0x9c, 0x46, 0xb2, 0xb2, 0x29, 0x7d, 0x5a, 0x1a, 0x1c, 0x57, 0x56, 0x4e, 0xc7, 0xa2, 0x48, 0x78,
+	0xc5, 0x3b, 0x6d, 0x35, 0xd0, 0xa7, 0x90, 0x37, 0xc8, 0xa1, 0xd9, 0x25, 0x53, 0xda, 0x75, 0x71,
+	0x70, 0x5c, 0x59, 0x90, 0x18, 0x4a, 0x91, 0xf0, 0x02, 0xc7, 0x7f, 0x07, 0x1b, 0x76, 0x7d, 0xa4,
+	0x61, 0x6b, 0x53, 0x0a, 0x35, 0x56, 0x8f, 0xa1, 0x76, 0xdd, 0x1c, 0x6b, 0xd7, 0xdb, 0x17, 0x50,
+	0x19, 0x6d, 0xd6, 0x3d, 0x58, 0x99, 0xe4, 0xe7, 0x6d, 0xfb, 0x89, 0xee, 0x81, 0x89, 0x8e, 0xdf,
+	0x56, 0x78, 0x13, 0x16, 0x92, 0xfe, 0xfc, 0xd1, 0xe8, 0x89, 0x7c, 0x63, 0xb6, 0xd4, 0xf0, 0xc9,
+	0xfc, 0xc7, 0x14, 0x2c, 0x0e, 0xdb, 0xd1, 0xa5, 0xa4, 0xdd, 0x33, 0xac, 0xab, 0x11, 0x64, 0x68,
+	0x7b, 0xc5, 0xef, 0x37, 0x3a, 0x46, 0xf7, 0x93, 0x2b, 0xce, 0xcc, 0x1b, 0xcb, 0x8e, 0xeb, 0x9f,
+	0x5c, 0x55, 0x3f, 0x39, 0xb9, 0x02, 0x65, 0xce, 0x45, 0x4c, 0xae, 0x48, 0x12, 0x64, 0xe8, 0x7d,
+	0x39, 0xba, 0xe1, 0xde, 0x3e, 0x5f, 0x8c, 0x35, 0x7a, 0x27, 0x92, 0x9d, 0xd0, 0x3f, 0xc2, 0x8c,
+	0xbd, 0xfa, 0x00, 0xf2, 0x89, 0x09, 0x15, 0x21, 0xfd, 0x9c, 0x1c, 0x45, 0xef, 0x5b, 0x3a, 0x44,
+	0x2b, 0xc3, 0x77, 0xa4, 0x7c, 0x74, 0x05, 0xfa, 0x34, 0xf5, 0x89, 0x20, 0xde, 0x82, 0x0c, 0x5d,
+	0xcf, 0xc4, 0x97, 0x74, 0x11, 0xd2, 0x0e, 0x09, 0x23, 0x0e, 0x1d, 0x8a, 0xbf, 0x11, 0x60, 0xf1,
+	0xa1, 0x69, 0x11, 0x4c, 0x02, 0xb7, 0xef, 0x77, 0x09, 0xba, 0x0b, 0xf3, 0xfb, 0xa6, 0xc5, 0xb6,
+	0xed, 0x19, 0xe7, 0x08, 0x0c, 0x8e, 0x2b, 0x39, 0xca, 0x51, 0x24, 0x9c, 0xa3, 0x58, 0xc5, 0x40,
+	0xd7, 0x00, 0x02, 0xf3, 0x4b, 0xa2, 0x75, 0x8e, 0x42, 0x56, 0x5d, 0x5a, 0x91, 0x3c, 0xb5, 0xac,
+	0x53, 0x03, 0xaa, 0x40, 0x21, 0x38, 0xd0, 0x1b, 0xf7, 0xee, 0x6b, 0x07, 0x7a, 0x70, 0xc0, 0xce,
+	0x83, 0x3c, 0x06, 0x6e, 0xda, 0xd4, 0x83, 0x03, 0xf1, 0x77, 0x02, 0x2c, 0xc9, 0x2f, 0x48, 0xb7,
+	0x1f, 0x9a, 0xae, 0xc3, 0xda, 0xf9, 0x3e, 0x64, 0x7b, 0xbe, 0xee, 0x1d, 0x44, 0xab, 0x58, 0xab,
+	0x25, 0xdf, 0x62, 0xb5, 0x8d, 0xe4, 0x0b, 0xec, 0x11, 0x45, 0x6c, 0xb8, 0xce, 0xbe, 0xd9, 0xc3,
+	0x1c, 0x8e, 0xd6, 0xe3, 0x7b, 0x34, 0xdb, 0xb2, 0xa9, 0x59, 0xdf, 0x28, 0xec, 0xa2, 0xcc, 0xf6,
+	0x29, 0xbf, 0x40, 0xd3, 0xa1, 0xf8, 0xdb, 0x34, 0xe4, 0x93, 0x89, 0x89, 0x89, 0xfc, 0x18, 0x96,
+	0x5c, 0xc7, 0x79, 0xa1, 0x75, 0x2c, 0xb7, 0xa3, 0xd1, 0xd2, 0xb0, 0x94, 0xae, 0x2f, 0x0f, 0x8e,
+	0x2b, 0x85, 0x96, 0xaa, 0x7e, 0xbe, 0x6e, 0xb9, 0x9d, 0xc7, 0xe4, 0x08, 0x17, 0x28, 0x2a, 0x7a,
+	0x40, 0x3f, 0x87, 0x3c, 0x23, 0xd1, 0x9c, 0x45, 0x67, 0xe2, 0x94, 0x1d, 0x30, 0x5c, 0x15, 0x7e,
+	0x54, 0x52, 0x61, 0x66, 0x5d, 0xa0, 0x32, 0x74, 0x44, 0x0f, 0x2d, 0xbf, 0xef, 0xd0, 0x2f, 0xca,
+	0x52, 0x83, 0x2d, 0x2f, 0x7e, 0x44, 0x1d, 0x58, 0x0a, 0x89, 0x13, 0xb8, 0xbe, 0x1f, 0xf2, 0x54,
+	0x18, 0xcc, 0xe1, 0x0f, 0xce, 0x76, 0xd8, 0x66, 0x70, 0xdc, 0x4e, 0x22, 0x5f, 0x2f, 0x0e, 0x8e,
+	0x2b, 0x8b, 0xb1, 0x99, 0x25, 0x69, 0x31, 0xd6, 0x64, 0x99, 0xe9, 0xc0, 0x92, 0xeb, 0x11, 0xe7,
+	0xd0, 0x74, 0x5c, 0xee, 0x83, 0xcc, 0xf2, 0xd1, 0xf2, 0x88, 0xf3, 0x44, 0x51, 0x5b, 0x63, 0x3e,
+	0x62, 0x33, 0xf7, 0x11, 0x6b, 0xb2, 0x5a, 0xfc, 0x4f, 0x80, 0xcb, 0xa7, 0x56, 0x86, 0x0e, 0x60,
+	0xc5, 0xf5, 0x42, 0xd3, 0x36, 0xbf, 0xd4, 0x69, 0xc7, 0x68, 0x9e, 0xef, 0xb2, 0xac, 0xf2, 0x1b,
+	0xe2, 0xbd, 0xd9, 0x41, 0xb6, 0x86, 0xd8, 0x3b, 0x9c, 0x8c, 0xdf, 0x71, 0x4f, 0x1b, 0xd1, 0x0d,
+	0x58, 0x26, 0x4e, 0x8f, 0xbe, 0x27, 0x47, 0x6b, 0x8d, 0x97, 0xb8, 0x39, 0x2e, 0xee, 0x53, 0x58,
+	0xb6, 0x89, 0xad, 0x79, 0xf4, 0x6b, 0xd1, 0x32, 0x6d, 0x93, 0x1d, 0x38, 0x34, 0x1b, 0xf5, 0x73,
+	0x64, 0x9c, 0xd8, 0x3b, 0xae, 0x6b, 0x6d, 0x31, 0x1a, 0x5e, 0xb2, 0x87, 0x1f, 0xc5, 0x5f, 0xc3,
+	0x7b, 0x53, 0x16, 0x8d, 0x7e, 0x05, 0x88, 0xd7, 0x44, 0x0b, 0x0e, 0x74, 0x8f, 0x68, 0xbe, 0xee,
+	0xf4, 0xe2, 0x3c, 0x34, 0x66, 0xbb, 0xe6, 0xbf, 0xbb, 0x94, 0x8a, 0x29, 0x13, 0x17, 0xc3, 0x31,
+	0x8b, 0xb8, 0x0d, 0xa5, 0xb3, 0xd0, 0x74, 0x63, 0x47, 0xde, 0x87, 0xb6, 0x08, 0x70, 0x93, 0x1a,
+	0x9d, 0x38, 0x86, 0x69, 0xb3, 0x7d, 0x98, 0xc5, 0x74, 0x28, 0xde, 0x83, 0x2b, 0x13, 0xe3, 0x46,
+	0xdf, 0x87, 0xfc, 0x17, 0xae, 0xff, 0x3c, 0xf0, 0xf4, 0x6e, 0xfc, 0xe9, 0x72, 0x62, 0x10, 0x7f,
+	0x2f, 0xc0, 0xe5, 0x53, 0xdd, 0x83, 0x3e, 0x87, 0x02, 0x3b, 0xaf, 0x79, 0xf0, 0x51, 0xd8, 0x0f,
+	0x2e, 0xd0, 0x7f, 0xb5, 0xe1, 0x90, 0x80, 0x69, 0xb1, 0xf1, 0x6a, 0x05, 0x0a, 0x43, 0x53, 0x71,
+	0x1c, 0x42, 0x12, 0xc7, 0x87, 0x7f, 0x49, 0xc3, 0xf7, 0xce, 0xf8, 0xd3, 0x05, 0xdd, 0x00, 0x71,
+	0xab, 0xf5, 0x48, 0xd9, 0x68, 0x6e, 0x69, 0x3b, 0xca, 0x8e, 0xbc, 0xa5, 0xa8, 0xb2, 0xa6, 0xb6,
+	0x24, 0x59, 0x7b, 0xac, 0xa8, 0x92, 0xb6, 0xa7, 0x3e, 0x56, 0x5b, 0x4f, 0xd5, 0xe2, 0x1c, 0xba,
+	0x05, 0xd5, 0x29, 0xb8, 0x8d, 0xe6, 0xb6, 0x8c, 0x9b, 0xda, 0x6e, 0x6b, 0x0f, 0x6f, 0xc8, 0x45,
+	0x40, 0x37, 0xe0, 0xfa, 0x14, 0xb4, 0x24, 0xb7, 0xe5, 0x8d, 0x76, 0xf1, 0xdb, 0x79, 0x54, 0x85,
+	0xf7, 0xa7, 0xa9, 0x6e, 0x35, 0x77, 0x77, 0x95, 0x87, 0xcf, 0x8a, 0xff, 0x99, 0x47, 0xb7, 0xe0,
+	0xe6, 0x14, 0xe4, 0xc3, 0x16, 0xd6, 0xe4, 0xe6, 0xc6, 0xa6, 0x86, 0x5b, 0x4a, 0xf1, 0x5f, 0x05,
+	0x74, 0x07, 0x6e, 0x4d, 0x41, 0x3f, 0x51, 0x24, 0xb9, 0xa5, 0xed, 0xb6, 0xb1, 0xdc, 0xdc, 0xd6,
+	0x76, 0x15, 0xf5, 0x71, 0xf1, 0xe5, 0x32, 0x7a, 0x00, 0x8d, 0x99, 0x4b, 0x56, 0x5a, 0xea, 0xae,
+	0xb6, 0x2d, 0xb7, 0xb1, 0xb2, 0xb1, 0xcb, 0x89, 0x7f, 0x5b, 0x46, 0x77, 0xa1, 0x3e, 0x85, 0xb8,
+	0xd5, 0x6c, 0xcb, 0xea, 0xc6, 0xb3, 0x51, 0xd6, 0xdf, 0x97, 0x51, 0x03, 0x3e, 0x9a, 0x16, 0x0f,
+	0x6e, 0x6e, 0xcb, 0xa3, 0x9c, 0x7f, 0x2c, 0x7f, 0xf8, 0x4f, 0x01, 0x96, 0x46, 0x2e, 0x2e, 0x68,
+	0x15, 0xae, 0x26, 0xec, 0xdd, 0x76, 0xb3, 0x2d, 0x0f, 0x55, 0xec, 0xf4, 0xdc, 0x8e, 0xac, 0x4a,
+	0x8a, 0xfa, 0xa8, 0x28, 0xa0, 0x12, 0xac, 0x8c, 0xcd, 0x61, 0xb9, 0x29, 0x3d, 0x2b, 0xa6, 0x26,
+	0xb0, 0xf0, 0x9e, 0xaa, 0x52, 0x56, 0x1a, 0x95, 0x61, 0x75, 0x6c, 0xae, 0x2d, 0xe3, 0x6d, 0x45,
+	0x6d, 0xb6, 0xe9, 0x7c, 0x06, 0x5d, 0x83, 0x77, 0xcf, 0x98, 0x97, 0xa5, 0x62, 0x16, 0xbd, 0x0b,
+	0x57, 0xc6, 0xa6, 0x1f, 0x36, 0x95, 0x2d, 0x59, 0x2a, 0xe6, 0xd6, 0xbb, 0x2f, 0x5f, 0x95, 0xe7,
+	0xbe, 0x79, 0x55, 0x9e, 0x7b, 0xf3, 0xaa, 0x2c, 0x7c, 0x35, 0x28, 0x0b, 0x5f, 0x0f, 0xca, 0xc2,
+	0x5f, 0x07, 0x65, 0xe1, 0xe5, 0xa0, 0x2c, 0xfc, 0x7b, 0x50, 0x16, 0xbe, 0x1d, 0x94, 0xe7, 0xde,
+	0x0c, 0xca, 0xc2, 0x1f, 0x5e, 0x97, 0xe7, 0x5e, 0xbe, 0x2e, 0xcf, 0x7d, 0xf3, 0xba, 0x3c, 0xf7,
+	0x8b, 0x8f, 0x7a, 0xa6, 0x6d, 0x91, 0xd0, 0xd2, 0x3b, 0x41, 0x4d, 0x37, 0xeb, 0xfc, 0xa9, 0x7e,
+	0xea, 0xdf, 0xd5, 0xcf, 0xf8, 0xa8, 0x93, 0x63, 0xb7, 0xea, 0x8f, 0xff, 0x1f, 0x00, 0x00, 0xff,
+	0xff, 0xa9, 0x21, 0xce, 0x5c, 0x80, 0x15, 0x00, 0x00,
 }
 
 func (x LogicalPipelineNodeKind) String() string {
@@ -2042,6 +2027,14 @@ func (this *Node) Equal(that interface{}) bool {
 	if this.Kind != that1.Kind {
 		return false
 	}
+	if len(this.Attributes) != len(that1.Attributes) {
+		return false
+	}
+	for i := range this.Attributes {
+		if !this.Attributes[i].Equal(that1.Attributes[i]) {
+			return false
+		}
+	}
 	if len(this.Inputs) != len(that1.Inputs) {
 		return false
 	}
@@ -2058,24 +2051,190 @@ func (this *Node) Equal(that interface{}) bool {
 			return false
 		}
 	}
-	if len(this.InitArgs) != len(that1.InitArgs) {
-		return false
-	}
-	for i := range this.InitArgs {
-		if !this.InitArgs[i].Equal(that1.InitArgs[i]) {
-			return false
-		}
-	}
 	return true
 }
-func (this *NodeInitArgs) Equal(that interface{}) bool {
+func (this *Value) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*NodeInitArgs)
+	that1, ok := that.(*Value)
 	if !ok {
-		that2, ok := that.(NodeInitArgs)
+		that2, ok := that.(Value)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if that1.Data == nil {
+		if this.Data != nil {
+			return false
+		}
+	} else if this.Data == nil {
+		return false
+	} else if !this.Data.Equal(that1.Data) {
+		return false
+	}
+	return true
+}
+func (this *Value_StringData) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Value_StringData)
+	if !ok {
+		that2, ok := that.(Value_StringData)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.StringData != that1.StringData {
+		return false
+	}
+	return true
+}
+func (this *Value_Int64Data) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Value_Int64Data)
+	if !ok {
+		that2, ok := that.(Value_Int64Data)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Int64Data != that1.Int64Data {
+		return false
+	}
+	return true
+}
+func (this *Value_DoubleData) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Value_DoubleData)
+	if !ok {
+		that2, ok := that.(Value_DoubleData)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.DoubleData != that1.DoubleData {
+		return false
+	}
+	return true
+}
+func (this *Value_BoolData) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Value_BoolData)
+	if !ok {
+		that2, ok := that.(Value_BoolData)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.BoolData != that1.BoolData {
+		return false
+	}
+	return true
+}
+func (this *Value_LambdaData) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Value_LambdaData)
+	if !ok {
+		that2, ok := that.(Value_LambdaData)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.LambdaData.Equal(that1.LambdaData) {
+		return false
+	}
+	return true
+}
+func (this *Value_ModelData) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Value_ModelData)
+	if !ok {
+		that2, ok := that.(Value_ModelData)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.ModelData.Equal(that1.ModelData) {
+		return false
+	}
+	return true
+}
+func (this *Value_ModelRef) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Value_ModelRef)
+	if !ok {
+		that2, ok := that.(Value_ModelRef)
 		if ok {
 			that1 = &that2
 		} else {
@@ -2090,25 +2249,16 @@ func (this *NodeInitArgs) Equal(that interface{}) bool {
 	if this.Name != that1.Name {
 		return false
 	}
-	if that1.DefaultValue == nil {
-		if this.DefaultValue != nil {
-			return false
-		}
-	} else if this.DefaultValue == nil {
-		return false
-	} else if !this.DefaultValue.Equal(that1.DefaultValue) {
-		return false
-	}
 	return true
 }
-func (this *NodeInitArgs_StringValue) Equal(that interface{}) bool {
+func (this *Value_Lambda) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*NodeInitArgs_StringValue)
+	that1, ok := that.(*Value_Lambda)
 	if !ok {
-		that2, ok := that.(NodeInitArgs_StringValue)
+		that2, ok := that.(Value_Lambda)
 		if ok {
 			that1 = &that2
 		} else {
@@ -2120,125 +2270,21 @@ func (this *NodeInitArgs_StringValue) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if this.StringValue != that1.StringValue {
+	if len(this.Inputs) != len(that1.Inputs) {
 		return false
 	}
-	return true
-}
-func (this *NodeInitArgs_Int64Value) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*NodeInitArgs_Int64Value)
-	if !ok {
-		that2, ok := that.(NodeInitArgs_Int64Value)
-		if ok {
-			that1 = &that2
-		} else {
+	for i := range this.Inputs {
+		if this.Inputs[i] != that1.Inputs[i] {
 			return false
 		}
 	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
+	if len(this.Outputs) != len(that1.Outputs) {
 		return false
 	}
-	if this.Int64Value != that1.Int64Value {
-		return false
-	}
-	return true
-}
-func (this *NodeInitArgs_DoubleValue) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*NodeInitArgs_DoubleValue)
-	if !ok {
-		that2, ok := that.(NodeInitArgs_DoubleValue)
-		if ok {
-			that1 = &that2
-		} else {
+	for i := range this.Outputs {
+		if this.Outputs[i] != that1.Outputs[i] {
 			return false
 		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if this.DoubleValue != that1.DoubleValue {
-		return false
-	}
-	return true
-}
-func (this *NodeInitArgs_BoolValue) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*NodeInitArgs_BoolValue)
-	if !ok {
-		that2, ok := that.(NodeInitArgs_BoolValue)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if this.BoolValue != that1.BoolValue {
-		return false
-	}
-	return true
-}
-func (this *NodeInitArgs_LambdaValue) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*NodeInitArgs_LambdaValue)
-	if !ok {
-		that2, ok := that.(NodeInitArgs_LambdaValue)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if !this.LambdaValue.Equal(that1.LambdaValue) {
-		return false
-	}
-	return true
-}
-func (this *Lambda) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*Lambda)
-	if !ok {
-		that2, ok := that.(Lambda)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
 	}
 	if len(this.Nodes) != len(that1.Nodes) {
 		return false
@@ -2247,6 +2293,33 @@ func (this *Lambda) Equal(that interface{}) bool {
 		if !this.Nodes[i].Equal(that1.Nodes[i]) {
 			return false
 		}
+	}
+	return true
+}
+func (this *NodeAttributes) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*NodeAttributes)
+	if !ok {
+		that2, ok := that.(NodeAttributes)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Name != that1.Name {
+		return false
+	}
+	if !this.Value.Equal(that1.Value) {
+		return false
 	}
 	return true
 }
@@ -2307,30 +2380,6 @@ func (this *NodeInput_ParamValue) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *NodeInput_ModelValue) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*NodeInput_ModelValue)
-	if !ok {
-		that2, ok := that.(NodeInput_ModelValue)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if !this.ModelValue.Equal(that1.ModelValue) {
-		return false
-	}
-	return true
-}
 func (this *NodeInput_NodeOutputValue) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
@@ -2351,6 +2400,30 @@ func (this *NodeInput_NodeOutputValue) Equal(that interface{}) bool {
 		return false
 	}
 	if !this.NodeOutputValue.Equal(that1.NodeOutputValue) {
+		return false
+	}
+	return true
+}
+func (this *NodeInput_ParamRef) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*NodeInput_ParamRef)
+	if !ok {
+		that2, ok := that.(NodeInput_ParamRef)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Name != that1.Name {
 		return false
 	}
 	return true
@@ -2382,54 +2455,6 @@ func (this *NodeInput_NodeOutputRef) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *NodeInput_ModelInput) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*NodeInput_ModelInput)
-	if !ok {
-		that2, ok := that.(NodeInput_ModelInput)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if this.ModelName != that1.ModelName {
-		return false
-	}
-	return true
-}
-func (this *NodeInput_ParamInput) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*NodeInput_ParamInput)
-	if !ok {
-		that2, ok := that.(NodeInput_ParamInput)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if this.ParamName != that1.ParamName {
-		return false
-	}
-	return true
-}
 func (this *NodeOutput) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
@@ -2454,14 +2479,14 @@ func (this *NodeOutput) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *GlobalParam) Equal(that interface{}) bool {
+func (this *Param) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*GlobalParam)
+	that1, ok := that.(*Param)
 	if !ok {
-		that2, ok := that.(GlobalParam)
+		that2, ok := that.(Param)
 		if ok {
 			that1 = &that2
 		} else {
@@ -2476,109 +2501,7 @@ func (this *GlobalParam) Equal(that interface{}) bool {
 	if this.Name != that1.Name {
 		return false
 	}
-	if that1.DefaultValue == nil {
-		if this.DefaultValue != nil {
-			return false
-		}
-	} else if this.DefaultValue == nil {
-		return false
-	} else if !this.DefaultValue.Equal(that1.DefaultValue) {
-		return false
-	}
-	return true
-}
-func (this *GlobalParam_StringValue) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*GlobalParam_StringValue)
-	if !ok {
-		that2, ok := that.(GlobalParam_StringValue)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if this.StringValue != that1.StringValue {
-		return false
-	}
-	return true
-}
-func (this *GlobalParam_Int64Value) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*GlobalParam_Int64Value)
-	if !ok {
-		that2, ok := that.(GlobalParam_Int64Value)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if this.Int64Value != that1.Int64Value {
-		return false
-	}
-	return true
-}
-func (this *GlobalParam_DoubleValue) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*GlobalParam_DoubleValue)
-	if !ok {
-		that2, ok := that.(GlobalParam_DoubleValue)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if this.DoubleValue != that1.DoubleValue {
-		return false
-	}
-	return true
-}
-func (this *GlobalParam_BoolValue) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*GlobalParam_BoolValue)
-	if !ok {
-		that2, ok := that.(GlobalParam_BoolValue)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if this.BoolValue != that1.BoolValue {
+	if !this.DefaultValue.Equal(that1.DefaultValue) {
 		return false
 	}
 	return true
@@ -2602,11 +2525,11 @@ func (this *LogicalPipeline) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if len(this.GlobalParams) != len(that1.GlobalParams) {
+	if len(this.Params) != len(that1.Params) {
 		return false
 	}
-	for i := range this.GlobalParams {
-		if !this.GlobalParams[i].Equal(that1.GlobalParams[i]) {
+	for i := range this.Params {
+		if !this.Params[i].Equal(that1.Params[i]) {
 			return false
 		}
 	}
@@ -3200,79 +3123,111 @@ func (this *Node) GoString() string {
 	s = append(s, "&corepb.Node{")
 	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
 	s = append(s, "Kind: "+fmt.Sprintf("%#v", this.Kind)+",\n")
+	if this.Attributes != nil {
+		s = append(s, "Attributes: "+fmt.Sprintf("%#v", this.Attributes)+",\n")
+	}
 	if this.Inputs != nil {
 		s = append(s, "Inputs: "+fmt.Sprintf("%#v", this.Inputs)+",\n")
 	}
 	if this.Outputs != nil {
 		s = append(s, "Outputs: "+fmt.Sprintf("%#v", this.Outputs)+",\n")
 	}
-	if this.InitArgs != nil {
-		s = append(s, "InitArgs: "+fmt.Sprintf("%#v", this.InitArgs)+",\n")
-	}
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *NodeInitArgs) GoString() string {
+func (this *Value) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 10)
-	s = append(s, "&corepb.NodeInitArgs{")
-	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
-	if this.DefaultValue != nil {
-		s = append(s, "DefaultValue: "+fmt.Sprintf("%#v", this.DefaultValue)+",\n")
+	s = append(s, "&corepb.Value{")
+	if this.Data != nil {
+		s = append(s, "Data: "+fmt.Sprintf("%#v", this.Data)+",\n")
 	}
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *NodeInitArgs_StringValue) GoString() string {
+func (this *Value_StringData) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&corepb.NodeInitArgs_StringValue{` +
-		`StringValue:` + fmt.Sprintf("%#v", this.StringValue) + `}`}, ", ")
+	s := strings.Join([]string{`&corepb.Value_StringData{` +
+		`StringData:` + fmt.Sprintf("%#v", this.StringData) + `}`}, ", ")
 	return s
 }
-func (this *NodeInitArgs_Int64Value) GoString() string {
+func (this *Value_Int64Data) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&corepb.NodeInitArgs_Int64Value{` +
-		`Int64Value:` + fmt.Sprintf("%#v", this.Int64Value) + `}`}, ", ")
+	s := strings.Join([]string{`&corepb.Value_Int64Data{` +
+		`Int64Data:` + fmt.Sprintf("%#v", this.Int64Data) + `}`}, ", ")
 	return s
 }
-func (this *NodeInitArgs_DoubleValue) GoString() string {
+func (this *Value_DoubleData) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&corepb.NodeInitArgs_DoubleValue{` +
-		`DoubleValue:` + fmt.Sprintf("%#v", this.DoubleValue) + `}`}, ", ")
+	s := strings.Join([]string{`&corepb.Value_DoubleData{` +
+		`DoubleData:` + fmt.Sprintf("%#v", this.DoubleData) + `}`}, ", ")
 	return s
 }
-func (this *NodeInitArgs_BoolValue) GoString() string {
+func (this *Value_BoolData) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&corepb.NodeInitArgs_BoolValue{` +
-		`BoolValue:` + fmt.Sprintf("%#v", this.BoolValue) + `}`}, ", ")
+	s := strings.Join([]string{`&corepb.Value_BoolData{` +
+		`BoolData:` + fmt.Sprintf("%#v", this.BoolData) + `}`}, ", ")
 	return s
 }
-func (this *NodeInitArgs_LambdaValue) GoString() string {
+func (this *Value_LambdaData) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&corepb.NodeInitArgs_LambdaValue{` +
-		`LambdaValue:` + fmt.Sprintf("%#v", this.LambdaValue) + `}`}, ", ")
+	s := strings.Join([]string{`&corepb.Value_LambdaData{` +
+		`LambdaData:` + fmt.Sprintf("%#v", this.LambdaData) + `}`}, ", ")
 	return s
 }
-func (this *Lambda) GoString() string {
+func (this *Value_ModelData) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&corepb.Value_ModelData{` +
+		`ModelData:` + fmt.Sprintf("%#v", this.ModelData) + `}`}, ", ")
+	return s
+}
+func (this *Value_ModelRef) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 5)
-	s = append(s, "&corepb.Lambda{")
+	s = append(s, "&corepb.Value_ModelRef{")
+	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *Value_Lambda) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 7)
+	s = append(s, "&corepb.Value_Lambda{")
+	s = append(s, "Inputs: "+fmt.Sprintf("%#v", this.Inputs)+",\n")
+	s = append(s, "Outputs: "+fmt.Sprintf("%#v", this.Outputs)+",\n")
 	if this.Nodes != nil {
 		s = append(s, "Nodes: "+fmt.Sprintf("%#v", this.Nodes)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *NodeAttributes) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&corepb.NodeAttributes{")
+	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
+	if this.Value != nil {
+		s = append(s, "Value: "+fmt.Sprintf("%#v", this.Value)+",\n")
 	}
 	s = append(s, "}")
 	return strings.Join(s, "")
@@ -3281,7 +3236,7 @@ func (this *NodeInput) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 8)
+	s := make([]string, 0, 7)
 	s = append(s, "&corepb.NodeInput{")
 	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
 	if this.Value != nil {
@@ -3298,14 +3253,6 @@ func (this *NodeInput_ParamValue) GoString() string {
 		`ParamValue:` + fmt.Sprintf("%#v", this.ParamValue) + `}`}, ", ")
 	return s
 }
-func (this *NodeInput_ModelValue) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&corepb.NodeInput_ModelValue{` +
-		`ModelValue:` + fmt.Sprintf("%#v", this.ModelValue) + `}`}, ", ")
-	return s
-}
 func (this *NodeInput_NodeOutputValue) GoString() string {
 	if this == nil {
 		return "nil"
@@ -3313,6 +3260,16 @@ func (this *NodeInput_NodeOutputValue) GoString() string {
 	s := strings.Join([]string{`&corepb.NodeInput_NodeOutputValue{` +
 		`NodeOutputValue:` + fmt.Sprintf("%#v", this.NodeOutputValue) + `}`}, ", ")
 	return s
+}
+func (this *NodeInput_ParamRef) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&corepb.NodeInput_ParamRef{")
+	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
 }
 func (this *NodeInput_NodeOutputRef) GoString() string {
 	if this == nil {
@@ -3322,26 +3279,6 @@ func (this *NodeInput_NodeOutputRef) GoString() string {
 	s = append(s, "&corepb.NodeInput_NodeOutputRef{")
 	s = append(s, "NodeName: "+fmt.Sprintf("%#v", this.NodeName)+",\n")
 	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
-	s = append(s, "}")
-	return strings.Join(s, "")
-}
-func (this *NodeInput_ModelInput) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := make([]string, 0, 5)
-	s = append(s, "&corepb.NodeInput_ModelInput{")
-	s = append(s, "ModelName: "+fmt.Sprintf("%#v", this.ModelName)+",\n")
-	s = append(s, "}")
-	return strings.Join(s, "")
-}
-func (this *NodeInput_ParamInput) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := make([]string, 0, 5)
-	s = append(s, "&corepb.NodeInput_ParamInput{")
-	s = append(s, "ParamName: "+fmt.Sprintf("%#v", this.ParamName)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -3355,12 +3292,12 @@ func (this *NodeOutput) GoString() string {
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *GlobalParam) GoString() string {
+func (this *Param) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 9)
-	s = append(s, "&corepb.GlobalParam{")
+	s := make([]string, 0, 6)
+	s = append(s, "&corepb.Param{")
 	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
 	if this.DefaultValue != nil {
 		s = append(s, "DefaultValue: "+fmt.Sprintf("%#v", this.DefaultValue)+",\n")
@@ -3368,46 +3305,14 @@ func (this *GlobalParam) GoString() string {
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *GlobalParam_StringValue) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&corepb.GlobalParam_StringValue{` +
-		`StringValue:` + fmt.Sprintf("%#v", this.StringValue) + `}`}, ", ")
-	return s
-}
-func (this *GlobalParam_Int64Value) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&corepb.GlobalParam_Int64Value{` +
-		`Int64Value:` + fmt.Sprintf("%#v", this.Int64Value) + `}`}, ", ")
-	return s
-}
-func (this *GlobalParam_DoubleValue) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&corepb.GlobalParam_DoubleValue{` +
-		`DoubleValue:` + fmt.Sprintf("%#v", this.DoubleValue) + `}`}, ", ")
-	return s
-}
-func (this *GlobalParam_BoolValue) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&corepb.GlobalParam_BoolValue{` +
-		`BoolValue:` + fmt.Sprintf("%#v", this.BoolValue) + `}`}, ", ")
-	return s
-}
 func (this *LogicalPipeline) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 6)
 	s = append(s, "&corepb.LogicalPipeline{")
-	if this.GlobalParams != nil {
-		s = append(s, "GlobalParams: "+fmt.Sprintf("%#v", this.GlobalParams)+",\n")
+	if this.Params != nil {
+		s = append(s, "Params: "+fmt.Sprintf("%#v", this.Params)+",\n")
 	}
 	if this.Nodes != nil {
 		s = append(s, "Nodes: "+fmt.Sprintf("%#v", this.Nodes)+",\n")
@@ -3719,20 +3624,6 @@ func (m *Node) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.InitArgs) > 0 {
-		for iNdEx := len(m.InitArgs) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.InitArgs[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintModelExec(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x2a
-		}
-	}
 	if len(m.Outputs) > 0 {
 		for iNdEx := len(m.Outputs) - 1; iNdEx >= 0; iNdEx-- {
 			{
@@ -3744,13 +3635,27 @@ func (m *Node) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 				i = encodeVarintModelExec(dAtA, i, uint64(size))
 			}
 			i--
-			dAtA[i] = 0x22
+			dAtA[i] = 0x2a
 		}
 	}
 	if len(m.Inputs) > 0 {
 		for iNdEx := len(m.Inputs) - 1; iNdEx >= 0; iNdEx-- {
 			{
 				size, err := m.Inputs[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintModelExec(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x22
+		}
+	}
+	if len(m.Attributes) > 0 {
+		for iNdEx := len(m.Attributes) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Attributes[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -3776,7 +3681,7 @@ func (m *Node) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *NodeInitArgs) Marshal() (dAtA []byte, err error) {
+func (m *Value) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3786,101 +3691,115 @@ func (m *NodeInitArgs) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *NodeInitArgs) MarshalTo(dAtA []byte) (int, error) {
+func (m *Value) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *NodeInitArgs) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *Value) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.DefaultValue != nil {
+	if m.Data != nil {
 		{
-			size := m.DefaultValue.Size()
+			size := m.Data.Size()
 			i -= size
-			if _, err := m.DefaultValue.MarshalTo(dAtA[i:]); err != nil {
+			if _, err := m.Data.MarshalTo(dAtA[i:]); err != nil {
 				return 0, err
 			}
 		}
 	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintModelExec(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0xa
-	}
 	return len(dAtA) - i, nil
 }
 
-func (m *NodeInitArgs_StringValue) MarshalTo(dAtA []byte) (int, error) {
+func (m *Value_StringData) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *NodeInitArgs_StringValue) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *Value_StringData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
-	i -= len(m.StringValue)
-	copy(dAtA[i:], m.StringValue)
-	i = encodeVarintModelExec(dAtA, i, uint64(len(m.StringValue)))
+	i -= len(m.StringData)
+	copy(dAtA[i:], m.StringData)
+	i = encodeVarintModelExec(dAtA, i, uint64(len(m.StringData)))
 	i--
-	dAtA[i] = 0x12
+	dAtA[i] = 0xa
 	return len(dAtA) - i, nil
 }
-func (m *NodeInitArgs_Int64Value) MarshalTo(dAtA []byte) (int, error) {
+func (m *Value_Int64Data) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *NodeInitArgs_Int64Value) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *Value_Int64Data) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
-	i = encodeVarintModelExec(dAtA, i, uint64(m.Int64Value))
+	i = encodeVarintModelExec(dAtA, i, uint64(m.Int64Data))
 	i--
-	dAtA[i] = 0x18
+	dAtA[i] = 0x10
 	return len(dAtA) - i, nil
 }
-func (m *NodeInitArgs_DoubleValue) MarshalTo(dAtA []byte) (int, error) {
+func (m *Value_DoubleData) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *NodeInitArgs_DoubleValue) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *Value_DoubleData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	i -= 8
-	encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.DoubleValue))))
+	encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.DoubleData))))
 	i--
-	dAtA[i] = 0x21
+	dAtA[i] = 0x19
 	return len(dAtA) - i, nil
 }
-func (m *NodeInitArgs_BoolValue) MarshalTo(dAtA []byte) (int, error) {
+func (m *Value_BoolData) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *NodeInitArgs_BoolValue) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *Value_BoolData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	i--
-	if m.BoolValue {
+	if m.BoolData {
 		dAtA[i] = 1
 	} else {
 		dAtA[i] = 0
 	}
 	i--
-	dAtA[i] = 0x28
+	dAtA[i] = 0x20
 	return len(dAtA) - i, nil
 }
-func (m *NodeInitArgs_LambdaValue) MarshalTo(dAtA []byte) (int, error) {
+func (m *Value_LambdaData) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *NodeInitArgs_LambdaValue) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *Value_LambdaData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
-	if m.LambdaValue != nil {
+	if m.LambdaData != nil {
 		{
-			size, err := m.LambdaValue.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.LambdaData.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintModelExec(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x2a
+	}
+	return len(dAtA) - i, nil
+}
+func (m *Value_ModelData) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Value_ModelData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.ModelData != nil {
+		{
+			size, err := m.ModelData.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -3892,7 +3811,7 @@ func (m *NodeInitArgs_LambdaValue) MarshalToSizedBuffer(dAtA []byte) (int, error
 	}
 	return len(dAtA) - i, nil
 }
-func (m *Lambda) Marshal() (dAtA []byte, err error) {
+func (m *Value_ModelRef) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3902,12 +3821,42 @@ func (m *Lambda) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Lambda) MarshalTo(dAtA []byte) (int, error) {
+func (m *Value_ModelRef) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *Lambda) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *Value_ModelRef) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintModelExec(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Value_Lambda) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Value_Lambda) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Value_Lambda) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3923,8 +3872,68 @@ func (m *Lambda) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 				i = encodeVarintModelExec(dAtA, i, uint64(size))
 			}
 			i--
+			dAtA[i] = 0x1a
+		}
+	}
+	if len(m.Outputs) > 0 {
+		for iNdEx := len(m.Outputs) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Outputs[iNdEx])
+			copy(dAtA[i:], m.Outputs[iNdEx])
+			i = encodeVarintModelExec(dAtA, i, uint64(len(m.Outputs[iNdEx])))
+			i--
+			dAtA[i] = 0x12
+		}
+	}
+	if len(m.Inputs) > 0 {
+		for iNdEx := len(m.Inputs) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Inputs[iNdEx])
+			copy(dAtA[i:], m.Inputs[iNdEx])
+			i = encodeVarintModelExec(dAtA, i, uint64(len(m.Inputs[iNdEx])))
+			i--
 			dAtA[i] = 0xa
 		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *NodeAttributes) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *NodeAttributes) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *NodeAttributes) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Value != nil {
+		{
+			size, err := m.Value.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintModelExec(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintModelExec(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -3989,27 +3998,6 @@ func (m *NodeInput_ParamValue) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	}
 	return len(dAtA) - i, nil
 }
-func (m *NodeInput_ModelValue) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *NodeInput_ModelValue) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.ModelValue != nil {
-		{
-			size, err := m.ModelValue.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintModelExec(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1a
-	}
-	return len(dAtA) - i, nil
-}
 func (m *NodeInput_NodeOutputValue) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
@@ -4027,10 +4015,40 @@ func (m *NodeInput_NodeOutputValue) MarshalToSizedBuffer(dAtA []byte) (int, erro
 			i = encodeVarintModelExec(dAtA, i, uint64(size))
 		}
 		i--
-		dAtA[i] = 0x22
+		dAtA[i] = 0x1a
 	}
 	return len(dAtA) - i, nil
 }
+func (m *NodeInput_ParamRef) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *NodeInput_ParamRef) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *NodeInput_ParamRef) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintModelExec(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *NodeInput_NodeOutputRef) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -4066,66 +4084,6 @@ func (m *NodeInput_NodeOutputRef) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
-func (m *NodeInput_ModelInput) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *NodeInput_ModelInput) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *NodeInput_ModelInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.ModelName) > 0 {
-		i -= len(m.ModelName)
-		copy(dAtA[i:], m.ModelName)
-		i = encodeVarintModelExec(dAtA, i, uint64(len(m.ModelName)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *NodeInput_ParamInput) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *NodeInput_ParamInput) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *NodeInput_ParamInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.ParamName) > 0 {
-		i -= len(m.ParamName)
-		copy(dAtA[i:], m.ParamName)
-		i = encodeVarintModelExec(dAtA, i, uint64(len(m.ParamName)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
 func (m *NodeOutput) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -4156,7 +4114,7 @@ func (m *NodeOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *GlobalParam) Marshal() (dAtA []byte, err error) {
+func (m *Param) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -4166,24 +4124,27 @@ func (m *GlobalParam) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *GlobalParam) MarshalTo(dAtA []byte) (int, error) {
+func (m *Param) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *GlobalParam) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *Param) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if m.DefaultValue != nil {
 		{
-			size := m.DefaultValue.Size()
-			i -= size
-			if _, err := m.DefaultValue.MarshalTo(dAtA[i:]); err != nil {
+			size, err := m.DefaultValue.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
 				return 0, err
 			}
+			i -= size
+			i = encodeVarintModelExec(dAtA, i, uint64(size))
 		}
+		i--
+		dAtA[i] = 0x12
 	}
 	if len(m.Name) > 0 {
 		i -= len(m.Name)
@@ -4195,62 +4156,6 @@ func (m *GlobalParam) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *GlobalParam_StringValue) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *GlobalParam_StringValue) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	i -= len(m.StringValue)
-	copy(dAtA[i:], m.StringValue)
-	i = encodeVarintModelExec(dAtA, i, uint64(len(m.StringValue)))
-	i--
-	dAtA[i] = 0x12
-	return len(dAtA) - i, nil
-}
-func (m *GlobalParam_Int64Value) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *GlobalParam_Int64Value) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	i = encodeVarintModelExec(dAtA, i, uint64(m.Int64Value))
-	i--
-	dAtA[i] = 0x18
-	return len(dAtA) - i, nil
-}
-func (m *GlobalParam_DoubleValue) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *GlobalParam_DoubleValue) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	i -= 8
-	encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.DoubleValue))))
-	i--
-	dAtA[i] = 0x21
-	return len(dAtA) - i, nil
-}
-func (m *GlobalParam_BoolValue) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *GlobalParam_BoolValue) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	i--
-	if m.BoolValue {
-		dAtA[i] = 1
-	} else {
-		dAtA[i] = 0
-	}
-	i--
-	dAtA[i] = 0x28
-	return len(dAtA) - i, nil
-}
 func (m *LogicalPipeline) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -4285,10 +4190,10 @@ func (m *LogicalPipeline) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0x12
 		}
 	}
-	if len(m.GlobalParams) > 0 {
-		for iNdEx := len(m.GlobalParams) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.Params) > 0 {
+		for iNdEx := len(m.Params) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.GlobalParams[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.Params[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -5090,21 +4995,21 @@ func (m *TensorRTTensorShapeRange) MarshalToSizedBuffer(dAtA []byte) (int, error
 	var l int
 	_ = l
 	if len(m.Dim) > 0 {
-		dAtA26 := make([]byte, len(m.Dim)*10)
-		var j25 int
+		dAtA28 := make([]byte, len(m.Dim)*10)
+		var j27 int
 		for _, num1 := range m.Dim {
 			num := uint64(num1)
 			for num >= 1<<7 {
-				dAtA26[j25] = uint8(uint64(num)&0x7f | 0x80)
+				dAtA28[j27] = uint8(uint64(num)&0x7f | 0x80)
 				num >>= 7
-				j25++
+				j27++
 			}
-			dAtA26[j25] = uint8(num)
-			j25++
+			dAtA28[j27] = uint8(num)
+			j27++
 		}
-		i -= j25
-		copy(dAtA[i:], dAtA26[:j25])
-		i = encodeVarintModelExec(dAtA, i, uint64(j25))
+		i -= j27
+		copy(dAtA[i:], dAtA28[:j27])
+		i = encodeVarintModelExec(dAtA, i, uint64(j27))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -5204,21 +5109,21 @@ func (m *OpenVINOModelSpec_TensorShape) MarshalToSizedBuffer(dAtA []byte) (int, 
 	var l int
 	_ = l
 	if len(m.Dim) > 0 {
-		dAtA28 := make([]byte, len(m.Dim)*10)
-		var j27 int
+		dAtA30 := make([]byte, len(m.Dim)*10)
+		var j29 int
 		for _, num1 := range m.Dim {
 			num := uint64(num1)
 			for num >= 1<<7 {
-				dAtA28[j27] = uint8(uint64(num)&0x7f | 0x80)
+				dAtA30[j29] = uint8(uint64(num)&0x7f | 0x80)
 				num >>= 7
-				j27++
+				j29++
 			}
-			dAtA28[j27] = uint8(num)
-			j27++
+			dAtA30[j29] = uint8(num)
+			j29++
 		}
-		i -= j27
-		copy(dAtA[i:], dAtA28[:j27])
-		i = encodeVarintModelExec(dAtA, i, uint64(j27))
+		i -= j29
+		copy(dAtA[i:], dAtA30[:j29])
+		i = encodeVarintModelExec(dAtA, i, uint64(j29))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -5249,6 +5154,12 @@ func (m *Node) Size() (n int) {
 	if m.Kind != 0 {
 		n += 1 + sovModelExec(uint64(m.Kind))
 	}
+	if len(m.Attributes) > 0 {
+		for _, e := range m.Attributes {
+			l = e.Size()
+			n += 1 + l + sovModelExec(uint64(l))
+		}
+	}
 	if len(m.Inputs) > 0 {
 		for _, e := range m.Inputs {
 			l = e.Size()
@@ -5261,16 +5172,83 @@ func (m *Node) Size() (n int) {
 			n += 1 + l + sovModelExec(uint64(l))
 		}
 	}
-	if len(m.InitArgs) > 0 {
-		for _, e := range m.InitArgs {
-			l = e.Size()
-			n += 1 + l + sovModelExec(uint64(l))
-		}
+	return n
+}
+
+func (m *Value) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Data != nil {
+		n += m.Data.Size()
 	}
 	return n
 }
 
-func (m *NodeInitArgs) Size() (n int) {
+func (m *Value_StringData) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.StringData)
+	n += 1 + l + sovModelExec(uint64(l))
+	return n
+}
+func (m *Value_Int64Data) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	n += 1 + sovModelExec(uint64(m.Int64Data))
+	return n
+}
+func (m *Value_DoubleData) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	n += 9
+	return n
+}
+func (m *Value_BoolData) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	n += 2
+	return n
+}
+func (m *Value_LambdaData) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.LambdaData != nil {
+		l = m.LambdaData.Size()
+		n += 1 + l + sovModelExec(uint64(l))
+	}
+	return n
+}
+func (m *Value_ModelData) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ModelData != nil {
+		l = m.ModelData.Size()
+		n += 1 + l + sovModelExec(uint64(l))
+	}
+	return n
+}
+func (m *Value_ModelRef) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -5280,72 +5258,49 @@ func (m *NodeInitArgs) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovModelExec(uint64(l))
 	}
-	if m.DefaultValue != nil {
-		n += m.DefaultValue.Size()
-	}
 	return n
 }
 
-func (m *NodeInitArgs_StringValue) Size() (n int) {
+func (m *Value_Lambda) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(m.StringValue)
-	n += 1 + l + sovModelExec(uint64(l))
-	return n
-}
-func (m *NodeInitArgs_Int64Value) Size() (n int) {
-	if m == nil {
-		return 0
+	if len(m.Inputs) > 0 {
+		for _, s := range m.Inputs {
+			l = len(s)
+			n += 1 + l + sovModelExec(uint64(l))
+		}
 	}
-	var l int
-	_ = l
-	n += 1 + sovModelExec(uint64(m.Int64Value))
-	return n
-}
-func (m *NodeInitArgs_DoubleValue) Size() (n int) {
-	if m == nil {
-		return 0
+	if len(m.Outputs) > 0 {
+		for _, s := range m.Outputs {
+			l = len(s)
+			n += 1 + l + sovModelExec(uint64(l))
+		}
 	}
-	var l int
-	_ = l
-	n += 9
-	return n
-}
-func (m *NodeInitArgs_BoolValue) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	n += 2
-	return n
-}
-func (m *NodeInitArgs_LambdaValue) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.LambdaValue != nil {
-		l = m.LambdaValue.Size()
-		n += 1 + l + sovModelExec(uint64(l))
-	}
-	return n
-}
-func (m *Lambda) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
 	if len(m.Nodes) > 0 {
 		for _, e := range m.Nodes {
 			l = e.Size()
 			n += 1 + l + sovModelExec(uint64(l))
 		}
+	}
+	return n
+}
+
+func (m *NodeAttributes) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Name)
+	if l > 0 {
+		n += 1 + l + sovModelExec(uint64(l))
+	}
+	if m.Value != nil {
+		l = m.Value.Size()
+		n += 1 + l + sovModelExec(uint64(l))
 	}
 	return n
 }
@@ -5378,18 +5333,6 @@ func (m *NodeInput_ParamValue) Size() (n int) {
 	}
 	return n
 }
-func (m *NodeInput_ModelValue) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.ModelValue != nil {
-		l = m.ModelValue.Size()
-		n += 1 + l + sovModelExec(uint64(l))
-	}
-	return n
-}
 func (m *NodeInput_NodeOutputValue) Size() (n int) {
 	if m == nil {
 		return 0
@@ -5402,6 +5345,19 @@ func (m *NodeInput_NodeOutputValue) Size() (n int) {
 	}
 	return n
 }
+func (m *NodeInput_ParamRef) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Name)
+	if l > 0 {
+		n += 1 + l + sovModelExec(uint64(l))
+	}
+	return n
+}
+
 func (m *NodeInput_NodeOutputRef) Size() (n int) {
 	if m == nil {
 		return 0
@@ -5412,32 +5368,6 @@ func (m *NodeInput_NodeOutputRef) Size() (n int) {
 		n += 1 + sovModelExec(uint64(m.NodeName))
 	}
 	l = len(m.Name)
-	if l > 0 {
-		n += 1 + l + sovModelExec(uint64(l))
-	}
-	return n
-}
-
-func (m *NodeInput_ModelInput) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.ModelName)
-	if l > 0 {
-		n += 1 + l + sovModelExec(uint64(l))
-	}
-	return n
-}
-
-func (m *NodeInput_ParamInput) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.ParamName)
 	if l > 0 {
 		n += 1 + l + sovModelExec(uint64(l))
 	}
@@ -5457,7 +5387,7 @@ func (m *NodeOutput) Size() (n int) {
 	return n
 }
 
-func (m *GlobalParam) Size() (n int) {
+func (m *Param) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -5468,56 +5398,20 @@ func (m *GlobalParam) Size() (n int) {
 		n += 1 + l + sovModelExec(uint64(l))
 	}
 	if m.DefaultValue != nil {
-		n += m.DefaultValue.Size()
+		l = m.DefaultValue.Size()
+		n += 1 + l + sovModelExec(uint64(l))
 	}
 	return n
 }
 
-func (m *GlobalParam_StringValue) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.StringValue)
-	n += 1 + l + sovModelExec(uint64(l))
-	return n
-}
-func (m *GlobalParam_Int64Value) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	n += 1 + sovModelExec(uint64(m.Int64Value))
-	return n
-}
-func (m *GlobalParam_DoubleValue) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	n += 9
-	return n
-}
-func (m *GlobalParam_BoolValue) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	n += 2
-	return n
-}
 func (m *LogicalPipeline) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if len(m.GlobalParams) > 0 {
-		for _, e := range m.GlobalParams {
+	if len(m.Params) > 0 {
+		for _, e := range m.Params {
 			l = e.Size()
 			n += 1 + l + sovModelExec(uint64(l))
 		}
@@ -5910,6 +5804,11 @@ func (this *Node) String() string {
 	if this == nil {
 		return "nil"
 	}
+	repeatedStringForAttributes := "[]*NodeAttributes{"
+	for _, f := range this.Attributes {
+		repeatedStringForAttributes += strings.Replace(f.String(), "NodeAttributes", "NodeAttributes", 1) + ","
+	}
+	repeatedStringForAttributes += "}"
 	repeatedStringForInputs := "[]*NodeInput{"
 	for _, f := range this.Inputs {
 		repeatedStringForInputs += strings.Replace(f.String(), "NodeInput", "NodeInput", 1) + ","
@@ -5920,83 +5819,97 @@ func (this *Node) String() string {
 		repeatedStringForOutputs += strings.Replace(f.String(), "NodeOutput", "NodeOutput", 1) + ","
 	}
 	repeatedStringForOutputs += "}"
-	repeatedStringForInitArgs := "[]*NodeInitArgs{"
-	for _, f := range this.InitArgs {
-		repeatedStringForInitArgs += strings.Replace(f.String(), "NodeInitArgs", "NodeInitArgs", 1) + ","
-	}
-	repeatedStringForInitArgs += "}"
 	s := strings.Join([]string{`&Node{`,
 		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
 		`Kind:` + fmt.Sprintf("%v", this.Kind) + `,`,
+		`Attributes:` + repeatedStringForAttributes + `,`,
 		`Inputs:` + repeatedStringForInputs + `,`,
 		`Outputs:` + repeatedStringForOutputs + `,`,
-		`InitArgs:` + repeatedStringForInitArgs + `,`,
 		`}`,
 	}, "")
 	return s
 }
-func (this *NodeInitArgs) String() string {
+func (this *Value) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&NodeInitArgs{`,
+	s := strings.Join([]string{`&Value{`,
+		`Data:` + fmt.Sprintf("%v", this.Data) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *Value_StringData) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&Value_StringData{`,
+		`StringData:` + fmt.Sprintf("%v", this.StringData) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *Value_Int64Data) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&Value_Int64Data{`,
+		`Int64Data:` + fmt.Sprintf("%v", this.Int64Data) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *Value_DoubleData) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&Value_DoubleData{`,
+		`DoubleData:` + fmt.Sprintf("%v", this.DoubleData) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *Value_BoolData) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&Value_BoolData{`,
+		`BoolData:` + fmt.Sprintf("%v", this.BoolData) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *Value_LambdaData) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&Value_LambdaData{`,
+		`LambdaData:` + strings.Replace(fmt.Sprintf("%v", this.LambdaData), "Value_Lambda", "Value_Lambda", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *Value_ModelData) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&Value_ModelData{`,
+		`ModelData:` + strings.Replace(fmt.Sprintf("%v", this.ModelData), "Value_ModelRef", "Value_ModelRef", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *Value_ModelRef) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&Value_ModelRef{`,
 		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
-		`DefaultValue:` + fmt.Sprintf("%v", this.DefaultValue) + `,`,
 		`}`,
 	}, "")
 	return s
 }
-func (this *NodeInitArgs_StringValue) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&NodeInitArgs_StringValue{`,
-		`StringValue:` + fmt.Sprintf("%v", this.StringValue) + `,`,
-		`}`,
-	}, "")
-	return s
-}
-func (this *NodeInitArgs_Int64Value) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&NodeInitArgs_Int64Value{`,
-		`Int64Value:` + fmt.Sprintf("%v", this.Int64Value) + `,`,
-		`}`,
-	}, "")
-	return s
-}
-func (this *NodeInitArgs_DoubleValue) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&NodeInitArgs_DoubleValue{`,
-		`DoubleValue:` + fmt.Sprintf("%v", this.DoubleValue) + `,`,
-		`}`,
-	}, "")
-	return s
-}
-func (this *NodeInitArgs_BoolValue) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&NodeInitArgs_BoolValue{`,
-		`BoolValue:` + fmt.Sprintf("%v", this.BoolValue) + `,`,
-		`}`,
-	}, "")
-	return s
-}
-func (this *NodeInitArgs_LambdaValue) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&NodeInitArgs_LambdaValue{`,
-		`LambdaValue:` + strings.Replace(fmt.Sprintf("%v", this.LambdaValue), "Lambda", "Lambda", 1) + `,`,
-		`}`,
-	}, "")
-	return s
-}
-func (this *Lambda) String() string {
+func (this *Value_Lambda) String() string {
 	if this == nil {
 		return "nil"
 	}
@@ -6005,8 +5918,21 @@ func (this *Lambda) String() string {
 		repeatedStringForNodes += strings.Replace(f.String(), "Node", "Node", 1) + ","
 	}
 	repeatedStringForNodes += "}"
-	s := strings.Join([]string{`&Lambda{`,
+	s := strings.Join([]string{`&Value_Lambda{`,
+		`Inputs:` + fmt.Sprintf("%v", this.Inputs) + `,`,
+		`Outputs:` + fmt.Sprintf("%v", this.Outputs) + `,`,
 		`Nodes:` + repeatedStringForNodes + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *NodeAttributes) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&NodeAttributes{`,
+		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
+		`Value:` + strings.Replace(this.Value.String(), "Value", "Value", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -6027,17 +5953,7 @@ func (this *NodeInput_ParamValue) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&NodeInput_ParamValue{`,
-		`ParamValue:` + strings.Replace(fmt.Sprintf("%v", this.ParamValue), "NodeInput_ParamInput", "NodeInput_ParamInput", 1) + `,`,
-		`}`,
-	}, "")
-	return s
-}
-func (this *NodeInput_ModelValue) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&NodeInput_ModelValue{`,
-		`ModelValue:` + strings.Replace(fmt.Sprintf("%v", this.ModelValue), "NodeInput_ModelInput", "NodeInput_ModelInput", 1) + `,`,
+		`ParamValue:` + strings.Replace(fmt.Sprintf("%v", this.ParamValue), "NodeInput_ParamRef", "NodeInput_ParamRef", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -6048,6 +5964,16 @@ func (this *NodeInput_NodeOutputValue) String() string {
 	}
 	s := strings.Join([]string{`&NodeInput_NodeOutputValue{`,
 		`NodeOutputValue:` + strings.Replace(fmt.Sprintf("%v", this.NodeOutputValue), "NodeInput_NodeOutputRef", "NodeInput_NodeOutputRef", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *NodeInput_ParamRef) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&NodeInput_ParamRef{`,
+		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -6063,26 +5989,6 @@ func (this *NodeInput_NodeOutputRef) String() string {
 	}, "")
 	return s
 }
-func (this *NodeInput_ModelInput) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&NodeInput_ModelInput{`,
-		`ModelName:` + fmt.Sprintf("%v", this.ModelName) + `,`,
-		`}`,
-	}, "")
-	return s
-}
-func (this *NodeInput_ParamInput) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&NodeInput_ParamInput{`,
-		`ParamName:` + fmt.Sprintf("%v", this.ParamName) + `,`,
-		`}`,
-	}, "")
-	return s
-}
 func (this *NodeOutput) String() string {
 	if this == nil {
 		return "nil"
@@ -6093,53 +5999,13 @@ func (this *NodeOutput) String() string {
 	}, "")
 	return s
 }
-func (this *GlobalParam) String() string {
+func (this *Param) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&GlobalParam{`,
+	s := strings.Join([]string{`&Param{`,
 		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
-		`DefaultValue:` + fmt.Sprintf("%v", this.DefaultValue) + `,`,
-		`}`,
-	}, "")
-	return s
-}
-func (this *GlobalParam_StringValue) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&GlobalParam_StringValue{`,
-		`StringValue:` + fmt.Sprintf("%v", this.StringValue) + `,`,
-		`}`,
-	}, "")
-	return s
-}
-func (this *GlobalParam_Int64Value) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&GlobalParam_Int64Value{`,
-		`Int64Value:` + fmt.Sprintf("%v", this.Int64Value) + `,`,
-		`}`,
-	}, "")
-	return s
-}
-func (this *GlobalParam_DoubleValue) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&GlobalParam_DoubleValue{`,
-		`DoubleValue:` + fmt.Sprintf("%v", this.DoubleValue) + `,`,
-		`}`,
-	}, "")
-	return s
-}
-func (this *GlobalParam_BoolValue) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&GlobalParam_BoolValue{`,
-		`BoolValue:` + fmt.Sprintf("%v", this.BoolValue) + `,`,
+		`DefaultValue:` + strings.Replace(this.DefaultValue.String(), "Value", "Value", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -6148,18 +6014,18 @@ func (this *LogicalPipeline) String() string {
 	if this == nil {
 		return "nil"
 	}
-	repeatedStringForGlobalParams := "[]*GlobalParam{"
-	for _, f := range this.GlobalParams {
-		repeatedStringForGlobalParams += strings.Replace(f.String(), "GlobalParam", "GlobalParam", 1) + ","
+	repeatedStringForParams := "[]*Param{"
+	for _, f := range this.Params {
+		repeatedStringForParams += strings.Replace(f.String(), "Param", "Param", 1) + ","
 	}
-	repeatedStringForGlobalParams += "}"
+	repeatedStringForParams += "}"
 	repeatedStringForNodes := "[]*Node{"
 	for _, f := range this.Nodes {
 		repeatedStringForNodes += strings.Replace(f.String(), "Node", "Node", 1) + ","
 	}
 	repeatedStringForNodes += "}"
 	s := strings.Join([]string{`&LogicalPipeline{`,
-		`GlobalParams:` + repeatedStringForGlobalParams + `,`,
+		`Params:` + repeatedStringForParams + `,`,
 		`Nodes:` + repeatedStringForNodes + `,`,
 		`}`,
 	}, "")
@@ -6510,6 +6376,40 @@ func (m *Node) Unmarshal(dAtA []byte) error {
 			}
 		case 3:
 			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Attributes", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowModelExec
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Attributes = append(m.Attributes, &NodeAttributes{})
+			if err := m.Attributes[len(m.Attributes)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Inputs", wireType)
 			}
 			var msglen int
@@ -6542,7 +6442,7 @@ func (m *Node) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 4:
+		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Outputs", wireType)
 			}
@@ -6576,9 +6476,143 @@ func (m *Node) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipModelExec(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Value) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowModelExec
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Value: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Value: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StringData", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowModelExec
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Data = &Value_StringData{string(dAtA[iNdEx:postIndex])}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Int64Data", wireType)
+			}
+			var v int64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowModelExec
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.Data = &Value_Int64Data{v}
+		case 3:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DoubleData", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Data = &Value_DoubleData{float64(math.Float64frombits(v))}
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BoolData", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowModelExec
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			b := bool(v != 0)
+			m.Data = &Value_BoolData{b}
 		case 5:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field InitArgs", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field LambdaData", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -6605,8 +6639,274 @@ func (m *Node) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.InitArgs = append(m.InitArgs, &NodeInitArgs{})
-			if err := m.InitArgs[len(m.InitArgs)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			v := &Value_Lambda{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Data = &Value_LambdaData{v}
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ModelData", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowModelExec
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &Value_ModelRef{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Data = &Value_ModelData{v}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipModelExec(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Value_ModelRef) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowModelExec
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ModelRef: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ModelRef: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowModelExec
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Name = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipModelExec(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Value_Lambda) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowModelExec
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Lambda: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Lambda: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Inputs", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowModelExec
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Inputs = append(m.Inputs, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Outputs", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowModelExec
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Outputs = append(m.Outputs, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Nodes", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowModelExec
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Nodes = append(m.Nodes, &Node{})
+			if err := m.Nodes[len(m.Nodes)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -6631,7 +6931,7 @@ func (m *Node) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *NodeInitArgs) Unmarshal(dAtA []byte) error {
+func (m *NodeAttributes) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -6654,10 +6954,10 @@ func (m *NodeInitArgs) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: NodeInitArgs: wiretype end group for non-group")
+			return fmt.Errorf("proto: NodeAttributes: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: NodeInitArgs: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: NodeAttributes: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -6694,91 +6994,7 @@ func (m *NodeInitArgs) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field StringValue", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowModelExec
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.DefaultValue = &NodeInitArgs_StringValue{string(dAtA[iNdEx:postIndex])}
-			iNdEx = postIndex
-		case 3:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Int64Value", wireType)
-			}
-			var v int64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowModelExec
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				v |= int64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			m.DefaultValue = &NodeInitArgs_Int64Value{v}
-		case 4:
-			if wireType != 1 {
-				return fmt.Errorf("proto: wrong wireType = %d for field DoubleValue", wireType)
-			}
-			var v uint64
-			if (iNdEx + 8) > l {
-				return io.ErrUnexpectedEOF
-			}
-			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
-			iNdEx += 8
-			m.DefaultValue = &NodeInitArgs_DoubleValue{float64(math.Float64frombits(v))}
-		case 5:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field BoolValue", wireType)
-			}
-			var v int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowModelExec
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				v |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			b := bool(v != 0)
-			m.DefaultValue = &NodeInitArgs_BoolValue{b}
-		case 6:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LambdaValue", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Value", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -6805,93 +7021,10 @@ func (m *NodeInitArgs) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &Lambda{}
-			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
+			if m.Value == nil {
+				m.Value = &Value{}
 			}
-			m.DefaultValue = &NodeInitArgs_LambdaValue{v}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipModelExec(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *Lambda) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowModelExec
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: Lambda: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Lambda: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Nodes", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowModelExec
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Nodes = append(m.Nodes, &Node{})
-			if err := m.Nodes[len(m.Nodes)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.Value.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -7006,48 +7139,13 @@ func (m *NodeInput) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &NodeInput_ParamInput{}
+			v := &NodeInput_ParamRef{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			m.Value = &NodeInput_ParamValue{v}
 			iNdEx = postIndex
 		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ModelValue", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowModelExec
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			v := &NodeInput_ModelInput{}
-			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			m.Value = &NodeInput_ModelValue{v}
-			iNdEx = postIndex
-		case 4:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field NodeOutputValue", wireType)
 			}
@@ -7081,6 +7179,88 @@ func (m *NodeInput) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			m.Value = &NodeInput_NodeOutputValue{v}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipModelExec(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *NodeInput_ParamRef) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowModelExec
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ParamRef: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ParamRef: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowModelExec
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthModelExec
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Name = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -7204,170 +7384,6 @@ func (m *NodeInput_NodeOutputRef) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *NodeInput_ModelInput) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowModelExec
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: ModelInput: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ModelInput: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ModelName", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowModelExec
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ModelName = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipModelExec(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *NodeInput_ParamInput) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowModelExec
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: ParamInput: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ParamInput: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ParamName", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowModelExec
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ParamName = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipModelExec(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthModelExec
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
 func (m *NodeOutput) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -7450,7 +7466,7 @@ func (m *NodeOutput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *GlobalParam) Unmarshal(dAtA []byte) error {
+func (m *Param) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -7473,10 +7489,10 @@ func (m *GlobalParam) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: GlobalParam: wiretype end group for non-group")
+			return fmt.Errorf("proto: Param: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: GlobalParam: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Param: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -7513,9 +7529,9 @@ func (m *GlobalParam) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field StringValue", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field DefaultValue", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowModelExec
@@ -7525,76 +7541,28 @@ func (m *GlobalParam) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthModelExec
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthModelExec
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.DefaultValue = &GlobalParam_StringValue{string(dAtA[iNdEx:postIndex])}
+			if m.DefaultValue == nil {
+				m.DefaultValue = &Value{}
+			}
+			if err := m.DefaultValue.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
-		case 3:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Int64Value", wireType)
-			}
-			var v int64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowModelExec
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				v |= int64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			m.DefaultValue = &GlobalParam_Int64Value{v}
-		case 4:
-			if wireType != 1 {
-				return fmt.Errorf("proto: wrong wireType = %d for field DoubleValue", wireType)
-			}
-			var v uint64
-			if (iNdEx + 8) > l {
-				return io.ErrUnexpectedEOF
-			}
-			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
-			iNdEx += 8
-			m.DefaultValue = &GlobalParam_DoubleValue{float64(math.Float64frombits(v))}
-		case 5:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field BoolValue", wireType)
-			}
-			var v int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowModelExec
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				v |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			b := bool(v != 0)
-			m.DefaultValue = &GlobalParam_BoolValue{b}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipModelExec(dAtA[iNdEx:])
@@ -7647,7 +7615,7 @@ func (m *LogicalPipeline) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field GlobalParams", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Params", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -7674,8 +7642,8 @@ func (m *LogicalPipeline) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.GlobalParams = append(m.GlobalParams, &GlobalParam{})
-			if err := m.GlobalParams[len(m.GlobalParams)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.Params = append(m.Params, &Param{})
+			if err := m.Params[len(m.Params)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
