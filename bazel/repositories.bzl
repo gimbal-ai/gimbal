@@ -233,6 +233,12 @@ def _cc_deps():
         location_name = "com_github_llvm_llvm_project",
         build_file_content = "# empty",
     )
+    _bazel_repo(
+        "torch-mlir-raw",
+        location_name = "com_github_llvm_torch_mlir",
+        build_file_content = "# empty",
+    )
+    _bazel_repo("stablehlo", location_name = "com_github_openxla_stablehlo")
 
 def _list_gml_deps(name):
     modules = dict()

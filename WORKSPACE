@@ -84,6 +84,12 @@ llvm_configure(
     },
 )
 
+load("@torch-mlir-raw//utils/bazel:configure.bzl", "torch_mlir_configure")
+
+torch_mlir_configure(
+    name = "torch-mlir",
+)
+
 # mediapipe dependencies
 load("@org_tensorflow//tensorflow:workspace3.bzl", "tf_workspace3")
 
