@@ -92,26 +92,33 @@ class NodeAttributes(_message.Message):
     def __init__(self, name: _Optional[str] = ..., value: _Optional[_Union[Value, _Mapping]] = ...) -> None: ...
 
 class NodeInput(_message.Message):
-    __slots__ = ["name", "node_output_value", "param_value"]
+    __slots__ = ["lambda_input_value", "name", "node_output_value", "param_value"]
+    class LambdaInputRef(_message.Message):
+        __slots__ = ["name"]
+        NAME_FIELD_NUMBER: _ClassVar[int]
+        name: str
+        def __init__(self, name: _Optional[str] = ...) -> None: ...
     class NodeOutputRef(_message.Message):
         __slots__ = ["name", "node_name"]
         NAME_FIELD_NUMBER: _ClassVar[int]
         NODE_NAME_FIELD_NUMBER: _ClassVar[int]
         name: str
-        node_name: int
-        def __init__(self, node_name: _Optional[int] = ..., name: _Optional[str] = ...) -> None: ...
+        node_name: str
+        def __init__(self, node_name: _Optional[str] = ..., name: _Optional[str] = ...) -> None: ...
     class ParamRef(_message.Message):
         __slots__ = ["name"]
         NAME_FIELD_NUMBER: _ClassVar[int]
         name: str
         def __init__(self, name: _Optional[str] = ...) -> None: ...
+    LAMBDA_INPUT_VALUE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     NODE_OUTPUT_VALUE_FIELD_NUMBER: _ClassVar[int]
     PARAM_VALUE_FIELD_NUMBER: _ClassVar[int]
+    lambda_input_value: NodeInput.LambdaInputRef
     name: str
     node_output_value: NodeInput.NodeOutputRef
     param_value: NodeInput.ParamRef
-    def __init__(self, name: _Optional[str] = ..., param_value: _Optional[_Union[NodeInput.ParamRef, _Mapping]] = ..., node_output_value: _Optional[_Union[NodeInput.NodeOutputRef, _Mapping]] = ...) -> None: ...
+    def __init__(self, name: _Optional[str] = ..., param_value: _Optional[_Union[NodeInput.ParamRef, _Mapping]] = ..., node_output_value: _Optional[_Union[NodeInput.NodeOutputRef, _Mapping]] = ..., lambda_input_value: _Optional[_Union[NodeInput.LambdaInputRef, _Mapping]] = ...) -> None: ...
 
 class NodeOutput(_message.Message):
     __slots__ = ["name"]

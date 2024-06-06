@@ -97,9 +97,15 @@ message NodeInput {
   // A reference to an output field of another node in the logical pipeline.
   message NodeOutputRef {
     // Name of the node that produced this output.
-    int64 node_name = 1;
+    string node_name = 1;
     // Name of the node's output field.
     string name = 2;
+  }
+
+  // If this node is used in a Lambda node, this is the input from the Lambda caller.
+  message LambdaInputRef {
+    // Name of the lambda input.
+    string name = 1;
   }
 
   // Name of the input.
@@ -109,6 +115,7 @@ message NodeInput {
     ParamRef param_value = 2;
     // Input value is another node's output.
     NodeOutputRef node_output_value = 3;
+    LambdaInputRef lambda_input_value = 4;
   }
 }
 
