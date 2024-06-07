@@ -105,11 +105,6 @@ class NodeInput(_message.Message):
         name: str
         node_name: str
         def __init__(self, node_name: _Optional[str] = ..., name: _Optional[str] = ...) -> None: ...
-    class ParamRef(_message.Message):
-        __slots__ = ["name"]
-        NAME_FIELD_NUMBER: _ClassVar[int]
-        name: str
-        def __init__(self, name: _Optional[str] = ...) -> None: ...
     LAMBDA_INPUT_VALUE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     NODE_OUTPUT_VALUE_FIELD_NUMBER: _ClassVar[int]
@@ -117,8 +112,8 @@ class NodeInput(_message.Message):
     lambda_input_value: NodeInput.LambdaInputRef
     name: str
     node_output_value: NodeInput.NodeOutputRef
-    param_value: NodeInput.ParamRef
-    def __init__(self, name: _Optional[str] = ..., param_value: _Optional[_Union[NodeInput.ParamRef, _Mapping]] = ..., node_output_value: _Optional[_Union[NodeInput.NodeOutputRef, _Mapping]] = ..., lambda_input_value: _Optional[_Union[NodeInput.LambdaInputRef, _Mapping]] = ...) -> None: ...
+    param_value: ParamRef
+    def __init__(self, name: _Optional[str] = ..., param_value: _Optional[_Union[ParamRef, _Mapping]] = ..., node_output_value: _Optional[_Union[NodeInput.NodeOutputRef, _Mapping]] = ..., lambda_input_value: _Optional[_Union[NodeInput.LambdaInputRef, _Mapping]] = ...) -> None: ...
 
 class NodeOutput(_message.Message):
     __slots__ = ["name"]
@@ -144,6 +139,12 @@ class Param(_message.Message):
     default_value: Value
     name: str
     def __init__(self, name: _Optional[str] = ..., default_value: _Optional[_Union[Value, _Mapping]] = ...) -> None: ...
+
+class ParamRef(_message.Message):
+    __slots__ = ["name"]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    name: str
+    def __init__(self, name: _Optional[str] = ...) -> None: ...
 
 class PhysicalPipeline(_message.Message):
     __slots__ = ["created_at", "device_id", "id", "pipeline_deployment_id", "spec", "status", "updated_at", "version"]
@@ -275,7 +276,7 @@ class TensorRTTensorShapeRange(_message.Message):
     def __init__(self, tensor_name: _Optional[str] = ..., dim: _Optional[_Iterable[int]] = ...) -> None: ...
 
 class Value(_message.Message):
-    __slots__ = ["bool_data", "double_data", "int64_data", "lambda_data", "model_data", "string_data"]
+    __slots__ = ["bool_data", "double_data", "int64_data", "lambda_data", "model_data", "param_data", "string_data"]
     class Lambda(_message.Message):
         __slots__ = ["inputs", "nodes", "outputs"]
         INPUTS_FIELD_NUMBER: _ClassVar[int]
@@ -295,14 +296,16 @@ class Value(_message.Message):
     INT64_DATA_FIELD_NUMBER: _ClassVar[int]
     LAMBDA_DATA_FIELD_NUMBER: _ClassVar[int]
     MODEL_DATA_FIELD_NUMBER: _ClassVar[int]
+    PARAM_DATA_FIELD_NUMBER: _ClassVar[int]
     STRING_DATA_FIELD_NUMBER: _ClassVar[int]
     bool_data: bool
     double_data: float
     int64_data: int
     lambda_data: Value.Lambda
     model_data: Value.ModelRef
+    param_data: ParamRef
     string_data: str
-    def __init__(self, string_data: _Optional[str] = ..., int64_data: _Optional[int] = ..., double_data: _Optional[float] = ..., bool_data: bool = ..., lambda_data: _Optional[_Union[Value.Lambda, _Mapping]] = ..., model_data: _Optional[_Union[Value.ModelRef, _Mapping]] = ...) -> None: ...
+    def __init__(self, string_data: _Optional[str] = ..., int64_data: _Optional[int] = ..., double_data: _Optional[float] = ..., bool_data: bool = ..., lambda_data: _Optional[_Union[Value.Lambda, _Mapping]] = ..., model_data: _Optional[_Union[Value.ModelRef, _Mapping]] = ..., param_data: _Optional[_Union[ParamRef, _Mapping]] = ...) -> None: ...
 
 class LogicalPipelineNodeKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = []

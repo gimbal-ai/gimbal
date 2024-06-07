@@ -57,6 +57,12 @@ message Node {
   repeated NodeOutput outputs = 5;
 }
 
+// A reference to a param.
+message ParamRef {
+  // Name of the param.
+  string name = 1;
+}
+
 message Value {
   message ModelRef {
     // Name of the model.
@@ -76,6 +82,7 @@ message Value {
     bool bool_data = 4;
     Lambda lambda_data = 5;
     ModelRef model_data = 6;
+    ParamRef param_data = 7;
   }
 }
 
@@ -88,12 +95,6 @@ message NodeAttributes {
 
 // Input values for a node.
 message NodeInput {
-  // A reference to a param.
-  message ParamRef {
-    // Name of the param.
-    string name = 1;
-  }
-
   // A reference to an output field of another node in the logical pipeline.
   message NodeOutputRef {
     // Name of the node that produced this output.
