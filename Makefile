@@ -36,11 +36,13 @@ gazelle: go-mod-tidy update-python-manifest ## Run gazelle.
 update-python-manifest:
 	$(BAZEL) run //:gazelle_python_manifest.update
 	$(BAZEL) run //src/experimental:gazelle_python_manifest.update
+	$(BAZEL) run //src/api/python:gazelle_python_manifest.update
 
 .PHONY: update-python-requirements
 update-python-requirements:
 	$(BAZEL) run //:requirements.update
 	$(BAZEL) run //src/experimental:requirements.update
+	$(BAZEL) run //src/api/python:requirements.update
 
 .PHONY: update-python-requirements-clean
 update-python-requirements-clean:
@@ -50,6 +52,9 @@ update-python-requirements-clean:
 	rm src/experimental/requirements_lock.txt
 	touch src/experimental/requirements_lock.txt
 	$(BAZEL) run //src/experimental:requirements.update
+	rm src/api/python/requirements_lock.txt
+	touch src/api/python/requirements_lock.txt
+	$(BAZEL) run //src/api/python:requirements.update
 
 src/ui/node_modules: src/ui/package.json src/ui/pnpm-lock.yaml
 	cd src/ui && pnpm install

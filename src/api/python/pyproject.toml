@@ -1,0 +1,7 @@
+[project]
+name = "gml-ai"
+version = "0.0.2"
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = "requirements.in"}

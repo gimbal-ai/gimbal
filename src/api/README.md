@@ -10,3 +10,5 @@ While each directory can contain multiple `.proto` files, they must all belong t
 - **corepb/**:
   - Contains the foundational APIs and messages used throughout the Gimlet platform.
   - This includes messages exchanged between the edge and the control plane, as well as types that provide basic functionality.
+- **python/**:
+  - Contains the python SDK for interacting with the Gimlet platform.
