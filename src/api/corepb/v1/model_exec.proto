@@ -27,6 +27,67 @@ import "src/common/typespb/uuid.proto";
 import "google/protobuf/timestamp.proto";
 
 /****************************************************************************
+ * Model definitions.
+ *****************************************************************************/
+message BoundingBoxInfo {
+  enum BoundingBoxFormat {
+    BOUNDING_BOX_FORMAT_UNKNOWN = 0;
+    // Center coordinate, and width and height.
+    BOUNDING_BOX_FORMAT_CXCYWH = 1;
+    // Top left and bottom right coordinates, with y dimension first.
+    BOUNDING_BOX_FORMAT_YXYX = 2;
+    // Top left and bottom right coordinates, with x dimension first.
+    BOUNDING_BOX_FORMAT_XYXY = 3;
+  }
+  // The format of bounding boxes output by the detection model.
+  BoundingBoxFormat box_format = 1;
+  // Whether the bounding boxes output by the detection model are normalized to [0,1] or not.
+  bool box_normalized = 2;
+}
+
+message ModelInfo {
+  // Name of the model. Used to reference the model in pipelines.
+  string name = 1;
+
+  enum ModelKind {
+    MODEL_KIND_UNKNOWN = 0;
+    MODEL_KIND_TORCH = 1;
+    MODEL_KIND_TORCHSCRIPT = 2;
+    MODEL_KIND_ONNX = 3;
+    MODEL_KIND_TFLITE = 4;
+    MODEL_KIND_OPENVINO = 5;
+  }
+  ModelKind kind = 2;
+
+  enum ModelStorageFormat {
+    MODEL_STORAGE_FORMAT_UNKNOWN = 0;
+    MODEL_STORAGE_FORMAT_MLIR_BYTECODE = 1;
+    MODEL_STORAGE_FORMAT_MLIR_TEXT = 2;
+    MODEL_STORAGE_FORMAT_PROTOBUF = 3;
+    MODEL_STORAGE_FORMAT_PROTO_TEXT = 4;
+    MODEL_STORAGE_FORMAT_FLATBUFFER = 5;
+    MODEL_STORAGE_FORMAT_OPENVINO = 6;
+  }
+  ModelStorageFormat format = 3;
+
+  // Map from asset name to ID of the uploaded file. Interpretation of the names depends on the
+  // storage format. For most formats, there will be a single asset with an empty string name.
+  // Formats that require multiple files each have there own names for the assets. For example,
+  // OpenVINO format will have a file called "weights" and a file called "model".
+  map<string, gml.types.UUID> file_assets = 4;
+
+  // All of the following fields are optional and their presence depends on the type of model.
+
+  // For models that output classifications/detections, this is the list of class names output by
+  // the model.
+  repeated string class_labels = 100;
+
+  // Information about the bounding boxes output by the model, specified only if the model outputs
+  // bounding boxes.
+  BoundingBoxInfo bbox_info = 101;
+}
+
+/****************************************************************************
  * Logical Pipeline definitions.
  *****************************************************************************/
 

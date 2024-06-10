@@ -27,6 +27,20 @@ PIPELINE_STATE_TERMINATED: PipelineState
 PIPELINE_STATE_TERMINATING: PipelineState
 PIPELINE_STATE_UNKNOWN: PipelineState
 
+class BoundingBoxInfo(_message.Message):
+    __slots__ = ["box_format", "box_normalized"]
+    class BoundingBoxFormat(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+        __slots__ = []
+    BOUNDING_BOX_FORMAT_CXCYWH: BoundingBoxInfo.BoundingBoxFormat
+    BOUNDING_BOX_FORMAT_UNKNOWN: BoundingBoxInfo.BoundingBoxFormat
+    BOUNDING_BOX_FORMAT_XYXY: BoundingBoxInfo.BoundingBoxFormat
+    BOUNDING_BOX_FORMAT_YXYX: BoundingBoxInfo.BoundingBoxFormat
+    BOX_FORMAT_FIELD_NUMBER: _ClassVar[int]
+    BOX_NORMALIZED_FIELD_NUMBER: _ClassVar[int]
+    box_format: BoundingBoxInfo.BoundingBoxFormat
+    box_normalized: bool
+    def __init__(self, box_format: _Optional[_Union[BoundingBoxInfo.BoundingBoxFormat, str]] = ..., box_normalized: bool = ...) -> None: ...
+
 class ExecutionSpec(_message.Message):
     __slots__ = ["graph", "model_spec"]
     GRAPH_FIELD_NUMBER: _ClassVar[int]
@@ -52,6 +66,46 @@ class LogicalPipeline(_message.Message):
     nodes: _containers.RepeatedCompositeFieldContainer[Node]
     params: _containers.RepeatedCompositeFieldContainer[Param]
     def __init__(self, params: _Optional[_Iterable[_Union[Param, _Mapping]]] = ..., nodes: _Optional[_Iterable[_Union[Node, _Mapping]]] = ...) -> None: ...
+
+class ModelInfo(_message.Message):
+    __slots__ = ["bbox_info", "class_labels", "file_assets", "format", "kind", "name"]
+    class ModelKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+        __slots__ = []
+    class ModelStorageFormat(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+        __slots__ = []
+    class FileAssetsEntry(_message.Message):
+        __slots__ = ["key", "value"]
+        KEY_FIELD_NUMBER: _ClassVar[int]
+        VALUE_FIELD_NUMBER: _ClassVar[int]
+        key: str
+        value: _uuid_pb2.UUID
+        def __init__(self, key: _Optional[str] = ..., value: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
+    BBOX_INFO_FIELD_NUMBER: _ClassVar[int]
+    CLASS_LABELS_FIELD_NUMBER: _ClassVar[int]
+    FILE_ASSETS_FIELD_NUMBER: _ClassVar[int]
+    FORMAT_FIELD_NUMBER: _ClassVar[int]
+    KIND_FIELD_NUMBER: _ClassVar[int]
+    MODEL_KIND_ONNX: ModelInfo.ModelKind
+    MODEL_KIND_OPENVINO: ModelInfo.ModelKind
+    MODEL_KIND_TFLITE: ModelInfo.ModelKind
+    MODEL_KIND_TORCH: ModelInfo.ModelKind
+    MODEL_KIND_TORCHSCRIPT: ModelInfo.ModelKind
+    MODEL_KIND_UNKNOWN: ModelInfo.ModelKind
+    MODEL_STORAGE_FORMAT_FLATBUFFER: ModelInfo.ModelStorageFormat
+    MODEL_STORAGE_FORMAT_MLIR_BYTECODE: ModelInfo.ModelStorageFormat
+    MODEL_STORAGE_FORMAT_MLIR_TEXT: ModelInfo.ModelStorageFormat
+    MODEL_STORAGE_FORMAT_OPENVINO: ModelInfo.ModelStorageFormat
+    MODEL_STORAGE_FORMAT_PROTOBUF: ModelInfo.ModelStorageFormat
+    MODEL_STORAGE_FORMAT_PROTO_TEXT: ModelInfo.ModelStorageFormat
+    MODEL_STORAGE_FORMAT_UNKNOWN: ModelInfo.ModelStorageFormat
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    bbox_info: BoundingBoxInfo
+    class_labels: _containers.RepeatedScalarFieldContainer[str]
+    file_assets: _containers.MessageMap[str, _uuid_pb2.UUID]
+    format: ModelInfo.ModelStorageFormat
+    kind: ModelInfo.ModelKind
+    name: str
+    def __init__(self, name: _Optional[str] = ..., kind: _Optional[_Union[ModelInfo.ModelKind, str]] = ..., format: _Optional[_Union[ModelInfo.ModelStorageFormat, str]] = ..., file_assets: _Optional[_Mapping[str, _uuid_pb2.UUID]] = ..., class_labels: _Optional[_Iterable[str]] = ..., bbox_info: _Optional[_Union[BoundingBoxInfo, _Mapping]] = ...) -> None: ...
 
 class ModelSpec(_message.Message):
     __slots__ = ["name", "onnx_blob_key", "onnx_file", "openvino_spec", "runtime", "tensorrt_spec"]
