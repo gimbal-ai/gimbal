@@ -5,3 +5,20 @@ dynamic = ["dependencies"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = "requirements.in"}
+
+[tool.setuptools.package-dir]
+"gml" = "gml"
+"src.api.corepb" = "../../../src/api/corepb"
+"gml.proto.src.api.corepb" = "../../../src/api/corepb"
+"src.common.typespb" = "../../../src/common/typespb"
+"gml.proto.src.common.typespb" = "../../../src/common/typespb"
+"src.controlplane.directory.directorypb" = "../../../src/controlplane/directory/directorypb"
+"gml.proto.src.controlplane.directory.directorypb" = "../../../src/controlplane/directory/directorypb"
+"src.controlplane.filetransfer.ftpb" = "../../../src/controlplane/filetransfer/ftpb"
+"gml.proto.src.controlplane.filetransfer.ftpb" = "../../../src/controlplane/filetransfer/ftpb"
+"src.controlplane.logicalpipeline.lppb" = "../../../src/controlplane/logicalpipeline/lppb"
+"gml.proto.src.controlplane.logicalpipeline.lppb" = "../../../src/controlplane/logicalpipeline/lppb"
+"gogoproto" = "../../../third_party/github.com/gogo/protobuf/gogoproto"
+"gml.proto.gogoproto" = "../../../third_party/github.com/gogo/protobuf/gogoproto"
+"mediapipe" = "../../../third_party/github.com/google/mediapipe/mediapipe"
+"gml.proto.mediapipe" = "../../../third_party/github.com/google/mediapipe/mediapipe"

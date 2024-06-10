@@ -14,10 +14,29 @@
 # SPDX-License-Identifier: Proprietary
 
 load("@rules_python//python:defs.bzl", "py_library")
+load("//bazel:copy_python_protos.bzl", "copy_python_protos")
+
+# gazelle:resolve_regexp py py gml\.proto\..* //src/api/python/gml:copy_protos
 
 py_library(
     name = "gml",
     srcs = ["__init__.py"],
     imports = [".."],
     visibility = ["//:__subpackages__"],
+)
+
+copy_python_protos(
+    name = "copy_protos",
+    srcs = [
+        "//src/api/corepb/v1:corepb_py_library",
+        "//src/common/typespb:typespb_py_library",
+        "//src/controlplane/directory/directorypb/v1:directorypb_grpc_py_library",
+        "//src/controlplane/directory/directorypb/v1:directorypb_py_library",
+        "//src/controlplane/filetransfer/ftpb/v1:ftpb_grpc_py_library",
+        "//src/controlplane/filetransfer/ftpb/v1:ftpb_py_library",
+        "//src/controlplane/logicalpipeline/lppb/v1:lppb_grpc_py_library",
+        "//src/controlplane/logicalpipeline/lppb/v1:lppb_py_library",
+    ],
+    import_prefix = "gml.proto",
+    out_dir = "proto",
 )
