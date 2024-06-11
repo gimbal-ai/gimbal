@@ -32,17 +32,29 @@ go-mod-tidy: ## Ensure that go are cleaned up.
 gazelle: go-mod-tidy update-python-manifest ## Run gazelle.
 	$(BAZEL) run //:gazelle
 
-.PHONY: update-python-manifest
-update-python-manifest:
-	$(BAZEL) run //:gazelle_python_manifest.update
-	$(BAZEL) run //src/experimental:gazelle_python_manifest.update
-	$(BAZEL) run //src/api/python:gazelle_python_manifest.update
+requirements_lock.txt: requirements.in
+	$(BAZEL) run //:requirements.update
+
+src/experimental/requirements_lock.txt: src/experimental/requirements.in
+	$(BAZEL) run //src/experimental:requirements.update
+
+src/api/python/requirements_lock.txt: src/api/python/requirements.in
+	$(BAZEL) run //src/api/python:requirements.update
 
 .PHONY: update-python-requirements
-update-python-requirements:
-	$(BAZEL) run //:requirements.update
-	$(BAZEL) run //src/experimental:requirements.update
-	$(BAZEL) run //src/api/python:requirements.update
+update-python-requirements: requirements_lock.txt src/experimental/requirements_lock.txt src/api/python/requirements_lock.txt
+
+gazelle_python.yaml: requirements_lock.txt
+	$(BAZEL) run //:gazelle_python_manifest.update
+
+src/experimental/gazelle_python.yaml: src/experimental/requirements_lock.txt
+	$(BAZEL) run //src/experimental:gazelle_python_manifest.update
+
+src/api/python/gazelle_python.yaml: src/api/python/requirements_lock.txt
+	$(BAZEL) run //src/api/python:gazelle_python_manifest.update
+
+.PHONY: update-python-manifest
+update-python-manifest: gazelle_python.yaml src/experimental/gazelle_python.yaml src/api/python/gazelle_python.yaml
 
 .PHONY: update-python-requirements-clean
 update-python-requirements-clean:
