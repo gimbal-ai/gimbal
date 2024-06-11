@@ -25,10 +25,14 @@ import (
 	"github.com/lestrrat-go/jwx/v2/jwk"
 	"github.com/lestrrat-go/jwx/v2/jwt"
 	log "github.com/sirupsen/logrus"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"gimletlabs.ai/gimlet/src/common/typespb"
 	"gimletlabs.ai/gimlet/src/shared/services/utils"
 )
+
+var ErrInsufficientClaims = status.Error(codes.PermissionDenied, "insufficient claims")
 
 type authContextKey struct{}
 
