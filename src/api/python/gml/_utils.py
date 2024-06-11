@@ -13,4 +13,29 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-from gml.client import Client  # noqa
+import hashlib
+import os
+from typing import BinaryIO, TextIO
+
+
+def chunk_file(f: TextIO | BinaryIO, chunk_size=64 * 1024):
+    while True:
+        chunk = f.read(chunk_size)
+        if not chunk:
+            break
+        yield chunk
+
+
+def sha256sum(f: BinaryIO, buffer_size=64 * 1024):
+    sha256sum = hashlib.sha256()
+    for chunk in chunk_file(f, buffer_size):
+        sha256sum.update(chunk)
+
+    return sha256sum.hexdigest()
+
+
+def get_file_size(f: TextIO | BinaryIO):
+    f.seek(0, os.SEEK_END)
+    file_size = f.tell()
+    f.seek(0)
+    return file_size

@@ -50,6 +50,7 @@ def _copy_python_protos_impl(ctx):
 
     transitive_imports = []
     transitive_files = []
+    transitive_runfiles = []
 
     for pkg in ctx.attr.srcs:
         imports = [
@@ -57,6 +58,8 @@ def _copy_python_protos_impl(ctx):
             for sys_path_prefix in pkg[PyInfo].imports.to_list()
         ]
         transitive_imports.append(pkg[PyInfo].imports)
+
+        transitive_runfiles.append(pkg[DefaultInfo].default_runfiles)
 
         for src in pkg[PyInfo].transitive_sources.to_list():
             if not src.basename.endswith("pb2.py") and not src.basename.endswith("pb2_grpc.py"):
@@ -89,10 +92,12 @@ def _copy_python_protos_impl(ctx):
         executable = sh_file,
     )
     transitive_depset = depset(transitive_files)
+    runfiles = ctx.runfiles(files = outputs, transitive_files = transitive_depset)
+    runfiles = runfiles.merge_all(transitive_runfiles)
     return [
         DefaultInfo(
             files = depset(outputs),
-            runfiles = ctx.runfiles(files = outputs, transitive_files = transitive_depset),
+            runfiles = runfiles,
         ),
         PyInfo(
             transitive_sources = depset(outputs, transitive = [transitive_depset]),

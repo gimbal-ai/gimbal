@@ -13,4 +13,15 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-from gml.client import Client  # noqa
+load("@gml//bazel:gml_build_system.bzl", "gml_py_test")
+
+gml_py_test(
+    name = "test_client",
+    srcs = ["test_client.py"],
+    imports = [".."],
+    deps = [
+        "//src/api/python/gml",
+        "@gml_api_pip//grpcio",
+        "@pip//pytest",
+    ],
+)

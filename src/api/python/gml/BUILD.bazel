@@ -20,9 +20,17 @@ load("//bazel:copy_python_protos.bzl", "copy_python_protos")
 
 py_library(
     name = "gml",
-    srcs = ["__init__.py"],
+    srcs = [
+        "__init__.py",
+        "_utils.py",
+        "client.py",
+    ],
     imports = [".."],
     visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/api/python/gml:copy_protos",
+        "@gml_api_pip//grpcio",
+    ],
 )
 
 copy_python_protos(
