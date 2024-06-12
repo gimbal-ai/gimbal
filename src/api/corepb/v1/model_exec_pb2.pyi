@@ -59,6 +59,46 @@ class FileResource(_message.Message):
     size_bytes: int
     def __init__(self, file_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., size_bytes: _Optional[int] = ..., sha256_hash: _Optional[str] = ...) -> None: ...
 
+class ImagePreprocessingStep(_message.Message):
+    __slots__ = ["conversion_params", "kind", "resize_params", "standardize_params"]
+    class ImagePreprocessingKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+        __slots__ = []
+    class ImageConversionParams(_message.Message):
+        __slots__ = ["scale"]
+        SCALE_FIELD_NUMBER: _ClassVar[int]
+        scale: bool
+        def __init__(self, scale: bool = ...) -> None: ...
+    class ImageResizeParams(_message.Message):
+        __slots__ = ["kind"]
+        class ImageResizeKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+            __slots__ = []
+        IMAGE_RESIZE_KIND_LETTERBOX: ImagePreprocessingStep.ImageResizeParams.ImageResizeKind
+        IMAGE_RESIZE_KIND_STRETCH: ImagePreprocessingStep.ImageResizeParams.ImageResizeKind
+        IMAGE_RESIZE_KIND_UNKNOWN: ImagePreprocessingStep.ImageResizeParams.ImageResizeKind
+        KIND_FIELD_NUMBER: _ClassVar[int]
+        kind: ImagePreprocessingStep.ImageResizeParams.ImageResizeKind
+        def __init__(self, kind: _Optional[_Union[ImagePreprocessingStep.ImageResizeParams.ImageResizeKind, str]] = ...) -> None: ...
+    class ImageStandardizeParams(_message.Message):
+        __slots__ = ["means", "stddevs"]
+        MEANS_FIELD_NUMBER: _ClassVar[int]
+        STDDEVS_FIELD_NUMBER: _ClassVar[int]
+        means: _containers.RepeatedScalarFieldContainer[float]
+        stddevs: _containers.RepeatedScalarFieldContainer[float]
+        def __init__(self, means: _Optional[_Iterable[float]] = ..., stddevs: _Optional[_Iterable[float]] = ...) -> None: ...
+    CONVERSION_PARAMS_FIELD_NUMBER: _ClassVar[int]
+    IMAGE_PREPROCESSING_KIND_CONVERT_TO_TENSOR: ImagePreprocessingStep.ImagePreprocessingKind
+    IMAGE_PREPROCESSING_KIND_RESIZE: ImagePreprocessingStep.ImagePreprocessingKind
+    IMAGE_PREPROCESSING_KIND_STANDARDIZE: ImagePreprocessingStep.ImagePreprocessingKind
+    IMAGE_PREPROCESSING_KIND_UNKNOWN: ImagePreprocessingStep.ImagePreprocessingKind
+    KIND_FIELD_NUMBER: _ClassVar[int]
+    RESIZE_PARAMS_FIELD_NUMBER: _ClassVar[int]
+    STANDARDIZE_PARAMS_FIELD_NUMBER: _ClassVar[int]
+    conversion_params: ImagePreprocessingStep.ImageConversionParams
+    kind: ImagePreprocessingStep.ImagePreprocessingKind
+    resize_params: ImagePreprocessingStep.ImageResizeParams
+    standardize_params: ImagePreprocessingStep.ImageStandardizeParams
+    def __init__(self, kind: _Optional[_Union[ImagePreprocessingStep.ImagePreprocessingKind, str]] = ..., conversion_params: _Optional[_Union[ImagePreprocessingStep.ImageConversionParams, _Mapping]] = ..., resize_params: _Optional[_Union[ImagePreprocessingStep.ImageResizeParams, _Mapping]] = ..., standardize_params: _Optional[_Union[ImagePreprocessingStep.ImageStandardizeParams, _Mapping]] = ...) -> None: ...
+
 class LogicalPipeline(_message.Message):
     __slots__ = ["nodes", "params"]
     NODES_FIELD_NUMBER: _ClassVar[int]
@@ -68,7 +108,7 @@ class LogicalPipeline(_message.Message):
     def __init__(self, params: _Optional[_Iterable[_Union[Param, _Mapping]]] = ..., nodes: _Optional[_Iterable[_Union[Node, _Mapping]]] = ...) -> None: ...
 
 class ModelInfo(_message.Message):
-    __slots__ = ["bbox_info", "class_labels", "file_assets", "format", "kind", "name"]
+    __slots__ = ["bbox_info", "class_labels", "file_assets", "format", "image_preprocessing_steps", "kind", "name"]
     class ModelKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = []
     class ModelStorageFormat(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
@@ -84,6 +124,7 @@ class ModelInfo(_message.Message):
     CLASS_LABELS_FIELD_NUMBER: _ClassVar[int]
     FILE_ASSETS_FIELD_NUMBER: _ClassVar[int]
     FORMAT_FIELD_NUMBER: _ClassVar[int]
+    IMAGE_PREPROCESSING_STEPS_FIELD_NUMBER: _ClassVar[int]
     KIND_FIELD_NUMBER: _ClassVar[int]
     MODEL_KIND_ONNX: ModelInfo.ModelKind
     MODEL_KIND_OPENVINO: ModelInfo.ModelKind
@@ -103,9 +144,10 @@ class ModelInfo(_message.Message):
     class_labels: _containers.RepeatedScalarFieldContainer[str]
     file_assets: _containers.MessageMap[str, _uuid_pb2.UUID]
     format: ModelInfo.ModelStorageFormat
+    image_preprocessing_steps: _containers.RepeatedCompositeFieldContainer[ImagePreprocessingStep]
     kind: ModelInfo.ModelKind
     name: str
-    def __init__(self, name: _Optional[str] = ..., kind: _Optional[_Union[ModelInfo.ModelKind, str]] = ..., format: _Optional[_Union[ModelInfo.ModelStorageFormat, str]] = ..., file_assets: _Optional[_Mapping[str, _uuid_pb2.UUID]] = ..., class_labels: _Optional[_Iterable[str]] = ..., bbox_info: _Optional[_Union[BoundingBoxInfo, _Mapping]] = ...) -> None: ...
+    def __init__(self, name: _Optional[str] = ..., kind: _Optional[_Union[ModelInfo.ModelKind, str]] = ..., format: _Optional[_Union[ModelInfo.ModelStorageFormat, str]] = ..., file_assets: _Optional[_Mapping[str, _uuid_pb2.UUID]] = ..., class_labels: _Optional[_Iterable[str]] = ..., bbox_info: _Optional[_Union[BoundingBoxInfo, _Mapping]] = ..., image_preprocessing_steps: _Optional[_Iterable[_Union[ImagePreprocessingStep, _Mapping]]] = ...) -> None: ...
 
 class ModelSpec(_message.Message):
     __slots__ = ["name", "onnx_blob_key", "onnx_file", "openvino_spec", "runtime", "tensorrt_spec"]

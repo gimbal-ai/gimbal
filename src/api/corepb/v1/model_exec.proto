@@ -45,6 +45,40 @@ message BoundingBoxInfo {
   bool box_normalized = 2;
 }
 
+message ImagePreprocessingStep {
+  enum ImagePreprocessingKind {
+    IMAGE_PREPROCESSING_KIND_UNKNOWN = 0;
+    IMAGE_PREPROCESSING_KIND_CONVERT_TO_TENSOR = 1;
+    IMAGE_PREPROCESSING_KIND_RESIZE = 2;
+    IMAGE_PREPROCESSING_KIND_STANDARDIZE = 3;
+  }
+  ImagePreprocessingKind kind = 1;
+
+  message ImageConversionParams {
+    // Whether to scale the image to [0, 1] from [0, 255].
+    bool scale = 1;
+  }
+  ImageConversionParams conversion_params = 2;
+
+  message ImageResizeParams {
+    enum ImageResizeKind {
+      IMAGE_RESIZE_KIND_UNKNOWN = 0;
+      IMAGE_RESIZE_KIND_STRETCH = 1;
+      IMAGE_RESIZE_KIND_LETTERBOX = 2;
+    }
+    ImageResizeKind kind = 1;
+  }
+  ImageResizeParams resize_params = 3;
+
+  message ImageStandardizeParams {
+    // Per-channel means to use for standardization.
+    repeated float means = 1;
+    // Per-channel standard deviations to use for standardization.
+    repeated float stddevs = 2;
+  }
+  ImageStandardizeParams standardize_params = 4;
+}
+
 message ModelInfo {
   // Name of the model. Used to reference the model in pipelines.
   string name = 1;
@@ -85,6 +119,9 @@ message ModelInfo {
   // Information about the bounding boxes output by the model, specified only if the model outputs
   // bounding boxes.
   BoundingBoxInfo bbox_info = 101;
+
+  // Stages of preprocessing necessary if the model accepts an image tensor as input.
+  repeated ImagePreprocessingStep image_preprocessing_steps = 102;
 }
 
 /****************************************************************************
