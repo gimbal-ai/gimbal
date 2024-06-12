@@ -201,7 +201,7 @@ class ParamRef(_message.Message):
     def __init__(self, name: _Optional[str] = ...) -> None: ...
 
 class PhysicalPipeline(_message.Message):
-    __slots__ = ["created_at", "device_id", "id", "pipeline_deployment_id", "spec", "status", "updated_at", "version"]
+    __slots__ = ["created_at", "device_id", "id", "pipeline_deployment_id", "spec", "status", "updated_at"]
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     DEVICE_ID_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -209,7 +209,6 @@ class PhysicalPipeline(_message.Message):
     SPEC_FIELD_NUMBER: _ClassVar[int]
     STATUS_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
-    VERSION_FIELD_NUMBER: _ClassVar[int]
     created_at: _timestamp_pb2.Timestamp
     device_id: _uuid_pb2.UUID
     id: _uuid_pb2.UUID
@@ -217,20 +216,29 @@ class PhysicalPipeline(_message.Message):
     spec: PhysicalPipelineSpec
     status: PhysicalPipelineStatus
     updated_at: _timestamp_pb2.Timestamp
-    version: int
-    def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., pipeline_deployment_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., device_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., version: _Optional[int] = ..., spec: _Optional[_Union[PhysicalPipelineSpec, _Mapping]] = ..., status: _Optional[_Union[PhysicalPipelineStatus, _Mapping]] = ...) -> None: ...
+    def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., pipeline_deployment_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., device_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., spec: _Optional[_Union[PhysicalPipelineSpec, _Mapping]] = ..., status: _Optional[_Union[PhysicalPipelineStatus, _Mapping]] = ...) -> None: ...
 
 class PhysicalPipelineSpec(_message.Message):
-    __slots__ = ["state"]
+    __slots__ = ["graph", "runtime", "state", "version"]
+    GRAPH_FIELD_NUMBER: _ClassVar[int]
+    RUNTIME_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
+    VERSION_FIELD_NUMBER: _ClassVar[int]
+    graph: ExecutionSpec
+    runtime: str
     state: PipelineState
-    def __init__(self, state: _Optional[_Union[PipelineState, str]] = ...) -> None: ...
+    version: int
+    def __init__(self, state: _Optional[_Union[PipelineState, str]] = ..., version: _Optional[int] = ..., graph: _Optional[_Union[ExecutionSpec, _Mapping]] = ..., runtime: _Optional[str] = ...) -> None: ...
 
 class PhysicalPipelineStatus(_message.Message):
-    __slots__ = ["state"]
+    __slots__ = ["runtime", "state", "version"]
+    RUNTIME_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
+    VERSION_FIELD_NUMBER: _ClassVar[int]
+    runtime: str
     state: PipelineState
-    def __init__(self, state: _Optional[_Union[PipelineState, str]] = ...) -> None: ...
+    version: int
+    def __init__(self, state: _Optional[_Union[PipelineState, str]] = ..., version: _Optional[int] = ..., runtime: _Optional[str] = ...) -> None: ...
 
 class Pipeline(_message.Message):
     __slots__ = ["nodes"]

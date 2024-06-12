@@ -261,24 +261,32 @@ message PhysicalPipeline {
   google.protobuf.Timestamp created_at = 4;
   // The time this physical pipeline was last updated.
   google.protobuf.Timestamp updated_at = 5;
-  // The version of the physical pipeline.
-  int64 version = 6;
   // The spec of the deployment.
-  PhysicalPipelineSpec spec = 7;
+  PhysicalPipelineSpec spec = 6;
   // The state of the deployment.
-  PhysicalPipelineStatus status = 8;
+  PhysicalPipelineStatus status = 7;
 }
 
 // The spec represents the desired state of the deployment.
 message PhysicalPipelineSpec {
   // The state that we would like the pipeline to be in.
   PipelineState state = 1;
+  // The version of the pipeline deployment that this spec is for.
+  int64 version = 2;
+  // The actual pipeline graph.
+  gml.internal.api.core.v1.ExecutionSpec graph = 3;
+  // The preferred runtime for the execution.
+  string runtime = 4;
 }
 
 // The state represents the actual state of the deployment.
 message PhysicalPipelineStatus {
   // The state that the pipeline is currently in.
   PipelineState state = 1;
+  // The version of the pipeline deployment that this status is for.
+  int64 version = 2;
+  // The actual runtime for the device's execution.
+  string runtime = 3;
 }
 
 /****************************************************************************
