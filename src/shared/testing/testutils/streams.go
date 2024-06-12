@@ -21,6 +21,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/nats-io/nats.go"
 	"github.com/nats-io/nats.go/jetstream"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/sync/errgroup"
@@ -179,4 +180,67 @@ func InitializeEdgeToCPStream(js jetstream.JetStream, topic corepb.EdgeCPTopic, 
 		Storage:  jetstream.MemoryStorage,
 	})
 	return err
+}
+
+type MockJetstreamMsg struct {
+	MsgData     []byte
+	MsgSubject  string
+	MsgMetadata *jetstream.MsgMetadata
+	nakCalled   bool
+}
+
+func (m *MockJetstreamMsg) Metadata() (*jetstream.MsgMetadata, error) {
+	return m.MsgMetadata, nil
+}
+
+func (*MockJetstreamMsg) Headers() nats.Header {
+	return nil
+}
+
+func (m *MockJetstreamMsg) Data() []byte {
+	return m.MsgData
+}
+
+func (m *MockJetstreamMsg) Subject() string {
+	return m.MsgSubject
+}
+
+func (*MockJetstreamMsg) Reply() string {
+	return ""
+}
+
+func (*MockJetstreamMsg) Ack() error {
+	return nil
+}
+
+func (*MockJetstreamMsg) DoubleAck(context.Context) error {
+	return nil
+}
+
+func (m *MockJetstreamMsg) Nak() error {
+	m.nakCalled = true
+
+	return nil
+}
+
+func (m *MockJetstreamMsg) NakWithDelay(time.Duration) error {
+	m.nakCalled = true
+
+	return nil
+}
+
+func (*MockJetstreamMsg) InProgress() error {
+	return nil
+}
+
+func (*MockJetstreamMsg) Term() error {
+	return nil
+}
+
+func (*MockJetstreamMsg) TermWithReason(string) error {
+	return nil
+}
+
+func (m *MockJetstreamMsg) NakCalled() bool {
+	return m.nakCalled
 }

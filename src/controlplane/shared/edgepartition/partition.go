@@ -164,8 +164,12 @@ func CPNATSTopic(partition string, edgeID string, topic corepb.CPTopic, isDurabl
 	switch topic {
 	case corepb.CP_TOPIC_DEVICE_CONNECTED:
 		return gen("deviceConnected"), nil
+	case corepb.CP_TOPIC_DEVICE_DISCONNECTED:
+		return gen("deviceDisconnected"), nil
 	case corepb.CP_TOPIC_PHYSICAL_PIPELINE_RECONCILIATION:
 		return gen("physicalPipelineReconciliation"), nil
+	case corepb.CP_TOPIC_PIPELINE_DEPLOYMENT_RECONCILIATION:
+		return gen("pipelineDeploymentReconciliation"), nil
 	default:
 		return "", fmt.Errorf("bad topic %s", topic.String())
 	}

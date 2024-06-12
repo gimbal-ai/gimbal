@@ -33,6 +33,7 @@ go_library(
         "//src/shared/services/utils",
         "@com_github_jmoiron_sqlx//:sqlx",
         "@com_github_lestrrat_go_jwx_v2//jwk",
+        "@com_github_nats_io_nats_go//:nats_go",
         "@com_github_nats_io_nats_go//jetstream",
         "@com_github_sirupsen_logrus//:logrus",
         "@com_github_spf13_viper//:viper",

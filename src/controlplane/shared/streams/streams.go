@@ -45,6 +45,7 @@ var EdgeCPTopicToStreamName = map[corepb.EdgeCPTopic]string{
 
 var CPTopicToStreamName = map[corepb.CPTopic]string{
 	corepb.CP_TOPIC_DEVICE_CONNECTED:                 "deviceConnected",
+	corepb.CP_TOPIC_DEVICE_DISCONNECTED:              "deviceDisconnected",
 	corepb.CP_TOPIC_PHYSICAL_PIPELINE_RECONCILIATION: "physicalPipelineReconciliation",
 }
 

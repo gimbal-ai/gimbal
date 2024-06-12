@@ -8,7 +8,9 @@ from google.protobuf import message as _message
 from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
 CP_TOPIC_DEVICE_CONNECTED: CPTopic
+CP_TOPIC_DEVICE_DISCONNECTED: CPTopic
 CP_TOPIC_PHYSICAL_PIPELINE_RECONCILIATION: CPTopic
+CP_TOPIC_PIPELINE_DEPLOYMENT_RECONCILIATION: CPTopic
 CP_TOPIC_UNKNOWN: CPTopic
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -31,6 +33,12 @@ class CPMetadata(_message.Message):
     def __init__(self, topic: _Optional[_Union[CPTopic, str]] = ..., entity_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., recv_timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class DeviceConnected(_message.Message):
+    __slots__ = ["device_id"]
+    DEVICE_ID_FIELD_NUMBER: _ClassVar[int]
+    device_id: _uuid_pb2.UUID
+    def __init__(self, device_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
+
+class DeviceDisconnected(_message.Message):
     __slots__ = ["device_id"]
     DEVICE_ID_FIELD_NUMBER: _ClassVar[int]
     device_id: _uuid_pb2.UUID

@@ -37,6 +37,7 @@ var ErrInvalidMessage = errors.New("message format invalid or unexpected")
 type MsgMetadata struct {
 	*corepb.EdgeCPMetadata
 	*corepb.CPMetadata
+	Msg jetstream.Msg
 }
 
 type DurableMessageHandler func(context.Context, *MsgMetadata, *types.Any) error
@@ -109,6 +110,8 @@ func (p *DurablePartitionHandler) handleMessage(topic string, msg jetstream.Msg)
 	var anyMsg *types.Any
 	var entityID *typespb.UUID
 	md := &MsgMetadata{}
+	md.Msg = msg
+
 	if p.isCPTopic {
 		cpMsg := &corepb.CPMessage{}
 		err := cpMsg.Unmarshal(msg.Data())

@@ -50,10 +50,18 @@ enum CPTopic {
   CP_TOPIC_UNKNOWN = 0;
   CP_TOPIC_DEVICE_CONNECTED = 1;
   CP_TOPIC_PHYSICAL_PIPELINE_RECONCILIATION = 2;
+  CP_TOPIC_DEVICE_DISCONNECTED = 3;
+  CP_TOPIC_PIPELINE_DEPLOYMENT_RECONCILIATION = 4;
 }
 
 // DeviceConnected is sent whenever a device connects.
 message DeviceConnected {
+  gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
+}
+
+// DeviceDisconnected is sent whenever a device disconnects from the NATS bridge.
+// This does not necessarily mean that the device is offline, the bridge may have just timed out.
+message DeviceDisconnected {
   gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
 }
 
