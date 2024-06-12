@@ -1,2 +1,4 @@
 protobuf
 grpcio
+torch
+torch_mlir_gml
