@@ -30,6 +30,9 @@ _HDR_EXTRA_COPTS = [
 def _is_header(path):
     return path.endswith(".h") or path.endswith(".hpp") or path.endswith(".hh") or path.endswith(".hxx")
 
+def _is_regular_c_src(path):
+    return path.endswith(".cc") or path.endswith(".c") or path.endswith(".cpp")
+
 def _generate_compile_commands(ctx, cc_toolchain, feature_configuration):
     """Generates compile commands for all the srcs in the given library."""
     clang_path = cc_common.get_tool_for_action(
@@ -127,6 +130,8 @@ def _run_clang_tidy_on_files(ctx, cc_toolchain, run_clang_tidy, compile_commands
     all_fixes = []
     for src in ctx.attr.srcs:
         f = src.files.to_list()[0]
+        if not _is_header(f.path) and not _is_regular_c_src(f.path):
+            continue
 
         fixes = ctx.actions.declare_file(ctx.attr.name + "." + f.basename + ".fixes.yaml")
         all_fixes.append(fixes)
