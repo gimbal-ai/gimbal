@@ -66,6 +66,39 @@ constexpr gml::types::Code GRPCCodeToGMLCode(grpc::StatusCode code) noexcept {
   }
 }
 
+constexpr grpc::StatusCode GMLCodeToGRPCCode(gml::types::Code code) noexcept {
+  switch (code) {
+    case gml::types::CODE_OK:
+      return grpc::StatusCode::OK;
+    case gml::types::CODE_CANCELLED:
+      return grpc::StatusCode::CANCELLED;
+    case gml::types::CODE_UNKNOWN:
+      return grpc::StatusCode::UNKNOWN;
+    case gml::types::CODE_INVALID_ARGUMENT:
+      return grpc::StatusCode::INVALID_ARGUMENT;
+    case gml::types::CODE_DEADLINE_EXCEEDED:
+      return grpc::StatusCode::DEADLINE_EXCEEDED;
+    case gml::types::CODE_NOT_FOUND:
+      return grpc::StatusCode::NOT_FOUND;
+    case gml::types::CODE_ALREADY_EXISTS:
+      return grpc::StatusCode::ALREADY_EXISTS;
+    case gml::types::CODE_PERMISSION_DENIED:
+      return grpc::StatusCode::PERMISSION_DENIED;
+    case gml::types::CODE_RESOURCE_UNAVAILABLE:
+      return grpc::StatusCode::RESOURCE_EXHAUSTED;
+    case gml::types::CODE_FAILED_PRECONDITION:
+      return grpc::StatusCode::FAILED_PRECONDITION;
+    case gml::types::CODE_UNIMPLEMENTED:
+      return grpc::StatusCode::UNIMPLEMENTED;
+    case gml::types::CODE_INTERNAL:
+      return grpc::StatusCode::INTERNAL;
+    case gml::types::CODE_UNAUTHENTICATED:
+      return grpc::StatusCode::UNAUTHENTICATED;
+    default:
+      return grpc::StatusCode::UNKNOWN;
+  }
+}
+
 // Conversion of grpc::Status message.
 template <>
 inline Status StatusAdapter<grpc::Status>(const grpc::Status& s) noexcept {
@@ -74,5 +107,19 @@ inline Status StatusAdapter<grpc::Status>(const grpc::Status& s) noexcept {
   }
   return {GRPCCodeToGMLCode(s.error_code()), s.error_message()};
 };
+
+template <typename T>
+inline grpc::Status GRPCStatusAdapter(const T&) noexcept {
+  static_assert(sizeof(T) == 0, "Implement custom status adapter, or include correct .h file.");
+  return {grpc::StatusCode::UNIMPLEMENTED, "Should never get here"};
+}
+
+template <>
+inline grpc::Status GRPCStatusAdapter(const gml::Status& s) noexcept {
+  if (s.ok()) {
+    return grpc::Status::OK;
+  }
+  return {GMLCodeToGRPCCode(s.code()), s.msg()};
+}
 
 }  // namespace gml
