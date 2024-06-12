@@ -26,12 +26,12 @@ import "src/common/typespb/uuid.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 
-// CPEdgeMetadata has basic routing information for messages on the controlplane.
+// CPMetadata has basic routing information for messages on the controlplane.
 message CPMetadata {
   // The topic of this message.
   CPTopic topic = 1;
   // The device ID where the message is going.
-  gml.types.UUID device_id = 2 [ (gogoproto.customname) = "DeviceID" ];
+  gml.types.UUID entity_id = 2 [ (gogoproto.customname) = "EntityID" ];
   // The timestamp when the message was generated.
   google.protobuf.Timestamp recv_timestamp = 3;
 }

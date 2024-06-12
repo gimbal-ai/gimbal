@@ -107,7 +107,7 @@ func (p *DurablePartitionHandler) handleMessage(topic string, msg jetstream.Msg)
 	topicLog := log.WithField("topic", topic)
 
 	var anyMsg *types.Any
-	var deviceID *typespb.UUID
+	var entityID *typespb.UUID
 	md := &MsgMetadata{}
 	if p.isCPTopic {
 		cpMsg := &corepb.CPMessage{}
@@ -116,7 +116,7 @@ func (p *DurablePartitionHandler) handleMessage(topic string, msg jetstream.Msg)
 			return err
 		}
 		anyMsg = cpMsg.Msg
-		deviceID = cpMsg.Metadata.DeviceID
+		entityID = cpMsg.Metadata.EntityID
 		md.CPMetadata = cpMsg.Metadata
 	} else {
 		e2CpMsg := &corepb.EdgeCPMessage{}
@@ -125,19 +125,19 @@ func (p *DurablePartitionHandler) handleMessage(topic string, msg jetstream.Msg)
 			return err
 		}
 		anyMsg = e2CpMsg.Msg
-		deviceID = e2CpMsg.Metadata.DeviceID
+		entityID = e2CpMsg.Metadata.DeviceID
 		md.EdgeCPMetadata = e2CpMsg.Metadata
 	}
 
 	msgType, err := types.AnyMessageName(anyMsg)
 	if err != nil {
-		topicLog.WithError(err).WithField("deviceID", deviceID).Error("Failed to get type of any message")
+		topicLog.WithError(err).WithField("entityID", entityID).Error("Failed to get type of any message")
 		return ErrInvalidMessage
 	}
 
 	funcHandler, ok := p.messageHandlers[msgType]
 	if !ok {
-		topicLog.WithField("msgType", msgType).WithField("deviceID", deviceID).Error("Message type does not match any expected messages")
+		topicLog.WithField("msgType", msgType).WithField("entityID", entityID).Error("Message type does not match any expected messages")
 		return ErrInvalidMessage
 	}
 

@@ -21,14 +21,14 @@ class CPMessage(_message.Message):
     def __init__(self, metadata: _Optional[_Union[CPMetadata, _Mapping]] = ..., msg: _Optional[_Union[_any_pb2.Any, _Mapping]] = ...) -> None: ...
 
 class CPMetadata(_message.Message):
-    __slots__ = ["device_id", "recv_timestamp", "topic"]
-    DEVICE_ID_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["entity_id", "recv_timestamp", "topic"]
+    ENTITY_ID_FIELD_NUMBER: _ClassVar[int]
     RECV_TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     TOPIC_FIELD_NUMBER: _ClassVar[int]
-    device_id: _uuid_pb2.UUID
+    entity_id: _uuid_pb2.UUID
     recv_timestamp: _timestamp_pb2.Timestamp
     topic: CPTopic
-    def __init__(self, topic: _Optional[_Union[CPTopic, str]] = ..., device_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., recv_timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, topic: _Optional[_Union[CPTopic, str]] = ..., entity_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., recv_timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class DeviceConnected(_message.Message):
     __slots__ = ["device_id"]
