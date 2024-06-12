@@ -59,7 +59,7 @@ function fatal() {
 
 function device_type() {
   if [[ "$(uname -m)" == "x86_64" ]]; then
-    if [[ -d "/etc/OpenCL/vendors" ]] && [[ -d "/dev/dri" ]]; then
+    if [[ -f "/etc/OpenCL/vendors/intel.icd" ]] && [[ -d "/dev/dri" ]]; then
       echo "x86_64 Intel GPU"
       return
     fi
@@ -111,7 +111,8 @@ else
   extra_docker_flags+=(-d)
 fi
 
-DEFAULT_IMAGE_TAG=""
+IMAGE_TYPE=""
+DEFAULT_IMAGE_VERSION="dev-latest"
 
 cmdline_opts=(
   "--blob_store_dir" "/gml"
@@ -128,14 +129,13 @@ if [[ "$(device_type)" == "aarch64 NVIDIA Orin Nano"* ]]; then
     -v /usr/local/cuda:/host_cuda
     -e LD_LIBRARY_PATH=/lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/host_lib/aarch64-linux-gnu:/host_cuda/lib64:/host_lib/aarch64-linux-gnu/tegra:/host_lib/aarch64-linux-gnu/tegra-egl
   )
-  DEFAULT_IMAGE_TAG=jetson-dev-latest
+  IMAGE_TYPE=jetson
 elif [[ "$(device_type)" == "x86_64"* ]]; then
-  DEFAULT_IMAGE_TAG=dev-latest
   for vid in "/dev/video"*; do
     extra_docker_flags+=("--device" "${vid}")
   done
 elif [[ "$(device_type)" == "aarch64"* ]]; then
-  DEFAULT_IMAGE_TAG=aarch64-dev-latest
+  IMAGE_TYPE=aarch64
   for vid in "/dev/video"*; do
     extra_docker_flags+=("--device" "${vid}")
   done
@@ -144,7 +144,7 @@ else
 fi
 
 if [[ "$(device_type)" == "x86_64 Intel GPU" ]]; then
-  DEFAULT_IMAGE_TAG=intelgpu-dev-latest
+  IMAGE_TYPE=intelgpu
   extra_docker_flags+=(
     "--device" "/dev/dri"
     # We need to add /usr/local/lib to the library search path.
@@ -178,7 +178,12 @@ cmdline_opts+=(--controlplane_addr="$USE_CONTROLPLANE_ADDR")
 
 mkdir -p "$GML_CACHE_DIR"
 
-IMAGE_TAG=${GML_IMAGE_TAG:-${DEFAULT_IMAGE_TAG}}
+IMAGE_VERSION=${GML_IMAGE_VERSION:-${DEFAULT_IMAGE_VERSION}}
+if [[ -z "$IMAGE_TYPE" ]]; then
+  IMAGE_TAG=${GML_IMAGE_TAG:-${IMAGE_VERSION}}
+else
+  IMAGE_TAG=${GML_IMAGE_TAG:-"${IMAGE_TYPE}-${IMAGE_VERSION}"}
+fi
 IMAGE_REPO=${GML_IMAGE_REPO:-${DEFAULT_IMAGE_REPO}}
 echo "Running container: $IMAGE_REPO:$IMAGE_TAG"
 
