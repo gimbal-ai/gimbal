@@ -32,13 +32,13 @@ go-mod-tidy: ## Ensure that go are cleaned up.
 gazelle: go-mod-tidy update-python-manifest ## Run gazelle.
 	$(BAZEL) run //:gazelle
 
-requirements_lock.txt: requirements.in BUILD.bazel
+requirements_lock.txt: requirements.in
 	$(BAZEL) run //:requirements.update
 
-src/experimental/requirements_lock.txt: src/experimental/requirements.in src/experimental/BUILD.bazel
+src/experimental/requirements_lock.txt: src/experimental/requirements.in
 	$(BAZEL) run //src/experimental:requirements.update
 
-src/api/python/requirements_lock.txt: src/api/python/requirements.in src/api/python/BUILD.bazel
+src/api/python/requirements_lock.txt: src/api/python/requirements.in
 	$(BAZEL) run //src/api/python:requirements.update
 
 .PHONY: update-python-requirements
