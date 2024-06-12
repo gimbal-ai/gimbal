@@ -243,13 +243,13 @@ When gazelle adds in pip deps, it walks up the tree from the file location to fi
     make update-python-requirements
     ```
 
-1. Finally run the `gazelle_python_manifest` target to generate the relevant `gazelle_python.yaml` file.
+1. Run the `gazelle_python_manifest` target to generate the relevant `gazelle_python.yaml` file.
 
     ```bash
     make update-python-manifest
     ```
 
-1. Finally run the `gazelle` target if needed to generate and update `BUILD.bazel` files.
+1. Run the `gazelle` target if needed to generate and update `BUILD.bazel` files.
 
     ```bash
     make gazelle
