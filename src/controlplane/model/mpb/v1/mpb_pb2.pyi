@@ -24,12 +24,14 @@ class CreateModelResponse(_message.Message):
     def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
 
 class GetModelRequest(_message.Message):
-    __slots__ = ["id", "name"]
+    __slots__ = ["id", "name", "org_id"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    ORG_ID_FIELD_NUMBER: _ClassVar[int]
     id: _uuid_pb2.UUID
     name: str
-    def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., name: _Optional[str] = ...) -> None: ...
+    org_id: _uuid_pb2.UUID
+    def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., name: _Optional[str] = ..., org_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
 
 class GetModelResponse(_message.Message):
     __slots__ = ["model_info"]
