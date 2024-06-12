@@ -150,7 +150,8 @@ class ModelInfo(_message.Message):
     def __init__(self, name: _Optional[str] = ..., kind: _Optional[_Union[ModelInfo.ModelKind, str]] = ..., format: _Optional[_Union[ModelInfo.ModelStorageFormat, str]] = ..., file_assets: _Optional[_Mapping[str, _uuid_pb2.UUID]] = ..., class_labels: _Optional[_Iterable[str]] = ..., bbox_info: _Optional[_Union[BoundingBoxInfo, _Mapping]] = ..., image_preprocessing_steps: _Optional[_Iterable[_Union[ImagePreprocessingStep, _Mapping]]] = ...) -> None: ...
 
 class ModelSpec(_message.Message):
-    __slots__ = ["name", "onnx_blob_key", "onnx_file", "openvino_spec", "runtime", "tensorrt_spec"]
+    __slots__ = ["name", "named_asset", "onnx_blob_key", "onnx_file", "openvino_spec", "runtime", "tensorrt_spec"]
+    NAMED_ASSET_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     ONNX_BLOB_KEY_FIELD_NUMBER: _ClassVar[int]
     ONNX_FILE_FIELD_NUMBER: _ClassVar[int]
@@ -158,12 +159,21 @@ class ModelSpec(_message.Message):
     RUNTIME_FIELD_NUMBER: _ClassVar[int]
     TENSORRT_SPEC_FIELD_NUMBER: _ClassVar[int]
     name: str
+    named_asset: _containers.RepeatedCompositeFieldContainer[NamedAsset]
     onnx_blob_key: str
     onnx_file: FileResource
     openvino_spec: OpenVINOModelSpec
     runtime: str
     tensorrt_spec: TensorRTModelSpec
-    def __init__(self, name: _Optional[str] = ..., onnx_blob_key: _Optional[str] = ..., onnx_file: _Optional[_Union[FileResource, _Mapping]] = ..., runtime: _Optional[str] = ..., tensorrt_spec: _Optional[_Union[TensorRTModelSpec, _Mapping]] = ..., openvino_spec: _Optional[_Union[OpenVINOModelSpec, _Mapping]] = ...) -> None: ...
+    def __init__(self, name: _Optional[str] = ..., onnx_blob_key: _Optional[str] = ..., onnx_file: _Optional[_Union[FileResource, _Mapping]] = ..., named_asset: _Optional[_Iterable[_Union[NamedAsset, _Mapping]]] = ..., runtime: _Optional[str] = ..., tensorrt_spec: _Optional[_Union[TensorRTModelSpec, _Mapping]] = ..., openvino_spec: _Optional[_Union[OpenVINOModelSpec, _Mapping]] = ...) -> None: ...
+
+class NamedAsset(_message.Message):
+    __slots__ = ["file", "name"]
+    FILE_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    file: FileResource
+    name: str
+    def __init__(self, name: _Optional[str] = ..., file: _Optional[_Union[FileResource, _Mapping]] = ...) -> None: ...
 
 class Node(_message.Message):
     __slots__ = ["attributes", "inputs", "kind", "name", "outputs"]

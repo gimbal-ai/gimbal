@@ -376,6 +376,13 @@ message ExecutionSpec {
   repeated ModelSpec model_spec = 2;
 }
 
+// NamedAsset represents a file asset for a model, tagged with a name that is interpreted by the
+// model runtime.
+message NamedAsset {
+  string name = 1;
+  FileResource file = 2;
+}
+
 // ModelSpec defines how to prepare the model.
 // The current spec definitions are temporary and subject to change significantly.
 message ModelSpec {
@@ -384,6 +391,10 @@ message ModelSpec {
   // TODO(oazizi): Remove onnx_blob_key once file download work is complete; using name instead.
   string onnx_blob_key = 2 [ (gogoproto.customname) = "ONNXBlobKey" ];
   FileResource onnx_file = 3 [ (gogoproto.customname) = "ONNXFile" ];
+
+  // Model file assets.
+  // Asset naming is optional, and interpreted only by the runtime.
+  repeated NamedAsset named_asset = 4;
 
   // The preferred runtime for the execution.
   string runtime = 50;
