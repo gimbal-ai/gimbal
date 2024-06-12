@@ -8503,6 +8503,8 @@ manifest:
     rpds: rpds_py
     rpds.rpds: rpds_py
     ruff: ruff
+    runfiles: bazel_runfiles
+    runfiles.runfiles: bazel_runfiles
     safetensors: safetensors
     safetensors.flax: safetensors
     safetensors.mlx: safetensors
@@ -12136,6 +12138,132 @@ manifest:
     torch.utils.viz: torch
     torch.utils.weak: torch
     torch.version: torch
+    torch_mlir: torch_mlir_gml
+    torch_mlir.compiler_utils: torch_mlir_gml
+    torch_mlir.dialects.amdgpu: torch_mlir_gml
+    torch_mlir.dialects.arith: torch_mlir_gml
+    torch_mlir.dialects.async_dialect: torch_mlir_gml
+    torch_mlir.dialects.async_dialect.passes: torch_mlir_gml
+    torch_mlir.dialects.bufferization: torch_mlir_gml
+    torch_mlir.dialects.builtin: torch_mlir_gml
+    torch_mlir.dialects.cf: torch_mlir_gml
+    torch_mlir.dialects.complex: torch_mlir_gml
+    torch_mlir.dialects.func: torch_mlir_gml
+    torch_mlir.dialects.gpu: torch_mlir_gml
+    torch_mlir.dialects.gpu.passes: torch_mlir_gml
+    torch_mlir.dialects.linalg: torch_mlir_gml
+    torch_mlir.dialects.linalg.opdsl: torch_mlir_gml
+    torch_mlir.dialects.linalg.opdsl.dump_oplib: torch_mlir_gml
+    torch_mlir.dialects.linalg.opdsl.lang: torch_mlir_gml
+    torch_mlir.dialects.linalg.opdsl.lang.affine: torch_mlir_gml
+    torch_mlir.dialects.linalg.opdsl.lang.comprehension: torch_mlir_gml
+    torch_mlir.dialects.linalg.opdsl.lang.config: torch_mlir_gml
+    torch_mlir.dialects.linalg.opdsl.lang.dsl: torch_mlir_gml
+    torch_mlir.dialects.linalg.opdsl.lang.emitter: torch_mlir_gml
+    torch_mlir.dialects.linalg.opdsl.lang.scalar_expr: torch_mlir_gml
+    torch_mlir.dialects.linalg.opdsl.lang.types: torch_mlir_gml
+    torch_mlir.dialects.linalg.opdsl.lang.yaml_helper: torch_mlir_gml
+    torch_mlir.dialects.linalg.opdsl.ops: torch_mlir_gml
+    torch_mlir.dialects.linalg.opdsl.ops.core_named_ops: torch_mlir_gml
+    torch_mlir.dialects.linalg.passes: torch_mlir_gml
+    torch_mlir.dialects.math: torch_mlir_gml
+    torch_mlir.dialects.memref: torch_mlir_gml
+    torch_mlir.dialects.ml_program: torch_mlir_gml
+    torch_mlir.dialects.nvgpu: torch_mlir_gml
+    torch_mlir.dialects.nvvm: torch_mlir_gml
+    torch_mlir.dialects.pdl: torch_mlir_gml
+    torch_mlir.dialects.quant: torch_mlir_gml
+    torch_mlir.dialects.rocdl: torch_mlir_gml
+    torch_mlir.dialects.scf: torch_mlir_gml
+    torch_mlir.dialects.shape: torch_mlir_gml
+    torch_mlir.dialects.sparse_tensor: torch_mlir_gml
+    torch_mlir.dialects.tensor: torch_mlir_gml
+    torch_mlir.dialects.torch: torch_mlir_gml
+    torch_mlir.dialects.torch.importer.jit_ir: torch_mlir_gml
+    torch_mlir.dialects.torch.importer.jit_ir.build_tools: torch_mlir_gml
+    torch_mlir.dialects.torch.importer.jit_ir.build_tools.abstract_interp_lib_gen: torch_mlir_gml
+    torch_mlir.dialects.torch.importer.jit_ir.build_tools.library_generator: torch_mlir_gml
+    torch_mlir.dialects.torch.importer.jit_ir.build_tools.registry: torch_mlir_gml
+    torch_mlir.dialects.torch.importer.jit_ir.build_tools.testing_framework: torch_mlir_gml
+    torch_mlir.dialects.torch.importer.jit_ir.build_tools.torch_ods_gen: torch_mlir_gml
+    torch_mlir.dialects.torch.importer.jit_ir.build_tools.utils: torch_mlir_gml
+    torch_mlir.dialects.torch.importer.jit_ir.torchscript_annotations: torch_mlir_gml
+    torch_mlir.dialects.tosa: torch_mlir_gml
+    torch_mlir.dialects.transform: torch_mlir_gml
+    torch_mlir.dialects.transform.bufferization: torch_mlir_gml
+    torch_mlir.dialects.transform.gpu: torch_mlir_gml
+    torch_mlir.dialects.transform.loop: torch_mlir_gml
+    torch_mlir.dialects.transform.memref: torch_mlir_gml
+    torch_mlir.dialects.transform.pdl: torch_mlir_gml
+    torch_mlir.dialects.transform.structured: torch_mlir_gml
+    torch_mlir.dialects.transform.tensor: torch_mlir_gml
+    torch_mlir.dialects.transform.vector: torch_mlir_gml
+    torch_mlir.dialects.vector: torch_mlir_gml
+    torch_mlir.dynamo: torch_mlir_gml
+    torch_mlir.execution_engine: torch_mlir_gml
+    torch_mlir.ir: torch_mlir_gml
+    torch_mlir.passmanager: torch_mlir_gml
+    torch_mlir.runtime: torch_mlir_gml
+    torch_mlir.runtime.np_to_memref: torch_mlir_gml
+    torch_mlir_e2e_test: torch_mlir_gml
+    torch_mlir_e2e_test.annotations: torch_mlir_gml
+    torch_mlir_e2e_test.configs: torch_mlir_gml
+    torch_mlir_e2e_test.configs.lazy_tensor_core: torch_mlir_gml
+    torch_mlir_e2e_test.configs.linalg_on_tensors_backend: torch_mlir_gml
+    torch_mlir_e2e_test.configs.native_torch: torch_mlir_gml
+    torch_mlir_e2e_test.configs.stablehlo_backend: torch_mlir_gml
+    torch_mlir_e2e_test.configs.torchdynamo: torch_mlir_gml
+    torch_mlir_e2e_test.configs.torchscript: torch_mlir_gml
+    torch_mlir_e2e_test.configs.tosa_backend: torch_mlir_gml
+    torch_mlir_e2e_test.configs.utils: torch_mlir_gml
+    torch_mlir_e2e_test.debug.lockstep: torch_mlir_gml
+    torch_mlir_e2e_test.framework: torch_mlir_gml
+    torch_mlir_e2e_test.linalg_on_tensors_backends: torch_mlir_gml
+    torch_mlir_e2e_test.linalg_on_tensors_backends.abc: torch_mlir_gml
+    torch_mlir_e2e_test.linalg_on_tensors_backends.refbackend: torch_mlir_gml
+    torch_mlir_e2e_test.registry: torch_mlir_gml
+    torch_mlir_e2e_test.reporting: torch_mlir_gml
+    torch_mlir_e2e_test.stablehlo_backends: torch_mlir_gml
+    torch_mlir_e2e_test.stablehlo_backends.abc: torch_mlir_gml
+    torch_mlir_e2e_test.stablehlo_backends.linalg_on_tensors: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.arange: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.argmax: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.backprop: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.basic: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.cast: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.constant_alloc: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.control_flow: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.conv: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.custom_op_example: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.elementwise: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.elementwise_comparison: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.histogram_binning_calibration: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.index_select: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.matmul: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.mlp: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.nll_loss: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.norm_like: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.pooling: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.quantized_models: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.reduction: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.reshape_like: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.return_types: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.rng: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.scalar: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.scalar_comparison: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.scatter: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.slice_like: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.squeeze: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.stats: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.threshold: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.type_conversion: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.type_promotion: torch_mlir_gml
+    torch_mlir_e2e_test.test_suite.vision_models: torch_mlir_gml
+    torch_mlir_e2e_test.tosa_backends: torch_mlir_gml
+    torch_mlir_e2e_test.tosa_backends.abc: torch_mlir_gml
+    torch_mlir_e2e_test.tosa_backends.linalg_on_tensors: torch_mlir_gml
+    torch_mlir_e2e_test.utils: torch_mlir_gml
     torchgen: torch
     torchgen.api: torch
     torchgen.api.autograd: torch
@@ -14586,4 +14714,4 @@ manifest:
     zipp.py310compat: zipp
   pip_repository:
     name: pip
-integrity: f8aaa2493b37d990a7882eb2a6683be324ba0e4ed82a5fa555258455499fbd90
+integrity: ad2c06b85d4b00abe6acc2f2e595c7cd8e1aae9e63faaa7ba017c01ac87d272c

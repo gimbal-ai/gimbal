@@ -5,6 +5,7 @@ pytest_mock==3.14.0
 
 # Deps for the project
 absl-py==2.0.0
+bazel-runfiles==0.33.0
 beit3-gml==0.1.2
 efficientvit-gml==0.1.8
 gradio==4.29.0
@@ -20,4 +21,5 @@ psycopg2-binary==2.9.9
 segment-anything-py==1.0
 supervision==0.17.1
 torch==2.1.2
+torch_mlir_gml
 torchvision==0.16.2

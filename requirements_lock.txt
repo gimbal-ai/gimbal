@@ -47,6 +47,9 @@ attrs==23.2.0 \
     # via
     #   jsonschema
     #   referencing
+bazel-runfiles==0.33.0 \
+    --hash=sha256:8842656eebc72316c7f917d5494d9b27d4d90bb81fa8dd09f427a6ddc4e7d666
+    # via -r requirements.in
 beit3-gml==0.1.2 \
     --hash=sha256:60becdcacf8c05c1ab99b08ad86dbfc21413aad81b04ead129623b3e29bb4aea
     # via -r requirements.in
@@ -992,6 +995,7 @@ numpy==1.26.2 \
     #   streamlit
     #   supervision
     #   tifffile
+    #   torch-mlir-gml
     #   torchprofile
     #   torchvision
     #   transformers
@@ -1162,6 +1166,7 @@ packaging==23.2 \
     #   pytest
     #   scikit-image
     #   streamlit
+    #   torch-mlir-gml
     #   transformers
 pandas==2.2.1 \
     --hash=sha256:04f6ec3baec203c13e3f8b139fb0f9f86cd8c0b94603ae3ae8ce9a422e9f5bee \
@@ -2393,9 +2398,14 @@ torch==2.1.2+cu121 \
     #   lavis-gml
     #   segment-anything-py
     #   timm
+    #   torch-mlir-gml
     #   torchprofile
     #   torchscale-gml
     #   torchvision
+torch-mlir-gml==2.1.2 \
+    --hash=sha256:0865cea83dcba1604722bc0c1a78a31e2fd501992eb36e865c0d9d060ce883c9 \
+    --hash=sha256:caa89845ed5efa6830cabfb3aa3678abe382b0cd39cb0cc9acb828b760fc4d50
+    # via -r requirements.in
 torchprofile==0.0.4 \
     --hash=sha256:7151fe88dc770f0eeec241244a4c7feaec2c5e8c7852386bc2d6a8d7dde7384d \
     --hash=sha256:96b6da17d752a06b02977e078aea95614893b31d4117dd5dcd081f30ce65611b
