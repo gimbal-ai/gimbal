@@ -1661,6 +1661,34 @@ def deb_repos():
         deps = [],
     )
     deb_archive_w_pkg_providers(
+        name = "debian12_libmagic-mgc_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ff57ca94d3c1231b16d10587e60a2cf6c53b53249879235c59fa0b19e832974c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ff57ca94d3c1231b16d10587e60a2cf6c53b53249879235c59fa0b19e832974c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/f/file/libmagic-mgc_5.44-3_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libmagic-mgc_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "bad01673ba5dfb9b5db4f3ae6a71f18d492cb6801eab45ad3c7d483c0a1f6ad2",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/bad01673ba5dfb9b5db4f3ae6a71f18d492cb6801eab45ad3c7d483c0a1f6ad2.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/f/file/libmagic-mgc_5.44-3_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libmagic1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "2fbaa1e2efdb80cf20cb13b2c523e82602c117cf5ec922c6d1d4ce6e18440052",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/2fbaa1e2efdb80cf20cb13b2c523e82602c117cf5ec922c6d1d4ce6e18440052.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/f/file/libmagic1_5.44-3_arm64.deb"],
+        deps = ["@debian12_libbz2-1.0_aarch64//:all_files", "@debian12_liblzma5_aarch64//:all_files", "@debian12_libmagic-mgc_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian12_libmagic1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "a241c2adc7438a7e217f32544028489981768a349d3e48673392703255c7b88e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/a241c2adc7438a7e217f32544028489981768a349d3e48673392703255c7b88e.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/f/file/libmagic1_5.44-3_amd64.deb"],
+        deps = ["@debian12_libbz2-1.0_x86_64//:all_files", "@debian12_liblzma5_x86_64//:all_files", "@debian12_libmagic-mgc_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
         name = "debian12_libmd0_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "99a8c7dd591fae9fb37d8bf8dfdffa850e207fa405b3198c5b24711a5f972381",

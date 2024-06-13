@@ -64,6 +64,7 @@ _DEBIAN12_TEST_PKGS = [
     "debian12_gawk",
     "debian12_sed",
     "debian12_libc-bin",
+    "debian12_libmagic1",
     # Deps for podman
     "debian12_iptables",
     "debian12_aardvark-dns",
