@@ -15,6 +15,7 @@
 
 import concurrent.futures
 import io
+import os
 import struct
 import sys
 import tempfile
@@ -29,6 +30,11 @@ import gml.proto.src.controlplane.filetransfer.ftpb.v1.ftpb_pb2 as ftpb
 import gml.proto.src.controlplane.filetransfer.ftpb.v1.ftpb_pb2_grpc as ftpb_grpc
 import grpc
 import pytest
+
+import src.controlplane.logicalpipeline.lppb.v1.lppb_pb2 as lppb
+import src.controlplane.logicalpipeline.lppb.v1.lppb_pb2_grpc as lppb_grpc
+import src.controlplane.model.mpb.v1.mpb_pb2 as mpb
+import src.controlplane.model.mpb.v1.mpb_pb2_grpc as mpb_grpc
 
 
 def uuid_to_proto(id: uuid.UUID):
@@ -123,6 +129,46 @@ class FakeOrgDirectoryServicer(dirpb_grpc.OrgDirectoryServiceServicer):
         )
 
 
+class FakeModelServicer(mpb_grpc.ModelServiceServicer):
+    def __init__(self):
+        self.model_ids_by_org = dict()
+        self.models = dict()
+
+    def CreateModel(self, req: mpb.CreateModelRequest, context: grpc.ServicerContext):
+        org_id = proto_to_uuid(req.org_id)
+        if org_id not in self.model_ids_by_org:
+            self.model_ids_by_org[org_id] = dict()
+        if req.name in self.model_ids_by_org[org_id]:
+            context.set_code(grpc.StatusCode.ALREADY_EXISTS)
+            return mpb.CreateModelResponse()
+
+        id = uuid.uuid4()
+        self.model_ids_by_org[org_id][req.name] = id
+        self.models[id] = req.model_info
+        return mpb.CreateModelResponse(id=uuid_to_proto(id))
+
+
+class FakeLogicalPipelineServicer(lppb_grpc.LogicalPipelineServiceServicer):
+    def __init__(self):
+        self.pipeline_ids_by_org = dict()
+        self.pipelines = dict()
+
+    def CreateLogicalPipeline(
+        self, req: lppb.CreateLogicalPipelineRequest, context: grpc.ServicerContext
+    ):
+        org_id = proto_to_uuid(req.org_id)
+        if org_id not in self.pipeline_ids_by_org:
+            self.pipeline_ids_by_org[org_id] = dict()
+        if req.name in self.pipeline_ids_by_org[org_id]:
+            context.set_code(grpc.StatusCode.ALREADY_EXISTS)
+            return lppb.CreateLogicalPipelineResponse()
+
+        id = uuid.uuid4()
+        self.pipeline_ids_by_org[org_id][req.name] = id
+        self.pipelines[id] = req.yaml
+        return lppb.CreateLogicalPipelineResponse(id=uuid_to_proto(id))
+
+
 @pytest.fixture
 def gml_client():
     server = grpc.server(concurrent.futures.ThreadPoolExecutor(max_workers=1))
@@ -131,6 +177,10 @@ def gml_client():
     )
     dirpb_grpc.add_OrgDirectoryServiceServicer_to_server(
         FakeOrgDirectoryServicer(), server
+    )
+    mpb_grpc.add_ModelServiceServicer_to_server(FakeModelServicer(), server)
+    lppb_grpc.add_LogicalPipelineServiceServicer_to_server(
+        FakeLogicalPipelineServicer(), server
     )
     tmpdir = tempfile.mkdtemp()
     addr = "unix:" + "/".join([tmpdir, "socket"])
@@ -147,6 +197,7 @@ def gml_client():
 
     server.stop(1)
     server.wait_for_termination()
+    os.removedirs(tmpdir)
 
 
 def test_upload_file(gml_client: gml.Client):
@@ -180,6 +231,34 @@ def test_upload_file_already_created(gml_client: gml.Client):
 def test_get_org_id(gml_client: gml.Client):
     id = gml_client._get_org_id()
     assert proto_to_uuid(id) == ORG_ID
+
+
+def test_upload_pipeline(gml_client: gml.Client):
+    model = gml.Model(
+        "test_model",
+        torch_module=None,
+        input_shapes=[],
+        input_dtypes=[],
+        output_bbox_format=gml.model.BoundingBoxFormat(
+            box_format="cxcywh", is_normalized=True
+        ),
+        class_labels=["class1", "class2"],
+        image_preprocessing_steps=[
+            gml.preprocessing.LetterboxImage(),
+            gml.preprocessing.ImageToFloatTensor(),
+        ],
+    )
+    # stub convert_to_mlir
+    model.convert_to_torch_mlir = lambda *args, **kwargs: "test model contents"
+
+    pipeline = "test pipeline contents"
+
+    # Check that upload_pipeline doesn't fail.
+    gml_client.upload_pipeline(
+        name="test pipeline",
+        models=[model],
+        pipeline=pipeline,
+    )
 
 
 if __name__ == "__main__":

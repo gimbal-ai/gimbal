@@ -13,18 +13,25 @@
 #
 # SPDX-License-Identifier: Proprietary
 
+import io
 import os
 import uuid
-from typing import BinaryIO, Optional, TextIO
+from pathlib import Path
+from typing import BinaryIO, List, Optional, TextIO
 
+import gml.proto.src.api.corepb.v1.model_exec_pb2 as modelexecpb
 import gml.proto.src.common.typespb.uuid_pb2 as uuidpb
 import gml.proto.src.controlplane.directory.directorypb.v1.directory_pb2 as directorypb
 import gml.proto.src.controlplane.directory.directorypb.v1.directory_pb2_grpc as directorypb_grpc
 import gml.proto.src.controlplane.filetransfer.ftpb.v1.ftpb_pb2 as ftpb
 import gml.proto.src.controlplane.filetransfer.ftpb.v1.ftpb_pb2_grpc as ftpb_grpc
+import gml.proto.src.controlplane.logicalpipeline.lppb.v1.lppb_pb2 as lppb
 import gml.proto.src.controlplane.logicalpipeline.lppb.v1.lppb_pb2_grpc as lppb_grpc
+import gml.proto.src.controlplane.model.mpb.v1.mpb_pb2 as mpb
+import gml.proto.src.controlplane.model.mpb.v1.mpb_pb2_grpc as mpb_grpc
 import grpc
 from gml._utils import chunk_file, sha256sum
+from gml.model import Model
 
 DEFAULT_CONTROLPLANE_ADDR = "app.gimletlabs.ai"
 
@@ -100,6 +107,7 @@ class Client:
         self._fts_stub_cache: Optional[ftpb_grpc.FileTransferServiceStub] = None
         self._lps_stub_cache: Optional[lppb_grpc.LogicalPipelineServiceStub] = None
         self._ods_stub_cache: Optional[directorypb_grpc.OrgDirectoryServiceStub] = None
+        self._ms_stub_cache: Optional[mpb_grpc.ModelServiceStub] = None
 
     def _get_request_metadata(self, idempotent=False):
         md = [("x-api-key", self._api_key)]
@@ -127,6 +135,13 @@ class Client:
                 self._channel_factory.get_grpc_channel()
             )
         return self._ods_stub_cache
+
+    def _ms_stub(self):
+        if self._ms_stub_cache is None:
+            self._ms_stub_cache = mpb_grpc.ModelServiceStub(
+                self._channel_factory.get_grpc_channel()
+            )
+        return self._ms_stub_cache
 
     def _get_org_id(self):
         if self._org_name is None:
@@ -218,3 +233,54 @@ class Client:
             case _:
                 raise Exception("file status is deleted or unknown, cannot re-upload")
         return file_info
+
+    def _create_model(self, model_info: modelexecpb.ModelInfo):
+        req = mpb.CreateModelRequest(
+            org_id=self._get_org_id(),
+            name=model_info.name,
+            model_info=model_info,
+        )
+        stub = self._ms_stub()
+        resp = stub.CreateModel(
+            req, metadata=self._get_request_metadata(idempotent=True)
+        )
+        return resp.id
+
+    def upload_pipeline(
+        self,
+        *,
+        name: str,
+        models: List[Model],
+        pipeline_file: Optional[Path] = None,
+        pipeline: Optional[str] = None,
+    ) -> uuidpb.UUID:
+        if pipeline_file is not None:
+            with open(pipeline_file, "r") as f:
+                yaml = f.read()
+        elif pipeline is not None:
+            yaml = pipeline
+        else:
+            raise ValueError("must specify one of 'pipeline_file' or 'pipeline'")
+
+        for model in models:
+            torch_mlir = model.convert_to_torch_mlir()
+            file = io.BytesIO(str(torch_mlir).encode("utf-8"))
+            sha256 = sha256sum(file)
+
+            print(f"Uploading {model.name}...")
+            file_info = self._upload_file_if_not_exists(sha256, file, sha256)
+
+            model_info = model.to_proto()
+            model_info.file_assets[""].MergeFrom(file_info.file_id)
+            self._create_model(model_info)
+
+        stub = self._lps_stub()
+        req = lppb.CreateLogicalPipelineRequest(
+            org_id=self._org_id(),
+            name=name,
+            yaml=yaml,
+        )
+        resp: lppb.CreateLogicalPipelineResponse = stub.CreateLogicalPipeline(
+            req, metadata=self._get_request_metadata(idempotent=True)
+        )
+        return resp.id
