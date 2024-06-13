@@ -29,6 +29,7 @@ go_library(
 
 gml_go_test(
     name = "uuidutils_test",
+    timeout = "short",
     srcs = ["uuid_test.go"],
     deps = [
         ":uuidutils",

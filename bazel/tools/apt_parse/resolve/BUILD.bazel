@@ -34,6 +34,7 @@ go_library(
 
 gml_go_test(
     name = "resolve_test",
+    timeout = "short",
     srcs = [
         "dfs_test.go",
         "resolve_test.go",

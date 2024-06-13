@@ -26,6 +26,7 @@ go_library(
 
 gml_go_test(
     name = "statusz_test",
+    timeout = "short",
     srcs = ["statusz_test.go"],
     deps = [
         ":statusz",

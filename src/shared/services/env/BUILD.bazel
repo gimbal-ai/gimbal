@@ -26,6 +26,7 @@ go_library(
 
 gml_go_test(
     name = "env_test",
+    timeout = "short",
     srcs = ["env_test.go"],
     deps = [
         ":env",

@@ -34,6 +34,7 @@ go_library(
 
 gml_go_test(
     name = "index_test",
+    timeout = "short",
     srcs = ["debian_index_test.go"],
     deps = [
         ":index",

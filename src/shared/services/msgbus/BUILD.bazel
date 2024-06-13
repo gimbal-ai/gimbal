@@ -36,6 +36,7 @@ go_library(
 
 gml_go_test(
     name = "msgbus_test",
+    timeout = "short",
     srcs = ["jetstream_test.go"],
     deps = [
         ":msgbus",

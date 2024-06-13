@@ -37,6 +37,7 @@ go_library(
 
 gml_go_test(
     name = "utils_test",
+    timeout = "short",
     srcs = [
         "claims_test.go",
         "jwt_test.go",

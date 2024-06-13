@@ -35,6 +35,7 @@ go_library(
 
 gml_go_test(
     name = "authcontext_test",
+    timeout = "short",
     srcs = ["context_test.go"],
     deps = [
         ":authcontext",

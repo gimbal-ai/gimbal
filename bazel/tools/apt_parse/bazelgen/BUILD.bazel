@@ -30,6 +30,7 @@ go_library(
 
 gml_go_test(
     name = "bazelgen_test",
+    timeout = "short",
     srcs = ["bazelgen_test.go"],
     deps = [
         ":bazelgen",
