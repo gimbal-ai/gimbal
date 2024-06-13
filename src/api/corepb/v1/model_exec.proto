@@ -165,6 +165,8 @@ message Value {
   message ModelRef {
     // Name of the model.
     string name = 1;
+    // ID of the model.
+    types.UUID id = 2 [ (gogoproto.customname) = "ID" ];
   }
 
   message Lambda {

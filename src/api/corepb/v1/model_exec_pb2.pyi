@@ -401,10 +401,12 @@ class Value(_message.Message):
         outputs: _containers.RepeatedScalarFieldContainer[str]
         def __init__(self, inputs: _Optional[_Iterable[str]] = ..., outputs: _Optional[_Iterable[str]] = ..., nodes: _Optional[_Iterable[_Union[Node, _Mapping]]] = ...) -> None: ...
     class ModelRef(_message.Message):
-        __slots__ = ["name"]
+        __slots__ = ["id", "name"]
+        ID_FIELD_NUMBER: _ClassVar[int]
         NAME_FIELD_NUMBER: _ClassVar[int]
+        id: _uuid_pb2.UUID
         name: str
-        def __init__(self, name: _Optional[str] = ...) -> None: ...
+        def __init__(self, name: _Optional[str] = ..., id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
     BOOL_DATA_FIELD_NUMBER: _ClassVar[int]
     DOUBLE_DATA_FIELD_NUMBER: _ClassVar[int]
     INT64_DATA_FIELD_NUMBER: _ClassVar[int]

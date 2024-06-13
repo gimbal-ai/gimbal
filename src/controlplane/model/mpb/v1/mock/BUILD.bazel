@@ -1,0 +1,28 @@
+# Copyright © 2023- Gimlet Labs, Inc.
+# All Rights Reserved.
+#
+# NOTICE:  All information contained herein is, and remains
+# the property of Gimlet Labs, Inc. and its suppliers,
+# if any.  The intellectual and technical concepts contained
+# herein are proprietary to Gimlet Labs, Inc. and its suppliers and
+# may be covered by U.S. and Foreign Patents, patents in process,
+# and are protected by trade secret or copyright law. Dissemination
+# of this information or reproduction of this material is strictly
+# forbidden unless prior written permission is obtained from
+# Gimlet Labs, Inc.
+#
+# SPDX-License-Identifier: Proprietary
+
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "mock",
+    srcs = ["mpb_mock.gen.go"],
+    importpath = "gimletlabs.ai/gimlet/src/controlplane/model/mpb/v1/mock",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//src/controlplane/model/mpb/v1:mpb_go_proto",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_uber_go_mock//gomock",
+    ],
+)

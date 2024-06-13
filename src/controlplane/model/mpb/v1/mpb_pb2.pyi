@@ -34,7 +34,9 @@ class GetModelRequest(_message.Message):
     def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., name: _Optional[str] = ..., org_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
 
 class GetModelResponse(_message.Message):
-    __slots__ = ["model_info"]
+    __slots__ = ["id", "model_info"]
+    ID_FIELD_NUMBER: _ClassVar[int]
     MODEL_INFO_FIELD_NUMBER: _ClassVar[int]
+    id: _uuid_pb2.UUID
     model_info: _model_exec_pb2.ModelInfo
-    def __init__(self, model_info: _Optional[_Union[_model_exec_pb2.ModelInfo, _Mapping]] = ...) -> None: ...
+    def __init__(self, model_info: _Optional[_Union[_model_exec_pb2.ModelInfo, _Mapping]] = ..., id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
