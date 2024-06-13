@@ -237,19 +237,13 @@ When gazelle adds in pip deps, it walks up the tree from the file location to fi
 
 1. Add the dependency to `requirements.in` or `src/experiemental/requirements.in`.
 
-1. Run the `compile_pip_requirements` target to generate the relevant `requirements_lock.txt` file.
+1. Run the `update-python-requirements` target to generate the relevant `requirements_lock.txt` files.
 
     ```bash
     make update-python-requirements
     ```
 
-1. Run the `gazelle_python_manifest` target to generate the relevant `gazelle_python.yaml` file.
-
-    ```bash
-    make update-python-manifest
-    ```
-
-1. Run the `gazelle` target if needed to generate and update `BUILD.bazel` files.
+1. Run the `gazelle` target to generate or update the relevant `gazelle_python.yaml` and `BUILD.bazel` files.
 
     ```bash
     make gazelle

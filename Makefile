@@ -43,6 +43,7 @@ src/api/python/requirements_lock.txt: src/api/python/requirements.in
 
 .PHONY: update-python-requirements
 update-python-requirements: requirements_lock.txt src/experimental/requirements_lock.txt src/api/python/requirements_lock.txt
+	$(BAZEL) mod deps --lockfile_mode=update
 
 gazelle_python.yaml: requirements_lock.txt
 	$(BAZEL) run //:gazelle_python_manifest.update
