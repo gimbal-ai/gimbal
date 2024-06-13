@@ -17,16 +17,29 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package pg
+package pg_test
 
 import (
+	"os"
 	"testing"
 
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
+
+	"gimletlabs.ai/gimlet/src/shared/services/pg"
+	"gimletlabs.ai/gimlet/src/shared/services/pgtest"
 )
 
+var testDB *pgtest.TestDB
+
 func TestDefaultDBURI(t *testing.T) {
+	currSettings := viper.AllSettings()
+	t.Cleanup(func() {
+		for k, v := range currSettings {
+			viper.Set(k, v)
+		}
+	})
+
 	viper.Set("postgres_port", 5000)
 	viper.Set("postgres_hostname", "postgres-host")
 	viper.Set("postgres_db", "thedb")
@@ -35,11 +48,21 @@ func TestDefaultDBURI(t *testing.T) {
 
 	t.Run("With SSL", func(t *testing.T) {
 		viper.Set("postgres_ssl", true)
-		assert.Equal(t, "postgres://user:pass@postgres-host:5000/thedb?sslmode=require", DefaultDBURI())
+		assert.Equal(t, "postgres://user:pass@postgres-host:5000/thedb?sslmode=require", pg.DefaultDBURI())
 	})
 
 	t.Run("Without SSL", func(t *testing.T) {
 		viper.Set("postgres_ssl", false)
-		assert.Equal(t, "postgres://user:pass@postgres-host:5000/thedb?sslmode=disable", DefaultDBURI())
+		assert.Equal(t, "postgres://user:pass@postgres-host:5000/thedb?sslmode=disable", pg.DefaultDBURI())
 	})
+}
+
+func TestMain(m *testing.M) {
+	db, dbCleanup := pgtest.MustSetupTestDB(nil)
+	testDB = db
+
+	exitVal := m.Run()
+	dbCleanup()
+
+	os.Exit(exitVal)
 }

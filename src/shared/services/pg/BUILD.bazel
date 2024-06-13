@@ -49,8 +49,8 @@ gml_go_test(
         "pg_test.go",
         "uuid_test.go",
     ],
-    embed = [":pg"],
     deps = [
+        ":pg",
         "//src/shared/services/pgtest",
         "@com_github_gofrs_uuid_v5//:uuid",
         "@com_github_sirupsen_logrus//:logrus",

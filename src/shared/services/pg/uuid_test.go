@@ -25,8 +25,6 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
-	"gimletlabs.ai/gimlet/src/shared/services/pgtest"
 )
 
 const (
@@ -43,9 +41,9 @@ func init() {
 }
 
 func TestUUIDStrings(t *testing.T) {
-	db, err := pgtest.SetupTestDB(t, nil)
+	err := testDB.Reset()
 	require.NoError(t, err)
-	require.NotNil(t, db)
+	db := testDB.DB()
 
 	// Create fake test table.
 	_, err = db.Exec(createTableStmt)
@@ -78,9 +76,10 @@ func TestUUIDStrings(t *testing.T) {
 }
 
 func BenchmarkInserts_UUID(b *testing.B) {
-	db, err := pgtest.SetupTestDB(b, nil)
+	err := testDB.Reset()
 	require.NoError(b, err)
-	require.NotNil(b, db)
+	db := testDB.DB()
+
 	// Stop timer before we start teardown.
 	defer b.StopTimer()
 
@@ -95,9 +94,9 @@ func BenchmarkInserts_UUID(b *testing.B) {
 }
 
 func BenchmarkInserts_String(b *testing.B) {
-	db, err := pgtest.SetupTestDB(b, nil)
+	err := testDB.Reset()
 	require.NoError(b, err)
-	require.NotNil(b, db)
+	db := testDB.DB()
 	// Stop timer before we start teardown.
 	defer b.StopTimer()
 
@@ -112,9 +111,9 @@ func BenchmarkInserts_String(b *testing.B) {
 }
 
 func BenchmarkReads_UUID(b *testing.B) {
-	db, err := pgtest.SetupTestDB(b, nil)
+	err := testDB.Reset()
 	require.NoError(b, err)
-	require.NotNil(b, db)
+	db := testDB.DB()
 	// Stop timer before we start teardown.
 	defer b.StopTimer()
 
@@ -133,9 +132,9 @@ func BenchmarkReads_UUID(b *testing.B) {
 }
 
 func BenchmarkReads_String(b *testing.B) {
-	db, err := pgtest.SetupTestDB(b, nil)
+	err := testDB.Reset()
 	require.NoError(b, err)
-	require.NotNil(b, db)
+	db := testDB.DB()
 	// Stop timer before we start teardown.
 	defer b.StopTimer()
 

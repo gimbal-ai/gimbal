@@ -27,13 +27,12 @@ import (
 	"google.golang.org/grpc/metadata"
 
 	"gimletlabs.ai/gimlet/src/shared/services/pg"
-	"gimletlabs.ai/gimlet/src/shared/services/pgtest"
 )
 
 func TestCreateIdempotentTx(t *testing.T) {
-	db, err := pgtest.SetupTestDB(t, nil)
+	err := testDB.Reset()
 	require.NoError(t, err)
-	require.NotNil(t, db)
+	db := testDB.DB()
 
 	// Add idempotency table. In general, we expect this table to be created by the service creator in the migrations.
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS test_idempotency_key (idempotency_key text UNIQUE, created_at timestamp NOT NULL DEFAULT NOW())")
