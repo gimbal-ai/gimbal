@@ -30,13 +30,21 @@ namespace gml::gem::calculators::core {
  *  Inputs:
  *  - T
  *
- *  No outputs, outputs stats to opentelemetry.
+ *  No real outputs, outputs stats to opentelemetry. Optional bool output to signal processing has
+ *    finished.
  */
 template <typename T>
 class MetricsSinkCalculator : public mediapipe::CalculatorBase {
+ private:
+  static constexpr std::string_view kFinishedTag = "FINISHED";
+
  public:
   static absl::Status GetContract(mediapipe::CalculatorContract* cc) {
     cc->Inputs().Index(0).Set<T>();
+    if (cc->Outputs().HasTag(kFinishedTag)) {
+      cc->Outputs().Tag(kFinishedTag).Set<bool>();
+    }
+    cc->SetTimestampOffset(0);
     return absl::OkStatus();
   }
   absl::Status Open(mediapipe::CalculatorContext* cc) override {
@@ -45,6 +53,11 @@ class MetricsSinkCalculator : public mediapipe::CalculatorBase {
   }
   absl::Status Process(mediapipe::CalculatorContext* cc) override {
     GML_ABSL_RETURN_IF_ERROR(RecordMetrics(cc));
+    if (cc->Outputs().HasTag(kFinishedTag)) {
+      cc->Outputs()
+          .Tag(kFinishedTag)
+          .AddPacket(mediapipe::MakePacket<bool>(true).At(cc->InputTimestamp()));
+    }
     return absl::OkStatus();
   }
   absl::Status Close(mediapipe::CalculatorContext*) override { return absl::OkStatus(); }

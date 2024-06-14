@@ -32,7 +32,8 @@ namespace gml::gem::calculators::core {
  *  Inputs:
  *    std::vector<internal::api::corepb::v1::Detection> list of detection protos.
  *
- *  No outputs, outputs stats to opentelemetry.
+ *  No real outputs, outputs stats to opentelemetry. Optional bool output to signal when processing
+ *    is finished.
  */
 
 class DetectionsSummaryCalculator

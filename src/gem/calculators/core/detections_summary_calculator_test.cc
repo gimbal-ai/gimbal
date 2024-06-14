@@ -47,6 +47,7 @@ node_options {
   }
 }
 input_stream: "detection_list"
+output_stream: "FINISHED:finished"
 )pbtxt";
 
 struct ExpectedHist {
@@ -89,7 +90,9 @@ TEST_P(DetectionsSummaryTest, CollectsStatsCorrectly) {
                                                               &detections[i]));
   }
 
-  tester.ForInput(0, std::move(detections), mediapipe::Timestamp::Min()).Run();
+  tester.ForInput(0, std::move(detections), mediapipe::Timestamp::Min())
+      .Run()
+      .ExpectOutput<bool>("FINISHED", 0, mediapipe::Timestamp::Min(), true);
 
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
   auto check_results = [&test_case](
