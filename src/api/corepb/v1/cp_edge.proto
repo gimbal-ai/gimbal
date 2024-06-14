@@ -61,10 +61,9 @@ message EdgeHeartbeatAck {
 message PhysicalPipelineSpecUpdate {
   // The ID of the physical pipeline.
   gml.types.UUID physical_pipeline_id = 1 [ (gogoproto.customname) = "PhysicalPipelineID" ];
-  int64 version = 2;
   // The spec of the physical pipeline. This will contain the execution graph and other
   // configurations.
-  gml.internal.api.core.v1.PhysicalPipelineSpec spec = 3;
+  gml.internal.api.core.v1.PhysicalPipelineSpec spec = 2;
 }
 
 // PhysicalPipelineUpdate is a message from the edge to control plane to indicate changes with the

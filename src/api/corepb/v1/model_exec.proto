@@ -275,6 +275,8 @@ message PipelineDeployment {
   int64 version = 6;
   PipelineDeploymentSpec spec = 7;
   PipelineDeploymentStatus status = 8;
+  // The time this deployment was deleted.
+  google.protobuf.Timestamp deleted_at = 9;
 }
 
 // The spec represents the desired state of the deployment.
