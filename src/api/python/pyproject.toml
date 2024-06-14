@@ -18,6 +18,8 @@ dependencies = {file = "requirements.in"}
 "gml.proto.src.controlplane.filetransfer.ftpb" = "../../../src/controlplane/filetransfer/ftpb"
 "src.controlplane.logicalpipeline.lppb" = "../../../src/controlplane/logicalpipeline/lppb"
 "gml.proto.src.controlplane.logicalpipeline.lppb" = "../../../src/controlplane/logicalpipeline/lppb"
+"src.controlplane.model.mpb" = "../../../src/controlplane/model/mpb"
+"gml.proto.src.controlplane.model.mpb" = "../../../src/controlplane/model/mpb"
 "gogoproto" = "../../../third_party/github.com/gogo/protobuf/gogoproto"
 "gml.proto.gogoproto" = "../../../third_party/github.com/gogo/protobuf/gogoproto"
 "mediapipe" = "../../../third_party/github.com/google/mediapipe/mediapipe"
