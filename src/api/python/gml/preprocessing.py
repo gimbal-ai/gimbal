@@ -14,6 +14,7 @@
 # SPDX-License-Identifier: Proprietary
 
 import abc
+from typing import List
 
 import gml.proto.src.api.corepb.v1.model_exec_pb2 as modelexecpb
 
@@ -30,6 +31,35 @@ class LetterboxImage(ImagePreprocessingStep):
             kind=modelexecpb.ImagePreprocessingStep.IMAGE_PREPROCESSING_KIND_RESIZE,
             resize_params=modelexecpb.ImagePreprocessingStep.ImageResizeParams(
                 kind=modelexecpb.ImagePreprocessingStep.ImageResizeParams.IMAGE_RESIZE_KIND_LETTERBOX,
+            ),
+        )
+
+
+class ResizeImage(ImagePreprocessingStep):
+    """ResizeImage resizes the image to the target size without preserving aspect ratio."""
+
+    def to_proto(self) -> modelexecpb.ImagePreprocessingStep:
+        return modelexecpb.ImagePreprocessingStep(
+            kind=modelexecpb.ImagePreprocessingStep.IMAGE_PREPROCESSING_KIND_RESIZE,
+            resize_params=modelexecpb.ImagePreprocessingStep.ImageResizeParams(
+                kind=modelexecpb.ImagePreprocessingStep.ImageResizeParams.IMAGE_RESIZE_KIND_STRETCH,
+            ),
+        )
+
+
+class StandardizeTensor(ImagePreprocessingStep):
+    """StandardizeTensor standardizes the tensor with the given means and standard deviations."""
+
+    def __init__(self, means: List[float], stddevs: List[float]):
+        self.means = means
+        self.stddevs = stddevs
+
+    def to_proto(self) -> modelexecpb.ImagePreprocessingStep:
+        return modelexecpb.ImagePreprocessingStep(
+            kind=modelexecpb.ImagePreprocessingStep.IMAGE_PREPROCESSING_KIND_STANDARDIZE,
+            standardize_params=modelexecpb.ImagePreprocessingStep.ImageStandardizeParams(
+                means=self.means,
+                stddevs=self.stddevs,
             ),
         )
 

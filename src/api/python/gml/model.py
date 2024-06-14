@@ -13,6 +13,7 @@
 #
 # SPDX-License-Identifier: Proprietary
 
+from pathlib import Path
 from typing import List, Optional
 
 import gml.proto.src.api.corepb.v1.model_exec_pb2 as modelexecpb
@@ -55,11 +56,17 @@ class Model:
         input_dtypes: List[torch.dtype],
         output_bbox_format: Optional[BoundingBoxFormat] = None,
         class_labels: Optional[List[str]] = None,
+        class_labels_file: Optional[Path] = None,
         image_preprocessing_steps: Optional[List[ImagePreprocessingStep]] = None,
     ):
         self.name = name
         self.torch_module = torch_module
         self.class_labels = class_labels
+        if class_labels_file:
+            self.class_labels = []
+            with open(class_labels_file, "r") as f:
+                for line in f.readlines():
+                    self.class_labels.append(line.strip())
         self.output_bbox_format = output_bbox_format
         self.image_preprocessing_steps = image_preprocessing_steps
         self.input_shapes = input_shapes
