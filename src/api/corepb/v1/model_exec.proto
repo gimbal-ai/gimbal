@@ -241,6 +241,8 @@ message LogicalPipeline {
   repeated Param params = 1;
   // The nodes in the logical pipeline.
   repeated Node nodes = 2;
+  // List of all models used by the pipeline.
+  repeated gml.types.UUID model_ids = 3 [ (gogoproto.customname) = "ModelIDs" ];
 }
 
 /****************************************************************************

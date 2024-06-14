@@ -100,12 +100,14 @@ class ImagePreprocessingStep(_message.Message):
     def __init__(self, kind: _Optional[_Union[ImagePreprocessingStep.ImagePreprocessingKind, str]] = ..., conversion_params: _Optional[_Union[ImagePreprocessingStep.ImageConversionParams, _Mapping]] = ..., resize_params: _Optional[_Union[ImagePreprocessingStep.ImageResizeParams, _Mapping]] = ..., standardize_params: _Optional[_Union[ImagePreprocessingStep.ImageStandardizeParams, _Mapping]] = ...) -> None: ...
 
 class LogicalPipeline(_message.Message):
-    __slots__ = ["nodes", "params"]
+    __slots__ = ["model_ids", "nodes", "params"]
+    MODEL_IDS_FIELD_NUMBER: _ClassVar[int]
     NODES_FIELD_NUMBER: _ClassVar[int]
     PARAMS_FIELD_NUMBER: _ClassVar[int]
+    model_ids: _containers.RepeatedCompositeFieldContainer[_uuid_pb2.UUID]
     nodes: _containers.RepeatedCompositeFieldContainer[Node]
     params: _containers.RepeatedCompositeFieldContainer[Param]
-    def __init__(self, params: _Optional[_Iterable[_Union[Param, _Mapping]]] = ..., nodes: _Optional[_Iterable[_Union[Node, _Mapping]]] = ...) -> None: ...
+    def __init__(self, params: _Optional[_Iterable[_Union[Param, _Mapping]]] = ..., nodes: _Optional[_Iterable[_Union[Node, _Mapping]]] = ..., model_ids: _Optional[_Iterable[_Union[_uuid_pb2.UUID, _Mapping]]] = ...) -> None: ...
 
 class ModelInfo(_message.Message):
     __slots__ = ["bbox_info", "class_labels", "file_assets", "format", "image_preprocessing_steps", "kind", "name"]
