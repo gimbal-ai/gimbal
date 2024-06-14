@@ -48,6 +48,7 @@ message GetLogicalPipelineResponse {
   LogicalPipelineInfo pipeline_info = 2;
   string yaml = 3;
   gml.internal.api.core.v1.LogicalPipeline logical_pipeline = 4;
+  string encoded_dag = 5 [ (gogoproto.customname) = "EncodedDAG" ];
 }
 
 message CreateLogicalPipelineRequest {
