@@ -46,7 +46,7 @@ StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(
       std::unique_ptr<nvonnxparser::IParser>(nvonnxparser::createParser(*network, logger));
 
   {
-    auto file_id = ParseUUID(spec.onnx_file().file_id()).str();
+    auto file_id = ParseUUID(spec.named_asset(0).file().file_id()).str();
     GML_ASSIGN_OR_RETURN(auto onnx_file_path, store->FilePath(file_id));
     parser->parseFromFile(onnx_file_path.c_str(), /*verbosity*/ 0);
   }
@@ -74,24 +74,19 @@ StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(
     config->setFlag(nvinfer1::BuilderFlag::kINT8);
   }
 
-  for (const auto& opt_profile_spec : spec.tensorrt_spec().optimization_profile()) {
-    auto* opt_profile = builder->createOptimizationProfile();
-    for (const auto& tensor_shape_range : opt_profile_spec.tensor_shape_range()) {
-      nvinfer1::Dims dims;
-      dims.nbDims = tensor_shape_range.dim_size();
-      for (int i = 0; i < dims.nbDims; ++i) {
-        dims.d[i] = tensor_shape_range.dim(i);
-      }
-      opt_profile->setDimensions(tensor_shape_range.tensor_name().c_str(),
-                                 nvinfer1::OptProfileSelector::kMIN, dims);
-      opt_profile->setDimensions(tensor_shape_range.tensor_name().c_str(),
-                                 nvinfer1::OptProfileSelector::kOPT, dims);
-      opt_profile->setDimensions(tensor_shape_range.tensor_name().c_str(),
-                                 nvinfer1::OptProfileSelector::kMAX, dims);
-    }
-
-    config->addOptimizationProfile(opt_profile);
+  // Set the optimization profiles to have the shapes of the inputs. The compiler currently enforces
+  // that these are static.
+  auto* opt_profile = builder->createOptimizationProfile();
+  for (int i = 0; i < network->getNbInputs(); ++i) {
+    auto* input = network->getInput(i);
+    opt_profile->setDimensions(input->getName(), nvinfer1::OptProfileSelector::kMIN,
+                               input->getDimensions());
+    opt_profile->setDimensions(input->getName(), nvinfer1::OptProfileSelector::kOPT,
+                               input->getDimensions());
+    opt_profile->setDimensions(input->getName(), nvinfer1::OptProfileSelector::kMAX,
+                               input->getDimensions());
   }
+  config->addOptimizationProfile(opt_profile);
   if (spec.tensorrt_spec().mem_pool_limits().workspace() > 0) {
     config->setMemoryPoolLimit(nvinfer1::MemoryPoolType::kWORKSPACE,
                                spec.tensorrt_spec().mem_pool_limits().workspace());

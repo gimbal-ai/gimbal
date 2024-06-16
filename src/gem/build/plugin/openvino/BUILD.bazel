@@ -44,7 +44,10 @@ gem_plugin_cc_library(
 gml_cc_test(
     name = "model_builder_test",
     srcs = ["model_builder_test.cc"],
-    data = ["testdata/simple.onnx"],
+    data = [
+        "testdata/simple.bin",
+        "testdata/simple.xml",
+    ],
     deps = [
         ":cc_library",
         "//src/gem/storage:cc_library",

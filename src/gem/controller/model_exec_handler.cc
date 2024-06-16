@@ -25,6 +25,7 @@
 #include <sstream>
 #include <utility>
 
+#include <absl/strings/str_replace.h>
 #include <google/protobuf/any.pb.h>
 #include <grpcpp/grpcpp.h>
 
@@ -102,11 +103,21 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
     // Each model needs its own model execution context.
     for (const auto& [i, model_spec] : Enumerate(exec_spec_.model_spec())) {
       std::string plugin = model_spec.runtime();
-      std::string context_name = absl::StrCat(model_spec.name(), "_", plugin, "_exec_ctx");
+      std::string context_name = absl::StrCat(model_spec.name(), "_exec_ctx");
+      // mediapipe only accepts lowercase characters and "_".
+      context_name = absl::StrReplaceAll(context_name, {{".", "_"}});
+      context_name = absl::AsciiStrToLower(context_name);
 
-      GML_CHECK_OK(parent_->blob_store_->EnsureBlobExists(
-          ParseUUID(model_spec.onnx_file().file_id()).str(), model_spec.onnx_file().sha256_hash(),
-          model_spec.onnx_file().size_bytes()));
+      for (const auto& asset : model_spec.named_asset()) {
+        std::string name = model_spec.name();
+        if (asset.name() != "") {
+          name += ":" + asset.name();
+        }
+        LOG(INFO) << "Downloading model asset: " << name;
+        GML_CHECK_OK(parent_->blob_store_->EnsureBlobExists(ParseUUID(asset.file().file_id()).str(),
+                                                            asset.file().sha256_hash(),
+                                                            asset.file().size_bytes()));
+      }
 
       GML_ASSIGN_OR_RETURN(auto model,
                            plugin_registry.BuildModel(plugin, parent_->blob_store_, model_spec));
@@ -142,32 +153,12 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
     exec::core::Runner runner(exec_spec_);
     GML_RETURN_IF_ERROR(runner.Init(side_packets));
 
-    std::atomic_size_t num_frames = 0;
-    std::atomic_size_t num_frames_dropped = 0;
-    GML_RETURN_IF_ERROR(runner.AddOutputStreamCallback<bool>(
-        "frame_allowed", [&](const bool& allowed, const mediapipe::Timestamp&) {
-          num_frames++;
-          if (!allowed) {
-            num_frames_dropped++;
-          }
-          return Status::OK();
-        }));
-
     SendStatusUpdate(ExecutionGraphState::EXECUTION_GRAPH_STATE_DEPLOYED, "");
     GML_RETURN_IF_ERROR(runner.Start());
     GML_RETURN_IF_ERROR(
         ::gml::metrics::MetricsSystem::GetInstance().RegisterAuxMetricsProvider(&runner));
     while (!parent_->stop_signal_.load() && !runner.HasError()) {
-      auto dropped = num_frames_dropped.load();
-      auto total = num_frames.load();
-      if (total != 0) {
-        LOG(INFO) << absl::Substitute(
-            "Dropped $0/$1 frames ($2%)", dropped, total,
-            static_cast<float>(100 * dropped) / static_cast<float>(total));
-        num_frames.store(0);
-        num_frames_dropped.store(0);
-      }
-      std::this_thread::sleep_for(std::chrono::seconds{5});
+      std::this_thread::sleep_for(std::chrono::seconds{1});
     }
 
     GML_RETURN_IF_ERROR(runner.Stop());

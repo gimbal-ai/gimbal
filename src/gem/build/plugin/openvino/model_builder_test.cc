@@ -20,36 +20,47 @@
 #include <filesystem>
 #include <fstream>
 
+#include <sole.hpp>
+
 #include "src/common/bazel/runfiles.h"
 #include "src/common/fs/temp_dir.h"
 #include "src/common/testing/testing.h"
+#include "src/common/uuid/uuid_utils.h"
 #include "src/gem/storage/fs_blob_store.h"
 
 namespace gml::gem::build::openvino {
 
 using ::gml::internal::api::core::v1::ModelSpec;
 
-constexpr std::string_view kOnnxPath = "src/gem/build/plugin/openvino/testdata/simple.onnx";
+constexpr std::string_view kModelPath = "src/gem/build/plugin/openvino/testdata/simple.xml";
+constexpr std::string_view kWeightPath = "src/gem/build/plugin/openvino/testdata/simple.bin";
 
 TEST(ModelBuilder, BuildsWithoutError) {
-  auto onnx_path = bazel::RunfilePath(std::filesystem::path(kOnnxPath));
+  auto model_path = bazel::RunfilePath(std::filesystem::path(kModelPath));
+  auto weight_path = bazel::RunfilePath(std::filesystem::path(kWeightPath));
   ASSERT_OK_AND_ASSIGN(auto tmp_dir, fs::TempDir::Create());
   ASSERT_OK_AND_ASSIGN(auto blob_store, storage::FilesystemBlobStore::Create(tmp_dir->path()));
 
-  std::ifstream f(onnx_path);
-  std::string str_data((std::istreambuf_iterator<char>(f)), std::istreambuf_iterator<char>());
-
-  ASSERT_OK(blob_store->Upsert("00000000-0000-0000-0000-000000000000", str_data.c_str(),
-                               str_data.size()));
+  auto model_asset_id = sole::uuid4();
+  {
+    std::ifstream f(model_path);
+    std::string str_data((std::istreambuf_iterator<char>(f)), std::istreambuf_iterator<char>());
+    ASSERT_OK(blob_store->Upsert(model_asset_id.str(), str_data.c_str(), str_data.size()));
+  }
+  auto weight_asset_id = sole::uuid4();
+  {
+    std::ifstream f(weight_path);
+    std::string str_data((std::istreambuf_iterator<char>(f)), std::istreambuf_iterator<char>());
+    ASSERT_OK(blob_store->Upsert(weight_asset_id.str(), str_data.c_str(), str_data.size()));
+  }
 
   ModelSpec spec;
-  spec.set_onnx_blob_key(onnx_path.filename());
-  auto* ov_spec = spec.mutable_openvino_spec();
-  auto* input_shape = ov_spec->add_input_shape();
-  input_shape->add_dim(1);
-  input_shape->add_dim(1);
-  input_shape->add_dim(1);
-  input_shape->add_dim(1);
+  auto* model_asset = spec.add_named_asset();
+  model_asset->set_name("model");
+  ToProto(model_asset_id, model_asset->mutable_file()->mutable_file_id());
+  auto* weight_asset = spec.add_named_asset();
+  weight_asset->set_name("weight");
+  ToProto(weight_asset_id, weight_asset->mutable_file()->mutable_file_id());
 
   ModelBuilder builder;
 

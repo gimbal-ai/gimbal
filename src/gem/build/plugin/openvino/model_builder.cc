@@ -34,8 +34,30 @@ namespace gml::gem::build::openvino {
 
 StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobStore* store,
                                                                  const ModelSpec& spec) {
-  GML_ASSIGN_OR_RETURN(auto onnx_path,
-                       store->FilePath(ParseUUID(spec.onnx_file().file_id()).str()));
+  bool model_found = false;
+  types::UUID model_file_id;
+
+  bool weights_found = false;
+  types::UUID weights_file_id;
+
+  for (const auto& asset : spec.named_asset()) {
+    if (asset.name() == "weight") {
+      weights_file_id = asset.file().file_id();
+      weights_found = true;
+    } else if (asset.name() == "model") {
+      model_file_id = asset.file().file_id();
+      model_found = true;
+    }
+  }
+  if (!model_found) {
+    return error::InvalidArgument("OpenVINO runtime expects a model asset named 'model'");
+  }
+  if (!weights_found) {
+    return error::InvalidArgument("OpenVINO runtime expects a model asset named 'weight'");
+  }
+
+  GML_ASSIGN_OR_RETURN(auto model_path, store->FilePath(ParseUUID(model_file_id).str()));
+  GML_ASSIGN_OR_RETURN(auto weights_path, store->FilePath(ParseUUID(weights_file_id).str()));
 
   auto& core = exec::openvino::OpenVinoCoreGetInstance();
 
@@ -52,18 +74,8 @@ StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobSt
 
     LOG(INFO) << absl::Substitute("Using $0 to execute $1", device, spec.name());
 
-    auto model = core.read_model(onnx_path);
-    std::map<size_t, ov::PartialShape> input_idx_to_shape;
-    for (const auto& [idx, shape] : Enumerate(spec.openvino_spec().input_shape())) {
-      ov::PartialShape ov_shape;
-      for (const auto& dim : shape.dim()) {
-        ov_shape.push_back(dim);
-      }
-      input_idx_to_shape.emplace(idx, ov_shape);
-    }
-    if (!input_idx_to_shape.empty()) {
-      model->reshape(input_idx_to_shape);
-    }
+    auto model = core.read_model(model_path, weights_path);
+
     auto compiled_model = core.compile_model(model, device);
     return std::unique_ptr<exec::core::Model>{new Model(std::move(compiled_model))};
   } catch (const std::exception& e) {
