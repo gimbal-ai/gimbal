@@ -47,10 +47,10 @@ TEST(ImageShapeCPUTensorCalculator, CorrectImageShape) {
   mediapipe::ImageFrame img_frame(mediapipe::ImageFormat::FORMAT_SRGB, kWidth, kHeight);
 
   ASSERT_OK_AND_ASSIGN(auto expected_tensor,
-                       cpu_exec_ctx->TensorPool()->GetTensor(sizeof(float) * 2));
-  auto float_data = reinterpret_cast<float*>(expected_tensor->data());
-  float_data[0] = static_cast<float>(kHeight);
-  float_data[1] = static_cast<float>(kWidth);
+                       cpu_exec_ctx->TensorPool()->GetTensor(sizeof(int32_t) * 2));
+  auto data = reinterpret_cast<int32_t*>(expected_tensor->data());
+  data[0] = kWidth;
+  data[1] = kHeight;
 
   auto ts = mediapipe::Timestamp::Min();
   tester.WithExecutionContext(cpu_exec_ctx.get())

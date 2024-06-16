@@ -54,12 +54,12 @@ Status ImageShapeCPUTensorCalculator::ProcessImpl(mediapipe::CalculatorContext* 
 
   GML_ASSIGN_OR_RETURN(auto cpu_tensor, exec_ctx->TensorPool()->GetTensor(sizeof(float) * 2));
   GML_RETURN_IF_ERROR(cpu_tensor->Reshape(TensorShape{1, 2}));
-  cpu_tensor->SetDataType(DataType::FLOAT32);
+  cpu_tensor->SetDataType(DataType::INT32);
 
-  float* shape = cpu_tensor->TypedData<DataType::FLOAT32>();
+  int32_t* shape = cpu_tensor->TypedData<DataType::INT32>();
 
-  shape[0] = static_cast<float>(image_frame.Height());
-  shape[1] = static_cast<float>(image_frame.Width());
+  shape[0] = image_frame.Width();
+  shape[1] = image_frame.Height();
 
   auto packet = mediapipe::MakePacket<CPUTensorPtr>(std::move(cpu_tensor));
   packet = packet.At(cc->InputTimestamp());
