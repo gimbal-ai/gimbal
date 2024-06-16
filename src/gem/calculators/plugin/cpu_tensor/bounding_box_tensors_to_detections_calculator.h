@@ -29,16 +29,12 @@ namespace gml::gem::calculators::cpu_tensor {
  *  BoundingBoxTensorsToDetections Graph API:
  *
  *  Inputs:
- *    BOX_TENSOR (1 x N_CANDIDATES x 4) tensor containing candidate (a.k.a "anchor") boxes.
- *      Currently we only support (y1, x1, y2, x2) unnormalized bounding box coordinates. In the
- *      future, we'll likely support (xc, yc, w, h) format as well.
+ *    BOX_TENSOR (1 x N_SELECTED x 4) float32 tensor containing selected  boxes, in (xc, yc, w, h)
+ * normalized format as well.
  *
- *    SCORE_TENSOR (1 x N_CLASSES x N_CANDIDATES) tensor containing scores per class per box.
+ *    SCORE_TENSOR (1 x N_SELECTED) int tensor containing confidence scores for each prediction.
  *
- *    INDEX_TENSOR (N_SELECTED x 3) tensor containing NMS selected indices of best candidates.
- *      Each index is (batch_idx, class_idx, box_idx).
- *
- *    ORIG_IMAGE_SHAPE (1 x 2) original image shape [width, height]
+ *    CLASS_TENSOR (1 x N_SELECTED) int tensor containing class indices for each prediction.
  *
  *  Outputs:
  *    std::vector<Detection> a list of detection protos for the image.
@@ -52,17 +48,11 @@ class BoundingBoxTensorsToDetections : public mediapipe::CalculatorBase {
 
  protected:
   Status CheckShapes(const exec::core::TensorShape& boxes, const exec::core::TensorShape& scores,
-                     const exec::core::TensorShape& indices,
-                     const exec::core::TensorShape& original_shape);
+                     const exec::core::TensorShape& classes);
 
  private:
   bool shapes_checked_ = false;
-
   optionspb::BoundingBoxToDetectionsOptions options_;
-
-  using BoundingBoxConvFunc = std::function<void(
-      const float*, const float*, ::gml::internal::api::core::v1::NormalizedCenterRect*)>;
-  BoundingBoxConvFunc bounding_box_converter_;
 };
 
 }  // namespace gml::gem::calculators::cpu_tensor

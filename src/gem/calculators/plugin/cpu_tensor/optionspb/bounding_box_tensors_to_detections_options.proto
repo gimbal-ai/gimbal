@@ -24,21 +24,4 @@ option go_package = "gimletlabs.ai/gimlet/src/gem/calculators/plugin/cpu_tensor/
 message BoundingBoxToDetectionsOptions {
   // Mapping from detection label index to the detection label itself.
   repeated string index_to_label = 1;
-
-  enum CoordinateFormat {
-    COORDINATE_FORMAT_UNKNOWN = 0;
-    // Bounding box is specified by pixel coordinates of two diagonally opposite corners (with y
-    // coordinate specified first).
-    // i.e.  (y1, x1, y2, x2)
-    COORDINATE_FORMAT_DIAG_CORNERS_YX = 1;
-    // Bounding box is specified by pixel coordinates to the center of the box, plus its width and
-    // height in pixels. i.e. (xc, yc, w, h)
-    COORDINATE_FORMAT_CENTER_ANCHORED = 2;
-    // Bounding box is specified by normalized coordinates of two diagonally opposite corners (with
-    // x coordinate first).
-    // i.e. (x1, y1, x2, y2).
-    COORDINATE_FORMAT_NORMALIZED_DIAG_CORNERS_XY = 3;
-  };
-
-  CoordinateFormat coordinate_format = 2;
 }
