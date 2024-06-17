@@ -36,6 +36,7 @@ using ::gml::internal::api::core::v1::H264Chunk;
 using ::gml::internal::api::core::v1::ImageHistogramBatch;
 using ::gml::internal::api::core::v1::ImageOverlayChunk;
 using ::gml::internal::api::core::v1::ImageQualityMetrics;
+using ::gml::internal::api::core::v1::Segmentation;
 using ::gml::internal::api::core::v1::VideoHeader;
 
 static constexpr char kOverlayedFFmpegVideoSinkNode[] = R"pbtxt(
@@ -53,6 +54,7 @@ struct FFmpegVideoSinkTestCase {
   std::vector<std::vector<size_t>> expected_h264_chunks_ids;
   std::optional<std::string> image_hist_batch_pbtxt;
   std::optional<std::string> image_quality_pbtxt;
+  std::optional<std::string> segmentation_pbtxt;
 };
 
 class OverlayedFFmpegVideoSinkTest : public ::testing::TestWithParam<FFmpegVideoSinkTestCase> {};
@@ -75,6 +77,12 @@ TEST_P(OverlayedFFmpegVideoSinkTest, OutputsExpectedChunks) {
     overlay_input_streams.emplace_back(R"pb(input_stream: "IMAGE_QUALITY:quality")pb");
     ASSERT_TRUE(google::protobuf::TextFormat::ParseFromString(test_case.image_quality_pbtxt.value(),
                                                               &image_quality));
+  }
+  Segmentation segmentation;
+  if (test_case.segmentation_pbtxt.has_value()) {
+    overlay_input_streams.emplace_back(R"pb(input_stream: "SEGMENTATION:segmentation")pb");
+    ASSERT_TRUE(google::protobuf::TextFormat::ParseFromString(test_case.segmentation_pbtxt.value(),
+                                                              &segmentation));
   }
 
   auto config =
@@ -159,6 +167,9 @@ TEST_P(OverlayedFFmpegVideoSinkTest, OutputsExpectedChunks) {
   }
   if (test_case.image_quality_pbtxt.has_value()) {
     tester.ForInput("IMAGE_QUALITY", std::move(image_quality), ts);
+  }
+  if (test_case.segmentation_pbtxt.has_value()) {
+    tester.ForInput("SEGMENTATION", std::move(segmentation), ts);
   }
   tester.Run();
 
@@ -449,6 +460,49 @@ auto sink_tests = ::testing::Values(
                 brisque_score: 0.5
                 )pbtxt",
             },
+    },
+    FFmpegVideoSinkTestCase{
+        .av_packet_sizes =
+            {
+                100,
+            },
+        .expected_overlay_chunk_pbtxts =
+            {
+                R"pbtxt(
+                frame_ts: 0
+                eof: true
+                segmentation {
+                  masks {
+                    label: "person"
+                    run_length_encoding: [0,1,1,1]
+                  }
+                  masks {
+                    label: "cat"
+                    run_length_encoding: [1,1,1,0]
+                  }
+                  width: 640
+                  height: 480
+                }
+                )pbtxt",
+            },
+        .expected_h264_chunks_ids =
+            {
+                {0},
+            },
+        .segmentation_pbtxt =
+            {
+                R"pbtxt(
+          masks {
+            label: "person"
+            run_length_encoding: [0,1,1,1]
+          }
+          masks {
+            label: "cat"
+            run_length_encoding: [1,1,1,0]
+          }
+          width: 640
+          height: 480
+          )pbtxt"},
     });
 
 INSTANTIATE_TEST_SUITE_P(OverlayedFFmpegVideoSinkTestSuite, OverlayedFFmpegVideoSinkTest,

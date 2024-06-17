@@ -59,18 +59,20 @@ class ImageHistogramBatch(_message.Message):
     def __init__(self, histograms: _Optional[_Iterable[_Union[ImageHistogram, _Mapping]]] = ...) -> None: ...
 
 class ImageOverlayChunk(_message.Message):
-    __slots__ = ["detections", "eof", "frame_ts", "histograms", "image_quality"]
+    __slots__ = ["detections", "eof", "frame_ts", "histograms", "image_quality", "segmentation"]
     DETECTIONS_FIELD_NUMBER: _ClassVar[int]
     EOF_FIELD_NUMBER: _ClassVar[int]
     FRAME_TS_FIELD_NUMBER: _ClassVar[int]
     HISTOGRAMS_FIELD_NUMBER: _ClassVar[int]
     IMAGE_QUALITY_FIELD_NUMBER: _ClassVar[int]
+    SEGMENTATION_FIELD_NUMBER: _ClassVar[int]
     detections: DetectionList
     eof: bool
     frame_ts: int
     histograms: ImageHistogramBatch
     image_quality: ImageQualityMetrics
-    def __init__(self, frame_ts: _Optional[int] = ..., eof: bool = ..., detections: _Optional[_Union[DetectionList, _Mapping]] = ..., histograms: _Optional[_Union[ImageHistogramBatch, _Mapping]] = ..., image_quality: _Optional[_Union[ImageQualityMetrics, _Mapping]] = ...) -> None: ...
+    segmentation: Segmentation
+    def __init__(self, frame_ts: _Optional[int] = ..., eof: bool = ..., detections: _Optional[_Union[DetectionList, _Mapping]] = ..., segmentation: _Optional[_Union[Segmentation, _Mapping]] = ..., histograms: _Optional[_Union[ImageHistogramBatch, _Mapping]] = ..., image_quality: _Optional[_Union[ImageQualityMetrics, _Mapping]] = ...) -> None: ...
 
 class ImageQualityMetrics(_message.Message):
     __slots__ = ["blurriness_score", "brisque_score"]

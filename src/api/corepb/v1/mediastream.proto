@@ -126,7 +126,7 @@ message ImageOverlayChunk {
   oneof overlay {
     // Each detection is a bounding box with a label.
     DetectionList detections = 100;
-    // TODO(james): add segmentation overlay.
+    Segmentation segmentation = 101;
     ImageHistogramBatch histograms = 200;
     ImageQualityMetrics image_quality = 300;
   }

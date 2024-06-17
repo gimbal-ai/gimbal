@@ -36,6 +36,7 @@ using ::gml::internal::api::core::v1::H264Chunk;
 using ::gml::internal::api::core::v1::ImageHistogramBatch;
 using ::gml::internal::api::core::v1::ImageOverlayChunk;
 using ::gml::internal::api::core::v1::ImageQualityMetrics;
+using ::gml::internal::api::core::v1::Segmentation;
 using ::gml::internal::api::core::v1::VideoHeader;
 
 constexpr std::string_view kDetectionsTag = "DETECTIONS";
@@ -44,6 +45,7 @@ constexpr std::string_view kVideoHeaderTag = "VIDEO_HEADER";
 constexpr std::string_view kImageHistTag = "IMAGE_HIST";
 constexpr std::string_view kImageQualityTag = "IMAGE_QUALITY";
 constexpr std::string_view kFinishedTag = "FINISHED";
+constexpr std::string_view kSegmentationTag = "SEGMENTATION";
 
 // TODO(james): move this into calculator options
 constexpr size_t kMaxDesiredChunkSize = 512UL * 1024UL;
@@ -134,6 +136,9 @@ absl::Status OverlayedFFmpegVideoSinkCalculator::GetContract(mediapipe::Calculat
   if (cc->Inputs().HasTag(kImageQualityTag)) {
     cc->Inputs().Tag(kImageQualityTag).Set<ImageQualityMetrics>();
   }
+  if (cc->Inputs().HasTag(kSegmentationTag)) {
+    cc->Inputs().Tag(kSegmentationTag).Set<Segmentation>();
+  }
   cc->Inputs().Tag(kAVPacketTag).Set<std::vector<std::unique_ptr<AVPacketWrapper>>>();
   cc->Inputs().Tag(kVideoHeaderTag).Set<mediapipe::VideoHeader>();
   if (cc->Outputs().HasTag(kFinishedTag)) {
@@ -182,6 +187,14 @@ Status OverlayedFFmpegVideoSinkCalculator::ProcessImpl(
   if (cc->Inputs().HasTag(kDetectionsTag) && !cc->Inputs().Tag(kDetectionsTag).IsEmpty()) {
     const auto& detections = cc->Inputs().Tag(kDetectionsTag).Get<std::vector<Detection>>();
     GML_RETURN_IF_ERROR(DetectionsToImageOverlayChunks(detections, frame_ts, &messages));
+  } else if (cc->Inputs().HasTag(kSegmentationTag) &&
+             !cc->Inputs().Tag(kSegmentationTag).IsEmpty()) {
+    const auto& segmentation = cc->Inputs().Tag(kSegmentationTag).Get<Segmentation>();
+    // TODO(james): separate segmentation over multiple chunks.
+    auto chunk = std::make_unique<ImageOverlayChunk>();
+    chunk->set_frame_ts(frame_ts);
+    chunk->mutable_segmentation()->MergeFrom(segmentation);
+    messages.push_back(std::move(chunk));
   } else {
     // Always include an overlay chunk of type detections. This ensures that we clear
     // stale detections if any.

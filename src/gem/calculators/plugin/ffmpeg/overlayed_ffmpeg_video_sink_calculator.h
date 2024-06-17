@@ -30,14 +30,16 @@ namespace gml::gem::calculators::ffmpeg {
  *  OverlayedFFmpegVideoSinkCalculator Graph API:
  *
  *  Inputs:
- *    DETECTIONS std::vector<internal::api::corepb::v1::Detection> optional list of detection protos
- *      (currently required until we support segmenatation or other overlays.
+ *    DETECTIONS std::vector<internal::api::corepb::v1::Detection> optional list of detection
+ * protos.
  *
  *    AV_PACKETS std::vector<std::unique_ptr<AVPacketWrapper>> list of ffmpeg
  *      encoded packets.
  *
  *    IMAGE_HIST internal::api::core::v1::ImageHistogram
  *    IMAGE_QUALITY internal::api::core::v1::ImageQualityMetrics.
+ *
+ *    SEGMENTATION internal::api::corepb::v1::Segmentation optional proto with segmentation masks.
  *
  *  Outputs:
  *    This is a sink node so there are no data mediapipe outputs. Instead the node outputs proto
