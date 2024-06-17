@@ -27,6 +27,7 @@ py_library(
         "compile.py",
         "model.py",
         "preprocessing.py",
+        "tensor.py",
     ],
     imports = [".."],
     visibility = ["//:__subpackages__"],

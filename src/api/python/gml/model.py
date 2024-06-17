@@ -21,30 +21,7 @@ import torch
 import torch_mlir
 from gml.compile import to_torch_mlir
 from gml.preprocessing import ImagePreprocessingStep
-
-
-def box_format_str_to_proto(box_format: str):
-    match box_format:
-        case "cxcywh":
-            return modelexecpb.BoundingBoxInfo.BOUNDING_BOX_FORMAT_CXCYWH
-        case "xyxy":
-            return modelexecpb.BoundingBoxInfo.BOUNDING_BOX_FORMAT_XYXY
-        case "yxyx":
-            return modelexecpb.BoundingBoxInfo.BOUNDING_BOX_FORMAT_YXYX
-        case _:
-            raise ValueError("Invalid bounding box format: {}".format(box_format))
-
-
-class BoundingBoxFormat:
-    def __init__(self, box_format: str = "cxcywh", is_normalized: bool = True):
-        self.box_format = box_format_str_to_proto(box_format)
-        self.is_normalized = is_normalized
-
-    def to_proto(self) -> modelexecpb.BoundingBoxInfo:
-        return modelexecpb.BoundingBoxInfo(
-            box_format=self.box_format,
-            box_normalized=self.is_normalized,
-        )
+from gml.tensor import TensorSemantics
 
 
 class Model:
@@ -54,7 +31,8 @@ class Model:
         torch_module: torch.nn.Module,
         input_shapes: List[List[int]],
         input_dtypes: List[torch.dtype],
-        output_bbox_format: Optional[BoundingBoxFormat] = None,
+        input_tensor_semantics: List[TensorSemantics],
+        output_tensor_semantics: List[TensorSemantics],
         class_labels: Optional[List[str]] = None,
         class_labels_file: Optional[Path] = None,
         image_preprocessing_steps: Optional[List[ImagePreprocessingStep]] = None,
@@ -67,7 +45,8 @@ class Model:
             with open(class_labels_file, "r") as f:
                 for line in f.readlines():
                     self.class_labels.append(line.strip())
-        self.output_bbox_format = output_bbox_format
+        self.input_tensor_semantics = input_tensor_semantics
+        self.output_tensor_semantics = output_tensor_semantics
         self.image_preprocessing_steps = image_preprocessing_steps
         self.input_shapes = input_shapes
         self.input_dtypes = input_dtypes
@@ -82,9 +61,6 @@ class Model:
         )
 
     def to_proto(self) -> modelexecpb.ModelInfo:
-        bbox_info = None
-        if self.output_bbox_format:
-            bbox_info = self.output_bbox_format.to_proto()
         image_preprocessing_steps = None
         if self.image_preprocessing_steps:
             image_preprocessing_steps = [
@@ -95,6 +71,11 @@ class Model:
             kind=modelexecpb.ModelInfo.MODEL_KIND_TORCHSCRIPT,
             format=modelexecpb.ModelInfo.MODEL_STORAGE_FORMAT_MLIR_TEXT,
             class_labels=self.class_labels,
-            bbox_info=bbox_info,
             image_preprocessing_steps=image_preprocessing_steps,
+            input_tensor_semantics=[
+                semantics.to_proto() for semantics in self.input_tensor_semantics
+            ],
+            output_tensor_semantics=[
+                semantics.to_proto() for semantics in self.output_tensor_semantics
+            ],
         )

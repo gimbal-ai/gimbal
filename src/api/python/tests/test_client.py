@@ -239,13 +239,37 @@ def test_upload_pipeline(gml_client: gml.Client):
         torch_module=None,
         input_shapes=[],
         input_dtypes=[],
-        output_bbox_format=gml.model.BoundingBoxFormat(
-            box_format="cxcywh", is_normalized=True
-        ),
         class_labels=["class1", "class2"],
         image_preprocessing_steps=[
             gml.preprocessing.LetterboxImage(),
             gml.preprocessing.ImageToFloatTensor(),
+        ],
+        input_tensor_semantics=[
+            gml.tensor.TensorSemantics(
+                dimensions=[
+                    gml.tensor.BatchDimension(),
+                    gml.tensor.ImageChannelDimension(),
+                    gml.tensor.ImageHeightDimension(),
+                    gml.tensor.ImageWidthDimension(),
+                ],
+            ),
+        ],
+        output_tensor_semantics=[
+            gml.tensor.TensorSemantics(
+                dimensions=[
+                    gml.tensor.BatchDimension(),
+                    gml.tensor.DetectionNumCandidatesDimension(),
+                    gml.tensor.DetectionOutputDimension(
+                        coordinates_start_index=0,
+                        box_format=gml.tensor.BoundingBoxFormat(
+                            box_format="cxcywh",
+                            is_normalized=True,
+                        ),
+                        box_confidence_index=4,
+                        scores_range=(5, -1),
+                    ),
+                ],
+            ),
         ],
     )
     # stub convert_to_mlir
