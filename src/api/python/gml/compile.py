@@ -24,9 +24,13 @@ def to_torch_mlir(model, example_inputs):
     args = example_args._get_for_tracing(use_tracing=True, ignore_traced_shapes=True)[
         "forward"
     ]
-    # Running the model a few times on the inputs, leads to more consistent compiled results.
-    for _ in range(2):
-        _ = model(*args)
+    try:
+        # Running the model a few times on the inputs, leads to more consistent compiled results.
+        for _ in range(2):
+            _ = model(*args)
+    except Exception:
+        # Ignore errors running the model. This can happen when the model has data dependent branches.
+        pass
 
     try:
         compiled = torch_mlir_compile(
