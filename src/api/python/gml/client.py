@@ -13,7 +13,6 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-import io
 import os
 import uuid
 from pathlib import Path
@@ -246,6 +245,27 @@ class Client:
         )
         return resp.id
 
+    def create_model(self, model: Model):
+        model_info = model.to_proto()
+        for asset_name, file in model.collect_assets().items():
+            if isinstance(file, Path) or isinstance(file, str):
+                file = open(file, "rb")
+
+            sha256 = sha256sum(file)
+
+            upload_name = model.name
+            if asset_name:
+                upload_name += ":" + asset_name
+            print(f"Uploading {upload_name}...")
+
+            file_info = self._upload_file_if_not_exists(sha256, file, sha256)
+
+            model_info.file_assets[asset_name].MergeFrom(file_info.file_id)
+
+            file.close()
+
+        return self._create_model(model_info)
+
     def upload_pipeline(
         self,
         *,
@@ -263,16 +283,7 @@ class Client:
             raise ValueError("must specify one of 'pipeline_file' or 'pipeline'")
 
         for model in models:
-            torch_mlir = model.convert_to_torch_mlir()
-            file = io.BytesIO(str(torch_mlir).encode("utf-8"))
-            sha256 = sha256sum(file)
-
-            print(f"Uploading {model.name}...")
-            file_info = self._upload_file_if_not_exists(sha256, file, sha256)
-
-            model_info = model.to_proto()
-            model_info.file_assets[""].MergeFrom(file_info.file_id)
-            self._create_model(model_info)
+            self.create_model(model)
 
         stub = self._lps_stub()
         req = lppb.CreateLogicalPipelineRequest(

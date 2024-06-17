@@ -234,7 +234,7 @@ def test_get_org_id(gml_client: gml.Client):
 
 
 def test_upload_pipeline(gml_client: gml.Client):
-    model = gml.Model(
+    model = gml.TorchModel(
         "test_model",
         torch_module=None,
         input_shapes=[],
@@ -273,7 +273,7 @@ def test_upload_pipeline(gml_client: gml.Client):
         ],
     )
     # stub convert_to_mlir
-    model.convert_to_torch_mlir = lambda *args, **kwargs: "test model contents"
+    model._convert_to_torch_mlir = lambda *args, **kwargs: "test model contents"
 
     pipeline = "test pipeline contents"
 

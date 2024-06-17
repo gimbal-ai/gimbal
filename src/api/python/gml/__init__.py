@@ -14,4 +14,4 @@
 # SPDX-License-Identifier: Proprietary
 
 from gml.client import Client  # noqa
-from gml.model import Model  # noqa
+from gml.model import ModelFromFiles, TorchModel  # noqa
