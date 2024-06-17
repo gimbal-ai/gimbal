@@ -30,6 +30,7 @@ enum class DataType {
   FLOAT32 = 1,
   INT32 = 2,
   INT64 = 3,
+  INT8 = 4,
 };
 
 template <DataType TDataType>
@@ -56,6 +57,12 @@ class DataTypeTraits<DataType::INT64> {
   using value_type = int64_t;
 };
 
+template <>
+class DataTypeTraits<DataType::INT8> {
+ public:
+  using value_type = int8_t;
+};
+
 static inline size_t DataTypeByteSize(DataType type) {
   switch (type) {
     case DataType::FLOAT32:
@@ -64,6 +71,8 @@ static inline size_t DataTypeByteSize(DataType type) {
       return sizeof(DataTypeTraits<DataType::INT32>::value_type);
     case DataType::INT64:
       return sizeof(DataTypeTraits<DataType::INT64>::value_type);
+    case DataType::INT8:
+      return sizeof(DataTypeTraits<DataType::INT8>::value_type);
     default:
       return sizeof(DataTypeTraits<DataType::UNKNOWN>::value_type);
   }
