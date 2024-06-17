@@ -57,6 +57,24 @@ message DetectionList {
   repeated Detection detection = 1;
 }
 
+// A single binary segmentation mask with a class label.
+message SegmentationMask {
+  // Class label for this mask.
+  string label = 1;
+  // Run-length encoded binary mask. Specifies the number of 0s in a row, followed by the number of
+  // 1s, and so on.
+  repeated int32 run_length_encoding = 2;
+}
+
+// Segmentation represents a segmentation of an image, assigning each pixel a class.
+message Segmentation {
+  repeated SegmentationMask masks = 1;
+  // Width of the mask.
+  int64 width = 2;
+  // Height of the mask.
+  int64 height = 3;
+}
+
 enum ImageColorChannel {
   IMAGE_COLOR_CHANNEL_UNKNOWN = 0;
   IMAGE_COLOR_CHANNEL_GRAY = 1;

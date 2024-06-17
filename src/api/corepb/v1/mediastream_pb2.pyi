@@ -100,6 +100,24 @@ class NormalizedCenterRect(_message.Message):
     yc: float
     def __init__(self, xc: _Optional[float] = ..., yc: _Optional[float] = ..., width: _Optional[float] = ..., height: _Optional[float] = ...) -> None: ...
 
+class Segmentation(_message.Message):
+    __slots__ = ["height", "masks", "width"]
+    HEIGHT_FIELD_NUMBER: _ClassVar[int]
+    MASKS_FIELD_NUMBER: _ClassVar[int]
+    WIDTH_FIELD_NUMBER: _ClassVar[int]
+    height: int
+    masks: _containers.RepeatedCompositeFieldContainer[SegmentationMask]
+    width: int
+    def __init__(self, masks: _Optional[_Iterable[_Union[SegmentationMask, _Mapping]]] = ..., width: _Optional[int] = ..., height: _Optional[int] = ...) -> None: ...
+
+class SegmentationMask(_message.Message):
+    __slots__ = ["label", "run_length_encoding"]
+    LABEL_FIELD_NUMBER: _ClassVar[int]
+    RUN_LENGTH_ENCODING_FIELD_NUMBER: _ClassVar[int]
+    label: str
+    run_length_encoding: _containers.RepeatedScalarFieldContainer[int]
+    def __init__(self, label: _Optional[str] = ..., run_length_encoding: _Optional[_Iterable[int]] = ...) -> None: ...
+
 class VideoHeader(_message.Message):
     __slots__ = ["frame_rate", "height", "width"]
     FRAME_RATE_FIELD_NUMBER: _ClassVar[int]
