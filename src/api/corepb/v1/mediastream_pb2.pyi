@@ -1,4 +1,5 @@
 from gogoproto import gogo_pb2 as _gogo_pb2
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
@@ -13,12 +14,14 @@ IMAGE_COLOR_CHANNEL_RED: ImageColorChannel
 IMAGE_COLOR_CHANNEL_UNKNOWN: ImageColorChannel
 
 class Detection(_message.Message):
-    __slots__ = ["bounding_box", "label"]
+    __slots__ = ["bounding_box", "label", "track_id"]
     BOUNDING_BOX_FIELD_NUMBER: _ClassVar[int]
     LABEL_FIELD_NUMBER: _ClassVar[int]
+    TRACK_ID_FIELD_NUMBER: _ClassVar[int]
     bounding_box: NormalizedCenterRect
     label: _containers.RepeatedCompositeFieldContainer[Label]
-    def __init__(self, label: _Optional[_Iterable[_Union[Label, _Mapping]]] = ..., bounding_box: _Optional[_Union[NormalizedCenterRect, _Mapping]] = ...) -> None: ...
+    track_id: _wrappers_pb2.Int64Value
+    def __init__(self, label: _Optional[_Iterable[_Union[Label, _Mapping]]] = ..., bounding_box: _Optional[_Union[NormalizedCenterRect, _Mapping]] = ..., track_id: _Optional[_Union[_wrappers_pb2.Int64Value, _Mapping]] = ...) -> None: ...
 
 class DetectionList(_message.Message):
     __slots__ = ["detection"]

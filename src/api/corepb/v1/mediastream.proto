@@ -22,6 +22,7 @@ package gml.internal.api.core.v1;
 option go_package = "gimletlabs.ai/gimlet/src/api/corepb/v1;corepb";
 
 import "gogoproto/gogo.proto";
+import "google/protobuf/wrappers.proto";
 
 // Label represents a label with its confidence score.
 message Label {
@@ -49,6 +50,8 @@ message Detection {
   repeated Label label = 1;
 
   NormalizedCenterRect bounding_box = 2;
+
+  google.protobuf.Int64Value track_id = 3;
 }
 
 // DetectionList is a list of Detection protos. The only reason it's necessary is because oneofs
@@ -103,7 +106,7 @@ message ImageHistogramBatch {
 }
 
 message ImageQualityMetrics {
-  // The brique score (https://live.ece.utexas.edu/publications/2012/TIP%20BRISQUE.pdf) for the
+  // The brisque score (https://live.ece.utexas.edu/publications/2012/TIP%20BRISQUE.pdf) for the
   // image in range [0, 1.0]. Higher score is better.
   double brisque_score = 1;
   // The blurriness score in range [0, 1.0]. Higher score means more blurry.

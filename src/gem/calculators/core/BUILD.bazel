@@ -25,6 +25,8 @@ gml_cc_library(
     srcs = [
         "barcode_detector_calculator.cc",
         "barcode_detector_calculator.h",
+        "bytetrack_calculator.cc",
+        "bytetrack_calculator.h",
         "debug_dump_frame_calculator.cc",
         "debug_dump_frame_calculator.h",
         "detections_summary_calculator.cc",
@@ -55,6 +57,7 @@ gml_cc_library(
         "@com_github_google_mediapipe//mediapipe/calculators/util:latency_cc_proto",
         "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
         "@com_github_google_mediapipe//mediapipe/framework/formats:detection_cc_proto",
+        "@com_github_vertical_beach_bytetrack_cpp//:bytetrack",
         "@io_opentelemetry_cpp//sdk/src/metrics",
     ],
 )
@@ -102,5 +105,16 @@ gml_cc_test(
         ":cc_library",
         "//src/gem/testing/core:cc_library",
         "//src/gem/testing/core/testdata:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "bytetrack_calculator_test",
+    srcs = [
+        "bytetrack_calculator_test.cc",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
     ],
 )

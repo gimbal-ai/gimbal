@@ -12,9 +12,10 @@ _sym_db = _symbol_database.Default()
 
 
 from gogoproto import gogo_pb2 as gogoproto_dot_gogo__pb2
+from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n#src/api/corepb/v1/mediastream.proto\x12\x18gml.internal.api.core.v1\x1a\x14gogoproto/gogo.proto\"3\n\x05Label\x12\x14\n\x05label\x18\x01 \x01(\tR\x05label\x12\x14\n\x05score\x18\x02 \x01(\x02R\x05score\"d\n\x14NormalizedCenterRect\x12\x0e\n\x02xc\x18\x01 \x01(\x02R\x02xc\x12\x0e\n\x02yc\x18\x02 \x01(\x02R\x02yc\x12\x14\n\x05width\x18\x03 \x01(\x02R\x05width\x12\x16\n\x06height\x18\x04 \x01(\x02R\x06height\"\x95\x01\n\tDetection\x12\x35\n\x05label\x18\x01 \x03(\x0b\x32\x1f.gml.internal.api.core.v1.LabelR\x05label\x12Q\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32..gml.internal.api.core.v1.NormalizedCenterRectR\x0b\x62oundingBox\"R\n\rDetectionList\x12\x41\n\tdetection\x18\x01 \x03(\x0b\x32#.gml.internal.api.core.v1.DetectionR\tdetection\"X\n\x10SegmentationMask\x12\x14\n\x05label\x18\x01 \x01(\tR\x05label\x12.\n\x13run_length_encoding\x18\x02 \x03(\x05R\x11runLengthEncoding\"~\n\x0cSegmentation\x12@\n\x05masks\x18\x01 \x03(\x0b\x32*.gml.internal.api.core.v1.SegmentationMaskR\x05masks\x12\x14\n\x05width\x18\x02 \x01(\x03R\x05width\x12\x16\n\x06height\x18\x03 \x01(\x03R\x06height\"\xbb\x01\n\x0eImageHistogram\x12\x45\n\x07\x63hannel\x18\x01 \x01(\x0e\x32+.gml.internal.api.core.v1.ImageColorChannelR\x07\x63hannel\x12\x10\n\x03min\x18\x02 \x01(\x01R\x03min\x12\x10\n\x03max\x18\x03 \x01(\x01R\x03max\x12\x10\n\x03num\x18\x04 \x01(\x03R\x03num\x12\x10\n\x03sum\x18\x05 \x01(\x01R\x03sum\x12\x1a\n\x06\x62ucket\x18\x06 \x03(\x03\x42\x02\x10\x01R\x06\x62ucket\"_\n\x13ImageHistogramBatch\x12H\n\nhistograms\x18\x01 \x03(\x0b\x32(.gml.internal.api.core.v1.ImageHistogramR\nhistograms\"e\n\x13ImageQualityMetrics\x12#\n\rbrisque_score\x18\x01 \x01(\x01R\x0c\x62risqueScore\x12)\n\x10\x62lurriness_score\x18\x02 \x01(\x01R\x0f\x62lurrinessScore\"\xae\x03\n\x11ImageOverlayChunk\x12\x31\n\x08\x66rame_ts\x18\x01 \x01(\x03\x42\x16\xe2\xde\x1f\x07\x46rameTS\xea\xde\x1f\x07\x66rameTSR\x07\x66rameTS\x12\x19\n\x03\x65of\x18\x02 \x01(\x08\x42\x07\xe2\xde\x1f\x03\x45OFR\x03\x65of\x12I\n\ndetections\x18\x64 \x01(\x0b\x32\'.gml.internal.api.core.v1.DetectionListH\x00R\ndetections\x12L\n\x0csegmentation\x18\x65 \x01(\x0b\x32&.gml.internal.api.core.v1.SegmentationH\x00R\x0csegmentation\x12P\n\nhistograms\x18\xc8\x01 \x01(\x0b\x32-.gml.internal.api.core.v1.ImageHistogramBatchH\x00R\nhistograms\x12U\n\rimage_quality\x18\xac\x02 \x01(\x0b\x32-.gml.internal.api.core.v1.ImageQualityMetricsH\x00R\x0cimageQualityB\t\n\x07overlay\"\x81\x01\n\tH264Chunk\x12\x31\n\x08\x66rame_ts\x18\x01 \x01(\x03\x42\x16\xe2\xde\x1f\x07\x46rameTS\xea\xde\x1f\x07\x66rameTSR\x07\x66rameTS\x12\x19\n\x03\x65of\x18\x02 \x01(\x08\x42\x07\xe2\xde\x1f\x03\x45OFR\x03\x65of\x12&\n\x08nal_data\x18\x03 \x01(\x0c\x42\x0b\xe2\xde\x1f\x07NALDataR\x07nalData\"Z\n\x0bVideoHeader\x12\x14\n\x05width\x18\x01 \x01(\x03R\x05width\x12\x16\n\x06height\x18\x02 \x01(\x03R\x06height\x12\x1d\n\nframe_rate\x18\x03 \x01(\x01R\tframeRate*\xac\x01\n\x11ImageColorChannel\x12\x1f\n\x1bIMAGE_COLOR_CHANNEL_UNKNOWN\x10\x00\x12\x1c\n\x18IMAGE_COLOR_CHANNEL_GRAY\x10\x01\x12\x1b\n\x17IMAGE_COLOR_CHANNEL_RED\x10\x02\x12\x1d\n\x19IMAGE_COLOR_CHANNEL_GREEN\x10\x03\x12\x1c\n\x18IMAGE_COLOR_CHANNEL_BLUE\x10\x04\x42/Z-gimletlabs.ai/gimlet/src/api/corepb/v1;corepbb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n#src/api/corepb/v1/mediastream.proto\x12\x18gml.internal.api.core.v1\x1a\x14gogoproto/gogo.proto\x1a\x1egoogle/protobuf/wrappers.proto\"3\n\x05Label\x12\x14\n\x05label\x18\x01 \x01(\tR\x05label\x12\x14\n\x05score\x18\x02 \x01(\x02R\x05score\"d\n\x14NormalizedCenterRect\x12\x0e\n\x02xc\x18\x01 \x01(\x02R\x02xc\x12\x0e\n\x02yc\x18\x02 \x01(\x02R\x02yc\x12\x14\n\x05width\x18\x03 \x01(\x02R\x05width\x12\x16\n\x06height\x18\x04 \x01(\x02R\x06height\"\xcd\x01\n\tDetection\x12\x35\n\x05label\x18\x01 \x03(\x0b\x32\x1f.gml.internal.api.core.v1.LabelR\x05label\x12Q\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32..gml.internal.api.core.v1.NormalizedCenterRectR\x0b\x62oundingBox\x12\x36\n\x08track_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64ValueR\x07trackId\"R\n\rDetectionList\x12\x41\n\tdetection\x18\x01 \x03(\x0b\x32#.gml.internal.api.core.v1.DetectionR\tdetection\"X\n\x10SegmentationMask\x12\x14\n\x05label\x18\x01 \x01(\tR\x05label\x12.\n\x13run_length_encoding\x18\x02 \x03(\x05R\x11runLengthEncoding\"~\n\x0cSegmentation\x12@\n\x05masks\x18\x01 \x03(\x0b\x32*.gml.internal.api.core.v1.SegmentationMaskR\x05masks\x12\x14\n\x05width\x18\x02 \x01(\x03R\x05width\x12\x16\n\x06height\x18\x03 \x01(\x03R\x06height\"\xbb\x01\n\x0eImageHistogram\x12\x45\n\x07\x63hannel\x18\x01 \x01(\x0e\x32+.gml.internal.api.core.v1.ImageColorChannelR\x07\x63hannel\x12\x10\n\x03min\x18\x02 \x01(\x01R\x03min\x12\x10\n\x03max\x18\x03 \x01(\x01R\x03max\x12\x10\n\x03num\x18\x04 \x01(\x03R\x03num\x12\x10\n\x03sum\x18\x05 \x01(\x01R\x03sum\x12\x1a\n\x06\x62ucket\x18\x06 \x03(\x03\x42\x02\x10\x01R\x06\x62ucket\"_\n\x13ImageHistogramBatch\x12H\n\nhistograms\x18\x01 \x03(\x0b\x32(.gml.internal.api.core.v1.ImageHistogramR\nhistograms\"e\n\x13ImageQualityMetrics\x12#\n\rbrisque_score\x18\x01 \x01(\x01R\x0c\x62risqueScore\x12)\n\x10\x62lurriness_score\x18\x02 \x01(\x01R\x0f\x62lurrinessScore\"\xae\x03\n\x11ImageOverlayChunk\x12\x31\n\x08\x66rame_ts\x18\x01 \x01(\x03\x42\x16\xe2\xde\x1f\x07\x46rameTS\xea\xde\x1f\x07\x66rameTSR\x07\x66rameTS\x12\x19\n\x03\x65of\x18\x02 \x01(\x08\x42\x07\xe2\xde\x1f\x03\x45OFR\x03\x65of\x12I\n\ndetections\x18\x64 \x01(\x0b\x32\'.gml.internal.api.core.v1.DetectionListH\x00R\ndetections\x12L\n\x0csegmentation\x18\x65 \x01(\x0b\x32&.gml.internal.api.core.v1.SegmentationH\x00R\x0csegmentation\x12P\n\nhistograms\x18\xc8\x01 \x01(\x0b\x32-.gml.internal.api.core.v1.ImageHistogramBatchH\x00R\nhistograms\x12U\n\rimage_quality\x18\xac\x02 \x01(\x0b\x32-.gml.internal.api.core.v1.ImageQualityMetricsH\x00R\x0cimageQualityB\t\n\x07overlay\"\x81\x01\n\tH264Chunk\x12\x31\n\x08\x66rame_ts\x18\x01 \x01(\x03\x42\x16\xe2\xde\x1f\x07\x46rameTS\xea\xde\x1f\x07\x66rameTSR\x07\x66rameTS\x12\x19\n\x03\x65of\x18\x02 \x01(\x08\x42\x07\xe2\xde\x1f\x03\x45OFR\x03\x65of\x12&\n\x08nal_data\x18\x03 \x01(\x0c\x42\x0b\xe2\xde\x1f\x07NALDataR\x07nalData\"Z\n\x0bVideoHeader\x12\x14\n\x05width\x18\x01 \x01(\x03R\x05width\x12\x16\n\x06height\x18\x02 \x01(\x03R\x06height\x12\x1d\n\nframe_rate\x18\x03 \x01(\x01R\tframeRate*\xac\x01\n\x11ImageColorChannel\x12\x1f\n\x1bIMAGE_COLOR_CHANNEL_UNKNOWN\x10\x00\x12\x1c\n\x18IMAGE_COLOR_CHANNEL_GRAY\x10\x01\x12\x1b\n\x17IMAGE_COLOR_CHANNEL_RED\x10\x02\x12\x1d\n\x19IMAGE_COLOR_CHANNEL_GREEN\x10\x03\x12\x1c\n\x18IMAGE_COLOR_CHANNEL_BLUE\x10\x04\x42/Z-gimletlabs.ai/gimlet/src/api/corepb/v1;corepbb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'src.api.corepb.v1.mediastream_pb2', globals())
@@ -34,30 +35,30 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _H264CHUNK.fields_by_name['eof']._serialized_options = b'\342\336\037\003EOF'
   _H264CHUNK.fields_by_name['nal_data']._options = None
   _H264CHUNK.fields_by_name['nal_data']._serialized_options = b'\342\336\037\007NALData'
-  _IMAGECOLORCHANNEL._serialized_start=1744
-  _IMAGECOLORCHANNEL._serialized_end=1916
-  _LABEL._serialized_start=87
-  _LABEL._serialized_end=138
-  _NORMALIZEDCENTERRECT._serialized_start=140
-  _NORMALIZEDCENTERRECT._serialized_end=240
-  _DETECTION._serialized_start=243
-  _DETECTION._serialized_end=392
-  _DETECTIONLIST._serialized_start=394
-  _DETECTIONLIST._serialized_end=476
-  _SEGMENTATIONMASK._serialized_start=478
-  _SEGMENTATIONMASK._serialized_end=566
-  _SEGMENTATION._serialized_start=568
-  _SEGMENTATION._serialized_end=694
-  _IMAGEHISTOGRAM._serialized_start=697
-  _IMAGEHISTOGRAM._serialized_end=884
-  _IMAGEHISTOGRAMBATCH._serialized_start=886
-  _IMAGEHISTOGRAMBATCH._serialized_end=981
-  _IMAGEQUALITYMETRICS._serialized_start=983
-  _IMAGEQUALITYMETRICS._serialized_end=1084
-  _IMAGEOVERLAYCHUNK._serialized_start=1087
-  _IMAGEOVERLAYCHUNK._serialized_end=1517
-  _H264CHUNK._serialized_start=1520
-  _H264CHUNK._serialized_end=1649
-  _VIDEOHEADER._serialized_start=1651
-  _VIDEOHEADER._serialized_end=1741
+  _IMAGECOLORCHANNEL._serialized_start=1832
+  _IMAGECOLORCHANNEL._serialized_end=2004
+  _LABEL._serialized_start=119
+  _LABEL._serialized_end=170
+  _NORMALIZEDCENTERRECT._serialized_start=172
+  _NORMALIZEDCENTERRECT._serialized_end=272
+  _DETECTION._serialized_start=275
+  _DETECTION._serialized_end=480
+  _DETECTIONLIST._serialized_start=482
+  _DETECTIONLIST._serialized_end=564
+  _SEGMENTATIONMASK._serialized_start=566
+  _SEGMENTATIONMASK._serialized_end=654
+  _SEGMENTATION._serialized_start=656
+  _SEGMENTATION._serialized_end=782
+  _IMAGEHISTOGRAM._serialized_start=785
+  _IMAGEHISTOGRAM._serialized_end=972
+  _IMAGEHISTOGRAMBATCH._serialized_start=974
+  _IMAGEHISTOGRAMBATCH._serialized_end=1069
+  _IMAGEQUALITYMETRICS._serialized_start=1071
+  _IMAGEQUALITYMETRICS._serialized_end=1172
+  _IMAGEOVERLAYCHUNK._serialized_start=1175
+  _IMAGEOVERLAYCHUNK._serialized_end=1605
+  _H264CHUNK._serialized_start=1608
+  _H264CHUNK._serialized_end=1737
+  _VIDEOHEADER._serialized_start=1739
+  _VIDEOHEADER._serialized_end=1829
 # @@protoc_insertion_point(module_scope)
