@@ -43,7 +43,7 @@ class BoundingBoxInfo(_message.Message):
     def __init__(self, box_format: _Optional[_Union[BoundingBoxInfo.BoundingBoxFormat, str]] = ..., box_normalized: bool = ...) -> None: ...
 
 class DimensionSemantics(_message.Message):
-    __slots__ = ["detection_candidates_params", "detection_output_params", "image_channel_params", "kind"]
+    __slots__ = ["detection_candidates_params", "detection_output_params", "image_channel_params", "kind", "segmentation_mask_params"]
     class DimensionSemanticsKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = []
     class DetectionCandidatesParams(_message.Message):
@@ -81,6 +81,17 @@ class DimensionSemantics(_message.Message):
         IMAGE_CHANNEL_FORMAT_UNKNOWN: DimensionSemantics.ImageChannelParams.ImageChannelFormat
         format: DimensionSemantics.ImageChannelParams.ImageChannelFormat
         def __init__(self, format: _Optional[_Union[DimensionSemantics.ImageChannelParams.ImageChannelFormat, str]] = ...) -> None: ...
+    class SegmentationMaskParams(_message.Message):
+        __slots__ = ["kind"]
+        class SegmentationMaskKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+            __slots__ = []
+        KIND_FIELD_NUMBER: _ClassVar[int]
+        SEGMENTATION_MASK_KIND_BOOL: DimensionSemantics.SegmentationMaskParams.SegmentationMaskKind
+        SEGMENTATION_MASK_KIND_CLASS_LABEL: DimensionSemantics.SegmentationMaskParams.SegmentationMaskKind
+        SEGMENTATION_MASK_KIND_SCORE: DimensionSemantics.SegmentationMaskParams.SegmentationMaskKind
+        SEGMENTATION_MASK_KIND_UNKNOWN: DimensionSemantics.SegmentationMaskParams.SegmentationMaskKind
+        kind: DimensionSemantics.SegmentationMaskParams.SegmentationMaskKind
+        def __init__(self, kind: _Optional[_Union[DimensionSemantics.SegmentationMaskParams.SegmentationMaskKind, str]] = ...) -> None: ...
     DETECTION_CANDIDATES_PARAMS_FIELD_NUMBER: _ClassVar[int]
     DETECTION_OUTPUT_PARAMS_FIELD_NUMBER: _ClassVar[int]
     DIMENSION_SEMANTICS_KIND_BATCH: DimensionSemantics.DimensionSemanticsKind
@@ -91,14 +102,17 @@ class DimensionSemantics(_message.Message):
     DIMENSION_SEMANTICS_KIND_IMAGE_CHANNEL: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_IMAGE_HEIGHT: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_IMAGE_WIDTH: DimensionSemantics.DimensionSemanticsKind
+    DIMENSION_SEMANTICS_KIND_SEGMENTATION_MASK_CHANNEL: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_UNKNOWN: DimensionSemantics.DimensionSemanticsKind
     IMAGE_CHANNEL_PARAMS_FIELD_NUMBER: _ClassVar[int]
     KIND_FIELD_NUMBER: _ClassVar[int]
+    SEGMENTATION_MASK_PARAMS_FIELD_NUMBER: _ClassVar[int]
     detection_candidates_params: DimensionSemantics.DetectionCandidatesParams
     detection_output_params: DimensionSemantics.DetectionOutputParams
     image_channel_params: DimensionSemantics.ImageChannelParams
     kind: DimensionSemantics.DimensionSemanticsKind
-    def __init__(self, kind: _Optional[_Union[DimensionSemantics.DimensionSemanticsKind, str]] = ..., image_channel_params: _Optional[_Union[DimensionSemantics.ImageChannelParams, _Mapping]] = ..., detection_candidates_params: _Optional[_Union[DimensionSemantics.DetectionCandidatesParams, _Mapping]] = ..., detection_output_params: _Optional[_Union[DimensionSemantics.DetectionOutputParams, _Mapping]] = ...) -> None: ...
+    segmentation_mask_params: DimensionSemantics.SegmentationMaskParams
+    def __init__(self, kind: _Optional[_Union[DimensionSemantics.DimensionSemanticsKind, str]] = ..., image_channel_params: _Optional[_Union[DimensionSemantics.ImageChannelParams, _Mapping]] = ..., detection_candidates_params: _Optional[_Union[DimensionSemantics.DetectionCandidatesParams, _Mapping]] = ..., detection_output_params: _Optional[_Union[DimensionSemantics.DetectionOutputParams, _Mapping]] = ..., segmentation_mask_params: _Optional[_Union[DimensionSemantics.SegmentationMaskParams, _Mapping]] = ...) -> None: ...
 
 class ExecutionSpec(_message.Message):
     __slots__ = ["graph", "model_spec"]

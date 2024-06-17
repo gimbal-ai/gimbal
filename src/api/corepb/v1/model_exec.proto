@@ -90,6 +90,7 @@ message DimensionSemantics {
     DIMENSION_SEMANTICS_KIND_DETECTION_CANDIDATES = 6;
     DIMENSION_SEMANTICS_KIND_DETECTION_OUTPUT = 7;
     DIMENSION_SEMANTICS_KIND_CLASS_SCORES = 8;
+    DIMENSION_SEMANTICS_KIND_SEGMENTATION_MASK_CHANNEL = 9;
   }
   DimensionSemanticsKind kind = 1;
 
@@ -133,6 +134,22 @@ message DimensionSemantics {
     IndexRange scores_range = 5;
   }
   DetectionOutputParams detection_output_params = 4;
+
+  message SegmentationMaskParams {
+    enum SegmentationMaskKind {
+      SEGMENTATION_MASK_KIND_UNKNOWN = 0;
+      // Segmenation masks represented by an integer tensor where each pixel is a class label.
+      SEGMENTATION_MASK_KIND_CLASS_LABEL = 1;
+      // Segmentation masks represented by a boolean tensor where each channel is a different class'
+      // mask.
+      SEGMENTATION_MASK_KIND_BOOL = 2;
+      // Segmentation masks represented by a float tensor where each channel is a different class'
+      // confidence score at each pixel.
+      SEGMENTATION_MASK_KIND_SCORE = 3;
+    }
+    SegmentationMaskKind kind = 1;
+  }
+  SegmentationMaskParams segmentation_mask_params = 5;
 }
 
 // Semantics of an input/output tensor. Used to determine pre/post-processing necessary for
