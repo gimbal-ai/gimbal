@@ -418,6 +418,8 @@ message PhysicalPipelineStatus {
   int64 version = 2;
   // The actual runtime for the device's execution.
   string runtime = 3;
+  // The reason the pipeline is in this state.
+  string reason = 4;
 }
 
 /****************************************************************************

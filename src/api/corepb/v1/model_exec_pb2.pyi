@@ -362,14 +362,16 @@ class PhysicalPipelineSpec(_message.Message):
     def __init__(self, state: _Optional[_Union[PipelineState, str]] = ..., version: _Optional[int] = ..., graph: _Optional[_Union[ExecutionSpec, _Mapping]] = ..., runtime: _Optional[str] = ...) -> None: ...
 
 class PhysicalPipelineStatus(_message.Message):
-    __slots__ = ["runtime", "state", "version"]
+    __slots__ = ["reason", "runtime", "state", "version"]
+    REASON_FIELD_NUMBER: _ClassVar[int]
     RUNTIME_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
     VERSION_FIELD_NUMBER: _ClassVar[int]
+    reason: str
     runtime: str
     state: PipelineState
     version: int
-    def __init__(self, state: _Optional[_Union[PipelineState, str]] = ..., version: _Optional[int] = ..., runtime: _Optional[str] = ...) -> None: ...
+    def __init__(self, state: _Optional[_Union[PipelineState, str]] = ..., version: _Optional[int] = ..., runtime: _Optional[str] = ..., reason: _Optional[str] = ...) -> None: ...
 
 class Pipeline(_message.Message):
     __slots__ = ["nodes"]

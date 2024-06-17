@@ -52,13 +52,13 @@ namespace gml::gem::controller {
 
 using ::gml::gem::exec::core::ExecutionContext;
 using ::gml::gem::exec::core::Model;
-using ::gml::internal::api::core::v1::ApplyExecutionGraph;
 using ::gml::internal::api::core::v1::DeleteExecutionGraph;
 using gml::internal::api::core::v1::EDGE_CP_TOPIC_EXEC;
-using gml::internal::api::core::v1::ExecutionGraphState;
-using gml::internal::api::core::v1::ExecutionGraphStatus;
-using gml::internal::api::core::v1::ExecutionGraphStatusUpdate;
 using ::gml::internal::api::core::v1::ExecutionSpec;
+using ::gml::internal::api::core::v1::PhysicalPipelineSpecUpdate;
+using ::gml::internal::api::core::v1::PhysicalPipelineStatus;
+using gml::internal::api::core::v1::PhysicalPipelineStatusUpdate;
+using gml::internal::api::core::v1::PipelineState;
 using ::gml::internal::controlplane::egw::v1::BridgeResponse;
 
 namespace {
@@ -92,7 +92,7 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
         version_(version) {}
 
   Status PreparePluginExecutionContexts() {
-    SendStatusUpdate(ExecutionGraphState::EXECUTION_GRAPH_STATE_COMPILING, "");
+    SendStatusUpdate(PipelineState::PIPELINE_STATE_PENDING, "");
 
     auto& plugin_registry = plugins::Registry::GetInstance();
 
@@ -103,6 +103,7 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
     // Each model needs its own model execution context.
     for (const auto& [i, model_spec] : Enumerate(exec_spec_.model_spec())) {
       std::string plugin = model_spec.runtime();
+      runtime_ = plugin;
       std::string context_name = absl::StrCat(model_spec.name(), "_exec_ctx");
       // mediapipe only accepts lowercase characters and "_".
       context_name = absl::StrReplaceAll(context_name, {{".", "_"}});
@@ -129,7 +130,7 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
           EmplaceNewKey(&model_exec_ctxs_, context_name, std::move(model_exec_ctx)));
     }
 
-    SendStatusUpdate(ExecutionGraphState::EXECUTION_GRAPH_STATE_READY, "");
+    SendStatusUpdate(PipelineState::PIPELINE_STATE_READY, "");
     return Status::OK();
   }
 
@@ -153,7 +154,7 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
     exec::core::Runner runner(exec_spec_);
     GML_RETURN_IF_ERROR(runner.Init(side_packets));
 
-    SendStatusUpdate(ExecutionGraphState::EXECUTION_GRAPH_STATE_DEPLOYED, "");
+    SendStatusUpdate(PipelineState::PIPELINE_STATE_RUNNING, "");
     GML_RETURN_IF_ERROR(runner.Start());
     GML_RETURN_IF_ERROR(
         ::gml::metrics::MetricsSystem::GetInstance().RegisterAuxMetricsProvider(&runner));
@@ -168,22 +169,26 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
   void Work() override {
     auto s = Run();
     if (!s.ok()) {
-      SendStatusUpdate(ExecutionGraphState::EXECUTION_GRAPH_STATE_FAILED, "");
+      SendStatusUpdate(PipelineState::PIPELINE_STATE_FAILED, "");
+      failed_ = true;
       LOG(ERROR) << "Failed to run model: " << physical_pipeline_id_ << " " << s.msg();
     }
   }
 
   void Done() override {
-    SendStatusUpdate(ExecutionGraphState::EXECUTION_GRAPH_STATE_TERMINATING, "");
-
+    if (!failed_) {
+      SendStatusUpdate(PipelineState::PIPELINE_STATE_TERMINATED, "");
+    }
     parent_->HandleRunModelFinished(physical_pipeline_id_);
   }
 
-  void SendStatusUpdate(ExecutionGraphState state, std::string reason) {
-    ExecutionGraphStatus status;
+  void SendStatusUpdate(PipelineState state, std::string reason) {
+    PhysicalPipelineStatus status;
     status.set_state(state);
     status.set_version(version_);
     status.set_reason(reason);
+    status.set_runtime(runtime_);
+
     parent_->HandleModelStatusUpdate(physical_pipeline_id_, &status);
   }
 
@@ -196,18 +201,15 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
   std::vector<std::unique_ptr<Model>> models_;
   absl::flat_hash_map<std::string, std::unique_ptr<ExecutionContext>> model_exec_ctxs_;
   sole::uuid physical_pipeline_id_;
+  bool failed_ = false;
   int64_t version_;
+  std::string runtime_;
 };
 
 Status ModelExecHandler::HandleMessage(const BridgeResponse& msg) {
-  ApplyExecutionGraph eg;
+  PhysicalPipelineSpecUpdate eg;
   if (msg.msg().UnpackTo(&eg)) {
-    return this->HandleApplyExecutionGraph(eg);
-  }
-
-  DeleteExecutionGraph dg;
-  if (msg.msg().UnpackTo(&dg)) {
-    return this->HandleDeleteExecutionGraph(dg);
+    return this->HandlePhysicalPipelineSpecUpdate(eg);
   }
 
   LOG(ERROR) << "Failed to unpack message. Received message of type: " << msg.msg().type_url()
@@ -229,9 +231,9 @@ Status ModelExecHandler::HandleDeleteExecutionGraph(const DeleteExecutionGraph& 
     // If there are no queued execution graphs, run the default pipeline.
     if (queued_execution_graph_ == nullptr) {
       LOG(INFO) << "No other models are queued... Starting the DefaultVideoExecutionGraph";
-      ApplyExecutionGraph eg;
+      PhysicalPipelineSpecUpdate eg;
       GML_RETURN_IF_ERROR(this->GetDefaultVideoExecutionGraph(&eg));
-      return this->HandleApplyExecutionGraph(eg);
+      return this->HandlePhysicalPipelineSpecUpdate(eg);
     }
 
     return Status::OK();
@@ -251,24 +253,23 @@ Status ModelExecHandler::HandleDeleteExecutionGraph(const DeleteExecutionGraph& 
   return Status::OK();
 }
 
-Status ModelExecHandler::HandleApplyExecutionGraph(const ApplyExecutionGraph& eg) {
+Status ModelExecHandler::HandlePhysicalPipelineSpecUpdate(const PhysicalPipelineSpecUpdate& eg) {
   absl::base_internal::SpinLockHolder lock(&exec_graph_lock_);
 
   auto id = ParseUUID(eg.physical_pipeline_id());
 
   if (running_task_ != nullptr) {
     LOG(INFO) << "Model already running... Queuing up RunModel Request";
-    queued_execution_graph_ = std::make_unique<ApplyExecutionGraph>(eg);
+    queued_execution_graph_ = std::make_unique<PhysicalPipelineSpecUpdate>(eg);
     stop_signal_.store(true);
     return Status::OK();
   }
 
   LOG(INFO) << "Starting model execution  " << id;
   queued_execution_graph_ = nullptr;
-  ctrl_exec_ctx_->SetLogicalPipelineID(ParseUUID(eg.logical_pipeline_id()));
 
   if (!eg.has_spec()) {
-    LOG(ERROR) << "Missing spec in ApplyExecutionGraph msg";
+    LOG(ERROR) << "Missing spec in PhysicalPipelineSpecUpdate msg";
     return Status::OK();
   }
 
@@ -284,7 +285,7 @@ Status ModelExecHandler::HandleApplyExecutionGraph(const ApplyExecutionGraph& eg
   return Status::OK();
 }
 
-Status ModelExecHandler::GetDefaultVideoExecutionGraph(ApplyExecutionGraph* eg) {
+Status ModelExecHandler::GetDefaultVideoExecutionGraph(PhysicalPipelineSpecUpdate* eg) {
   auto caps = capabilities::core::DeviceCapabilities();
   auto& plugin_registry = plugins::Registry::GetInstance();
   for (auto& name : plugin_registry.RegisteredCapabilityListers()) {
@@ -328,11 +329,11 @@ Status ModelExecHandler::GetDefaultVideoExecutionGraph(ApplyExecutionGraph* eg) 
 Status ModelExecHandler::Init() {
   // When the GEM starts up, we want to run the video stream by default. This finds the
   // device's capabilities and initializes the default video stream.
-  ApplyExecutionGraph eg;
+  PhysicalPipelineSpecUpdate eg;
 
   GML_RETURN_IF_ERROR(this->GetDefaultVideoExecutionGraph(&eg));
 
-  return this->HandleApplyExecutionGraph(eg);
+  return this->HandlePhysicalPipelineSpecUpdate(eg);
 }
 
 Status ModelExecHandler::Finish() {
@@ -351,20 +352,15 @@ void ModelExecHandler::HandleRunModelFinished(sole::uuid physical_pipeline_id) {
   absl::base_internal::SpinLockHolder lock(&exec_graph_lock_);
   if (queued_execution_graph_ != nullptr) {
     auto eg = *queued_execution_graph_.get();
-    auto post_cb = [this, eg]() mutable { ECHECK_OK(this->HandleApplyExecutionGraph(eg)); };
+    auto post_cb = [this, eg]() mutable { ECHECK_OK(this->HandlePhysicalPipelineSpecUpdate(eg)); };
 
     dispatcher()->Post(event::PostCB(std::move(post_cb)));
   }
 }
 
 void ModelExecHandler::HandleModelStatusUpdate(sole::uuid physical_pipeline_id,
-                                               ExecutionGraphStatus* status) {
-  ExecutionGraphStatusUpdate update;
-
-  // Don't send the message if it is from the "default" pipeline.
-  if (physical_pipeline_id.ab == 0 && physical_pipeline_id.cd == 0) {
-    return;
-  }
+                                               PhysicalPipelineStatus* status) {
+  PhysicalPipelineStatusUpdate update;
 
   auto mutable_id = update.mutable_physical_pipeline_id();
   ToProto(physical_pipeline_id, mutable_id);

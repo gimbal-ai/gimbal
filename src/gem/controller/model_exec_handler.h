@@ -42,7 +42,8 @@ class ModelExecHandler : public MessageHandler {
   ~ModelExecHandler() override = default;
 
   Status HandleMessage(const ::gml::internal::controlplane::egw::v1::BridgeResponse& msg) override;
-  Status HandleApplyExecutionGraph(const ::gml::internal::api::core::v1::ApplyExecutionGraph&);
+  Status HandlePhysicalPipelineSpecUpdate(
+      const ::gml::internal::api::core::v1::PhysicalPipelineSpecUpdate&);
   Status HandleDeleteExecutionGraph(const ::gml::internal::api::core::v1::DeleteExecutionGraph&);
 
   Status Init() override;
@@ -51,8 +52,8 @@ class ModelExecHandler : public MessageHandler {
  private:
   class RunModelTask;
   void HandleRunModelFinished(sole::uuid);
-  void HandleModelStatusUpdate(sole::uuid, ::gml::internal::api::core::v1::ExecutionGraphStatus*);
-  Status GetDefaultVideoExecutionGraph(internal::api::core::v1::ApplyExecutionGraph*);
+  void HandleModelStatusUpdate(sole::uuid, ::gml::internal::api::core::v1::PhysicalPipelineStatus*);
+  Status GetDefaultVideoExecutionGraph(internal::api::core::v1::PhysicalPipelineSpecUpdate*);
 
   CachedBlobStore* blob_store_;
 
@@ -60,7 +61,7 @@ class ModelExecHandler : public MessageHandler {
   event::RunnableAsyncTaskUPtr running_task_ = nullptr;
   sole::uuid physical_pipeline_id_;
   absl::base_internal::SpinLock exec_graph_lock_;
-  std::unique_ptr<internal::api::core::v1::ApplyExecutionGraph> queued_execution_graph_
+  std::unique_ptr<internal::api::core::v1::PhysicalPipelineSpecUpdate> queued_execution_graph_
       ABSL_GUARDED_BY(exec_graph_lock_);
   std::atomic<bool> stop_signal_ = false;
 };
