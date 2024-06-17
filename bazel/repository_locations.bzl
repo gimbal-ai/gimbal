@@ -400,6 +400,16 @@ REPOSITORY_LOCATIONS = dict(
         strip_prefix = "stablehlo-271e8634de184fbfafd677d3876170feb6d08c97",
         urls = ["https://github.com/openxla/stablehlo/archive/271e8634de184fbfafd677d3876170feb6d08c97.tar.gz"],
     ),
+    com_github_vertical_beach_bytetrack_cpp = dict(
+        sha256 = "2bf7f198854453d69a683d1173fe9b59fb4171de245fe5a0e1902d6c2eb36377",
+        strip_prefix = "ByteTrack-cpp-d43805d461a714f65da039981bd5f5d21cf5cf59",
+        urls = ["https://github.com/Vertical-Beach/ByteTrack-cpp/archive/d43805d461a714f65da039981bd5f5d21cf5cf59.tar.gz"],
+    ),
+    com_gitlab_libeigen_eigen = dict(
+        sha256 = "8586084f71f9bde545ee7fa6d00288b264a2b7ac3607b974e54d13e7162c1c72",
+        strip_prefix = "eigen-3.4.0",
+        urls = ["https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz"],
+    ),
 )
 
 # To use a local repo for local development, simply add a `local_path` key to the relevant

@@ -182,6 +182,8 @@ def _cc_deps():
     _bazel_repo("com_github_nlohmann_json", build_file = "//bazel/external:nlohmann_json.BUILD")
     _bazel_repo("com_github_rlyeh_sole", patches = ["//bazel/external:sole.patch"], patch_args = ["-p1"], build_file = "//bazel/external:sole.BUILD")
     _bazel_repo("com_github_okdshin_picosha", build_file = "//bazel/external:picosha.BUILD")
+    _bazel_repo("com_gitlab_libeigen_eigen", build_file = "//bazel/external:eigen.BUILD")
+    _bazel_repo("com_github_vertical_beach_bytetrack_cpp", patches = ["//bazel/external:bytetrack_cpp.patch"], patch_args = ["-p1"], build_file = "//bazel/external:bytetrack_cpp.BUILD")
 
     # Dependencies used in foreign cc rules (e.g. cmake-based builds)
     _include_all_repo("com_github_gperftools_gperftools")

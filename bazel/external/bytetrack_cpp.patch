@@ -1,0 +1,23 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 7ccd9b3..05bb094 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -33,7 +33,7 @@ if(NOT EIGEN3_FOUND)
+   unset(BUILD_TESTING CACHE)
+ endif()
+ 
+-add_library(${PROJECT_NAME} SHARED
++add_library(${PROJECT_NAME} STATIC
+   ${CMAKE_CURRENT_SOURCE_DIR}/src/BYTETracker.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/src/KalmanFilter.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/src/lapjv.cpp
+@@ -46,6 +46,9 @@ target_include_directories(${PROJECT_NAME} PUBLIC
+   )
+ target_link_libraries(${PROJECT_NAME} Eigen3::Eigen)
+ 
++install(TARGETS ${PROJECT_NAME})
++install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ DESTINATION include)
++
+ # Build the tests if the 'BUILD_BYTETRACK_TEST' variable is set to 'ON'
+ set(BUILD_BYTETRACK_TEST OFF CACHE BOOL "The flag whether to build the tests or not")
+ if(BUILD_BYTETRACK_TEST)
