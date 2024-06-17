@@ -79,6 +79,69 @@ message ImagePreprocessingStep {
   ImageStandardizeParams standardize_params = 4;
 }
 
+message DimensionSemantics {
+  enum DimensionSemanticsKind {
+    DIMENSION_SEMANTICS_KIND_UNKNOWN = 0;
+    DIMENSION_SEMANTICS_KIND_BATCH = 1;
+    DIMENSION_SEMANTICS_KIND_IGNORE = 2;
+    DIMENSION_SEMANTICS_KIND_IMAGE_CHANNEL = 3;
+    DIMENSION_SEMANTICS_KIND_IMAGE_HEIGHT = 4;
+    DIMENSION_SEMANTICS_KIND_IMAGE_WIDTH = 5;
+    DIMENSION_SEMANTICS_KIND_DETECTION_CANDIDATES = 6;
+    DIMENSION_SEMANTICS_KIND_DETECTION_OUTPUT = 7;
+    DIMENSION_SEMANTICS_KIND_CLASS_SCORES = 8;
+  }
+  DimensionSemanticsKind kind = 1;
+
+  // Parameters for ImageChannelSemantics.
+  message ImageChannelParams {
+    enum ImageChannelFormat {
+      IMAGE_CHANNEL_FORMAT_UNKNOWN = 0;
+      IMAGE_CHANNEL_FORMAT_RGB = 1;
+      IMAGE_CHANNEL_FORMAT_BGR = 2;
+    }
+    ImageChannelFormat format = 1;
+  }
+  ImageChannelParams image_channel_params = 2;
+
+  // Parameters for DetectionCandidatesSemantics.
+  message DetectionCandidatesParams {
+    // Returns whether these N candidates are the result of an NMS step (is_nms_boxes = true) or are
+    // all candidate boxes (is_nms_boxes = false).
+    bool is_nms_boxes = 1;
+  }
+  DetectionCandidatesParams detection_candidates_params = 3;
+
+  // Parameters for DetectionOutputSemantics.
+  message DetectionOutputParams {
+    message IndexRange {
+      int32 start = 1;
+      int32 size = 2;
+    }
+    // Range of indices within the dimension that represent the coordinates of the detected box.
+    IndexRange box_coordinate_range = 1;
+    // Format of the box coodinates.
+    BoundingBoxInfo box_format = 2;
+    // Index containing confidence score of box. If `scores_range` is also specified then each
+    // classes score is multiplied by this value.
+    int32 box_confidence_index = 3;
+    // Optional index into dimension containing class indices. One of `class_index` and
+    // `scores_range` must be specified.
+    int32 class_index = 4;
+    // Range of indices containing the scores per-class. The highest score is taken as the detected
+    // class.
+    IndexRange scores_range = 5;
+  }
+  DetectionOutputParams detection_output_params = 4;
+}
+
+// Semantics of an input/output tensor. Used to determine pre/post-processing necessary for
+// inputs/outputs of model.
+message TensorSemantics {
+  // Semantics for each dimension in the tensor.
+  repeated DimensionSemantics dimensions = 1;
+}
+
 message ModelInfo {
   // Name of the model. Used to reference the model in pipelines.
   string name = 1;
@@ -109,6 +172,13 @@ message ModelInfo {
   // Formats that require multiple files each have there own names for the assets. For example,
   // OpenVINO format will have a file called "weights" and a file called "model".
   map<string, gml.types.UUID> file_assets = 4;
+
+  // Semantics of each input tensor. Describes the layout and semantic kind of each dimension in an
+  // input tensor.
+  repeated TensorSemantics input_tensor_semantics = 5;
+  // Semantics of each output tensor. Describes the layout and semantic kind of each dimension in an
+  // output tensor.
+  repeated TensorSemantics output_tensor_semantics = 6;
 
   // All of the following fields are optional and their presence depends on the type of model.
 

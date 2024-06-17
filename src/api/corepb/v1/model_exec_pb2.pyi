@@ -42,6 +42,64 @@ class BoundingBoxInfo(_message.Message):
     box_normalized: bool
     def __init__(self, box_format: _Optional[_Union[BoundingBoxInfo.BoundingBoxFormat, str]] = ..., box_normalized: bool = ...) -> None: ...
 
+class DimensionSemantics(_message.Message):
+    __slots__ = ["detection_candidates_params", "detection_output_params", "image_channel_params", "kind"]
+    class DimensionSemanticsKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+        __slots__ = []
+    class DetectionCandidatesParams(_message.Message):
+        __slots__ = ["is_nms_boxes"]
+        IS_NMS_BOXES_FIELD_NUMBER: _ClassVar[int]
+        is_nms_boxes: bool
+        def __init__(self, is_nms_boxes: bool = ...) -> None: ...
+    class DetectionOutputParams(_message.Message):
+        __slots__ = ["box_confidence_index", "box_coordinate_range", "box_format", "class_index", "scores_range"]
+        class IndexRange(_message.Message):
+            __slots__ = ["size", "start"]
+            SIZE_FIELD_NUMBER: _ClassVar[int]
+            START_FIELD_NUMBER: _ClassVar[int]
+            size: int
+            start: int
+            def __init__(self, start: _Optional[int] = ..., size: _Optional[int] = ...) -> None: ...
+        BOX_CONFIDENCE_INDEX_FIELD_NUMBER: _ClassVar[int]
+        BOX_COORDINATE_RANGE_FIELD_NUMBER: _ClassVar[int]
+        BOX_FORMAT_FIELD_NUMBER: _ClassVar[int]
+        CLASS_INDEX_FIELD_NUMBER: _ClassVar[int]
+        SCORES_RANGE_FIELD_NUMBER: _ClassVar[int]
+        box_confidence_index: int
+        box_coordinate_range: DimensionSemantics.DetectionOutputParams.IndexRange
+        box_format: BoundingBoxInfo
+        class_index: int
+        scores_range: DimensionSemantics.DetectionOutputParams.IndexRange
+        def __init__(self, box_coordinate_range: _Optional[_Union[DimensionSemantics.DetectionOutputParams.IndexRange, _Mapping]] = ..., box_format: _Optional[_Union[BoundingBoxInfo, _Mapping]] = ..., box_confidence_index: _Optional[int] = ..., class_index: _Optional[int] = ..., scores_range: _Optional[_Union[DimensionSemantics.DetectionOutputParams.IndexRange, _Mapping]] = ...) -> None: ...
+    class ImageChannelParams(_message.Message):
+        __slots__ = ["format"]
+        class ImageChannelFormat(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+            __slots__ = []
+        FORMAT_FIELD_NUMBER: _ClassVar[int]
+        IMAGE_CHANNEL_FORMAT_BGR: DimensionSemantics.ImageChannelParams.ImageChannelFormat
+        IMAGE_CHANNEL_FORMAT_RGB: DimensionSemantics.ImageChannelParams.ImageChannelFormat
+        IMAGE_CHANNEL_FORMAT_UNKNOWN: DimensionSemantics.ImageChannelParams.ImageChannelFormat
+        format: DimensionSemantics.ImageChannelParams.ImageChannelFormat
+        def __init__(self, format: _Optional[_Union[DimensionSemantics.ImageChannelParams.ImageChannelFormat, str]] = ...) -> None: ...
+    DETECTION_CANDIDATES_PARAMS_FIELD_NUMBER: _ClassVar[int]
+    DETECTION_OUTPUT_PARAMS_FIELD_NUMBER: _ClassVar[int]
+    DIMENSION_SEMANTICS_KIND_BATCH: DimensionSemantics.DimensionSemanticsKind
+    DIMENSION_SEMANTICS_KIND_CLASS_SCORES: DimensionSemantics.DimensionSemanticsKind
+    DIMENSION_SEMANTICS_KIND_DETECTION_CANDIDATES: DimensionSemantics.DimensionSemanticsKind
+    DIMENSION_SEMANTICS_KIND_DETECTION_OUTPUT: DimensionSemantics.DimensionSemanticsKind
+    DIMENSION_SEMANTICS_KIND_IGNORE: DimensionSemantics.DimensionSemanticsKind
+    DIMENSION_SEMANTICS_KIND_IMAGE_CHANNEL: DimensionSemantics.DimensionSemanticsKind
+    DIMENSION_SEMANTICS_KIND_IMAGE_HEIGHT: DimensionSemantics.DimensionSemanticsKind
+    DIMENSION_SEMANTICS_KIND_IMAGE_WIDTH: DimensionSemantics.DimensionSemanticsKind
+    DIMENSION_SEMANTICS_KIND_UNKNOWN: DimensionSemantics.DimensionSemanticsKind
+    IMAGE_CHANNEL_PARAMS_FIELD_NUMBER: _ClassVar[int]
+    KIND_FIELD_NUMBER: _ClassVar[int]
+    detection_candidates_params: DimensionSemantics.DetectionCandidatesParams
+    detection_output_params: DimensionSemantics.DetectionOutputParams
+    image_channel_params: DimensionSemantics.ImageChannelParams
+    kind: DimensionSemantics.DimensionSemanticsKind
+    def __init__(self, kind: _Optional[_Union[DimensionSemantics.DimensionSemanticsKind, str]] = ..., image_channel_params: _Optional[_Union[DimensionSemantics.ImageChannelParams, _Mapping]] = ..., detection_candidates_params: _Optional[_Union[DimensionSemantics.DetectionCandidatesParams, _Mapping]] = ..., detection_output_params: _Optional[_Union[DimensionSemantics.DetectionOutputParams, _Mapping]] = ...) -> None: ...
+
 class ExecutionSpec(_message.Message):
     __slots__ = ["graph", "model_spec"]
     GRAPH_FIELD_NUMBER: _ClassVar[int]
@@ -111,7 +169,7 @@ class LogicalPipeline(_message.Message):
     def __init__(self, params: _Optional[_Iterable[_Union[Param, _Mapping]]] = ..., nodes: _Optional[_Iterable[_Union[Node, _Mapping]]] = ..., model_ids: _Optional[_Iterable[_Union[_uuid_pb2.UUID, _Mapping]]] = ...) -> None: ...
 
 class ModelInfo(_message.Message):
-    __slots__ = ["bbox_info", "class_labels", "file_assets", "format", "image_preprocessing_steps", "kind", "name"]
+    __slots__ = ["bbox_info", "class_labels", "file_assets", "format", "image_preprocessing_steps", "input_tensor_semantics", "kind", "name", "output_tensor_semantics"]
     class ModelKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = []
     class ModelStorageFormat(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
@@ -128,6 +186,7 @@ class ModelInfo(_message.Message):
     FILE_ASSETS_FIELD_NUMBER: _ClassVar[int]
     FORMAT_FIELD_NUMBER: _ClassVar[int]
     IMAGE_PREPROCESSING_STEPS_FIELD_NUMBER: _ClassVar[int]
+    INPUT_TENSOR_SEMANTICS_FIELD_NUMBER: _ClassVar[int]
     KIND_FIELD_NUMBER: _ClassVar[int]
     MODEL_KIND_ONNX: ModelInfo.ModelKind
     MODEL_KIND_OPENVINO: ModelInfo.ModelKind
@@ -143,14 +202,17 @@ class ModelInfo(_message.Message):
     MODEL_STORAGE_FORMAT_PROTO_TEXT: ModelInfo.ModelStorageFormat
     MODEL_STORAGE_FORMAT_UNKNOWN: ModelInfo.ModelStorageFormat
     NAME_FIELD_NUMBER: _ClassVar[int]
+    OUTPUT_TENSOR_SEMANTICS_FIELD_NUMBER: _ClassVar[int]
     bbox_info: BoundingBoxInfo
     class_labels: _containers.RepeatedScalarFieldContainer[str]
     file_assets: _containers.MessageMap[str, _uuid_pb2.UUID]
     format: ModelInfo.ModelStorageFormat
     image_preprocessing_steps: _containers.RepeatedCompositeFieldContainer[ImagePreprocessingStep]
+    input_tensor_semantics: _containers.RepeatedCompositeFieldContainer[TensorSemantics]
     kind: ModelInfo.ModelKind
     name: str
-    def __init__(self, name: _Optional[str] = ..., kind: _Optional[_Union[ModelInfo.ModelKind, str]] = ..., format: _Optional[_Union[ModelInfo.ModelStorageFormat, str]] = ..., file_assets: _Optional[_Mapping[str, _uuid_pb2.UUID]] = ..., class_labels: _Optional[_Iterable[str]] = ..., bbox_info: _Optional[_Union[BoundingBoxInfo, _Mapping]] = ..., image_preprocessing_steps: _Optional[_Iterable[_Union[ImagePreprocessingStep, _Mapping]]] = ...) -> None: ...
+    output_tensor_semantics: _containers.RepeatedCompositeFieldContainer[TensorSemantics]
+    def __init__(self, name: _Optional[str] = ..., kind: _Optional[_Union[ModelInfo.ModelKind, str]] = ..., format: _Optional[_Union[ModelInfo.ModelStorageFormat, str]] = ..., file_assets: _Optional[_Mapping[str, _uuid_pb2.UUID]] = ..., input_tensor_semantics: _Optional[_Iterable[_Union[TensorSemantics, _Mapping]]] = ..., output_tensor_semantics: _Optional[_Iterable[_Union[TensorSemantics, _Mapping]]] = ..., class_labels: _Optional[_Iterable[str]] = ..., bbox_info: _Optional[_Union[BoundingBoxInfo, _Mapping]] = ..., image_preprocessing_steps: _Optional[_Iterable[_Union[ImagePreprocessingStep, _Mapping]]] = ...) -> None: ...
 
 class ModelSpec(_message.Message):
     __slots__ = ["name", "named_asset", "onnx_blob_key", "onnx_file", "openvino_spec", "runtime", "tensorrt_spec"]
@@ -393,6 +455,12 @@ class TensorRTTensorShapeRange(_message.Message):
     dim: _containers.RepeatedScalarFieldContainer[int]
     tensor_name: str
     def __init__(self, tensor_name: _Optional[str] = ..., dim: _Optional[_Iterable[int]] = ...) -> None: ...
+
+class TensorSemantics(_message.Message):
+    __slots__ = ["dimensions"]
+    DIMENSIONS_FIELD_NUMBER: _ClassVar[int]
+    dimensions: _containers.RepeatedCompositeFieldContainer[DimensionSemantics]
+    def __init__(self, dimensions: _Optional[_Iterable[_Union[DimensionSemantics, _Mapping]]] = ...) -> None: ...
 
 class Value(_message.Message):
     __slots__ = ["bool_data", "double_data", "int64_data", "lambda_data", "model_data", "param_data", "string_data"]
