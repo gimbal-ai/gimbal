@@ -87,13 +87,17 @@ absl::Status BoundingBoxTensorsToDetections::Process(mediapipe::CalculatorContex
   std::vector<Detection> detections;
 
   for (size_t i = 0; i < num_selected; ++i) {
-    auto& d = detections.emplace_back();
-
     const auto score = score_data[i];
     const auto class_idx = get_class_idx(i);
+
+    auto class_label = options_.index_to_label(class_idx);
+    if (class_label == "") {
+      continue;
+    }
+    auto& d = detections.emplace_back();
     auto* label = d.add_label();
     label->set_score(score);
-    label->set_label(options_.index_to_label(class_idx));
+    label->set_label(class_label);
 
     auto* bbox = d.mutable_bounding_box();
     bbox->set_xc(box_data[box_step * i + 0]);
