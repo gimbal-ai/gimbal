@@ -66,10 +66,6 @@ class StandardizeTensor(ImagePreprocessingStep):
 
 class ImageToFloatTensor(ImagePreprocessingStep):
     def __init__(self, scale: bool = True):
-        if not scale:
-            raise ValueError(
-                "ImageToTensor only currently implemented with scaling enabled."
-            )
         self.scale = scale
 
     def to_proto(self) -> modelexecpb.ImagePreprocessingStep:

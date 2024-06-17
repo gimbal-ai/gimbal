@@ -57,7 +57,7 @@ Status ImageFrameToCPUTensorCalculator::ProcessImpl(mediapipe::CalculatorContext
   auto mat_view = mediapipe::formats::MatView(&image_frame);
   // TODO(james): we should do these conversions separately.
   cv::Mat float_img;
-  mat_view.convertTo(float_img, CV_32F, 1.0 / 255);
+  mat_view.convertTo(float_img, CV_32F);
 
   size_t chan_size = static_cast<size_t>(float_img.rows * float_img.cols) * float_img.elemSize1();
   size_t bytes = chan_size * float_img.channels();
