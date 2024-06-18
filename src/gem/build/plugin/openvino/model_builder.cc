@@ -66,11 +66,13 @@ StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobSt
     // TODO(james): investigate why 'AUTO' plugin doesn't pick the GPU when available.
     auto available_devices = core.get_available_devices();
     std::string device = "CPU";
-    for (const auto& dev : available_devices) {
-      if (absl::StartsWith(dev, "GPU")) {
-        device = "GPU";
-      }
-    }
+
+    // TODO(james): re-enable the GPU once the compiler issues are fixed.
+    // for (const auto& dev : available_devices) {
+    //  if (absl::StartsWith(dev, "GPU")) {
+    //    device = "GPU";
+    //  }
+    //}
 
     LOG(INFO) << absl::Substitute("Using $0 to execute $1", device, spec.name());
 
