@@ -14,7 +14,7 @@
 # SPDX-License-Identifier: Proprietary
 
 import abc
-from typing import List, Optional, Tuple
+from typing import List, Literal, Optional, Tuple
 
 import gml.proto.src.api.corepb.v1.model_exec_pb2 as modelexecpb
 
@@ -152,6 +152,33 @@ class DetectionOutputDimension(DimensionSemantics):
                 box_confidence_index=self.box_confidence_index,
                 class_index=self.class_index,
                 scores_range=scores_range,
+            ),
+        )
+
+
+def _segmentation_mask_kind_to_proto(kind: str):
+    match kind.lower():
+        case "bool_masks":
+            return (
+                modelexecpb.DimensionSemantics.SegmentationMaskParams.SEGMENTATION_MASK_KIND_BOOL
+            )
+        case "int_label_masks":
+            return (
+                modelexecpb.DimensionSemantics.SegmentationMaskParams.SEGMENTATION_MASK_KIND_CLASS_LABEL
+            )
+        case _:
+            raise ValueError("Invalid segmentation mask kind: {}".format(kind))
+
+
+class SegmentationMaskChannel(DimensionSemantics):
+    def __init__(self, kind: Literal["bool_masks", "int_label_masks"]):
+        self.kind = _segmentation_mask_kind_to_proto(kind)
+
+    def to_proto(self) -> modelexecpb.DimensionSemantics:
+        return modelexecpb.DimensionSemantics(
+            kind=modelexecpb.DimensionSemantics.DIMENSION_SEMANTICS_KIND_SEGMENTATION_MASK_CHANNEL,
+            segmentation_mask_params=modelexecpb.DimensionSemantics.SegmentationMaskParams(
+                kind=self.kind,
             ),
         )
 
