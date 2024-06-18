@@ -1585,6 +1585,7 @@ manifest:
     google.protobuf.wrappers_pb2: protobuf
     gradio: gradio
     gradio.analytics: gradio
+    gradio.analytics_dashboard: gradio
     gradio.blocks: gradio
     gradio.blocks_events: gradio
     gradio.chat_interface: gradio
@@ -1675,6 +1676,7 @@ manifest:
     gradio.processing_utils: gradio
     gradio.queueing: gradio
     gradio.ranged_response: gradio
+    gradio.renderable: gradio
     gradio.route_utils: gradio
     gradio.routes: gradio
     gradio.server_messages: gradio
@@ -14714,4 +14716,4 @@ manifest:
     zipp.py310compat: zipp
   pip_repository:
     name: pip
-integrity: bf63a5befce7699c34abcc5958c04ad84b19c331d2f7c2e955cf6a2f5d5f06c6
+integrity: 89c9c4580c54cd9e1ba9ae2770c5c7e96b97934c1abafdcbc9c15909c5d236d4

@@ -388,9 +388,9 @@ gitpython==3.1.42 \
     --hash=sha256:1bf9cd7c9e7255f77778ea54359e54ac22a72a5b51288c457c881057b7bb9ecd \
     --hash=sha256:2d99869e0fef71a73cbd242528105af1d6c1b108c60dfabd994bf292f76c3ceb
     # via streamlit
-gradio==4.29.0 \
-    --hash=sha256:1fbd8ee53aabf056ea726c674174f7bea20656ce6ff2611781ec036a76c2359a \
-    --hash=sha256:d7b293d1bf6404efb12e0220c5fa708c44c3a1133869324f949bfb1e39095e3a
+gradio==4.36.1 \
+    --hash=sha256:31edb504c88c1db06c08daf750dcdaa072087ada59aa4ff83c1a3f4c2075912d \
+    --hash=sha256:72b2d21156d3467123bae6f30f463f002ef06e272766274308f5ed3cac37563b
     # via
     #   -r requirements.in
     #   efficientvit-gml
@@ -406,9 +406,9 @@ gradio-clickable-arrow-dropdown==0.0.3 \
     --hash=sha256:72f13f580caf1c321685e7b93eea9bc0f0f1effe6fba27846d4c70008494f242 \
     --hash=sha256:8f3dbdb83245277ca69a02ce047fb66272a752c10c00bb08dbf87a3d2a18dc71
     # via efficientvit-gml
-gradio-client==0.16.1 \
-    --hash=sha256:28f6799366ca795fbd6ea72f328ee75ea2322417cf11d6a23ce825bca8954be1 \
-    --hash=sha256:9da92f892d0f9e50a0a0eae7ff65aeeab0495919295dbc079703d1a99c13c980
+gradio-client==1.0.1 \
+    --hash=sha256:b3fa4d1c626067cc866d6172caa75d373e114bacfba650e49e293646d786646a \
+    --hash=sha256:fe3f527349ac38cbc5deb6d629a15c06fa3b4a68d1e04dc5ca9fbb1896318629
     # via gradio
 gradio-point-promptable-image==0.0.3 \
     --hash=sha256:0a5918612f46afda1c3ab2b1ebcb40955f156e934b8f1831e75a7001f677fa2b \

@@ -8,7 +8,7 @@ absl-py==2.0.0
 bazel-runfiles==0.33.0
 beit3-gml==0.1.2
 efficientvit-gml==0.1.8
-gradio==4.29.0
+gradio==4.36.1
 groundingdino-gml==0.1.2
 grpcio==1.62.0
 lavis-gml==1.0.2.post4
