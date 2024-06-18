@@ -31,6 +31,7 @@
 namespace gml::gem::calculators::core {
 
 using ::gml::internal::api::core::v1::Detection;
+using ::gml::internal::api::core::v1::Label;
 
 constexpr char kGraph[] = R"pbtxt(
   calculator: "ByteTrackCalculator"
@@ -74,6 +75,29 @@ Detection Box2AtTime(int t, std::mt19937* rng) {
   label->set_score(static_cast<float>(0.7 * kScoreNoiseDist(*rng)));
 
   return box;
+}
+
+struct ExpectedBox {
+  int track_id;
+  std::string label;
+  float score;
+};
+
+auto BoxMatcher(const ExpectedBox& expected) {
+  using ::google::protobuf::Int64Value;
+  using ::testing::ElementsAre;
+  using ::testing::Eq;
+  using ::testing::FloatNear;
+  using ::testing::Property;
+
+  constexpr double kTolerance = 0.05;
+
+  return ::testing::AllOf(
+      Property(&Detection::track_id,
+               Property(&Int64Value::value, ::testing::Eq(expected.track_id))),
+      Property(&Detection::label, ElementsAre(Property(&Label::label, Eq(expected.label)))),
+      Property(&Detection::label,
+               ElementsAre(Property(&Label::score, FloatNear(expected.score, kTolerance)))));
 }
 
 TEST(ByteTrackCalculatorTest, TrackTwoSimultaneousObjects) {
@@ -135,36 +159,17 @@ TEST(ByteTrackCalculatorTest, TrackTwoSimultaneousObjects) {
   const std::vector<mediapipe::Packet>& output_packets = outputs.Tag("DETECTIONS").packets;
   EXPECT_EQ(output_packets.size(), 3);
 
-  constexpr double kTolerance = 0.05;
-
-  // TODO(oazizi): Use gtest matchers.
-
   const auto& detection1 = output_packets[0].Get<std::vector<Detection>>();
-  ASSERT_EQ(detection1.size(), 2);
-  EXPECT_EQ(detection1[0].track_id().value(), 1);
-  EXPECT_EQ(detection1[0].label(0).label(), "id: 1");
-  EXPECT_NEAR(detection1[0].label(0).score(), 0.9, kTolerance);
-  EXPECT_EQ(detection1[1].track_id().value(), 2);
-  EXPECT_EQ(detection1[1].label(0).label(), "id: 2");
-  EXPECT_NEAR(detection1[1].label(0).score(), 0.7, kTolerance);
+  EXPECT_THAT(detection1, ::testing::UnorderedElementsAre(BoxMatcher({1, "id: 1", 0.9}),
+                                                          BoxMatcher({2, "id: 2", 0.7})));
 
   const auto& detection2 = output_packets[1].Get<std::vector<Detection>>();
-  ASSERT_EQ(detection2.size(), 2);
-  EXPECT_EQ(detection2[0].track_id().value(), 1);
-  EXPECT_EQ(detection2[0].label(0).label(), "id: 1");
-  EXPECT_NEAR(detection2[0].label(0).score(), 0.9, kTolerance);
-  EXPECT_EQ(detection2[1].track_id().value(), 2);
-  EXPECT_EQ(detection2[1].label(0).label(), "id: 2");
-  EXPECT_NEAR(detection2[1].label(0).score(), 0.7, kTolerance);
+  EXPECT_THAT(detection2, ::testing::UnorderedElementsAre(BoxMatcher({1, "id: 1", 0.9}),
+                                                          BoxMatcher({2, "id: 2", 0.7})));
 
   const auto& detection3 = output_packets[2].Get<std::vector<Detection>>();
-  ASSERT_EQ(detection3.size(), 2);
-  EXPECT_EQ(detection3[0].track_id().value(), 1);
-  EXPECT_EQ(detection3[0].label(0).label(), "id: 1");
-  EXPECT_NEAR(detection3[0].label(0).score(), 0.9, kTolerance);
-  EXPECT_EQ(detection3[1].track_id().value(), 2);
-  EXPECT_EQ(detection3[1].label(0).label(), "id: 2");
-  EXPECT_NEAR(detection3[1].label(0).score(), 0.7, kTolerance);
+  EXPECT_THAT(detection3, ::testing::UnorderedElementsAre(BoxMatcher({1, "id: 1", 0.9}),
+                                                          BoxMatcher({2, "id: 2", 0.7})));
 }
 
 }  // namespace gml::gem::calculators::core
