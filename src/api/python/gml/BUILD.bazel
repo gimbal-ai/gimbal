@@ -55,4 +55,5 @@ copy_python_protos(
     ],
     import_prefix = "gml.proto",
     out_dir = "proto",
+    visibility = ["//src/api/python:__subpackages__"],
 )

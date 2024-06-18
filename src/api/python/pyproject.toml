@@ -1,7 +1,13 @@
 [project]
-name = "gml-ai"
-version = "0.0.2"
-dynamic = ["dependencies"]
+name = "gimlet-api"
+dynamic = ["version", "dependencies"]
+
+[build-system]
+requires = ["setuptools", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+fallback_version = "0.0.0-dev"
 
 [tool.setuptools.dynamic]
 dependencies = {file = "requirements.in"}

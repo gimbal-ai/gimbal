@@ -14,6 +14,7 @@
 # SPDX-License-Identifier: Proprietary
 
 load("@gml_api_pip//:requirements.bzl", "all_whl_requirements")
+load("@rules_python//python:packaging.bzl", "py_wheel")
 load("@rules_python//python:pip.bzl", "compile_pip_requirements")
 load("@rules_python_gazelle_plugin//manifest:defs.bzl", "gazelle_python_manifest")
 load("@rules_python_gazelle_plugin//modules_mapping:def.bzl", "modules_mapping")
@@ -46,4 +47,27 @@ gazelle_python_manifest(
     pip_repository_name = "gml_api_pip",
     requirements = ":requirements_lock.txt",
     target_compatible_with = no_sysroot(),
+)
+
+py_wheel(
+    name = "api_wheel",
+    author = "Gimlet Labs, Inc.",
+    author_email = "support@gimletlabs.ai",
+    classifiers = [
+        "Programming Language :: Python :: 3",
+        "Operating System :: OS Independent",
+        "License :: OSI Approved :: Apache Software License",
+        "Typing :: Typed",
+    ],
+    distribution = "gimlet-api",
+    platform = "any",
+    python_requires = ">=3",
+    python_tag = "py3",
+    requires_file = "requirements.in",
+    strip_path_prefixes = ["src/api/python/"],
+    version = "{STABLE_BUILD_TAG}",
+    deps = [
+        "//src/api/python/gml",
+        "//src/api/python/gml:copy_protos",
+    ],
 )
