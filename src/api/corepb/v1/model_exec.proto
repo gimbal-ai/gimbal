@@ -377,6 +377,8 @@ message PipelineDeploymentSpec {
 message PipelineDeploymentStatus {
   // The state that the deployment is currently in.
   PipelineState state = 1;
+  // The reason for why the deployment is in this state.
+  string reason = 2;
 }
 
 // A physical pipeline represents the deployment of a pipeline to a specific device.

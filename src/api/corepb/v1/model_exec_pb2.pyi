@@ -408,10 +408,12 @@ class PipelineDeploymentSpec(_message.Message):
     def __init__(self, state: _Optional[_Union[PipelineState, str]] = ...) -> None: ...
 
 class PipelineDeploymentStatus(_message.Message):
-    __slots__ = ["state"]
+    __slots__ = ["reason", "state"]
+    REASON_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
+    reason: str
     state: PipelineState
-    def __init__(self, state: _Optional[_Union[PipelineState, str]] = ...) -> None: ...
+    def __init__(self, state: _Optional[_Union[PipelineState, str]] = ..., reason: _Optional[str] = ...) -> None: ...
 
 class PipelineNode(_message.Message):
     __slots__ = ["attr", "id", "inputs", "outputs", "type"]
