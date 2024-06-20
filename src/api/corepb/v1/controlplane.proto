@@ -52,10 +52,16 @@ enum CPTopic {
   CP_TOPIC_PHYSICAL_PIPELINE_RECONCILIATION = 2;
   CP_TOPIC_DEVICE_DISCONNECTED = 3;
   CP_TOPIC_PIPELINE_DEPLOYMENT_RECONCILIATION = 4;
+  CP_TOPIC_DEVICE_UPDATE = 5;
 }
 
 // DeviceConnected is sent whenever a device connects.
 message DeviceConnected {
+  gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
+}
+
+// DeviceUpdateis sent whenever a device has an update.
+message DeviceUpdate {
   gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
 }
 

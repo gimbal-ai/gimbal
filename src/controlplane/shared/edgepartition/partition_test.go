@@ -216,8 +216,8 @@ func TestCPToEdgeNATSTopic(t *testing.T) {
 
 func TestCPNATSTopic(t *testing.T) {
 	id, _ := uuid.FromString("6ba7b810-9dad-11d1-80b4-00c04fd430c8") // Example UUID
-	actual, err := edgepartition.CPNATSTopic(edgepartition.EdgeIDToPartition(id), id.String(), corepb.CP_TOPIC_DEVICE_CONNECTED, true)
-	expected := "cp2cp.6b.6ba7b810-9dad-11d1-80b4-00c04fd430c8.DurabledeviceConnected"
+	actual, err := edgepartition.CPNATSTopic(edgepartition.EdgeIDToPartition(id), id.String(), corepb.CP_TOPIC_DEVICE_UPDATE, true)
+	expected := "cp2cp.6b.6ba7b810-9dad-11d1-80b4-00c04fd430c8.DurabledeviceUpdate"
 
 	require.NoError(t, err)
 	assert.Equal(t, expected, actual)
