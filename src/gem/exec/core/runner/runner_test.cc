@@ -147,35 +147,4 @@ TEST(Runner, CollectStats) {
   EXPECT_EQ(metrics.scope_metrics(0).metrics().size(), kNumCalculators * kNumMetricsPerCalc);
 }
 
-TEST(Runner, Subgraph) {
-  static constexpr char kExecSpecUsingSubgraphPbTxt[] = R"pbtxt(
-    graph {
-      output_stream: "frame_out"
-      input_stream: "FINISHED:frame_processed"
-      output_stream: "ALLOW:frame_allowed"
-
-      node {
-        calculator: "OpenCVCamSourceSubgraph"
-        output_stream: "FRAMES:frame_out"
-        output_stream: "VIDEO_HEADER:video_header"
-        input_stream: "FINISHED:frame_processed"
-        output_stream: "ALLOW:frame_allowed"
-        node_options: {
-          [type.googleapis.com/gml.gem.calculators.opencv_cam.optionspb.OpenCVCamSourceSubgraphOptions] {
-            device_filename: "filename0"
-          }
-        }
-      }
-    }
-  )pbtxt";
-
-  ExecutionSpec spec;
-  ASSERT_TRUE(google::protobuf::TextFormat::ParseFromString(kExecSpecUsingSubgraphPbTxt, &spec));
-
-  Runner runner(spec);
-
-  // Only check that we init(), which means the subgraph and its node_options are loaded properly.
-  ASSERT_OK(runner.Init({}));
-}
-
 }  // namespace gml::gem::exec::core

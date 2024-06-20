@@ -21,7 +21,6 @@ PLUGINS = dict(
         enabled_by_default = False,
         libs = [
             "//src/gem/calculators/plugin/argus:cc_library",
-            "//src/gem/calculators/subgraphs:argus_cam_source_subgraph",
             "//src/gem/capabilities/plugin/argus:cc_library",
             "//src/gem/calculators/plugin/argus/optionspb:optionspb_options_registry",
         ],
@@ -38,8 +37,6 @@ PLUGINS = dict(
         enabled_by_default = True,
         libs = [
             "//src/gem/calculators/plugin/ffmpeg:cc_library",
-            "//src/gem/calculators/subgraphs:video_encoder_subgraph",
-            "//src/gem/calculators/subgraphs:obj_detection_overlayed_video_sink_subgraph",
         ],
     ),
     tensorrt = struct(
@@ -48,9 +45,6 @@ PLUGINS = dict(
             "//src/gem/calculators/plugin/tensorrt:cc_library",
             "//src/gem/exec/plugin/tensorrt:cc_library",
             "//src/gem/build/plugin/tensorrt:cc_library",
-            "//src/gem/calculators/subgraphs:classify_roi_tensorrt_subgraph",
-            "//src/gem/calculators/subgraphs:yolo_model_tensorrt_subgraph",
-            "//src/gem/calculators/subgraphs:product_model_tensorrt_subgraph",
             "//src/gem/capabilities/plugin/tensorrt:cc_library",
         ],
     ),
@@ -58,7 +52,6 @@ PLUGINS = dict(
         enabled_by_default = True,
         libs = [
             "//src/gem/calculators/plugin/opencv_cam:cc_library",
-            "//src/gem/calculators/subgraphs:opencv_cam_source_subgraph",
             "//src/gem/capabilities/plugin/opencv_cam:cc_library",
             "//src/gem/calculators/plugin/opencv_cam/optionspb:optionspb_options_registry",
         ],
@@ -69,9 +62,6 @@ PLUGINS = dict(
             "//src/gem/exec/plugin/openvino:cc_library",
             "//src/gem/build/plugin/openvino:cc_library",
             "//src/gem/calculators/plugin/openvino:cc_library",
-            "//src/gem/calculators/subgraphs:yolo_model_openvino_subgraph",
-            "//src/gem/calculators/subgraphs:product_model_openvino_subgraph",
-            "//src/gem/calculators/subgraphs:classify_roi_openvino_subgraph",
             "//src/gem/capabilities/plugin/openvino:cc_library",
             "//src/gem/metrics/plugin/openvino:cc_library",
         ],
