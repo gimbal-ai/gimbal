@@ -9,16 +9,14 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class CreateLogicalPipelineRequest(_message.Message):
-    __slots__ = ["name", "org_id", "pipeline", "yaml"]
+    __slots__ = ["name", "org_id", "yaml"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     ORG_ID_FIELD_NUMBER: _ClassVar[int]
-    PIPELINE_FIELD_NUMBER: _ClassVar[int]
     YAML_FIELD_NUMBER: _ClassVar[int]
     name: str
     org_id: _uuid_pb2.UUID
-    pipeline: _model_exec_pb2.Pipeline
     yaml: str
-    def __init__(self, org_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., name: _Optional[str] = ..., pipeline: _Optional[_Union[_model_exec_pb2.Pipeline, _Mapping]] = ..., yaml: _Optional[str] = ...) -> None: ...
+    def __init__(self, org_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., name: _Optional[str] = ..., yaml: _Optional[str] = ...) -> None: ...
 
 class CreateLogicalPipelineResponse(_message.Message):
     __slots__ = ["id"]
@@ -33,18 +31,16 @@ class GetLogicalPipelineRequest(_message.Message):
     def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
 
 class GetLogicalPipelineResponse(_message.Message):
-    __slots__ = ["encoded_dag", "logical_pipeline", "pipeline", "pipeline_info", "yaml"]
+    __slots__ = ["encoded_dag", "logical_pipeline", "pipeline_info", "yaml"]
     ENCODED_DAG_FIELD_NUMBER: _ClassVar[int]
     LOGICAL_PIPELINE_FIELD_NUMBER: _ClassVar[int]
-    PIPELINE_FIELD_NUMBER: _ClassVar[int]
     PIPELINE_INFO_FIELD_NUMBER: _ClassVar[int]
     YAML_FIELD_NUMBER: _ClassVar[int]
     encoded_dag: str
     logical_pipeline: _model_exec_pb2.LogicalPipeline
-    pipeline: _model_exec_pb2.Pipeline
     pipeline_info: LogicalPipelineInfo
     yaml: str
-    def __init__(self, pipeline: _Optional[_Union[_model_exec_pb2.Pipeline, _Mapping]] = ..., pipeline_info: _Optional[_Union[LogicalPipelineInfo, _Mapping]] = ..., yaml: _Optional[str] = ..., logical_pipeline: _Optional[_Union[_model_exec_pb2.LogicalPipeline, _Mapping]] = ..., encoded_dag: _Optional[str] = ...) -> None: ...
+    def __init__(self, pipeline_info: _Optional[_Union[LogicalPipelineInfo, _Mapping]] = ..., yaml: _Optional[str] = ..., logical_pipeline: _Optional[_Union[_model_exec_pb2.LogicalPipeline, _Mapping]] = ..., encoded_dag: _Optional[str] = ...) -> None: ...
 
 class ListLogicalPipelinesRequest(_message.Message):
     __slots__ = ["org_id"]

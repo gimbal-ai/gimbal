@@ -424,39 +424,6 @@ message PhysicalPipelineStatus {
   string reason = 4;
 }
 
-/****************************************************************************
- * Older pipeline definitions. We should clean these up as we refactor our
- * logical pipelines/graph representation.
- *****************************************************************************/
-
-// Pipeline is a high-level representation of an execution graph.
-message Pipeline {
-  // List of nodes in the pipeline.
-  // Each node defines its input and output ports.
-  // To connect nodes, the same net name should set for the relevant ports.
-  repeated PipelineNode nodes = 2;
-}
-
-// PipelineNode is a node in an execution pipeline.
-message PipelineNode {
-  // A unique ID used to reference this node.
-  uint64 id = 1;
-  string type = 2;
-  repeated Port inputs = 3;
-  repeated Port outputs = 4;
-  // TODO(james): temporary API change, will likely remove when we redo the pipelinecompiler.
-  map<string, string> attr = 5;
-}
-
-// A port has a name, and a net.
-// The port is a logical name for the input or output.
-// The net defines how the port is connected to other ports of other nodes (common net names on
-// ports throughout the graph are connected).
-message Port {
-  string name = 1;
-  string net = 2;
-}
-
 message FileResource {
   // The ID of the file to fetch.
   gml.types.UUID file_id = 1 [ (gogoproto.customname) = "FileID" ];

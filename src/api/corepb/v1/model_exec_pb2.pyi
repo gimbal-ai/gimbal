@@ -373,12 +373,6 @@ class PhysicalPipelineStatus(_message.Message):
     version: int
     def __init__(self, state: _Optional[_Union[PipelineState, str]] = ..., version: _Optional[int] = ..., runtime: _Optional[str] = ..., reason: _Optional[str] = ...) -> None: ...
 
-class Pipeline(_message.Message):
-    __slots__ = ["nodes"]
-    NODES_FIELD_NUMBER: _ClassVar[int]
-    nodes: _containers.RepeatedCompositeFieldContainer[PipelineNode]
-    def __init__(self, nodes: _Optional[_Iterable[_Union[PipelineNode, _Mapping]]] = ...) -> None: ...
-
 class PipelineDeployment(_message.Message):
     __slots__ = ["created_at", "deleted_at", "fleet_id", "id", "logical_pipeline_id", "spec", "status", "updated_at", "version"]
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
@@ -414,35 +408,6 @@ class PipelineDeploymentStatus(_message.Message):
     reason: str
     state: PipelineState
     def __init__(self, state: _Optional[_Union[PipelineState, str]] = ..., reason: _Optional[str] = ...) -> None: ...
-
-class PipelineNode(_message.Message):
-    __slots__ = ["attr", "id", "inputs", "outputs", "type"]
-    class AttrEntry(_message.Message):
-        __slots__ = ["key", "value"]
-        KEY_FIELD_NUMBER: _ClassVar[int]
-        VALUE_FIELD_NUMBER: _ClassVar[int]
-        key: str
-        value: str
-        def __init__(self, key: _Optional[str] = ..., value: _Optional[str] = ...) -> None: ...
-    ATTR_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
-    INPUTS_FIELD_NUMBER: _ClassVar[int]
-    OUTPUTS_FIELD_NUMBER: _ClassVar[int]
-    TYPE_FIELD_NUMBER: _ClassVar[int]
-    attr: _containers.ScalarMap[str, str]
-    id: int
-    inputs: _containers.RepeatedCompositeFieldContainer[Port]
-    outputs: _containers.RepeatedCompositeFieldContainer[Port]
-    type: str
-    def __init__(self, id: _Optional[int] = ..., type: _Optional[str] = ..., inputs: _Optional[_Iterable[_Union[Port, _Mapping]]] = ..., outputs: _Optional[_Iterable[_Union[Port, _Mapping]]] = ..., attr: _Optional[_Mapping[str, str]] = ...) -> None: ...
-
-class Port(_message.Message):
-    __slots__ = ["name", "net"]
-    NAME_FIELD_NUMBER: _ClassVar[int]
-    NET_FIELD_NUMBER: _ClassVar[int]
-    name: str
-    net: str
-    def __init__(self, name: _Optional[str] = ..., net: _Optional[str] = ...) -> None: ...
 
 class TensorRTMemPoolLimits(_message.Message):
     __slots__ = ["workspace"]
