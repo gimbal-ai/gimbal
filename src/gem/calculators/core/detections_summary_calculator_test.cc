@@ -64,18 +64,24 @@ struct DetectionsSummaryTestCase {
 
 class DetectionsSummaryTest : public ::testing::TestWithParam<DetectionsSummaryTestCase> {};
 
-auto MatchPointData(ExpectedHist expected) {
-  return ::testing::AllOf(
-      ::testing::Field(
-          &opentelemetry::sdk::metrics::PointDataAttributes::point_data,
-          ::testing::VariantWith<opentelemetry::sdk::metrics::HistogramPointData>(::testing::AllOf(
-              ::testing::Field(&opentelemetry::sdk::metrics::HistogramPointData::boundaries_,
-                               ::testing::ElementsAreArray(expected.bucket_bounds)),
-              ::testing::Field(&opentelemetry::sdk::metrics::HistogramPointData::counts_,
-                               ::testing::ElementsAreArray(expected.bucket_counts))))),
-      ::testing::Field(&opentelemetry::sdk::metrics::PointDataAttributes::attributes,
-                       ::testing::UnorderedElementsAreArray(expected.attributes.begin(),
-                                                            expected.attributes.end())));
+auto MatchPointData(const ExpectedHist& expected) {
+  using ::testing::AllOf;
+  using ::testing::ElementsAreArray;
+  using ::testing::Field;
+  using ::testing::UnorderedElementsAreArray;
+  using ::testing::VariantWith;
+
+  namespace otel_metrics = opentelemetry::sdk::metrics;
+
+  return AllOf(
+      Field(&otel_metrics::PointDataAttributes::point_data,
+            VariantWith<otel_metrics::HistogramPointData>(
+                AllOf(Field(&otel_metrics::HistogramPointData::boundaries_,
+                            ElementsAreArray(expected.bucket_bounds)),
+                      Field(&otel_metrics::HistogramPointData::counts_,
+                            ElementsAreArray(expected.bucket_counts))))),
+      Field(&otel_metrics::PointDataAttributes::attributes,
+            UnorderedElementsAreArray(expected.attributes.begin(), expected.attributes.end())));
 }
 
 TEST_P(DetectionsSummaryTest, CollectsStatsCorrectly) {
