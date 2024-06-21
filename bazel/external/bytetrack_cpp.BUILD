@@ -30,14 +30,12 @@ cmake(
     ],
     cache_entries = {
         "BUILD_SHARED_LIBS": "OFF",
-        "CMAKE_PREFIX_PATH": "$$EXT_BUILD_DEPS/eigen",
+        "Eigen3_INCLUDE_DIR": "$$EXT_BUILD_DEPS/include",
     },
     lib_name = "libbytetrack",
     lib_source = ":all",
     out_include_dir = "include",
     out_static_libs = ["libbytetrack.a"],
     visibility = ["//visibility:public"],
-    deps = ["@com_gitlab_libeigen_eigen//:eigen"],
-    # TODO(oazizi): Switch to the eight pulled in from TensorFlow.
-    # deps = ["@eigen_archive//:eigen3"],
+    deps = ["@eigen_archive//:eigen3"],
 )
