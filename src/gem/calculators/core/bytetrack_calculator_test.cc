@@ -33,12 +33,6 @@ namespace gml::gem::calculators::core {
 using ::gml::internal::api::core::v1::Detection;
 using ::gml::internal::api::core::v1::Label;
 
-constexpr char kGraph[] = R"pbtxt(
-  calculator: "ByteTrackCalculator"
-  input_stream: "DETECTIONS:detection_list"
-  output_stream: "DETECTIONS:tracked_detection_list"
-)pbtxt";
-
 // An absolute noise factor applied to values like x, y, width, and height.
 std::uniform_real_distribution<float> kPixelNoiseDist(-0.5, 0.5);
 
@@ -103,6 +97,12 @@ auto BoxMatcher(const ExpectedBox& expected) {
 TEST(ByteTrackCalculatorTest, TrackTwoSimultaneousObjects) {
   std::mt19937 rng(37);
 
+  constexpr char kGraph[] = R"pbtxt(
+    calculator: "ByteTrackCalculator"
+    input_stream: "DETECTIONS:detection_list"
+    output_stream: "DETECTIONS:tracked_detection_list"
+  )pbtxt";
+
   mediapipe::CalculatorRunner runner(kGraph);
 
   // The basic scenario is that there are two boxes:
@@ -119,7 +119,6 @@ TEST(ByteTrackCalculatorTest, TrackTwoSimultaneousObjects) {
     detections.push_back(Box1AtTime(t, &rng));
     detections.push_back(Box2AtTime(t, &rng));
 
-    // Run the calculator for a single packet.
     mediapipe::Packet p = mediapipe::MakePacket<std::vector<Detection>>(std::move(detections));
     p = p.At(mediapipe::Timestamp(t));
     runner.MutableInputs()->Tag("DETECTIONS").packets.push_back(p);
@@ -131,7 +130,6 @@ TEST(ByteTrackCalculatorTest, TrackTwoSimultaneousObjects) {
     detections.push_back(Box1AtTime(t, &rng));
     detections.push_back(Box2AtTime(t, &rng));
 
-    // Run the calculator for a single packet.
     mediapipe::Packet p = mediapipe::MakePacket<std::vector<Detection>>(std::move(detections));
     p = p.At(mediapipe::Timestamp(t));
     runner.MutableInputs()->Tag("DETECTIONS").packets.push_back(p);
@@ -143,7 +141,6 @@ TEST(ByteTrackCalculatorTest, TrackTwoSimultaneousObjects) {
     detections.push_back(Box1AtTime(t, &rng));
     detections.push_back(Box2AtTime(t, &rng));
 
-    // Run the calculator for a single packet.
     mediapipe::Packet p = mediapipe::MakePacket<std::vector<Detection>>(std::move(detections));
     p = p.At(mediapipe::Timestamp(t));
     runner.MutableInputs()->Tag("DETECTIONS").packets.push_back(p);
@@ -170,6 +167,62 @@ TEST(ByteTrackCalculatorTest, TrackTwoSimultaneousObjects) {
   const auto& detection3 = output_packets[2].Get<std::vector<Detection>>();
   EXPECT_THAT(detection3, ::testing::UnorderedElementsAre(BoxMatcher({1, "id: 1", 0.9}),
                                                           BoxMatcher({2, "id: 2", 0.7})));
+}
+
+TEST(ByteTrackCalculatorTest, Options) {
+  std::mt19937 rng(37);
+
+  constexpr char kGraph[] = R"pbtxt(
+    calculator: "ByteTrackCalculator"
+    input_stream: "DETECTIONS:detection_list"
+    output_stream: "DETECTIONS:tracked_detection_list"
+    node_options {
+      [type.googleapis.com/gml.gem.calculators.core.optionspb.ByteTrackCalculatorOptions] {
+        track_thresh { value: 1.0 };
+        high_thresh { value: 1.0 };
+        match_thresh { value: 1.0 };
+      }
+    }
+  )pbtxt";
+
+  mediapipe::CalculatorRunner runner(kGraph);
+
+  int t;
+
+  t = 1;
+  {
+    std::vector<Detection> detections;
+    detections.push_back(Box1AtTime(t, &rng));
+    detections.push_back(Box2AtTime(t, &rng));
+
+    mediapipe::Packet p = mediapipe::MakePacket<std::vector<Detection>>(std::move(detections));
+    p = p.At(mediapipe::Timestamp(t));
+    runner.MutableInputs()->Tag("DETECTIONS").packets.push_back(p);
+  }
+
+  t = 2;
+  {
+    std::vector<Detection> detections;
+    detections.push_back(Box1AtTime(t, &rng));
+    detections.push_back(Box2AtTime(t, &rng));
+
+    mediapipe::Packet p = mediapipe::MakePacket<std::vector<Detection>>(std::move(detections));
+    p = p.At(mediapipe::Timestamp(t));
+    runner.MutableInputs()->Tag("DETECTIONS").packets.push_back(p);
+  }
+
+  ASSERT_OK(runner.Run());
+
+  // Check output.
+  const auto& outputs = runner.Outputs();
+  ASSERT_EQ(outputs.NumEntries(), 1);
+
+  const std::vector<mediapipe::Packet>& output_packets = outputs.Tag("DETECTIONS").packets;
+  EXPECT_EQ(output_packets.size(), 2);
+
+  // High thresholds will cause no detections to come out.
+  const auto& detection1 = output_packets[0].Get<std::vector<Detection>>();
+  ASSERT_EQ(detection1.size(), 0);
 }
 
 }  // namespace gml::gem::calculators::core

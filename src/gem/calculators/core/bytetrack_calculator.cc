@@ -26,8 +26,10 @@
 
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/base/base.h"
+#include "src/gem/calculators/core/optionspb/bytetrack_calculator_options.pb.h"
 
 namespace gml::gem::calculators::core {
+using ::gml::gem::calculators::core::optionspb::ByteTrackCalculatorOptions;
 using ::gml::internal::api::core::v1::Detection;
 
 constexpr std::string_view kDetectionVectorTag = "DETECTIONS";
@@ -53,8 +55,39 @@ absl::Status ByteTrackCalculator::GetContract(mediapipe::CalculatorContract* cc)
   return absl::OkStatus();
 }
 
-absl::Status ByteTrackCalculator::Open(mediapipe::CalculatorContext*) {
-  byte_tracker_ = std::make_unique<byte_track::BYTETracker>();
+absl::Status ByteTrackCalculator::Open(mediapipe::CalculatorContext* cc) {
+  options_ = cc->Options<ByteTrackCalculatorOptions>();
+
+  // Get proto values, or use default value if not set.
+  int32_t max_frames_lost = 30;
+  if (options_.has_max_frames_lost()) {
+    max_frames_lost = options_.max_frames_lost().value();
+  }
+
+  float track_thresh = 0.5;
+  if (options_.has_track_thresh()) {
+    track_thresh = options_.track_thresh().value();
+  }
+
+  float high_thresh = 0.6;
+  if (options_.has_high_thresh()) {
+    high_thresh = options_.high_thresh().value();
+  }
+
+  float match_thresh = 0.8;
+  if (options_.has_match_thresh()) {
+    match_thresh = options_.match_thresh().value();
+  }
+
+  // Bytetrack uses the following relationship.
+  //   max_frames_lost = frame_rate / 30.0 * track_buffer
+  // We set frame_rate and track_buffer to achieve desired max_frames_lost.
+  int frame_rate = 30;
+  int track_buffer = max_frames_lost;
+
+  byte_tracker_ = std::make_unique<byte_track::BYTETracker>(frame_rate, track_buffer, track_thresh,
+                                                            high_thresh, match_thresh);
+
   return absl::OkStatus();
 }
 

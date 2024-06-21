@@ -22,21 +22,27 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 proto_library(
     name = "optionspb_proto",
     srcs = [
+        "bytetrack_calculator_options.proto",
         "detections_summary_calculator_options.proto",
         "image_quality_calculator_options.proto",
         "packet_latency_metrics_sink_calculator_options.proto",
     ],
     visibility = ["//visibility:public"],
+    deps = [
+        "@com_google_protobuf//:wrappers_proto",
+    ],
 )
 
 proto_cc_library(
     name = "optionspb_cc_library",
     srcs = [
+        "bytetrack_calculator_options.pb.cc",
         "detections_summary_calculator_options.pb.cc",
         "image_quality_calculator_options.pb.cc",
         "packet_latency_metrics_sink_calculator_options.pb.cc",
     ],
     hdrs = [
+        "bytetrack_calculator_options.pb.h",
         "detections_summary_calculator_options.pb.h",
         "image_quality_calculator_options.pb.h",
         "packet_latency_metrics_sink_calculator_options.pb.h",
@@ -54,6 +60,8 @@ proto_compile(
         "detections_summary_calculator_options.pb.h",
         "image_quality_calculator_options.pb.cc",
         "image_quality_calculator_options.pb.h",
+        "bytetrack_calculator_options.pb.cc",
+        "bytetrack_calculator_options.pb.h",
     ],
     plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
     proto = "optionspb_proto",
@@ -66,11 +74,13 @@ proto_compile(
         "packet_latency_metrics_sink_calculator_options.pb.go=gimletlabs.ai/gimlet/src/gem/calculators/core/optionspb/packet_latency_metrics_sink_calculator_options.pb.go",
         "detections_summary_calculator_options.pb.go=gimletlabs.ai/gimlet/src/gem/calculators/core/optionspb/detections_summary_calculator_options.pb.go",
         "image_quality_calculator_options.pb.go=gimletlabs.ai/gimlet/src/gem/calculators/core/optionspb/image_quality_calculator_options.pb.go",
+        "bytetrack_calculator_options.pb.go=gimletlabs.ai/gimlet/src/gem/calculators/core/optionspb/bytetrack_calculator_options.pb.go",
     ],
     outputs = [
         "packet_latency_metrics_sink_calculator_options.pb.go",
         "detections_summary_calculator_options.pb.go",
         "image_quality_calculator_options.pb.go",
+        "bytetrack_calculator_options.pb.go",
     ],
     plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
     proto = "optionspb_proto",
@@ -80,6 +90,7 @@ proto_compile(
 proto_go_library(
     name = "optionspb_go_proto",
     srcs = [
+        "bytetrack_calculator_options.pb.go",
         "detections_summary_calculator_options.pb.go",
         "image_quality_calculator_options.pb.go",
         "packet_latency_metrics_sink_calculator_options.pb.go",
@@ -94,15 +105,18 @@ proto_go_library(
         "@org_golang_google_grpc//:go_default_library",
         "@org_golang_google_grpc//codes",
         "@org_golang_google_grpc//status",
+        "@org_golang_google_protobuf//types/known/wrapperspb",
     ],
 )
 
 proto_compile(
     name = "optionspb_py_compile",
     outputs = [
-        "packet_latency_metrics_sink_calculator_options_pb2.py",
+        "bytetrack_calculator_options_pb2.py",
         "detections_summary_calculator_options_pb2.py",
+        "packet_latency_metrics_sink_calculator_options_pb2.py",
         "image_quality_calculator_options_pb2.py",
+        "bytetrack_calculator_options_pb2.pyi",
         "detections_summary_calculator_options_pb2.pyi",
         "image_quality_calculator_options_pb2.pyi",
         "packet_latency_metrics_sink_calculator_options_pb2.pyi",
@@ -118,6 +132,7 @@ proto_compile(
 proto_py_library(
     name = "optionspb_py_library",
     srcs = [
+        "bytetrack_calculator_options_pb2.py",
         "detections_summary_calculator_options_pb2.py",
         "image_quality_calculator_options_pb2.py",
         "packet_latency_metrics_sink_calculator_options_pb2.py",
