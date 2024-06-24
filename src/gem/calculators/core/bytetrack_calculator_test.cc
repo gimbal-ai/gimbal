@@ -157,16 +157,16 @@ TEST(ByteTrackCalculatorTest, TrackTwoSimultaneousObjects) {
   EXPECT_EQ(output_packets.size(), 3);
 
   const auto& detection1 = output_packets[0].Get<std::vector<Detection>>();
-  EXPECT_THAT(detection1, ::testing::UnorderedElementsAre(BoxMatcher({1, "id: 1", 0.9}),
-                                                          BoxMatcher({2, "id: 2", 0.7})));
+  EXPECT_THAT(detection1, ::testing::UnorderedElementsAre(BoxMatcher({1, "person 1", 0.9}),
+                                                          BoxMatcher({2, "person 2", 0.7})));
 
   const auto& detection2 = output_packets[1].Get<std::vector<Detection>>();
-  EXPECT_THAT(detection2, ::testing::UnorderedElementsAre(BoxMatcher({1, "id: 1", 0.9}),
-                                                          BoxMatcher({2, "id: 2", 0.7})));
+  EXPECT_THAT(detection2, ::testing::UnorderedElementsAre(BoxMatcher({1, "person 1", 0.9}),
+                                                          BoxMatcher({2, "person 2", 0.7})));
 
   const auto& detection3 = output_packets[2].Get<std::vector<Detection>>();
-  EXPECT_THAT(detection3, ::testing::UnorderedElementsAre(BoxMatcher({1, "id: 1", 0.9}),
-                                                          BoxMatcher({2, "id: 2", 0.7})));
+  EXPECT_THAT(detection3, ::testing::UnorderedElementsAre(BoxMatcher({1, "person 1", 0.9}),
+                                                          BoxMatcher({2, "person 2", 0.7})));
 }
 
 TEST(ByteTrackCalculatorTest, Options) {

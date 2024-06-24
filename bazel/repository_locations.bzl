@@ -401,9 +401,9 @@ REPOSITORY_LOCATIONS = dict(
         urls = ["https://github.com/openxla/stablehlo/archive/271e8634de184fbfafd677d3876170feb6d08c97.tar.gz"],
     ),
     com_github_vertical_beach_bytetrack_cpp = dict(
-        sha256 = "2bf7f198854453d69a683d1173fe9b59fb4171de245fe5a0e1902d6c2eb36377",
-        strip_prefix = "ByteTrack-cpp-d43805d461a714f65da039981bd5f5d21cf5cf59",
-        urls = ["https://github.com/Vertical-Beach/ByteTrack-cpp/archive/d43805d461a714f65da039981bd5f5d21cf5cf59.tar.gz"],
+        sha256 = "be773e2fdc714f8034914903080bc91becab1facc1bd0cc8057666d100d4b521",
+        strip_prefix = "ByteTrack-cpp-561f0c45c0052a86240ca7088cee8c721e0c3f78",
+        urls = ["https://github.com/gimletlabs/ByteTrack-cpp/archive/561f0c45c0052a86240ca7088cee8c721e0c3f78.tar.gz"],
     ),
 )
 

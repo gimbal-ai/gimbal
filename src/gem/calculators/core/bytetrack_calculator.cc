@@ -38,14 +38,24 @@ int LabelMapper::get_id(const std::string& label) {
   int label_id;
   auto it = label_to_id_.find(label);
   if (it != label_to_id_.end()) {
+    // Found existing id.
     label_id = it->second;
   } else {
     // Assign new ID based on map size.
     label_id = static_cast<int>(label_to_id_.size());
     label_to_id_[label] = label_id;
+    id_to_label_[label_id] = label;
   }
 
   return label_id;
+}
+
+StatusOr<std::string> LabelMapper::get_label(int id) {
+  auto it = id_to_label_.find(id);
+  if (it != id_to_label_.end()) {
+    return it->second;
+  }
+  return error::NotFound("Could not find label for id: $0", id);
 }
 
 absl::Status ByteTrackCalculator::GetContract(mediapipe::CalculatorContract* cc) {
@@ -97,9 +107,10 @@ absl::Status ByteTrackCalculator::Process(mediapipe::CalculatorContext* cc) {
 
   // Convert to bytetracker format.
   for (const auto& detection : detections) {
-    const byte_track::Rect rect(detection.bounding_box().xc(), detection.bounding_box().yc(),
-                                detection.bounding_box().width(),
-                                detection.bounding_box().height());
+    const byte_track::Rect rect(
+        detection.bounding_box().xc() - detection.bounding_box().width() / 2,
+        detection.bounding_box().yc() - detection.bounding_box().height() / 2,
+        detection.bounding_box().width(), detection.bounding_box().height());
     std::string label = detection.label(0).label();
     float score = detection.label(0).score();
 
@@ -117,16 +128,14 @@ absl::Status ByteTrackCalculator::Process(mediapipe::CalculatorContext* cc) {
     auto rect = tracked_obj->getRect();
 
     Detection detection;
-    detection.mutable_bounding_box()->set_xc(rect.x());
-    detection.mutable_bounding_box()->set_yc(rect.y());
+    detection.mutable_bounding_box()->set_xc(rect.x() + rect.width() / 2);
+    detection.mutable_bounding_box()->set_yc(rect.y() + rect.height() / 2);
     detection.mutable_bounding_box()->set_width(rect.width());
     detection.mutable_bounding_box()->set_height(rect.height());
 
     auto label = detection.add_label();
-    // TODO(oazizi): Modify bytetrack cpp to preserve the original label so it can be copied.
-    // For now, use track id instead so it will be rendered.
-    // Assumes that there is only one class (and thus the label is irrelevant).
-    label->set_label(absl::Substitute("id: $0", tracked_obj->getTrackId()));
+    auto label_str = label_mapper_.get_label(tracked_obj->getClass()).ValueOr("");
+    label->set_label(absl::Substitute("$0 $1", label_str, tracked_obj->getTrackId()));
     label->set_score(tracked_obj->getScore());
 
     detection.mutable_track_id()->set_value(static_cast<int64_t>(tracked_obj->getTrackId()));
