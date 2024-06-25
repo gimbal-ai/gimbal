@@ -43,15 +43,16 @@ FILTER_REGEX_EXCLUDE: "(app\\/graphql_schema\\.ts|\
                        pnpm-lock\\.yaml|\
                        infra\\/credentials\\/|\
                        gazelle_python\\.yaml|\
-                       k8s\\/charts\\/.*\\/templates\\/.*.yaml|\
+                       k8s\\/charts\\/.*\\/templates\\/.*\\.yaml|\
                        k8s\\/common\\/nack\\/crds.yaml|\
                        visspec\\/visspec_schema\\.ts|\
                        tools\\/globals.css.tpl|\
+                       src\\/ui\\/graphql\\/__generated__\\/.*\\.tsx|\
                        .*\\.pb\\.go|\
                        .*_pb2\\.py|\
                        .*_pb2_grpc\\.py|\
                        .*\\.onnx|\
-                       ^third_party\\/.*proto$)"
+                       ^third_party\\/.*\\.proto$)"
 
 # Linter specific configs
 CSS_STYLELINT_ARGUMENTS: '--config-basedir src/ui'
