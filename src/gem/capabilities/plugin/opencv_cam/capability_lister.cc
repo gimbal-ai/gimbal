@@ -68,6 +68,24 @@ Status CapabilityLister::Populate(DeviceCapabilities* cap) {
       continue;
     }
 
+    // Filter for only devices that have mjpeg support.
+    // TODO(james/vihang): Push up available video formats to the controlplane and let it decide
+    // which ones to use.
+    bool hasMJPEG = false;
+    v4l2_fmtdesc fmt;
+    fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+    fmt.index = 0;
+    while (ioctl(file->fd(), VIDIOC_ENUM_FMT, &fmt) != -1) {
+      if (fmt.pixelformat == v4l2_fourcc('M', 'J', 'P', 'G')) {
+        hasMJPEG = true;
+        break;
+      }
+      fmt.index++;
+    }
+    if (!hasMJPEG) {
+      continue;
+    }
+
     auto mutable_cam = cap->add_cameras();
     mutable_cam->set_driver(
         internal::api::core::v1::DeviceCapabilities::CameraInfo::CAMERA_DRIVER_V4L2);
