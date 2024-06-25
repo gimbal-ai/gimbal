@@ -222,7 +222,8 @@ _collect_runfiles = rule(
 )
 
 def _gml_fast_py_image(name, binary, **kwargs):
-    default_base_image = "@gml//bazel/python:python_experimental_base_image" if native.package_name().startswith("src/experimental/") else "@gml//bazel/python:python_base_image"
+    is_experimental = native.package_name().startswith("src/experimental/")
+    default_base_image = "@gml//bazel/python:python_experimental_base_image" if is_experimental else "@gml//bazel/python:python_base_image"
 
     default_arg(kwargs, "base", default_base_image)
     default_arg(kwargs, "runfiles_denylist", [])
@@ -235,10 +236,26 @@ def _gml_fast_py_image(name, binary, **kwargs):
         "/usr/local/lib/python3.11/dist-packages",
         "/app/{}.runfiles/_main".format(binary_name),
     ]
-    default_arg(kwargs, "env", {"PYTHONPATH": ":".join(python_path)})
 
     # Exclude rules_python dependencies (includes hermetic python toolchain and pip dependencies)
     kwargs["runfiles_denylist"].append("rules_python~")
+
+    git_changes_dir = "/opt/git_changes"
+    default_env = {"PYTHONPATH": ":".join(python_path)}
+    if is_experimental:
+        default_env["GIT_MERGE_BASE_DIR"] = git_changes_dir
+
+        pkg_tar(
+            name = name + "_git_changes",
+            srcs = [
+                "//src/experimental/research/cli/reprofiles:reprofiles",
+            ],
+            package_dir = git_changes_dir,
+            testonly = kwargs.get("testonly", False),
+        )
+        kwargs["tars"] = kwargs["tars"] + [name + "_git_changes"]
+
+    default_arg(kwargs, "env", default_env)
 
     _gml_binary_image(
         name = name,
