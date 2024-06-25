@@ -22,6 +22,7 @@
 #include <mediapipe/framework/calculator_framework.h>
 
 #include "src/api/corepb/v1/mediastream.pb.h"
+#include "src/common/base/bimap.h"
 #include "src/common/base/statusor.h"
 #include "src/gem/calculators/core/optionspb/bytetrack_calculator_options.pb.h"
 
@@ -34,8 +35,7 @@ class LabelMapper {
   StatusOr<std::string> get_label(int id);
 
  private:
-  absl::flat_hash_map<std::string, int> label_to_id_;
-  absl::flat_hash_map<int, std::string> id_to_label_;
+  BiMap<std::string, int> label_id_bimap_;
 };
 
 class ByteTrackCalculator : public mediapipe::CalculatorBase {

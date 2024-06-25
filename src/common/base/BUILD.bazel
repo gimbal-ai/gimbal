@@ -32,6 +32,7 @@ gml_cc_library_internal(
     hdrs = [
         "arch.h",
         "base.h",
+        "bimap.h",
         "byte_utils.h",
         "defer.h",
         "enum_utils.h",
@@ -52,6 +53,7 @@ gml_cc_library_internal(
     ],
     deps = [
         "//src/common/typespb:typespb_cc_library",
+        "@com_google_absl//absl/container:node_hash_map",
         "@com_google_absl//absl/status",
         "@com_google_googletest//:gtest_prod",
     ],
@@ -106,6 +108,12 @@ gml_cc_test(
 gml_cc_test(
     name = "file_test",
     srcs = ["file_test.cc"],
+    deps = [":cc_library"],
+)
+
+gml_cc_test(
+    name = "bimap_test",
+    srcs = ["bimap_test.cc"],
     deps = [":cc_library"],
 )
 

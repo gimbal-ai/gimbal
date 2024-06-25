@@ -35,28 +35,25 @@ using ::gml::internal::api::core::v1::Detection;
 constexpr std::string_view kDetectionVectorTag = "DETECTIONS";
 
 int LabelMapper::get_id(const std::string& label) {
-  int label_id;
-  auto it = label_to_id_.find(label);
-  if (it != label_to_id_.end()) {
-    // Found existing id.
-    label_id = it->second;
-  } else {
-    // Assign new ID based on map size.
-    label_id = static_cast<int>(label_to_id_.size());
-    label_to_id_[label] = label_id;
-    id_to_label_[label_id] = label;
+  static int next_label_id = 0;
+
+  StatusOr<int> res = label_id_bimap_.KeyToValue(label);
+  if (res.ok()) {
+    return res.ValueOrDie();
   }
 
+  int label_id = next_label_id;
+  next_label_id++;
+
+  auto status = label_id_bimap_.Insert(label, label_id);
+  if (!status.ok()) {
+    LOG(ERROR) << absl::Substitute("Failed to insert label: $0 with id: $1", label, label_id);
+    return -1;
+  }
   return label_id;
 }
 
-StatusOr<std::string> LabelMapper::get_label(int id) {
-  auto it = id_to_label_.find(id);
-  if (it != id_to_label_.end()) {
-    return it->second;
-  }
-  return error::NotFound("Could not find label for id: $0", id);
-}
+StatusOr<std::string> LabelMapper::get_label(int id) { return label_id_bimap_.ValueToKey(id); }
 
 absl::Status ByteTrackCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   cc->Inputs().Tag(kDetectionVectorTag).Set<std::vector<Detection>>();
