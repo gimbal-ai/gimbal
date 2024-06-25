@@ -38,16 +38,13 @@ gml_cc_library(
 
 gml_cc_binary(
     name = "gem",
-    data = [
-        "static/default_argus_graph.pbtxt",
-        "static/default_opencv_graph.pbtxt",
-    ],
     linkopts = [
         # Ensure that our shared libs are picked up before LD_LIBRARY_PATH libs.
         "-Wl,--disable-new-dtags",
     ],
     deps = [
         ":cc_library",
+        "//src/gem/static:cc_library",
         "//src/shared/version:cc_library",
         "//src/shared/version:version_linkstamp",
     ],

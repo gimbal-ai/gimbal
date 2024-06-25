@@ -313,17 +313,17 @@ Status ModelExecHandler::GetDefaultVideoExecutionGraph(PhysicalPipelineSpecUpdat
   if (camera.driver() ==
       gml::internal::api::core::v1::DeviceCapabilities_CameraInfo::CAMERA_DRIVER_ARGUS) {
     GML_RETURN_IF_ERROR(LoadPbtxt(FLAGS_default_argus_pbtxt, spec));
-    gml::gem::calculators::argus::optionspb::ArgusCamSourceSubgraphOptions opts;
+    gml::gem::calculators::argus::optionspb::ArgusCamSourceCalculatorOptions opts;
     opts.set_device_uuid(camera.camera_id());
     opts.set_target_frame_rate(30);
     any.PackFrom(opts);
   } else {
     GML_RETURN_IF_ERROR(LoadPbtxt(FLAGS_default_opencv_pbtxt, spec));
-    gml::gem::calculators::opencv_cam::optionspb::OpenCVCamSourceSubgraphOptions opts;
+    gml::gem::calculators::opencv_cam::optionspb::OpenCVCamSourceCalculatorOptions opts;
     opts.set_device_filename(camera.camera_id());
     any.PackFrom(opts);
   }
-  (*spec->mutable_graph()->mutable_node(0)->add_node_options()) = any;
+  (*spec->mutable_graph()->mutable_graph_options(0)) = any;
 
   return Status::OK();
 }

@@ -1,30 +1,84 @@
 graph {
   input_side_packet: "ctrl_exec_ctx"
 
+  graph_options: {
+    [type.googleapis.com/gml.gem.calculators.argus.optionspb.ArgusCamSourceCalculatorOptions] {}
+  }
+
   node {
-    calculator: "ArgusCamSourceSubgraph"
+    calculator: "ArgusCamSourceCalculator"
+    output_stream: "nv_buf"
+    output_stream: "VIDEO_PRESTREAM:video_header"
+    node_options: {
+      [type.googleapis.com/gml.gem.calculators.argus.optionspb.ArgusCamSourceCalculatorOptions] {}
+    }
+    option_value: "target_frame_rate:options/target_frame_rate"
+    option_value: "device_uuid:options/device_uuid"
+  }
+
+  node {
+    calculator: "NvBufSurfToImageFrameCalculator"
+    input_stream: "nv_buf"
+    output_stream: "video_frames"
+  }
+
+  node {
+    calculator: "FlowLimiterCalculator"
+    input_stream: "video_frames"
     input_stream: "FINISHED:finished"
-    output_stream: "frames"
-    output_stream: "VIDEO_HEADER:video_header"
+    input_stream_info {
+      tag_index: "FINISHED"
+      back_edge: true
+    }
+    output_stream: "sampled_frames"
     output_stream: "ALLOW:frame_allowed"
+    node_options: {
+      [type.googleapis.com/mediapipe.FlowLimiterCalculatorOptions] {
+        max_in_flight: 1
+        max_in_queue: 1
+        in_flight_timeout: 0
+      }
+    }
   }
   node {
-    calculator: "VideoEncoderSubgraph"
-    input_stream: "frames"
+    calculator: "ScaleImageCalculator"
+    input_stream: "FRAMES:sampled_frames"
     input_stream: "VIDEO_HEADER:video_header"
-    output_stream: "video"
+    output_stream: "FRAMES:scaled_frames"
     output_stream: "VIDEO_HEADER:scaled_video_header"
+    node_options {
+      [type.googleapis.com/mediapipe.ScaleImageCalculatorOptions] {
+        target_width: 640
+        target_height: 480
+        min_aspect_ratio: "1/0"
+        max_aspect_ratio: "1/0"
+        preserve_aspect_ratio: true
+        output_format: FORMAT_SRGB
+        algorithm: SCALE_ALGO_DEFAULT_WITHOUT_UPSCALE
+      }
+    }
+  }
+  node {
+    calculator: "ImageFrameToYUVPlanarImage"
+    input_stream: "IMAGE_FRAME:scaled_frames"
+    output_stream: "YUV_IMAGE:planar_image"
+  }
+  node {
+    calculator: "FFmpegVideoEncoderCalculator"
+    input_stream: "PLANAR_IMAGE:planar_image"
+    input_stream: "VIDEO_HEADER:scaled_video_header"
+    output_stream: "AV_PACKETS:encoded_av_packets"
   }
   node {
     calculator: "ImageQualityCalculator"
-    input_stream: "IMAGE_FRAME:frames"
+    input_stream: "IMAGE_FRAME:sampled_frames"
     output_stream: "IMAGE_QUALITY:quality"
     output_stream: "IMAGE_HIST:histogram"
   }
   node {
-    calculator: "ObjDetectionOverlayedVideoSinkSubgraph"
+    calculator: "OverlayedFFmpegVideoSinkCalculator"
     input_side_packet: "EXEC_CTX:ctrl_exec_ctx"
-    input_stream: "AV_PACKETS:video"
+    input_stream: "AV_PACKETS:encoded_av_packets"
     input_stream: "VIDEO_HEADER:scaled_video_header"
     input_stream: "IMAGE_QUALITY:quality"
     input_stream: "IMAGE_HIST:histogram"
