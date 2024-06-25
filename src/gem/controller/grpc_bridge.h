@@ -72,7 +72,7 @@ class GRPCBridge {
   Status WriteWithRetries(const BridgeRequest&);
   Status WriteRequestToBridge(const BridgeRequest&);
 
-  Status HandleReadWriteFailure() ABSL_LOCKS_EXCLUDED(rdwr_lock_);
+  void HandleReadWriteFailure() ABSL_LOCKS_EXCLUDED(rdwr_lock_);
   Status Connect() ABSL_EXCLUSIVE_LOCKS_REQUIRED(rdwr_lock_);
 
   std::string controlplane_addr_;

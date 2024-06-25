@@ -17,7 +17,9 @@
 
 #include "src/gem/controller/grpc_bridge.h"
 
+#include <chrono>
 #include <memory>
+#include <thread>
 
 #include <magic_enum.hpp>
 
@@ -48,26 +50,32 @@ Status GRPCBridge::Connect() {
   return Status::OK();
 }
 
-Status GRPCBridge::HandleReadWriteFailure() {
+void GRPCBridge::HandleReadWriteFailure() {
   absl::WriterMutexLock lock(&rdwr_lock_);
   rdwr_->WritesDone();
   auto grpc_status = rdwr_->Finish();
-  // Check if the error is a RST_STREAM.
-  if (grpc_status.ok() || grpc_status.error_code() != grpc::StatusCode::INTERNAL ||
-      !absl::StrContains(grpc_status.error_message(), "RST_STREAM")) {
-    if (grpc_status.ok()) {
-      // Successful Finish call implies the server cancelled the stream without error.
-      return error::Cancelled("GRPCBridge stream cancelled by server");
-    }
-    return StatusAdapter(grpc_status);
-  }
-  // If it is a RST_STREAM restart the stream.
-  LOG(INFO) << "Restarting GRPCBridge due to RST_STREAM";
+  // Restart the stream on any errors.
+  LOG(INFO) << "Restarting GRPCBridge";
+  VLOG(1) << "GRPCBridge restarted due to error: " << grpc_status.error_message();
 
   stream_reset_total_->Add(1);
 
-  GML_RETURN_IF_ERROR(Connect());
-  return Status::OK();
+  auto s = Connect();
+
+  constexpr auto kInitialPeriod = std::chrono::milliseconds{50};
+  constexpr auto kMaxPeriod = std::chrono::seconds{30};
+  constexpr int kExpFactor = 2;
+  std::chrono::milliseconds backoff_period = kInitialPeriod;
+
+  while (!s.ok()) {
+    LOG(INFO) << "Reconnecting GRPCBridge to controlplane failed: " << s.msg();
+    LOG(INFO) << "Retrying in " << backoff_period.count() << "ms";
+    std::this_thread::sleep_for(backoff_period);
+    if (backoff_period <= kMaxPeriod) {
+      backoff_period *= kExpFactor;
+    }
+    s = Connect();
+  }
 }
 
 Status GRPCBridge::Init() {
@@ -138,11 +146,7 @@ void GRPCBridge::Reader() {
     }
     if (!read_succeeded) {
       rx_err_total_->Add(1);
-      auto s = HandleReadWriteFailure();
-      if (!s.ok()) {
-        // TODO(zasgar): We need to notify of error here.
-        LOG(FATAL) << absl::Substitute("GRPCBridge read failed with error: $0", s.msg());
-      }
+      HandleReadWriteFailure();
     }
 
     std::string topic(magic_enum::enum_name(resp->topic()));
@@ -164,7 +168,7 @@ Status GRPCBridge::WriteRequestToBridge(const BridgeRequest& req) {
   }
   if (!write_suceeded) {
     tx_err_total_->Add(1);
-    GML_RETURN_IF_ERROR(HandleReadWriteFailure());
+    HandleReadWriteFailure();
   }
 
   std::string topic(magic_enum::enum_name(req.topic()));
