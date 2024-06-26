@@ -54,6 +54,8 @@ gml_cc_library(
         "@com_github_google_mediapipe//mediapipe/calculators/core:concatenate_vector_calculator",
         "@com_github_google_mediapipe//mediapipe/calculators/core:end_loop_calculator",
         "@com_github_google_mediapipe//mediapipe/calculators/core:pass_through_calculator",
+        "@com_github_google_mediapipe//mediapipe/calculators/image:image_cropping_calculator",
+        "@com_github_google_mediapipe//mediapipe/calculators/util:detections_to_rects_calculator",
         "@com_github_google_mediapipe//mediapipe/calculators/util:latency_cc_proto",
         "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
         "@com_github_google_mediapipe//mediapipe/framework/formats:detection_cc_proto",
