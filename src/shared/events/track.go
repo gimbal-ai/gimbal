@@ -31,6 +31,8 @@ import (
 
 func init() {
 	pflag.String("segment_write_key", "", "The key to use for segment")
+	pflag.Int("segment_batch_size", analytics.DefaultBatchSize, "The batch size to use for segment")
+	pflag.Duration("segment_flush_interval", analytics.DefaultInterval, "The flush interval for segment")
 }
 
 var (
@@ -55,9 +57,17 @@ func (*placeholderClient) Close() error {
 
 func getDefaultClient() analytics.Client {
 	k := viper.GetString("segment_write_key")
+	// Key is specified try to to create segment client.
 	if len(k) > 0 {
-		// Key is specified try to to create segment client.
-		return analytics.New(k)
+		c, err := analytics.NewWithConfig(k, analytics.Config{
+			BatchSize: viper.GetInt("segment_batch_size"),
+			Interval:  viper.GetDuration("segment_flush_interval"),
+		})
+		if err != nil {
+			log.WithError(err).Error("Failed to create segment client")
+			return &placeholderClient{}
+		}
+		return c
 	}
 	return &placeholderClient{}
 }
