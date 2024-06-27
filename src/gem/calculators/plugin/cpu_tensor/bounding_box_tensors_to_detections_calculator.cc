@@ -90,6 +90,10 @@ absl::Status BoundingBoxTensorsToDetections::Process(mediapipe::CalculatorContex
     const auto score = score_data[i];
     const auto class_idx = get_class_idx(i);
 
+    if (class_idx < 0) {
+      continue;
+    }
+
     auto class_label = options_.index_to_label(class_idx);
     if (class_label == "") {
       continue;

@@ -78,7 +78,9 @@ StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobSt
 
     auto model = core.read_model(model_path, weights_path);
 
-    auto compiled_model = core.compile_model(model, device);
+    // TODO(james): convert models to fp16 in the compiler and remove the inference precision hint
+    // here.
+    auto compiled_model = core.compile_model(model, device, ov::hint::inference_precision("f32"));
     return std::unique_ptr<exec::core::Model>{new Model(std::move(compiled_model))};
   } catch (const std::exception& e) {
     return error::Internal("Failed to compile openvino model: $0", e.what());
