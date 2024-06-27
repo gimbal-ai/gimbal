@@ -21,10 +21,11 @@ package events
 // reduce the chance of a typo messing up the analytics.
 
 const (
-	// UserLoggedIn is the login event.
-	UserLoggedIn = "ev-user-logged-in"
-	// UserSignedUp is the signup event.
-	UserSignedUp = "ev-user-signed-up"
-	// OrgCreated is the event for a new Org.
-	OrgCreated = "ev-org-created"
+	UserLoggedIn            = "ev-user-logged-in"
+	UserSignedUp            = "ev-user-signed-up"
+	OrgCreated              = "ev-org-created"
+	FleetCreated            = "ev-fleet-created"
+	ModelCreated            = "ev-model-created"
+	LogicalPipelineCreated  = "ev-logical-pipeline-created"
+	LogicalPipelineDeployed = "ev-logical-pipeline-deployed"
 )
