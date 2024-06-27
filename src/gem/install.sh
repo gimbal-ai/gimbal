@@ -89,7 +89,7 @@ function device_type() {
 GML_CACHE_DIR=${GML_CACHE_DIR:-"$HOME/.cache/gml"}
 
 common_docker_flags=(
-  --network=host
+  --pid=host
   -v "$GML_CACHE_DIR:/gml"
   -v /usr/lib:/host_lib
   # Mount /sys so that GEM can use the mac address as the SERIAL_NUMBER and also read system metrics.
@@ -109,6 +109,13 @@ if [[ "$DEV_MODE" == "true" ]]; then
 else
   # In production mode, we want to run the container in a detached state.
   extra_docker_flags+=(-d)
+fi
+
+HOST_NETWORK=${GML_HOST_NETWORK:-"false"}
+if [[ "$HOST_NETWORK" == "true" ]]; then
+  extra_docker_flags+=(
+    --network=host
+  )
 fi
 
 IMAGE_TYPE=""
