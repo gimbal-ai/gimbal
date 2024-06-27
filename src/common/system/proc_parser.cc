@@ -159,10 +159,10 @@ Status ProcParser::ParseProcPIDNetDev(int32_t pid, std::vector<NetworkStats>* ou
   return this->ParseNetDev(fpath, out);
 }
 
-Status ProcParser::ParseProcHostNetDev(std::filesystem::path host_path,
-                                       std::vector<NetworkStats>* out) const {
-  auto fpath = std::move(host_path);
-  fpath /= ProcPath("net", "dev").relative_path();
+Status ProcParser::ParseProcHostNetDev(std::vector<NetworkStats>* out) const {
+  // TODO(michelle): This function will only work if --host=pid is set. We should find a
+  // way to check for that inside this function and error if not.
+  const auto fpath = ProcPidPath(1, "net", "dev");
   return this->ParseNetDev(fpath, out);
 }
 

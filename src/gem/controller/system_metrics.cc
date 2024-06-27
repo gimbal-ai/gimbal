@@ -123,8 +123,8 @@ void SystemMetricsReader::Scrape() {
                                   {{"state", "system"}}, {});
 
   std::vector<gml::system::ProcParser::NetworkStats> network_stats;
-  auto s = proc_parser_.ParseProcHostNetDev(gml::system::Config::GetInstance().host_path(),
-                                            &network_stats);
+  // This expects --pid=host to be true on the container.
+  auto s = proc_parser_.ParseProcHostNetDev(&network_stats);
   if (!s.ok()) {
     LOG(INFO) << "Failed to read proc network stats. Skipping...";
     return;

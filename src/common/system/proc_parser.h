@@ -267,7 +267,7 @@ class ProcParser {
    * @param out a valid pointer to an output struct.
    * @return status of parsing.
    */
-  Status ParseProcHostNetDev(std::filesystem::path host_path, std::vector<NetworkStats>* out) const;
+  Status ParseProcHostNetDev(std::vector<NetworkStats>* out) const;
 
   /**
    * Parses /proc/stat and reports a value for each of the physical CPUs.
