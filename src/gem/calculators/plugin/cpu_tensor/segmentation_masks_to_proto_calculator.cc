@@ -31,6 +31,56 @@ using ::gml::internal::api::core::v1::Segmentation;
 
 constexpr std::string_view kMaskTag = "MASK_TENSOR";
 
+namespace {
+
+struct RLEState {
+  int32_t last_index = -1;
+  std::vector<int32_t> rle;
+};
+
+template <typename T>
+void MaskTensorToProto(const T* data, int32_t height, int32_t width,
+                       const SegmentationMasksToProtoOptions& options, Segmentation* proto) {
+  std::vector<RLEState> state_per_class(options.index_to_label_size());
+
+  int32_t last_class_idx = -1;
+
+  for (int i = 0; i < height * width; ++i) {
+    auto class_idx = data[i];
+    if (class_idx < 0) {
+      continue;
+    }
+    auto& state = state_per_class[class_idx];
+    if (class_idx == last_class_idx) {
+      state.rle.back()++;
+      state.last_index = i;
+      continue;
+    }
+    auto zeros = (i - 1) - state.last_index;
+    state.rle.push_back(zeros);
+    state.rle.push_back(1);
+    state.last_index = i;
+    last_class_idx = class_idx;
+  }
+
+  for (auto& state : state_per_class) {
+    int32_t zeros = (height * width - 1) - state.last_index;
+    if (zeros <= 0) {
+      continue;
+    }
+    state.rle.push_back(zeros);
+    state.rle.push_back(0);
+  }
+
+  for (const auto& [class_idx, state] : Enumerate(state_per_class)) {
+    auto* mask = proto->add_masks();
+    auto label = options.index_to_label(static_cast<int32_t>(class_idx));
+    mask->set_label(label);
+    mask->mutable_run_length_encoding()->Assign(state.rle.begin(), state.rle.end());
+  }
+}
+}  // namespace
+
 absl::Status SegmentationMasksToProtoCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   cc->Inputs().Tag(kMaskTag).Set<CPUTensorPtr>();
   cc->Outputs().Index(0).Set<Segmentation>();
@@ -51,42 +101,25 @@ absl::Status SegmentationMasksToProtoCalculator::Process(mediapipe::CalculatorCo
     return AbslStatusAdapter(error::Unimplemented("Currently only batches=1 is supported"));
   }
 
-  auto num_classes = mask_tensor->Shape()[1];
-  if (num_classes != options_.index_to_label_size()) {
+  if (mask_tensor->Shape()[1] != 1) {
     return AbslStatusAdapter(error::InvalidArgument(
-        "number of classes in options does not match mask tensor channel dimension"));
+        "Expected Segmentation masks in [B, 1, H, W] format, received size $0 second dimension",
+        mask_tensor->Shape()[1]));
   }
 
   auto height = mask_tensor->Shape()[2];
   auto width = mask_tensor->Shape()[3];
 
-  const auto* mask_data = mask_tensor->TypedData<DataType::INT8>();
-  const auto class_step = height * width;
-
   Segmentation segmentation;
   segmentation.set_height(height);
   segmentation.set_width(width);
 
-  for (int class_idx = 0; class_idx < num_classes; ++class_idx) {
-    const auto* class_data = mask_data + (class_step * static_cast<size_t>(class_idx));
-    auto class_label = options_.index_to_label(class_idx);
-    auto* mask = segmentation.add_masks();
-    mask->set_label(class_label);
-    int32_t count = 0;
-    bool current = false;
-    for (int j = 0; j < class_step; ++j) {
-      if (static_cast<bool>(class_data[j]) ^ current) {
-        mask->add_run_length_encoding(count);
-        count = 0;
-        current = class_data[j];
-      }
-      count++;
-    }
-    mask->add_run_length_encoding(count);
-    if (!current) {
-      // Make sure size of run length encoding is always even.
-      mask->add_run_length_encoding(0);
-    }
+  if (mask_tensor->DataType() == DataType::INT32) {
+    const auto* data = mask_tensor->TypedData<DataType::INT32>();
+    MaskTensorToProto(data, height, width, options_, &segmentation);
+  } else {
+    const auto* data = mask_tensor->TypedData<DataType::INT64>();
+    MaskTensorToProto(data, height, width, options_, &segmentation);
   }
 
   auto packet = mediapipe::MakePacket<Segmentation>(std::move(segmentation));

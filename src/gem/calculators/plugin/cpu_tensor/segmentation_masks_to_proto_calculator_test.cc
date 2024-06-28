@@ -40,12 +40,13 @@ node_options {
   [type.googleapis.com/gml.gem.calculators.cpu_tensor.optionspb.SegmentationMasksToProtoOptions] {
     index_to_label: "person"
     index_to_label: "cat"
+    index_to_label: "dog"
   }
 }
 )pbtxt";
 
 struct SegmentationTestCase {
-  std::vector<std::vector<std::vector<int8_t>>> binary_masks;
+  std::vector<std::vector<int32_t>> label_masks;
   std::vector<std::string> expected_labels;
   std::vector<std::vector<int>> expected_rle;
   int64_t expected_width;
@@ -61,20 +62,17 @@ TEST_P(SegmentationMasksToProtoCalculatorTest, ConvertsCorrectly) {
   CPUTensorPool pool;
   testing::CalculatorTester tester(kSegmentationMasksToProtoNode);
 
-  int n_classes = static_cast<int>(test_case.binary_masks.size());
-  int height = static_cast<int>(test_case.binary_masks[0].size());
-  int width = static_cast<int>(test_case.binary_masks[0][0].size());
+  int height = static_cast<int>(test_case.label_masks.size());
+  int width = static_cast<int>(test_case.label_masks[0].size());
 
   ASSERT_OK_AND_ASSIGN(auto mask_tensor,
-                       pool.GetTensor(TensorShape{1, n_classes, height, width}, DataType::INT8));
+                       pool.GetTensor(TensorShape{1, 1, height, width}, DataType::INT32));
 
-  auto* mask_data = mask_tensor->TypedData<DataType::INT8>();
-  for (const auto& mask : test_case.binary_masks) {
-    for (const auto& row : mask) {
-      for (auto val : row) {
-        *mask_data = static_cast<int8_t>(val);
-        mask_data++;
-      }
+  auto* mask_data = mask_tensor->TypedData<DataType::INT32>();
+  for (const auto& row : test_case.label_masks) {
+    for (auto val : row) {
+      *mask_data = static_cast<int32_t>(val);
+      mask_data++;
     }
   }
 
@@ -98,26 +96,22 @@ TEST_P(SegmentationMasksToProtoCalculatorTest, ConvertsCorrectly) {
 }
 
 INSTANTIATE_TEST_SUITE_P(SegmentationMasksToProtoSuite, SegmentationMasksToProtoCalculatorTest,
-                         ::testing::Values(SegmentationTestCase{.binary_masks =
+                         ::testing::Values(SegmentationTestCase{.label_masks =
                                                                     {
-                                                                        {
-                                                                            {0, 0, 1, 0},
-                                                                            {0, 1, 1, 1},
-                                                                        },
-                                                                        {
-                                                                            {1, 1, 0, 1},
-                                                                            {1, 0, 0, 0},
-                                                                        },
+                                                                        {0, 0, 1, 2},
+                                                                        {2, 2, 1, 1},
                                                                     },
                                                                 .expected_labels =
                                                                     {
                                                                         "person",
                                                                         "cat",
+                                                                        "dog",
                                                                     },
                                                                 .expected_rle =
                                                                     {
-                                                                        {2, 1, 2, 3},
-                                                                        {0, 2, 1, 2, 3, 0},
+                                                                        {0, 2, 6, 0},
+                                                                        {2, 1, 3, 2},
+                                                                        {3, 3, 2, 0},
                                                                     },
                                                                 .expected_width = 4,
                                                                 .expected_height = 2
