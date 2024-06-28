@@ -62,6 +62,10 @@ absl::Status ArgusCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
     cc->Outputs().Tag(kVideoPrestreamTag).Close();
   }
 
+  auto& metrics_system = metrics::MetricsSystem::GetInstance();
+  auto gml_meter = metrics_system.GetMeterProvider()->GetMeter("gml");
+  fps_gauge_ = gml_meter->CreateDoubleGauge("gml.gem.camera.fps");
+
   return absl::OkStatus();
 }
 
@@ -78,6 +82,9 @@ absl::Status ArgusCamSourceCalculator::Process(mediapipe::CalculatorContext* cc)
   auto packet = mediapipe::MakePacket<std::shared_ptr<NvBufSurfaceWrapper>>(std::move(buf_shared));
   packet = packet.At(mediapipe::Timestamp(timestamp_ns_ / 1000));
   cc->Outputs().Index(0).AddPacket(std::move(packet));
+
+  fps_gauge_->Record(options_.target_frame_rate(),
+                     {{"camera_id", options_.device_uuid()}, {"camera", "argus"}}, {});
 
   return absl::OkStatus();
 }

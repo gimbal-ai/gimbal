@@ -19,6 +19,7 @@
 
 #include <mediapipe/framework/calculator_framework.h>
 
+#include "src/common/metrics/metrics_system.h"
 #include "src/gem/calculators/plugin/argus/optionspb/argus_cam_calculator_options.pb.h"
 #include "src/gem/devices/camera/argus/argus_cam.h"
 #include "src/gem/devices/camera/argus/argus_manager.h"
@@ -35,6 +36,9 @@ class ArgusCamSourceCalculator : public mediapipe::CalculatorBase {
  private:
   optionspb::ArgusCamSourceCalculatorOptions options_;
   devices::argus::ArgusManager::ArgusCamManagedPtr argus_cam_;
+
+  // Metrics.
+  std::unique_ptr<opentelemetry::metrics::Gauge<double>> fps_gauge_;
 };
 
 }  // namespace gml::gem::calculators::argus

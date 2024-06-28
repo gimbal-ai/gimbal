@@ -37,6 +37,7 @@ gem_plugin_cc_library(
     ],
     plugin_name = "argus",
     deps = [
+        "//src/common/metrics:cc_library",
         "//src/gem/calculators/plugin/argus/optionspb:optionspb_cc_library",
         "//src/gem/devices/camera/argus:cc_library",
         "//src/gem/exec/core:cc_library",

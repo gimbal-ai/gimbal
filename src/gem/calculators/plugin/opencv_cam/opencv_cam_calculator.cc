@@ -140,6 +140,10 @@ absl::Status OpenCVCamSourceCalculator::GetContract(mediapipe::CalculatorContrac
 absl::Status OpenCVCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
   options_ = cc->Options<OpenCVCamSourceCalculatorOptions>();
 
+  auto& metrics_system = metrics::MetricsSystem::GetInstance();
+  auto gml_meter = metrics_system.GetMeterProvider()->GetMeter("gml");
+  fps_gauge_ = gml_meter->CreateDoubleGauge("gml.gem.camera.fps");
+
   LOG(INFO) << "Using v4l2 camera: " << options_.device_filename();
 
   std::vector<int> params;
@@ -223,6 +227,8 @@ absl::Status OpenCVCamSourceCalculator::Process(mediapipe::CalculatorContext* cc
   if (options_.max_num_frames() > 0 && ++frame_counter_ >= options_.max_num_frames()) {
     return mediapipe::tool::StatusStop();
   }
+
+  fps_gauge_->Record(fps_, {{"camera_id", options_.device_filename()}, {"camera", "opencv"}}, {});
 
   return absl::OkStatus();
 }

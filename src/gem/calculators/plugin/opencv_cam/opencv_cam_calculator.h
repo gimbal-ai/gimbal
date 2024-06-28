@@ -23,6 +23,7 @@
 #include <mediapipe/framework/formats/image_format.pb.h>
 #include <opencv4/opencv2/opencv.hpp>
 
+#include "src/common/metrics/metrics_system.h"
 #include "src/gem/calculators/plugin/opencv_cam/optionspb/opencv_cam_calculator_options.pb.h"
 
 namespace gml::gem::calculators::opencv_cam {
@@ -66,6 +67,9 @@ class OpenCVCamSourceCalculator : public mediapipe::CalculatorBase {
   int32_t height_;
   double fps_;
   double frame_count_;
+
+  // Metrics.
+  std::unique_ptr<opentelemetry::metrics::Gauge<double>> fps_gauge_;
 };
 
 }  // namespace gml::gem::calculators::opencv_cam
