@@ -27,16 +27,16 @@
 
 namespace gml::gem::capabilities::opencv_cam {
 
-DEFINE_string(video_from_file_override, gflags::StringFromEnv("GML_VIDEO_FROM_FILE_OVERRIDE", ""),
+DEFINE_string(video_file, gflags::StringFromEnv("GML_VIDEO_FILE", ""),
               "A video file to use as the input instead of a camera attached to the system.");
 
 Status CapabilityLister::Populate(DeviceCapabilities* cap) {
-  if (FLAGS_video_from_file_override != "") {
+  if (FLAGS_video_file != "") {
     auto mutable_cam = cap->add_cameras();
     mutable_cam->set_driver(
         internal::api::core::v1::DeviceCapabilities::CameraInfo::CAMERA_DRIVER_V4L2);
 
-    mutable_cam->set_camera_id(FLAGS_video_from_file_override);
+    mutable_cam->set_camera_id(FLAGS_video_file);
     return Status::OK();
   }
 

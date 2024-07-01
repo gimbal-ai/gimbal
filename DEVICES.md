@@ -108,11 +108,10 @@ If you'd like to record new data, see <https://github.com/gimletlabs/gimlet/blob
 
 ### If deploying the GEM binary directly
 
-Set `GML_VIDEO_FROM_FILE_OVERRIDE` or `--video_from_file_override` to the location of the
-desired video file to use, and we will use that instead of a camera.
+Set `GML_VIDEO_FILE` or `--video_file` to the location of the desired video file to use, and we will use that instead of a camera.
 
 ```sh
-export GML_VIDEO_FROM_FILE_OVERRIDE=<path-to-video-file> # replace with your video file
+export GML_VIDEO_FILE=<path-to-video-file> # replace with your video file
 bazel run -c opt //src/gem:gem -- --blob_store_dir=$HOME/.cache/gml
 ```
 

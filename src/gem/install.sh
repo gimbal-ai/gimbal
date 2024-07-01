@@ -127,13 +127,13 @@ cmdline_opts=(
   "--sys_class_net_path" "/host/sys/class/net"
 )
 
-VIDEO_FROM_FILE_OVERRIDE=${GML_VIDEO_FROM_FILE_OVERRIDE:-""}
-if [[ -n "$VIDEO_FROM_FILE_OVERRIDE" ]]; then
-  video_filename=$(basename "$VIDEO_FROM_FILE_OVERRIDE")
+VIDEO_FILE=${GML_VIDEO_FILE:-""}
+if [[ -n "$VIDEO_FILE" ]]; then
+  video_filename=$(basename "$VIDEO_FILE")
   extra_docker_flags+=(
-    -v "$VIDEO_FROM_FILE_OVERRIDE:/gml/${video_filename}"
+    -v "$VIDEO_FILE:/gml/${video_filename}"
   )
-  cmdline_opts+=("--video_from_file_override=/gml/${video_filename}")
+  cmdline_opts+=("--video_file=/gml/${video_filename}")
 fi
 
 RANDOMIZE_DEVICE_SERIAL=${GML_RANDOMIZE_DEVICE_SERIAL:-"false"}
