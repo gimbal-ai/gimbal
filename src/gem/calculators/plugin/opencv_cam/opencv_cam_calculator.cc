@@ -75,7 +75,7 @@ cv::Mat OpenCVCamSourceCalculator::LoopCapture() {
   cv::Mat frame;
 
   auto curr_frame = cap_->get(cv::CAP_PROP_POS_FRAMES);
-  if (frame_count_ == -1 || curr_frame == -1) {
+  if (frame_count_ <= 0 || curr_frame == -1) {
     // This is a camera, not a video.
     cap_->read(frame);
     return frame;
