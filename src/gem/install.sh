@@ -127,6 +127,11 @@ cmdline_opts=(
   "--sys_class_net_path" "/host/sys/class/net"
 )
 
+RANDOMIZE_DEVICE_SERIAL=${GML_RANDOMIZE_DEVICE_SERIAL:-"false"}
+if [[ "$RANDOMIZE_DEVICE_SERIAL" == "true" ]]; then
+  cmdline_opts+=("--device_serial=$(</dev/urandom tr -dc 'a-f0-9' | fold -w 32 | head -n 1)")
+fi
+
 if [[ "$(device_type)" == "aarch64 NVIDIA Orin Nano"* ]]; then
   extra_docker_flags+=(
     --privileged
