@@ -187,6 +187,13 @@ class SegmentationMaskChannel(DimensionSemantics):
         )
 
 
+class LabelsDimension(DimensionSemantics):
+    def to_proto(self) -> modelexecpb.DimensionSemantics:
+        return modelexecpb.DimensionSemantics(
+            kind=modelexecpb.DimensionSemantics.DIMENSION_SEMANTICS_KIND_CLASS_LABELS
+        )
+
+
 class TensorSemantics:
     def __init__(self, dimensions: List[DimensionSemantics]):
         self.dimensions = dimensions
