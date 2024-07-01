@@ -95,6 +95,7 @@ class DimensionSemantics(_message.Message):
     DETECTION_CANDIDATES_PARAMS_FIELD_NUMBER: _ClassVar[int]
     DETECTION_OUTPUT_PARAMS_FIELD_NUMBER: _ClassVar[int]
     DIMENSION_SEMANTICS_KIND_BATCH: DimensionSemantics.DimensionSemanticsKind
+    DIMENSION_SEMANTICS_KIND_CLASS_LABELS: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_CLASS_SCORES: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_DETECTION_CANDIDATES: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_DETECTION_OUTPUT: DimensionSemantics.DimensionSemanticsKind
