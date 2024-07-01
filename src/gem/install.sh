@@ -42,6 +42,7 @@ tty_underline="$(tty_escape "4")"
 
 tty_red="$(tty_escape "31")"
 tty_green="$(tty_escape "32")"
+tty_orange="$(tty_escape "33")"
 tty_cyan="$(tty_escape "36")"
 
 function emph() {
@@ -49,7 +50,7 @@ function emph() {
 }
 
 function warn() {
-  printf "${tty_bold}${tty_red}%s${tty_reset}\n" "$1"
+  printf "${tty_bold}${tty_orange}%s${tty_reset}\n" "$1"
 }
 
 function fatal() {
@@ -141,6 +142,23 @@ if [[ "$RANDOMIZE_DEVICE_SERIAL" == "true" ]]; then
   cmdline_opts+=("--device_serial=$(</dev/urandom tr -dc 'a-f0-9' | fold -w 32 | head -n 1)")
 fi
 
+function add_device_flags() {
+  if [[ -n "$VIDEO_FROM_FILE_OVERRIDE" ]]; then
+    return
+  fi
+  ret=0
+  devs=$(ls /dev/video* 2>/dev/null) || ret=$?
+  if [[ $ret -ne 0 ]]; then
+    warn "Could not find any video devices in /dev. Trying again with sudo."
+    # Perhaps the user isn't in the video group, try sudo.
+    devs=$(sudo ls /dev/video* 2>/dev/null)
+  fi
+
+  for vid in $devs; do
+    extra_docker_flags+=("--device" "${vid}")
+  done
+}
+
 if [[ "$(device_type)" == "aarch64 NVIDIA Orin Nano"* ]]; then
   extra_docker_flags+=(
     --privileged
@@ -152,14 +170,10 @@ if [[ "$(device_type)" == "aarch64 NVIDIA Orin Nano"* ]]; then
   )
   IMAGE_TYPE=jetson
 elif [[ "$(device_type)" == "x86_64"* ]]; then
-  for vid in "/dev/video"*; do
-    extra_docker_flags+=("--device" "${vid}")
-  done
+  add_device_flags
 elif [[ "$(device_type)" == "aarch64"* ]]; then
   IMAGE_TYPE=aarch64
-  for vid in "/dev/video"*; do
-    extra_docker_flags+=("--device" "${vid}")
-  done
+  add_device_flags
 else
   fatal "Only NVIDIA Orin Nano devices or x86_64 machines are supported."
 fi
