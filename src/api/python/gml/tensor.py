@@ -166,12 +166,16 @@ def _segmentation_mask_kind_to_proto(kind: str):
             return (
                 modelexecpb.DimensionSemantics.SegmentationMaskParams.SEGMENTATION_MASK_KIND_CLASS_LABEL
             )
+        case "score_masks":
+            return (
+                modelexecpb.DimensionSemantics.SegmentationMaskParams.SEGMENTATION_MASK_KIND_SCORE
+            )
         case _:
             raise ValueError("Invalid segmentation mask kind: {}".format(kind))
 
 
 class SegmentationMaskChannel(DimensionSemantics):
-    def __init__(self, kind: Literal["bool_masks", "int_label_masks"]):
+    def __init__(self, kind: Literal["bool_masks", "int_label_masks", "score_masks"]):
         self.kind = _segmentation_mask_kind_to_proto(kind)
 
     def to_proto(self) -> modelexecpb.DimensionSemantics:
