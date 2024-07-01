@@ -42,6 +42,9 @@ configure_make(
         "--enable-cross-compile",
         "--disable-ffplay",
         "--enable-libopenh264",
+        "--enable-openssl",
+        "--enable-muxer=rtsp",
+        "--enable-demuxer=rtsp",
         "--ar=$$EXT_BUILD_ROOT/$(AR)",
         "--cc=$$EXT_BUILD_ROOT/$(CC)",
         "--cxx=$$EXT_BUILD_ROOT/$(CC)",
@@ -74,7 +77,9 @@ configure_make(
         "//conditions:default": {
             "PKG_CONFIG_PATH": "$${EXT_BUILD_DEPS}/openh264/lib/pkgconfig",
         },
-    }),
+    }) | {
+        "LDFLAGS": "-L$${EXT_BUILD_DEPS}/boringssl/ -l:libssl.a -l:libcrypto.a",
+    },
     lib_source = ":all",
     out_binaries = [
         "ffmpeg",
@@ -89,6 +94,8 @@ configure_make(
     }),
     visibility = ["//visibility:public"],
     deps = [
+        "@boringssl//:crypto",
+        "@boringssl//:ssl",
         "@com_github_cisco_openh264//:openh264",
     ] + select({
         "@gml//bazel/cc_toolchains/sysroots:sysroot_type_cuda": [
