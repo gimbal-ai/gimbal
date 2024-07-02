@@ -146,8 +146,10 @@ absl::Status OpenCVCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
 
   LOG(INFO) << "Using v4l2 camera: " << options_.device_filename();
 
+  int api_preference = cv::CAP_FFMPEG;
   std::vector<int> params;
   if (absl::StartsWith(options_.device_filename(), "/dev/video")) {
+    api_preference = cv::CAP_V4L2;
     params.insert(params.end(), {
                                     cv::CAP_PROP_FRAME_WIDTH,
                                     kTargetFrameWidth,
@@ -158,7 +160,7 @@ absl::Status OpenCVCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
                                 });
   }
 
-  cap_ = std::make_unique<cv::VideoCapture>(options_.device_filename(), cv::CAP_ANY, params);
+  cap_ = std::make_unique<cv::VideoCapture>(options_.device_filename(), api_preference, params);
   if (absl::StartsWith(options_.device_filename(), "/dev/video")) {
     cap_->set(cv::CAP_PROP_FPS, kTargetFPS);
   }
