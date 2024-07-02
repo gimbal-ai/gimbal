@@ -25,6 +25,7 @@ import "gogoproto/gogo.proto";
 import "mediapipe/framework/calculator.proto";
 import "src/common/typespb/uuid.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
 
 /****************************************************************************
  * Model definitions.
@@ -92,6 +93,7 @@ message DimensionSemantics {
     DIMENSION_SEMANTICS_KIND_CLASS_SCORES = 8;
     DIMENSION_SEMANTICS_KIND_SEGMENTATION_MASK_CHANNEL = 9;
     DIMENSION_SEMANTICS_KIND_CLASS_LABELS = 10;
+    DIMENSION_SEMANTICS_KIND_REGRESSION_VALUE = 11;
   }
   DimensionSemanticsKind kind = 1;
 
@@ -151,6 +153,14 @@ message DimensionSemantics {
     SegmentationMaskKind kind = 1;
   }
   SegmentationMaskParams segmentation_mask_params = 5;
+
+  message RegressionParams {
+    // Label to give to the regression value.
+    string label = 1;
+    // Optional scalar multiplier for regression output.
+    google.protobuf.DoubleValue scale = 2;
+  }
+  RegressionParams regression_params = 6;
 }
 
 // Semantics of an input/output tensor. Used to determine pre/post-processing necessary for

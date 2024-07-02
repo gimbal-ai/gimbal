@@ -3,6 +3,7 @@ from mediapipe.framework import calculator_pb2 as _calculator_pb2
 from mediapipe.framework import calculator_options_pb2 as _calculator_options_pb2
 from src.common.typespb import uuid_pb2 as _uuid_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
@@ -43,7 +44,7 @@ class BoundingBoxInfo(_message.Message):
     def __init__(self, box_format: _Optional[_Union[BoundingBoxInfo.BoundingBoxFormat, str]] = ..., box_normalized: bool = ...) -> None: ...
 
 class DimensionSemantics(_message.Message):
-    __slots__ = ["detection_candidates_params", "detection_output_params", "image_channel_params", "kind", "segmentation_mask_params"]
+    __slots__ = ["detection_candidates_params", "detection_output_params", "image_channel_params", "kind", "regression_params", "segmentation_mask_params"]
     class DimensionSemanticsKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = []
     class DetectionCandidatesParams(_message.Message):
@@ -81,6 +82,13 @@ class DimensionSemantics(_message.Message):
         IMAGE_CHANNEL_FORMAT_UNKNOWN: DimensionSemantics.ImageChannelParams.ImageChannelFormat
         format: DimensionSemantics.ImageChannelParams.ImageChannelFormat
         def __init__(self, format: _Optional[_Union[DimensionSemantics.ImageChannelParams.ImageChannelFormat, str]] = ...) -> None: ...
+    class RegressionParams(_message.Message):
+        __slots__ = ["label", "scale"]
+        LABEL_FIELD_NUMBER: _ClassVar[int]
+        SCALE_FIELD_NUMBER: _ClassVar[int]
+        label: str
+        scale: _wrappers_pb2.DoubleValue
+        def __init__(self, label: _Optional[str] = ..., scale: _Optional[_Union[_wrappers_pb2.DoubleValue, _Mapping]] = ...) -> None: ...
     class SegmentationMaskParams(_message.Message):
         __slots__ = ["kind"]
         class SegmentationMaskKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
@@ -103,17 +111,20 @@ class DimensionSemantics(_message.Message):
     DIMENSION_SEMANTICS_KIND_IMAGE_CHANNEL: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_IMAGE_HEIGHT: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_IMAGE_WIDTH: DimensionSemantics.DimensionSemanticsKind
+    DIMENSION_SEMANTICS_KIND_REGRESSION_VALUE: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_SEGMENTATION_MASK_CHANNEL: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_UNKNOWN: DimensionSemantics.DimensionSemanticsKind
     IMAGE_CHANNEL_PARAMS_FIELD_NUMBER: _ClassVar[int]
     KIND_FIELD_NUMBER: _ClassVar[int]
+    REGRESSION_PARAMS_FIELD_NUMBER: _ClassVar[int]
     SEGMENTATION_MASK_PARAMS_FIELD_NUMBER: _ClassVar[int]
     detection_candidates_params: DimensionSemantics.DetectionCandidatesParams
     detection_output_params: DimensionSemantics.DetectionOutputParams
     image_channel_params: DimensionSemantics.ImageChannelParams
     kind: DimensionSemantics.DimensionSemanticsKind
+    regression_params: DimensionSemantics.RegressionParams
     segmentation_mask_params: DimensionSemantics.SegmentationMaskParams
-    def __init__(self, kind: _Optional[_Union[DimensionSemantics.DimensionSemanticsKind, str]] = ..., image_channel_params: _Optional[_Union[DimensionSemantics.ImageChannelParams, _Mapping]] = ..., detection_candidates_params: _Optional[_Union[DimensionSemantics.DetectionCandidatesParams, _Mapping]] = ..., detection_output_params: _Optional[_Union[DimensionSemantics.DetectionOutputParams, _Mapping]] = ..., segmentation_mask_params: _Optional[_Union[DimensionSemantics.SegmentationMaskParams, _Mapping]] = ...) -> None: ...
+    def __init__(self, kind: _Optional[_Union[DimensionSemantics.DimensionSemanticsKind, str]] = ..., image_channel_params: _Optional[_Union[DimensionSemantics.ImageChannelParams, _Mapping]] = ..., detection_candidates_params: _Optional[_Union[DimensionSemantics.DetectionCandidatesParams, _Mapping]] = ..., detection_output_params: _Optional[_Union[DimensionSemantics.DetectionOutputParams, _Mapping]] = ..., segmentation_mask_params: _Optional[_Union[DimensionSemantics.SegmentationMaskParams, _Mapping]] = ..., regression_params: _Optional[_Union[DimensionSemantics.RegressionParams, _Mapping]] = ...) -> None: ...
 
 class ExecutionSpec(_message.Message):
     __slots__ = ["graph", "model_spec"]
