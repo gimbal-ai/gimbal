@@ -105,6 +105,14 @@ class NormalizedCenterRect(_message.Message):
     yc: float
     def __init__(self, xc: _Optional[float] = ..., yc: _Optional[float] = ..., width: _Optional[float] = ..., height: _Optional[float] = ...) -> None: ...
 
+class Regression(_message.Message):
+    __slots__ = ["label", "value"]
+    LABEL_FIELD_NUMBER: _ClassVar[int]
+    VALUE_FIELD_NUMBER: _ClassVar[int]
+    label: str
+    value: float
+    def __init__(self, label: _Optional[str] = ..., value: _Optional[float] = ...) -> None: ...
+
 class Segmentation(_message.Message):
     __slots__ = ["height", "masks", "width"]
     HEIGHT_FIELD_NUMBER: _ClassVar[int]

@@ -86,6 +86,13 @@ enum ImageColorChannel {
   IMAGE_COLOR_CHANNEL_BLUE = 4;
 }
 
+// Regression represents a single predicted numeric variable.
+message Regression {
+  // Label for the predicted variable, eg. "count of cars in image".
+  string label = 1;
+  double value = 2;
+}
+
 // ImageHistogram represents histogram data for a single frame.
 message ImageHistogram {
   ImageColorChannel channel = 1;
