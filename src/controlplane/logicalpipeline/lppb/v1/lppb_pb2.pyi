@@ -25,10 +25,14 @@ class CreateLogicalPipelineResponse(_message.Message):
     def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
 
 class GetLogicalPipelineRequest(_message.Message):
-    __slots__ = ["id"]
+    __slots__ = ["id", "name", "org_id"]
     ID_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    ORG_ID_FIELD_NUMBER: _ClassVar[int]
     id: _uuid_pb2.UUID
-    def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
+    name: str
+    org_id: _uuid_pb2.UUID
+    def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., name: _Optional[str] = ..., org_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
 
 class GetLogicalPipelineResponse(_message.Message):
     __slots__ = ["encoded_dag", "logical_pipeline", "pipeline_info", "yaml"]

@@ -40,7 +40,11 @@ message ListLogicalPipelinesResponse {
 }
 
 message GetLogicalPipelineRequest {
+  // Will use ID if supplied, else will try to lookup by name.
   gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
+  string name = 2;
+  // Lookup by name requires OrgID to be set.
+  gml.types.UUID org_id = 3 [ (gogoproto.customname) = "OrgID" ];
 }
 
 message GetLogicalPipelineResponse {
