@@ -34,6 +34,7 @@ py_library(
     deps = [
         "//src/api/python/gml:copy_protos",
         "@gml_api_pip//grpcio",
+        "@gml_api_pip//protobuf",
         "@gml_api_pip//torch",
         "@gml_api_pip//torch_mlir_gml",
     ],

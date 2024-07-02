@@ -17,6 +17,7 @@ import abc
 from typing import List, Literal, Optional, Tuple
 
 import gml.proto.src.api.corepb.v1.model_exec_pb2 as modelexecpb
+import google.protobuf.wrappers_pb2 as wrapperspb
 
 
 def box_format_str_to_proto(box_format: str):
@@ -191,6 +192,31 @@ class LabelsDimension(DimensionSemantics):
     def to_proto(self) -> modelexecpb.DimensionSemantics:
         return modelexecpb.DimensionSemantics(
             kind=modelexecpb.DimensionSemantics.DIMENSION_SEMANTICS_KIND_CLASS_LABELS
+        )
+
+
+class ScoresDimension(DimensionSemantics):
+    def to_proto(self) -> modelexecpb.DimensionSemantics:
+        return modelexecpb.DimensionSemantics(
+            kind=modelexecpb.DimensionSemantics.DIMENSION_SEMANTICS_KIND_CLASS_SCORES
+        )
+
+
+class RegressionValueDimension(DimensionSemantics):
+    def __init__(self, label: str, scale: Optional[float] = None):
+        self.label = label
+        self.scale = scale
+
+    def to_proto(self) -> modelexecpb.DimensionSemantics:
+        scale = None
+        if self.scale is not None:
+            scale = wrapperspb.DoubleValue(value=self.scale)
+        return modelexecpb.DimensionSemantics(
+            kind=modelexecpb.DimensionSemantics.DIMENSION_SEMANTICS_KIND_REGRESSION_VALUE,
+            regression_params=modelexecpb.DimensionSemantics.RegressionParams(
+                label=self.label,
+                scale=scale,
+            ),
         )
 
 
