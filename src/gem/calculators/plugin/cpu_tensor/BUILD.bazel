@@ -31,6 +31,8 @@ gem_plugin_cc_library(
         "image_frame_to_cpu_tensor_calculator.h",
         "image_shape_cpu_tensor_calculator.cc",
         "image_shape_cpu_tensor_calculator.h",
+        "regression_to_proto_calculator.cc",
+        "regression_to_proto_calculator.h",
         "scores_to_label_calculator.cc",
         "scores_to_label_calculator.h",
         "segmentation_masks_to_proto_calculator.cc",
@@ -79,6 +81,18 @@ gml_cc_test(
     name = "segmentation_masks_to_proto_calculator_test",
     srcs = [
         "segmentation_masks_to_proto_calculator_test.cc",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+        "//src/gem/testing/plugin/cpu_tensor:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "regression_to_proto_calculator_test",
+    srcs = [
+        "regression_to_proto_calculator_test.cc",
     ],
     deps = [
         ":cc_library",
