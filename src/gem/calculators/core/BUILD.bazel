@@ -40,6 +40,8 @@ gml_cc_library(
         "image_quality_calculator.h",
         "mediapipe_typed_calculators.cc",
         "metrics_sink_calculator.h",
+        "modify_detection_with_regression_calculator.cc",
+        "modify_detection_with_regression_calculator.h",
         "packet_latency_metrics_sink_calculator.cc",
         "packet_latency_metrics_sink_calculator.h",
     ],
@@ -114,6 +116,17 @@ gml_cc_test(
     name = "bytetrack_calculator_test",
     srcs = [
         "bytetrack_calculator_test.cc",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "modify_detection_with_regression_calculator_test",
+    srcs = [
+        "modify_detection_with_regression_calculator_test.cc",
     ],
     deps = [
         ":cc_library",
