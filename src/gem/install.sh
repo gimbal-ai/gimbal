@@ -143,7 +143,7 @@ if [[ "$RANDOMIZE_DEVICE_SERIAL" == "true" ]]; then
 fi
 
 function add_device_flags() {
-  if [[ -n "$VIDEO_FROM_FILE_OVERRIDE" ]]; then
+  if [[ -n "$VIDEO_FILE" ]]; then
     return
   fi
   ret=0
