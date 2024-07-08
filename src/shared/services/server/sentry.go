@@ -24,12 +24,12 @@ import (
 	"time"
 
 	"github.com/getsentry/sentry-go"
+	sentrylogrus "github.com/getsentry/sentry-go/logrus"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 
 	version "gimletlabs.ai/gimlet/src/shared/goversion"
-	"gimletlabs.ai/gimlet/src/shared/services/sentryhook"
 )
 
 func init() {
@@ -46,7 +46,9 @@ func InitDefaultSentry() func() {
 	podName := viper.GetString("pod_name")
 	executable, _ := os.Executable()
 
-	err := sentry.Init(sentry.ClientOptions{
+	hook, err := sentrylogrus.New([]log.Level{
+		log.ErrorLevel, log.PanicLevel, log.FatalLevel,
+	}, sentry.ClientOptions{
 		Dsn:              dsn,
 		AttachStacktrace: true,
 		Release:          version.GetVersion().ToString(),
@@ -55,17 +57,15 @@ func InitDefaultSentry() func() {
 	})
 	if err != nil {
 		log.WithError(err).Trace("Cannot initialize sentry")
-	} else {
-		tags := map[string]string{
-			"version":    version.GetVersion().ToString(),
-			"executable": executable,
-			"pod_name":   podName,
-		}
-		hook := sentryhook.New([]log.Level{
-			log.ErrorLevel, log.PanicLevel, log.FatalLevel,
-		}, sentryhook.WithTags(tags))
-		log.AddHook(hook)
+		return func() {}
 	}
+
+	hook.AddTags(map[string]string{
+		"version":    version.GetVersion().ToString(),
+		"executable": executable,
+		"pod_name":   podName,
+	})
+	log.AddHook(hook)
 
 	return func() {
 		sentry.Flush(2 * time.Second)
