@@ -36,9 +36,11 @@ const std::vector<double> kConfidenceClassesBounds = {0,   0.1, 0.2, 0.3, 0.4,
 Status DetectionsSummaryCalculator::BuildMetrics(mediapipe::CalculatorContext*) {
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
   detection_hist_ = metrics_system.CreateHistogramWithBounds<uint64_t>(
-      "gml_gem_model_detection_classes", kDetectionClassesBounds);
+      "gml_gem_model_detection_classes", "Frequency of detection classes predicted by the model.",
+      kDetectionClassesBounds);
   confidence_hist_ = metrics_system.CreateHistogramWithBounds<double>(
-      "gml_gem_model_confidence_classes", kConfidenceClassesBounds);
+      "gml_gem_model_confidence_classes", "Confidence scores of model predictions.",
+      kConfidenceClassesBounds);
   return Status::OK();
 }
 

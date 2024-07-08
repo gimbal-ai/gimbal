@@ -36,7 +36,8 @@ Status PacketLatencyMetricsSinkCalculator::BuildMetrics(mediapipe::CalculatorCon
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
 
   latency_hist_ = metrics_system.CreateHistogramWithBounds<double>(
-      absl::Substitute("gml_gem_$0_latency_seconds", options.name()), kLatencyBucketBounds);
+      absl::Substitute("gml_gem_$0_latency_seconds", options.name()), "Packet latency in seconds.",
+      kLatencyBucketBounds);
   return Status::OK();
 }
 

@@ -137,7 +137,8 @@ TEST(MetricsTest, CreateHistogramWithBounds) {
   ::gml::metrics::MetricsSystem& metrics_sys = ::gml::metrics::MetricsSystem::GetInstance();
   metrics_sys.Reset();
 
-  auto hist = metrics_sys.CreateHistogramWithBounds<uint64_t>("test_metric", {0.0, 10.0, 50.0});
+  auto hist = metrics_sys.CreateHistogramWithBounds<uint64_t>("test_metric", "this is my metric",
+                                                              {0.0, 10.0, 50.0});
 
   hist->Record(1, {{"test", "test1"}}, {});
   hist->Record(10, {{"test", "test1"}}, {});

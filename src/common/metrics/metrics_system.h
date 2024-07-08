@@ -122,7 +122,7 @@ class MetricsSystem {
    */
   template <typename T>
   std::unique_ptr<opentelemetry::metrics::Histogram<T>> CreateHistogramWithBounds(
-      std::string name, const std::vector<double>& bounds) {
+      std::string name, const std::string& description, const std::vector<double>& bounds) {
     absl::base_internal::SpinLockHolder lock(&meter_provider_lock_);
     auto provider = GetMeterProvider();
     auto meter = provider->GetMeter("gml");
@@ -149,9 +149,9 @@ class MetricsSystem {
 
     std::unique_ptr<opentelemetry::metrics::Histogram<T>> histogram;
     if constexpr (std::is_same_v<T, uint64_t>) {
-      histogram = meter->CreateUInt64Histogram(name);
+      histogram = meter->CreateUInt64Histogram(name, description);
     } else if constexpr (std::is_same_v<T, double>) {
-      histogram = meter->CreateDoubleHistogram(name);
+      histogram = meter->CreateDoubleHistogram(name, description);
     } else {
       CHECK(false) << "Only uint64_t or double supported for CreateHistogramWithBounds";
     }
