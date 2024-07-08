@@ -125,8 +125,14 @@ Status ImageQualityCalculator::OpenImpl(mediapipe::CalculatorContext*) {
 
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
   auto gml_meter = metrics_system.GetMeterProvider()->GetMeter("gml");
-  brisque_score_ = gml_meter->CreateDoubleGauge("gml.gem.image_quality.brisque_score");
-  blurriness_score_ = gml_meter->CreateDoubleGauge("gml.gem.image_quality.blurriness_score");
+  brisque_score_ = gml_meter->CreateDoubleGauge(
+      "gml.gem.image_quality.brisque_score",
+      "The BRISQUE score measuring the perceived quality of images on "
+      "the device’s cameras. Range: [0, 1], higher is better quality.");
+  blurriness_score_ =
+      gml_meter->CreateDoubleGauge("gml.gem.image_quality.blurriness_score",
+                                   "The score measuring the blurriness of images on the device’s "
+                                   "cameras. Range: [0, 1], higher is blurrier.");
 
   return Status::OK();
 }

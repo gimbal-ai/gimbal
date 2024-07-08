@@ -312,8 +312,9 @@ IntelGPUMetrics::IntelGPUMetrics(gml::metrics::MetricsSystem* metrics_system,
     : core::Scraper(metrics_system) {
   auto gml_meter = metrics_system_->GetMeterProvider()->GetMeter("gml");
 
-  system_utilization_counter_ =
-      gml_meter->CreateDoubleObservableCounter(core::kGPUUtilizationSystemCounterName);
+  system_utilization_counter_ = gml_meter->CreateDoubleObservableCounter(
+      core::kGPUUtilizationSystemCounterName,
+      "The total GPU time consumed by the system in seconds.");
   system_utilization_counter_->AddCallback(
       [](auto observer, void* parent) {
         auto gpu_metrics = static_cast<IntelGPUMetrics*>(parent);
@@ -327,8 +328,8 @@ IntelGPUMetrics::IntelGPUMetrics(gml::metrics::MetricsSystem* metrics_system,
         }
       },
       this);
-  gem_utilization_counter_ =
-      gml_meter->CreateDoubleObservableCounter(core::kGPUUtilizationGEMCounterName);
+  gem_utilization_counter_ = gml_meter->CreateDoubleObservableCounter(
+      core::kGPUUtilizationGEMCounterName, "The total GPU time consumed by the GEM in seconds.");
   gem_utilization_counter_->AddCallback(
       [](auto observer, void* parent) {
         auto gpu_metrics = static_cast<IntelGPUMetrics*>(parent);
@@ -343,7 +344,8 @@ IntelGPUMetrics::IntelGPUMetrics(gml::metrics::MetricsSystem* metrics_system,
       },
       this);
 
-  system_memory_size_gauge_ = gml_meter->CreateInt64Gauge(core::kGPUMemorySystemSizeGaugeName);
+  system_memory_size_gauge_ = gml_meter->CreateInt64Gauge(
+      core::kGPUMemorySystemSizeGaugeName, "The size of GPU memory on the device in bytes.");
   start_time_ = std::chrono::steady_clock::now();
 }
 

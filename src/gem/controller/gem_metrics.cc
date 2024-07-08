@@ -39,7 +39,8 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
   auto gml_meter = metrics_system_->GetMeterProvider()->GetMeter("gml");
 
   // Setup process stats counters.
-  cpu_counter_ = gml_meter->CreateDoubleObservableCounter("gml.gem.cpu.seconds.total");
+  cpu_counter_ = gml_meter->CreateDoubleObservableCounter(
+      "gml.gem.cpu.seconds.total", "The total CPU time consumed by the GEM, in seconds.");
   cpu_counter_->AddCallback(
       [](auto observer, void* parent) {
         auto reader = static_cast<GEMMetricsReader*>(parent);
@@ -66,7 +67,11 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
         }
       },
       this);
-  disk_rchar_counter_ = gml_meter->CreateInt64ObservableCounter("gml.gem.disk.rchar.total");
+  disk_rchar_counter_ = gml_meter->CreateInt64ObservableCounter(
+      "gml.gem.disk.rchar.total",
+      "The number of bytes which the GEM has caused to be read from storage. This is simply the "
+      "sum of bytes which this process passed to read() and pread() and may include things like "
+      "tty IO. It is unaffected by whether or not actual physical disk IO was required");
   disk_rchar_counter_->AddCallback(
       [](auto observer, void* parent) {
         auto reader = static_cast<GEMMetricsReader*>(parent);
@@ -74,7 +79,10 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
                                                              [](auto p) { return p.rchar_bytes; });
       },
       this);
-  disk_wchar_counter_ = gml_meter->CreateInt64ObservableCounter("gml.gem.disk.wchar.total");
+  disk_wchar_counter_ = gml_meter->CreateInt64ObservableCounter(
+      "gml.gem.disk.wchar.total",
+      "The number of bytes which the GEM has caused, or shall cause to be written to disk. It is "
+      "unaffected by whether or not actual physical disk IO was required.");
   disk_wchar_counter_->AddCallback(
       [](auto observer, void* parent) {
         auto reader = static_cast<GEMMetricsReader*>(parent);
@@ -82,8 +90,8 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
                                                              [](auto p) { return p.wchar_bytes; });
       },
       this);
-  disk_read_bytes_counter_ =
-      gml_meter->CreateInt64ObservableCounter("gml.gem.disk.read_bytes.total");
+  disk_read_bytes_counter_ = gml_meter->CreateInt64ObservableCounter(
+      "gml.gem.disk.read_bytes.total", "The total number of bytes read from disk by the GEM.");
   disk_read_bytes_counter_->AddCallback(
       [](auto observer, void* parent) {
         auto reader = static_cast<GEMMetricsReader*>(parent);
@@ -91,8 +99,8 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
                                                              [](auto p) { return p.read_bytes; });
       },
       this);
-  disk_write_bytes_counter_ =
-      gml_meter->CreateInt64ObservableCounter("gml.gem.disk.write_bytes.total");
+  disk_write_bytes_counter_ = gml_meter->CreateInt64ObservableCounter(
+      "gml.gem.disk.write_bytes.total", "The total number of bytes written to disk by the GEM.");
   disk_write_bytes_counter_->AddCallback(
       [](auto observer, void* parent) {
         auto reader = static_cast<GEMMetricsReader*>(parent);
@@ -101,13 +109,17 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
       },
       this);
 
-  mem_usage_gauge_ = gml_meter->CreateInt64Gauge("gml.gem.memory.usage.bytes");
-  mem_virtual_gauge_ = gml_meter->CreateInt64Gauge("gml.gem.memory.virtual.bytes");
-  thread_gauge_ = gml_meter->CreateInt64Gauge("gml.gem.threads");
+  mem_usage_gauge_ = gml_meter->CreateInt64Gauge(
+      "gml.gem.memory.usage.bytes", "The total number of bytes of memory used by the GEM.");
+  mem_virtual_gauge_ = gml_meter->CreateInt64Gauge(
+      "gml.gem.memory.virtual.bytes", "The total number of virtual memory bytes used by the GEM.");
+  thread_gauge_ =
+      gml_meter->CreateInt64Gauge("gml.gem.threads", "The number of threads in use by the GEM.");
 
   // Setup process status counters.
-  context_switches_counter_ =
-      gml_meter->CreateInt64ObservableCounter("gml.gem.context_switches.total");
+  context_switches_counter_ = gml_meter->CreateInt64ObservableCounter(
+      "gml.gem.context_switches.total",
+      "The total number of context switches that have occurred in the GEM process.");
   context_switches_counter_->AddCallback(
       [](auto observer, void* parent) {
         auto reader = static_cast<GEMMetricsReader*>(parent);
@@ -137,8 +149,9 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
       this);
 
   // Setup network stats counters.
-  network_rx_bytes_counter_ =
-      gml_meter->CreateInt64ObservableCounter("gml.gem.network.rx_bytes.total");
+  network_rx_bytes_counter_ = gml_meter->CreateInt64ObservableCounter(
+      "gml.gem.network.rx_bytes.total",
+      "The total number of bytes received by the GEM over the network.");
   network_rx_bytes_counter_->AddCallback(
       [](auto observer, void* parent) {
         auto reader = static_cast<GEMMetricsReader*>(parent);
@@ -146,8 +159,9 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
                                                              [](auto p) { return p.rx_bytes; });
       },
       this);
-  network_rx_drops_counter_ =
-      gml_meter->CreateInt64ObservableCounter("gml.gem.network.rx_drops.total");
+  network_rx_drops_counter_ = gml_meter->CreateInt64ObservableCounter(
+      "gml.gem.network.rx_drops.total",
+      "The total number of incoming network packets dropped by the GEM.");
   network_rx_drops_counter_->AddCallback(
       [](auto observer, void* parent) {
         auto reader = static_cast<GEMMetricsReader*>(parent);
@@ -155,8 +169,9 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
                                                              [](auto p) { return p.rx_drops; });
       },
       this);
-  network_tx_bytes_counter_ =
-      gml_meter->CreateInt64ObservableCounter("gml.gem.network.tx_bytes.total");
+  network_tx_bytes_counter_ = gml_meter->CreateInt64ObservableCounter(
+      "gml.gem.network.tx_bytes.total",
+      "The total number of bytes transmitted by the GEM over the network.");
   network_tx_bytes_counter_->AddCallback(
       [](auto observer, void* parent) {
         auto reader = static_cast<GEMMetricsReader*>(parent);
@@ -164,8 +179,9 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
                                                              [](auto p) { return p.tx_bytes; });
       },
       this);
-  network_tx_drops_counter_ =
-      gml_meter->CreateInt64ObservableCounter("gml.gem.network.tx_drops.total");
+  network_tx_drops_counter_ = gml_meter->CreateInt64ObservableCounter(
+      "gml.gem.network.tx_drops.total",
+      "The total number of outgoing network packets dropped by the GEM.");
   network_tx_drops_counter_->AddCallback(
       [](auto observer, void* parent) {
         auto reader = static_cast<GEMMetricsReader*>(parent);

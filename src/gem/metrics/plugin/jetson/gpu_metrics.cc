@@ -49,11 +49,17 @@ JetsonGPUMetrics::JetsonGPUMetrics(gml::metrics::MetricsSystem* metrics_system,
     : core::Scraper(metrics_system), dispatcher_(dispatcher) {
   auto gml_meter = metrics_system_->GetMeterProvider()->GetMeter("gml");
 
-  system_memory_size_gauge_ = gml_meter->CreateInt64Gauge(core::kGPUMemorySystemSizeGaugeName);
-  system_memory_usage_gauge_ = gml_meter->CreateInt64Gauge(core::kGPUMemorySystemUsageGaugeName);
-  gem_memory_usage_gauge_ = gml_meter->CreateInt64Gauge(core::kGPUMemoryGEMUsageGaugeName);
-  system_utilization_counter_ =
-      gml_meter->CreateDoubleObservableCounter(core::kGPUUtilizationSystemCounterName);
+  system_memory_size_gauge_ = gml_meter->CreateInt64Gauge(
+      core::kGPUMemorySystemSizeGaugeName, "The size of GPU memory on the device in bytes.");
+  system_memory_usage_gauge_ =
+      gml_meter->CreateInt64Gauge(core::kGPUMemorySystemUsageGaugeName,
+                                  "The total number of bytes of GPU memory inuse on the device.");
+  gem_memory_usage_gauge_ =
+      gml_meter->CreateInt64Gauge(core::kGPUMemoryGEMUsageGaugeName,
+                                  "The total number of bytes of GPU memory inuse by the GEM.");
+  system_utilization_counter_ = gml_meter->CreateDoubleObservableCounter(
+      core::kGPUUtilizationSystemCounterName,
+      "The total GPU time consumed by the system in seconds.");
   system_utilization_counter_->AddCallback(
       [](auto observer, void* parent) {
         auto gpu_metrics = static_cast<JetsonGPUMetrics*>(parent);

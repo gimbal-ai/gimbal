@@ -39,7 +39,9 @@ SystemMetricsReader::SystemMetricsReader(::gml::metrics::MetricsSystem* metrics_
 
   auto gml_meter = metrics_system_->GetMeterProvider()->GetMeter("gml");
 
-  cpu_stats_counter_ = gml_meter->CreateDoubleObservableCounter("gml.system.cpu.seconds.total");
+  cpu_stats_counter_ = gml_meter->CreateDoubleObservableCounter(
+      "gml.system.cpu.seconds.total",
+      "The total CPU time spent in each mode (system, user, idle, wait) in seconds.");
   cpu_stats_counter_->AddCallback(
       [](auto observer, void* parent) {
         auto reader = static_cast<SystemMetricsReader*>(parent);
@@ -57,16 +59,26 @@ SystemMetricsReader::SystemMetricsReader(::gml::metrics::MetricsSystem* metrics_
       },
       this);
 
-  cpu_num_gauge_ = gml_meter->CreateInt64Gauge("gml.system.cpu.virtual");
-  cpu_frequency_gauge_ = gml_meter->CreateInt64Gauge("gml.system.cpu.scaling_frequency_hertz");
-  mem_stats_total_bytes_ = gml_meter->CreateInt64Gauge("gml.system.memory.total_bytes");
-  mem_stats_free_bytes_ = gml_meter->CreateInt64Gauge("gml.system.memory.free_bytes");
-  mem_stats_buffered_bytes_ = gml_meter->CreateInt64Gauge("gml.system.memory.buffered_bytes");
-  mem_stats_cached_bytes_ = gml_meter->CreateInt64Gauge("gml.system.memory.cached_bytes");
+  cpu_num_gauge_ = gml_meter->CreateInt64Gauge("gml.system.cpu.virtual",
+                                               "The number of virtual CPUs on the device.");
+  cpu_frequency_gauge_ = gml_meter->CreateInt64Gauge(
+      "gml.system.cpu.scaling_frequency_hertz",
+      "The frequency, also known as the clock speed, of each CPU in hertz.");
+  mem_stats_total_bytes_ =
+      gml_meter->CreateInt64Gauge("gml.system.memory.total_bytes",
+                                  "The total amount of memory available on the system in bytes.");
+  mem_stats_free_bytes_ = gml_meter->CreateInt64Gauge(
+      "gml.system.memory.free_bytes", "The amount of free memory available in bytes.");
+  mem_stats_buffered_bytes_ =
+      gml_meter->CreateInt64Gauge("gml.system.memory.buffered_bytes",
+                                  "The total number of bytes used for buffering I/O operations.");
+  mem_stats_cached_bytes_ = gml_meter->CreateInt64Gauge(
+      "gml.system.memory.cached_bytes", "The total number of bytes used by the cache memory");
 
   // Setup network counters.
-  network_rx_bytes_counter_ =
-      gml_meter->CreateInt64ObservableCounter("gml.system.network.rx_bytes.total");
+  network_rx_bytes_counter_ = gml_meter->CreateInt64ObservableCounter(
+      "gml.system.network.rx_bytes.total",
+      "The total number of bytes received on all network interfaces.");
   network_rx_bytes_counter_->AddCallback(
       [](auto observer, void* parent) {
         auto reader = static_cast<SystemMetricsReader*>(parent);
@@ -74,8 +86,9 @@ SystemMetricsReader::SystemMetricsReader(::gml::metrics::MetricsSystem* metrics_
                                                              [](auto p) { return p.rx_bytes; });
       },
       this);
-  network_rx_drops_counter_ =
-      gml_meter->CreateInt64ObservableCounter("gml.system.network.rx_drops.total");
+  network_rx_drops_counter_ = gml_meter->CreateInt64ObservableCounter(
+      "gml.system.network.rx_drops.total",
+      "The total number of incoming packets that have been dropped.");
   network_rx_drops_counter_->AddCallback(
       [](auto observer, void* parent) {
         auto reader = static_cast<SystemMetricsReader*>(parent);
@@ -83,8 +96,9 @@ SystemMetricsReader::SystemMetricsReader(::gml::metrics::MetricsSystem* metrics_
                                                              [](auto p) { return p.rx_drops; });
       },
       this);
-  network_tx_bytes_counter_ =
-      gml_meter->CreateInt64ObservableCounter("gml.system.network.tx_bytes.total");
+  network_tx_bytes_counter_ = gml_meter->CreateInt64ObservableCounter(
+      "gml.system.network.tx_bytes.total",
+      "The total number of bytes transmitted on all network interfaces.");
   network_tx_bytes_counter_->AddCallback(
       [](auto observer, void* parent) {
         auto reader = static_cast<SystemMetricsReader*>(parent);
@@ -92,8 +106,9 @@ SystemMetricsReader::SystemMetricsReader(::gml::metrics::MetricsSystem* metrics_
                                                              [](auto p) { return p.tx_bytes; });
       },
       this);
-  network_tx_drops_counter_ =
-      gml_meter->CreateInt64ObservableCounter("gml.system.network.tx_drops.total");
+  network_tx_drops_counter_ = gml_meter->CreateInt64ObservableCounter(
+      "gml.system.network.tx_drops.total",
+      "The total number of outgoing packets that have been dropped.");
   network_tx_drops_counter_->AddCallback(
       [](auto observer, void* parent) {
         auto reader = static_cast<SystemMetricsReader*>(parent);

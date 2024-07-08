@@ -32,7 +32,9 @@ OpenVinoGPUMetrics::OpenVinoGPUMetrics(gml::metrics::MetricsSystem* metrics_syst
     : core::Scraper(metrics_system) {
   auto gml_meter = metrics_system_->GetMeterProvider()->GetMeter("gml");
 
-  gpu_mem_usage_gauge_ = gml_meter->CreateInt64Gauge(core::kGPUMemoryGEMUsageGaugeName);
+  gpu_mem_usage_gauge_ =
+      gml_meter->CreateInt64Gauge(core::kGPUMemoryGEMUsageGaugeName,
+                                  "The total number of bytes of GPU memory used by the GEM.");
 }
 
 void OpenVinoGPUMetrics::Scrape() {
