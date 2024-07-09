@@ -90,6 +90,7 @@ function device_type() {
 GML_CACHE_DIR=${GML_CACHE_DIR:-"$HOME/.cache/gml"}
 
 common_docker_flags=(
+  -h "$(hostname)"
   --pid=host
   -v "$GML_CACHE_DIR:/gml"
   -v /usr/lib:/host_lib
