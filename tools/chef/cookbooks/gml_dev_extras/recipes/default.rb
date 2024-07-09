@@ -46,9 +46,11 @@ remote_file "/usr/local/share/zsh/site-functions/_bazel" do
   checksum node["bazel"]["zcomp_sha256"]
 end
 
+common_remote_bin "buildifier"
 common_remote_bin "envoy"
 common_remote_bin "kubectl"
 common_remote_tar_bin "kustomize"
+common_remote_tar_bin "k9s"
 common_remote_bin "minikube"
 common_remote_bin "skaffold"
 common_remote_bin "sops"
@@ -112,12 +114,4 @@ remote_file "/usr/local/lib/docker/cli-plugins/docker-buildx" do
   source node["docker-buildx"]["download_path"]
   mode "0755"
   checksum node["docker-buildx"]["sha256"]
-end
-
-execute "install go binaries" do
-  ENV["GOPATH"] = "/opt/gml_dev/gopath"
-  command %(go install github.com/bazelbuild/buildtools/buildifier@latest && \
-            go install github.com/derailed/k9s@v0.27.4 && \
-            go clean -modcache && \
-            go clean -cache)
 end

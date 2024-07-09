@@ -23,6 +23,11 @@ end
 default["owner"] = "root"
 default["group"] = "root"
 
+default["buildifier"]["download_path"] =
+  "https://github.com/bazelbuild/buildtools/releases/download/v7.1.2/buildifier-linux-amd64"
+default["buildifier"]["sha256"] =
+  "28285fe7e39ed23dc1a3a525dfcdccbc96c0034ff1d4277905d2672a71b38f13"
+
 default["docker-buildx"]["download_path"] =
   "https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.linux-amd64"
 default["docker-buildx"]["sha256"] =
@@ -57,6 +62,11 @@ default["kustomize"]["download_path"] =
   "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.0.3/kustomize_v5.0.3_linux_amd64.tar.gz"
 default["kustomize"]["sha256"] =
   "c627b1575c3fecbc7ad1c181c23a7adcacf19732dab627eb57e89a7bc4c1e929"
+
+default["k9s"]["download_path"] =
+  "https://github.com/derailed/k9s/releases/download/v0.32.5/k9s_Linux_amd64.tar.gz"
+default["k9s"]["sha256"] =
+  "33c31bf5feba292b59b8dabe5547cb52ab565521ee5619b52eb4bd4bf226cea3"
 
 default["lego"]["download_path"] =
   "https://github.com/go-acme/lego/releases/download/v4.5.3/lego_v4.5.3_linux_amd64.tar.gz"

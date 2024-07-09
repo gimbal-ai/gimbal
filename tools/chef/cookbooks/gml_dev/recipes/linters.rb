@@ -15,13 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-execute "install go linters" do
-  command %(go install golang.org/x/lint/golint@v0.0.0-20210508222113-6edffad5e616 && \
-            go install golang.org/x/tools/cmd/goimports@v0.1.2 && \
-            go clean -modcache && \
-            go clean -cache)
-end
-
 execute "install js linters" do
   command "npm install -g jshint@2.11.0 && npm cache clean --force"
 end
@@ -30,6 +23,7 @@ execute "install py linters" do
   command "python3 -m pip install flake8 flake8-mypy pytype yamllint --no-cache-dir && python3 -m pip cache purge"
 end
 
+common_remote_bin "buildozer"
 common_remote_bin "prototool"
 
 common_remote_tar_bin "golangci-lint" do

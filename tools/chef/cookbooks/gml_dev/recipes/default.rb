@@ -28,3 +28,12 @@ template "/opt/gml_dev/gmlenv.inc" do
 end
 
 common_remote_bin "codecov"
+common_remote_bin "cosign"
+common_remote_bin "regbot"
+common_remote_bin "regctl"
+common_remote_bin "regsync"
+
+common_remote_tar_bin "containerregistry" do
+  bin_name "crane"
+  tool_loc "crane"
+end
