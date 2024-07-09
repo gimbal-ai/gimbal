@@ -174,6 +174,8 @@ matchers = [
 def is_generated_code(file_path: str):
     return (
         file_path.endswith(".gen.go")
+        or file_path.endswith("_pb2.py")
+        or file_path.endswith("_pb2.pyi")
         or file_path.endswith(".pb.go")
         or file_path.endswith(".deepcopy.go")
         or file_path.endswith("/schema.ts")
