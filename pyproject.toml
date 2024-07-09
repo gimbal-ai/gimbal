@@ -15,3 +15,10 @@ profile = "black"
 [tool.pyright]
 include = ["src"]
 reportUnusedImport = true
+
+[tool.ruff.lint]
+# Add flake8-bugbear rules to the default ruff setup
+select = ["E4", "E7", "E9", "F", "B"]
+# Avoid trying to fix bugbear violations.
+unfixable = ["B"]
+
