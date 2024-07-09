@@ -2,18 +2,25 @@
 descriptor_id: PROTO
 descriptor_type: language
 file_extensions:
-- ".proto"
+- .proto
 linters:
 - linter_name: buf_breakcheck
   cli_executable: buf
   linter_url: https://buf.build/docs/breaking/overview
   cli_lint_extra_args:
-  - 'breaking'
-  - '--against=.git#branch=main'
-  cli_lint_mode: 'project'
+  - breaking
+  - --against=.git#branch=main
+  cli_lint_mode: project
+  examples:
+  - buf breaking --against=.git#branch=main
+  pre_commands:
+  - command: git config --global --add safe.directory `pwd`/.git
+    cwd: workspace
 - linter_name: buf_lint
   cli_executable: buf
   linter_url: https://buf.build/docs/lint/overview
   cli_lint_extra_args:
-  - 'lint'
-  cli_lint_mode: 'project'
+  - lint
+  cli_lint_mode: project
+  examples:
+  - buf lint

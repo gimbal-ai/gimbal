@@ -2,21 +2,23 @@
 descriptor_id: BAZEL
 descriptor_type: language
 file_extensions:
-- ".bzl"
-- ".BUILD"
+- .bzl
+- .BUILD
 file_names_regex:
-- "WORKSPACE"
-- "BUILD.bazel"
-- "MODULE.bazel"
+- WORKSPACE
+- BUILD.bazel
+- MODULE.bazel
 linters:
 - linter_name: buildifier
   linter_url: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
   cli_lint_extra_args:
-  - '--lint=warn'
-  - '--mode=check'
-  - '--warnings=+load-on-top,+out-of-order-load,+unsorted-dict-items,+native-cc,+native-java,+native-proto,+native-py,-module-docstring,-function-docstring,-function-docstring-args,-function-docstring-header'
-  cli_lint_mode: 'list_of_files'
-  cli_lint_fix_arg_name: '--lint=fix'
+  - --lint=warn
+  - --mode=check
+  - --warnings=+unsorted-dict-items,+native-cc,+native-java,+native-proto,+native-py,-module-docstring,-function-docstring,-function-docstring-args,-function-docstring-header
+  cli_lint_mode: list_of_files
+  cli_lint_fix_arg_name: --lint=fix
   cli_lint_fix_remove_args:
-  - '--lint=warn'
-  - '--mode=check'
+  - --lint=warn
+  - --mode=check
+  examples:
+  - buildifier --lint=fix <filename>

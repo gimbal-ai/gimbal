@@ -61,13 +61,14 @@ EDITORCONFIG_EDITORCONFIG_CHECKER_FILTER_REGEX_EXCLUDE: "(.mega-linter.yml|\
                                                         src\\/controlplane\\/logicalpipeline\\/controllers\\/pipeline_parser_test.go|\
                                                          bazel\\/tools\\/apt_parse\\/bazelgen\\/bazelgen_test.go)"
 GO_GOLANGCI_LINT_ARGUMENTS: '--timeout 5m'
-GO_GOLANGCI_LINT_CLI_LINT_MODE: project
 GO_GOLANGCI_LINT_CONFIG_FILE: .golangci.yaml
 JSON_V8R_CLI_LINT_MODE: project
 JSON_V8R_ARGUMENTS: "--schema src/ui/visspec/visspec.schema.json **/*.visspec.json"
 MARKDOWN_MARKDOWNLINT_FILTER_REGEX_EXCLUDE: (\.github\/PULL_REQUEST_TEMPLATE)
+REPOSITORY_LICENSE_CHECKER_FILTER_REGEX_EXCLUDE: "bazel\\/cc_toolchains\\/sysroots\\/packages\\/all_debs.bzl"
 # See https://github.com/oxsecurity/megalinter/issues/2699
-TERRAFORM_TFLINT_UNSECURED_ENV_VARIABLES: GITHUB_TOKEN
+TERRAFORM_TFLINT_UNSECURED_ENV_VARIABLES:
+- GITHUB_TOKEN
 TYPESCRIPT_DEFAULT_STYLE: prettier
 TYPESCRIPT_ES_CONFIG_FILE: src/ui/.eslintrc.cjs
 TYPESCRIPT_ES_RULES_PATH: src/ui
@@ -79,16 +80,15 @@ PYTHON_ISORT_CONFIG_FILE: pyproject.toml
 # The mega-linter json schema is broken with plugins, so don't check the schema.
 YAML_V8R_FILTER_REGEX_EXCLUDE: (.mega-linter.yml)
 YAML_YAMLLINT_ARGUMENTS: '--strict'
-REPOSITORY_LICENSE_CHECKER_FILTER_REGEX_EXCLUDE: "bazel\\/cc_toolchains\\/sysroots\\/packages\\/all_debs.bzl"
 
 PRE_COMMANDS:
 # Record UID/GID from .gitignore file into a temp file, so that we can restore the ownership of files after linting.
 - command: |-
     echo $(stat -c "%u:%g" .gitignore) > .uid_gid_stash
-  cwd: "workspace"
+  cwd: workspace
 POST_COMMANDS:
 # Restore ownership of files
 - command: |-
     find . -user root -group root -exec chown $(cat .uid_gid_stash) {} \;
     rm .uid_gid_stash
-  cwd: "workspace"
+  cwd: workspace

@@ -5,7 +5,7 @@ config {
 
 plugin "google" {
   enabled = true
-  version = "0.27.1"
+  version = "0.29.0"
   source  = "github.com/terraform-linters/tflint-ruleset-google"
 }
 

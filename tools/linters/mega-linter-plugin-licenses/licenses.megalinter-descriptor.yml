@@ -6,8 +6,10 @@ file_extensions:
 linters:
 - linter_name: license_checker
   linter_url: https://github.com/gimletlabs/gimlet
-  cli_executable: 'python3'
+  cli_executable: python3
   cli_lint_extra_args:
-  - 'tools/licenses/checker.py'
-  cli_lint_mode: 'list_of_files'
-  cli_lint_fix_arg_name: '-a'
+  - tools/licenses/checker.py
+  cli_lint_mode: list_of_files
+  cli_lint_fix_arg_name: -a
+  examples:
+  - python3 tools/licenses/checker.py <filename>

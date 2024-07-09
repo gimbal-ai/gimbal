@@ -13,7 +13,9 @@
 #
 # SPDX-License-Identifier: Proprietary
 
-FROM docker.io/oxsecurity/megalinter-cupcake:v7@sha256:40754d52e36787444c89228cae60c3ac0739145b71bfc3a611a326427761881a
+FROM docker.io/oxsecurity/megalinter-cupcake:v7@sha256:6c7e48d9832345f3bd06750a5ba35e8ad1e1d887b0603b414c022e8e0c5d4154
+
+ARG GITHUB_TOKEN
 
 COPY .tflint.hcl /.tflint.hcl
 
@@ -21,7 +23,7 @@ RUN echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/ap
     apk add go@edge
 
 RUN apk add clang-extra-tools g++ && \
-    go install github.com/bazelbuild/buildtools/buildifier@v0.0.0-20230926111657-7d855c59baeb && \
+    go install github.com/bazelbuild/buildtools/buildifier@v0.0.0-20240422193413-1429e15ae755 && \
     go install github.com/bufbuild/buf/cmd/buf@v1.26.1 && \
     go clean -modcache && \
     go clean -cache && \

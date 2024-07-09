@@ -105,7 +105,7 @@ lint: src/ui/node_modules
 		--env NODE_PATH=./src/ui/node_modules \
 		--env REPORT_OUTPUT_FOLDER=none \
 		--env GITHUB_TOKEN="${GITHUB_TOKEN}" \
-		--image=us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/megalinter-gml-custom:20240315100556
+		--image=us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/megalinter-gml-custom:20240709133108
 
 .PHONY: lint-all
 lint-all: src/ui/node_modules
@@ -115,4 +115,4 @@ lint-all: src/ui/node_modules
 		--env NODE_PATH=./src/ui/node_modules \
 		--env REPORT_OUTPUT_FOLDER=none \
 		--env GITHUB_TOKEN="${GITHUB_TOKEN}" \
-		--image=us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/megalinter-gml-custom:20240315100556
+		--image=us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/megalinter-gml-custom:20240709133108

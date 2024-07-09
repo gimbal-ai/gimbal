@@ -2,19 +2,21 @@
 descriptor_id: CPP
 descriptor_type: language
 file_extensions:
-- ".cc"
-- ".hpp"
-- ".h"
-- ".c"
-- ".proto"
+- .cc
+- .hpp
+- .h
+- .c
+- .proto
 linters:
 - linter_name: clang_format
   linter_url: https://clang.llvm.org/docs/ClangFormat.html
-  cli_executable: 'clang-format'
+  cli_executable: clang-format
   cli_lint_extra_args:
-  - '-Werror'
-  - '--dry-run'
-  cli_lint_mode: 'list_of_files'
-  cli_lint_fix_arg_name: '-i'
+  - -Werror
+  - --dry-run
+  cli_lint_mode: list_of_files
+  cli_lint_fix_arg_name: -i
   cli_lint_fix_remove_args:
-  - '--dry-run'
+  - --dry-run
+  examples:
+  - clang-format -i <filename>

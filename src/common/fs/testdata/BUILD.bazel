@@ -19,5 +19,5 @@ package(default_visibility = ["//src:__subpackages__"])
 
 filegroup(
     name = "testdata",
-    srcs = glob(include = ["testfile.txt"]),
+    srcs = ["testfile.txt"],
 )
