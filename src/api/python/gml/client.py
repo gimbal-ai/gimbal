@@ -166,7 +166,9 @@ class Client:
             )
         except grpc.RpcError as e:
             if e.code() == grpc.StatusCode.ALREADY_EXISTS:
-                raise FileAlreadyExists(f"A file already exists with name: {name}")
+                raise FileAlreadyExists(
+                    f"A file already exists with name: {name}"
+                ) from e
             raise e
         return resp.info
 
