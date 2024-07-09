@@ -97,9 +97,9 @@ cachetools==5.3.2 \
     --hash=sha256:086ee420196f7b2ab9ca2db2520aca326318b68fe5ba8bc4d49cca91add450f2 \
     --hash=sha256:861f35a13a451f94e301ce2bec7cac63e881232ccce7ed67fab9b5df4d3beaa1
     # via streamlit
-certifi==2024.2.2 \
-    --hash=sha256:0569859f95fc761b18b45ef421b1290a0f65f147e92a1e5eb3e635f9a5e4e66f \
-    --hash=sha256:dc383c07b76109f368f6106eee2b593b04a011ea4d55f652c6ca24a754d1cdd1
+certifi==2024.7.4 \
+    --hash=sha256:5a1e7645bc0ec61a09e26c36f6106dd4cf40c6db3a1fb6352b0244e7fb057c7b \
+    --hash=sha256:c198e21b1289c2ab85ee4e67bb4b4ef3ead0892059901a8d5b622f24a1101e90
     # via
     #   httpcore
     #   httpx
@@ -2651,9 +2651,9 @@ yapf==0.40.2 \
     --hash=sha256:4dab8a5ed7134e26d57c1647c7483afb3f136878b579062b786c9ba16b94637b \
     --hash=sha256:adc8b5dd02c0143108878c499284205adb258aad6db6634e5b869e7ee2bd548b
     # via groundingdino-gml
-zipp==3.17.0 \
-    --hash=sha256:0e923e726174922dce09c53c59ad483ff7bbb8e572e00c7f7c46b88556409f31 \
-    --hash=sha256:84e64a1c28cf7e91ed2078bb8cc8c259cb19b76942096c8d7b84947690cabaf0
+zipp==3.19.2 \
+    --hash=sha256:bf1dcf6450f873a13e952a29504887c89e6de7506209e5b1bcc3460135d4de19 \
+    --hash=sha256:f091755f667055f2d02b32c53771a7a6c8b47e1fdbc4b72a8b9072b3eef8015c
     # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:

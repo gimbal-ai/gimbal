@@ -14712,8 +14712,9 @@ manifest:
     yapftests.yapf_test: yapf
     yapftests.yapf_test_helper: yapf
     zipp: zipp
+    zipp.compat: zipp
+    zipp.compat.py310: zipp
     zipp.glob: zipp
-    zipp.py310compat: zipp
   pip_repository:
     name: pip
-integrity: 89c9c4580c54cd9e1ba9ae2770c5c7e96b97934c1abafdcbc9c15909c5d236d4
+integrity: 8abe8b905c1902c2dc504bc0fb58b716ec7ed5a4decc3fc1d56beb7f0f5d0e60
