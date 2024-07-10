@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 # SPDX-License-Identifier: Apache-2.0
+
 load("@bazel_tools//tools/build_defs/cc:action_names.bzl", "ACTION_NAMES")
 load(
     "@bazel_tools//tools/cpp:cc_toolchain_config_lib.bzl",
