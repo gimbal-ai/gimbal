@@ -49,6 +49,11 @@ void ParseFromKeyValueLine(
       *val_ptr *= 1024;
     } else {
       ok = absl::SimpleAtoi(val, val_ptr);
+
+      if (!ok) {
+        auto uint_val_ptr = reinterpret_cast<uint64_t*>(out_base + offset);
+        ok = absl::SimpleHexAtoi(val, uint_val_ptr);
+      }
     }
 
     if (!ok) {

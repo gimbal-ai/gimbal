@@ -48,6 +48,7 @@ class GEMMetricsReader : public gml::metrics::Scrapeable {
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> mem_usage_gauge_;
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> mem_virtual_gauge_;
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> thread_gauge_;
+  std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> privileged_gauge_;
   std::shared_ptr<opentelemetry::metrics::ObservableInstrument> context_switches_counter_;
   std::shared_ptr<opentelemetry::metrics::ObservableInstrument> network_rx_bytes_counter_;
   std::shared_ptr<opentelemetry::metrics::ObservableInstrument> network_rx_drops_counter_;

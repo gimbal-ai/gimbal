@@ -26,6 +26,8 @@
 
 namespace gml::gem::controller {
 
+const uint64_t kPrivileged = 0x000001ffffffffff;  // All capabilities.
+
 template <typename T>
 auto GetObservableResult(opentelemetry::metrics::ObserverResult& observer) {
   return std::get<std::shared_ptr<opentelemetry::metrics::ObserverResultT<T>>>(observer);
@@ -117,6 +119,9 @@ GEMMetricsReader::GEMMetricsReader(::gml::metrics::MetricsSystem* metrics_system
       gml_meter->CreateInt64Gauge("gml.gem.threads", "The number of threads in use by the GEM.");
 
   // Setup process status counters.
+  privileged_gauge_ = gml_meter->CreateInt64Gauge("gml.gem.privileged",
+                                                  "Whether the GEM process is privileged. 1 "
+                                                  "if privileged, 0 if not.");
   context_switches_counter_ = gml_meter->CreateInt64ObservableCounter(
       "gml.gem.context_switches.total",
       "The total number of context switches that have occurred in the GEM process.");
@@ -214,6 +219,13 @@ void GEMMetricsReader::Scrape() {
 
     auto tgid = process_status.tgid;
     pid_to_tgid_[p] = tgid;
+
+    if (p == tgid) {
+      // Record whether or not the process is privileged.
+      privileged_gauge_->Record(process_status.cap_prm == kPrivileged,
+                                {{"pid", pid}, {"tgid", tgid}, {"thread_group_leader", p == tgid}},
+                                {});
+    }
 
     // Parse process stats.
     gml::system::ProcParser::ProcessStats process_stats;

@@ -155,6 +155,8 @@ class ProcParser {
 
     int64_t voluntary_ctxt_switches = 0;
     int64_t nonvoluntary_ctxt_switches = 0;
+
+    uint64_t cap_prm = 0;
   };
 
   /**

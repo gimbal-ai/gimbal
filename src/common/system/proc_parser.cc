@@ -503,6 +503,7 @@ Status ProcParser::ParseProcPIDStatus(int32_t pid, ProcessStatus* out) const {
       {"HugetlbPages", offsetof(ProcessStatus, hugetlb_pages_bytes)},
       {"voluntary_ctxt_switches", offsetof(ProcessStatus, voluntary_ctxt_switches)},
       {"nonvoluntary_ctxt_switches", offsetof(ProcessStatus, nonvoluntary_ctxt_switches)},
+      {"CapPrm", offsetof(ProcessStatus, cap_prm)}
   };
   // clang-format on
 

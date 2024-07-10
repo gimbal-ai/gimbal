@@ -203,6 +203,8 @@ TEST_F(ProcParserTest, ParsePIDStatus) {
   EXPECT_EQ(76 * 1024, stats.vm_pte_bytes);
   EXPECT_EQ(0 * 1024, stats.vm_swap_bytes);
   EXPECT_EQ(0 * 1024, stats.hugetlb_pages_bytes);
+  // All capabilities.
+  EXPECT_EQ(0x000001ffffffffff, stats.cap_prm);
 
   EXPECT_EQ(2, stats.voluntary_ctxt_switches);
   EXPECT_EQ(2, stats.nonvoluntary_ctxt_switches);
