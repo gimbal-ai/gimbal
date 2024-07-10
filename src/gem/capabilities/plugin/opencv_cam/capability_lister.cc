@@ -27,16 +27,17 @@
 
 namespace gml::gem::capabilities::opencv_cam {
 
-DEFINE_string(video_file, gflags::StringFromEnv("GML_VIDEO_FILE", ""),
-              "A video file to use as the input instead of a camera attached to the system.");
+DEFINE_string(video_source, gflags::StringFromEnv("GML_VIDEO_SOURCE", ""),
+              "A video source to use as the input instead of a camera attached to the system. For "
+              "example a video file or a RSTP stream.");
 
 Status CapabilityLister::Populate(DeviceCapabilities* cap) {
-  if (FLAGS_video_file != "") {
+  if (FLAGS_video_source != "") {
     auto mutable_cam = cap->add_cameras();
     mutable_cam->set_driver(
         internal::api::core::v1::DeviceCapabilities::CameraInfo::CAMERA_DRIVER_V4L2);
 
-    mutable_cam->set_camera_id(FLAGS_video_file);
+    mutable_cam->set_camera_id(FLAGS_video_source);
     return Status::OK();
   }
 

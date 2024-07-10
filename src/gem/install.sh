@@ -97,6 +97,7 @@ common_docker_flags=(
   # Mount /sys so that GEM can use the mac address as the SERIAL_NUMBER and also read system metrics.
   -v /sys:/host/sys
 )
+
 extra_docker_flags=()
 DEV_MODE=${GML_DEV_MODE:-"false"}
 
@@ -129,13 +130,18 @@ cmdline_opts=(
   "--sys_class_net_path" "/host/sys/class/net"
 )
 
-VIDEO_FILE=${GML_VIDEO_FILE:-""}
+VIDEO_FILE="${GML_VIDEO_FILE:-""}"
 if [[ -n "$VIDEO_FILE" ]]; then
   video_filename=$(basename "$VIDEO_FILE")
   extra_docker_flags+=(
     -v "$VIDEO_FILE:/gml/${video_filename}"
   )
-  cmdline_opts+=("--video_file=/gml/${video_filename}")
+  cmdline_opts+=("--video_source=/gml/${video_filename}")
+fi
+
+RTSP_STREAM="${GML_RTSP_STREAM:-""}"
+if [ -n "$RTSP_STREAM" ] && [ -z "$VIDEO_FILE" ]; then
+  cmdline_opts+=("--video_source=${RTSP_STREAM}")
 fi
 
 RANDOMIZE_DEVICE_SERIAL=${GML_RANDOMIZE_DEVICE_SERIAL:-"false"}
@@ -144,7 +150,7 @@ if [[ "$RANDOMIZE_DEVICE_SERIAL" == "true" ]]; then
 fi
 
 function add_device_flags() {
-  if [[ -n "$VIDEO_FILE" ]]; then
+  if [ -n "$VIDEO_FILE" ] || [ -n "$GML_RTSP_STREAM" ]; then
     return
   fi
   ret=0
