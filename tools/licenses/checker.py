@@ -252,7 +252,7 @@ def generate_modifications_diff_if_needed(path, contents):
 
     for line in content_lines:
         offset += 1
-        result = re.match("(#|\s\*|\/\/)? Copyright \d\d\d\d- ([\w\s]+).", line)
+        result = re.match("(#|\s\*|\/\/)? Copyright \d\d\d\d- ([\w\s\,]+).", line)
         if result is not None:
             copyright_comment = result.group(1)
             copyright_owner = result.group(2)
