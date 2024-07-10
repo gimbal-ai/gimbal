@@ -337,7 +337,7 @@ def generate_diff_if_needed(path):
         # Since we split, '' means there was a \n.
         if offset > 0:
             if content_lines[offset - 1] != "":
-                license_text = "\n" + license_text
+                license_text = "\n" + license_text + "\n"
         if offset < len(content_lines):
             if content_lines[offset] != "":
                 license_text = license_text + "\n"
