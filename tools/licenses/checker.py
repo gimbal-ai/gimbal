@@ -150,6 +150,7 @@ matchers = [
             re.compile(r"^.*\.(sky)$"),
             # Ruby.
             re.compile(r"^.*\.(rb)$"),
+            re.compile(r"^.*\.(erb)$"),
             # Terraform.
             re.compile(r"^.*\.(tf)$"),
         ],
