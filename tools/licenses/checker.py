@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright 2018- The Pixie Authors.
-# Modifications Copyright 2023- Gimlet Labs, Inc.
+# Copyright 2023- Gimlet Labs, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,6 +15,7 @@
 # limitations under the License.
 #
 # SPDX-License-Identifier: Apache-2.0
+
 
 import argparse
 import logging
