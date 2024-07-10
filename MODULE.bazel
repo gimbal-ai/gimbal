@@ -212,7 +212,6 @@ pip.parse(
     requirements_lock = "//:requirements_lock.txt",
 )
 use_repo(pip, "pip")
-
 pip.parse(
     hub_name = "gml_api_pip",
     python_version = "3.11",
