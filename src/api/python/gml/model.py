@@ -98,7 +98,7 @@ class TorchModel(Model):
 
     def _convert_to_torch_mlir(self):
         return to_torch_mlir(
-            self.torch_module,
+            self.torch_module.to("cpu"),
             [
                 torch_mlir.TensorPlaceholder(shape, dtype)
                 for shape, dtype in zip(self.input_shapes, self.input_dtypes)

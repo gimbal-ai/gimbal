@@ -27,6 +27,8 @@ py_library(
         "client.py",
         "compile.py",
         "model.py",
+        "model_utils.py",
+        "pipelines.py",
         "preprocessing.py",
         "tensor.py",
     ],

@@ -17,7 +17,7 @@
 import os
 import uuid
 from pathlib import Path
-from typing import BinaryIO, List, Optional, TextIO
+from typing import BinaryIO, List, Optional, TextIO, Union
 
 import gml.proto.src.api.corepb.v1.model_exec_pb2 as modelexecpb
 import gml.proto.src.common.typespb.uuid_pb2 as uuidpb
@@ -32,6 +32,7 @@ import gml.proto.src.controlplane.model.mpb.v1.mpb_pb2_grpc as mpb_grpc
 import grpc
 from gml._utils import chunk_file, sha256sum
 from gml.model import Model
+from gml.pipelines import Pipeline
 
 DEFAULT_CONTROLPLANE_ADDR = "app.gimletlabs.ai"
 
@@ -275,13 +276,20 @@ class Client:
         name: str,
         models: List[Model],
         pipeline_file: Optional[Path] = None,
-        pipeline: Optional[str] = None,
+        pipeline: Optional[Union[str, Pipeline]] = None,
     ) -> uuidpb.UUID:
         if pipeline_file is not None:
             with open(pipeline_file, "r") as f:
                 yaml = f.read()
         elif pipeline is not None:
-            yaml = pipeline
+            if isinstance(pipeline, Pipeline):
+                if self._org_name is None:
+                    raise ValueError("must set `org` to upload a pipeline")
+                yaml = pipeline.to_yaml(
+                    [model.name for model in models], self._org_name
+                )
+            else:
+                yaml = pipeline
         else:
             raise ValueError("must specify one of 'pipeline_file' or 'pipeline'")
 
