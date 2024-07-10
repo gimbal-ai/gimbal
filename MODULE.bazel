@@ -213,7 +213,6 @@ pip.parse(
 )
 use_repo(pip, "pip")
 
-
 pip.parse(
     hub_name = "gml_api_pip",
     python_version = "3.11",
