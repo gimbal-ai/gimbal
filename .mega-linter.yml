@@ -52,7 +52,11 @@ FILTER_REGEX_EXCLUDE: "(app\\/graphql_schema\\.ts|\
                        .*_pb2\\.py|\
                        .*_pb2_grpc\\.py|\
                        .*\\.onnx|\
+                       ^README_oss\\.md|\
+                       ^LICENSE_oss|\
+                       .*\\/LICENSE|\
                        ^third_party\\/.*\\.proto$)"
+
 
 # Linter specific configs
 CSS_STYLELINT_ARGUMENTS: '--config-basedir src/ui'
