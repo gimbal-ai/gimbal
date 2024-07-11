@@ -124,7 +124,7 @@ class DetectionOutputDimension(DimensionSemantics):
         self,
         coordinates_start_index: int,
         box_format: BoundingBoxFormat,
-        box_confidence_index: int,
+        box_confidence_index: Optional[int] = None,
         class_index: Optional[int] = None,
         scores_range: Optional[Tuple[int, int]] = None,
     ):
@@ -143,6 +143,9 @@ class DetectionOutputDimension(DimensionSemantics):
                     size=self.scores_range[1],
                 )
             )
+        box_confidence_index = -1
+        if self.box_confidence_index is not None:
+            box_confidence_index = self.box_confidence_index
         return modelexecpb.DimensionSemantics(
             kind=modelexecpb.DimensionSemantics.DIMENSION_SEMANTICS_KIND_DETECTION_OUTPUT,
             detection_output_params=modelexecpb.DimensionSemantics.DetectionOutputParams(
@@ -151,7 +154,7 @@ class DetectionOutputDimension(DimensionSemantics):
                     size=self.coordinates_range[1],
                 ),
                 box_format=self.box_format.to_proto(),
-                box_confidence_index=self.box_confidence_index,
+                box_confidence_index=box_confidence_index,
                 class_index=self.class_index,
                 scores_range=scores_range,
             ),
@@ -229,3 +232,102 @@ class TensorSemantics:
         return modelexecpb.TensorSemantics(
             dimensions=[dim.to_proto() for dim in self.dimensions],
         )
+
+
+class RGBImage(TensorSemantics):
+    """RGBImage is an image tensor input with channels in RGB order."""
+
+    def __init__(self, channels_first=True):
+        if channels_first:
+            dimensions = [
+                BatchDimension(),
+                ImageChannelDimension(channel_format="rgb"),
+                ImageHeightDimension(),
+                ImageWidthDimension(),
+            ]
+        else:
+            dimensions = [
+                BatchDimension(),
+                ImageHeightDimension(),
+                ImageWidthDimension(),
+                ImageChannelDimension(channel_format="rgb"),
+            ]
+        super().__init__(dimensions)
+
+
+class BGRImage(TensorSemantics):
+    """BGRImage is an image tensor input with channels in BGR order."""
+
+    def __init__(self, channels_first=True):
+        if channels_first:
+            dimensions = [
+                BatchDimension(),
+                ImageChannelDimension(channel_format="bgr"),
+                ImageHeightDimension(),
+                ImageWidthDimension(),
+            ]
+        else:
+            dimensions = [
+                BatchDimension(),
+                ImageHeightDimension(),
+                ImageWidthDimension(),
+                ImageChannelDimension(channel_format="bgr"),
+            ]
+        super().__init__(dimensions)
+
+
+class BinarySegmentationMasks(TensorSemantics):
+    """BinarySegmentationMasks represents the output of a segmentation model with binary masks.
+
+    The expected tensor shape is [B, NUM_CLASSES, H, W].
+    For example, a segmentation model with 4 classes would output a tensor of shape [B, 4, H, W],
+    where each channel is a binary mask per-pixel.
+    """
+
+    def __init__(self):
+        dimensions = [
+            BatchDimension(),
+            SegmentationMaskChannel("bool_masks"),
+            ImageHeightDimension(),
+            ImageWidthDimension(),
+        ]
+        super().__init__(dimensions)
+
+
+class YOLOOutput(TensorSemantics):
+    """YOLOOutput represents a detection output from a YOLO model.
+
+    The YOLO model should output a tensor of shape [B, N_BOXES, (4 or 5) + NUM_CLASSES].
+    """
+
+    def __init__(self, has_box_conf=True):
+        dimensions = [
+            BatchDimension(),
+            DetectionNumCandidatesDimension(is_nms=False),
+        ]
+
+        if has_box_conf:
+            dimensions.append(
+                DetectionOutputDimension(
+                    coordinates_start_index=0,
+                    box_format=BoundingBoxFormat(
+                        box_format="cxcywh",
+                        is_normalized=False,
+                    ),
+                    box_confidence_index=4,
+                    scores_range=(5, -1),
+                )
+            )
+        else:
+            dimensions.append(
+                DetectionOutputDimension(
+                    coordinates_start_index=0,
+                    box_format=BoundingBoxFormat(
+                        box_format="cxcywh",
+                        is_normalized=False,
+                    ),
+                    scores_range=(4, -1),
+                )
+            )
+
+        super().__init__(dimensions)
