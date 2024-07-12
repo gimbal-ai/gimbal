@@ -90,7 +90,7 @@ function device_type() {
 
 GML_CACHE_DIR=${GML_CACHE_DIR:-"$HOME/.cache/gml"}
 
-common_docker_flags=(
+docker_flags=(
   -h "$(hostname)"
   --pid=host
   -v "$GML_CACHE_DIR:/gml"
@@ -99,12 +99,11 @@ common_docker_flags=(
   -v /sys:/host/sys
 )
 
-extra_docker_flags=()
 DEV_MODE=${GML_DEV_MODE:-"false"}
 
 if [[ "$DEV_MODE" == "true" ]]; then
   warn "DEV MODE: ENABLED"
-  extra_docker_flags+=(
+  docker_flags+=(
     # Pull the latest image every time
     --pull always
     # Run the container interactively so that users can see the logs
@@ -112,12 +111,12 @@ if [[ "$DEV_MODE" == "true" ]]; then
   )
 else
   # In production mode, we want to run the container in a detached state.
-  extra_docker_flags+=(-d)
+  docker_flags+=(-d)
 fi
 
 HOST_NETWORK=${GML_HOST_NETWORK:-"false"}
 if [[ "$HOST_NETWORK" == "true" ]]; then
-  extra_docker_flags+=(
+  docker_flags+=(
     --network=host
   )
 fi
@@ -134,7 +133,7 @@ cmdline_opts=(
 VIDEO_FILE="${GML_VIDEO_FILE:-""}"
 if [[ -n "$VIDEO_FILE" ]]; then
   video_filename=$(basename "$VIDEO_FILE")
-  extra_docker_flags+=(
+  docker_flags+=(
     -v "$VIDEO_FILE:/gml/${video_filename}"
   )
   cmdline_opts+=("--video_source=/gml/${video_filename}")
@@ -163,12 +162,12 @@ function add_device_flags() {
   fi
 
   for vid in $devs; do
-    extra_docker_flags+=("--device" "${vid}")
+    docker_flags+=("--device" "${vid}")
   done
 }
 
 if [[ "$(device_type)" == "aarch64 NVIDIA Orin Nano"* ]]; then
-  extra_docker_flags+=(
+  docker_flags+=(
     --privileged
     --runtime nvidia
     --gpus all
@@ -216,8 +215,8 @@ cmdline_opts+=(--deploy_key="$DEPLOY_KEY")
 
 DEFAULT_IMAGE_REPO="us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/gem_image"
 DEFAULT_CONTROLPLANE_ADDR="app.dev.gimletlabs.dev:443"
-USE_CONTROLPLANE_ADDR=${GML_CONTROLPLANE_ADDR:-${DEFAULT_CONTROLPLANE_ADDR}}
-cmdline_opts+=(--controlplane_addr="$USE_CONTROLPLANE_ADDR")
+CONTROLPLANE_ADDR=${GML_CONTROLPLANE_ADDR:-${DEFAULT_CONTROLPLANE_ADDR}}
+cmdline_opts+=(--controlplane_addr="$CONTROLPLANE_ADDR")
 
 mkdir -p "$GML_CACHE_DIR"
 
@@ -231,15 +230,14 @@ IMAGE_REPO=${GML_IMAGE_REPO:-${DEFAULT_IMAGE_REPO}}
 echo "Running container: $IMAGE_REPO:$IMAGE_TAG"
 
 container_id=$(docker run \
-  "${common_docker_flags[@]}" \
-  "${extra_docker_flags[@]}" \
+  "${docker_flags[@]}" \
   "$IMAGE_REPO:$IMAGE_TAG" \
   "${cmdline_opts[@]}")
 
 function success() {
   cat <<EOS
 ${tty_bold}${tty_green}Gimlet has been successfully installed!${tty_reset}
-Please visit ${tty_underline}https://${USE_CONTROLPLANE_ADDR}${tty_reset} to deploy your first model.
+Please visit ${tty_underline}https://${CONTROLPLANE_ADDR}${tty_reset} to deploy your first model.
 EOS
   exit 0
 }
