@@ -121,7 +121,6 @@ if [[ "$HOST_NETWORK" == "true" ]]; then
   )
 fi
 
-IMAGE_TYPE=""
 DEFAULT_IMAGE_VERSION="dev-latest"
 
 cmdline_opts=(
@@ -166,7 +165,11 @@ function add_device_flags() {
   done
 }
 
-if [[ "$(device_type)" == "aarch64 NVIDIA Orin Nano"* ]]; then
+device_str=$(device_type)
+
+IMAGE_TYPE=""
+if [[ "$device_str" == "aarch64 NVIDIA Orin Nano"* ]]; then
+  IMAGE_TYPE=jetson
   docker_flags+=(
     --privileged
     --runtime nvidia
@@ -175,25 +178,24 @@ if [[ "$(device_type)" == "aarch64 NVIDIA Orin Nano"* ]]; then
     -v /usr/local/cuda:/host_cuda
     -e LD_LIBRARY_PATH=/lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/host_lib/aarch64-linux-gnu:/host_cuda/lib64:/host_lib/aarch64-linux-gnu/tegra:/host_lib/aarch64-linux-gnu/tegra-egl
   )
-  IMAGE_TYPE=jetson
-elif [[ "$(device_type)" == "x86_64"* ]]; then
-  add_device_flags
-elif [[ "$(device_type)" == "aarch64"* ]]; then
-  IMAGE_TYPE=aarch64
-  add_device_flags
-else
-  fatal "Only NVIDIA Orin Nano devices or x86_64 machines are supported."
-fi
-
-if [[ "$(device_type)" == "x86_64 Intel GPU" ]]; then
+elif [[ "$device_str" == "x86_64 Intel GPU" ]]; then
   IMAGE_TYPE=intelgpu
-  extra_docker_flags+=(
+  add_device_flags
+  docker_flags+=(
     "--device" "/dev/dri"
     # We need to add /usr/local/lib to the library search path.
     "--env" "LD_LIBRARY_PATH=/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/local/lib"
     # We need privileged to collect system GPU metrics.
     "--privileged"
   )
+elif [[ "$device_str" == "x86_64"* ]]; then
+  IMAGE_TYPE=""
+  add_device_flags
+elif [[ "$device_str" == "aarch64"* ]]; then
+  IMAGE_TYPE=aarch64
+  add_device_flags
+else
+  fatal "Unsupported device: ${device_str}"
 fi
 
 emph "Installing Gimlet Edge Module"
