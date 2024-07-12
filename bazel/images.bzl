@@ -127,7 +127,9 @@ def _gml_oci_push(name, **kwargs):
                 "SYSROOT_PREFIXCOMMIT_SHA",
                 "SYSROOT_PREFIXTAG",
             ],
-            "//conditions:default": [],
+            "//conditions:default": [
+                "SYSROOT_PREFIXdev",
+            ],
         }) + ["SYSROOT_PREFIX" + tag for tag in tags],
     )
 
