@@ -306,99 +306,101 @@ class FleetMgrEdgeServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.AssociateTagsWithDeployKey = channel.unary_unary(
-                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/AssociateTagsWithDeployKey',
-                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyRequest.SerializeToString,
-                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyResponse.FromString,
-                )
-        self.UnassociateTagsWithDeployKey = channel.unary_unary(
-                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/UnassociateTagsWithDeployKey',
-                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UnassociateTagsWithDeployKeyRequest.SerializeToString,
-                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UnassociateTagsWithDeployKeyResponse.FromString,
-                )
-        self.ListTagsAssociatedWithDeployKey = channel.unary_unary(
-                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/ListTagsAssociatedWithDeployKey',
-                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyRequest.SerializeToString,
-                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyResponse.FromString,
-                )
         self.Register = channel.unary_unary(
                 '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/Register',
                 request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.RegisterRequest.SerializeToString,
                 response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.RegisterResponse.FromString,
-                )
-        self.UpdateStatus = channel.unary_unary(
-                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/UpdateStatus',
-                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateStatusRequest.SerializeToString,
-                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateStatusResponse.FromString,
-                )
-        self.GetDevice = channel.unary_unary(
-                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/GetDevice',
-                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetDeviceRequest.SerializeToString,
-                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetDeviceResponse.FromString,
-                )
-        self.ListDevices = channel.unary_unary(
-                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/ListDevices',
-                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListDevicesRequest.SerializeToString,
-                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListDevicesResponse.FromString,
-                )
-        self.UpdateDevice = channel.unary_unary(
-                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/UpdateDevice',
-                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateDeviceRequest.SerializeToString,
-                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateDeviceResponse.FromString,
-                )
-        self.DeleteDevices = channel.unary_unary(
-                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/DeleteDevices',
-                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.DeleteDevicesRequest.SerializeToString,
-                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.DeleteDevicesResponse.FromString,
-                )
-        self.SetDeviceCapabilities = channel.unary_unary(
-                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/SetDeviceCapabilities',
-                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.SetDeviceCapabilitiesRequest.SerializeToString,
-                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.SetDeviceCapabilitiesResponse.FromString,
-                )
-        self.GetTags = channel.unary_unary(
-                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/GetTags',
-                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetTagsRequest.SerializeToString,
-                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetTagsResponse.FromString,
-                )
-        self.UpsertTag = channel.unary_unary(
-                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/UpsertTag',
-                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpsertTagRequest.SerializeToString,
-                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpsertTagResponse.FromString,
-                )
-        self.DeleteTag = channel.unary_unary(
-                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/DeleteTag',
-                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.DeleteTagRequest.SerializeToString,
-                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.DeleteTagResponse.FromString,
                 )
 
 
 class FleetMgrEdgeServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def AssociateTagsWithDeployKey(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def UnassociateTagsWithDeployKey(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def ListTagsAssociatedWithDeployKey(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def Register(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
+
+
+def add_FleetMgrEdgeServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'Register': grpc.unary_unary_rpc_method_handler(
+                    servicer.Register,
+                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.RegisterRequest.FromString,
+                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.RegisterResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class FleetMgrEdgeService(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def Register(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/Register',
+            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.RegisterRequest.SerializeToString,
+            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.RegisterResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+
+class FleetMgrDeviceServiceStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.UpdateStatus = channel.unary_unary(
+                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceService/UpdateStatus',
+                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateStatusRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateStatusResponse.FromString,
+                )
+        self.GetDevice = channel.unary_unary(
+                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceService/GetDevice',
+                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetDeviceRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetDeviceResponse.FromString,
+                )
+        self.ListDevices = channel.unary_unary(
+                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceService/ListDevices',
+                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListDevicesRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListDevicesResponse.FromString,
+                )
+        self.UpdateDevice = channel.unary_unary(
+                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceService/UpdateDevice',
+                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateDeviceRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateDeviceResponse.FromString,
+                )
+        self.DeleteDevices = channel.unary_unary(
+                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceService/DeleteDevices',
+                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.DeleteDevicesRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.DeleteDevicesResponse.FromString,
+                )
+        self.SetDeviceCapabilities = channel.unary_unary(
+                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceService/SetDeviceCapabilities',
+                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.SetDeviceCapabilitiesRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.SetDeviceCapabilitiesResponse.FromString,
+                )
+
+
+class FleetMgrDeviceServiceServicer(object):
+    """Missing associated documentation comment in .proto file."""
 
     def UpdateStatus(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -436,47 +438,9 @@ class FleetMgrEdgeServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetTags(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
 
-    def UpsertTag(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def DeleteTag(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-
-def add_FleetMgrEdgeServiceServicer_to_server(servicer, server):
+def add_FleetMgrDeviceServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'AssociateTagsWithDeployKey': grpc.unary_unary_rpc_method_handler(
-                    servicer.AssociateTagsWithDeployKey,
-                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyRequest.FromString,
-                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyResponse.SerializeToString,
-            ),
-            'UnassociateTagsWithDeployKey': grpc.unary_unary_rpc_method_handler(
-                    servicer.UnassociateTagsWithDeployKey,
-                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UnassociateTagsWithDeployKeyRequest.FromString,
-                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UnassociateTagsWithDeployKeyResponse.SerializeToString,
-            ),
-            'ListTagsAssociatedWithDeployKey': grpc.unary_unary_rpc_method_handler(
-                    servicer.ListTagsAssociatedWithDeployKey,
-                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyRequest.FromString,
-                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyResponse.SerializeToString,
-            ),
-            'Register': grpc.unary_unary_rpc_method_handler(
-                    servicer.Register,
-                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.RegisterRequest.FromString,
-                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.RegisterResponse.SerializeToString,
-            ),
             'UpdateStatus': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateStatus,
                     request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateStatusRequest.FromString,
@@ -507,98 +471,15 @@ def add_FleetMgrEdgeServiceServicer_to_server(servicer, server):
                     request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.SetDeviceCapabilitiesRequest.FromString,
                     response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.SetDeviceCapabilitiesResponse.SerializeToString,
             ),
-            'GetTags': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetTags,
-                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetTagsRequest.FromString,
-                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetTagsResponse.SerializeToString,
-            ),
-            'UpsertTag': grpc.unary_unary_rpc_method_handler(
-                    servicer.UpsertTag,
-                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpsertTagRequest.FromString,
-                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpsertTagResponse.SerializeToString,
-            ),
-            'DeleteTag': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeleteTag,
-                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.DeleteTagRequest.FromString,
-                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.DeleteTagResponse.SerializeToString,
-            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService', rpc_method_handlers)
+            'gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
-class FleetMgrEdgeService(object):
+class FleetMgrDeviceService(object):
     """Missing associated documentation comment in .proto file."""
-
-    @staticmethod
-    def AssociateTagsWithDeployKey(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/AssociateTagsWithDeployKey',
-            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyRequest.SerializeToString,
-            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def UnassociateTagsWithDeployKey(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/UnassociateTagsWithDeployKey',
-            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UnassociateTagsWithDeployKeyRequest.SerializeToString,
-            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UnassociateTagsWithDeployKeyResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def ListTagsAssociatedWithDeployKey(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/ListTagsAssociatedWithDeployKey',
-            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyRequest.SerializeToString,
-            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def Register(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/Register',
-            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.RegisterRequest.SerializeToString,
-            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.RegisterResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def UpdateStatus(request,
@@ -611,7 +492,7 @@ class FleetMgrEdgeService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/UpdateStatus',
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceService/UpdateStatus',
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateStatusRequest.SerializeToString,
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateStatusResponse.FromString,
             options, channel_credentials,
@@ -628,7 +509,7 @@ class FleetMgrEdgeService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/GetDevice',
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceService/GetDevice',
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetDeviceRequest.SerializeToString,
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetDeviceResponse.FromString,
             options, channel_credentials,
@@ -645,7 +526,7 @@ class FleetMgrEdgeService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/ListDevices',
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceService/ListDevices',
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListDevicesRequest.SerializeToString,
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListDevicesResponse.FromString,
             options, channel_credentials,
@@ -662,7 +543,7 @@ class FleetMgrEdgeService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/UpdateDevice',
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceService/UpdateDevice',
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateDeviceRequest.SerializeToString,
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateDeviceResponse.FromString,
             options, channel_credentials,
@@ -679,7 +560,7 @@ class FleetMgrEdgeService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/DeleteDevices',
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceService/DeleteDevices',
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.DeleteDevicesRequest.SerializeToString,
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.DeleteDevicesResponse.FromString,
             options, channel_credentials,
@@ -696,11 +577,135 @@ class FleetMgrEdgeService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/SetDeviceCapabilities',
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceService/SetDeviceCapabilities',
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.SetDeviceCapabilitiesRequest.SerializeToString,
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.SetDeviceCapabilitiesResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+
+class FleetMgrDeviceTagsServiceStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.GetTags = channel.unary_unary(
+                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceTagsService/GetTags',
+                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetTagsRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetTagsResponse.FromString,
+                )
+        self.UpsertTag = channel.unary_unary(
+                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceTagsService/UpsertTag',
+                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpsertTagRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpsertTagResponse.FromString,
+                )
+        self.DeleteTag = channel.unary_unary(
+                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceTagsService/DeleteTag',
+                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.DeleteTagRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.DeleteTagResponse.FromString,
+                )
+        self.AssociateTagsWithDeployKey = channel.unary_unary(
+                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceTagsService/AssociateTagsWithDeployKey',
+                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyResponse.FromString,
+                )
+        self.UnassociateTagsWithDeployKey = channel.unary_unary(
+                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceTagsService/UnassociateTagsWithDeployKey',
+                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UnassociateTagsWithDeployKeyRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UnassociateTagsWithDeployKeyResponse.FromString,
+                )
+        self.ListTagsAssociatedWithDeployKey = channel.unary_unary(
+                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceTagsService/ListTagsAssociatedWithDeployKey',
+                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyResponse.FromString,
+                )
+
+
+class FleetMgrDeviceTagsServiceServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def GetTags(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpsertTag(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteTag(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AssociateTagsWithDeployKey(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UnassociateTagsWithDeployKey(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListTagsAssociatedWithDeployKey(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_FleetMgrDeviceTagsServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'GetTags': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTags,
+                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetTagsRequest.FromString,
+                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetTagsResponse.SerializeToString,
+            ),
+            'UpsertTag': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpsertTag,
+                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpsertTagRequest.FromString,
+                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpsertTagResponse.SerializeToString,
+            ),
+            'DeleteTag': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteTag,
+                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.DeleteTagRequest.FromString,
+                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.DeleteTagResponse.SerializeToString,
+            ),
+            'AssociateTagsWithDeployKey': grpc.unary_unary_rpc_method_handler(
+                    servicer.AssociateTagsWithDeployKey,
+                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyRequest.FromString,
+                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyResponse.SerializeToString,
+            ),
+            'UnassociateTagsWithDeployKey': grpc.unary_unary_rpc_method_handler(
+                    servicer.UnassociateTagsWithDeployKey,
+                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UnassociateTagsWithDeployKeyRequest.FromString,
+                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UnassociateTagsWithDeployKeyResponse.SerializeToString,
+            ),
+            'ListTagsAssociatedWithDeployKey': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListTagsAssociatedWithDeployKey,
+                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyRequest.FromString,
+                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceTagsService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class FleetMgrDeviceTagsService(object):
+    """Missing associated documentation comment in .proto file."""
 
     @staticmethod
     def GetTags(request,
@@ -713,7 +718,7 @@ class FleetMgrEdgeService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/GetTags',
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceTagsService/GetTags',
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetTagsRequest.SerializeToString,
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetTagsResponse.FromString,
             options, channel_credentials,
@@ -730,7 +735,7 @@ class FleetMgrEdgeService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/UpsertTag',
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceTagsService/UpsertTag',
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpsertTagRequest.SerializeToString,
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpsertTagResponse.FromString,
             options, channel_credentials,
@@ -747,8 +752,59 @@ class FleetMgrEdgeService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrEdgeService/DeleteTag',
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceTagsService/DeleteTag',
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.DeleteTagRequest.SerializeToString,
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.DeleteTagResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def AssociateTagsWithDeployKey(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceTagsService/AssociateTagsWithDeployKey',
+            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyRequest.SerializeToString,
+            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.AssociateTagsWithDeployKeyResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UnassociateTagsWithDeployKey(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceTagsService/UnassociateTagsWithDeployKey',
+            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UnassociateTagsWithDeployKeyRequest.SerializeToString,
+            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UnassociateTagsWithDeployKeyResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ListTagsAssociatedWithDeployKey(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrDeviceTagsService/ListTagsAssociatedWithDeployKey',
+            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyRequest.SerializeToString,
+            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

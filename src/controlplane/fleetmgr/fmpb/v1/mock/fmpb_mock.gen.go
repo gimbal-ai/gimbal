@@ -366,146 +366,6 @@ func (m *MockFleetMgrEdgeServiceClient) EXPECT() *MockFleetMgrEdgeServiceClientM
 	return m.recorder
 }
 
-// AssociateTagsWithDeployKey mocks base method.
-func (m *MockFleetMgrEdgeServiceClient) AssociateTagsWithDeployKey(ctx context.Context, in *fmpb.AssociateTagsWithDeployKeyRequest, opts ...grpc.CallOption) (*fmpb.AssociateTagsWithDeployKeyResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "AssociateTagsWithDeployKey", varargs...)
-	ret0, _ := ret[0].(*fmpb.AssociateTagsWithDeployKeyResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// AssociateTagsWithDeployKey indicates an expected call of AssociateTagsWithDeployKey.
-func (mr *MockFleetMgrEdgeServiceClientMockRecorder) AssociateTagsWithDeployKey(ctx, in any, opts ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AssociateTagsWithDeployKey", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).AssociateTagsWithDeployKey), varargs...)
-}
-
-// DeleteDevices mocks base method.
-func (m *MockFleetMgrEdgeServiceClient) DeleteDevices(ctx context.Context, in *fmpb.DeleteDevicesRequest, opts ...grpc.CallOption) (*fmpb.DeleteDevicesResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DeleteDevices", varargs...)
-	ret0, _ := ret[0].(*fmpb.DeleteDevicesResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DeleteDevices indicates an expected call of DeleteDevices.
-func (mr *MockFleetMgrEdgeServiceClientMockRecorder) DeleteDevices(ctx, in any, opts ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDevices", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).DeleteDevices), varargs...)
-}
-
-// DeleteTag mocks base method.
-func (m *MockFleetMgrEdgeServiceClient) DeleteTag(ctx context.Context, in *fmpb.DeleteTagRequest, opts ...grpc.CallOption) (*fmpb.DeleteTagResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DeleteTag", varargs...)
-	ret0, _ := ret[0].(*fmpb.DeleteTagResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DeleteTag indicates an expected call of DeleteTag.
-func (mr *MockFleetMgrEdgeServiceClientMockRecorder) DeleteTag(ctx, in any, opts ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTag", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).DeleteTag), varargs...)
-}
-
-// GetDevice mocks base method.
-func (m *MockFleetMgrEdgeServiceClient) GetDevice(ctx context.Context, in *fmpb.GetDeviceRequest, opts ...grpc.CallOption) (*fmpb.GetDeviceResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "GetDevice", varargs...)
-	ret0, _ := ret[0].(*fmpb.GetDeviceResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetDevice indicates an expected call of GetDevice.
-func (mr *MockFleetMgrEdgeServiceClientMockRecorder) GetDevice(ctx, in any, opts ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDevice", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).GetDevice), varargs...)
-}
-
-// GetTags mocks base method.
-func (m *MockFleetMgrEdgeServiceClient) GetTags(ctx context.Context, in *fmpb.GetTagsRequest, opts ...grpc.CallOption) (*fmpb.GetTagsResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "GetTags", varargs...)
-	ret0, _ := ret[0].(*fmpb.GetTagsResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetTags indicates an expected call of GetTags.
-func (mr *MockFleetMgrEdgeServiceClientMockRecorder) GetTags(ctx, in any, opts ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTags", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).GetTags), varargs...)
-}
-
-// ListDevices mocks base method.
-func (m *MockFleetMgrEdgeServiceClient) ListDevices(ctx context.Context, in *fmpb.ListDevicesRequest, opts ...grpc.CallOption) (*fmpb.ListDevicesResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "ListDevices", varargs...)
-	ret0, _ := ret[0].(*fmpb.ListDevicesResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ListDevices indicates an expected call of ListDevices.
-func (mr *MockFleetMgrEdgeServiceClientMockRecorder) ListDevices(ctx, in any, opts ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDevices", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).ListDevices), varargs...)
-}
-
-// ListTagsAssociatedWithDeployKey mocks base method.
-func (m *MockFleetMgrEdgeServiceClient) ListTagsAssociatedWithDeployKey(ctx context.Context, in *fmpb.ListTagsAssociatedWithDeployKeyRequest, opts ...grpc.CallOption) (*fmpb.ListTagsAssociatedWithDeployKeyResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "ListTagsAssociatedWithDeployKey", varargs...)
-	ret0, _ := ret[0].(*fmpb.ListTagsAssociatedWithDeployKeyResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ListTagsAssociatedWithDeployKey indicates an expected call of ListTagsAssociatedWithDeployKey.
-func (mr *MockFleetMgrEdgeServiceClientMockRecorder) ListTagsAssociatedWithDeployKey(ctx, in any, opts ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTagsAssociatedWithDeployKey", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).ListTagsAssociatedWithDeployKey), varargs...)
-}
-
 // Register mocks base method.
 func (m *MockFleetMgrEdgeServiceClient) Register(ctx context.Context, in *fmpb.RegisterRequest, opts ...grpc.CallOption) (*fmpb.RegisterResponse, error) {
 	m.ctrl.T.Helper()
@@ -524,106 +384,6 @@ func (mr *MockFleetMgrEdgeServiceClientMockRecorder) Register(ctx, in any, opts 
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Register", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).Register), varargs...)
-}
-
-// SetDeviceCapabilities mocks base method.
-func (m *MockFleetMgrEdgeServiceClient) SetDeviceCapabilities(ctx context.Context, in *fmpb.SetDeviceCapabilitiesRequest, opts ...grpc.CallOption) (*fmpb.SetDeviceCapabilitiesResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "SetDeviceCapabilities", varargs...)
-	ret0, _ := ret[0].(*fmpb.SetDeviceCapabilitiesResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SetDeviceCapabilities indicates an expected call of SetDeviceCapabilities.
-func (mr *MockFleetMgrEdgeServiceClientMockRecorder) SetDeviceCapabilities(ctx, in any, opts ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDeviceCapabilities", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).SetDeviceCapabilities), varargs...)
-}
-
-// UnassociateTagsWithDeployKey mocks base method.
-func (m *MockFleetMgrEdgeServiceClient) UnassociateTagsWithDeployKey(ctx context.Context, in *fmpb.UnassociateTagsWithDeployKeyRequest, opts ...grpc.CallOption) (*fmpb.UnassociateTagsWithDeployKeyResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "UnassociateTagsWithDeployKey", varargs...)
-	ret0, _ := ret[0].(*fmpb.UnassociateTagsWithDeployKeyResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UnassociateTagsWithDeployKey indicates an expected call of UnassociateTagsWithDeployKey.
-func (mr *MockFleetMgrEdgeServiceClientMockRecorder) UnassociateTagsWithDeployKey(ctx, in any, opts ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnassociateTagsWithDeployKey", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).UnassociateTagsWithDeployKey), varargs...)
-}
-
-// UpdateDevice mocks base method.
-func (m *MockFleetMgrEdgeServiceClient) UpdateDevice(ctx context.Context, in *fmpb.UpdateDeviceRequest, opts ...grpc.CallOption) (*fmpb.UpdateDeviceResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "UpdateDevice", varargs...)
-	ret0, _ := ret[0].(*fmpb.UpdateDeviceResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UpdateDevice indicates an expected call of UpdateDevice.
-func (mr *MockFleetMgrEdgeServiceClientMockRecorder) UpdateDevice(ctx, in any, opts ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateDevice", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).UpdateDevice), varargs...)
-}
-
-// UpdateStatus mocks base method.
-func (m *MockFleetMgrEdgeServiceClient) UpdateStatus(ctx context.Context, in *fmpb.UpdateStatusRequest, opts ...grpc.CallOption) (*fmpb.UpdateStatusResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "UpdateStatus", varargs...)
-	ret0, _ := ret[0].(*fmpb.UpdateStatusResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UpdateStatus indicates an expected call of UpdateStatus.
-func (mr *MockFleetMgrEdgeServiceClientMockRecorder) UpdateStatus(ctx, in any, opts ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatus", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).UpdateStatus), varargs...)
-}
-
-// UpsertTag mocks base method.
-func (m *MockFleetMgrEdgeServiceClient) UpsertTag(ctx context.Context, in *fmpb.UpsertTagRequest, opts ...grpc.CallOption) (*fmpb.UpsertTagResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "UpsertTag", varargs...)
-	ret0, _ := ret[0].(*fmpb.UpsertTagResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UpsertTag indicates an expected call of UpsertTag.
-func (mr *MockFleetMgrEdgeServiceClientMockRecorder) UpsertTag(ctx, in any, opts ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertTag", reflect.TypeOf((*MockFleetMgrEdgeServiceClient)(nil).UpsertTag), varargs...)
 }
 
 // MockFleetMgrEdgeServiceServer is a mock of FleetMgrEdgeServiceServer interface.
@@ -649,111 +409,6 @@ func (m *MockFleetMgrEdgeServiceServer) EXPECT() *MockFleetMgrEdgeServiceServerM
 	return m.recorder
 }
 
-// AssociateTagsWithDeployKey mocks base method.
-func (m *MockFleetMgrEdgeServiceServer) AssociateTagsWithDeployKey(arg0 context.Context, arg1 *fmpb.AssociateTagsWithDeployKeyRequest) (*fmpb.AssociateTagsWithDeployKeyResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AssociateTagsWithDeployKey", arg0, arg1)
-	ret0, _ := ret[0].(*fmpb.AssociateTagsWithDeployKeyResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// AssociateTagsWithDeployKey indicates an expected call of AssociateTagsWithDeployKey.
-func (mr *MockFleetMgrEdgeServiceServerMockRecorder) AssociateTagsWithDeployKey(arg0, arg1 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AssociateTagsWithDeployKey", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).AssociateTagsWithDeployKey), arg0, arg1)
-}
-
-// DeleteDevices mocks base method.
-func (m *MockFleetMgrEdgeServiceServer) DeleteDevices(arg0 context.Context, arg1 *fmpb.DeleteDevicesRequest) (*fmpb.DeleteDevicesResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteDevices", arg0, arg1)
-	ret0, _ := ret[0].(*fmpb.DeleteDevicesResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DeleteDevices indicates an expected call of DeleteDevices.
-func (mr *MockFleetMgrEdgeServiceServerMockRecorder) DeleteDevices(arg0, arg1 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDevices", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).DeleteDevices), arg0, arg1)
-}
-
-// DeleteTag mocks base method.
-func (m *MockFleetMgrEdgeServiceServer) DeleteTag(arg0 context.Context, arg1 *fmpb.DeleteTagRequest) (*fmpb.DeleteTagResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteTag", arg0, arg1)
-	ret0, _ := ret[0].(*fmpb.DeleteTagResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DeleteTag indicates an expected call of DeleteTag.
-func (mr *MockFleetMgrEdgeServiceServerMockRecorder) DeleteTag(arg0, arg1 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTag", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).DeleteTag), arg0, arg1)
-}
-
-// GetDevice mocks base method.
-func (m *MockFleetMgrEdgeServiceServer) GetDevice(arg0 context.Context, arg1 *fmpb.GetDeviceRequest) (*fmpb.GetDeviceResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetDevice", arg0, arg1)
-	ret0, _ := ret[0].(*fmpb.GetDeviceResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetDevice indicates an expected call of GetDevice.
-func (mr *MockFleetMgrEdgeServiceServerMockRecorder) GetDevice(arg0, arg1 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDevice", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).GetDevice), arg0, arg1)
-}
-
-// GetTags mocks base method.
-func (m *MockFleetMgrEdgeServiceServer) GetTags(arg0 context.Context, arg1 *fmpb.GetTagsRequest) (*fmpb.GetTagsResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetTags", arg0, arg1)
-	ret0, _ := ret[0].(*fmpb.GetTagsResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetTags indicates an expected call of GetTags.
-func (mr *MockFleetMgrEdgeServiceServerMockRecorder) GetTags(arg0, arg1 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTags", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).GetTags), arg0, arg1)
-}
-
-// ListDevices mocks base method.
-func (m *MockFleetMgrEdgeServiceServer) ListDevices(arg0 context.Context, arg1 *fmpb.ListDevicesRequest) (*fmpb.ListDevicesResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListDevices", arg0, arg1)
-	ret0, _ := ret[0].(*fmpb.ListDevicesResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ListDevices indicates an expected call of ListDevices.
-func (mr *MockFleetMgrEdgeServiceServerMockRecorder) ListDevices(arg0, arg1 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDevices", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).ListDevices), arg0, arg1)
-}
-
-// ListTagsAssociatedWithDeployKey mocks base method.
-func (m *MockFleetMgrEdgeServiceServer) ListTagsAssociatedWithDeployKey(arg0 context.Context, arg1 *fmpb.ListTagsAssociatedWithDeployKeyRequest) (*fmpb.ListTagsAssociatedWithDeployKeyResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListTagsAssociatedWithDeployKey", arg0, arg1)
-	ret0, _ := ret[0].(*fmpb.ListTagsAssociatedWithDeployKeyResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ListTagsAssociatedWithDeployKey indicates an expected call of ListTagsAssociatedWithDeployKey.
-func (mr *MockFleetMgrEdgeServiceServerMockRecorder) ListTagsAssociatedWithDeployKey(arg0, arg1 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTagsAssociatedWithDeployKey", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).ListTagsAssociatedWithDeployKey), arg0, arg1)
-}
-
 // Register mocks base method.
 func (m *MockFleetMgrEdgeServiceServer) Register(arg0 context.Context, arg1 *fmpb.RegisterRequest) (*fmpb.RegisterResponse, error) {
 	m.ctrl.T.Helper()
@@ -769,8 +424,219 @@ func (mr *MockFleetMgrEdgeServiceServerMockRecorder) Register(arg0, arg1 any) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Register", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).Register), arg0, arg1)
 }
 
+// MockFleetMgrDeviceServiceClient is a mock of FleetMgrDeviceServiceClient interface.
+type MockFleetMgrDeviceServiceClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockFleetMgrDeviceServiceClientMockRecorder
+}
+
+// MockFleetMgrDeviceServiceClientMockRecorder is the mock recorder for MockFleetMgrDeviceServiceClient.
+type MockFleetMgrDeviceServiceClientMockRecorder struct {
+	mock *MockFleetMgrDeviceServiceClient
+}
+
+// NewMockFleetMgrDeviceServiceClient creates a new mock instance.
+func NewMockFleetMgrDeviceServiceClient(ctrl *gomock.Controller) *MockFleetMgrDeviceServiceClient {
+	mock := &MockFleetMgrDeviceServiceClient{ctrl: ctrl}
+	mock.recorder = &MockFleetMgrDeviceServiceClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockFleetMgrDeviceServiceClient) EXPECT() *MockFleetMgrDeviceServiceClientMockRecorder {
+	return m.recorder
+}
+
+// DeleteDevices mocks base method.
+func (m *MockFleetMgrDeviceServiceClient) DeleteDevices(ctx context.Context, in *fmpb.DeleteDevicesRequest, opts ...grpc.CallOption) (*fmpb.DeleteDevicesResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteDevices", varargs...)
+	ret0, _ := ret[0].(*fmpb.DeleteDevicesResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteDevices indicates an expected call of DeleteDevices.
+func (mr *MockFleetMgrDeviceServiceClientMockRecorder) DeleteDevices(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDevices", reflect.TypeOf((*MockFleetMgrDeviceServiceClient)(nil).DeleteDevices), varargs...)
+}
+
+// GetDevice mocks base method.
+func (m *MockFleetMgrDeviceServiceClient) GetDevice(ctx context.Context, in *fmpb.GetDeviceRequest, opts ...grpc.CallOption) (*fmpb.GetDeviceResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetDevice", varargs...)
+	ret0, _ := ret[0].(*fmpb.GetDeviceResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDevice indicates an expected call of GetDevice.
+func (mr *MockFleetMgrDeviceServiceClientMockRecorder) GetDevice(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDevice", reflect.TypeOf((*MockFleetMgrDeviceServiceClient)(nil).GetDevice), varargs...)
+}
+
+// ListDevices mocks base method.
+func (m *MockFleetMgrDeviceServiceClient) ListDevices(ctx context.Context, in *fmpb.ListDevicesRequest, opts ...grpc.CallOption) (*fmpb.ListDevicesResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListDevices", varargs...)
+	ret0, _ := ret[0].(*fmpb.ListDevicesResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListDevices indicates an expected call of ListDevices.
+func (mr *MockFleetMgrDeviceServiceClientMockRecorder) ListDevices(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDevices", reflect.TypeOf((*MockFleetMgrDeviceServiceClient)(nil).ListDevices), varargs...)
+}
+
 // SetDeviceCapabilities mocks base method.
-func (m *MockFleetMgrEdgeServiceServer) SetDeviceCapabilities(arg0 context.Context, arg1 *fmpb.SetDeviceCapabilitiesRequest) (*fmpb.SetDeviceCapabilitiesResponse, error) {
+func (m *MockFleetMgrDeviceServiceClient) SetDeviceCapabilities(ctx context.Context, in *fmpb.SetDeviceCapabilitiesRequest, opts ...grpc.CallOption) (*fmpb.SetDeviceCapabilitiesResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "SetDeviceCapabilities", varargs...)
+	ret0, _ := ret[0].(*fmpb.SetDeviceCapabilitiesResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SetDeviceCapabilities indicates an expected call of SetDeviceCapabilities.
+func (mr *MockFleetMgrDeviceServiceClientMockRecorder) SetDeviceCapabilities(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDeviceCapabilities", reflect.TypeOf((*MockFleetMgrDeviceServiceClient)(nil).SetDeviceCapabilities), varargs...)
+}
+
+// UpdateDevice mocks base method.
+func (m *MockFleetMgrDeviceServiceClient) UpdateDevice(ctx context.Context, in *fmpb.UpdateDeviceRequest, opts ...grpc.CallOption) (*fmpb.UpdateDeviceResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateDevice", varargs...)
+	ret0, _ := ret[0].(*fmpb.UpdateDeviceResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateDevice indicates an expected call of UpdateDevice.
+func (mr *MockFleetMgrDeviceServiceClientMockRecorder) UpdateDevice(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateDevice", reflect.TypeOf((*MockFleetMgrDeviceServiceClient)(nil).UpdateDevice), varargs...)
+}
+
+// UpdateStatus mocks base method.
+func (m *MockFleetMgrDeviceServiceClient) UpdateStatus(ctx context.Context, in *fmpb.UpdateStatusRequest, opts ...grpc.CallOption) (*fmpb.UpdateStatusResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateStatus", varargs...)
+	ret0, _ := ret[0].(*fmpb.UpdateStatusResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateStatus indicates an expected call of UpdateStatus.
+func (mr *MockFleetMgrDeviceServiceClientMockRecorder) UpdateStatus(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatus", reflect.TypeOf((*MockFleetMgrDeviceServiceClient)(nil).UpdateStatus), varargs...)
+}
+
+// MockFleetMgrDeviceServiceServer is a mock of FleetMgrDeviceServiceServer interface.
+type MockFleetMgrDeviceServiceServer struct {
+	ctrl     *gomock.Controller
+	recorder *MockFleetMgrDeviceServiceServerMockRecorder
+}
+
+// MockFleetMgrDeviceServiceServerMockRecorder is the mock recorder for MockFleetMgrDeviceServiceServer.
+type MockFleetMgrDeviceServiceServerMockRecorder struct {
+	mock *MockFleetMgrDeviceServiceServer
+}
+
+// NewMockFleetMgrDeviceServiceServer creates a new mock instance.
+func NewMockFleetMgrDeviceServiceServer(ctrl *gomock.Controller) *MockFleetMgrDeviceServiceServer {
+	mock := &MockFleetMgrDeviceServiceServer{ctrl: ctrl}
+	mock.recorder = &MockFleetMgrDeviceServiceServerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockFleetMgrDeviceServiceServer) EXPECT() *MockFleetMgrDeviceServiceServerMockRecorder {
+	return m.recorder
+}
+
+// DeleteDevices mocks base method.
+func (m *MockFleetMgrDeviceServiceServer) DeleteDevices(arg0 context.Context, arg1 *fmpb.DeleteDevicesRequest) (*fmpb.DeleteDevicesResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteDevices", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.DeleteDevicesResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteDevices indicates an expected call of DeleteDevices.
+func (mr *MockFleetMgrDeviceServiceServerMockRecorder) DeleteDevices(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDevices", reflect.TypeOf((*MockFleetMgrDeviceServiceServer)(nil).DeleteDevices), arg0, arg1)
+}
+
+// GetDevice mocks base method.
+func (m *MockFleetMgrDeviceServiceServer) GetDevice(arg0 context.Context, arg1 *fmpb.GetDeviceRequest) (*fmpb.GetDeviceResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDevice", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.GetDeviceResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDevice indicates an expected call of GetDevice.
+func (mr *MockFleetMgrDeviceServiceServerMockRecorder) GetDevice(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDevice", reflect.TypeOf((*MockFleetMgrDeviceServiceServer)(nil).GetDevice), arg0, arg1)
+}
+
+// ListDevices mocks base method.
+func (m *MockFleetMgrDeviceServiceServer) ListDevices(arg0 context.Context, arg1 *fmpb.ListDevicesRequest) (*fmpb.ListDevicesResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListDevices", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.ListDevicesResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListDevices indicates an expected call of ListDevices.
+func (mr *MockFleetMgrDeviceServiceServerMockRecorder) ListDevices(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDevices", reflect.TypeOf((*MockFleetMgrDeviceServiceServer)(nil).ListDevices), arg0, arg1)
+}
+
+// SetDeviceCapabilities mocks base method.
+func (m *MockFleetMgrDeviceServiceServer) SetDeviceCapabilities(arg0 context.Context, arg1 *fmpb.SetDeviceCapabilitiesRequest) (*fmpb.SetDeviceCapabilitiesResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "SetDeviceCapabilities", arg0, arg1)
 	ret0, _ := ret[0].(*fmpb.SetDeviceCapabilitiesResponse)
@@ -779,28 +645,13 @@ func (m *MockFleetMgrEdgeServiceServer) SetDeviceCapabilities(arg0 context.Conte
 }
 
 // SetDeviceCapabilities indicates an expected call of SetDeviceCapabilities.
-func (mr *MockFleetMgrEdgeServiceServerMockRecorder) SetDeviceCapabilities(arg0, arg1 any) *gomock.Call {
+func (mr *MockFleetMgrDeviceServiceServerMockRecorder) SetDeviceCapabilities(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDeviceCapabilities", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).SetDeviceCapabilities), arg0, arg1)
-}
-
-// UnassociateTagsWithDeployKey mocks base method.
-func (m *MockFleetMgrEdgeServiceServer) UnassociateTagsWithDeployKey(arg0 context.Context, arg1 *fmpb.UnassociateTagsWithDeployKeyRequest) (*fmpb.UnassociateTagsWithDeployKeyResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UnassociateTagsWithDeployKey", arg0, arg1)
-	ret0, _ := ret[0].(*fmpb.UnassociateTagsWithDeployKeyResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UnassociateTagsWithDeployKey indicates an expected call of UnassociateTagsWithDeployKey.
-func (mr *MockFleetMgrEdgeServiceServerMockRecorder) UnassociateTagsWithDeployKey(arg0, arg1 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnassociateTagsWithDeployKey", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).UnassociateTagsWithDeployKey), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDeviceCapabilities", reflect.TypeOf((*MockFleetMgrDeviceServiceServer)(nil).SetDeviceCapabilities), arg0, arg1)
 }
 
 // UpdateDevice mocks base method.
-func (m *MockFleetMgrEdgeServiceServer) UpdateDevice(arg0 context.Context, arg1 *fmpb.UpdateDeviceRequest) (*fmpb.UpdateDeviceResponse, error) {
+func (m *MockFleetMgrDeviceServiceServer) UpdateDevice(arg0 context.Context, arg1 *fmpb.UpdateDeviceRequest) (*fmpb.UpdateDeviceResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateDevice", arg0, arg1)
 	ret0, _ := ret[0].(*fmpb.UpdateDeviceResponse)
@@ -809,13 +660,13 @@ func (m *MockFleetMgrEdgeServiceServer) UpdateDevice(arg0 context.Context, arg1 
 }
 
 // UpdateDevice indicates an expected call of UpdateDevice.
-func (mr *MockFleetMgrEdgeServiceServerMockRecorder) UpdateDevice(arg0, arg1 any) *gomock.Call {
+func (mr *MockFleetMgrDeviceServiceServerMockRecorder) UpdateDevice(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateDevice", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).UpdateDevice), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateDevice", reflect.TypeOf((*MockFleetMgrDeviceServiceServer)(nil).UpdateDevice), arg0, arg1)
 }
 
 // UpdateStatus mocks base method.
-func (m *MockFleetMgrEdgeServiceServer) UpdateStatus(arg0 context.Context, arg1 *fmpb.UpdateStatusRequest) (*fmpb.UpdateStatusResponse, error) {
+func (m *MockFleetMgrDeviceServiceServer) UpdateStatus(arg0 context.Context, arg1 *fmpb.UpdateStatusRequest) (*fmpb.UpdateStatusResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateStatus", arg0, arg1)
 	ret0, _ := ret[0].(*fmpb.UpdateStatusResponse)
@@ -824,13 +675,254 @@ func (m *MockFleetMgrEdgeServiceServer) UpdateStatus(arg0 context.Context, arg1 
 }
 
 // UpdateStatus indicates an expected call of UpdateStatus.
-func (mr *MockFleetMgrEdgeServiceServerMockRecorder) UpdateStatus(arg0, arg1 any) *gomock.Call {
+func (mr *MockFleetMgrDeviceServiceServerMockRecorder) UpdateStatus(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatus", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).UpdateStatus), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatus", reflect.TypeOf((*MockFleetMgrDeviceServiceServer)(nil).UpdateStatus), arg0, arg1)
+}
+
+// MockFleetMgrDeviceTagsServiceClient is a mock of FleetMgrDeviceTagsServiceClient interface.
+type MockFleetMgrDeviceTagsServiceClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockFleetMgrDeviceTagsServiceClientMockRecorder
+}
+
+// MockFleetMgrDeviceTagsServiceClientMockRecorder is the mock recorder for MockFleetMgrDeviceTagsServiceClient.
+type MockFleetMgrDeviceTagsServiceClientMockRecorder struct {
+	mock *MockFleetMgrDeviceTagsServiceClient
+}
+
+// NewMockFleetMgrDeviceTagsServiceClient creates a new mock instance.
+func NewMockFleetMgrDeviceTagsServiceClient(ctrl *gomock.Controller) *MockFleetMgrDeviceTagsServiceClient {
+	mock := &MockFleetMgrDeviceTagsServiceClient{ctrl: ctrl}
+	mock.recorder = &MockFleetMgrDeviceTagsServiceClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockFleetMgrDeviceTagsServiceClient) EXPECT() *MockFleetMgrDeviceTagsServiceClientMockRecorder {
+	return m.recorder
+}
+
+// AssociateTagsWithDeployKey mocks base method.
+func (m *MockFleetMgrDeviceTagsServiceClient) AssociateTagsWithDeployKey(ctx context.Context, in *fmpb.AssociateTagsWithDeployKeyRequest, opts ...grpc.CallOption) (*fmpb.AssociateTagsWithDeployKeyResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "AssociateTagsWithDeployKey", varargs...)
+	ret0, _ := ret[0].(*fmpb.AssociateTagsWithDeployKeyResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// AssociateTagsWithDeployKey indicates an expected call of AssociateTagsWithDeployKey.
+func (mr *MockFleetMgrDeviceTagsServiceClientMockRecorder) AssociateTagsWithDeployKey(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AssociateTagsWithDeployKey", reflect.TypeOf((*MockFleetMgrDeviceTagsServiceClient)(nil).AssociateTagsWithDeployKey), varargs...)
+}
+
+// DeleteTag mocks base method.
+func (m *MockFleetMgrDeviceTagsServiceClient) DeleteTag(ctx context.Context, in *fmpb.DeleteTagRequest, opts ...grpc.CallOption) (*fmpb.DeleteTagResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteTag", varargs...)
+	ret0, _ := ret[0].(*fmpb.DeleteTagResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteTag indicates an expected call of DeleteTag.
+func (mr *MockFleetMgrDeviceTagsServiceClientMockRecorder) DeleteTag(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTag", reflect.TypeOf((*MockFleetMgrDeviceTagsServiceClient)(nil).DeleteTag), varargs...)
+}
+
+// GetTags mocks base method.
+func (m *MockFleetMgrDeviceTagsServiceClient) GetTags(ctx context.Context, in *fmpb.GetTagsRequest, opts ...grpc.CallOption) (*fmpb.GetTagsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetTags", varargs...)
+	ret0, _ := ret[0].(*fmpb.GetTagsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTags indicates an expected call of GetTags.
+func (mr *MockFleetMgrDeviceTagsServiceClientMockRecorder) GetTags(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTags", reflect.TypeOf((*MockFleetMgrDeviceTagsServiceClient)(nil).GetTags), varargs...)
+}
+
+// ListTagsAssociatedWithDeployKey mocks base method.
+func (m *MockFleetMgrDeviceTagsServiceClient) ListTagsAssociatedWithDeployKey(ctx context.Context, in *fmpb.ListTagsAssociatedWithDeployKeyRequest, opts ...grpc.CallOption) (*fmpb.ListTagsAssociatedWithDeployKeyResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListTagsAssociatedWithDeployKey", varargs...)
+	ret0, _ := ret[0].(*fmpb.ListTagsAssociatedWithDeployKeyResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTagsAssociatedWithDeployKey indicates an expected call of ListTagsAssociatedWithDeployKey.
+func (mr *MockFleetMgrDeviceTagsServiceClientMockRecorder) ListTagsAssociatedWithDeployKey(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTagsAssociatedWithDeployKey", reflect.TypeOf((*MockFleetMgrDeviceTagsServiceClient)(nil).ListTagsAssociatedWithDeployKey), varargs...)
+}
+
+// UnassociateTagsWithDeployKey mocks base method.
+func (m *MockFleetMgrDeviceTagsServiceClient) UnassociateTagsWithDeployKey(ctx context.Context, in *fmpb.UnassociateTagsWithDeployKeyRequest, opts ...grpc.CallOption) (*fmpb.UnassociateTagsWithDeployKeyResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnassociateTagsWithDeployKey", varargs...)
+	ret0, _ := ret[0].(*fmpb.UnassociateTagsWithDeployKeyResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UnassociateTagsWithDeployKey indicates an expected call of UnassociateTagsWithDeployKey.
+func (mr *MockFleetMgrDeviceTagsServiceClientMockRecorder) UnassociateTagsWithDeployKey(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnassociateTagsWithDeployKey", reflect.TypeOf((*MockFleetMgrDeviceTagsServiceClient)(nil).UnassociateTagsWithDeployKey), varargs...)
 }
 
 // UpsertTag mocks base method.
-func (m *MockFleetMgrEdgeServiceServer) UpsertTag(arg0 context.Context, arg1 *fmpb.UpsertTagRequest) (*fmpb.UpsertTagResponse, error) {
+func (m *MockFleetMgrDeviceTagsServiceClient) UpsertTag(ctx context.Context, in *fmpb.UpsertTagRequest, opts ...grpc.CallOption) (*fmpb.UpsertTagResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertTag", varargs...)
+	ret0, _ := ret[0].(*fmpb.UpsertTagResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpsertTag indicates an expected call of UpsertTag.
+func (mr *MockFleetMgrDeviceTagsServiceClientMockRecorder) UpsertTag(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertTag", reflect.TypeOf((*MockFleetMgrDeviceTagsServiceClient)(nil).UpsertTag), varargs...)
+}
+
+// MockFleetMgrDeviceTagsServiceServer is a mock of FleetMgrDeviceTagsServiceServer interface.
+type MockFleetMgrDeviceTagsServiceServer struct {
+	ctrl     *gomock.Controller
+	recorder *MockFleetMgrDeviceTagsServiceServerMockRecorder
+}
+
+// MockFleetMgrDeviceTagsServiceServerMockRecorder is the mock recorder for MockFleetMgrDeviceTagsServiceServer.
+type MockFleetMgrDeviceTagsServiceServerMockRecorder struct {
+	mock *MockFleetMgrDeviceTagsServiceServer
+}
+
+// NewMockFleetMgrDeviceTagsServiceServer creates a new mock instance.
+func NewMockFleetMgrDeviceTagsServiceServer(ctrl *gomock.Controller) *MockFleetMgrDeviceTagsServiceServer {
+	mock := &MockFleetMgrDeviceTagsServiceServer{ctrl: ctrl}
+	mock.recorder = &MockFleetMgrDeviceTagsServiceServerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockFleetMgrDeviceTagsServiceServer) EXPECT() *MockFleetMgrDeviceTagsServiceServerMockRecorder {
+	return m.recorder
+}
+
+// AssociateTagsWithDeployKey mocks base method.
+func (m *MockFleetMgrDeviceTagsServiceServer) AssociateTagsWithDeployKey(arg0 context.Context, arg1 *fmpb.AssociateTagsWithDeployKeyRequest) (*fmpb.AssociateTagsWithDeployKeyResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AssociateTagsWithDeployKey", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.AssociateTagsWithDeployKeyResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// AssociateTagsWithDeployKey indicates an expected call of AssociateTagsWithDeployKey.
+func (mr *MockFleetMgrDeviceTagsServiceServerMockRecorder) AssociateTagsWithDeployKey(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AssociateTagsWithDeployKey", reflect.TypeOf((*MockFleetMgrDeviceTagsServiceServer)(nil).AssociateTagsWithDeployKey), arg0, arg1)
+}
+
+// DeleteTag mocks base method.
+func (m *MockFleetMgrDeviceTagsServiceServer) DeleteTag(arg0 context.Context, arg1 *fmpb.DeleteTagRequest) (*fmpb.DeleteTagResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteTag", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.DeleteTagResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteTag indicates an expected call of DeleteTag.
+func (mr *MockFleetMgrDeviceTagsServiceServerMockRecorder) DeleteTag(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTag", reflect.TypeOf((*MockFleetMgrDeviceTagsServiceServer)(nil).DeleteTag), arg0, arg1)
+}
+
+// GetTags mocks base method.
+func (m *MockFleetMgrDeviceTagsServiceServer) GetTags(arg0 context.Context, arg1 *fmpb.GetTagsRequest) (*fmpb.GetTagsResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTags", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.GetTagsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTags indicates an expected call of GetTags.
+func (mr *MockFleetMgrDeviceTagsServiceServerMockRecorder) GetTags(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTags", reflect.TypeOf((*MockFleetMgrDeviceTagsServiceServer)(nil).GetTags), arg0, arg1)
+}
+
+// ListTagsAssociatedWithDeployKey mocks base method.
+func (m *MockFleetMgrDeviceTagsServiceServer) ListTagsAssociatedWithDeployKey(arg0 context.Context, arg1 *fmpb.ListTagsAssociatedWithDeployKeyRequest) (*fmpb.ListTagsAssociatedWithDeployKeyResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListTagsAssociatedWithDeployKey", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.ListTagsAssociatedWithDeployKeyResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTagsAssociatedWithDeployKey indicates an expected call of ListTagsAssociatedWithDeployKey.
+func (mr *MockFleetMgrDeviceTagsServiceServerMockRecorder) ListTagsAssociatedWithDeployKey(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTagsAssociatedWithDeployKey", reflect.TypeOf((*MockFleetMgrDeviceTagsServiceServer)(nil).ListTagsAssociatedWithDeployKey), arg0, arg1)
+}
+
+// UnassociateTagsWithDeployKey mocks base method.
+func (m *MockFleetMgrDeviceTagsServiceServer) UnassociateTagsWithDeployKey(arg0 context.Context, arg1 *fmpb.UnassociateTagsWithDeployKeyRequest) (*fmpb.UnassociateTagsWithDeployKeyResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UnassociateTagsWithDeployKey", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.UnassociateTagsWithDeployKeyResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UnassociateTagsWithDeployKey indicates an expected call of UnassociateTagsWithDeployKey.
+func (mr *MockFleetMgrDeviceTagsServiceServerMockRecorder) UnassociateTagsWithDeployKey(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnassociateTagsWithDeployKey", reflect.TypeOf((*MockFleetMgrDeviceTagsServiceServer)(nil).UnassociateTagsWithDeployKey), arg0, arg1)
+}
+
+// UpsertTag mocks base method.
+func (m *MockFleetMgrDeviceTagsServiceServer) UpsertTag(arg0 context.Context, arg1 *fmpb.UpsertTagRequest) (*fmpb.UpsertTagResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpsertTag", arg0, arg1)
 	ret0, _ := ret[0].(*fmpb.UpsertTagResponse)
@@ -839,7 +931,7 @@ func (m *MockFleetMgrEdgeServiceServer) UpsertTag(arg0 context.Context, arg1 *fm
 }
 
 // UpsertTag indicates an expected call of UpsertTag.
-func (mr *MockFleetMgrEdgeServiceServerMockRecorder) UpsertTag(arg0, arg1 any) *gomock.Call {
+func (mr *MockFleetMgrDeviceTagsServiceServerMockRecorder) UpsertTag(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertTag", reflect.TypeOf((*MockFleetMgrEdgeServiceServer)(nil).UpsertTag), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertTag", reflect.TypeOf((*MockFleetMgrDeviceTagsServiceServer)(nil).UpsertTag), arg0, arg1)
 }

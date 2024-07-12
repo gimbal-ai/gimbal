@@ -327,7 +327,7 @@ message DeleteTagResponse {}
 
 // ================== Service Definitions ==================
 
-// FleetMgrService is responsible for communciating with the API service about fleets and devices.
+// FleetMgrService is responsible for communicating with the API service about fleets.
 service FleetMgrService {
   // Creates a new fleet for the org.
   rpc CreateFleet(CreateFleetRequest) returns (CreateFleetResponse);
@@ -349,19 +349,13 @@ service FleetMgrService {
 
 // FleetMgrEdgeService is responsible for communicating with the devices about their state.
 service FleetMgrEdgeService {
-  // AssociateTagsWithDeployKey stores tags associated with a deploy key. These
-  // tags will be converted to device tags during device registration.
-  rpc AssociateTagsWithDeployKey(AssociateTagsWithDeployKeyRequest)
-      returns (AssociateTagsWithDeployKeyResponse);
-  // UnassociateTagsWithDeployKey removes tags associated with a deploy key.
-  rpc UnassociateTagsWithDeployKey(UnassociateTagsWithDeployKeyRequest)
-      returns (UnassociateTagsWithDeployKeyResponse);
-  // ListTagsAssociatedWithDeployKey returns the tags associated with a deploy key.
-  rpc ListTagsAssociatedWithDeployKey(ListTagsAssociatedWithDeployKeyRequest)
-      returns (ListTagsAssociatedWithDeployKeyResponse);
   // Register adds a device as part of the fleet. If the device has already been registered it
   // simply returns with the existing config.
   rpc Register(RegisterRequest) returns (RegisterResponse);
+}
+
+// FleetMgrDeviceService is responsible for management of devices.
+service FleetMgrDeviceService {
   // UpdateStatus is used to update a device's status, such as its last heartbeat.
   rpc UpdateStatus(UpdateStatusRequest) returns (UpdateStatusResponse);
   // GetDevice gets the information about a particular device.
@@ -374,10 +368,24 @@ service FleetMgrEdgeService {
   rpc DeleteDevices(DeleteDevicesRequest) returns (DeleteDevicesResponse);
   // SetDeviceCapabilities sets the capabilities of a device.
   rpc SetDeviceCapabilities(SetDeviceCapabilitiesRequest) returns (SetDeviceCapabilitiesResponse);
+}
+
+// FleetMgrDeviceTagsService is responsible for managing device tags.
+service FleetMgrDeviceTagsService {
   // GetTags gets the tags for a device.
   rpc GetTags(GetTagsRequest) returns (GetTagsResponse);
   // UpsertTag creates or updates a tag for a device.
   rpc UpsertTag(UpsertTagRequest) returns (UpsertTagResponse);
   // DeleteTag deletes a tag from a device.
   rpc DeleteTag(DeleteTagRequest) returns (DeleteTagResponse);
+  // AssociateTagsWithDeployKey stores tags associated with a deploy key. These
+  // tags will be converted to device tags during device registration.
+  rpc AssociateTagsWithDeployKey(AssociateTagsWithDeployKeyRequest)
+      returns (AssociateTagsWithDeployKeyResponse);
+  // UnassociateTagsWithDeployKey removes tags associated with a deploy key.
+  rpc UnassociateTagsWithDeployKey(UnassociateTagsWithDeployKeyRequest)
+      returns (UnassociateTagsWithDeployKeyResponse);
+  // ListTagsAssociatedWithDeployKey returns the tags associated with a deploy key.
+  rpc ListTagsAssociatedWithDeployKey(ListTagsAssociatedWithDeployKeyRequest)
+      returns (ListTagsAssociatedWithDeployKeyResponse);
 }
