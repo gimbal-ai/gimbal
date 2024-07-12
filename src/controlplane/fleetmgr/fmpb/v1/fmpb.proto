@@ -173,6 +173,10 @@ message DeviceInfo {
   string serial = 2;
   // The hostname of the device.
   string hostname = 3;
+  // An optional user set display name for the device.
+  // This should be preferentially used when referring to the device in the UI,
+  // with the hostname as a fallback.
+  string display_name = 11;
   // The fleet that the device is in.
   gml.types.UUID fleet_id = 4
       [ (gogoproto.customname) = "FleetID", (gogoproto.moretags) = 'db:"fleet_id"' ];
