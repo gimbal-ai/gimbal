@@ -88,18 +88,38 @@ function device_type() {
   return
 }
 
-GML_CACHE_DIR=${GML_CACHE_DIR:-"$HOME/.cache/gml"}
+# Do not inline this variable; it is the keyword of templating process.
+DEFAULT_CONTROLPLANE_ADDR="app.dev.gimletlabs.dev:443"
+
+# Externally settable environment variables.
+CONTROLPLANE_ADDR=${GML_CONTROLPLANE_ADDR:-${DEFAULT_CONTROLPLANE_ADDR}}
+DEPLOY_KEY=${GML_DEPLOY_KEY:-""}
+IMAGE_REPO=${GML_IMAGE_REPO:-"us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/gem_image"}
+IMAGE_TAG=${GML_IMAGE_TAG:-""}
+IMAGE_VERSION=${GML_IMAGE_VERSION:-"dev-latest"}
+HOST_NETWORK=${GML_HOST_NETWORK:-"false"}
+VIDEO_FILE=${GML_VIDEO_FILE:-""}
+RTSP_STREAM="${GML_RTSP_STREAM:-""}"
+RANDOMIZE_DEVICE_SERIAL=${GML_RANDOMIZE_DEVICE_SERIAL:-"false"}
+DEV_MODE=${GML_DEV_MODE:-"false"}
+CACHE_DIR=${GML_CACHE_DIR:-"$HOME/.cache/gml"}
+
+mkdir -p "$CACHE_DIR"
 
 docker_flags=(
   -h "$(hostname)"
   --pid=host
-  -v "$GML_CACHE_DIR:/gml"
+  -v "$CACHE_DIR:/gml"
   -v /usr/lib:/host_lib
   # Mount /sys so that GEM can use the mac address as the SERIAL_NUMBER and also read system metrics.
   -v /sys:/host/sys
 )
 
-DEV_MODE=${GML_DEV_MODE:-"false"}
+cmdline_opts=(
+  "--blob_store_dir" "/gml"
+  "--sys_path" "/host/sys"
+  "--sys_class_net_path" "/host/sys/class/net"
+)
 
 if [[ "$DEV_MODE" == "true" ]]; then
   warn "DEV MODE: ENABLED"
@@ -114,22 +134,12 @@ else
   docker_flags+=(-d)
 fi
 
-HOST_NETWORK=${GML_HOST_NETWORK:-"false"}
 if [[ "$HOST_NETWORK" == "true" ]]; then
   docker_flags+=(
     --network=host
   )
 fi
 
-DEFAULT_IMAGE_VERSION="dev-latest"
-
-cmdline_opts=(
-  "--blob_store_dir" "/gml"
-  "--sys_path" "/host/sys"
-  "--sys_class_net_path" "/host/sys/class/net"
-)
-
-VIDEO_FILE="${GML_VIDEO_FILE:-""}"
 if [[ -n "$VIDEO_FILE" ]]; then
   video_filename=$(basename "$VIDEO_FILE")
   docker_flags+=(
@@ -138,12 +148,10 @@ if [[ -n "$VIDEO_FILE" ]]; then
   cmdline_opts+=("--video_source=/gml/${video_filename}")
 fi
 
-RTSP_STREAM="${GML_RTSP_STREAM:-""}"
 if [ -n "$RTSP_STREAM" ] && [ -z "$VIDEO_FILE" ]; then
   cmdline_opts+=("--video_source=${RTSP_STREAM}")
 fi
 
-RANDOMIZE_DEVICE_SERIAL=${GML_RANDOMIZE_DEVICE_SERIAL:-"false"}
 if [[ "$RANDOMIZE_DEVICE_SERIAL" == "true" ]]; then
   cmdline_opts+=("--device_serial=$(</dev/urandom tr -dc 'a-f0-9' | fold -w 32 | head -n 1)")
 fi
@@ -204,7 +212,6 @@ function prompt_deploy_key() {
   read -r -p "Deploy Key: " DEPLOY_KEY
 }
 
-DEPLOY_KEY=${GML_DEPLOY_KEY:-""}
 if [[ -z "$DEPLOY_KEY" ]]; then
   prompt_deploy_key
 fi
@@ -214,26 +221,21 @@ while [[ -z "$DEPLOY_KEY" ]]; do
 done
 
 cmdline_opts+=(--deploy_key="$DEPLOY_KEY")
-
-DEFAULT_IMAGE_REPO="us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/gem_image"
-DEFAULT_CONTROLPLANE_ADDR="app.dev.gimletlabs.dev:443"
-CONTROLPLANE_ADDR=${GML_CONTROLPLANE_ADDR:-${DEFAULT_CONTROLPLANE_ADDR}}
 cmdline_opts+=(--controlplane_addr="$CONTROLPLANE_ADDR")
 
-mkdir -p "$GML_CACHE_DIR"
-
-IMAGE_VERSION=${GML_IMAGE_VERSION:-${DEFAULT_IMAGE_VERSION}}
 if [[ -z "$IMAGE_TYPE" ]]; then
   IMAGE_TAG=${GML_IMAGE_TAG:-${IMAGE_VERSION}}
 else
   IMAGE_TAG=${GML_IMAGE_TAG:-"${IMAGE_TYPE}-${IMAGE_VERSION}"}
 fi
-IMAGE_REPO=${GML_IMAGE_REPO:-${DEFAULT_IMAGE_REPO}}
-echo "Running container: $IMAGE_REPO:$IMAGE_TAG"
+
+IMAGE="${IMAGE_REPO}:${IMAGE_TAG}"
+
+echo "Running container: $IMAGE"
 
 container_id=$(docker run \
   "${docker_flags[@]}" \
-  "$IMAGE_REPO:$IMAGE_TAG" \
+  "$IMAGE" \
   "${cmdline_opts[@]}")
 
 function success() {
