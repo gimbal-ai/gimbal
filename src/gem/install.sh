@@ -95,8 +95,8 @@ DEFAULT_CONTROLPLANE_ADDR="app.dev.gimletlabs.dev:443"
 CONTROLPLANE_ADDR=${GML_CONTROLPLANE_ADDR:-${DEFAULT_CONTROLPLANE_ADDR}}
 DEPLOY_KEY=${GML_DEPLOY_KEY:-""}
 IMAGE_REPO=${GML_IMAGE_REPO:-"us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/gem_image"}
-IMAGE_TAG=${GML_IMAGE_TAG:-""}
 IMAGE_VERSION=${GML_IMAGE_VERSION:-"dev-latest"}
+IMAGE_DIGEST=${GML_IMAGE_DIGEST:-""}
 HOST_NETWORK=${GML_HOST_NETWORK:-"false"}
 VIDEO_FILE=${GML_VIDEO_FILE:-""}
 RTSP_STREAM="${GML_RTSP_STREAM:-""}"
@@ -223,13 +223,15 @@ done
 cmdline_opts+=(--deploy_key="$DEPLOY_KEY")
 cmdline_opts+=(--controlplane_addr="$CONTROLPLANE_ADDR")
 
-if [[ -z "$IMAGE_TYPE" ]]; then
-  IMAGE_TAG=${GML_IMAGE_TAG:-${IMAGE_VERSION}}
-else
-  IMAGE_TAG=${GML_IMAGE_TAG:-"${IMAGE_TYPE}-${IMAGE_VERSION}"}
+IMAGE_TAG=${IMAGE_VERSION}
+if [[ -n "$IMAGE_TYPE" ]]; then
+  IMAGE_TAG="${IMAGE_TYPE}-${IMAGE_TAG}"
 fi
 
 IMAGE="${IMAGE_REPO}:${IMAGE_TAG}"
+if [[ -n "${IMAGE_DIGEST}" ]]; then
+  IMAGE="${IMAGE}@${IMAGE_DIGEST}"
+fi
 
 echo "Running container: $IMAGE"
 
