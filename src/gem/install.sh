@@ -149,7 +149,7 @@ if [[ "$RANDOMIZE_DEVICE_SERIAL" == "true" ]]; then
 fi
 
 function add_device_flags() {
-  if [ -n "$VIDEO_FILE" ] || [ -n "$GML_RTSP_STREAM" ]; then
+  if [ -n "$VIDEO_FILE" ] || [ -n "$RTSP_STREAM" ]; then
     return
   fi
   ret=0
