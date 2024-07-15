@@ -55,7 +55,7 @@ func init() {
 	}
 
 	t := time.Unix(tUnix, 0)
-	v := semver.MustParse(buildSemver)
+	semVer := semver.MustParse(buildSemver)
 
 	// Short git tags are only 7 characters.
 	buildSCMRevisionShort := "0000000"
@@ -67,16 +67,15 @@ func init() {
 	buildMetadata := []string{
 		buildSCMStatus,
 		buildSCMRevisionShort,
-		t.Format("20060102150405"),
 		buildNumber,
 		builtBy,
 	}
-	v.Build = buildMetadata
+	semVer.Build = buildMetadata
 
 	versionInstance = &Version{
 		buildSCMRevision: buildSCMRevision,
 		buildSCMStatus:   buildSCMStatus,
-		buildSemver:      v,
+		buildSemver:      semVer,
 		buildTimeStamp:   t,
 		builtBy:          builtBy,
 	}
