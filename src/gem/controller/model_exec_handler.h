@@ -46,7 +46,6 @@ class ModelExecHandler : public MessageHandler {
   Status HandleMessage(const ::gml::internal::controlplane::egw::v1::BridgeResponse& msg) override;
   Status HandlePhysicalPipelineSpecUpdate(
       const ::gml::internal::api::core::v1::PhysicalPipelineSpecUpdate&);
-  Status HandleDeleteExecutionGraph(const ::gml::internal::api::core::v1::DeleteExecutionGraph&);
 
   Status Init() override;
   Status Finish() override;

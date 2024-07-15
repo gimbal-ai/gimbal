@@ -53,7 +53,6 @@ namespace gml::gem::controller {
 
 using ::gml::gem::exec::core::ExecutionContext;
 using ::gml::gem::exec::core::Model;
-using ::gml::internal::api::core::v1::DeleteExecutionGraph;
 using gml::internal::api::core::v1::EDGE_CP_TOPIC_EXEC;
 using ::gml::internal::api::core::v1::ExecutionSpec;
 using ::gml::internal::api::core::v1::PhysicalPipelineSpecUpdate;
@@ -210,9 +209,9 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
 };
 
 Status ModelExecHandler::HandleMessage(const BridgeResponse& msg) {
-  PhysicalPipelineSpecUpdate eg;
-  if (msg.msg().UnpackTo(&eg)) {
-    return this->HandlePhysicalPipelineSpecUpdate(eg);
+  PhysicalPipelineSpecUpdate update;
+  if (msg.msg().UnpackTo(&update)) {
+    return this->HandlePhysicalPipelineSpecUpdate(update);
   }
 
   LOG(ERROR) << "Failed to unpack message. Received message of type: " << msg.msg().type_url()
@@ -221,49 +220,25 @@ Status ModelExecHandler::HandleMessage(const BridgeResponse& msg) {
   return Status::OK();
 }
 
-Status ModelExecHandler::HandleDeleteExecutionGraph(const DeleteExecutionGraph& dg) {
+Status ModelExecHandler::HandlePhysicalPipelineSpecUpdate(
+    const PhysicalPipelineSpecUpdate& update) {
   absl::base_internal::SpinLockHolder lock(&exec_graph_lock_);
 
-  auto id = ParseUUID(dg.physical_pipeline_id());
+  PhysicalPipelineSpecUpdate graph = update;
+  PhysicalPipelineSpecUpdate default_graph;
 
-  // If there's a running task and its ID matches the one to delete, stop it.
-  if (running_task_ != nullptr && id == physical_pipeline_id_) {
-    LOG(INFO) << "Model is running... Signaling the running task to stop";
-    stop_signal_.store(true);
+  if (update.spec().state() == PipelineState::PIPELINE_STATE_TERMINATED) {
+    // We should run the default pipeline.
+    GML_RETURN_IF_ERROR(this->GetDefaultVideoExecutionGraph(&default_graph));
 
-    // If there are no queued execution graphs, run the default pipeline.
-    if (queued_execution_graph_ == nullptr) {
-      LOG(INFO) << "No other models are queued... Starting the DefaultVideoExecutionGraph";
-      PhysicalPipelineSpecUpdate eg;
-      GML_RETURN_IF_ERROR(this->GetDefaultVideoExecutionGraph(&eg));
-      return this->HandlePhysicalPipelineSpecUpdate(eg);
-    }
-
-    return Status::OK();
+    graph = default_graph;
   }
 
-  // If the queued execution graph's ID matches the one to delete, remove it from the queue.
-  if (queued_execution_graph_ != nullptr &&
-      id == ParseUUID(queued_execution_graph_->physical_pipeline_id())) {
-    LOG(INFO) << "Model is running... Signaling the running task to stop";
-    queued_execution_graph_ = nullptr;
-
-    return Status::OK();
-  }
-
-  LOG(INFO) << "Could not find model to delete from device  " << id;
-
-  return Status::OK();
-}
-
-Status ModelExecHandler::HandlePhysicalPipelineSpecUpdate(const PhysicalPipelineSpecUpdate& eg) {
-  absl::base_internal::SpinLockHolder lock(&exec_graph_lock_);
-
-  auto id = ParseUUID(eg.physical_pipeline_id());
+  auto id = ParseUUID(graph.physical_pipeline_id());
 
   if (running_task_ != nullptr) {
     LOG(INFO) << "Model already running... Queuing up RunModel Request";
-    queued_execution_graph_ = std::make_unique<PhysicalPipelineSpecUpdate>(eg);
+    queued_execution_graph_ = std::make_unique<PhysicalPipelineSpecUpdate>(graph);
     stop_signal_.store(true);
     return Status::OK();
   }
@@ -271,15 +246,15 @@ Status ModelExecHandler::HandlePhysicalPipelineSpecUpdate(const PhysicalPipeline
   LOG(INFO) << "Starting model execution  " << id;
   queued_execution_graph_ = nullptr;
 
-  if (!eg.has_spec()) {
+  if (!graph.has_spec()) {
     LOG(ERROR) << "Missing spec in PhysicalPipelineSpecUpdate msg";
     return Status::OK();
   }
 
   stop_signal_.store(false);
 
-  auto task = std::make_unique<RunModelTask>(this, eg.spec().graph(), ctrl_exec_ctx_, id,
-                                             eg.spec().version());
+  auto task = std::make_unique<RunModelTask>(this, graph.spec().graph(), ctrl_exec_ctx_, id,
+                                             graph.spec().version());
 
   running_task_ = dispatcher()->CreateAsyncTask(std::move(task));
   running_task_->Run();
@@ -288,7 +263,7 @@ Status ModelExecHandler::HandlePhysicalPipelineSpecUpdate(const PhysicalPipeline
   return Status::OK();
 }
 
-Status ModelExecHandler::GetDefaultVideoExecutionGraph(PhysicalPipelineSpecUpdate* eg) {
+Status ModelExecHandler::GetDefaultVideoExecutionGraph(PhysicalPipelineSpecUpdate* update) {
   auto caps = capabilities::core::DeviceCapabilities();
   auto& plugin_registry = plugins::Registry::GetInstance();
   for (auto& name : plugin_registry.RegisteredCapabilityListers()) {
@@ -309,7 +284,7 @@ Status ModelExecHandler::GetDefaultVideoExecutionGraph(PhysicalPipelineSpecUpdat
   }
 
   // Pass the camera options to the exec graph.
-  auto spec = eg->mutable_spec()->mutable_graph();
+  auto spec = update->mutable_spec()->mutable_graph();
   google::protobuf::Any any;
   if (camera.driver() ==
       gml::internal::api::core::v1::DeviceCapabilities_CameraInfo::CAMERA_DRIVER_ARGUS) {
@@ -332,11 +307,11 @@ Status ModelExecHandler::GetDefaultVideoExecutionGraph(PhysicalPipelineSpecUpdat
 Status ModelExecHandler::Init() {
   // When the GEM starts up, we want to run the video stream by default. This finds the
   // device's capabilities and initializes the default video stream.
-  PhysicalPipelineSpecUpdate eg;
+  PhysicalPipelineSpecUpdate update;
 
-  GML_RETURN_IF_ERROR(this->GetDefaultVideoExecutionGraph(&eg));
+  GML_RETURN_IF_ERROR(this->GetDefaultVideoExecutionGraph(&update));
 
-  return this->HandlePhysicalPipelineSpecUpdate(eg);
+  return this->HandlePhysicalPipelineSpecUpdate(update);
 }
 
 Status ModelExecHandler::Finish() {
@@ -354,8 +329,10 @@ void ModelExecHandler::HandleRunModelFinished(sole::uuid physical_pipeline_id) {
 
   absl::base_internal::SpinLockHolder lock(&exec_graph_lock_);
   if (queued_execution_graph_ != nullptr) {
-    auto eg = *queued_execution_graph_.get();
-    auto post_cb = [this, eg]() mutable { ECHECK_OK(this->HandlePhysicalPipelineSpecUpdate(eg)); };
+    auto update = *queued_execution_graph_.get();
+    auto post_cb = [this, update]() mutable {
+      ECHECK_OK(this->HandlePhysicalPipelineSpecUpdate(update));
+    };
 
     dispatcher()->Post(event::PostCB(std::move(post_cb)));
   }
