@@ -103,6 +103,11 @@ common:cuda_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
 common:cuda_sysroot --config=sysroot-base
 common:cuda_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=cuda
 
+common:experimental_sysroot --config=clang-libc++
+common:experimental_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
+common:experimental_sysroot --config=sysroot-base
+common:experimental_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=experimental
+
 # Build for Clang using Libc++.
 build:clang-libc++ --//bazel/cc_toolchains:compiler=clang
 build:clang-libc++ --//bazel:enable_libcpp

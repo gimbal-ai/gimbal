@@ -78,31 +78,58 @@ _DEBIAN12_TEST_PKGS = [
     "debian12_python3.11",
 ]
 
-def _debian12_sysroots():
-    sysroot_repo(
-        name = "sysroot_debian12_runtime",
+def _debian12_with_extras(
+        prefix,
+        runtime_target_settings,
+        build_target_settings,
+        test_target_settings,
+        extra_runtime_packages = [],
+        extra_build_packages = [],
+        extra_test_packages = [],
+        extra_build_compile_flags = [],
+        extra_build_link_flags = [],
         libc_version = "glibc2_36",
-        supported_archs = ["aarch64", "x86_64"],
+        supported_archs = ["aarch64", "x86_64"]):
+    sysroot_repo(
+        name = "{}_runtime".format(prefix),
+        libc_version = libc_version,
+        supported_archs = supported_archs,
         variant = "runtime",
-        packages = _DEBIAN12_RUNTIME_PKGS,
-        target_settings = ["@gml//bazel/cc_toolchains/sysroots:use_debian12_runtime_sysroot"],
+        packages = _DEBIAN12_RUNTIME_PKGS + extra_runtime_packages,
+        target_settings = runtime_target_settings,
     )
+
     sysroot_repo(
-        name = "sysroot_debian12_build",
-        libc_version = "glibc2_36",
-        supported_archs = ["aarch64", "x86_64"],
+        name = "{}_build".format(prefix),
+        libc_version = libc_version,
+        supported_archs = supported_archs,
         variant = "build",
-        packages = _DEBIAN12_RUNTIME_PKGS + _DEBIAN12_BUILD_PKGS,
-        target_settings = ["@gml//bazel/cc_toolchains/sysroots:use_debian12_build_sysroot"],
-        path_prefix_filters = _DEFAULT_BUILD_PATH_PREFIXES,
+        packages = _DEBIAN12_RUNTIME_PKGS + _DEBIAN12_BUILD_PKGS + extra_runtime_packages + extra_build_packages,
+        extra_compile_flags = extra_build_compile_flags,
+        extra_link_flags = extra_build_link_flags,
+        target_settings = build_target_settings,
     )
+
     sysroot_repo(
-        name = "sysroot_debian12_test",
-        libc_version = "glibc2_36",
-        supported_archs = ["aarch64", "x86_64"],
+        name = "{}_test".format(prefix),
+        libc_version = libc_version,
+        supported_archs = supported_archs,
         variant = "test",
-        packages = _DEBIAN12_RUNTIME_PKGS + _DEBIAN12_BUILD_PKGS + _DEBIAN12_TEST_PKGS,
-        target_settings = ["@gml//bazel/cc_toolchains/sysroots:use_debian12_test_sysroot"],
+        packages = _DEBIAN12_RUNTIME_PKGS + _DEBIAN12_BUILD_PKGS + _DEBIAN12_TEST_PKGS + extra_runtime_packages + extra_build_packages + extra_test_packages,
+
+        # TODO(james) figure out if we need the build compile flags here or not. The original CUDA implementation
+        # seemed to require it.
+        extra_compile_flags = extra_build_compile_flags,
+        extra_link_flags = extra_build_link_flags,
+        target_settings = test_target_settings,
+    )
+
+def _debian12_sysroots():
+    _debian12_with_extras(
+        prefix = "sysroot_debian12",
+        runtime_target_settings = ["@gml//bazel/cc_toolchains/sysroots:use_debian12_runtime_sysroot"],
+        build_target_settings = ["@gml//bazel/cc_toolchains/sysroots:use_debian12_build_sysroot"],
+        test_target_settings = ["@gml//bazel/cc_toolchains/sysroots:use_debian12_test_sysroot"],
     )
 
 def _jetson_sysroots():
@@ -203,12 +230,12 @@ def _intel_gpu_sysroots():
         target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_intelgpu"],
     )
 
-def _cuda_sysroot():
-    python_runtime_pkgs = [
-        "debian12_coreutils",
-        "debian12_python3.11",
-    ]
+PYTHON_RUNTIME_PKGS = [
+    "debian12_coreutils",
+    "debian12_python3.11",
+]
 
+def _cuda_sysroot():
     ffmpeg_runtime_pkgs = [
         "debian12_libvdpau1",
         "debian12_libvpx-dev",
@@ -221,43 +248,31 @@ def _cuda_sysroot():
         "nvidia_cuda-toolkit-12-3",
     ]
 
-    sysroot_repo(
-        name = "sysroot_cuda_runtime",
-        libc_version = "glibc2_36",
+    target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_cuda"]
+    _debian12_with_extras(
+        prefix = "sysroot_cuda",
+        runtime_target_settings = target_settings,
+        build_target_settings = target_settings,
+        test_target_settings = target_settings,
+        extra_runtime_packages = PYTHON_RUNTIME_PKGS + ffmpeg_runtime_pkgs,
+        extra_build_packages = ffmpeg_build_pkgs,
         supported_archs = ["x86_64"],
-        variant = "runtime",
-        packages = _DEBIAN12_RUNTIME_PKGS + python_runtime_pkgs + ffmpeg_runtime_pkgs,
-        target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_cuda"],
-    )
-
-    sysroot_repo(
-        name = "sysroot_cuda_build",
-        libc_version = "glibc2_36",
-        supported_archs = ["x86_64"],
-        variant = "build",
-        packages = _DEBIAN12_RUNTIME_PKGS + _DEBIAN12_BUILD_PKGS + python_runtime_pkgs + ffmpeg_runtime_pkgs + ffmpeg_build_pkgs,
-        extra_compile_flags = [
+        extra_build_compile_flags = [
             "-isystem%sysroot%/usr/local/cuda/include",
         ],
-        extra_link_flags = [
+        extra_build_link_flags = [
             "-L%sysroot%/usr/local/cuda/lib64",
         ],
-        target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_cuda"],
     )
 
-    sysroot_repo(
-        name = "sysroot_cuda_test",
-        libc_version = "glibc2_36",
-        supported_archs = ["x86_64"],
-        variant = "test",
-        packages = _DEBIAN12_RUNTIME_PKGS + _DEBIAN12_BUILD_PKGS + _DEBIAN12_TEST_PKGS + python_runtime_pkgs + ffmpeg_runtime_pkgs + ffmpeg_build_pkgs,
-        extra_compile_flags = [
-            "-isystem%sysroot%/usr/local/cuda/include",
-        ],
-        extra_link_flags = [
-            "-L%sysroot%/usr/local/cuda/lib64",
-        ],
-        target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_cuda"],
+def _experimental_sysroot():
+    target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_experimental"]
+    _debian12_with_extras(
+        prefix = "sysroot_experimental",
+        runtime_target_settings = target_settings,
+        build_target_settings = target_settings,
+        test_target_settings = target_settings,
+        extra_runtime_packages = PYTHON_RUNTIME_PKGS + ["debian12_libmagic1", "debian12_dash"],
     )
 
 def _gml_sysroots():
@@ -265,6 +280,7 @@ def _gml_sysroots():
     _jetson_sysroots()
     _intel_gpu_sysroots()
     _cuda_sysroot()
+    _experimental_sysroot()
 
 SYSROOT_LIBC_VERSIONS = [
     "glibc2_36",

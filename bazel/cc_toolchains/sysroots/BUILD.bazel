@@ -39,6 +39,7 @@ string_flag(
         "jetson",
         "intelgpu",
         "cuda",
+        "experimental",
     ],
 )
 
@@ -70,6 +71,13 @@ config_setting(
     },
 )
 
+config_setting(
+    name = "sysroot_type_experimental",
+    flag_values = {
+        ":sysroot_type": "experimental",
+    },
+)
+
 # Some of the sysroots don't provide all variants (runtime, build, and test). For those sysroots, we default to the debian12 sysroot for that variant.
 selects.config_setting_group(
     name = "use_debian12_runtime_sysroot",
@@ -84,6 +92,7 @@ selects.config_setting_group(
     match_any = [
         ":sysroot_type_debian12",
         ":sysroot_type_intelgpu",
+        ":sysroot_type_experimental",
     ],
     visibility = ["//visibility:public"],
 )
