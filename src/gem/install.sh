@@ -98,8 +98,7 @@ IMAGE_REPO=${GML_IMAGE_REPO:-"us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-in
 IMAGE_VERSION=${GML_IMAGE_VERSION:-"latest"}
 IMAGE_DIGEST=${GML_IMAGE_DIGEST:-""}
 HOST_NETWORK=${GML_HOST_NETWORK:-"false"}
-VIDEO_FILE=${GML_VIDEO_FILE:-""}
-RTSP_STREAM="${GML_RTSP_STREAM:-""}"
+VIDEO_SOURCE=${GML_VIDEO_SOURCE:-""}
 RANDOMIZE_DEVICE_SERIAL=${GML_RANDOMIZE_DEVICE_SERIAL:-"false"}
 DEV_MODE=${GML_DEV_MODE:-"false"}
 CACHE_DIR=${GML_CACHE_DIR:-"$HOME/.cache/gml"}
@@ -140,16 +139,19 @@ if [[ "$HOST_NETWORK" == "true" ]]; then
   )
 fi
 
-if [[ -n "$VIDEO_FILE" ]]; then
-  video_filename=$(basename "$VIDEO_FILE")
-  docker_flags+=(
-    -v "$VIDEO_FILE:/gml/${video_filename}"
+if [[ "$VIDEO_SOURCE" == "file://"* ]]; then
+  echo "Using file as video source"
+  video_file_path=${VIDEO_SOURCE#file://}
+  video_filename=$(basename "$video_file_path")
+  extra_docker_flags+=(
+    -v "$video_file_path:/gml/${video_filename}"
   )
   cmdline_opts+=("--video_source=/gml/${video_filename}")
-fi
-
-if [ -n "$RTSP_STREAM" ] && [ -z "$VIDEO_FILE" ]; then
-  cmdline_opts+=("--video_source=${RTSP_STREAM}")
+elif [[ "$VIDEO_SOURCE" == "rtsp://"* ]] || [[ "$VIDEO_SOURCE" == "rtsps://"* ]]; then
+  cmdline_opts+=("--video_source=${VIDEO_SOURCE}")
+elif [[ -n "$VIDEO_SOURCE" ]]; then
+  warn "Video source must be a file path beginning with file:// or an RTSP URL beginning with rtsp:// or rtsps://."
+  exit 1
 fi
 
 if [[ "$RANDOMIZE_DEVICE_SERIAL" == "true" ]]; then
@@ -157,7 +159,7 @@ if [[ "$RANDOMIZE_DEVICE_SERIAL" == "true" ]]; then
 fi
 
 function add_device_flags() {
-  if [ -n "$VIDEO_FILE" ] || [ -n "$RTSP_STREAM" ]; then
+  if [[ -n "$VIDEO_SOURCE" ]]; then
     return
   fi
   ret=0
