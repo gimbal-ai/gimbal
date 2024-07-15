@@ -94,8 +94,8 @@ DEFAULT_CONTROLPLANE_ADDR="app.dev.gimletlabs.dev:443"
 # Externally settable environment variables.
 CONTROLPLANE_ADDR=${GML_CONTROLPLANE_ADDR:-${DEFAULT_CONTROLPLANE_ADDR}}
 DEPLOY_KEY=${GML_DEPLOY_KEY:-""}
-IMAGE_REPO=${GML_IMAGE_REPO:-"us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/gem_image"}
-IMAGE_VERSION=${GML_IMAGE_VERSION:-"dev-latest"}
+IMAGE_REPO=${GML_IMAGE_REPO:-"us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/gem_image"}
+IMAGE_VERSION=${GML_IMAGE_VERSION:-"latest"}
 IMAGE_DIGEST=${GML_IMAGE_DIGEST:-""}
 HOST_NETWORK=${GML_HOST_NETWORK:-"false"}
 VIDEO_FILE=${GML_VIDEO_FILE:-""}
@@ -124,7 +124,7 @@ cmdline_opts=(
 if [[ "$DEV_MODE" == "true" ]]; then
   warn "DEV MODE: ENABLED"
   docker_flags+=(
-    # Pull the latest image every time
+    # Pull the image every time
     --pull always
     # Run the container interactively so that users can see the logs
     -it
