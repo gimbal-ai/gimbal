@@ -17,7 +17,7 @@
 load("@experimental_pip//:requirements.bzl", experimental_data_requirements = "all_data_requirements", experimental_requirements = "all_requirements")
 load("@pip//:requirements.bzl", "all_data_requirements", "all_requirements")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
-load("//bazel:images.bzl", "gml_oci_image", "gml_oci_push")
+load("//bazel:images.bzl", "gml_oci_image")
 load("//bazel/python:py_pkg_provider.bzl", "py_pkg_provider")
 
 py_pkg_provider(
@@ -57,13 +57,6 @@ gml_oci_image(
     visibility = ["//visibility:public"],
 )
 
-gml_oci_push(
-    name = "push_python_base_image",
-    image = ":python_base_image",
-    remote_tags = ["latest"],
-    repository = "us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/python_base_image",
-)
-
 gml_oci_image(
     name = "python_experimental_base_image",
     base = "@gml//:cc_base_image",
@@ -73,11 +66,4 @@ gml_oci_image(
         "@com_github_ffmpeg_ffmpeg//:ffmpeg_libs",
     ],
     visibility = ["//src/experimental:__subpackages__"],
-)
-
-gml_oci_push(
-    name = "push_python_experimental_base_image",
-    image = ":python_experimental_base_image",
-    remote_tags = ["latest"],
-    repository = "us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/python_experimental_base_image",
 )
