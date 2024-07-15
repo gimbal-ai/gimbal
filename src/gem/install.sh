@@ -96,6 +96,7 @@ CONTROLPLANE_ADDR=${GML_CONTROLPLANE_ADDR:-${DEFAULT_CONTROLPLANE_ADDR}}
 DEPLOY_KEY=${GML_DEPLOY_KEY:-""}
 IMAGE_REPO=${GML_IMAGE_REPO:-"us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/gem_image"}
 IMAGE_VERSION=${GML_IMAGE_VERSION:-"latest"}
+IMAGE_TAG=${GML_IMAGE_TAG:-""}
 IMAGE_DIGEST=${GML_IMAGE_DIGEST:-""}
 HOST_NETWORK=${GML_HOST_NETWORK:-"false"}
 VIDEO_SOURCE=${GML_VIDEO_SOURCE:-""}
@@ -225,9 +226,11 @@ done
 cmdline_opts+=(--deploy_key="$DEPLOY_KEY")
 cmdline_opts+=(--controlplane_addr="$CONTROLPLANE_ADDR")
 
-IMAGE_TAG=${IMAGE_VERSION}
-if [[ -n "$IMAGE_TYPE" ]]; then
-  IMAGE_TAG="${IMAGE_TYPE}-${IMAGE_TAG}"
+if [[ -z "${IMAGE_TAG}" ]]; then
+  IMAGE_TAG="${IMAGE_VERSION}"
+  if [[ -n "${IMAGE_TYPE}" ]]; then
+    IMAGE_TAG="${IMAGE_TYPE}-${IMAGE_TAG}"
+  fi
 fi
 
 IMAGE="${IMAGE_REPO}:${IMAGE_TAG}"
