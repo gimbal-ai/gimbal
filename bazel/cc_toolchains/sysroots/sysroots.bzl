@@ -89,7 +89,8 @@ def _debian12_with_extras(
         extra_build_compile_flags = [],
         extra_build_link_flags = [],
         libc_version = "glibc2_36",
-        supported_archs = ["aarch64", "x86_64"]):
+        supported_archs = ["aarch64", "x86_64"],
+        path_prefix_filters = []):
     sysroot_repo(
         name = "{}_runtime".format(prefix),
         libc_version = libc_version,
@@ -108,6 +109,7 @@ def _debian12_with_extras(
         extra_compile_flags = extra_build_compile_flags,
         extra_link_flags = extra_build_link_flags,
         target_settings = build_target_settings,
+        path_prefix_filters = path_prefix_filters,
     )
 
     sysroot_repo(
@@ -130,6 +132,7 @@ def _debian12_sysroots():
         runtime_target_settings = ["@gml//bazel/cc_toolchains/sysroots:use_debian12_runtime_sysroot"],
         build_target_settings = ["@gml//bazel/cc_toolchains/sysroots:use_debian12_build_sysroot"],
         test_target_settings = ["@gml//bazel/cc_toolchains/sysroots:use_debian12_test_sysroot"],
+        path_prefix_filters = _DEFAULT_BUILD_PATH_PREFIXES,
     )
 
 def _jetson_sysroots():
