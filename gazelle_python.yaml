@@ -8992,6 +8992,7 @@ manifest:
     setuptools.command.alias: setuptools
     setuptools.command.bdist_egg: setuptools
     setuptools.command.bdist_rpm: setuptools
+    setuptools.command.bdist_wheel: setuptools
     setuptools.command.build: setuptools
     setuptools.command.build_clib: setuptools
     setuptools.command.build_ext: setuptools
@@ -9016,11 +9017,11 @@ manifest:
     setuptools.compat: setuptools
     setuptools.compat.py310: setuptools
     setuptools.compat.py311: setuptools
+    setuptools.compat.py39: setuptools
     setuptools.config: setuptools
     setuptools.config.expand: setuptools
     setuptools.config.pyprojecttoml: setuptools
     setuptools.config.setupcfg: setuptools
-    setuptools.dep_util: setuptools
     setuptools.depends: setuptools
     setuptools.discovery: setuptools
     setuptools.dist: setuptools
@@ -14717,4 +14718,4 @@ manifest:
     zipp.glob: zipp
   pip_repository:
     name: pip
-integrity: 8abe8b905c1902c2dc504bc0fb58b716ec7ed5a4decc3fc1d56beb7f0f5d0e60
+integrity: 2863abdb3f9b8b83a8b4cb3a263d3ca1ddaaf8b0e5c9f4d44b4537cc7fdecb12
