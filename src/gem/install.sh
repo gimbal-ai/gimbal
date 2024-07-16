@@ -144,10 +144,10 @@ if [[ "$VIDEO_SOURCE" == "file://"* ]]; then
   echo "Using file as video source"
   video_file_path=${VIDEO_SOURCE#file://}
   video_filename=$(basename "$video_file_path")
-  extra_docker_flags+=(
-    -v "$video_file_path:/gml/${video_filename}"
+  docker_flags+=(
+    -v "$video_file_path:/gml_videos/${video_filename}"
   )
-  cmdline_opts+=("--video_source=/gml/${video_filename}")
+  cmdline_opts+=("--video_source=/gml_videos/${video_filename}")
 elif [[ "$VIDEO_SOURCE" == "rtsp://"* ]] || [[ "$VIDEO_SOURCE" == "rtsps://"* ]]; then
   cmdline_opts+=("--video_source=${VIDEO_SOURCE}")
 elif [[ -n "$VIDEO_SOURCE" ]]; then
