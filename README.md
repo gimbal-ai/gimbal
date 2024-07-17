@@ -49,7 +49,7 @@ The control plane and CLI are primarily written in Go and utilize cloud-native b
     Using Docker:
 
     ```bash
-    docker run -it us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/dev_image_with_extras:202407091449
+    ./scripts/run_docker.sh
     ```
 
     Using Chef:
