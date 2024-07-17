@@ -223,7 +223,7 @@ use_repo(pip, "gml_api_pip")
 oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
 oci.pull(
     name = "distroless_nodejs",
-    digest = "sha256:a69b487c1d156e3aeaab0ffb587f46248c8e891e289081a3c28f7104a69c4515",  # latest (2024-05-07) multiarch digest
+    digest = "sha256:08d0b6846a21812d07a537eff956acc1bc38a7440a838ce6730515f8d3cd5d9e",  # latest (2024-07-16) multiarch digest
     image = "gcr.io/distroless/nodejs20-debian12",
     platforms = [
         "linux/amd64",
