@@ -70,6 +70,14 @@ The control plane and CLI are primarily written in Go and utilize cloud-native b
     bazel test //...
     ```
 
+1. **Create a Fleet:**
+
+  Go to the [app.gimletlabs.ai](hosted control plane) and create a fleet for your device.
+
+1. **Create a Deploy Key:**
+
+  Go to your fleet's settings and click "Create Deploy Key".
+
 1. **Run GEM:**
 
     ```bash
