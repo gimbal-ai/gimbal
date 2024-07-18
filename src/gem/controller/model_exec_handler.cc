@@ -168,12 +168,14 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
 
   void Work() override {
     auto s = Run();
-    if (!s.ok()) {
+    if (!s.ok() && !parent_->stop_signal_.load()) {
       // TODO(michelle): This is not the prettiest error message, we should consider grouping
       // potential errors into more readable messages.
       SendStatusUpdate(PipelineState::PIPELINE_STATE_FAILED, s.msg());
       failed_ = true;
       LOG(ERROR) << "Failed to run model: " << physical_pipeline_id_ << " " << s.msg();
+    } else {
+      LOG(INFO) << "Model execution finished successfully";
     }
   }
 
