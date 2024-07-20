@@ -27,10 +27,10 @@
 namespace gml::gem::calculators::core {
 
 /**
- *  DetectionsSummaryCalculator Graph API:
+ *  PacketLatencyMetricsSinkCalculator Graph API:
  *
  *  Inputs:
- *    std::vector<internal::api::corepb::v1::Detection> list of detection protos.
+ *    mediapipe::Packet<mediapipe::PacketLatency> packet containing latency data.
  *
  *  No outputs, outputs stats to opentelemetry.
  */
