@@ -34,6 +34,7 @@ using ::gml::gem::calculators::core::optionspb::ByteTrackCalculatorOptions;
 using ::gml::internal::api::core::v1::Detection;
 
 constexpr std::string_view kDetectionVectorTag = "DETECTIONS";
+constexpr std::string_view kRemovedTrackIdsTag = "REMOVED_TRACK_IDS";
 
 int LabelMapper::get_id(const std::string& label) {
   static int next_label_id = 0;
@@ -59,6 +60,9 @@ StatusOr<std::string> LabelMapper::get_label(int id) { return label_id_bimap_.Va
 absl::Status ByteTrackCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   cc->Inputs().Tag(kDetectionVectorTag).Set<std::vector<Detection>>();
   cc->Outputs().Tag(kDetectionVectorTag).Set<std::vector<Detection>>();
+  if (cc->Outputs().HasTag(kRemovedTrackIdsTag)) {
+    cc->Outputs().Tag(kRemovedTrackIdsTag).Set<std::vector<int64_t>>();
+  }
   cc->SetTimestampOffset(0);
   return absl::OkStatus();
 }
@@ -117,8 +121,8 @@ absl::Status ByteTrackCalculator::Process(mediapipe::CalculatorContext* cc) {
     tracker_objects.emplace_back(rect, label_id, score);
   }
 
-  std::vector<byte_track::BYTETracker::STrackPtr> tracked_objs =
-      byte_tracker_->update(tracker_objects).active_stracks;
+  const auto stracks = byte_tracker_->update(tracker_objects);
+  const std::vector<byte_track::BYTETracker::STrackPtr> tracked_objs = stracks.active_stracks;
 
   // Convert back to detections format.
   std::vector<Detection> tracked_detections;
@@ -144,6 +148,17 @@ absl::Status ByteTrackCalculator::Process(mediapipe::CalculatorContext* cc) {
   auto packet = mediapipe::MakePacket<std::vector<Detection>>(std::move(tracked_detections));
   packet = packet.At(cc->InputTimestamp());
   cc->Outputs().Tag(kDetectionVectorTag).AddPacket(std::move(packet));
+
+  if (cc->Outputs().HasTag(kRemovedTrackIdsTag)) {
+    std::vector<int64_t> removed_track_ids;
+    removed_track_ids.reserve(stracks.removed_stracks.size());
+    for (const auto& strack : stracks.removed_stracks) {
+      removed_track_ids.push_back(static_cast<int64_t>(strack->getTrackId()));
+    }
+    auto packet = mediapipe::MakePacket<std::vector<int64_t>>(std::move(removed_track_ids));
+    packet = packet.At(cc->InputTimestamp());
+    cc->Outputs().Tag(kRemovedTrackIdsTag).AddPacket(std::move(packet));
+  }
 
   return absl::OkStatus();
 }

@@ -147,7 +147,6 @@ TEST(ByteTrackCalculatorTest, TrackTwoSimultaneousObjects) {
     runner.MutableInputs()->Tag("DETECTIONS").packets.push_back(p);
   }
 
-  LOG(INFO) << "Running graph.";
   ASSERT_OK(runner.Run());
 
   // Check output.
@@ -224,6 +223,90 @@ TEST(ByteTrackCalculatorTest, Options) {
   // High thresholds will cause no detections to come out.
   const auto& detection1 = output_packets[0].Get<std::vector<Detection>>();
   ASSERT_EQ(detection1.size(), 0);
+}
+
+TEST(ByteTrackCalculatorTest, RemovesTracksAfterMaxFramesLost) {
+  std::mt19937 rng(37);
+
+  constexpr char kGraph[] = R"pbtxt(
+    calculator: "ByteTrackCalculator"
+    input_stream: "DETECTIONS:detection_list"
+    output_stream: "DETECTIONS:tracked_detection_list"
+    output_stream: "REMOVED_TRACK_IDS:removed_track_ids"
+    node_options {
+      [type.googleapis.com/gml.gem.calculators.core.optionspb.ByteTrackCalculatorOptions] {
+        max_frames_lost { value: 2 }
+      }
+    }
+  )pbtxt";
+
+  mediapipe::CalculatorRunner runner(kGraph);
+
+  int t;
+
+  // Frame 1: Two objects
+  t = 1;
+  {
+    std::vector<Detection> detections;
+    detections.push_back(Box1AtTime(t, &rng));
+    detections.push_back(Box2AtTime(t, &rng));
+    runner.MutableInputs()
+        ->Tag("DETECTIONS")
+        .packets.push_back(mediapipe::MakePacket<std::vector<Detection>>(std::move(detections))
+                               .At(mediapipe::Timestamp(t)));
+  }
+
+  // Frame 2: Only one object (Box1)
+  t = 2;
+  {
+    std::vector<Detection> detections;
+    detections.push_back(Box1AtTime(t, &rng));
+    runner.MutableInputs()
+        ->Tag("DETECTIONS")
+        .packets.push_back(mediapipe::MakePacket<std::vector<Detection>>(std::move(detections))
+                               .At(mediapipe::Timestamp(t)));
+  }
+
+  // Frame 3: Only one object (Box1)
+  t = 3;
+  {
+    std::vector<Detection> detections;
+    detections.push_back(Box1AtTime(t, &rng));
+    runner.MutableInputs()
+        ->Tag("DETECTIONS")
+        .packets.push_back(mediapipe::MakePacket<std::vector<Detection>>(std::move(detections))
+                               .At(mediapipe::Timestamp(t)));
+  }
+
+  // Frame 4: Only one object (Box1)
+  t = 4;
+  {
+    std::vector<Detection> detections;
+    detections.push_back(Box1AtTime(t, &rng));
+    runner.MutableInputs()
+        ->Tag("DETECTIONS")
+        .packets.push_back(mediapipe::MakePacket<std::vector<Detection>>(std::move(detections))
+                               .At(mediapipe::Timestamp(t)));
+  }
+
+  ASSERT_OK(runner.Run());
+
+  const auto& outputs = runner.Outputs();
+  ASSERT_EQ(outputs.NumEntries(), 2);
+
+  const std::vector<mediapipe::Packet>& detection_packets = outputs.Tag("DETECTIONS").packets;
+  EXPECT_EQ(detection_packets.size(), 4);
+
+  const std::vector<mediapipe::Packet>& removed_track_packets =
+      outputs.Tag("REMOVED_TRACK_IDS").packets;
+  EXPECT_EQ(removed_track_packets.size(), 4);
+
+  // Check that Box2 is removed after 2 frames of being lost
+  for (int i = 0; i < 3; ++i) {
+    EXPECT_THAT(removed_track_packets[i].Get<std::vector<int64_t>>(), ::testing::ElementsAre());
+  }
+  // Check that Box2 is removed after 2 frames of being lost
+  EXPECT_THAT(removed_track_packets[3].Get<std::vector<int64_t>>(), ::testing::ElementsAre(2));
 }
 
 }  // namespace gml::gem::calculators::core
