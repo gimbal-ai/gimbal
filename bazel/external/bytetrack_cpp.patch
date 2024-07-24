@@ -37,3 +37,20 @@ index 7ccd9b3..216ba71 100644
  
  # Build the tests if the 'BUILD_BYTETRACK_TEST' variable is set to 'ON'
  set(BUILD_BYTETRACK_TEST OFF CACHE BOOL "The flag whether to build the tests or not")
+diff --git a/src/BYTETracker.cpp b/src/BYTETracker.cpp
+index a02abc1..aa2e751 100644
+--- a/src/BYTETracker.cpp
++++ b/src/BYTETracker.cpp
+@@ -209,6 +209,12 @@ std::vector<byte_track::BYTETracker::STrackPtr> byte_track::BYTETracker::update(
+     lost_stracks_ = subStracks(jointStracks(subStracks(lost_stracks_, tracked_stracks_), current_lost_stracks), removed_stracks_);
+     removed_stracks_ = jointStracks(removed_stracks_, current_removed_stracks);
+ 
++    // Remove the earliest stracks in removed_stracks_ if it exceeds 1000 elements
++    // to ensure we don't have a memory leak.
++    if (removed_stracks_.size() > 1000) {
++        removed_stracks_.erase(removed_stracks_.begin(), removed_stracks_.end() - 999);
++    }
++
+     std::vector<STrackPtr> tracked_stracks_out, lost_stracks_out;
+     removeDuplicateStracks(tracked_stracks_, lost_stracks_, tracked_stracks_out, lost_stracks_out);
+     tracked_stracks_ = tracked_stracks_out;
