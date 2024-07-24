@@ -46,6 +46,8 @@ class DetectionsSummaryCalculator
  private:
   std::unique_ptr<opentelemetry::metrics::Histogram<uint64_t>> detection_hist_;
   std::unique_ptr<opentelemetry::metrics::Histogram<double>> confidence_hist_;
+  std::unique_ptr<opentelemetry::metrics::Histogram<double>> box_area_hist_;
+  std::unique_ptr<opentelemetry::metrics::Histogram<double>> box_aspect_ratio_hist_;
 };
 
 }  // namespace gml::gem::calculators::core
