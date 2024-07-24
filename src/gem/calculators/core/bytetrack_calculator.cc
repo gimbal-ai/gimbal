@@ -118,7 +118,7 @@ absl::Status ByteTrackCalculator::Process(mediapipe::CalculatorContext* cc) {
   }
 
   std::vector<byte_track::BYTETracker::STrackPtr> tracked_objs =
-      byte_tracker_->update(tracker_objects);
+      byte_tracker_->update(tracker_objects).active_stracks;
 
   // Convert back to detections format.
   std::vector<Detection> tracked_detections;
