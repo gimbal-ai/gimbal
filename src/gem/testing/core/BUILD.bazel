@@ -14,7 +14,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-load("//bazel:gml_build_system.bzl", "gml_cc_library")
+load("//bazel:gml_build_system.bzl", "gml_cc_library", "gml_cc_test")
 
 package(default_visibility = [
     "//src:__subpackages__",
@@ -27,11 +27,21 @@ gml_cc_library(
     srcs = [
         "calculator_tester.h",
         "matchers.h",
+        "otel_utils.h",
     ],
     deps = [
         "//src/common/testing:cc_library",
         "//src/gem/exec/core:cc_library",
         "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
         "@com_github_google_mediapipe//mediapipe/framework:calculator_runner",
+        "@io_opentelemetry_cpp//sdk/src/metrics",
+    ],
+)
+
+gml_cc_test(
+    name = "otel_utils_test",
+    srcs = ["otel_utils_test.cc"],
+    deps = [
+        ":cc_library",
     ],
 )

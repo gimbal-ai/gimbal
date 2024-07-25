@@ -27,6 +27,7 @@
 #include "src/common/testing/testing.h"
 #include "src/gem/calculators/core/test_utils.h"
 #include "src/gem/testing/core/calculator_tester.h"
+#include "src/gem/testing/core/otel_utils.h"
 
 namespace gml::gem::calculators::core {
 
