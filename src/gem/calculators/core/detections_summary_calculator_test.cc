@@ -25,13 +25,12 @@
 #include "src/common/metrics/metrics_system.h"
 #include "src/common/testing/protobuf.h"
 #include "src/common/testing/testing.h"
+#include "src/gem/calculators/core/test_utils.h"
 #include "src/gem/testing/core/calculator_tester.h"
 
 namespace gml::gem::calculators::core {
 
 using ::gml::internal::api::core::v1::Detection;
-
-using ::opentelemetry::sdk::common::OwnedAttributeValue;
 
 static constexpr char kDetectionsSummaryNode[] = R"pbtxt(
 calculator: "DetectionsSummaryCalculator"
@@ -51,12 +50,6 @@ input_stream: "detection_list"
 output_stream: "FINISHED:finished"
 )pbtxt";
 
-struct ExpectedHist {
-  std::vector<double> bucket_bounds;
-  std::vector<uint64_t> bucket_counts;
-  absl::flat_hash_map<std::string, OwnedAttributeValue> attributes;
-};
-
 struct DetectionsSummaryTestCase {
   std::vector<std::string> detection_pbtxts;
 
@@ -64,26 +57,6 @@ struct DetectionsSummaryTestCase {
 };
 
 class DetectionsSummaryTest : public ::testing::TestWithParam<DetectionsSummaryTestCase> {};
-
-auto MatchPointData(const ExpectedHist& expected) {
-  using ::testing::AllOf;
-  using ::testing::ElementsAreArray;
-  using ::testing::Field;
-  using ::testing::UnorderedElementsAreArray;
-  using ::testing::VariantWith;
-
-  namespace otel_metrics = opentelemetry::sdk::metrics;
-
-  return AllOf(
-      Field(&otel_metrics::PointDataAttributes::point_data,
-            VariantWith<otel_metrics::HistogramPointData>(
-                AllOf(Field(&otel_metrics::HistogramPointData::boundaries_,
-                            ElementsAreArray(expected.bucket_bounds)),
-                      Field(&otel_metrics::HistogramPointData::counts_,
-                            ElementsAreArray(expected.bucket_counts))))),
-      Field(&otel_metrics::PointDataAttributes::attributes,
-            UnorderedElementsAreArray(expected.attributes.begin(), expected.attributes.end())));
-}
 
 TEST_P(DetectionsSummaryTest, CollectsStatsCorrectly) {
   auto test_case = GetParam();
@@ -116,8 +89,8 @@ TEST_P(DetectionsSummaryTest, CollectsStatsCorrectly) {
       const auto& expected_hists = test_case.expected_hists[name];
       const auto& point_data = metric_datum.point_data_attr_;
       ASSERT_EQ(expected_hists.size(), point_data.size());
-      EXPECT_THAT(point_data, ::testing::UnorderedElementsAre(MatchPointData(expected_hists[0]),
-                                                              MatchPointData(expected_hists[1])));
+      EXPECT_THAT(point_data, ::testing::UnorderedElementsAre(MatchHistogram(expected_hists[0]),
+                                                              MatchHistogram(expected_hists[1])));
     }
   };
   auto results_cb =

@@ -25,49 +25,12 @@
 #include "src/common/metrics/metrics_system.h"
 #include "src/common/testing/protobuf.h"
 #include "src/common/testing/testing.h"
+#include "src/gem/calculators/core/test_utils.h"
 #include "src/gem/testing/core/calculator_tester.h"
 
 namespace gml::gem::calculators::core {
 
 using ::gml::internal::api::core::v1::Label;
-
-// TODO(oazizi): Refactor structs that are shared with detections_summary_calculator_test.cc.
-struct ExpectedHist {
-  std::vector<double> bucket_bounds;
-  std::vector<uint64_t> bucket_counts;
-  absl::flat_hash_map<std::string, ::opentelemetry::sdk::common::OwnedAttributeValue> attributes;
-};
-
-auto MatchPointData(const ExpectedHist& expected) {
-  using ::testing::AllOf;
-  using ::testing::ElementsAreArray;
-  using ::testing::Field;
-  using ::testing::UnorderedElementsAreArray;
-  using ::testing::VariantWith;
-
-  namespace otel_metrics = opentelemetry::sdk::metrics;
-
-  return AllOf(
-      Field(&otel_metrics::PointDataAttributes::point_data,
-            VariantWith<otel_metrics::HistogramPointData>(
-                AllOf(Field(&otel_metrics::HistogramPointData::boundaries_,
-                            ElementsAreArray(expected.bucket_bounds)),
-                      Field(&otel_metrics::HistogramPointData::counts_,
-                            ElementsAreArray(expected.bucket_counts))))),
-      Field(&otel_metrics::PointDataAttributes::attributes,
-            UnorderedElementsAreArray(expected.attributes.begin(), expected.attributes.end())));
-}
-
-auto MatchPointDataVector(const std::vector<ExpectedHist>& expected) {
-  using MatchPointDataType = decltype(MatchPointData(expected[0]));
-
-  std::vector<MatchPointDataType> matchers;
-  matchers.reserve(expected.size());
-  for (const auto& x : expected) {
-    matchers.push_back(MatchPointData(x));
-  }
-  return UnorderedElementsAreArray(matchers);
-}
 
 struct PacketAndExpectation {
   std::vector<std::string> input_labels_pbtxts;
@@ -116,7 +79,7 @@ TEST_P(ClassificationsMetricsSinkTest, CollectsStatsCorrectly) {
 
           for (const auto& metric_datum : metric_data) {
             const auto& point_data = metric_datum.point_data_attr_;
-            EXPECT_THAT(point_data, MatchPointDataVector(expected_hists));
+            EXPECT_THAT(point_data, MatchHistogramVector(expected_hists));
           }
         };
     auto results_cb =

@@ -96,6 +96,7 @@ gml_cc_test(
     name = "classifications_metrics_sink_calculator_test",
     srcs = [
         "classifications_metrics_sink_calculator_test.cc",
+        "test_utils.h",
     ],
     deps = [
         ":cc_library",
@@ -107,6 +108,7 @@ gml_cc_test(
     name = "detections_summary_calculator_test",
     srcs = [
         "detections_summary_calculator_test.cc",
+        "test_utils.h",
     ],
     deps = [
         ":cc_library",
