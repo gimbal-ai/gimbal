@@ -31,8 +31,8 @@ namespace gml::gem::calculators::core {
  *  Inputs:
  *  - T
  *
- *  No real outputs, outputs stats to opentelemetry. Optional bool output to signal processing has
- *    finished.
+ *  No real outputs, outputs stats to opentelemetry.
+ *  Optional bool output to signal processing has finished.
  */
 template <typename T>
 class MetricsSinkCalculator : public mediapipe::CalculatorBase {
@@ -48,10 +48,12 @@ class MetricsSinkCalculator : public mediapipe::CalculatorBase {
     cc->SetTimestampOffset(0);
     return absl::OkStatus();
   }
+
   absl::Status Open(mediapipe::CalculatorContext* cc) override {
     GML_ABSL_RETURN_IF_ERROR(BuildMetrics(cc));
     return absl::OkStatus();
   }
+
   absl::Status Process(mediapipe::CalculatorContext* cc) override {
     GML_ABSL_RETURN_IF_ERROR(RecordMetrics(cc));
     if (cc->Outputs().HasTag(kFinishedTag)) {
@@ -61,6 +63,7 @@ class MetricsSinkCalculator : public mediapipe::CalculatorBase {
     }
     return absl::OkStatus();
   }
+
   absl::Status Close(mediapipe::CalculatorContext*) override { return absl::OkStatus(); }
 
  protected:

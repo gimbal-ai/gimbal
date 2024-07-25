@@ -28,6 +28,8 @@ gml_cc_library(
         "barcode_detector_calculator.h",
         "bytetrack_calculator.cc",
         "bytetrack_calculator.h",
+        "classifications_metrics_sink_calculator.cc",
+        "classifications_metrics_sink_calculator.h",
         "debug_dump_frame_calculator.cc",
         "debug_dump_frame_calculator.h",
         "detections_summary_calculator.cc",
@@ -87,6 +89,17 @@ gml_cc_test(
         ":cc_library",
         "//src/gem/testing/core:cc_library",
         "//src/gem/testing/core/testdata:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "classifications_metrics_sink_calculator_test",
+    srcs = [
+        "classifications_metrics_sink_calculator_test.cc",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
     ],
 )
 
