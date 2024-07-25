@@ -113,6 +113,8 @@ docker_flags=(
   -v /usr/lib:/host_lib
   # Mount /sys so that GEM can use the mac address as the SERIAL_NUMBER and also read system metrics.
   -v /sys:/host/sys
+  # Resolve the image tag on every deploy. This ensures that latest doesn't point to an older release.
+  --pull always
 )
 
 cmdline_opts=(
@@ -124,8 +126,6 @@ cmdline_opts=(
 if [[ "$DEV_MODE" == "true" ]]; then
   warn "DEV MODE: ENABLED"
   docker_flags+=(
-    # Pull the image every time
-    --pull always
     # Run the container interactively so that users can see the logs
     -it
   )
