@@ -47,6 +47,8 @@ gml_cc_library(
         "modify_detection_with_regression_calculator.h",
         "packet_latency_metrics_sink_calculator.cc",
         "packet_latency_metrics_sink_calculator.h",
+        "tracks_metrics_sink_calculator.cc",
+        "tracks_metrics_sink_calculator.h",
     ],
     data = ["@com_github_opencv_contrib//:quality_models"],
     deps = [
@@ -143,6 +145,18 @@ gml_cc_test(
     name = "modify_detection_with_regression_calculator_test",
     srcs = [
         "modify_detection_with_regression_calculator_test.cc",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "tracks_metrics_sink_calculator_test",
+    srcs = [
+        "test_utils.h",
+        "tracks_metrics_sink_calculator_test.cc",
     ],
     deps = [
         ":cc_library",

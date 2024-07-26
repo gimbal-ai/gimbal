@@ -23,6 +23,7 @@
 #include <absl/container/flat_hash_map.h>
 #include <gmock/gmock.h>
 #include <opentelemetry/sdk/common/attribute_utils.h>
+#include <opentelemetry/sdk/metrics/meter.h>
 #include <opentelemetry/sdk/metrics/sync_instruments.h>
 
 struct ExpectedHist {
@@ -30,6 +31,18 @@ struct ExpectedHist {
   std::vector<uint64_t> bucket_counts;
   absl::flat_hash_map<std::string, ::opentelemetry::sdk::common::OwnedAttributeValue> attributes;
 };
+
+auto OTelAttributes(
+    const absl::flat_hash_map<std::string, ::opentelemetry::sdk::common::OwnedAttributeValue>&
+        expected_attributes) {
+  using ::testing::Field;
+  using ::testing::UnorderedElementsAreArray;
+
+  namespace otel_metrics = opentelemetry::sdk::metrics;
+
+  return Field(&otel_metrics::PointDataAttributes::attributes,
+               UnorderedElementsAreArray(expected_attributes.begin(), expected_attributes.end()));
+}
 
 auto MatchHistogram(const ExpectedHist& expected) {
   using ::testing::AllOf;
@@ -40,15 +53,42 @@ auto MatchHistogram(const ExpectedHist& expected) {
 
   namespace otel_metrics = opentelemetry::sdk::metrics;
 
-  return AllOf(
-      Field(&otel_metrics::PointDataAttributes::point_data,
-            VariantWith<otel_metrics::HistogramPointData>(
-                AllOf(Field(&otel_metrics::HistogramPointData::boundaries_,
-                            ElementsAreArray(expected.bucket_bounds)),
-                      Field(&otel_metrics::HistogramPointData::counts_,
-                            ElementsAreArray(expected.bucket_counts))))),
-      Field(&otel_metrics::PointDataAttributes::attributes,
-            UnorderedElementsAreArray(expected.attributes.begin(), expected.attributes.end())));
+  return AllOf(Field(&otel_metrics::PointDataAttributes::point_data,
+                     VariantWith<otel_metrics::HistogramPointData>(
+                         AllOf(Field(&otel_metrics::HistogramPointData::boundaries_,
+                                     ElementsAreArray(expected.bucket_bounds)),
+                               Field(&otel_metrics::HistogramPointData::counts_,
+                                     ElementsAreArray(expected.bucket_counts))))),
+               OTelAttributes(expected.attributes));
+}
+
+template <typename T>
+struct ExpectedGaugeOrCounter {
+  T value;
+  absl::flat_hash_map<std::string, ::opentelemetry::sdk::common::OwnedAttributeValue> attributes;
+};
+
+template <typename T, typename PointData>
+auto MatchGaugeOrCounter(const ExpectedGaugeOrCounter<T>& expected) {
+  using ::testing::AllOf;
+  using ::testing::Field;
+  using ::testing::UnorderedElementsAreArray;
+  using ::testing::VariantWith;
+
+  namespace otel_metrics = opentelemetry::sdk::metrics;
+
+  return AllOf(Field(&otel_metrics::PointDataAttributes::point_data,
+                     VariantWith<PointData>(Field(&PointData::value_, expected.value))),
+               OTelAttributes(expected.attributes));
+}
+template <typename T>
+auto MatchGauge(const ExpectedGaugeOrCounter<T>& expected) {
+  return MatchGaugeOrCounter<T, opentelemetry::sdk::metrics::LastValuePointData>(expected);
+}
+
+template <typename T>
+auto MatchCounter(const ExpectedGaugeOrCounter<T>& expected) {
+  return MatchGaugeOrCounter<T, opentelemetry::sdk::metrics::SumPointData>(expected);
 }
 
 auto MatchHistogramVector(const std::vector<ExpectedHist>& expected) {

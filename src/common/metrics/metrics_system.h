@@ -159,6 +159,29 @@ class MetricsSystem {
     return histogram;
   }
 
+  std::unique_ptr<opentelemetry::metrics::Counter<uint64_t>> CreateCounter(
+      const std::string& name, const std::string& description) {
+    absl::base_internal::SpinLockHolder lock(&meter_provider_lock_);
+    auto provider = GetMeterProvider();
+    auto meter = provider->GetMeter("gml");
+    return meter->CreateUInt64Counter(name, description);
+  }
+
+  template <typename T>
+  std::unique_ptr<opentelemetry::metrics::Gauge<T>> CreateGauge(const std::string& name,
+                                                                const std::string& description) {
+    absl::base_internal::SpinLockHolder lock(&meter_provider_lock_);
+    auto provider = GetMeterProvider();
+    auto meter = provider->GetMeter("gml");
+    static_assert(std::is_same_v<T, uint64_t> || std::is_same_v<T, double>,
+                  "Only uint64_t or double supported for CreateGauge");
+    if constexpr (std::is_same_v<T, uint64_t>) {
+      return meter->CreateInt64Gauge(name, description);
+    } else if constexpr (std::is_same_v<T, double>) {
+      return meter->CreateDoubleGauge(name, description);
+    }
+  }
+
   // Reset removes all metrics.
   void Reset();
 

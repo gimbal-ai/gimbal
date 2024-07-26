@@ -79,9 +79,32 @@ std::ostream& operator<<(std::ostream& os,
   return os;
 }
 
+std::ostream& operator<<(std::ostream& os, const opentelemetry::sdk::metrics::ValueType& sum) {
+  if (std::holds_alternative<int64_t>(sum)) {
+    os << std::get<int64_t>(sum);
+  } else if (std::holds_alternative<double>(sum)) {
+    os << std::get<double>(sum);
+  }
+  return os;
+}
+std::ostream& operator<<(std::ostream& os, const opentelemetry::sdk::metrics::SumPointData& sum) {
+  os << sum.value_;
+  return os;
+}
+
+std::ostream& operator<<(std::ostream& os,
+                         const opentelemetry::sdk::metrics::LastValuePointData& last) {
+  os << last.value_;
+  return os;
+}
+
 std::ostream& operator<<(std::ostream& os, const opentelemetry::sdk::metrics::PointType& pt) {
   if (std::holds_alternative<opentelemetry::sdk::metrics::HistogramPointData>(pt)) {
     os << "Histogram: " << std::get<opentelemetry::sdk::metrics::HistogramPointData>(pt);
+  } else if (std::holds_alternative<opentelemetry::sdk::metrics::SumPointData>(pt)) {
+    os << "Counter: " << std::get<opentelemetry::sdk::metrics::SumPointData>(pt);
+  } else if (std::holds_alternative<opentelemetry::sdk::metrics::LastValuePointData>(pt)) {
+    os << "Gauge: " << std::get<opentelemetry::sdk::metrics::LastValuePointData>(pt);
   } else {
     // TODO(philkuz) implement the other point types as they are needed.
     LOG(DFATAL) << "Unexpected point type encountered in PointTypeToString";
