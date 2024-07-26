@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "src/gem/calculators/core/classifications_metrics_sink_calculator.h"
+#include "src/gem/calculators/core/classification_metrics_sink_calculator.h"
 
 #include "gmock/gmock.h"
 #include <absl/container/flat_hash_map.h>
@@ -37,18 +37,18 @@ struct PacketAndExpectation {
   std::vector<ExpectedHist> expected_hists;
 };
 
-class ClassificationsMetricsSinkTest
+class ClassificationMetricsSinkTest
     : public ::testing::TestWithParam<std::vector<PacketAndExpectation>> {};
 
-TEST_P(ClassificationsMetricsSinkTest, CollectsStatsCorrectly) {
+TEST_P(ClassificationMetricsSinkTest, CollectsStatsCorrectly) {
   auto packet_and_expectation = GetParam();
 
-  constexpr char kClassificationsMetricsSinkNode[] = R"pbtxt(
-    calculator: "ClassificationsMetricsSinkCalculator"
+  constexpr char kClassificationMetricsSinkNode[] = R"pbtxt(
+    calculator: "ClassificationMetricsSinkCalculator"
     input_stream: "classifications"
   )pbtxt";
 
-  mediapipe::CalculatorRunner runner(kClassificationsMetricsSinkNode);
+  mediapipe::CalculatorRunner runner(kClassificationMetricsSinkNode);
 
   // The test param comes as a packet per time step and an expectation for that timestep.
   for (size_t t = 0; t < packet_and_expectation.size(); ++t) {
@@ -90,7 +90,7 @@ TEST_P(ClassificationsMetricsSinkTest, CollectsStatsCorrectly) {
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    ClassificationsMetricsSinkTestSuite, ClassificationsMetricsSinkTest,
+    ClassificationMetricsSinkTestSuite, ClassificationMetricsSinkTest,
     ::testing::Values(std::vector<PacketAndExpectation>{
         PacketAndExpectation{
             std::string{

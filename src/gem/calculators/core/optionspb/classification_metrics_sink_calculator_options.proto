@@ -22,7 +22,7 @@ package gml.gem.calculators.core.optionspb;
 
 option go_package = "gimletlabs.ai/gimlet/src/gem/calculators/core/optionspb;optionspb";
 
-message ClassificationsMetricsSinkCalculatorOptions {
+message ClassificationMetricsSinkCalculatorOptions {
   // Additional attributes to add to the metrics.
   map<string, string> metric_attributes = 1;
 }

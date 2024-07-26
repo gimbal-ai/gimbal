@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "src/gem/calculators/core/classifications_metrics_sink_calculator.h"
+#include "src/gem/calculators/core/classification_metrics_sink_calculator.h"
 
 #include <queue>
 
@@ -25,7 +25,7 @@
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/base/base.h"
 #include "src/common/metrics/metrics_system.h"
-#include "src/gem/calculators/core/optionspb/classifications_metrics_sink_calculator_options.pb.h"
+#include "src/gem/calculators/core/optionspb/classification_metrics_sink_calculator_options.pb.h"
 
 namespace gml::gem::calculators::core {
 
@@ -45,7 +45,7 @@ const std::vector<double> kConfidenceClassesBounds = []() {
   return temp;
 }();
 
-Status ClassificationsMetricsSinkCalculator::BuildMetrics(mediapipe::CalculatorContext*) {
+Status ClassificationMetricsSinkCalculator::BuildMetrics(mediapipe::CalculatorContext*) {
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
 
   confidence_hist_ = metrics_system.CreateHistogramWithBounds<double>(
@@ -54,8 +54,8 @@ Status ClassificationsMetricsSinkCalculator::BuildMetrics(mediapipe::CalculatorC
   return Status::OK();
 }
 
-Status ClassificationsMetricsSinkCalculator::RecordMetrics(mediapipe::CalculatorContext* cc) {
-  const auto& options = cc->Options<optionspb::ClassificationsMetricsSinkCalculatorOptions>();
+Status ClassificationMetricsSinkCalculator::RecordMetrics(mediapipe::CalculatorContext* cc) {
+  const auto& options = cc->Options<optionspb::ClassificationMetricsSinkCalculatorOptions>();
   auto& classification = cc->Inputs().Index(0).Get<Classification>();
 
   auto cmp = [](const std::pair<std::string, double>& lhs,
@@ -90,6 +90,6 @@ Status ClassificationsMetricsSinkCalculator::RecordMetrics(mediapipe::Calculator
   return Status::OK();
 }
 
-REGISTER_CALCULATOR(ClassificationsMetricsSinkCalculator);
+REGISTER_CALCULATOR(ClassificationMetricsSinkCalculator);
 
 }  // namespace gml::gem::calculators::core

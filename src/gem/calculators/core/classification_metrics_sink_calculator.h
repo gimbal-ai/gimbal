@@ -28,7 +28,7 @@
 namespace gml::gem::calculators::core {
 
 /**
- *  ClassificationsMetricsSinkCalculator Graph API:
+ *  ClassificationMetricsSinkCalculator Graph API:
  *
  *  Inputs:
  *    std::vector<std::string> list of class labels.
@@ -36,7 +36,7 @@ namespace gml::gem::calculators::core {
  *  No real outputs, outputs stats to opentelemetry.
  */
 
-class ClassificationsMetricsSinkCalculator
+class ClassificationMetricsSinkCalculator
     : public MetricsSinkCalculator<::gml::internal::api::core::v1::Classification> {
  protected:
   Status BuildMetrics(mediapipe::CalculatorContext* cc) override;

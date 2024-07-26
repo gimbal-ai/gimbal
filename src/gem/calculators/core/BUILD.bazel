@@ -28,8 +28,8 @@ gml_cc_library(
         "barcode_detector_calculator.h",
         "bytetrack_calculator.cc",
         "bytetrack_calculator.h",
-        "classifications_metrics_sink_calculator.cc",
-        "classifications_metrics_sink_calculator.h",
+        "classification_metrics_sink_calculator.cc",
+        "classification_metrics_sink_calculator.h",
         "debug_dump_frame_calculator.cc",
         "debug_dump_frame_calculator.h",
         "detections_summary_calculator.cc",
@@ -95,9 +95,9 @@ gml_cc_test(
 )
 
 gml_cc_test(
-    name = "classifications_metrics_sink_calculator_test",
+    name = "classification_metrics_sink_calculator_test",
     srcs = [
-        "classifications_metrics_sink_calculator_test.cc",
+        "classification_metrics_sink_calculator_test.cc",
         "test_utils.h",
     ],
     deps = [

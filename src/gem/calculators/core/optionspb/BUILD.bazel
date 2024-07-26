@@ -24,7 +24,7 @@ proto_library(
     name = "optionspb_proto",
     srcs = [
         "bytetrack_calculator_options.proto",
-        "classifications_metrics_sink_calculator_options.proto",
+        "classification_metrics_sink_calculator_options.proto",
         "detections_summary_calculator_options.proto",
         "image_quality_calculator_options.proto",
         "packet_latency_metrics_sink_calculator_options.proto",
@@ -40,7 +40,7 @@ proto_cc_library(
     name = "optionspb_cc_library",
     srcs = [
         "bytetrack_calculator_options.pb.cc",
-        "classifications_metrics_sink_calculator_options.pb.cc",
+        "classification_metrics_sink_calculator_options.pb.cc",
         "detections_summary_calculator_options.pb.cc",
         "image_quality_calculator_options.pb.cc",
         "packet_latency_metrics_sink_calculator_options.pb.cc",
@@ -48,7 +48,7 @@ proto_cc_library(
     ],
     hdrs = [
         "bytetrack_calculator_options.pb.h",
-        "classifications_metrics_sink_calculator_options.pb.h",
+        "classification_metrics_sink_calculator_options.pb.h",
         "detections_summary_calculator_options.pb.h",
         "image_quality_calculator_options.pb.h",
         "packet_latency_metrics_sink_calculator_options.pb.h",
@@ -63,8 +63,8 @@ proto_compile(
     outputs = [
         "packet_latency_metrics_sink_calculator_options.pb.cc",
         "packet_latency_metrics_sink_calculator_options.pb.h",
-        "classifications_metrics_sink_calculator_options.pb.cc",
-        "classifications_metrics_sink_calculator_options.pb.h",
+        "classification_metrics_sink_calculator_options.pb.cc",
+        "classification_metrics_sink_calculator_options.pb.h",
         "tracks_metrics_sink_calculator_options.pb.cc",
         "tracks_metrics_sink_calculator_options.pb.h",
         "detections_summary_calculator_options.pb.cc",
@@ -87,14 +87,14 @@ proto_compile(
         "detections_summary_calculator_options.pb.go=gimletlabs.ai/gimlet/src/gem/calculators/core/optionspb/detections_summary_calculator_options.pb.go",
         "image_quality_calculator_options.pb.go=gimletlabs.ai/gimlet/src/gem/calculators/core/optionspb/image_quality_calculator_options.pb.go",
         "bytetrack_calculator_options.pb.go=gimletlabs.ai/gimlet/src/gem/calculators/core/optionspb/bytetrack_calculator_options.pb.go",
-        "classifications_metrics_sink_calculator_options.pb.go=gimletlabs.ai/gimlet/src/gem/calculators/core/optionspb/classifications_metrics_sink_calculator_options.pb.go",
+        "classification_metrics_sink_calculator_options.pb.go=gimletlabs.ai/gimlet/src/gem/calculators/core/optionspb/classification_metrics_sink_calculator_options.pb.go",
     ],
     outputs = [
         "packet_latency_metrics_sink_calculator_options.pb.go",
         "detections_summary_calculator_options.pb.go",
         "image_quality_calculator_options.pb.go",
         "bytetrack_calculator_options.pb.go",
-        "classifications_metrics_sink_calculator_options.pb.go",
+        "classification_metrics_sink_calculator_options.pb.go",
         "tracks_metrics_sink_calculator_options.pb.go",
     ],
     plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
@@ -106,7 +106,7 @@ proto_go_library(
     name = "optionspb_go_proto",
     srcs = [
         "bytetrack_calculator_options.pb.go",
-        "classifications_metrics_sink_calculator_options.pb.go",
+        "classification_metrics_sink_calculator_options.pb.go",
         "detections_summary_calculator_options.pb.go",
         "image_quality_calculator_options.pb.go",
         "packet_latency_metrics_sink_calculator_options.pb.go",
@@ -138,8 +138,8 @@ proto_compile(
         "detections_summary_calculator_options_pb2.pyi",
         "image_quality_calculator_options_pb2.pyi",
         "packet_latency_metrics_sink_calculator_options_pb2.pyi",
-        "classifications_metrics_sink_calculator_options_pb2.py",
-        "classifications_metrics_sink_calculator_options_pb2.pyi",
+        "classification_metrics_sink_calculator_options_pb2.py",
+        "classification_metrics_sink_calculator_options_pb2.pyi",
         "tracks_metrics_sink_calculator_options_pb2.pyi",
     ],
     plugins = [
@@ -154,7 +154,7 @@ proto_py_library(
     name = "optionspb_py_library",
     srcs = [
         "bytetrack_calculator_options_pb2.py",
-        "classifications_metrics_sink_calculator_options_pb2.py",
+        "classification_metrics_sink_calculator_options_pb2.py",
         "detections_summary_calculator_options_pb2.py",
         "image_quality_calculator_options_pb2.py",
         "packet_latency_metrics_sink_calculator_options_pb2.py",
