@@ -28,7 +28,8 @@
 #include "src/gem/calculators/core/optionspb/classifications_metrics_sink_calculator_options.pb.h"
 
 namespace gml::gem::calculators::core {
-using ::gml::internal::api::core::v1::Label;
+
+using ::gml::internal::api::core::v1::Classification;
 
 // Maximum number of top classes to report statistics for.
 constexpr size_t kMaxK = 3;
@@ -55,7 +56,7 @@ Status ClassificationsMetricsSinkCalculator::BuildMetrics(mediapipe::CalculatorC
 
 Status ClassificationsMetricsSinkCalculator::RecordMetrics(mediapipe::CalculatorContext* cc) {
   const auto& options = cc->Options<optionspb::ClassificationsMetricsSinkCalculatorOptions>();
-  auto& labels = cc->Inputs().Index(0).Get<std::vector<Label>>();
+  auto& classification = cc->Inputs().Index(0).Get<Classification>();
 
   auto cmp = [](const std::pair<std::string, double>& lhs,
                 const std::pair<std::string, double>& rhs) { return lhs.second > rhs.second; };
@@ -65,7 +66,8 @@ Status ClassificationsMetricsSinkCalculator::RecordMetrics(mediapipe::Calculator
       top_k_classes(cmp);
 
   // Sort the labels by score, keeping top K only.
-  for (const auto& label : labels) {
+  for (int i = 0; i < classification.label_size(); ++i) {
+    const auto& label = classification.label(i);
     top_k_classes.push({label.label(), label.score()});
     if (top_k_classes.size() > kMaxK) {
       top_k_classes.pop();

@@ -13,6 +13,12 @@ IMAGE_COLOR_CHANNEL_GREEN: ImageColorChannel
 IMAGE_COLOR_CHANNEL_RED: ImageColorChannel
 IMAGE_COLOR_CHANNEL_UNKNOWN: ImageColorChannel
 
+class Classification(_message.Message):
+    __slots__ = ["label"]
+    LABEL_FIELD_NUMBER: _ClassVar[int]
+    label: _containers.RepeatedCompositeFieldContainer[Label]
+    def __init__(self, label: _Optional[_Iterable[_Union[Label, _Mapping]]] = ...) -> None: ...
+
 class Detection(_message.Message):
     __slots__ = ["bounding_box", "label", "track_id"]
     BOUNDING_BOX_FIELD_NUMBER: _ClassVar[int]

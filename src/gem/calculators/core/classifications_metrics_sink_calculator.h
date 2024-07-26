@@ -37,7 +37,7 @@ namespace gml::gem::calculators::core {
  */
 
 class ClassificationsMetricsSinkCalculator
-    : public MetricsSinkCalculator<std::vector<::gml::internal::api::core::v1::Label>> {
+    : public MetricsSinkCalculator<::gml::internal::api::core::v1::Classification> {
  protected:
   Status BuildMetrics(mediapipe::CalculatorContext* cc) override;
   Status RecordMetrics(mediapipe::CalculatorContext* cc) override;

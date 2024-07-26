@@ -30,10 +30,10 @@
 
 namespace gml::gem::calculators::core {
 
-using ::gml::internal::api::core::v1::Label;
+using ::gml::internal::api::core::v1::Classification;
 
 struct PacketAndExpectation {
-  std::vector<std::string> input_labels_pbtxts;
+  std::string classification_pbtxt;
   std::vector<ExpectedHist> expected_hists;
 };
 
@@ -52,16 +52,14 @@ TEST_P(ClassificationsMetricsSinkTest, CollectsStatsCorrectly) {
 
   // The test param comes as a packet per time step and an expectation for that timestep.
   for (size_t t = 0; t < packet_and_expectation.size(); ++t) {
-    const auto& input_labels_pbtxts = packet_and_expectation[t].input_labels_pbtxts;
+    const auto& classification_pbtxt = packet_and_expectation[t].classification_pbtxt;
     const auto& expected_hists = packet_and_expectation[t].expected_hists;
 
     // Convert the pbtxts into Label objects.
-    std::vector<Label> labels(input_labels_pbtxts.size());
-    for (size_t i = 0; i < input_labels_pbtxts.size(); i++) {
-      CHECK(google::protobuf::TextFormat::ParseFromString(input_labels_pbtxts[i], &labels[i]));
-    }
+    Classification classification;
+    CHECK(google::protobuf::TextFormat::ParseFromString(classification_pbtxt, &classification));
 
-    mediapipe::Packet p = mediapipe::MakePacket<std::vector<Label>>(std::move(labels));
+    mediapipe::Packet p = mediapipe::MakePacket<Classification>(classification);
     p = p.At(mediapipe::Timestamp(static_cast<int64_t>(t)));
     runner.MutableInputs()->Index(0).packets.push_back(p);
 
@@ -95,18 +93,20 @@ INSTANTIATE_TEST_SUITE_P(
     ClassificationsMetricsSinkTestSuite, ClassificationsMetricsSinkTest,
     ::testing::Values(std::vector<PacketAndExpectation>{
         PacketAndExpectation{
-            std::vector<std::string>{
+            std::string{
                 R"pbtxt(
+                label: {
                   label: "bottle"
                   score: 0.89999
-                )pbtxt",
-                R"pbtxt(
+                },
+                label: {
                   label: "can"
                   score: 0.59999
-                )pbtxt",
-                R"pbtxt(
+                },
+                label: {
                   label: "person"
                   score: 0.19999
+                }
                 )pbtxt",
             },
             std::vector<ExpectedHist>{
@@ -131,22 +131,24 @@ INSTANTIATE_TEST_SUITE_P(
             },
         },
         PacketAndExpectation{
-            std::vector<std::string>{
+            std::string{
                 R"pbtxt(
+                label: {
                   label: "bottle"
                   score: 0.79999
-                )pbtxt",
-                R"pbtxt(
+                },
+                label: {
                   label: "can"
                   score: 0.58888
-                )pbtxt",
-                R"pbtxt(
+                },
+                label: {
                   label: "wrench"
                   score: 0.19999
-                )pbtxt",
-                R"pbtxt(
+                },
+                label: {
                   label: "hammer"
                   score: 0.09999
+                }
                 )pbtxt",
             },
             std::vector<ExpectedHist>{

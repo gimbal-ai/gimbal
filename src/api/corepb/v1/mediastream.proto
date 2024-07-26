@@ -43,6 +43,12 @@ message NormalizedCenterRect {
   float height = 4;
 }
 
+// Classification represents a single classification of an image.
+message Classification {
+  // Label of the classification (top k).
+  repeated Label label = 1;
+}
+
 // Detection represents a bounding-box style object detection.
 message Detection {
   // Support sending multiple labels for a single bounding box with associated confidence scores.
