@@ -26,10 +26,6 @@
 
 namespace gml::gem::calculators::core {
 
-// Bounds are based on the default histogram suggestions in the Otel Spec.
-// https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/sdk.md#explicit-bucket-histogram-aggregation
-static const std::vector<double> kFrameCountBounds = {0,   5,   10,   25,   50,   75,   100,  250,
-                                                      500, 750, 1000, 2500, 5000, 7500, 10000};
 constexpr std::string_view kDetectionsTag = "DETECTIONS";
 constexpr std::string_view kTracksMetadataTag = "TRACKS_METADATA";
 constexpr std::string_view kFinishedTag = "FINISHED";
@@ -59,7 +55,11 @@ absl::Status TracksMetricsSinkCalculator::Open(mediapipe::CalculatorContext*) {
 
   track_frame_histogram_ = metrics_system.CreateHistogramWithBounds<uint64_t>(
       "gml_gem_track_frames",
-      "Distribution of frame counts for tracked objects when they are removed", kFrameCountBounds);
+      "Distribution of frame counts for tracked objects when they are removed",
+      metrics::kDefaultHistogramBounds);
+  track_lifetime_histogram_ = metrics_system.CreateHistogramWithBounds<double>(
+      "gml_gem_track_lifetime", "Distribution of track lifetimes in milliseconds",
+      kTrackLifetimeHistogramBounds);
 
   return absl::OkStatus();
 }
@@ -77,11 +77,18 @@ absl::Status TracksMetricsSinkCalculator::Process(mediapipe::CalculatorContext* 
     if (!detection.has_track_id()) {
       continue;
     }
-    if (track_id_to_frame_count_.find(detection.track_id().value()) ==
-        track_id_to_frame_count_.end()) {
+    if (!track_id_to_info_.contains(detection.track_id().value())) {
       new_track_id_count++;
+      track_id_to_info_[detection.track_id().value()] =
+          TrackInfo{.track_id = detection.track_id().value(),
+                    .frame_count = 1,
+                    .first_timestamp = cc->InputTimestamp(),
+                    .latest_timestamp = cc->InputTimestamp()};
+    } else {
+      auto& track_info = track_id_to_info_[detection.track_id().value()];
+      track_info.latest_timestamp = cc->InputTimestamp();
+      track_info.frame_count++;
     }
-    track_id_to_frame_count_[detection.track_id().value()]++;
   }
 
   // TODO(philkuz) do we want to record the class of the detection as an attribute?
@@ -90,14 +97,17 @@ absl::Status TracksMetricsSinkCalculator::Process(mediapipe::CalculatorContext* 
   std::unordered_map<std::string, std::string> attrs(options.metric_attributes().begin(),
                                                      options.metric_attributes().end());
   for (const auto& track_id : tracks_metadata.removed_track_ids()) {
-    if (track_id_to_frame_count_.find(track_id) == track_id_to_frame_count_.end()) {
+    if (!track_id_to_info_.contains(track_id)) {
       continue;
     }
-    track_frame_histogram_->Record(track_id_to_frame_count_[track_id], attrs);
-    track_id_to_frame_count_.erase(track_id);
+    auto& track_info = track_id_to_info_[track_id];
+    track_frame_histogram_->Record(track_info.frame_count, attrs);
+    track_lifetime_histogram_->Record(
+        track_info.latest_timestamp.Seconds() - track_info.first_timestamp.Seconds(), attrs);
+    track_id_to_info_.erase(track_id);
   }
 
-  lost_tracks_gauge_->Record(track_id_to_frame_count_.size() - detections.size(), attrs);
+  lost_tracks_gauge_->Record(track_id_to_info_.size() - detections.size(), attrs);
   active_tracks_gauge_->Record(detections.size(), attrs);
 
   unique_track_ids_counter_->Add(new_track_id_count, attrs);

@@ -44,6 +44,7 @@ struct MetricValues {
   ExpectedGaugeOrCounter<int64_t> lost_tracks;
   // Optional because histogram is not emitted before tracks are removed.
   std::optional<ExpectedHist> expected_track_frames_histogram;
+  std::optional<ExpectedHist> expected_track_lifetime_histogram;
 };
 
 struct TracksMetricsSinkTestStep {
@@ -80,7 +81,9 @@ TEST_P(TracksMetricsSinkTest, RecordsMetricsCorrectly) {
 
     // Increment the ts for the next step.
     for (int64_t i = 0; i < test_case.apply_times; i++) {
-      ts = ts.NextAllowedInStream();
+      ts = mediapipe::Timestamp(
+          ts.Value() +
+          static_cast<int64_t>(std::round(mediapipe::Timestamp::kTimestampUnitsPerSecond * 0.3)));
       tester.ForInput("DETECTIONS", detections, ts)
           .ForInput("TRACKS_METADATA", tracks_metadata, ts)
           .Run()
@@ -99,7 +102,11 @@ TEST_P(TracksMetricsSinkTest, RecordsMetricsCorrectly) {
       ASSERT_EQ(1, scope_metrics.size());
 
       const auto& metric_data = scope_metrics[0].metric_data_;
-      ASSERT_EQ(3 + test_case.expected_metrics.expected_track_frames_histogram.has_value(),
+      // Ensure that the number of metrics matches the test cases. There are 3 metrics that will
+      // always be output and 2 more for histograms which are only generated when track_ids are
+      // removed.
+      ASSERT_EQ(3 + test_case.expected_metrics.expected_track_frames_histogram.has_value() +
+                    test_case.expected_metrics.expected_track_lifetime_histogram.has_value(),
                 metric_data.size());
 
       for (const auto& metric_datum : metric_data) {
@@ -121,7 +128,15 @@ TEST_P(TracksMetricsSinkTest, RecordsMetricsCorrectly) {
                 point_data[0],
                 MatchHistogram(test_case.expected_metrics.expected_track_frames_histogram.value()));
           } else {
-            FAIL() << "Unexpected gml_gem_trck_frames: result " << point_data[0];
+            FAIL() << "Unexpected gml_gem_track_frames: result " << point_data[0];
+          }
+        } else if (name == "gml_gem_track_lifetime") {
+          if (test_case.expected_metrics.expected_track_lifetime_histogram.has_value()) {
+            EXPECT_THAT(point_data[0],
+                        MatchHistogram(
+                            test_case.expected_metrics.expected_track_lifetime_histogram.value()));
+          } else {
+            FAIL() << "Unexpected gml_gem_track_lifetime: result " << point_data[0];
           }
         } else {
           FAIL() << "Unexpected metric name: " << name;
@@ -174,6 +189,7 @@ bounding_box { xc: 0.7 yc: 0.6 width: 0.15 height: 0.25 }
                                                .unique_track_ids_count = {3, {}},
                                                .lost_tracks = {0, {}},
                                                .expected_track_frames_histogram = std::nullopt,
+                                               .expected_track_lifetime_histogram = std::nullopt,
                                            }},
              TracksMetricsSinkTestStep{.detection_pbtxts =
                                            {
@@ -195,6 +211,7 @@ bounding_box { xc: 0.7 yc: 0.6 width: 0.15 height: 0.25 }
                                                .unique_track_ids_count = {3, {}},
                                                .lost_tracks = {1, {}},
                                                .expected_track_frames_histogram = std::nullopt,
+                                               .expected_track_lifetime_histogram = std::nullopt,
                                            },
                                        .apply_times = 5},
              TracksMetricsSinkTestStep{
@@ -212,9 +229,12 @@ bounding_box { xc: 0.7 yc: 0.6 width: 0.15 height: 0.25 }
                          .active_tracks = {1, {}},
                          .unique_track_ids_count = {3, {}},
                          .lost_tracks = {0, {}},
-                         .expected_track_frames_histogram = {{{0, 5, 10, 25, 50, 75, 100, 250, 500,
-                                                               750, 1000, 2500, 5000, 7500, 10000},
+                         .expected_track_frames_histogram = {{metrics::kDefaultHistogramBounds,
                                                               {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                               0, 0, 0, 0},
+                                                              {}}},
+                         .expected_track_lifetime_histogram = {{kTrackLifetimeHistogramBounds,
+                                                              {1, 0,0,  1, 0, 0,0, 0, 0, 0, 0, 0, 0, 0,
                                                                0, 0, 0, 0},
                                                               {}}},
                      },
@@ -323,7 +343,7 @@ bounding_box { xc: 0.5 yc: 0.5 width: 0.1 height: 0.2 }
                               "test_device",
                           },
                       }},
-                     .expected_track_frames_histogram{{{0, 5, 10, 25, 50, 75, 100, 250, 500, 750, 1000, 2500, 5000, 7500, 10000},
+                     .expected_track_frames_histogram{{metrics::kDefaultHistogramBounds,
                        {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                        {{
                             "pipeline_id",
@@ -332,7 +352,18 @@ bounding_box { xc: 0.5 yc: 0.5 width: 0.1 height: 0.2 }
                         {
                             "device_id",
                             "test_device",
-                        }}}}},
+                        }}}},
+                      .expected_track_lifetime_histogram = {{kTrackLifetimeHistogramBounds,
+                       {1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0},
+                       {{
+                            "pipeline_id",
+                            "test_pipeline",
+                        },
+                        {
+                            "device_id",
+                            "test_device",
+                        }}}}
+                        },
                 },
 
             },

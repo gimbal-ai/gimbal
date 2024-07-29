@@ -26,6 +26,11 @@
 
 namespace gml::gem::calculators::core {
 
+// TODO(philkuz) Consider using an exponential histogram. Will need testing in victoria db and the
+// metrics dashboard.
+static const std::vector<double> kTrackLifetimeHistogramBounds = {
+    0, 0.3, 1, 5, 10, 25, 50, 75, 100, 250, 500, 750, 1000, 2500, 5000, 7500, 10000};
+
 /**
  *  TrackingMetricsSinkCalculator Graph API:
  *
@@ -49,11 +54,18 @@ class TracksMetricsSinkCalculator : public mediapipe::CalculatorBase {
   absl::Status Close(mediapipe::CalculatorContext*) override { return absl::OkStatus(); }
 
  private:
+  struct TrackInfo {
+    int64_t track_id;
+    int64_t frame_count;
+    mediapipe::Timestamp first_timestamp;
+    mediapipe::Timestamp latest_timestamp;
+  };
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> active_tracks_gauge_;
   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> lost_tracks_gauge_;
   std::unique_ptr<opentelemetry::metrics::Counter<uint64_t>> unique_track_ids_counter_;
   std::unique_ptr<opentelemetry::metrics::Histogram<uint64_t>> track_frame_histogram_;
-  absl::flat_hash_map<int64_t, int64_t> track_id_to_frame_count_;
+  std::unique_ptr<opentelemetry::metrics::Histogram<double>> track_lifetime_histogram_;
+  absl::flat_hash_map<int64_t, TrackInfo> track_id_to_info_;
 };
 
 }  // namespace gml::gem::calculators::core

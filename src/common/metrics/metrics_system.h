@@ -29,6 +29,11 @@
 
 namespace gml::metrics {
 
+// Bounds are based on the default histogram suggestions in the Otel Spec.
+// https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/sdk.md#explicit-bucket-histogram-aggregation
+static const std::vector<double> kDefaultHistogramBounds = {
+    0, 5, 10, 25, 50, 75, 100, 250, 500, 750, 1000, 2500, 5000, 7500, 10000};
+
 class MetricsSystem;
 
 class Scrapeable {
