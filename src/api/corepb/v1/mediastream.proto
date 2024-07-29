@@ -67,6 +67,10 @@ message DetectionList {
   repeated Detection detection = 1;
 }
 
+message TracksMetadata {
+  repeated int64 removed_track_ids = 1;
+}
+
 // A single binary segmentation mask with a class label.
 message SegmentationMask {
   // Class label for this mask.

@@ -32,9 +32,10 @@
 namespace gml::gem::calculators::core {
 using ::gml::gem::calculators::core::optionspb::ByteTrackCalculatorOptions;
 using ::gml::internal::api::core::v1::Detection;
+using ::gml::internal::api::core::v1::TracksMetadata;
 
 constexpr std::string_view kDetectionVectorTag = "DETECTIONS";
-constexpr std::string_view kRemovedTrackIdsTag = "REMOVED_TRACK_IDS";
+constexpr std::string_view kTracksMetadataTag = "TRACKS_METADATA";
 
 int LabelMapper::get_id(const std::string& label) {
   static int next_label_id = 0;
@@ -60,8 +61,8 @@ StatusOr<std::string> LabelMapper::get_label(int id) { return label_id_bimap_.Va
 absl::Status ByteTrackCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   cc->Inputs().Tag(kDetectionVectorTag).Set<std::vector<Detection>>();
   cc->Outputs().Tag(kDetectionVectorTag).Set<std::vector<Detection>>();
-  if (cc->Outputs().HasTag(kRemovedTrackIdsTag)) {
-    cc->Outputs().Tag(kRemovedTrackIdsTag).Set<std::vector<int64_t>>();
+  if (cc->Outputs().HasTag(kTracksMetadataTag)) {
+    cc->Outputs().Tag(kTracksMetadataTag).Set<TracksMetadata>();
   }
   cc->SetTimestampOffset(0);
   return absl::OkStatus();
@@ -149,15 +150,14 @@ absl::Status ByteTrackCalculator::Process(mediapipe::CalculatorContext* cc) {
   packet = packet.At(cc->InputTimestamp());
   cc->Outputs().Tag(kDetectionVectorTag).AddPacket(std::move(packet));
 
-  if (cc->Outputs().HasTag(kRemovedTrackIdsTag)) {
-    std::vector<int64_t> removed_track_ids;
-    removed_track_ids.reserve(stracks.removed_stracks.size());
+  if (cc->Outputs().HasTag(kTracksMetadataTag)) {
+    TracksMetadata tracks_metadata;
     for (const auto& strack : stracks.removed_stracks) {
-      removed_track_ids.push_back(static_cast<int64_t>(strack->getTrackId()));
+      tracks_metadata.add_removed_track_ids(static_cast<int64_t>(strack->getTrackId()));
     }
-    auto packet = mediapipe::MakePacket<std::vector<int64_t>>(std::move(removed_track_ids));
+    auto packet = mediapipe::MakePacket<TracksMetadata>(std::move(tracks_metadata));
     packet = packet.At(cc->InputTimestamp());
-    cc->Outputs().Tag(kRemovedTrackIdsTag).AddPacket(std::move(packet));
+    cc->Outputs().Tag(kTracksMetadataTag).AddPacket(std::move(packet));
   }
 
   return absl::OkStatus();

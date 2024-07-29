@@ -33,6 +33,7 @@ namespace gml::gem::calculators::core {
 
 using ::gml::internal::api::core::v1::Detection;
 using ::gml::internal::api::core::v1::Label;
+using ::gml::internal::api::core::v1::TracksMetadata;
 
 // An absolute noise factor applied to values like x, y, width, and height.
 std::uniform_real_distribution<float> kPixelNoiseDist(-0.5, 0.5);
@@ -232,7 +233,7 @@ TEST(ByteTrackCalculatorTest, RemovesTracksAfterMaxFramesLost) {
     calculator: "ByteTrackCalculator"
     input_stream: "DETECTIONS:detection_list"
     output_stream: "DETECTIONS:tracked_detection_list"
-    output_stream: "REMOVED_TRACK_IDS:removed_track_ids"
+    output_stream: "TRACKS_METADATA:tracks_metadata"
     node_options {
       [type.googleapis.com/gml.gem.calculators.core.optionspb.ByteTrackCalculatorOptions] {
         max_frames_lost { value: 2 }
@@ -298,15 +299,17 @@ TEST(ByteTrackCalculatorTest, RemovesTracksAfterMaxFramesLost) {
   EXPECT_EQ(detection_packets.size(), 4);
 
   const std::vector<mediapipe::Packet>& removed_track_packets =
-      outputs.Tag("REMOVED_TRACK_IDS").packets;
+      outputs.Tag("TRACKS_METADATA").packets;
   EXPECT_EQ(removed_track_packets.size(), 4);
 
   // Check that Box2 is removed after 2 frames of being lost
   for (int i = 0; i < 3; ++i) {
-    EXPECT_THAT(removed_track_packets[i].Get<std::vector<int64_t>>(), ::testing::ElementsAre());
+    EXPECT_THAT(removed_track_packets[i].Get<TracksMetadata>().removed_track_ids(),
+                ::testing::ElementsAre());
   }
   // Check that Box2 is removed after 2 frames of being lost
-  EXPECT_THAT(removed_track_packets[3].Get<std::vector<int64_t>>(), ::testing::ElementsAre(2));
+  EXPECT_THAT(removed_track_packets[3].Get<TracksMetadata>().removed_track_ids(),
+              ::testing::ElementsAre(2));
 }
 
 }  // namespace gml::gem::calculators::core

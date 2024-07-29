@@ -32,6 +32,7 @@
 namespace gml::gem::calculators::core {
 
 using ::gml::internal::api::core::v1::Detection;
+using ::gml::internal::api::core::v1::TracksMetadata;
 
 using ::opentelemetry::sdk::common::OwnedAttributeValue;
 
@@ -73,12 +74,15 @@ TEST_P(TracksMetricsSinkTest, RecordsMetricsCorrectly) {
       ASSERT_TRUE(google::protobuf::TextFormat::ParseFromString(test_case.detection_pbtxts[i],
                                                                 &detections[i]));
     }
+    TracksMetadata tracks_metadata;
+    tracks_metadata.mutable_removed_track_ids()->Assign(test_case.removed_track_ids.begin(),
+                                                        test_case.removed_track_ids.end());
 
     // Increment the ts for the next step.
     for (int64_t i = 0; i < test_case.apply_times; i++) {
       ts = ts.NextAllowedInStream();
       tester.ForInput("DETECTIONS", detections, ts)
-          .ForInput("REMOVED_TRACK_IDS", test_case.removed_track_ids, ts)
+          .ForInput("TRACKS_METADATA", tracks_metadata, ts)
           .Run()
           .ExpectOutput<bool>("FINISHED", ts, true);
 
@@ -142,7 +146,7 @@ INSTANTIATE_TEST_SUITE_P(
             R"pbtxt(
 calculator: "TracksMetricsSinkCalculator"
 input_stream: "DETECTIONS:detections"
-input_stream: "REMOVED_TRACK_IDS:removed_track_ids"
+input_stream: "TRACKS_METADATA:tracks_metadata"
 output_stream: "FINISHED:finished"
 )pbtxt",
             {TracksMetricsSinkTestStep{.detection_pbtxts =
@@ -233,7 +237,7 @@ node_options {
   }
 }
 input_stream: "DETECTIONS:detections"
-input_stream: "REMOVED_TRACK_IDS:removed_track_ids"
+input_stream: "TRACKS_METADATA:tracks_metadata"
 output_stream: "FINISHED:finished"
 )pbtxt",
             {

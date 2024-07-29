@@ -32,7 +32,10 @@ namespace gml::gem::calculators::core {
  *  Inputs:
  *    std::vector<internal::api::corepb::v1::Detection> list of detection protos that should contain
  *        the tracking id.
- *    std::vector<int64_t> list of removed track ids.
+ *    std::vector<internal::api::corepb::v1::TracksMetadata> The metadata about tracks currently
+ *        held in the tracker. In the future, we can exploring making this optional as it currently
+ *        only provides info about removed ids, which we can approximate with a timeout on this
+ *        metric node.
  *
  *  No real outputs, outputs stats to opentelemetry. Optional bool output to signal when processing
  *    is finished.

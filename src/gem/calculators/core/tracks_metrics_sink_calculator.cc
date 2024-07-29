@@ -31,12 +31,12 @@ namespace gml::gem::calculators::core {
 static const std::vector<double> kFrameCountBounds = {0,   5,   10,   25,   50,   75,   100,  250,
                                                       500, 750, 1000, 2500, 5000, 7500, 10000};
 constexpr std::string_view kDetectionsTag = "DETECTIONS";
-constexpr std::string_view kRemovedTrackIdsTag = "REMOVED_TRACK_IDS";
+constexpr std::string_view kTracksMetadataTag = "TRACKS_METADATA";
 constexpr std::string_view kFinishedTag = "FINISHED";
 
 absl::Status TracksMetricsSinkCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   cc->Inputs().Tag(kDetectionsTag).Set<std::vector<::gml::internal::api::core::v1::Detection>>();
-  cc->Inputs().Tag(kRemovedTrackIdsTag).Set<std::vector<int64_t>>();
+  cc->Inputs().Tag(kTracksMetadataTag).Set<::gml::internal::api::core::v1::TracksMetadata>();
   if (cc->Outputs().HasTag(kFinishedTag)) {
     cc->Outputs().Tag(kFinishedTag).Set<bool>();
   }
@@ -69,7 +69,8 @@ absl::Status TracksMetricsSinkCalculator::Process(mediapipe::CalculatorContext* 
   const auto& detections = cc->Inputs()
                                .Tag(kDetectionsTag)
                                .Get<std::vector<::gml::internal::api::core::v1::Detection>>();
-  const auto& removed_track_ids = cc->Inputs().Tag(kRemovedTrackIdsTag).Get<std::vector<int64_t>>();
+  const auto& tracks_metadata =
+      cc->Inputs().Tag(kTracksMetadataTag).Get<::gml::internal::api::core::v1::TracksMetadata>();
 
   uint64_t new_track_id_count = 0;
   for (const auto& detection : detections) {
@@ -88,7 +89,7 @@ absl::Status TracksMetricsSinkCalculator::Process(mediapipe::CalculatorContext* 
   // during the track lifetime.
   std::unordered_map<std::string, std::string> attrs(options.metric_attributes().begin(),
                                                      options.metric_attributes().end());
-  for (const auto& track_id : removed_track_ids) {
+  for (const auto& track_id : tracks_metadata.removed_track_ids()) {
     if (track_id_to_frame_count_.find(track_id) == track_id_to_frame_count_.end()) {
       continue;
     }

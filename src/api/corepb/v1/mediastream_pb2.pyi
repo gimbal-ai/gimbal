@@ -137,6 +137,12 @@ class SegmentationMask(_message.Message):
     run_length_encoding: _containers.RepeatedScalarFieldContainer[int]
     def __init__(self, label: _Optional[str] = ..., run_length_encoding: _Optional[_Iterable[int]] = ...) -> None: ...
 
+class TracksMetadata(_message.Message):
+    __slots__ = ["removed_track_ids"]
+    REMOVED_TRACK_IDS_FIELD_NUMBER: _ClassVar[int]
+    removed_track_ids: _containers.RepeatedScalarFieldContainer[int]
+    def __init__(self, removed_track_ids: _Optional[_Iterable[int]] = ...) -> None: ...
+
 class VideoHeader(_message.Message):
     __slots__ = ["frame_rate", "height", "width"]
     FRAME_RATE_FIELD_NUMBER: _ClassVar[int]
