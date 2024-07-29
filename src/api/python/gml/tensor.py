@@ -19,6 +19,7 @@ from typing import List, Literal, Optional, Tuple
 
 import gml.proto.src.api.corepb.v1.model_exec_pb2 as modelexecpb
 import google.protobuf.wrappers_pb2 as wrapperspb
+import numpy as np
 
 
 def box_format_str_to_proto(box_format: str):
@@ -143,7 +144,7 @@ class DetectionOutputDimension(DimensionSemantics):
                     size=self.scores_range[1],
                 )
             )
-        box_confidence_index = -1
+        box_confidence_index = np.iinfo(np.int32).min
         if self.box_confidence_index is not None:
             box_confidence_index = self.box_confidence_index
         return modelexecpb.DimensionSemantics(
@@ -297,37 +298,47 @@ class BinarySegmentationMasks(TensorSemantics):
 class YOLOOutput(TensorSemantics):
     """YOLOOutput represents a detection output from a YOLO model.
 
-    The YOLO model should output a tensor of shape [B, N_BOXES, (4 or 5) + NUM_CLASSES].
+    If `has_box_conf=True` then the YOLO model should output a tensor of shape [B, NUM_BOXES, 5 + NUM_CLASSES].
+    Otherwise, it should output a tensor of shape [B, NUM_BOXES, 4 + NUM_CLASSES].
     """
 
-    def __init__(self, has_box_conf=True):
+    def __init__(self, version="v5"):
+        if version != "v5" and version != "v8":
+            raise ValueError(
+                "gml.tensor.YOLOOutput alias currently only supports YOLO versions v5 and v8"
+            )
         dimensions = [
             BatchDimension(),
-            DetectionNumCandidatesDimension(is_nms=False),
         ]
 
-        if has_box_conf:
-            dimensions.append(
-                DetectionOutputDimension(
-                    coordinates_start_index=0,
-                    box_format=BoundingBoxFormat(
-                        box_format="cxcywh",
-                        is_normalized=False,
+        if version == "v5":
+            dimensions.extend(
+                [
+                    DetectionNumCandidatesDimension(is_nms=False),
+                    DetectionOutputDimension(
+                        coordinates_start_index=0,
+                        box_format=BoundingBoxFormat(
+                            box_format="cxcywh",
+                            is_normalized=False,
+                        ),
+                        box_confidence_index=4,
+                        scores_range=(5, -1),
                     ),
-                    box_confidence_index=4,
-                    scores_range=(5, -1),
-                )
+                ]
             )
-        else:
-            dimensions.append(
-                DetectionOutputDimension(
-                    coordinates_start_index=0,
-                    box_format=BoundingBoxFormat(
-                        box_format="cxcywh",
-                        is_normalized=False,
+        elif version == "v8":
+            dimensions.extend(
+                [
+                    DetectionOutputDimension(
+                        coordinates_start_index=0,
+                        box_format=BoundingBoxFormat(
+                            box_format="cxcywh",
+                            is_normalized=False,
+                        ),
+                        scores_range=(4, -1),
                     ),
-                    scores_range=(4, -1),
-                )
+                    DetectionNumCandidatesDimension(is_nms=False),
+                ]
             )
 
         super().__init__(dimensions)

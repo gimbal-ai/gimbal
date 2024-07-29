@@ -2,3 +2,4 @@ protobuf
 grpcio
 torch
 torch_mlir_gml
+numpy<2.0.0

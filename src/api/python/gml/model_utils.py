@@ -31,3 +31,5 @@ def prepare_ultralytics_yolo(model):
     for _, m in model.named_modules():
         if hasattr(m, "export"):
             m.export = True
+            # YOLOv8 requires setting `format` when `export = True`
+            m.format = "custom"
