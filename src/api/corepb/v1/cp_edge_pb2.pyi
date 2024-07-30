@@ -14,6 +14,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 CP_EDGE_TOPIC_EXEC: CPEdgeTopic
 CP_EDGE_TOPIC_FILE_TRANSFER: CPEdgeTopic
 CP_EDGE_TOPIC_INFO: CPEdgeTopic
+CP_EDGE_TOPIC_MEDIA: CPEdgeTopic
 CP_EDGE_TOPIC_METRICS: CPEdgeTopic
 CP_EDGE_TOPIC_STATUS: CPEdgeTopic
 CP_EDGE_TOPIC_UNKNOWN: CPEdgeTopic
@@ -22,6 +23,7 @@ DESCRIPTOR: _descriptor.FileDescriptor
 EDGE_CP_TOPIC_EXEC: EdgeCPTopic
 EDGE_CP_TOPIC_FILE_TRANSFER: EdgeCPTopic
 EDGE_CP_TOPIC_INFO: EdgeCPTopic
+EDGE_CP_TOPIC_MEDIA: EdgeCPTopic
 EDGE_CP_TOPIC_METRICS: EdgeCPTopic
 EDGE_CP_TOPIC_STATUS: EdgeCPTopic
 EDGE_CP_TOPIC_UNKNOWN: EdgeCPTopic
@@ -198,6 +200,24 @@ class FileTransferResponse(_message.Message):
     status: _status_pb2.Status
     def __init__(self, status: _Optional[_Union[_status_pb2.Status, _Mapping]] = ..., chunk: _Optional[_Union[FileTransferResponse.FileChunk, _Mapping]] = ..., file_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
 
+class MediaStreamControl(_message.Message):
+    __slots__ = ["text_stream_control"]
+    TEXT_STREAM_CONTROL_FIELD_NUMBER: _ClassVar[int]
+    text_stream_control: TextStreamControl
+    def __init__(self, text_stream_control: _Optional[_Union[TextStreamControl, _Mapping]] = ...) -> None: ...
+
+class MediaStreamKeepAlive(_message.Message):
+    __slots__ = []
+    def __init__(self) -> None: ...
+
+class MediaStreamStart(_message.Message):
+    __slots__ = []
+    def __init__(self) -> None: ...
+
+class MediaStreamStop(_message.Message):
+    __slots__ = []
+    def __init__(self) -> None: ...
+
 class PhysicalPipelineSpecUpdate(_message.Message):
     __slots__ = ["physical_pipeline_id", "spec"]
     PHYSICAL_PIPELINE_ID_FIELD_NUMBER: _ClassVar[int]
@@ -215,6 +235,12 @@ class PhysicalPipelineStatusUpdate(_message.Message):
     status: _model_exec_pb2.PhysicalPipelineStatus
     version: int
     def __init__(self, physical_pipeline_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., version: _Optional[int] = ..., status: _Optional[_Union[_model_exec_pb2.PhysicalPipelineStatus, _Mapping]] = ...) -> None: ...
+
+class TextStreamControl(_message.Message):
+    __slots__ = ["prompt"]
+    PROMPT_FIELD_NUMBER: _ClassVar[int]
+    prompt: str
+    def __init__(self, prompt: _Optional[str] = ...) -> None: ...
 
 class VideoStreamKeepAlive(_message.Message):
     __slots__ = []

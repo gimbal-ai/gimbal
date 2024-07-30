@@ -156,6 +156,37 @@ message VideoStreamStop {}
 message VideoStreamKeepAlive {}
 
 /****************************************************************************
+ * Messages that are used to stream media from the edge.
+ * These should be sent on the .MEDIA topic.
+ * The device will send messages from mediastream.
+ *****************************************************************************/
+
+// MediaStreamStart is a request to start a media stream on the device.
+message MediaStreamStart {}
+
+// MediaStreamStop is a request to notify the device to stop the media stream.
+message MediaStreamStop {}
+
+// MediaStreamKeepAlive is a keep alive, which the control plane sends out periodically to
+// let the edge device know it should continue streaming video.
+message MediaStreamKeepAlive {}
+
+// MediaStreamControl is a control message sent from the control plane to update/manage
+// the media stream, such as sending input.
+// If the control message contains data for a different media type than the current stream type,
+// it will be ignored (for example, if sending a text prompt to a video stream).
+message MediaStreamControl {
+  // A control message to manage a text stream.
+  TextStreamControl text_stream_control = 1;
+}
+
+// TextStreamControl is a message for sending controls to a text stream. For example,
+// providing a text prompt.
+message TextStreamControl {
+  string prompt = 1;
+}
+
+/****************************************************************************
  * Messages that are used to stream metrics from the edge.
  * These should be sent on the .METRICS topic.
  *****************************************************************************/
@@ -250,6 +281,8 @@ enum EdgeCPTopic {
   EDGE_CP_TOPIC_METRICS = 4;
   EDGE_CP_TOPIC_FILE_TRANSFER = 5;
   EDGE_CP_TOPIC_INFO = 6;
+  // Media topic is used for streaming media (video, audio, text, etc).
+  EDGE_CP_TOPIC_MEDIA = 7;
 }
 
 // CPEdgeTopic has the list of topics used between CP and edge.
@@ -261,6 +294,7 @@ enum CPEdgeTopic {
   CP_EDGE_TOPIC_METRICS = 4;
   CP_EDGE_TOPIC_FILE_TRANSFER = 5;
   CP_EDGE_TOPIC_INFO = 6;
+  CP_EDGE_TOPIC_MEDIA = 7;
 }
 
 // EdgeCPMetadata has basic routing information for shared bus.
