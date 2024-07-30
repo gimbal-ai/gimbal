@@ -115,28 +115,28 @@ TEST_P(TracksMetricsSinkTest, RecordsMetricsCorrectly) {
         ASSERT_EQ(1, point_data.size());
 
         // Check the metric value based on its type
-        if (name == "gml_gem_active_tracks") {
+        if (name == "gml_gem_pipe_tracks_active") {
           EXPECT_THAT(point_data[0], MatchGauge<int64_t>(test_case.expected_metrics.active_tracks));
-        } else if (name == "gml_gem_lost_tracks") {
+        } else if (name == "gml_gem_pipe_tracks_lost") {
           EXPECT_THAT(point_data[0], MatchGauge<int64_t>(test_case.expected_metrics.lost_tracks));
-        } else if (name == "gml_gem_unique_track_ids_count") {
+        } else if (name == "gml_gem_pipe_tracks_unique_ids") {
           EXPECT_THAT(point_data[0],
                       MatchCounter<int64_t>(test_case.expected_metrics.unique_track_ids_count));
-        } else if (name == "gml_gem_track_frames") {
+        } else if (name == "gml_gem_pipe_tracks_frame_count") {
           if (test_case.expected_metrics.expected_track_frames_histogram.has_value()) {
             EXPECT_THAT(
                 point_data[0],
                 MatchHistogram(test_case.expected_metrics.expected_track_frames_histogram.value()));
           } else {
-            FAIL() << "Unexpected gml_gem_track_frames: result " << point_data[0];
+            FAIL() << "Unexpected gml_gem_pipe_tracks_frame_count: result " << point_data[0];
           }
-        } else if (name == "gml_gem_track_lifetime") {
+        } else if (name == "gml_gem_pipe_tracks_lifetime") {
           if (test_case.expected_metrics.expected_track_lifetime_histogram.has_value()) {
             EXPECT_THAT(point_data[0],
                         MatchHistogram(
                             test_case.expected_metrics.expected_track_lifetime_histogram.value()));
           } else {
-            FAIL() << "Unexpected gml_gem_track_lifetime: result " << point_data[0];
+            FAIL() << "Unexpected gml_gem_pipe_tracks_lifetime: result " << point_data[0];
           }
         } else {
           FAIL() << "Unexpected metric name: " << name;

@@ -49,7 +49,7 @@ Status ClassificationMetricsSinkCalculator::BuildMetrics(mediapipe::CalculatorCo
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
 
   confidence_hist_ = metrics_system.CreateHistogramWithBounds<double>(
-      "gml_gem_model_classification_confidence", "Confidence scores of model predictions.",
+      "gml_gem_pipe_classifications_confidence", "Confidence scores of model predictions.",
       kConfidenceClassesBounds);
   return Status::OK();
 }
