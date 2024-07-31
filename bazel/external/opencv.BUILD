@@ -67,12 +67,14 @@ cmake(
     ],
     cache_entries = {
         "BUILD_EXAMPLES": "OFF",
+        "BUILD_JPEG": "ON",
         # The module list is always sorted alphabetically so that we do not
         # cause a rebuild when changing the link order.
         "BUILD_LIST": ",".join(sorted(OPENCV_MODULES)),
         "BUILD_PERF_TESTS": "OFF",
         "BUILD_SHARED_LIBS": "ON" if OPENCV_SHARED_LIBS else "OFF",
         "BUILD_TESTS": "OFF",
+        "BUILD_TIFF": "ON",
         "BUILD_opencv_python": "OFF",
 
         # Optimization flags
