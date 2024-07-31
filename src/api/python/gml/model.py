@@ -22,8 +22,7 @@ from typing import BinaryIO, Dict, List, Literal, Optional, TextIO, Tuple
 
 import gml.proto.src.api.corepb.v1.model_exec_pb2 as modelexecpb
 import torch
-import torch_mlir
-from gml.compile import to_torch_mlir
+from gml.compile import to_torch_mlir, torch_mlir_output_kind
 from gml.preprocessing import ImagePreprocessingStep
 from gml.tensor import TensorSemantics
 
@@ -83,27 +82,35 @@ class TorchModel(Model):
         self,
         name: str,
         torch_module: torch.nn.Module,
-        input_shapes: List[List[int]],
-        input_dtypes: List[torch.dtype],
+        example_inputs: Optional[List[torch.Tensor]] = None,
+        input_shapes: Optional[List[List[int]]] = None,
+        input_dtypes: Optional[List[torch.dtype]] = None,
         **kwargs,
     ):
         super().__init__(
             name,
-            modelexecpb.ModelInfo.MODEL_KIND_TORCHSCRIPT,
+            torch_mlir_output_kind(),
             modelexecpb.ModelInfo.MODEL_STORAGE_FORMAT_MLIR_TEXT,
             **kwargs,
         )
         self.torch_module = torch_module
+        self.example_inputs = example_inputs
         self.input_shapes = input_shapes
         self.input_dtypes = input_dtypes
+        if self.example_inputs is None:
+            if self.input_shapes is None or self.input_dtypes is None:
+                raise ValueError(
+                    "one of `example_inputs` or (`input_shapes` and `input_dtype`) must be provided to `TorchModel`"
+                )
+            self.example_inputs = [
+                torch.rand(shape, dtype=dtype)
+                for shape, dtype in zip(self.input_shapes, self.input_dtypes)
+            ]
 
     def _convert_to_torch_mlir(self):
         return to_torch_mlir(
-            self.torch_module.to("cpu"),
-            [
-                torch_mlir.TensorPlaceholder(shape, dtype)
-                for shape, dtype in zip(self.input_shapes, self.input_dtypes)
-            ],
+            self.torch_module,
+            self.example_inputs,
         )
 
     def collect_assets(self) -> Dict[str, TextIO | BinaryIO | Path]:
