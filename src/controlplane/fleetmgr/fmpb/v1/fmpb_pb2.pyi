@@ -285,14 +285,16 @@ class OSInfo(_message.Message):
     def __init__(self, kind: _Optional[_Union[OSKind, str]] = ..., version: _Optional[str] = ...) -> None: ...
 
 class RegisterRequest(_message.Message):
-    __slots__ = ["device_serial", "hostname", "os"]
+    __slots__ = ["device_serial", "hostname", "os", "version"]
     DEVICE_SERIAL_FIELD_NUMBER: _ClassVar[int]
     HOSTNAME_FIELD_NUMBER: _ClassVar[int]
     OS_FIELD_NUMBER: _ClassVar[int]
+    VERSION_FIELD_NUMBER: _ClassVar[int]
     device_serial: str
     hostname: str
     os: OSInfo
-    def __init__(self, device_serial: _Optional[str] = ..., hostname: _Optional[str] = ..., os: _Optional[_Union[OSInfo, _Mapping]] = ...) -> None: ...
+    version: str
+    def __init__(self, device_serial: _Optional[str] = ..., hostname: _Optional[str] = ..., os: _Optional[_Union[OSInfo, _Mapping]] = ..., version: _Optional[str] = ...) -> None: ...
 
 class RegisterResponse(_message.Message):
     __slots__ = ["device_id"]

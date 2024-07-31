@@ -43,6 +43,7 @@
 #include "src/gem/controller/system_metrics.h"
 #include "src/gem/controller/video_stream_handler.h"
 #include "src/gem/exec/core/control_context.h"
+#include "src/shared/version/version.h"
 
 namespace gml::gem::controller {
 
@@ -91,6 +92,10 @@ Status Controller::Register() {
     selected_serial = serial_or_s.ConsumeValueOrDie();
   }
   req.set_device_serial(selected_serial);
+  req.set_version(gml::VersionInfo::VersionString());
+
+  LOG(INFO) << "GEM Version: " << gml::VersionInfo::VersionString();
+
   grpc::ClientContext ctx;
   ctx.AddMetadata("x-deploy-key", deploy_key_);
 

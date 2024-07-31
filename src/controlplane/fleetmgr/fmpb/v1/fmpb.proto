@@ -241,6 +241,9 @@ message RegisterRequest {
   string hostname = 2;
   OSInfo os = 3 [ (gogoproto.customname) = "OS" ];
   // TODO(zasgar): Pass the device's public key here so that we can encrypt the request.
+
+  // The version of the GEM running on the device.
+  string version = 4;
 }
 
 message RegisterResponse {
