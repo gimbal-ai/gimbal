@@ -74,11 +74,12 @@ Status ClassificationMetricsSinkCalculator::RecordMetrics(mediapipe::CalculatorC
     }
   }
 
+  std::unordered_map<std::string, std::string> attrs(options.metric_attributes().begin(),
+                                                     options.metric_attributes().end());
+
   for (size_t k = top_k_classes.size(); k > 0; --k) {
     const auto& [class_name, conf] = top_k_classes.top();
 
-    std::unordered_map<std::string, std::string> attrs(options.metric_attributes().begin(),
-                                                       options.metric_attributes().end());
     attrs["class"] = class_name;
     attrs["k"] = std::to_string(k);
 

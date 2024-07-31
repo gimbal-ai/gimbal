@@ -32,6 +32,8 @@ gml_cc_library(
         "classification_metrics_sink_calculator.h",
         "debug_dump_frame_calculator.cc",
         "debug_dump_frame_calculator.h",
+        "detections_metrics_sink_calculator.cc",
+        "detections_metrics_sink_calculator.h",
         "detections_summary_calculator.cc",
         "detections_summary_calculator.h",
         "detections_to_mediapipe_calculator.cc",
@@ -98,6 +100,18 @@ gml_cc_test(
     name = "classification_metrics_sink_calculator_test",
     srcs = [
         "classification_metrics_sink_calculator_test.cc",
+        "test_utils.h",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "detections_metrics_sink_calculator_test",
+    srcs = [
+        "detections_metrics_sink_calculator_test.cc",
         "test_utils.h",
     ],
     deps = [

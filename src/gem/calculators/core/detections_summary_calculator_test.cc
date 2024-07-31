@@ -33,7 +33,7 @@ namespace gml::gem::calculators::core {
 
 using ::gml::internal::api::core::v1::Detection;
 
-static constexpr char kDetectionsSummaryNode[] = R"pbtxt(
+constexpr char kDetectionsSummaryNode[] = R"pbtxt(
 calculator: "DetectionsSummaryCalculator"
 node_options {
   [type.googleapis.com/gml.gem.calculators.core.optionspb.DetectionsSummaryCalculatorOptions] {
