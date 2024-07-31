@@ -74,7 +74,7 @@ TEST_P(ModifyDetectionWithRegressionTest, ConvertsCorrectly) {
 
 INSTANTIATE_TEST_SUITE_P(ModifyDetectionWithRegressionTestSuite, ModifyDetectionWithRegressionTest,
                          ::testing::Values(ModifyDetectionWithRegressionTestCase{
-                             R"pbtxt(
+                             .detection_pbtxt = R"pbtxt(
 label {
   label: "bottle"
   score: 0.9
@@ -86,11 +86,11 @@ bounding_box {
   height: 0.2
 }
 )pbtxt",
-                             R"pbtxt(
+                             .regression_pbtxt = R"pbtxt(
 label: "my_label"
 value: 0.05
 )pbtxt",
-                             R"pbtxt(
+                             .expected_detection_pbtxt = R"pbtxt(
 label {
   label: "bottle"
   score: 0.9

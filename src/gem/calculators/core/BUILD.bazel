@@ -45,6 +45,8 @@ gml_cc_library(
         "image_quality_calculator.h",
         "mediapipe_typed_calculators.cc",
         "metrics_sink_calculator.h",
+        "modify_detection_with_classification_calculator.cc",
+        "modify_detection_with_classification_calculator.h",
         "modify_detection_with_regression_calculator.cc",
         "modify_detection_with_regression_calculator.h",
         "packet_latency_metrics_sink_calculator.cc",
@@ -171,6 +173,17 @@ gml_cc_test(
     srcs = [
         "test_utils.h",
         "tracks_metrics_sink_calculator_test.cc",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "modify_detection_with_classification_calculator_test",
+    srcs = [
+        "modify_detection_with_classification_calculator_test.cc",
     ],
     deps = [
         ":cc_library",
