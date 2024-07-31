@@ -137,6 +137,14 @@ class SegmentationMask(_message.Message):
     run_length_encoding: _containers.RepeatedScalarFieldContainer[int]
     def __init__(self, label: _Optional[str] = ..., run_length_encoding: _Optional[_Iterable[int]] = ...) -> None: ...
 
+class TextBatch(_message.Message):
+    __slots__ = ["eos", "text"]
+    EOS_FIELD_NUMBER: _ClassVar[int]
+    TEXT_FIELD_NUMBER: _ClassVar[int]
+    eos: bool
+    text: str
+    def __init__(self, text: _Optional[str] = ..., eos: bool = ...) -> None: ...
+
 class TracksMetadata(_message.Message):
     __slots__ = ["removed_track_ids"]
     REMOVED_TRACK_IDS_FIELD_NUMBER: _ClassVar[int]

@@ -179,3 +179,11 @@ message VideoHeader {
   // The frame rate in Hz at which the video frames are output.
   double frame_rate = 3;
 }
+
+// TextBatch is batch of text output. For example, this can be a partial result from a LLM.
+message TextBatch {
+  // The text in the batch.
+  string text = 1;
+  // Whether this is the last batch of the output.
+  bool eos = 2 [ (gogoproto.customname) = "EOS" ];
+}
