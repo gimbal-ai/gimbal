@@ -194,6 +194,8 @@ message DeviceInfo {
   map<string, Tag> tags = 9;
   OSInfo os = 10 [ (gogoproto.customname) = "OS" ];
 
+  // The semver compatible version of the GEM running on the device.
+  string version = 13;
   reserved 7;
 }
 

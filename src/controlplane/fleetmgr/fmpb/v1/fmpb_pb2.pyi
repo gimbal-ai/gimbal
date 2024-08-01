@@ -100,7 +100,7 @@ class DeleteTagResponse(_message.Message):
     def __init__(self) -> None: ...
 
 class DeviceInfo(_message.Message):
-    __slots__ = ["capabilities", "created_at", "display_name", "fleet_id", "hostname", "id", "last_heartbeat_ns", "os", "serial", "status", "tags"]
+    __slots__ = ["capabilities", "created_at", "display_name", "fleet_id", "hostname", "id", "last_heartbeat_ns", "os", "serial", "status", "tags", "version"]
     class TagsEntry(_message.Message):
         __slots__ = ["key", "value"]
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -119,6 +119,7 @@ class DeviceInfo(_message.Message):
     SERIAL_FIELD_NUMBER: _ClassVar[int]
     STATUS_FIELD_NUMBER: _ClassVar[int]
     TAGS_FIELD_NUMBER: _ClassVar[int]
+    VERSION_FIELD_NUMBER: _ClassVar[int]
     capabilities: _cp_edge_pb2.DeviceCapabilities
     created_at: _timestamp_pb2.Timestamp
     display_name: str
@@ -130,7 +131,8 @@ class DeviceInfo(_message.Message):
     serial: str
     status: DeviceStatus
     tags: _containers.MessageMap[str, Tag]
-    def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., serial: _Optional[str] = ..., hostname: _Optional[str] = ..., display_name: _Optional[str] = ..., fleet_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., last_heartbeat_ns: _Optional[int] = ..., status: _Optional[_Union[DeviceStatus, str]] = ..., capabilities: _Optional[_Union[_cp_edge_pb2.DeviceCapabilities, _Mapping]] = ..., tags: _Optional[_Mapping[str, Tag]] = ..., os: _Optional[_Union[OSInfo, _Mapping]] = ...) -> None: ...
+    version: str
+    def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., serial: _Optional[str] = ..., hostname: _Optional[str] = ..., display_name: _Optional[str] = ..., fleet_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., last_heartbeat_ns: _Optional[int] = ..., status: _Optional[_Union[DeviceStatus, str]] = ..., capabilities: _Optional[_Union[_cp_edge_pb2.DeviceCapabilities, _Mapping]] = ..., tags: _Optional[_Mapping[str, Tag]] = ..., os: _Optional[_Union[OSInfo, _Mapping]] = ..., version: _Optional[str] = ...) -> None: ...
 
 class FleetInfo(_message.Message):
     __slots__ = ["created_at", "description", "id", "name", "org_id", "tags"]
