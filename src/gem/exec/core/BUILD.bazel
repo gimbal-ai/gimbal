@@ -33,6 +33,7 @@ gml_cc_library(
         "tensor.h",
         "tensor_pool.h",
         "tensor_traits.h",
+        "tokenizer.h",
     ],
     deps = [
         "//src/api/corepb/v1:corepb_cc_library",
