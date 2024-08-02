@@ -33,22 +33,22 @@ namespace gml::gem::exec::core {
  * */
 class ControlExecutionContext : public ExecutionContext {
  public:
-  using VideoWithOverlaysCallback =
+  using MediaStreamCallback =
       std::function<Status(const std::vector<std::unique_ptr<google::protobuf::Message>>&)>;
 
-  void RegisterVideoWithOverlaysCallback(VideoWithOverlaysCallback cb) {
-    absl::base_internal::SpinLockHolder lock(&video_cb_lock_);
-    video_w_overlays_cb_ = std::move(cb);
+  void RegisterMediaStreamCallback(MediaStreamCallback cb) {
+    absl::base_internal::SpinLockHolder lock(&media_cb_lock_);
+    media_cb_ = std::move(cb);
   }
 
-  void ClearVideoWithOverlaysCallback() {
-    absl::base_internal::SpinLockHolder lock(&video_cb_lock_);
-    video_w_overlays_cb_ = nullptr;
+  void ClearMediaStreamCallback() {
+    absl::base_internal::SpinLockHolder lock(&media_cb_lock_);
+    media_cb_ = nullptr;
   }
 
-  VideoWithOverlaysCallback GetVideoWithOverlaysCallback() {
-    absl::base_internal::SpinLockHolder lock(&video_cb_lock_);
-    return video_w_overlays_cb_;
+  MediaStreamCallback GetMediaStreamCallback() {
+    absl::base_internal::SpinLockHolder lock(&media_cb_lock_);
+    return media_cb_;
   }
 
   void SetLogicalPipelineID(const sole::uuid& logical_pipeline_id) {
@@ -62,8 +62,8 @@ class ControlExecutionContext : public ExecutionContext {
   }
 
  private:
-  absl::base_internal::SpinLock video_cb_lock_;
-  VideoWithOverlaysCallback video_w_overlays_cb_ ABSL_GUARDED_BY(video_cb_lock_);
+  absl::base_internal::SpinLock media_cb_lock_;
+  MediaStreamCallback media_cb_ ABSL_GUARDED_BY(media_cb_lock_);
 
   absl::base_internal::SpinLock logical_pipeline_id_lock_;
   sole::uuid logical_pipeline_id_ ABSL_GUARDED_BY(logical_pipeline_id_lock_);

@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "src/gem/controller/video_stream_handler.h"
+#include "src/gem/controller/media_stream_handler.h"
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -40,34 +40,34 @@
 #include "src/gem/controller/grpc_bridge.h"
 #include "src/gem/exec/core/control_context.h"
 
-using gml::internal::api::core::v1::EDGE_CP_TOPIC_VIDEO;
+using gml::internal::api::core::v1::EDGE_CP_TOPIC_MEDIA;
 
 namespace gml::gem::controller {
 
-using ::gml::internal::api::core::v1::VideoStreamKeepAlive;
-using ::gml::internal::api::core::v1::VideoStreamStart;
-using ::gml::internal::api::core::v1::VideoStreamStop;
+using ::gml::internal::api::core::v1::MediaStreamKeepAlive;
+using ::gml::internal::api::core::v1::MediaStreamStart;
+using ::gml::internal::api::core::v1::MediaStreamStop;
 
-VideoStreamHandler::VideoStreamHandler(gml::event::Dispatcher* d, GEMInfo* info, GRPCBridge* b,
+MediaStreamHandler::MediaStreamHandler(gml::event::Dispatcher* d, GEMInfo* info, GRPCBridge* b,
                                        exec::core::ControlExecutionContext* ctrl_exec_ctx)
     : MessageHandler(d, info, b), ctrl_exec_ctx_(ctrl_exec_ctx) {}
 
-Status VideoStreamHandler::VideoWithOverlaysCallback(
+Status MediaStreamHandler::MediaStreamCallback(
     const std::vector<std::unique_ptr<google::protobuf::Message>>& messages) {
   for (const auto& message : messages) {
-    GML_RETURN_IF_ERROR(bridge()->SendMessageToBridge(EDGE_CP_TOPIC_VIDEO, *message));
+    GML_RETURN_IF_ERROR(bridge()->SendMessageToBridge(EDGE_CP_TOPIC_MEDIA, *message));
   }
   return Status::OK();
 }
 
-Status VideoStreamHandler::Start() {
-  LOG(INFO) << "Starting VideoStreamHandler";
+Status MediaStreamHandler::Start() {
+  LOG(INFO) << "Starting MediaStreamHandler";
   ctrl_exec_ctx_->RegisterMediaStreamCallback(
-      std::bind(&VideoStreamHandler::VideoWithOverlaysCallback, this, std::placeholders::_1));
+      std::bind(&MediaStreamHandler::MediaStreamCallback, this, std::placeholders::_1));
   running_ = true;
 
   keep_alive_timer_ = dispatcher()->CreateTimer([this]() {
-    VLOG(1) << "Missed VideoStreamKeepAlive message. Stopping video stream.";
+    VLOG(1) << "Missed MediaStreamKeepAlive message. Stopping media stream.";
     auto s = Finish();
     if (!s.ok()) {
       LOG(ERROR) << "Failed to stop stream: " << s.msg();
@@ -78,33 +78,33 @@ Status VideoStreamHandler::Start() {
   return Status::OK();
 }
 
-Status VideoStreamHandler::HandleMessage(
+Status MediaStreamHandler::HandleMessage(
     const gml::internal::controlplane::egw::v1::BridgeResponse& msg) {
-  if (msg.msg().Is<VideoStreamStop>()) {
+  if (msg.msg().Is<MediaStreamStop>()) {
     return Finish();
   }
 
-  if (msg.msg().Is<VideoStreamStart>() || msg.msg().Is<VideoStreamKeepAlive>()) {
+  if (msg.msg().Is<MediaStreamStart>() || msg.msg().Is<MediaStreamKeepAlive>()) {
     if (!running_) {
       return Start();
     }
     if (keep_alive_timer_) {
-      VLOG(1) << "Resetting KeepAlive timer for VideoStreamHandler";
+      VLOG(1) << "Resetting KeepAlive timer for MediaStreamHandler";
       // Already running, just reset the timer.
       keep_alive_timer_->EnableTimer(kKeepAliveInterval);
       return Status::OK();
     }
   }
 
-  LOG(ERROR) << "Failed to unpack VideoStreamMessage. Recived message of type: "
+  LOG(ERROR) << "Failed to unpack MediaStreamMessage. Recived message of type: "
              << msg.msg().type_url() << " . Ignoring...";
   return Status::OK();
 }
 
-Status VideoStreamHandler::Init() { return Status::OK(); }
+Status MediaStreamHandler::Init() { return Status::OK(); }
 
-Status VideoStreamHandler::Finish() {
-  LOG(INFO) << "Stopping VideoStreamHandler";
+Status MediaStreamHandler::Finish() {
+  LOG(INFO) << "Stopping MediaStreamHandler";
   if (keep_alive_timer_) {
     keep_alive_timer_->DisableTimer();
     keep_alive_timer_.reset();

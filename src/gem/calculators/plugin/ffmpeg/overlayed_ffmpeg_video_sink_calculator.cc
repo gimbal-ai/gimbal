@@ -231,7 +231,7 @@ Status OverlayedFFmpegVideoSinkCalculator::ProcessImpl(
   header->set_frame_rate(video_header_.frame_rate);
   messages.push_back(std::move(header));
 
-  auto cb = control_ctx->GetVideoWithOverlaysCallback();
+  auto cb = control_ctx->GetMediaStreamCallback();
   if (!!cb) {
     GML_RETURN_IF_ERROR(cb(messages));
   }

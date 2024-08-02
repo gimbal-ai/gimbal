@@ -38,6 +38,7 @@
 #include "src/gem/controller/file_downloader.h"
 #include "src/gem/controller/grpc_bridge.h"
 #include "src/gem/controller/heartbeat.h"
+#include "src/gem/controller/media_stream_handler.h"
 #include "src/gem/controller/metrics_handler.h"
 #include "src/gem/controller/model_exec_handler.h"
 #include "src/gem/controller/system_metrics.h"
@@ -59,6 +60,7 @@ using gml::internal::controlplane::fleetmgr::v1::RegisterResponse;
 using internal::api::core::v1::CP_EDGE_TOPIC_EXEC;
 using internal::api::core::v1::CP_EDGE_TOPIC_FILE_TRANSFER;
 using internal::api::core::v1::CP_EDGE_TOPIC_INFO;
+using internal::api::core::v1::CP_EDGE_TOPIC_MEDIA;
 using internal::api::core::v1::CP_EDGE_TOPIC_METRICS;
 using internal::api::core::v1::CP_EDGE_TOPIC_STATUS;
 using internal::api::core::v1::CP_EDGE_TOPIC_VIDEO;
@@ -135,8 +137,12 @@ Status Controller::Init() {
   auto info_handler = std::make_shared<DeviceInfoHandler>(dispatcher(), &info_, bridge_.get());
   auto exec_handler = std::make_shared<ModelExecHandler>(dispatcher(), &info_, bridge_.get(),
                                                          blob_store_.get(), ctrl_exec_ctx_.get());
+  // TODO(michelle): Remove the video stream handler once we completely move video streams to
+  // the media stream topic.
   auto video_handler = std::make_shared<VideoStreamHandler>(dispatcher(), &info_, bridge_.get(),
                                                             ctrl_exec_ctx_.get());
+  auto media_stream_handler = std::make_shared<MediaStreamHandler>(
+      dispatcher(), &info_, bridge_.get(), ctrl_exec_ctx_.get());
   auto metrics_handler =
       std::make_shared<MetricsHandler>(dispatcher(), &info_, bridge_.get(), ctrl_exec_ctx_.get());
 
@@ -144,6 +150,7 @@ Status Controller::Init() {
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_INFO, info_handler));
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_EXEC, exec_handler));
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_VIDEO, video_handler));
+  GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_MEDIA, media_stream_handler));
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_METRICS, metrics_handler));
   GML_CHECK_OK(RegisterMessageHandler(CP_EDGE_TOPIC_FILE_TRANSFER, file_downloader_));
 

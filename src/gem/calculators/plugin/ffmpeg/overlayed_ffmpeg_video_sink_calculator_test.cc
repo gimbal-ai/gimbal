@@ -132,7 +132,7 @@ TEST_P(OverlayedFFmpegVideoSinkTest, OutputsExpectedChunks) {
   std::vector<ImageOverlayChunk> actual_image_overlay_chunks;
   std::vector<H264Chunk> actual_h264_chunks;
 
-  exec::core::ControlExecutionContext::VideoWithOverlaysCallback cb =
+  exec::core::ControlExecutionContext::MediaStreamCallback cb =
       [&](const std::vector<std::unique_ptr<google::protobuf::Message>>& messages) {
         for (auto& message : messages) {
           auto type = message->GetTypeName();
@@ -154,7 +154,7 @@ TEST_P(OverlayedFFmpegVideoSinkTest, OutputsExpectedChunks) {
       };
 
   exec::core::ControlExecutionContext control_ctx;
-  control_ctx.RegisterVideoWithOverlaysCallback(cb);
+  control_ctx.RegisterMediaStreamCallback(cb);
 
   tester.WithExecutionContext(&control_ctx)
       .ForInput("VIDEO_HEADER", video_header, mediapipe::Timestamp::PreStream());
