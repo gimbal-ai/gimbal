@@ -40,6 +40,13 @@ PLUGINS = dict(
             "//src/gem/calculators/plugin/ffmpeg:cc_library",
         ],
     ),
+    huggingface = struct(
+        enabled_by_default = True,
+        libs = [
+            "//src/gem/exec/plugin/huggingface:cc_library",
+            "//src/gem/calculators/plugin/huggingface:cc_library",
+        ],
+    ),
     tensorrt = struct(
         enabled_by_default = False,
         libs = [
