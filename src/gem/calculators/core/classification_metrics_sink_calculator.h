@@ -43,7 +43,7 @@ class ClassificationMetricsSinkCalculator
   Status RecordMetrics(mediapipe::CalculatorContext* cc) override;
 
  private:
-  std::unique_ptr<opentelemetry::metrics::Histogram<double>> confidence_hist_;
+  opentelemetry::metrics::Histogram<double>* confidence_hist_;
 };
 
 }  // namespace gml::gem::calculators::core

@@ -48,7 +48,7 @@ const std::vector<double> kConfidenceClassesBounds = []() {
 Status ClassificationMetricsSinkCalculator::BuildMetrics(mediapipe::CalculatorContext*) {
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
 
-  confidence_hist_ = metrics_system.CreateHistogramWithBounds<double>(
+  confidence_hist_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
       "gml_gem_pipe_classifications_confidence", "Confidence scores of model predictions.",
       kConfidenceClassesBounds);
   return Status::OK();

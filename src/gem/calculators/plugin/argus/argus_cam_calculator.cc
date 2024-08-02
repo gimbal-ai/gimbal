@@ -64,8 +64,7 @@ absl::Status ArgusCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
   }
 
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
-  auto gml_meter = metrics_system.GetMeterProvider()->GetMeter("gml");
-  fps_gauge_ = gml_meter->CreateDoubleGauge("gml.gem.camera.fps");
+  fps_gauge_ = metrics_system.GetOrCreateGauge<double>("gml.gem.camera.fps", "Camera FPS");
 
   return absl::OkStatus();
 }

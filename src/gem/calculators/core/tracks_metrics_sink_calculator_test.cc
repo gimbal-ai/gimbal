@@ -66,6 +66,8 @@ TEST_P(TracksMetricsSinkTest, RecordsMetricsCorrectly) {
   auto ts = mediapipe::Timestamp::Min();
   int64_t test_i = 0;
   testing::CalculatorTester tester(test_case_parent.calculator_pbtxt);
+  auto& metrics_system = metrics::MetricsSystem::GetInstance();
+
   for (const auto& test_case : test_case_parent.steps) {
     SCOPED_TRACE(absl::StrCat("Test step ", test_i));
     test_i++;
@@ -81,6 +83,7 @@ TEST_P(TracksMetricsSinkTest, RecordsMetricsCorrectly) {
 
     // Increment the ts for the next step.
     for (int64_t i = 0; i < test_case.apply_times; i++) {
+      metrics_system.Reset();
       ts = mediapipe::Timestamp(
           ts.Value() +
           static_cast<int64_t>(std::round(mediapipe::Timestamp::kTimestampUnitsPerSecond * 0.3)));
@@ -90,12 +93,11 @@ TEST_P(TracksMetricsSinkTest, RecordsMetricsCorrectly) {
           .ExpectOutput<bool>("FINISHED", ts, true);
 
       if (i != test_case.apply_times - 1) {
-        metrics::MetricsSystem::GetInstance().Reader()->Collect(
+        metrics_system.Reader()->Collect(
             [](opentelemetry::sdk::metrics::ResourceMetrics&) { return true; });
       }
     }
 
-    auto& metrics_system = metrics::MetricsSystem::GetInstance();
     auto check_results = [&test_case](
                              opentelemetry::sdk::metrics::ResourceMetrics& resource_metrics) {
       const auto& scope_metrics = resource_metrics.scope_metric_data_;
@@ -159,14 +161,14 @@ INSTANTIATE_TEST_SUITE_P(
     ::testing::Values(
         TracksMetricsSinkTestCase{
             R"pbtxt(
-calculator: "TracksMetricsSinkCalculator"
-input_stream: "DETECTIONS:detections"
-input_stream: "TRACKS_METADATA:tracks_metadata"
-output_stream: "FINISHED:finished"
-)pbtxt",
-            {TracksMetricsSinkTestStep{.detection_pbtxts =
-                                           {
-                                               R"pbtxt(
+                calculator: "TracksMetricsSinkCalculator"
+                input_stream: "DETECTIONS:detections"
+                input_stream: "TRACKS_METADATA:tracks_metadata"
+                output_stream: "FINISHED:finished"
+            )pbtxt",
+            {TracksMetricsSinkTestStep{
+              .detection_pbtxts = {
+                R"pbtxt(
 track_id { value: 1 }
 label { label: "person" score: 0.9 }
 bounding_box { xc: 0.5 yc: 0.5 width: 0.1 height: 0.2 }

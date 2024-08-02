@@ -64,6 +64,12 @@ void MetricsSystem::Init() {
   scrapeables_.clear();
   reader_.reset();
 
+  counters_.clear();
+  gauges_double_.clear();
+  gauges_uint64_.clear();
+  histograms_double_.clear();
+  histograms_uint64_.clear();
+
   std::shared_ptr<opentelemetry::metrics::MeterProvider> provider(
       new opentelemetry::sdk::metrics::MeterProvider());
   std::shared_ptr<opentelemetry::sdk::metrics::MeterProvider> p =

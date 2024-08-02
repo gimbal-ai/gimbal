@@ -27,6 +27,7 @@
 #include "src/common/testing/testing.h"
 #include "src/gem/calculators/core/test_utils.h"
 #include "src/gem/testing/core/calculator_tester.h"
+#include "src/gem/testing/core/otel_utils.h"
 
 namespace gml::gem::calculators::core {
 
@@ -50,6 +51,8 @@ TEST_P(ClassificationMetricsSinkTest, CollectsStatsCorrectly) {
 
   mediapipe::CalculatorRunner runner(kClassificationMetricsSinkNode);
 
+  auto& metrics_system = metrics::MetricsSystem::GetInstance();
+
   // The test param comes as a packet per time step and an expectation for that timestep.
   for (size_t t = 0; t < packet_and_expectation.size(); ++t) {
     const auto& classification_pbtxt = packet_and_expectation[t].classification_pbtxt;
@@ -63,9 +66,8 @@ TEST_P(ClassificationMetricsSinkTest, CollectsStatsCorrectly) {
     p = p.At(mediapipe::Timestamp(static_cast<int64_t>(t)));
     runner.MutableInputs()->Index(0).packets.push_back(p);
 
+    metrics_system.Reset();
     ASSERT_OK(runner.Run());
-
-    auto& metrics_system = metrics::MetricsSystem::GetInstance();
 
     auto check_results =
         [&expected_hists](opentelemetry::sdk::metrics::ResourceMetrics& resource_metrics) {
@@ -77,6 +79,7 @@ TEST_P(ClassificationMetricsSinkTest, CollectsStatsCorrectly) {
 
           for (const auto& metric_datum : metric_data) {
             const auto& point_data = metric_datum.point_data_attr_;
+
             EXPECT_THAT(point_data, MatchHistogramVector(expected_hists));
           }
         };

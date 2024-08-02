@@ -43,9 +43,9 @@ class DetectionsMetricsSinkCalculator
   Status RecordMetrics(mediapipe::CalculatorContext* cc) override;
 
  private:
-  std::unique_ptr<opentelemetry::metrics::Histogram<double>> confidence_hist_;
-  std::unique_ptr<opentelemetry::metrics::Histogram<double>> box_area_hist_;
-  std::unique_ptr<opentelemetry::metrics::Histogram<double>> box_aspect_ratio_hist_;
+  opentelemetry::metrics::Histogram<double>* confidence_hist_;
+  opentelemetry::metrics::Histogram<double>* box_area_hist_;
+  opentelemetry::metrics::Histogram<double>* box_aspect_ratio_hist_;
 };
 
 }  // namespace gml::gem::calculators::core

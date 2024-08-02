@@ -45,20 +45,20 @@ absl::Status TracksMetricsSinkCalculator::Open(mediapipe::CalculatorContext*) {
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
 
   // needs a tracking prefix
-  active_tracks_gauge_ = metrics_system.CreateGauge<uint64_t>(
+  active_tracks_gauge_ = metrics_system.GetOrCreateGauge<uint64_t>(
       "gml_gem_pipe_tracks_active", "Count of tracks that are detected in the current frame");
-  lost_tracks_gauge_ = metrics_system.CreateGauge<uint64_t>(
+  lost_tracks_gauge_ = metrics_system.GetOrCreateGauge<uint64_t>(
       "gml_gem_pipe_tracks_lost",
       "Count of tracks that have not been removed from the tracker and are not currently detected "
       "in the current frame");
-  unique_track_ids_counter_ =
-      metrics_system.CreateCounter("gml_gem_pipe_tracks_unique_ids", "Count of unique track IDs");
+  unique_track_ids_counter_ = metrics_system.GetOrCreateCounter("gml_gem_pipe_tracks_unique_ids",
+                                                                "Count of unique track IDs");
 
-  track_frame_histogram_ = metrics_system.CreateHistogramWithBounds<uint64_t>(
+  track_frame_histogram_ = metrics_system.GetOrCreateHistogramWithBounds<uint64_t>(
       "gml_gem_pipe_tracks_frame_count",
       "Distribution of frame counts for tracked objects when they are removed",
       metrics::kDefaultHistogramBounds);
-  track_lifetime_histogram_ = metrics_system.CreateHistogramWithBounds<double>(
+  track_lifetime_histogram_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
       "gml_gem_pipe_tracks_lifetime", "Distribution of track lifetimes in milliseconds",
       kTrackLifetimeHistogramBounds);
 

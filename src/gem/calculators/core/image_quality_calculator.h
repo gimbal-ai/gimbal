@@ -63,8 +63,8 @@ class ImageQualityCalculator : public mediapipe::CalculatorBase {
 
  private:
   cv::Ptr<cv::quality::QualityBRISQUE> brisque_calc;
-  std::unique_ptr<opentelemetry::metrics::Gauge<double>> brisque_score_;
-  std::unique_ptr<opentelemetry::metrics::Gauge<double>> blurriness_score_;
+  opentelemetry::metrics::Gauge<double>* brisque_score_;
+  opentelemetry::metrics::Gauge<double>* blurriness_score_;
 
   internal::api::core::v1::ImageQualityMetrics metrics_;
   int64_t frame_count = 0;

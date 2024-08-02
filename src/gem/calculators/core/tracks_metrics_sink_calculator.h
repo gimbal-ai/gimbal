@@ -60,11 +60,11 @@ class TracksMetricsSinkCalculator : public mediapipe::CalculatorBase {
     mediapipe::Timestamp first_timestamp;
     mediapipe::Timestamp latest_timestamp;
   };
-  std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> active_tracks_gauge_;
-  std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>> lost_tracks_gauge_;
-  std::unique_ptr<opentelemetry::metrics::Counter<uint64_t>> unique_track_ids_counter_;
-  std::unique_ptr<opentelemetry::metrics::Histogram<uint64_t>> track_frame_histogram_;
-  std::unique_ptr<opentelemetry::metrics::Histogram<double>> track_lifetime_histogram_;
+  opentelemetry::metrics::Gauge<uint64_t>* active_tracks_gauge_;
+  opentelemetry::metrics::Gauge<uint64_t>* lost_tracks_gauge_;
+  opentelemetry::metrics::Counter<uint64_t>* unique_track_ids_counter_;
+  opentelemetry::metrics::Histogram<uint64_t>* track_frame_histogram_;
+  opentelemetry::metrics::Histogram<double>* track_lifetime_histogram_;
   absl::flat_hash_map<int64_t, TrackInfo> track_id_to_info_;
 };
 

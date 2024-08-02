@@ -70,7 +70,7 @@ class OpenCVCamSourceCalculator : public mediapipe::CalculatorBase {
   double frame_count_;
 
   // Metrics.
-  std::unique_ptr<opentelemetry::metrics::Gauge<double>> fps_gauge_;
+  opentelemetry::metrics::Gauge<double>* fps_gauge_;
 };
 
 }  // namespace gml::gem::calculators::opencv_cam

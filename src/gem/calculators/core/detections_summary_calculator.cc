@@ -44,16 +44,16 @@ const std::vector<double> kBoxAspectRatioBounds = {0, 0.02, 0.2, 0.5, 1, 2.0, 5,
 
 Status DetectionsSummaryCalculator::BuildMetrics(mediapipe::CalculatorContext*) {
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
-  detection_hist_ = metrics_system.CreateHistogramWithBounds<uint64_t>(
+  detection_hist_ = metrics_system.GetOrCreateHistogramWithBounds<uint64_t>(
       "gml_gem_model_detection_classes", "Frequency of detection classes predicted by the model.",
       kDetectionClassesBounds);
-  confidence_hist_ = metrics_system.CreateHistogramWithBounds<double>(
+  confidence_hist_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
       "gml_gem_model_confidence_classes", "Confidence scores of model predictions.",
       kConfidenceClassesBounds);
-  box_area_hist_ = metrics_system.CreateHistogramWithBounds<double>(
+  box_area_hist_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
       "gml_gem_model_box_area",
       "Area of the detection bounding box as a percentage of the image area.", kBoxAreaBounds);
-  box_aspect_ratio_hist_ = metrics_system.CreateHistogramWithBounds<double>(
+  box_aspect_ratio_hist_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
       "gml_gem_model_box_aspect_ratio",
       "Aspect ratio (width / height) of the detection bounding box.", kBoxAspectRatioBounds);
   return Status::OK();

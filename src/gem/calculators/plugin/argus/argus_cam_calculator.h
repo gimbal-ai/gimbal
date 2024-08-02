@@ -39,7 +39,7 @@ class ArgusCamSourceCalculator : public mediapipe::CalculatorBase {
   devices::argus::ArgusManager::ArgusCamManagedPtr argus_cam_;
 
   // Metrics.
-  std::unique_ptr<opentelemetry::metrics::Gauge<double>> fps_gauge_;
+  opentelemetry::metrics::Gauge<double>* fps_gauge_;
 };
 
 }  // namespace gml::gem::calculators::argus

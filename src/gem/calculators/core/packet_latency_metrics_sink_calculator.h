@@ -41,7 +41,7 @@ class PacketLatencyMetricsSinkCalculator : public MetricsSinkCalculator<mediapip
   Status RecordMetrics(mediapipe::CalculatorContext* cc) override;
 
  private:
-  std::unique_ptr<opentelemetry::metrics::Histogram<double>> latency_hist_;
+  opentelemetry::metrics::Histogram<double>* latency_hist_;
 };
 
 }  // namespace gml::gem::calculators::core
