@@ -20,6 +20,7 @@ ENABLE_LINTERS:
 - REPOSITORY_LICENSE_CHECKER
 # TODO(vihang): Enable this after rubucop is faster.
 # - RUBY_RUBOCOP
+- RUST_CLIPPY
 - SQL_SQUAWK
 - TERRAFORM_TERRAFORM_FMT
 # TODO(michelle/zasgar): Consider enabling after auditing the rules and current set of lint issues.

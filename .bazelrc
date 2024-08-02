@@ -8,6 +8,12 @@ common --experimental_build_transitive_python_runfiles
 common --experimental_remote_cache_compression
 common --nolegacy_important_outputs
 
+# Required for cargo_build_script support before Bazel 7
+common --incompatible_merge_fixed_and_default_shell_env
+
+# https://github.com/bazelbuild/rules_rust/issues/2084
+build --@rules_rust//cargo/settings:experimental_symlink_execroot
+
 build --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
 fetch --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
 query --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig

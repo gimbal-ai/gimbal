@@ -38,7 +38,7 @@ bazel_dep(name = "abseil-cpp", version = "20230802.1", repo_name = "com_google_a
 bazel_dep(name = "googletest", version = "1.14.0.bcr.1", repo_name = "com_google_googletest")
 bazel_dep(name = "google_benchmark", version = "1.8.5", repo_name = "com_google_benchmark")
 bazel_dep(name = "re2", version = "2023-11-01", repo_name = "com_googlesource_code_re2")
-bazel_dep(name = "rules_apple", version = "3.4.0", repo_name = "build_bazel_rules_apple")
+bazel_dep(name = "rules_apple", version = "3.7.0", repo_name = "build_bazel_rules_apple")
 
 # mediapipe uses rules_nodejs so we pull it in at the top level despite it being pulled in by aspect_rules_js already.
 bazel_dep(name = "rules_nodejs", version = "5.8.3")
@@ -258,3 +258,40 @@ oci.pull(
     ],
 )
 use_repo(oci, "distroless_nodejs", "pgvector_pg15", "python_3_11_image", "victoria_metrics_1_93_6")
+
+bazel_dep(name = "rules_rust", version = "0.48.0")
+
+# Rust toolchain
+RUST_EDITION = "2021"
+
+RUST_VERSION = "1.80.0"
+
+rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
+rust.toolchain(
+    edition = RUST_EDITION,
+    extra_target_triples = [
+        "aarch64-unknown-linux-gnu",
+        "x86_64-unknown-linux-gnu",
+    ],
+    versions = [RUST_VERSION],
+)
+use_repo(rust, "rust_toolchains")
+
+register_toolchains("@rust_toolchains//:all")
+
+# Proto toolchain
+register_toolchains("@rules_rust//proto/protobuf:default-proto-toolchain")
+
+crate = use_extension(
+    "@rules_rust//crate_universe:extension.bzl",
+    "crate",
+)
+crate.from_cargo(
+    name = "crates",
+    cargo_lockfile = "//:Cargo.lock",
+    manifests = [
+        "//:Cargo.toml",
+        "//src/experimental/rs/basic_ffi:Cargo.toml",
+    ],
+)
+use_repo(crate, "crates")
