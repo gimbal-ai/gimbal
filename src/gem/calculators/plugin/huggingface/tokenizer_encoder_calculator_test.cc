@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "src/gem/calculators/plugin/huggingface/tokenizer_decoder_calculator.h"
+#include "src/gem/calculators/plugin/huggingface/tokenizer_encoder_calculator.h"
 
 #include "gmock/gmock.h"
 #include <absl/container/flat_hash_map.h>
@@ -31,12 +31,12 @@
 
 namespace gml::gem::calculators::huggingface {
 
-TEST(TokenizerDecoderCalculatorTest, UsesTokenizerInContext) {
-  constexpr char kTokenizerDecoderNode[] = R"pbtxt(
-    calculator: "TokenizerDecoderCalculator"
+TEST(TokenizerEncoderCalculatorTest, UsesTokenizerInContext) {
+  constexpr char kTokenizerEncoderNode[] = R"pbtxt(
+    calculator: "TokenizerEncoderCalculator"
     input_side_packet: "EXEC_CTX:ctrl_exec_ctx"
-    input_stream: "TOKEN_IDS:ids"
-    output_stream: "DECODED_TOKENS:tokens"
+    input_stream: "TEXT:text"
+    output_stream: "TOKEN_IDS:ids"
   )pbtxt";
 
   auto text = std::string{"this is a test"};
@@ -44,11 +44,12 @@ TEST(TokenizerDecoderCalculatorTest, UsesTokenizerInContext) {
   auto model = gml::gem::exec::huggingface::Model(std::move(tokenizer));
   auto tokenizer_exec_ctx = std::make_unique<gml::gem::exec::huggingface::ExecutionContext>(&model);
 
-  testing::CalculatorTester tester(kTokenizerDecoderNode);
+  testing::CalculatorTester tester(kTokenizerEncoderNode);
   tester.WithExecutionContext(tokenizer_exec_ctx.get())
-      .ForInput("TOKEN_IDS", std::vector<int>{1, 2, 3}, mediapipe::Timestamp(0))
+      .ForInput("TEXT", std::string("this is a test"), mediapipe::Timestamp(0))
       .Run()
-      .ExpectOutput<std::string>("DECODED_TOKENS", mediapipe::Timestamp(0), text);
+      .ExpectOutput<std::vector<int>>("TOKEN_IDS", mediapipe::Timestamp(0),
+                                      std::vector<int>{1, 2, 3});
 }
 
 }  // namespace gml::gem::calculators::huggingface

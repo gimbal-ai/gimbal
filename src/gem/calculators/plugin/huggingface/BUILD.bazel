@@ -27,6 +27,8 @@ gem_plugin_cc_library(
     srcs = [
         "tokenizer_decoder_calculator.cc",
         "tokenizer_decoder_calculator.h",
+        "tokenizer_encoder_calculator.cc",
+        "tokenizer_encoder_calculator.h",
     ],
     plugin_name = "huggingface",
     deps = [
@@ -40,7 +42,21 @@ gem_plugin_cc_library(
 gml_cc_test(
     name = "tokenizer_decoder_calculator_test",
     srcs = [
+        "test_utils.h",
         "tokenizer_decoder_calculator_test.cc",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/exec/core:cc_library",
+        "//src/gem/testing/core:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "tokenizer_encoder_calculator_test",
+    srcs = [
+        "test_utils.h",
+        "tokenizer_encoder_calculator_test.cc",
     ],
     deps = [
         ":cc_library",
