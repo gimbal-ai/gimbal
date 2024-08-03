@@ -1,0 +1,11 @@
+[package]
+name = "tokenizer_wrapper"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokenizers = "0.19"
+cxx = "1.0"
+
+[build-dependencies]
+cxx-build = "1.0"

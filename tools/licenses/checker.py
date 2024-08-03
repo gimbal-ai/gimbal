@@ -116,6 +116,7 @@ matchers = [
         "name": "c_style",
         "exprs": [
             re.compile(r"^.*\.(cc|cpp|h|hpp|c|inl)$"),
+            re.compile(r"^.*\.(rs)$"),
             re.compile(r"^.*\.(bt)$"),
             re.compile(r"^.*\.(java)$"),
             re.compile(r"^.*\.(js|jsx|ts|tsx)$"),

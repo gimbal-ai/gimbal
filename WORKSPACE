@@ -118,3 +118,18 @@ mediapipe_repos()
 load("//bazel/external:mediapipe_deps.bzl", "mediapipe_deps")
 
 mediapipe_deps()
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+# cxxbridge-cmd is a binary only Rust crate, so we follow these instructions for it
+# http://bazelbuild.github.io/rules_rust/crate_universe.html#binary-dependencies
+http_archive(
+    name = "cxxbridge_cmd",
+    build_file = "//bazel/external/cxxbridge_cmd:BUILD.bazel.gml",
+    sha256 = "b20c2a31fb5a2e2aeebced19e35d78a974301171391b39e36d5ebb00bea2aa93",
+    strip_prefix = "cxxbridge-cmd-1.0.94",
+    type = "tar.gz",
+    urls = [
+        "https://crates.io/api/v1/crates/cxxbridge-cmd/1.0.94/download",
+    ],
+)

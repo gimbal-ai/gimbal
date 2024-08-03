@@ -292,6 +292,8 @@ crate.from_cargo(
     manifests = [
         "//:Cargo.toml",
         "//src/experimental/rs/basic_ffi:Cargo.toml",
+        "//src/gem/exec/plugin/huggingface/tokenizer_wrapper:Cargo.toml",
+        "//bazel/external/cxxbridge_cmd:Cargo.toml",
     ],
 )
 use_repo(crate, "crates")

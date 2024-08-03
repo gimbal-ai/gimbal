@@ -19,6 +19,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include "src/common/base/base.h"
 #include "src/gem/exec/core/model.h"
