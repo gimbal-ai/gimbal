@@ -44,6 +44,7 @@ using gml::internal::api::core::v1::EDGE_CP_TOPIC_MEDIA;
 
 namespace gml::gem::controller {
 
+using ::gml::internal::api::core::v1::MediaStreamControl;
 using ::gml::internal::api::core::v1::MediaStreamKeepAlive;
 using ::gml::internal::api::core::v1::MediaStreamStart;
 using ::gml::internal::api::core::v1::MediaStreamStop;
@@ -94,6 +95,13 @@ Status MediaStreamHandler::HandleMessage(
       keep_alive_timer_->EnableTimer(kKeepAliveInterval);
       return Status::OK();
     }
+  }
+
+  if (msg.msg().Is<MediaStreamControl>()) {
+    auto ctrl_msg = std::make_unique<MediaStreamControl>();
+    msg.msg().UnpackTo(ctrl_msg.get());
+    ctrl_exec_ctx_->QueueControlMessage(std::move(ctrl_msg));
+    return Status::OK();
   }
 
   LOG(ERROR) << "Failed to unpack MediaStreamMessage. Recived message of type: "

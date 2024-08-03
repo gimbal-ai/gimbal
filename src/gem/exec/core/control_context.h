@@ -18,15 +18,20 @@
 
 #pragma once
 
+#include <memory>
+#include <queue>
 #include <utility>
 
 #include <sole.hpp>
 
+#include "src/api/corepb/v1/cp_edge.pb.h"
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/base/base.h"
 #include "src/gem/exec/core/context.h"
 
 namespace gml::gem::exec::core {
+
+using ::gml::internal::api::core::v1::MediaStreamControl;
 
 /**
  * ControlExecutionContext allows calculators to interface with GEM's controller.
@@ -44,6 +49,21 @@ class ControlExecutionContext : public ExecutionContext {
   void ClearMediaStreamCallback() {
     absl::base_internal::SpinLockHolder lock(&media_cb_lock_);
     media_cb_ = nullptr;
+  }
+
+  void QueueControlMessage(std::unique_ptr<MediaStreamControl> control) {
+    absl::base_internal::SpinLockHolder lock(&control_queue_lock_);
+    control_queue_.push(std::move(control));
+  }
+
+  std::unique_ptr<MediaStreamControl> GetControlMessage() {
+    absl::base_internal::SpinLockHolder lock(&control_queue_lock_);
+    if (!control_queue_.empty()) {
+      auto control = std::move(control_queue_.front());
+      control_queue_.pop();
+      return control;
+    }
+    return nullptr;
   }
 
   MediaStreamCallback GetMediaStreamCallback() {
@@ -67,6 +87,9 @@ class ControlExecutionContext : public ExecutionContext {
 
   absl::base_internal::SpinLock logical_pipeline_id_lock_;
   sole::uuid logical_pipeline_id_ ABSL_GUARDED_BY(logical_pipeline_id_lock_);
+
+  absl::base_internal::SpinLock control_queue_lock_;
+  std::queue<std::unique_ptr<MediaStreamControl>> control_queue_;
 };
 
 }  // namespace gml::gem::exec::core
