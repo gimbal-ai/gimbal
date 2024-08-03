@@ -14,43 +14,42 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-load("@crates//:defs.bzl", "all_crate_deps")
-load("@gml//bazel/rust:rust_cxx_bridge.bzl", "rust_cxx_bridge")
-load("@rules_rust//rust:defs.bzl", "rust_static_library")
-load("//bazel:gml_build_system.bzl", "gml_cc_library", "gml_cc_test")
+load("//bazel:gml_build_system.bzl", "gml_cc_test")
+load("//src/gem/plugins:plugins.bzl", "gem_plugin_cc_library")
 
 package(default_visibility = [
+    "//src/experimental:__subpackages__",
     "//src/gem:__subpackages__",
 ])
 
-rust_static_library(
-    name = "tokenizer_wrapper_static_lib",
-    srcs = ["src/lib.rs"],
-    deps = all_crate_deps(normal = True),
-)
-
-rust_cxx_bridge(
-    name = "tokenizer_wrapper_bridge",
-    src = "src/lib.rs",
-    deps = [":tokenizer_wrapper_static_lib"],
-)
-
-gml_cc_library(
+gem_plugin_cc_library(
     name = "cc_library",
-    srcs = ["hf_fast_tokenizer.cc"],
-    hdrs = ["hf_fast_tokenizer.h"],
+    srcs = [
+        "model_builder.cc",
+        "plugin.cc",
+    ],
+    hdrs = [
+        "model_builder.h",
+    ],
+    plugin_name = "huggingface",
     deps = [
-        ":tokenizer_wrapper_bridge",
+        "//src/common/uuid:cc_library",
+        "//src/gem/build/core:cc_library",
         "//src/gem/exec/core:cc_library",
+        "//src/gem/exec/plugin/huggingface:cc_library",
+        "//src/gem/exec/plugin/huggingface/tokenizer_wrapper:cc_library",
+        "//src/gem/plugins:cc_library",
     ],
 )
 
 gml_cc_test(
-    name = "hf_fast_tokenizer_test",
-    srcs = ["hf_fast_tokenizer_test.cc"],
-    data = ["testdata/sample_tokenizer.json"],
+    name = "model_builder_test",
+    srcs = ["model_builder_test.cc"],
+    data = [
+        "testdata/simple.json",
+    ],
     deps = [
         ":cc_library",
-        "//src/common/bazel:cc_library",
+        "//src/gem/storage:cc_library",
     ],
 )
