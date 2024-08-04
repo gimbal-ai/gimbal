@@ -166,3 +166,41 @@ TEST(MetricsTest, GetOrCreateHistogramWithBounds) {
   ASSERT_EQ(4, dp1.bucket_counts_size());
   EXPECT_THAT(dp1.bucket_counts(), ::testing::ElementsAre(0, 0, 1, 0));
 }
+
+TEST(MetricsTest, GetOrCreateMetric) {
+  ::gml::metrics::MetricsSystem& metrics_sys = ::gml::metrics::MetricsSystem::GetInstance();
+  metrics_sys.Reset();
+
+  auto counter0a = metrics_sys.GetOrCreateCounter("test_metric0", "number of hammers");
+  auto counter0b = metrics_sys.GetOrCreateCounter("test_metric0", "number of hammers");
+  auto counter1 = metrics_sys.GetOrCreateCounter("test_metric1", "number of wrenches");
+
+  counter0a->Add(1);
+  counter0b->Add(1);
+  counter1->Add(1);
+
+  ResourceMetrics proto = metrics_sys.CollectAllAsProto();
+
+  ASSERT_EQ(1, proto.scope_metrics_size());
+  ASSERT_EQ(2, proto.scope_metrics(0).metrics_size());
+
+  auto metrics = proto.scope_metrics(0).metrics();
+  std::vector<std::tuple<std::string, int>> actual_metrics;
+  for (const auto& metric : metrics) {
+    ASSERT_TRUE(metric.has_sum());
+    ASSERT_EQ(1, metric.sum().data_points_size());
+    actual_metrics.emplace_back(metric.name(), metric.sum().data_points(0).as_int());
+  }
+
+  EXPECT_THAT(actual_metrics, testing::UnorderedElementsAre(testing::FieldsAre("test_metric1", 1),
+                                                            testing::FieldsAre("test_metric0", 2)));
+}
+
+TEST(MetricsTest, NameClobberingNotAllowed) {
+  ::gml::metrics::MetricsSystem& metrics_sys = ::gml::metrics::MetricsSystem::GetInstance();
+  metrics_sys.Reset();
+
+  metrics_sys.GetOrCreateCounter("test_metric", "number of hammers");
+  ASSERT_DEATH(metrics_sys.GetOrCreateGauge<uint64_t>("test_metric", "number of hammers"),
+               "Metric test_metric is not a gauge");
+}

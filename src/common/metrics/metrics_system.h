@@ -132,21 +132,16 @@ class MetricsSystem {
       std::string name, const std::string& description, const std::vector<double>& bounds) {
     static_assert(std::is_same_v<T, uint64_t> || std::is_same_v<T, double>,
                   "Only uint64_t or double supported for GetOrCreateHistogramWithBounds");
+    using HistogramUPtr = std::unique_ptr<opentelemetry::metrics::Histogram<T>>;
 
     absl::base_internal::SpinLockHolder lock(&meter_provider_lock_);
 
-    absl::flat_hash_map<std::string, std::unique_ptr<opentelemetry::metrics::Histogram<T>>>*
-        histograms_ptr;
-    if constexpr (std::is_same_v<T, uint64_t>) {
-      histograms_ptr = &histograms_uint64_;
-    } else if constexpr (std::is_same_v<T, double>) {
-      histograms_ptr = &histograms_double_;
-    }
-    absl::flat_hash_map<std::string, std::unique_ptr<opentelemetry::metrics::Histogram<T>>>&
-        histograms = *histograms_ptr;
-
-    if (histograms.contains(name)) {
-      return histograms[name].get();
+    if (metrics_.contains(name)) {
+      if (!std::holds_alternative<HistogramUPtr>(metrics_[name])) {
+        LOG(FATAL) << absl::Substitute("Metric $0 is not a histogram of the appropriate type",
+                                       name);
+      }
+      return std::get<HistogramUPtr>(metrics_[name]).get();
     }
 
     auto provider = GetMeterProvider();
@@ -172,7 +167,7 @@ class MetricsSystem {
     sdk_provider->AddView(std::move(instrument_selector), std::move(meter_selector),
                           std::move(histogram_view));
 
-    std::unique_ptr<opentelemetry::metrics::Histogram<T>> histogram;
+    HistogramUPtr histogram;
     if constexpr (std::is_same_v<T, uint64_t>) {
       histogram = meter->CreateUInt64Histogram(name, description);
     } else if constexpr (std::is_same_v<T, double>) {
@@ -181,54 +176,55 @@ class MetricsSystem {
 
     // Store the histogram in the map, so we can return it if it is requested again.
     auto histogram_ptr = histogram.get();
-    histograms[name] = std::move(histogram);
+    metrics_[name] = std::move(histogram);
     return histogram_ptr;
   }
 
   opentelemetry::metrics::Counter<uint64_t>* GetOrCreateCounter(const std::string& name,
                                                                 const std::string& description) {
+    using CounterUPtr = std::unique_ptr<opentelemetry::metrics::Counter<uint64_t>>;
+
     absl::base_internal::SpinLockHolder lock(&meter_provider_lock_);
 
-    if (counters_.contains(name)) {
-      return counters_[name].get();
+    if (metrics_.contains(name)) {
+      if (!std::holds_alternative<CounterUPtr>(metrics_[name])) {
+        LOG(FATAL) << absl::Substitute("Metric $0 is not a counter", name);
+      }
+      return std::get<CounterUPtr>(metrics_[name]).get();
     }
 
     auto provider = GetMeterProvider();
     auto meter = provider->GetMeter("gml");
-    auto counter = meter->CreateUInt64Counter(name, description);
+
+    CounterUPtr counter = meter->CreateUInt64Counter(name, description);
 
     // Store the counter in the map, so we can return it if it is requested again.
     auto counter_ptr = counter.get();
-    counters_[name] = std::move(counter);
+    metrics_[name] = std::move(counter);
     return counter_ptr;
   }
 
   template <typename T>
   opentelemetry::metrics::Gauge<T>* GetOrCreateGauge(const std::string& name,
                                                      const std::string& description) {
+    using GaugeUPtr = std::unique_ptr<opentelemetry::metrics::Gauge<T>>;
+
     static_assert(std::is_same_v<T, uint64_t> || std::is_same_v<T, double>,
                   "Only uint64_t or double supported for GetOrCreateGauge");
 
     absl::base_internal::SpinLockHolder lock(&meter_provider_lock_);
 
-    absl::flat_hash_map<std::string, std::unique_ptr<opentelemetry::metrics::Gauge<T>>>* gauges_ptr;
-    if constexpr (std::is_same_v<T, uint64_t>) {
-      gauges_ptr = &gauges_uint64_;
-    } else if constexpr (std::is_same_v<T, double>) {
-      gauges_ptr = &gauges_double_;
-    }
-    absl::flat_hash_map<std::string, std::unique_ptr<opentelemetry::metrics::Gauge<T>>>& gauges =
-        *gauges_ptr;
-
-    if (gauges.contains(name)) {
-      return gauges[name].get();
+    if (metrics_.contains(name)) {
+      if (!std::holds_alternative<GaugeUPtr>(metrics_[name])) {
+        LOG(FATAL) << absl::Substitute("Metric $0 is not a gauge of the appropriate type", name);
+      }
+      return std::get<GaugeUPtr>(metrics_[name]).get();
     }
 
     auto provider = GetMeterProvider();
     auto meter = provider->GetMeter("gml");
-    static_assert(std::is_same_v<T, uint64_t> || std::is_same_v<T, double>,
-                  "Only uint64_t or double supported for GetOrCreateGauge");
-    std::unique_ptr<opentelemetry::metrics::Gauge<T>> gauge;
+
+    GaugeUPtr gauge;
     if constexpr (std::is_same_v<T, uint64_t>) {
       gauge = meter->CreateInt64Gauge(name, description);
     } else if constexpr (std::is_same_v<T, double>) {
@@ -237,7 +233,7 @@ class MetricsSystem {
 
     // Store the gauge in the map, so we can return it if it is requested again.
     auto gauge_ptr = gauge.get();
-    gauges[name] = std::move(gauge);
+    metrics_[name] = std::move(gauge);
     return gauge_ptr;
   }
 
@@ -265,16 +261,14 @@ class MetricsSystem {
   std::shared_ptr<opentelemetry::sdk::metrics::MetricReader> reader_;
 
   // Maps to all created metrics. If a metric is requested again, we return the same instance.
-  absl::flat_hash_map<std::string, std::unique_ptr<opentelemetry::metrics::Counter<uint64_t>>>
-      counters_;
-  absl::flat_hash_map<std::string, std::unique_ptr<opentelemetry::metrics::Gauge<double>>>
-      gauges_double_;
-  absl::flat_hash_map<std::string, std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>>>
-      gauges_uint64_;
-  absl::flat_hash_map<std::string, std::unique_ptr<opentelemetry::metrics::Histogram<double>>>
-      histograms_double_;
-  absl::flat_hash_map<std::string, std::unique_ptr<opentelemetry::metrics::Histogram<uint64_t>>>
-      histograms_uint64_;
+
+  using MetricInstrumentsPointers =
+      std::variant<std::unique_ptr<opentelemetry::metrics::Counter<uint64_t>>,
+                   std::unique_ptr<opentelemetry::metrics::Gauge<uint64_t>>,
+                   std::unique_ptr<opentelemetry::metrics::Gauge<double>>,
+                   std::unique_ptr<opentelemetry::metrics::Histogram<double>>,
+                   std::unique_ptr<opentelemetry::metrics::Histogram<uint64_t>>>;
+  absl::flat_hash_map<std::string, MetricInstrumentsPointers> metrics_;
 };
 
 }  // namespace gml::metrics
