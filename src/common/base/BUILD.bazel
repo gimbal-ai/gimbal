@@ -31,6 +31,7 @@ gml_cc_library_internal(
     ],
     hdrs = [
         "arch.h",
+        "array_ref.h",
         "base.h",
         "bimap.h",
         "byte_utils.h",
@@ -157,4 +158,10 @@ gml_cc_binary(
     deps = [
         "//src/common/benchmark:benchmark_main",
     ],
+)
+
+gml_cc_test(
+    name = "array_ref_test",
+    srcs = ["array_ref_test.cc"],
+    deps = [":cc_library"],
 )
