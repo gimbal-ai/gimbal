@@ -81,6 +81,8 @@ Status DetectionsMetricsSinkCalculator::RecordMetrics(mediapipe::CalculatorConte
       top_k_classes(cmp);
 
   for (const auto& detection : detections) {
+    DCHECK(top_k_classes.empty());
+
     // Box area is a percentage of the image area.
     // Note that the box is normalized to [0, 1], which makes the math easy.
     double box_area = detection.bounding_box().width() * detection.bounding_box().height();
@@ -99,9 +101,6 @@ Status DetectionsMetricsSinkCalculator::RecordMetrics(mediapipe::CalculatorConte
     std::unordered_map<std::string, std::string> attrs(options.metric_attributes().begin(),
                                                        options.metric_attributes().end());
 
-    box_area_hist_->Record(box_area, attrs, {});
-    box_aspect_ratio_hist_->Record(aspect_ratio, attrs, {});
-
     for (size_t k = top_k_classes.size(); k > 0; --k) {
       const auto& [class_name, conf] = top_k_classes.top();
 
@@ -112,6 +111,12 @@ Status DetectionsMetricsSinkCalculator::RecordMetrics(mediapipe::CalculatorConte
 
       top_k_classes.pop();
     }
+
+    // Keep this after the loop so that attrs["class"] is set to top class.
+    DCHECK(attrs["k"] == "1");
+    attrs.erase("k");
+    box_area_hist_->Record(box_area, attrs, {});
+    box_aspect_ratio_hist_->Record(aspect_ratio, attrs, {});
   }
 
   return Status::OK();
