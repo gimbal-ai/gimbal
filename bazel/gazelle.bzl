@@ -20,6 +20,7 @@ _THIRD_PARTY_IMPORTS = [
     "//third_party/github.com/open-telemetry/opentelemetry-proto:imports.csv",
     "//third_party/github.com/gogo/protobuf:imports.csv",
     "//third_party/github.com/google/mediapipe:imports.csv",
+    "//third_party/github.com/qdrant/go-client:imports.csv",
 ]
 
 _GAZELLE_COMMON_ATTRS = dict(

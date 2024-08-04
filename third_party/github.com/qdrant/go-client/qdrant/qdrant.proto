@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+import "qdrant/collections_service.proto";
+import "qdrant/points_service.proto";
+import "qdrant/snapshots_service.proto";
+
+package qdrant;
+option go_package="github.com/qdrant/go-client/qdrant";
+
+service Qdrant {
+  rpc HealthCheck (HealthCheckRequest) returns (HealthCheckReply) {}
+}
+
+message HealthCheckRequest {}
+
+message HealthCheckReply {
+  string title = 1;
+  string version = 2;
+  string commit = 3;
+}

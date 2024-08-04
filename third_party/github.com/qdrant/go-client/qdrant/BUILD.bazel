@@ -1,0 +1,280 @@
+# Copyright 2023- Gimlet Labs, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
+load("@build_stack_rules_proto//rules/cc:grpc_cc_library.bzl", "grpc_cc_library")
+load("@build_stack_rules_proto//rules/cc:proto_cc_library.bzl", "proto_cc_library")
+load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
+load("@build_stack_rules_proto//rules/py:grpc_py_library.bzl", "grpc_py_library")
+load("@build_stack_rules_proto//rules/py:proto_py_library.bzl", "proto_py_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "qdrant_proto",
+    srcs = [
+        "collections.proto",
+        "collections_service.proto",
+        "json_with_int.proto",
+        "points.proto",
+        "points_service.proto",
+        "qdrant.proto",
+        "snapshots_service.proto",
+    ],
+    strip_import_prefix = "/third_party/github.com/qdrant/go-client",
+    visibility = ["//visibility:public"],
+    deps = ["@com_google_protobuf//:timestamp_proto"],
+)
+
+grpc_cc_library(
+    name = "qdrant_grpc_cc_library",
+    srcs = [
+        "collections_service.grpc.pb.cc",
+        "points_service.grpc.pb.cc",
+        "qdrant.grpc.pb.cc",
+        "snapshots_service.grpc.pb.cc",
+    ],
+    hdrs = [
+        "collections_service.grpc.pb.h",
+        "points_service.grpc.pb.h",
+        "qdrant.grpc.pb.h",
+        "snapshots_service.grpc.pb.h",
+    ],
+    strip_include_prefix = "/third_party/github.com/qdrant/go-client",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":qdrant_cc_library",
+        "@com_github_grpc_grpc//:grpc++",
+        "@com_github_grpc_grpc//:grpc++_reflection",
+    ],
+)
+
+proto_cc_library(
+    name = "qdrant_cc_library",
+    srcs = [
+        "collections.pb.cc",
+        "collections_service.pb.cc",
+        "json_with_int.pb.cc",
+        "points.pb.cc",
+        "points_service.pb.cc",
+        "qdrant.pb.cc",
+        "snapshots_service.pb.cc",
+    ],
+    hdrs = [
+        "collections.pb.h",
+        "collections_service.pb.h",
+        "json_with_int.pb.h",
+        "points.pb.h",
+        "points_service.pb.h",
+        "qdrant.pb.h",
+        "snapshots_service.pb.h",
+    ],
+    strip_include_prefix = "/third_party/github.com/qdrant/go-client",
+    visibility = ["//visibility:public"],
+    deps = ["@com_google_protobuf//:protobuf"],
+)
+
+proto_compile(
+    name = "qdrant_cpp_compile",
+    output_mappings = [
+        "collections.pb.cc=qdrant/collections.pb.cc",
+        "collections.pb.h=qdrant/collections.pb.h",
+        "collections_service.grpc.pb.cc=qdrant/collections_service.grpc.pb.cc",
+        "collections_service.grpc.pb.h=qdrant/collections_service.grpc.pb.h",
+        "collections_service.pb.cc=qdrant/collections_service.pb.cc",
+        "collections_service.pb.h=qdrant/collections_service.pb.h",
+        "json_with_int.pb.cc=qdrant/json_with_int.pb.cc",
+        "json_with_int.pb.h=qdrant/json_with_int.pb.h",
+        "points.pb.cc=qdrant/points.pb.cc",
+        "points.pb.h=qdrant/points.pb.h",
+        "points_service.grpc.pb.cc=qdrant/points_service.grpc.pb.cc",
+        "points_service.grpc.pb.h=qdrant/points_service.grpc.pb.h",
+        "points_service.pb.cc=qdrant/points_service.pb.cc",
+        "points_service.pb.h=qdrant/points_service.pb.h",
+        "qdrant.grpc.pb.cc=qdrant/qdrant.grpc.pb.cc",
+        "qdrant.grpc.pb.h=qdrant/qdrant.grpc.pb.h",
+        "qdrant.pb.cc=qdrant/qdrant.pb.cc",
+        "qdrant.pb.h=qdrant/qdrant.pb.h",
+        "snapshots_service.grpc.pb.cc=qdrant/snapshots_service.grpc.pb.cc",
+        "snapshots_service.grpc.pb.h=qdrant/snapshots_service.grpc.pb.h",
+        "snapshots_service.pb.cc=qdrant/snapshots_service.pb.cc",
+        "snapshots_service.pb.h=qdrant/snapshots_service.pb.h",
+    ],
+    outputs = [
+        "collections.pb.cc",
+        "collections.pb.h",
+        "collections_service.grpc.pb.cc",
+        "collections_service.grpc.pb.h",
+        "collections_service.pb.cc",
+        "collections_service.pb.h",
+        "json_with_int.pb.cc",
+        "json_with_int.pb.h",
+        "points.pb.cc",
+        "points.pb.h",
+        "points_service.grpc.pb.cc",
+        "points_service.grpc.pb.h",
+        "points_service.pb.cc",
+        "points_service.pb.h",
+        "qdrant.grpc.pb.cc",
+        "qdrant.grpc.pb.h",
+        "qdrant.pb.cc",
+        "qdrant.pb.h",
+        "snapshots_service.grpc.pb.cc",
+        "snapshots_service.grpc.pb.h",
+        "snapshots_service.pb.cc",
+        "snapshots_service.pb.h",
+    ],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:cpp",
+        "@build_stack_rules_proto//plugin/grpc/grpc:protoc-gen-grpc-cpp",
+    ],
+    proto = "qdrant_proto",
+    visibility = ["//visibility:public"],
+)
+
+proto_compile(
+    name = "qdrant_go_compile",
+    options = {"@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick": ["plugins=grpc"]},
+    output_mappings = [
+        "collections.pb.go=github.com/qdrant/go-client/qdrant/collections.pb.go",
+        "collections_service.pb.go=github.com/qdrant/go-client/qdrant/collections_service.pb.go",
+        "json_with_int.pb.go=github.com/qdrant/go-client/qdrant/json_with_int.pb.go",
+        "points.pb.go=github.com/qdrant/go-client/qdrant/points.pb.go",
+        "points_service.pb.go=github.com/qdrant/go-client/qdrant/points_service.pb.go",
+        "qdrant.pb.go=github.com/qdrant/go-client/qdrant/qdrant.pb.go",
+        "snapshots_service.pb.go=github.com/qdrant/go-client/qdrant/snapshots_service.pb.go",
+    ],
+    outputs = [
+        "collections.pb.go",
+        "collections_service.pb.go",
+        "json_with_int.pb.go",
+        "points.pb.go",
+        "points_service.pb.go",
+        "qdrant.pb.go",
+        "snapshots_service.pb.go",
+    ],
+    plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
+    proto = "qdrant_proto",
+    visibility = ["//visibility:public"],
+)
+
+proto_go_library(
+    name = "qdrant_go_proto",
+    srcs = [
+        "collections.pb.go",
+        "collections_service.pb.go",
+        "json_with_int.pb.go",
+        "points.pb.go",
+        "points_service.pb.go",
+        "qdrant.pb.go",
+        "snapshots_service.pb.go",
+    ],
+    importpath = "github.com/qdrant/go-client/qdrant",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_gogo_protobuf//proto",
+        "@com_github_gogo_protobuf//protoc-gen-gogo/descriptor",
+        "@com_github_gogo_protobuf//sortkeys",
+        "@com_github_gogo_protobuf//types",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//status",
+        "@org_golang_google_protobuf//types/known/timestamppb",
+    ],
+)
+
+grpc_py_library(
+    name = "qdrant_grpc_py_library",
+    srcs = [
+        "collections_service_pb2_grpc.py",
+        "points_service_pb2_grpc.py",
+        "qdrant_pb2_grpc.py",
+        "snapshots_service_pb2_grpc.py",
+    ],
+    imports = [".."],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":qdrant_py_library",
+        "@pip//grpcio",
+        "@pip//protobuf",
+    ],
+)
+
+proto_compile(
+    name = "qdrant_py_compile",
+    output_mappings = [
+        "collections_pb2.py=/qdrant/collections_pb2.py",
+        "collections_pb2.pyi=/qdrant/collections_pb2.pyi",
+        "collections_service_pb2.py=/qdrant/collections_service_pb2.py",
+        "collections_service_pb2.pyi=/qdrant/collections_service_pb2.pyi",
+        "collections_service_pb2_grpc.py=/qdrant/collections_service_pb2_grpc.py",
+        "json_with_int_pb2.py=/qdrant/json_with_int_pb2.py",
+        "json_with_int_pb2.pyi=/qdrant/json_with_int_pb2.pyi",
+        "points_pb2.py=/qdrant/points_pb2.py",
+        "points_pb2.pyi=/qdrant/points_pb2.pyi",
+        "points_service_pb2.py=/qdrant/points_service_pb2.py",
+        "points_service_pb2.pyi=/qdrant/points_service_pb2.pyi",
+        "points_service_pb2_grpc.py=/qdrant/points_service_pb2_grpc.py",
+        "qdrant_pb2.py=/qdrant/qdrant_pb2.py",
+        "qdrant_pb2.pyi=/qdrant/qdrant_pb2.pyi",
+        "qdrant_pb2_grpc.py=/qdrant/qdrant_pb2_grpc.py",
+        "snapshots_service_pb2.py=/qdrant/snapshots_service_pb2.py",
+        "snapshots_service_pb2.pyi=/qdrant/snapshots_service_pb2.pyi",
+        "snapshots_service_pb2_grpc.py=/qdrant/snapshots_service_pb2_grpc.py",
+    ],
+    outputs = [
+        "collections_pb2.py",
+        "collections_pb2.pyi",
+        "collections_service_pb2.py",
+        "collections_service_pb2.pyi",
+        "collections_service_pb2_grpc.py",
+        "json_with_int_pb2.py",
+        "json_with_int_pb2.pyi",
+        "points_pb2.py",
+        "points_pb2.pyi",
+        "points_service_pb2.py",
+        "points_service_pb2.pyi",
+        "points_service_pb2_grpc.py",
+        "qdrant_pb2.py",
+        "qdrant_pb2.pyi",
+        "qdrant_pb2_grpc.py",
+        "snapshots_service_pb2.py",
+        "snapshots_service_pb2.pyi",
+        "snapshots_service_pb2_grpc.py",
+    ],
+    plugins = [
+        "@build_stack_rules_proto//plugin/builtin:pyi",
+        "@build_stack_rules_proto//plugin/builtin:python",
+        "@build_stack_rules_proto//plugin/grpc/grpc:protoc-gen-grpc-python",
+    ],
+    proto = "qdrant_proto",
+    visibility = ["//visibility:public"],
+)
+
+proto_py_library(
+    name = "qdrant_py_library",
+    srcs = [
+        "collections_pb2.py",
+        "collections_service_pb2.py",
+        "json_with_int_pb2.py",
+        "points_pb2.py",
+        "points_service_pb2.py",
+        "qdrant_pb2.py",
+        "snapshots_service_pb2.py",
+    ],
+    imports = [".."],
+    visibility = ["//visibility:public"],
+    deps = ["@pip//protobuf"],
+)
