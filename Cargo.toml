@@ -3,5 +3,4 @@ resolver = "2"
 members = [
   "bazel/external/cxxbridge_cmd",
   "src/gem/exec/plugin/huggingface/tokenizer_wrapper",
-  "src/experimental/rs/basic_ffi",
 ]
