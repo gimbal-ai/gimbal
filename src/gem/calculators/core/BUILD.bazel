@@ -30,6 +30,8 @@ gml_cc_library(
         "bytetrack_calculator.h",
         "classification_metrics_sink_calculator.cc",
         "classification_metrics_sink_calculator.h",
+        "clock_latency_metrics_sink_calculator.cc",
+        "clock_latency_metrics_sink_calculator.h",
         "debug_dump_frame_calculator.cc",
         "debug_dump_frame_calculator.h",
         "detections_metrics_sink_calculator.cc",
@@ -99,6 +101,18 @@ gml_cc_test(
         ":cc_library",
         "//src/gem/testing/core:cc_library",
         "//src/gem/testing/core/testdata:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "clock_latency_metrics_sink_calculator_test",
+    srcs = [
+        "clock_latency_metrics_sink_calculator_test.cc",
+        "test_utils.h",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
     ],
 )
 

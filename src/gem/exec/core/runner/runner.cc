@@ -33,6 +33,10 @@ Status Runner::Init(const std::map<std::string, mediapipe::Packet>& extra_side_p
 }
 
 Status Runner::Start() {
+  std::string graph_proto_text;
+  google::protobuf::TextFormat::PrintToString(graph_.Config(), &graph_proto_text);
+  VLOG(1) << "Graph:\n" << graph_proto_text;
+
   GML_RETURN_IF_ERROR(graph_.StartRun(side_packets_));
   started_ = true;
   return Status::OK();

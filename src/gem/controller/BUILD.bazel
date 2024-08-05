@@ -80,6 +80,8 @@ gml_cc_library(
         "//src/shared/version:cc_library",
         "@com_github_google_mediapipe//mediapipe/calculators/core:flow_limiter_calculator",
         "@com_github_google_mediapipe//mediapipe/calculators/util:annotation_overlay_calculator",
+        "@com_github_google_mediapipe//mediapipe/calculators/util:clock_latency_calculator",
+        "@com_github_google_mediapipe//mediapipe/calculators/util:clock_timestamp_calculator",
         "@com_github_google_mediapipe//mediapipe/calculators/util:detections_to_render_data_calculator",
         "@com_github_google_mediapipe//mediapipe/calculators/util:packet_latency_calculator",
         "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",

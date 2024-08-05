@@ -41,7 +41,9 @@ class MetricsSinkCalculator : public mediapipe::CalculatorBase {
 
  public:
   static absl::Status GetContract(mediapipe::CalculatorContract* cc) {
-    cc->Inputs().Index(0).Set<T>();
+    for (mediapipe::CollectionItemId id = cc->Inputs().BeginId(); id < cc->Inputs().EndId(); ++id) {
+      cc->Inputs().Get(id).Set<T>();
+    }
     if (cc->Outputs().HasTag(kFinishedTag)) {
       cc->Outputs().Tag(kFinishedTag).Set<bool>();
     }
