@@ -10,6 +10,9 @@
 <!-- TOC -->
 
 - [Development Environment](#development-environment)
+  - [Chef](#chef)
+    - [Shared development machine](#shared-development-machine)
+    - [Local development on your own machine](#local-development-on-your-own-machine)
   - [Pegboard Cluster](#pegboard-cluster)
     - [kubeconfig](#kubeconfig)
     - [Local Image Registry](#local-image-registry)
@@ -26,6 +29,32 @@
   - [C++ Development](#c-development)
 
 <!-- /TOC -->
+
+## Chef
+
+For any part of the development enviornment to work to work, you will also need to either run Chef, or use a shared machine where someone else handles Chef for you.
+
+### Shared development machine
+
+Make sure to add this to your `.zshrc` or `.bashrc` file:
+
+``` sh
+source /opt/gml_dev/gmlenv.inc
+```
+
+### Local development on your own machine
+
+If you are using your own local development machine, use the following command. This is not necessary on shared machines. Make sure to insert the API key below.
+
+``` sh
+BUILDBUDDY_API_KEY="" sudo --preserve-env=BUILDBUDDY_API_KEY chef-solo -c solo.rb -j node_workstation.json
+```
+
+Then, source the Gimlet environment in your `.zshrc` or `.bashrc` file:
+
+``` sh
+source /opt/gml_dev/gmlenv.inc
+```
 
 ## Pegboard Cluster
 
@@ -153,7 +182,7 @@ If you need a GEM that sends data to your controlplane for testing purposes, you
     sudo chmod g+r ${HOSTNAME}.beluga-snapper.ts.net.key
     ```
 
-1. To point to a backend that isn't yours, set the `BACKEND` env var. We default to `app.${USER}.gimletlabs.dev`
+1. To point to a backend that isn't yours, set the `BACKEND` env var. We default to `app.${USER}.gimletlabs.dev`. Note that you can't use this mechanism to set prod or staging as the backend, because the login process won't work.
 
 1. From the `src/ui` directory, run `pnpm dev`.
 
