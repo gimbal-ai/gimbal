@@ -107,6 +107,7 @@ class DimensionSemantics(_message.Message):
         def __init__(self, kind: _Optional[_Union[DimensionSemantics.SegmentationMaskParams.SegmentationMaskKind, str]] = ...) -> None: ...
     DETECTION_CANDIDATES_PARAMS_FIELD_NUMBER: _ClassVar[int]
     DETECTION_OUTPUT_PARAMS_FIELD_NUMBER: _ClassVar[int]
+    DIMENSION_SEMANTICS_KIND_ATTENTION_MASK: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_BATCH: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_CLASS_LABELS: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_CLASS_SCORES: DimensionSemantics.DimensionSemanticsKind
@@ -118,7 +119,9 @@ class DimensionSemantics(_message.Message):
     DIMENSION_SEMANTICS_KIND_IMAGE_WIDTH: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_REGRESSION_VALUE: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_SEGMENTATION_MASK_CHANNEL: DimensionSemantics.DimensionSemanticsKind
+    DIMENSION_SEMANTICS_KIND_TOKENS: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_UNKNOWN: DimensionSemantics.DimensionSemanticsKind
+    DIMENSION_SEMANTICS_KIND_VOCAB_LOGITS: DimensionSemantics.DimensionSemanticsKind
     IMAGE_CHANNEL_PARAMS_FIELD_NUMBER: _ClassVar[int]
     KIND_FIELD_NUMBER: _ClassVar[int]
     REGRESSION_PARAMS_FIELD_NUMBER: _ClassVar[int]

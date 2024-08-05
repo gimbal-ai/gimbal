@@ -225,6 +225,27 @@ class RegressionValueDimension(DimensionSemantics):
         )
 
 
+class TokensDimension(DimensionSemantics):
+    def to_proto(self) -> modelexecpb.DimensionSemantics:
+        return modelexecpb.DimensionSemantics(
+            kind=modelexecpb.DimensionSemantics.DIMENSION_SEMANTICS_KIND_TOKENS,
+        )
+
+
+class AttentionMaskDimension(DimensionSemantics):
+    def to_proto(self) -> modelexecpb.DimensionSemantics:
+        return modelexecpb.DimensionSemantics(
+            kind=modelexecpb.DimensionSemantics.DIMENSION_SEMANTICS_KIND_ATTENTION_MASK,
+        )
+
+
+class VocabLogitsDimension(DimensionSemantics):
+    def to_proto(self) -> modelexecpb.DimensionSemantics:
+        return modelexecpb.DimensionSemantics(
+            kind=modelexecpb.DimensionSemantics.DIMENSION_SEMANTICS_KIND_VOCAB_LOGITS,
+        )
+
+
 class TensorSemantics:
     def __init__(self, dimensions: List[DimensionSemantics]):
         self.dimensions = dimensions
