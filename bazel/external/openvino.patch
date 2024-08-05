@@ -1,24 +1,37 @@
+diff --git a/cmake/developer_package/target_flags.cmake b/cmake/developer_package/target_flags.cmake
+index c6e3ebb290..d92cf34861 100644
+--- a/cmake/developer_package/target_flags.cmake
++++ b/cmake/developer_package/target_flags.cmake
+@@ -214,7 +214,7 @@ ov_libc_version()
+ #
+ macro(ov_get_glibcxx_use_cxx11_abi)
+     if(LINUX)
+-        ov_get_compiler_definition("_GLIBCXX_USE_CXX11_ABI" OV_GLIBCXX_USE_CXX11_ABI)
++        set(OV_GLIBCXX_USE_CXX11_ABI "1" PARENT_SCOPE)
+     endif()
+ endmacro()
+ 
 diff --git a/cmake/templates/OpenVINOConfig.cmake.in b/cmake/templates/OpenVINOConfig.cmake.in
-index 9eb1cfdd35..834498642e 100644
+index af8dd1596c..01726cb99e 100644
 --- a/cmake/templates/OpenVINOConfig.cmake.in
 +++ b/cmake/templates/OpenVINOConfig.cmake.in
-@@ -176,7 +176,10 @@ macro(_ov_find_tbb)
+@@ -190,7 +190,10 @@ macro(_ov_find_tbb)
  
              set(enable_system_tbb "@ENABLE_SYSTEM_TBB@")
              if(NOT enable_system_tbb)
--                set_and_check(_tbb_dir "@PACKAGE_IE_TBB_DIR@")
+-                set_and_check(_tbb_dir "@PACKAGE_OV_TBB_DIR@")
 +                # [GML] Because bazel builds in a build_tmpdir, the TBB path is wrong.
 +                # [GML] This is a hack to fix-up the path.
-+                string(REPLACE ".build_tmpdir" "" _gml_package_ie_tbb_dir "@PACKAGE_IE_TBB_DIR@")
++                string(REPLACE ".build_tmpdir" "" _gml_package_ie_tbb_dir "@PACKAGE_OV_TBB_DIR@")
 +                set_and_check(_tbb_dir ${_gml_package_ie_tbb_dir})
  
                  # see https://stackoverflow.com/questions/28070810/cmake-generate-error-on-windows-as-it-uses-as-escape-seq
                  if(DEFINED ENV{TBBROOT})
 diff --git a/src/plugins/intel_cpu/CMakeLists.txt b/src/plugins/intel_cpu/CMakeLists.txt
-index 3212bdefc7..225ef169f2 100644
+index b76b198d30..e37f7c5d7a 100644
 --- a/src/plugins/intel_cpu/CMakeLists.txt
 +++ b/src/plugins/intel_cpu/CMakeLists.txt
-@@ -123,10 +123,10 @@ target_compile_definitions(${TARGET_NAME} PRIVATE IMPLEMENT_INFERENCE_EXTENSION_
+@@ -194,7 +194,7 @@ target_link_libraries(${TARGET_NAME} PRIVATE dnnl
  target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
  if (ENABLE_MLAS_FOR_CPU)
      target_link_libraries(${TARGET_NAME} PRIVATE mlas)
@@ -26,94 +39,139 @@ index 3212bdefc7..225ef169f2 100644
 +    target_include_directories(${TARGET_NAME} SYSTEM PRIVATE ${MLAS_INCLUDE_DIRS})
      add_definitions(-DOV_CPU_WITH_MLAS)
  endif()
+ if (ENABLE_SNIPPETS_LIBXSMM_TPP)
+@@ -205,7 +205,7 @@ endif ()
+ if(ENABLE_SHL_FOR_CPU)
+     target_link_libraries(${TARGET_NAME} PRIVATE shl)
+ endif()
 -target_include_directories(${TARGET_NAME} SYSTEM PRIVATE $<TARGET_PROPERTY:dnnl,INCLUDE_DIRECTORIES>)
 +target_include_directories(${TARGET_NAME} SYSTEM PRIVATE ${DNNL_INCLUDE_DIRS})
- # Cross compiled function
- # TODO: The same for proposal, proposalONNX, topk
- cross_compiled_file(${TARGET_NAME}
+ 
+ # Temporal solution to use template reference implementations in cases where optimizied implementation
+ # is not (yet) needed.
 diff --git a/src/plugins/intel_cpu/src/transformations/transformation_pipeline.cpp b/src/plugins/intel_cpu/src/transformations/transformation_pipeline.cpp
-index ae0e82a1c3..2fc68715f3 100644
+index 8ae45b10c3..7dfca20e80 100644
 --- a/src/plugins/intel_cpu/src/transformations/transformation_pipeline.cpp
 +++ b/src/plugins/intel_cpu/src/transformations/transformation_pipeline.cpp
-@@ -424,7 +424,7 @@ void Transformations::PreLpt(const std::vector<ov::element::Type>& defaultPrecis
+@@ -649,7 +649,7 @@ void Transformations::PreLpt(const std::vector<ov::element::Type>& defaultPrecis
  
          CPU_SET_CALLBACK_COMMON(manager,
              [&defaultPrecisions](const_node_ptr &node) -> bool {
--                return ngraph::pass::low_precision::NetworkHelper::areQuantizeAndDequantizeSupportedForMultiply(node, defaultPrecisions);
-+                return !ngraph::pass::low_precision::NetworkHelper::areQuantizeAndDequantizeSupportedForMultiply(node, defaultPrecisions);
+-                return ov::pass::low_precision::NetworkHelper::areQuantizeAndDequantizeSupportedForMultiply(node, defaultPrecisions);
++                return !ov::pass::low_precision::NetworkHelper::areQuantizeAndDequantizeSupportedForMultiply(node, defaultPrecisions);
              },
              ov::pass::ConvertQuantizeDequantize);
      }
 diff --git a/src/plugins/intel_cpu/thirdparty/CMakeLists.txt b/src/plugins/intel_cpu/thirdparty/CMakeLists.txt
-index 98935a0792..8f40c454ae 100644
+index ef6b56ea77..54f6493959 100644
 --- a/src/plugins/intel_cpu/thirdparty/CMakeLists.txt
 +++ b/src/plugins/intel_cpu/thirdparty/CMakeLists.txt
-@@ -133,8 +133,13 @@ function(ov_add_onednn)
- endfunction()
+@@ -148,8 +148,11 @@ if (ENABLE_SNIPPETS_LIBXSMM_TPP)
+ endif()
  
  if(ENABLE_MLAS_FOR_CPU)
 -    add_subdirectory(mlas)
--    ov_install_static_lib(mlas cpu)
+-    ov_install_static_lib(mlas ${OV_CPACK_COMP_CORE})
 +    #add_subdirectory(mlas)
-+    #ov_install_static_lib(mlas cpu)
++    #ov_install_static_lib(mlas ${OV_CPACK_COMP_CORE})
 +
 +    include_directories(${MLAS_INCLUDE_DIRS})
 +    link_directories(${MLAS_LIBRARY_DIRS})
+ endif()
+ 
+ if(ENABLE_SHL_FOR_CPU)
+@@ -157,4 +160,6 @@ if(ENABLE_SHL_FOR_CPU)
+     ov_install_static_lib(shl ${OV_CPACK_COMP_CORE})
  endif()
  
 -ov_add_onednn()
 +#ov_add_onednn()
 +include_directories(${DNNL_INCLUDE_DIRS})
 +link_directories(${DNNL_LIBRARY_DIRS})
-diff --git a/src/plugins/intel_gpu/include/intel_gpu/runtime/debug_configuration.hpp b/src/plugins/intel_gpu/include/intel_gpu/runtime/debug_configuration.hpp
-index febf41a557..3ba6fb1677 100644
---- a/src/plugins/intel_gpu/include/intel_gpu/runtime/debug_configuration.hpp
-+++ b/src/plugins/intel_gpu/include/intel_gpu/runtime/debug_configuration.hpp
-@@ -4,6 +4,7 @@
- 
- #pragma once
- #include <string>
-+#include <cstring>
- #include <mutex>
- #include <vector>
- #include <set>
 diff --git a/src/plugins/intel_gpu/src/plugin/transformations_pipeline.cpp b/src/plugins/intel_gpu/src/plugin/transformations_pipeline.cpp
-index d091b0c348..22edf2da90 100644
+index dbe7e858c1..54192c2406 100644
 --- a/src/plugins/intel_gpu/src/plugin/transformations_pipeline.cpp
 +++ b/src/plugins/intel_gpu/src/plugin/transformations_pipeline.cpp
-@@ -201,11 +201,11 @@ void TransformationsPipeline::apply(std::shared_ptr<ov::Model> func) {
-         manager.register_pass<ov::pass::MVN6Decomposition>();
-         manager.register_pass<ov::pass::BroadcastTransition>();
+@@ -307,6 +307,8 @@ void TransformationsPipeline::apply(std::shared_ptr<ov::Model> func) {
+         if (!is_model_quantized)
+             pass_config->set_callback<ov::pass::MarkDequantizationSubgraph>(is_non_supported_decompression_op);
  
 +        manager.register_pass<ov::pass::CommonOptimizations>();
 +
-         //  call ConvertPrecision with keep_precision_sensitive_in_fp32 = true
-         manager.register_pass<ov::pass::ConvertPrecision>(fp_convert_precision_map, empty_fuse_map, true);
+         const bool keep_precision_sensitive_in_fp32_1 = true;
+         const bool convert_input_output_precision = false;
+         const bool store_original_precision_as_rt_attribute = true;
+@@ -316,8 +318,6 @@ void TransformationsPipeline::apply(std::shared_ptr<ov::Model> func) {
+                                                           convert_input_output_precision,
+                                                           store_original_precision_as_rt_attribute);
  
 -        manager.register_pass<ov::pass::CommonOptimizations>();
 -
-         manager.register_pass<ov::pass::WrapInterpolateIntoTransposes>();
-         manager.register_pass<ov::pass::TransposeSinking>();
- 
-@@ -451,7 +451,7 @@ void TransformationsPipeline::apply(std::shared_ptr<ov::Model> func) {
+         pass_config->set_callback<ov::pass::ScaledDotProductAttentionDecomposition>([&](const std::shared_ptr<const ov::Node> node){
+             GPU_DEBUG_IF(cldnn::debug_configuration::get_instance()->enable_sdpa != -1) {
+                 GPU_DEBUG_CODE(return cldnn::debug_configuration::get_instance()->enable_sdpa == 1);
+@@ -634,7 +634,7 @@ void TransformationsPipeline::apply(std::shared_ptr<ov::Model> func) {
  
          if (enableInt8) {
-             pass_config->set_callback<ov::pass::ConvertQuantizeDequantize>([&defaultPrecisions](const_node_ptr &node) -> bool {
--                return ngraph::pass::low_precision::NetworkHelper::areQuantizeAndDequantizeSupportedForMultiply(node, defaultPrecisions);
-+                return !ngraph::pass::low_precision::NetworkHelper::areQuantizeAndDequantizeSupportedForMultiply(node, defaultPrecisions);
+             pass_config->set_callback<ov::pass::ConvertQuantizeDequantize>([&](const_node_ptr &node) -> bool {
+-                return ov::pass::low_precision::NetworkHelper::areQuantizeAndDequantizeSupportedForMultiply(node, defaultPrecisions);
++                return !ov::pass::low_precision::NetworkHelper::areQuantizeAndDequantizeSupportedForMultiply(node, defaultPrecisions);
              });
          }
  
 diff --git a/thirdparty/dependencies.cmake b/thirdparty/dependencies.cmake
-index 43e0ed671a..3133c281af 100644
+index 24c4940fed..36ab1be47a 100644
 --- a/thirdparty/dependencies.cmake
 +++ b/thirdparty/dependencies.cmake
-@@ -569,7 +569,7 @@ endif()
+@@ -479,7 +479,7 @@ endif()
  #
  
  if(ENABLE_OV_ONNX_FRONTEND)
--    find_package(ONNX 1.13.1 EXACT QUIET COMPONENTS onnx onnx_proto NO_MODULE)
+-    find_package(ONNX 1.15.0 QUIET COMPONENTS onnx onnx_proto NO_MODULE)
 +    find_package(ONNX QUIET COMPONENTS onnx onnx_proto NO_MODULE)
  
      if(ONNX_FOUND)
          # conan and vcpkg create imported targets 'onnx' and 'onnx_proto'
+@@ -518,6 +518,7 @@ endif()
+ # Install
+ #
+ 
++if(ENABLE_SAMPLES OR ENABLE_TESTS)
+ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/gflags
+         DESTINATION ${OV_CPACK_SAMPLESDIR}/cpp/thirdparty
+         COMPONENT ${OV_CPACK_COMP_CPP_SAMPLES}
+@@ -538,7 +539,9 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/gflags
+         PATTERN .travis.yml EXCLUDE
+         PATTERN src/gflags_completions.sh EXCLUDE
+         PATTERN WORKSPACE EXCLUDE)
++endif()
+ 
++if(ENABLE_SAMPLES OR ENABLE_TESTS)
+ file(GLOB zlib_sources ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/zlib/zlib/*.c
+                         ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/zlib/zlib/*.h)
+ install(FILES ${zlib_sources}
+@@ -549,7 +552,9 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/zlib/CMakeLists.txt
+         DESTINATION ${OV_CPACK_SAMPLESDIR}/cpp/thirdparty/zlib
+         COMPONENT ${OV_CPACK_COMP_CPP_SAMPLES}
+         ${OV_CPACK_COMP_CPP_SAMPLES_EXCLUDE_ALL})
++endif()
+ 
++if(ENABLE_SAMPLES)
+ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/json/nlohmann_json
+         DESTINATION ${OV_CPACK_SAMPLESDIR}/cpp/thirdparty
+         COMPONENT ${OV_CPACK_COMP_CPP_SAMPLES}
+@@ -570,11 +575,14 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/json/nlohmann_json
+         PATTERN tests EXCLUDE
+         PATTERN tools EXCLUDE
+         PATTERN wsjcpp.yml EXCLUDE)
++endif()
+ 
++if(ENABLE_SAMPLES OR ENABLE_TESTS)
+ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/cnpy
+         DESTINATION ${OV_CPACK_SAMPLESDIR}/cpp/thirdparty
+         COMPONENT ${OV_CPACK_COMP_CPP_SAMPLES}
+         ${OV_CPACK_COMP_CPP_SAMPLES_EXCLUDE_ALL})
++endif()
+ 
+ # restore state
+ 

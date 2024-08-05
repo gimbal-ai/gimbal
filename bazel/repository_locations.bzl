@@ -320,19 +320,19 @@ REPOSITORY_LOCATIONS = dict(
         urls = ["https://github.com/oneapi-src/oneTBB/archive/refs/tags/v2021.10.0.tar.gz"],
     ),
     com_github_openvinotoolkit_openvino = dict(
-        sha256 = "ff88596b342440185874ddbe22874b47ad7b923f14671921af760b15c98aacd6",
-        strip_prefix = "openvino-2023.1.0",
-        urls = ["https://github.com/openvinotoolkit/openvino/archive/refs/tags/2023.1.0.tar.gz"],
+        sha256 = "53fccad05279d0975eca84ec75517a7c360be9b0f7bcd822da29a7949c12ce70",
+        strip_prefix = "openvino-2024.3.0",
+        urls = ["https://github.com/openvinotoolkit/openvino/archive/refs/tags/2024.3.0.tar.gz"],
     ),
     com_github_openvinotoolkit_oneDNN = dict(
-        sha256 = "3c51d577f9e7e4cbd94ad08d267502953ec64513241dda6595b2608fafc8314c",
-        strip_prefix = "oneDNN-2ead5d4fe5993a797d9a7a4b8b5557b96f6ec90e",
-        urls = ["https://github.com/openvinotoolkit/oneDNN/archive/2ead5d4fe5993a797d9a7a4b8b5557b96f6ec90e.tar.gz"],
+        sha256 = "13bee5b8522177f297e095e3eba5948c1a7ee7a816d19d5a59ce0f717f82cedc",
+        strip_prefix = "oneDNN-f0f8defe2dff5058391f2a66e775e20b5de33b08",
+        urls = ["https://github.com/openvinotoolkit/oneDNN/archive/f0f8defe2dff5058391f2a66e775e20b5de33b08.tar.gz"],
     ),
     com_github_openvinotoolkit_mlas = dict(
-        sha256 = "b7fdd19523a88373d19fd8d5380f64c2834040fa50a6f0774acf08f3fa858daa",
-        strip_prefix = "mlas-7a35e48a723944972088627be1a8b60841e8f6a5",
-        urls = ["https://github.com/openvinotoolkit/mlas/archive/7a35e48a723944972088627be1a8b60841e8f6a5.tar.gz"],
+        sha256 = "0a44fbfd4b13e8609d66ddac4b11a27c90c1074cde5244c91ad197901666004c",
+        strip_prefix = "mlas-d1bc25ec4660cddd87804fcf03b2411b5dfb2e94",
+        urls = ["https://github.com/openvinotoolkit/mlas/archive/d1bc25ec4660cddd87804fcf03b2411b5dfb2e94.tar.gz"],
     ),
     com_github_zeux_pugixml = dict(
         sha256 = "2f10e276870c64b1db6809050a75e11a897a8d7456c4be5c6b2e35a11168a015",

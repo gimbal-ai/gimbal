@@ -1,8 +1,8 @@
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index efebb5156..290a4f890 100644
+index 5b99060ee..2ec7fe126 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -277,19 +277,21 @@ if(UNIX AND DNNL_INSTALL_MODE STREQUAL "BUNDLE_V2")
+@@ -282,19 +282,21 @@ if(UNIX AND DNNL_INSTALL_MODE STREQUAL "BUNDLE_V2")
      install(CODE "file(WRITE \"${CMAKE_INSTALL_PREFIX}/${LIB_CONFIG_INSTALL_DIR}/${LIB_PACKAGE_NAME}-targets.cmake\" \"\${TARGETS_CONTENT}\")")
  endif()
  
@@ -36,7 +36,7 @@ index efebb5156..290a4f890 100644
  
  if(DNNL_GPU_RUNTIME STREQUAL "OCL")
      install(FILES
-@@ -311,3 +313,12 @@ if(WIN32)
+@@ -316,3 +318,12 @@ if(WIN32)
      endif()
      set(CTESTCONFIG_PATH "${CTESTCONFIG_PATH}" PARENT_SCOPE)
  endif()

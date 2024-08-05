@@ -1,8 +1,17 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index fba3e38..513b9e2 100644
+index fba3e38..4082be9 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -304,3 +304,8 @@ if (WIN32)
+@@ -126,6 +126,8 @@ else()
+         set(AARCH64 TRUE)
+     endif()
+ 
++    message("CSP: ${CMAKE_SYSTEM_PROCESSOR}, AARCH64: ${AARCH64}, x86_64: ${X86_64}")
++
+     #If ONNXRUNTIME_MLAS_MULTI_ARCH is true, we need to go through every if branch below
+     #and split MLAS to multiple static libraries.
+     #Otherwise, it works like if(...) elseif(...) elseif(...) endif()
+@@ -304,3 +306,8 @@ if (WIN32)
      target_compile_options(mlas PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:/wd6385>" "$<$<COMPILE_LANGUAGE:CXX>:/wd4127>")
  endif()
  set_property(TARGET mlas PROPERTY POSITION_INDEPENDENT_CODE ON)
