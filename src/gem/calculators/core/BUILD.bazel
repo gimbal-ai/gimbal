@@ -53,6 +53,8 @@ gml_cc_library(
         "packet_latency_metrics_sink_calculator.h",
         "text_stream_sink_calculator.cc",
         "text_stream_sink_calculator.h",
+        "text_stream_source_calculator.cc",
+        "text_stream_source_calculator.h",
         "tracks_metrics_sink_calculator.cc",
         "tracks_metrics_sink_calculator.h",
     ],
