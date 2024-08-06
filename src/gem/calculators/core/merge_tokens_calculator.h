@@ -55,7 +55,7 @@ class MergeTokensCalculator : public mediapipe::CalculatorBase {
   void HandleOutput(mediapipe::CalculatorContext* cc);
 
   mediapipe::Timestamp internal_timestamp_ = mediapipe::Timestamp(0);
-  std::deque<std::vector<int64_t>> input_buffer_;
+  std::deque<std::vector<int>> input_buffer_;
   bool is_processing_output_ = false;
 };
 

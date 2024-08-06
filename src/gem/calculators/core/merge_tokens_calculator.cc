@@ -31,11 +31,11 @@ constexpr std::string_view kLoopStartTag = "LOOP_START";
 constexpr std::string_view kMergedStreamTag = "MERGED_TOKENS";
 
 absl::Status MergeTokensCalculator::GetContract(mediapipe::CalculatorContract* cc) {
-  cc->Inputs().Tag(kInputStreamTag).Set<std::vector<int64_t>>();
-  cc->Inputs().Tag(kOutputStreamTag).Set<std::vector<int64_t>>();
+  cc->Inputs().Tag(kInputStreamTag).Set<std::vector<int>>();
+  cc->Inputs().Tag(kOutputStreamTag).Set<std::vector<int>>();
   cc->Inputs().Tag(kOutputEOSTag).Set<bool>();
 
-  cc->Outputs().Tag(kMergedStreamTag).Set<std::vector<int64_t>>();
+  cc->Outputs().Tag(kMergedStreamTag).Set<std::vector<int>>();
   cc->Outputs().Tag(kLoopStartTag).Set<bool>();
 
   return absl::OkStatus();
@@ -47,8 +47,8 @@ void MergeTokensCalculator::EmitInput(mediapipe::CalculatorContext* cc) {
   ++internal_timestamp_;
   cc->Outputs()
       .Tag(kMergedStreamTag)
-      .AddPacket(mediapipe::MakePacket<std::vector<int64_t>>(input_buffer_.front())
-                     .At(internal_timestamp_));
+      .AddPacket(
+          mediapipe::MakePacket<std::vector<int>>(input_buffer_.front()).At(internal_timestamp_));
   cc->Outputs()
       .Tag(kLoopStartTag)
       .AddPacket(mediapipe::MakePacket<bool>(true).At(internal_timestamp_));
@@ -57,7 +57,7 @@ void MergeTokensCalculator::EmitInput(mediapipe::CalculatorContext* cc) {
 }
 
 void MergeTokensCalculator::HandleInput(mediapipe::CalculatorContext* cc) {
-  const auto& input_stream_value = cc->Inputs().Tag(kInputStreamTag).Get<std::vector<int64_t>>();
+  const auto& input_stream_value = cc->Inputs().Tag(kInputStreamTag).Get<std::vector<int>>();
   input_buffer_.push_back(input_stream_value);
 
   if (is_processing_output_) {
@@ -78,13 +78,13 @@ void MergeTokensCalculator::HandleOutput(mediapipe::CalculatorContext* cc) {
     return;
   }
 
-  const auto& output_stream_value = cc->Inputs().Tag(kOutputStreamTag).Get<std::vector<int64_t>>();
+  const auto& output_stream_value = cc->Inputs().Tag(kOutputStreamTag).Get<std::vector<int>>();
 
   ++internal_timestamp_;
   cc->Outputs()
       .Tag(kMergedStreamTag)
       .AddPacket(
-          mediapipe::MakePacket<std::vector<int64_t>>(output_stream_value).At(internal_timestamp_));
+          mediapipe::MakePacket<std::vector<int>>(output_stream_value).At(internal_timestamp_));
   cc->Outputs()
       .Tag(kLoopStartTag)
       .AddPacket(mediapipe::MakePacket<bool>(false).At(internal_timestamp_));
