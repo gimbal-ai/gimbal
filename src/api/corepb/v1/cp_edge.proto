@@ -186,6 +186,24 @@ message TextStreamControl {
   string prompt = 1;
 }
 
+// EdgeCPMediaStreamMessage is a media stream message sent from the edge to the controlplane.
+message EdgeCPMediaStreamMessage {
+  // The stream this message is intended for. If empty, it is a broadcast message.
+  gml.types.UUID stream_id = 1 [ (gogoproto.customname) = "StreamID" ];
+
+  // The actual message.
+  google.protobuf.Any msg = 1000;
+}
+
+// CPEdgeMediaStreamMessage is a media stream message sent from the controlplane to the edge.
+message CPEdgeMediaStreamMessage {
+  // The stream this message is intended for. If empty, it is a broadcast message.
+  gml.types.UUID stream_id = 1 [ (gogoproto.customname) = "StreamID" ];
+
+  // The actual message.
+  google.protobuf.Any msg = 1000;
+}
+
 /****************************************************************************
  * Messages that are used to stream metrics from the edge.
  * These should be sent on the .METRICS topic.

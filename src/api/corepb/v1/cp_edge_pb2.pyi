@@ -47,6 +47,14 @@ class ApplyExecutionGraph(_message.Message):
     spec: ExecutionGraphSpec
     def __init__(self, physical_pipeline_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., logical_pipeline_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., spec: _Optional[_Union[ExecutionGraphSpec, _Mapping]] = ...) -> None: ...
 
+class CPEdgeMediaStreamMessage(_message.Message):
+    __slots__ = ["msg", "stream_id"]
+    MSG_FIELD_NUMBER: _ClassVar[int]
+    STREAM_ID_FIELD_NUMBER: _ClassVar[int]
+    msg: _any_pb2.Any
+    stream_id: _uuid_pb2.UUID
+    def __init__(self, stream_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., msg: _Optional[_Union[_any_pb2.Any, _Mapping]] = ...) -> None: ...
+
 class CPEdgeMessage(_message.Message):
     __slots__ = ["metadata", "msg"]
     METADATA_FIELD_NUMBER: _ClassVar[int]
@@ -108,6 +116,14 @@ class DeviceCapabilities(_message.Message):
     cameras: _containers.RepeatedCompositeFieldContainer[DeviceCapabilities.CameraInfo]
     model_runtimes: _containers.RepeatedCompositeFieldContainer[DeviceCapabilities.ModelRuntimeInfo]
     def __init__(self, model_runtimes: _Optional[_Iterable[_Union[DeviceCapabilities.ModelRuntimeInfo, _Mapping]]] = ..., cameras: _Optional[_Iterable[_Union[DeviceCapabilities.CameraInfo, _Mapping]]] = ...) -> None: ...
+
+class EdgeCPMediaStreamMessage(_message.Message):
+    __slots__ = ["msg", "stream_id"]
+    MSG_FIELD_NUMBER: _ClassVar[int]
+    STREAM_ID_FIELD_NUMBER: _ClassVar[int]
+    msg: _any_pb2.Any
+    stream_id: _uuid_pb2.UUID
+    def __init__(self, stream_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., msg: _Optional[_Union[_any_pb2.Any, _Mapping]] = ...) -> None: ...
 
 class EdgeCPMessage(_message.Message):
     __slots__ = ["metadata", "msg"]
