@@ -135,6 +135,18 @@ class FakeModelServicer(mpb_grpc.ModelServiceServicer):
         self.model_ids_by_org = dict()
         self.models = dict()
 
+    def GetModel(self, req: mpb.GetModelRequest, context: grpc.ServicerContext):
+        org_id = proto_to_uuid(req.org_id)
+        if (
+            org_id not in self.model_ids_by_org
+            or req.name not in self.model_ids_by_org[org_id]
+        ):
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            return mpb.GetModelResponse()
+        id = self.model_ids_by_org[org_id][req.name]
+        mi = self.models[id]
+        return mpb.GetModelResponse(model_info=mi, id=id)
+
     def CreateModel(self, req: mpb.CreateModelRequest, context: grpc.ServicerContext):
         org_id = proto_to_uuid(req.org_id)
         if org_id not in self.model_ids_by_org:

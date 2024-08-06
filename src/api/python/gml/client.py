@@ -65,6 +65,10 @@ class FileAlreadyExists(Exception):
     pass
 
 
+class ModelAlreadyExists(Exception):
+    pass
+
+
 class OrgNotSet(Exception):
     pass
 
@@ -185,7 +189,7 @@ class Client:
         file_id: uuidpb.UUID,
         sha256: str,
         file: TextIO | BinaryIO,
-        chunk_size=64 * 1024,
+        chunk_size=1024 * 1024,
     ):
         def chunked_requests():
             file.seek(0)
@@ -206,7 +210,7 @@ class Client:
         name: str,
         file: TextIO | BinaryIO,
         sha256: Optional[str] = None,
-        chunk_size=64 * 1024,
+        chunk_size=1024 * 1024,
     ) -> ftpb.FileInfo:
         file_info = self._create_file(name)
 
@@ -237,6 +241,20 @@ class Client:
                 raise Exception("file status is deleted or unknown, cannot re-upload")
         return file_info
 
+    def _model_exists(self, name: str):
+        req = mpb.GetModelRequest(
+            name=name,
+            org_id=self._get_org_id(),
+        )
+        stub = self._ms_stub()
+        try:
+            stub.GetModel(req, metadata=self._get_request_metadata())
+            return True
+        except grpc.RpcError as e:
+            if e.code() != grpc.StatusCode.NOT_FOUND:
+                raise e
+            return False
+
     def _create_model(self, model_info: modelexecpb.ModelInfo):
         req = mpb.CreateModelRequest(
             org_id=self._get_org_id(),
@@ -250,6 +268,11 @@ class Client:
         return resp.id
 
     def create_model(self, model: Model):
+        if self._model_exists(model.name):
+            raise ModelAlreadyExists(
+                'model already exists with name: "{}"'.format(model.name)
+            )
+
         model_info = model.to_proto()
         with model.collect_assets() as model_assets:
             for asset_name, file in model_assets.items():
@@ -293,7 +316,14 @@ class Client:
             raise ValueError("must specify one of 'pipeline_file' or 'pipeline'")
 
         for model in models:
-            self.create_model(model)
+            try:
+                self.create_model(model)
+            except ModelAlreadyExists:
+                print(
+                    'warning: model "{}" already exists and will not be uploaded.'.format(
+                        model.name
+                    )
+                )
 
         stub = self._lps_stub()
         req = lppb.CreateLogicalPipelineRequest(
