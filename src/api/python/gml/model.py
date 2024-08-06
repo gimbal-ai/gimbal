@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 import abc
+import contextlib
 import io
 from pathlib import Path
 from typing import BinaryIO, Dict, List, Literal, Optional, TextIO, Tuple
@@ -73,8 +74,12 @@ class Model(abc.ABC):
         )
 
     @abc.abstractmethod
-    def collect_assets(self) -> Dict[str, TextIO | BinaryIO | Path]:
+    def _collect_assets(self) -> Dict[str, TextIO | BinaryIO | Path]:
         pass
+
+    @contextlib.contextmanager
+    def collect_assets(self):
+        yield from self._collect_assets()
 
 
 class TorchModel(Model):
@@ -113,10 +118,10 @@ class TorchModel(Model):
             self.example_inputs,
         )
 
-    def collect_assets(self) -> Dict[str, TextIO | BinaryIO | Path]:
+    def _collect_assets(self) -> Dict[str, TextIO | BinaryIO | Path]:
         compiled = self._convert_to_torch_mlir()
         file = io.BytesIO(str(compiled).encode("utf-8"))
-        return {"": file}
+        yield {"": file}
 
 
 def _kind_str_to_kind_format_protos(
@@ -154,5 +159,5 @@ class ModelFromFiles(Model):
         super().__init__(name=name, kind=kind, storage_format=storage_format, **kwargs)
         self.files = files
 
-    def collect_assets(self) -> Dict[str, TextIO | BinaryIO | Path]:
-        return self.files
+    def _collect_assets(self) -> Dict[str, TextIO | BinaryIO | Path]:
+        yield self.files

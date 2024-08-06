@@ -251,22 +251,23 @@ class Client:
 
     def create_model(self, model: Model):
         model_info = model.to_proto()
-        for asset_name, file in model.collect_assets().items():
-            if isinstance(file, Path) or isinstance(file, str):
-                file = open(file, "rb")
+        with model.collect_assets() as model_assets:
+            for asset_name, file in model_assets.items():
+                if isinstance(file, Path) or isinstance(file, str):
+                    file = open(file, "rb")
 
-            sha256 = sha256sum(file)
+                sha256 = sha256sum(file)
 
-            upload_name = model.name
-            if asset_name:
-                upload_name += ":" + asset_name
-            print(f"Uploading {upload_name}...")
+                upload_name = model.name
+                if asset_name:
+                    upload_name += ":" + asset_name
+                print(f"Uploading {upload_name}...")
 
-            file_info = self._upload_file_if_not_exists(sha256, file, sha256)
+                file_info = self._upload_file_if_not_exists(sha256, file, sha256)
 
-            model_info.file_assets[asset_name].MergeFrom(file_info.file_id)
+                model_info.file_assets[asset_name].MergeFrom(file_info.file_id)
 
-            file.close()
+                file.close()
 
         return self._create_model(model_info)
 
