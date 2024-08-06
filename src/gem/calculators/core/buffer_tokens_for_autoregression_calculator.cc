@@ -25,7 +25,6 @@
 #include "src/common/base/base.h"
 
 namespace gml::gem::calculators::core {
-using ::gml::internal::api::core::v1::Detection;
 
 constexpr std::string_view kTokensTag = "TOKENS";
 constexpr std::string_view kLoopStartTag = "LOOP_START";

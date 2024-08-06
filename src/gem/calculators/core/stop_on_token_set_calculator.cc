@@ -26,7 +26,6 @@
 #include "src/gem/calculators/core/optionspb/stop_on_token_set_calculator_options.pb.h"
 
 namespace gml::gem::calculators::core {
-using ::gml::internal::api::core::v1::Detection;
 
 constexpr std::string_view kTokensTag = "TOKENS";
 constexpr std::string_view kEOSTag = "EOS";
