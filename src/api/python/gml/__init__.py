@@ -15,4 +15,5 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from gml.client import Client  # noqa
+from gml.hf import import_huggingface_pipeline  # noqa
 from gml.model import ModelFromFiles, TorchModel  # noqa

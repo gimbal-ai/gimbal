@@ -28,6 +28,16 @@ from gml.preprocessing import ImagePreprocessingStep
 from gml.tensor import TensorSemantics
 
 
+class GenerationConfig:
+    def __init__(self, eos_token_ids: List[int]):
+        self.eos_token_ids = eos_token_ids
+
+    def to_proto(self) -> modelexecpb.GenerationConfig:
+        return modelexecpb.GenerationConfig(
+            eos_token_ids=self.eos_token_ids,
+        )
+
+
 class Model(abc.ABC):
     def __init__(
         self,
@@ -39,6 +49,7 @@ class Model(abc.ABC):
         class_labels: Optional[List[str]] = None,
         class_labels_file: Optional[Path] = None,
         image_preprocessing_steps: Optional[List[ImagePreprocessingStep]] = None,
+        generation_config: Optional[GenerationConfig] = None,
     ):
         self.name = name
         self.kind = kind
@@ -52,6 +63,7 @@ class Model(abc.ABC):
         self.input_tensor_semantics = input_tensor_semantics
         self.output_tensor_semantics = output_tensor_semantics
         self.image_preprocessing_steps = image_preprocessing_steps
+        self.generation_config = generation_config
 
     def to_proto(self) -> modelexecpb.ModelInfo:
         image_preprocessing_steps = None
@@ -59,6 +71,9 @@ class Model(abc.ABC):
             image_preprocessing_steps = [
                 step.to_proto() for step in self.image_preprocessing_steps
             ]
+        generation_config = None
+        if self.generation_config:
+            generation_config = self.generation_config.to_proto()
         return modelexecpb.ModelInfo(
             name=self.name,
             kind=self.kind,
@@ -71,6 +86,7 @@ class Model(abc.ABC):
             output_tensor_semantics=[
                 semantics.to_proto() for semantics in self.output_tensor_semantics
             ],
+            generation_config=generation_config,
         )
 
     @abc.abstractmethod

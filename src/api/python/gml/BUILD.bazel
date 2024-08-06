@@ -26,6 +26,7 @@ py_library(
         "_utils.py",
         "client.py",
         "compile.py",
+        "hf.py",
         "model.py",
         "model_utils.py",
         "pipelines.py",
@@ -41,6 +42,7 @@ py_library(
         "@gml_api_pip//protobuf",
         "@gml_api_pip//torch",
         "@gml_api_pip//torch_mlir_gml",
+        "@gml_api_pip//transformers",
     ],
 )
 

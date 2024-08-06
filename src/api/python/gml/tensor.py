@@ -256,6 +256,11 @@ class TensorSemantics:
         )
 
 
+class UnusedTensorSemantics(TensorSemantics):
+    def __init__(self):
+        super().__init__(dimensions=[])
+
+
 class RGBImage(TensorSemantics):
     """RGBImage is an image tensor input with channels in RGB order."""
 
