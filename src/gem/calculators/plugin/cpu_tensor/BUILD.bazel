@@ -42,6 +42,10 @@ gem_plugin_cc_library(
         "segmentation_masks_to_proto_calculator.h",
         "standardize_tensor_calculator.cc",
         "standardize_tensor_calculator.h",
+        "tensor_to_tokens_calculator.cc",
+        "tensor_to_tokens_calculator.h",
+        "tokens_to_tensor_calculator.cc",
+        "tokens_to_tensor_calculator.h",
     ],
     plugin_name = "cpu_tensor",
     deps = [
@@ -108,6 +112,30 @@ gml_cc_test(
     name = "scores_to_classification_calculator_test",
     srcs = [
         "scores_to_classification_calculator_test.cc",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+        "//src/gem/testing/plugin/cpu_tensor:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "tokens_to_tensor_calculator_test",
+    srcs = [
+        "tokens_to_tensor_calculator_test.cc",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+        "//src/gem/testing/plugin/cpu_tensor:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "tensor_to_tokens_calculator_test",
+    srcs = [
+        "tensor_to_tokens_calculator_test.cc",
     ],
     deps = [
         ":cc_library",
