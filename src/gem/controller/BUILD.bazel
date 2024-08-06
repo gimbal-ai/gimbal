@@ -62,6 +62,7 @@ gml_cc_library(
         "//src/common/bazel:cc_library",
         "//src/common/event:cc_library",
         "//src/common/grpcutils:cc_library",
+        "//src/common/mediapipe:cc_library",
         "//src/common/metrics:cc_library",
         "//src/common/signal:cc_library",
         "//src/common/system:cc_library",

@@ -35,6 +35,7 @@
 #include "src/common/bazel/runfiles.h"
 #include "src/common/event/dispatcher.h"
 #include "src/common/event/task.h"
+#include "src/common/mediapipe/sanitize.h"
 #include "src/common/uuid/uuid.h"
 #include "src/gem/calculators/plugin/argus/optionspb/argus_cam_calculator_options.pb.h"
 #include "src/gem/calculators/plugin/opencv_cam/optionspb/opencv_cam_calculator_options.pb.h"
@@ -106,8 +107,7 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
       runtime_ = plugin;
       std::string context_name = absl::StrCat(model_spec.name(), "_exec_ctx");
       // mediapipe only accepts lowercase characters and "_".
-      context_name = absl::StrReplaceAll(context_name, {{".", "_"}});
-      context_name = absl::AsciiStrToLower(context_name);
+      context_name = gml::mp::SanitizeNameForMediapipeGraph(context_name);
 
       for (const auto& asset : model_spec.named_asset()) {
         std::string name = model_spec.name();
