@@ -46,6 +46,8 @@ gml_cc_library(
         "image_quality_calculator.cc",
         "image_quality_calculator.h",
         "mediapipe_typed_calculators.cc",
+        "merge_tokens_calculator.cc",
+        "merge_tokens_calculator.h",
         "metrics_sink_calculator.h",
         "modify_detection_with_classification_calculator.cc",
         "modify_detection_with_classification_calculator.h",
@@ -76,6 +78,7 @@ gml_cc_library(
         "@com_github_google_mediapipe//mediapipe/calculators/util:latency_cc_proto",
         "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
         "@com_github_google_mediapipe//mediapipe/framework/formats:detection_cc_proto",
+        "@com_github_google_mediapipe//mediapipe/framework/stream_handler:sync_set_input_stream_handler",
         "@com_github_vertical_beach_bytetrack_cpp//:bytetrack",
         "@io_opentelemetry_cpp//sdk/src/metrics",
     ],
@@ -218,5 +221,19 @@ gml_cc_test(
     deps = [
         ":cc_library",
         "//src/gem/testing/core:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "merge_tokens_calculator_test",
+    srcs = [
+        "merge_tokens_calculator_test.cc",
+        "test_utils.h",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+        "@com_github_google_mediapipe//mediapipe/framework/stream_handler:sync_set_input_stream_handler_cc_proto",
+        "@com_github_google_mediapipe//mediapipe/util:packet_test_util",
     ],
 )
