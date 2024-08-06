@@ -26,6 +26,8 @@ gml_cc_library(
     srcs = [
         "barcode_detector_calculator.cc",
         "barcode_detector_calculator.h",
+        "buffer_tokens_for_autoregression_calculator.cc",
+        "buffer_tokens_for_autoregression_calculator.h",
         "bytetrack_calculator.cc",
         "bytetrack_calculator.h",
         "classification_metrics_sink_calculator.cc",
@@ -244,6 +246,17 @@ gml_cc_test(
     name = "stop_on_token_set_calculator_test",
     srcs = [
         "stop_on_token_set_calculator_test.cc",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "buffer_tokens_for_autoregression_calculator_test",
+    srcs = [
+        "buffer_tokens_for_autoregression_calculator_test.cc",
     ],
     deps = [
         ":cc_library",
