@@ -47,6 +47,12 @@ PLUGINS = dict(
             "//src/gem/calculators/plugin/huggingface:cc_library",
         ],
     ),
+    qdrant = struct(
+        enabled_by_default = True,
+        libs = [
+            "//src/gem/calculators/plugin/qdrant:cc_library",
+        ],
+    ),
     tensorrt = struct(
         enabled_by_default = False,
         libs = [
