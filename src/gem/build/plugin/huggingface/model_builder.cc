@@ -36,13 +36,14 @@ StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobSt
   types::UUID model_file_id;
 
   for (const auto& asset : spec.named_asset()) {
-    if (asset.name() == "model") {
+    if (asset.name() == "tokenizer.json") {
       model_file_id = asset.file().file_id();
       model_found = true;
     }
   }
   if (!model_found) {
-    return error::InvalidArgument("HuggingFace tokenizer expects a json asset named 'model'");
+    return error::InvalidArgument(
+        "HuggingFace tokenizer expects a json asset named 'tokenizer.json'");
   }
   GML_ASSIGN_OR_RETURN(auto model_path, store->FilePath(ParseUUID(model_file_id).str()));
 

@@ -49,7 +49,7 @@ TEST(ModelBuilder, BuildsWithoutError) {
 
   ModelSpec spec;
   auto* model_asset = spec.add_named_asset();
-  model_asset->set_name("model");
+  model_asset->set_name("tokenizer.json");
   ToProto(model_asset_id, model_asset->mutable_file()->mutable_file_id());
 
   ModelBuilder builder;
