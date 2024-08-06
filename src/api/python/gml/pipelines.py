@@ -17,20 +17,23 @@
 import abc
 from typing import List
 
+import gml.proto.src.api.corepb.v1.model_exec_pb2 as modelexecpb
+from gml.model import Model
+
 
 class Pipeline:
     @abc.abstractmethod
-    def to_yaml(self, models: List[str], org_name: str) -> str:
+    def to_yaml(self, models: List[Model], org_name: str) -> str:
         pass
 
 
 class SingleModelPipeline(Pipeline):
-    def to_yaml(self, models: List[str], org_name: str) -> str:
+    def to_yaml(self, models: List[Model], org_name: str) -> str:
         if len(models) != 1:
             raise ValueError(
                 "{} only supports a single model".format(type(self).__qualname__)
             )
-        return self._to_yaml(models[0], org_name)
+        return self._to_yaml(models[0].name, org_name)
 
     @abc.abstractmethod
     def _to_yaml(self, model_name: str, org_name: str) -> str:
@@ -143,6 +146,69 @@ nodes:
     frame: .camera_source.frame
     frame_metrics: .frame_metrics_sink.frame_metrics
     segmentation: .segment.segmentation
+"""
+
+
+class LiveChatPipeline(Pipeline):
+    def to_yaml(self, models: List[Model], org_name: str) -> str:
+        if len(models) != 2:
+            raise ValueError(
+                "LiveChatPipeline expects two models (a tokenizer and a language model)"
+            )
+        tokenizer = None
+        lm = None
+        for m in models:
+            if m.storage_format == modelexecpb.ModelInfo.MODEL_STORAGE_FORMAT_OPAQUE:
+                tokenizer = m
+            if m.generation_config is not None:
+                lm = m
+        if tokenizer is None or lm is None:
+            raise ValueError(
+                "LiveChatPipeline expects both a tokenizer model and a language model)"
+            )
+        return f"""---
+nodes:
+- name: text_source
+  kind: TextStreamSource
+  outputs:
+  - prompt
+- name: tokenize
+  kind: Tokenize
+  attributes:
+    tokenizer:
+      model:
+        name: {tokenizer.name}
+        org: {org_name}
+  inputs:
+    text: .text_source.prompt
+  outputs:
+  - tokens
+- name: generate
+  kind: GenerateTokens
+  attributes:
+    model:
+      model:
+        name: {lm.name}
+        org: {org_name}
+  inputs:
+    prompt: .tokenize.tokens
+  outputs:
+  - generated_tokens
+- name: detokenize
+  kind: Detokenize
+  attributes:
+    tokenizer:
+      model:
+        name: {tokenizer.name}
+        org: {org_name}
+  inputs:
+    tokens: .generate.generated_tokens
+  outputs:
+  - text
+- name: text_sink
+  kind: TextStreamSink
+  inputs:
+    text_batch: .detokenize.text
 """
 
 

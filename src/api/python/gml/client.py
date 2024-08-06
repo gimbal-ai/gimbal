@@ -286,9 +286,7 @@ class Client:
             if isinstance(pipeline, Pipeline):
                 if self._org_name is None:
                     raise ValueError("must set `org` to upload a pipeline")
-                yaml = pipeline.to_yaml(
-                    [model.name for model in models], self._org_name
-                )
+                yaml = pipeline.to_yaml(models, self._org_name)
             else:
                 yaml = pipeline
         else:
