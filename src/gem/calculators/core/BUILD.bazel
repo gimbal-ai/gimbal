@@ -43,6 +43,8 @@ gml_cc_library(
         "detections_to_mediapipe_calculator.cc",
         "detections_to_mediapipe_calculator.h",
         "execution_context_calculator.h",
+        "generate_tokens_metrics_sink_calculator.cc",
+        "generate_tokens_metrics_sink_calculator.h",
         "image_frame_to_yuv_planar_image.cc",
         "image_frame_to_yuv_planar_image.h",
         "image_quality_calculator.cc",
@@ -238,7 +240,19 @@ gml_cc_test(
         ":cc_library",
         "//src/gem/testing/core:cc_library",
         "@com_github_google_mediapipe//mediapipe/framework/stream_handler:sync_set_input_stream_handler_cc_proto",
-        "@com_github_google_mediapipe//mediapipe/util:packet_test_util",
+    ],
+)
+
+gml_cc_test(
+    name = "generate_tokens_metrics_sink_calculator_test",
+    srcs = [
+        "generate_tokens_metrics_sink_calculator_test.cc",
+        "test_utils.h",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+        "@com_github_google_mediapipe//mediapipe/framework/stream_handler:sync_set_input_stream_handler_cc_proto",
     ],
 )
 

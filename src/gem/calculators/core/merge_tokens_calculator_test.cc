@@ -21,7 +21,6 @@
 #include <mediapipe/framework/calculator_framework.h>
 #include <mediapipe/framework/calculator_runner.h>
 #include <mediapipe/framework/stream_handler/sync_set_input_stream_handler.pb.h>
-#include <mediapipe/util/packet_test_util.h>
 
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/base/logging.h"

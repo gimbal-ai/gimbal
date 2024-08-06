@@ -19,48 +19,48 @@
 #pragma once
 
 #include <mediapipe/framework/calculator_framework.h>
+#include <opentelemetry/sdk/metrics/sync_instruments.h>
 
 #include "src/api/corepb/v1/mediastream.pb.h"
+#include "src/common/base/status.h"
 
 namespace gml::gem::calculators::core {
-
 /**
- *  MergeTokensCalculator Graph API:
- *  Enables merging of input stream with the LLM output stream. If the LLM output stream has an eos,
- *  it skips that particular batch of the stream since we don't need to feed that back into the LLM.
+ *  GenerateTokensMetricsSinkCalculator Graph API:
  *
  *  Note that this is expected to be used with a SyncSetInputStreamHandler on each of the input
- *  streams. Also note that this calculator uses loop internal timestamps. To get real timestamps,
- *  wrap outputs with a ClockTimestampCalculator.
- *
+ *  streams.
  *
  *  Inputs:
  *    INPUT_TOKENS std::vector<int> - Token IDs encoded from the input stream.
  *    OUTPUT_TOKENS std::vector<int> - Token IDs to be written to the output stream.
- *    OUTPUT_EOS bool - A flag indicating whether it is the end of the LLM output.
+ *    OUTPUT_EOS bool - A flag indicating whether it is the end of the stream.
  *
  *  Outputs:
- *    LOOP_START bool - A flag indicating the start of the loop, will be emitted with the first
- *    input token.
- *    MERGED_TOKENS std::vector<int> - Merged stream of tokens.
- *
+ *    This is a sink node so there are no data mediapipe outputs, but will write
+ *    stats to opentelemetry.
  */
-class MergeTokensCalculator : public mediapipe::CalculatorBase {
+class GenerateTokensMetricsSinkCalculator : public mediapipe::CalculatorBase {
  public:
   static absl::Status GetContract(mediapipe::CalculatorContract* cc);
+
   absl::Status Open(mediapipe::CalculatorContext* cc) override;
   absl::Status Process(mediapipe::CalculatorContext* cc) override;
-  absl::Status Close(mediapipe::CalculatorContext* cc) override;
+  absl::Status Close(mediapipe::CalculatorContext*) override { return absl::OkStatus(); }
 
  private:
-  void EmitInput(mediapipe::CalculatorContext* cc);
   void HandleInput(mediapipe::CalculatorContext* cc);
-
   void HandleOutput(mediapipe::CalculatorContext* cc);
 
-  mediapipe::Timestamp internal_timestamp_ = mediapipe::Timestamp(0);
-  std::deque<std::vector<int>> input_buffer_;
-  bool is_processing_output_ = false;
+  opentelemetry::metrics::Histogram<uint64_t>* input_tokens_histogram_;
+  // We have separate metrics for output histogram and counter because
+  // we want to capture "live" metrics for output tokens and also
+  // track the full length of output streams, which requires you to accumulate
+  // the output stream_count.
+  opentelemetry::metrics::Histogram<uint64_t>* output_tokens_histogram_;
+  opentelemetry::metrics::Counter<uint64_t>* output_tokens_counter_;
+  uint64_t running_output_tokens_ = 0;
+  absl::flat_hash_map<std::string, std::string> metric_attributes_;
 };
 
 }  // namespace gml::gem::calculators::core
