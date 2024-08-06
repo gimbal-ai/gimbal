@@ -273,6 +273,14 @@ rust.toolchain(
         "aarch64-unknown-linux-gnu",
         "x86_64-unknown-linux-gnu",
     ],
+    sha256s = {
+        "cargo-1.80.0-x86_64-unknown-linux-gnu.tar.xz": "5602ba863f5276cfaa7ed3a8dd94d187fbd0319a1b4bbb9284e77fb6b7168a41",
+        "clippy-1.80.0-x86_64-unknown-linux-gnu.tar.xz": "6218ff568459d7e000e3613c506a1c78ff0a91c840617a1d04af1edfe00a8326",
+        "llvm-tools-1.80.0-x86_64-unknown-linux-gnu.tar.xz": "54451eeb9128669861b1d5e0c3493c59ff9348e55c35d343a8e58184c19b8040",
+        "rust-std-1.80.0-aarch64-unknown-linux-gnu.tar.xz": "5911cc5af031648b29b42aaa1fe77d577848db08d9a400eada1e803960e78c4c",
+        "rust-std-1.80.0-x86_64-unknown-linux-gnu.tar.xz": "c722cba93c9627e04a6a5ecc749cde9dda39f15e4d02fb6ae8d0b27e02e6488a",
+        "rustc-1.80.0-x86_64-unknown-linux-gnu.tar.xz": "ef1692e3d67236868d32ef26f96f47792b1c3a3f9747bbe05c63742464307c4f",
+    },
     versions = [RUST_VERSION],
 )
 use_repo(rust, "rust_toolchains")
