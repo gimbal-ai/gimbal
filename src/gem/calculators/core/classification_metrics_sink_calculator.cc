@@ -49,7 +49,10 @@ Status ClassificationMetricsSinkCalculator::BuildMetrics(mediapipe::CalculatorCo
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
 
   confidence_hist_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
-      "gml_gem_pipe_classifications_confidence", "Confidence scores of model predictions.",
+      "gml_gem_pipe_classifications_confidence", "DEPRECATED.", kConfidenceClassesBounds);
+
+  scores_hist_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
+      "gml_gem_pipe_classifications_scores", "Scores of model predictions.",
       kConfidenceClassesBounds);
   return Status::OK();
 }
@@ -84,6 +87,7 @@ Status ClassificationMetricsSinkCalculator::RecordMetrics(mediapipe::CalculatorC
     attrs["k"] = std::to_string(k);
 
     confidence_hist_->Record(conf, attrs, {});
+    scores_hist_->Record(conf, attrs, {});
 
     top_k_classes.pop();
   }

@@ -43,7 +43,12 @@ class ClassificationMetricsSinkCalculator
   Status RecordMetrics(mediapipe::CalculatorContext* cc) override;
 
  private:
+  // Deprecated on 08/05/2024. Maintained for backwards compatibility.
+  // Can be removed once all GEMs are updated, and UI queries are updated and control plane
+  // released.
   opentelemetry::metrics::Histogram<double>* confidence_hist_;
+
+  opentelemetry::metrics::Histogram<double>* scores_hist_;
 };
 
 }  // namespace gml::gem::calculators::core
