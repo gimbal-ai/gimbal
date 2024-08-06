@@ -222,6 +222,7 @@ class ModelInfo(_message.Message):
     IMAGE_PREPROCESSING_STEPS_FIELD_NUMBER: _ClassVar[int]
     INPUT_TENSOR_SEMANTICS_FIELD_NUMBER: _ClassVar[int]
     KIND_FIELD_NUMBER: _ClassVar[int]
+    MODEL_KIND_HUGGINGFACE_TOKENIZER: ModelInfo.ModelKind
     MODEL_KIND_ONNX: ModelInfo.ModelKind
     MODEL_KIND_OPENVINO: ModelInfo.ModelKind
     MODEL_KIND_TFLITE: ModelInfo.ModelKind
@@ -231,6 +232,7 @@ class ModelInfo(_message.Message):
     MODEL_STORAGE_FORMAT_FLATBUFFER: ModelInfo.ModelStorageFormat
     MODEL_STORAGE_FORMAT_MLIR_BYTECODE: ModelInfo.ModelStorageFormat
     MODEL_STORAGE_FORMAT_MLIR_TEXT: ModelInfo.ModelStorageFormat
+    MODEL_STORAGE_FORMAT_OPAQUE: ModelInfo.ModelStorageFormat
     MODEL_STORAGE_FORMAT_OPENVINO: ModelInfo.ModelStorageFormat
     MODEL_STORAGE_FORMAT_PROTOBUF: ModelInfo.ModelStorageFormat
     MODEL_STORAGE_FORMAT_PROTO_TEXT: ModelInfo.ModelStorageFormat

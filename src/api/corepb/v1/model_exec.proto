@@ -185,6 +185,7 @@ message ModelInfo {
     MODEL_KIND_ONNX = 3;
     MODEL_KIND_TFLITE = 4;
     MODEL_KIND_OPENVINO = 5;
+    MODEL_KIND_HUGGINGFACE_TOKENIZER = 6;
   }
   ModelKind kind = 2;
 
@@ -196,6 +197,8 @@ message ModelInfo {
     MODEL_STORAGE_FORMAT_PROTO_TEXT = 4;
     MODEL_STORAGE_FORMAT_FLATBUFFER = 5;
     MODEL_STORAGE_FORMAT_OPENVINO = 6;
+    // Opaque models are ignored by MLIR processing.
+    MODEL_STORAGE_FORMAT_OPAQUE = 7;
   }
   ModelStorageFormat format = 3;
 
