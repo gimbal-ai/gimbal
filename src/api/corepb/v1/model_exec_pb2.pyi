@@ -153,6 +153,12 @@ class FileResource(_message.Message):
     size_bytes: int
     def __init__(self, file_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., size_bytes: _Optional[int] = ..., sha256_hash: _Optional[str] = ...) -> None: ...
 
+class GenerationConfig(_message.Message):
+    __slots__ = ["eos_token_ids"]
+    EOS_TOKEN_IDS_FIELD_NUMBER: _ClassVar[int]
+    eos_token_ids: _containers.RepeatedScalarFieldContainer[int]
+    def __init__(self, eos_token_ids: _Optional[_Iterable[int]] = ...) -> None: ...
+
 class ImagePreprocessingStep(_message.Message):
     __slots__ = ["conversion_params", "kind", "resize_params", "standardize_params"]
     class ImagePreprocessingKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
@@ -204,7 +210,7 @@ class LogicalPipeline(_message.Message):
     def __init__(self, params: _Optional[_Iterable[_Union[Param, _Mapping]]] = ..., nodes: _Optional[_Iterable[_Union[Node, _Mapping]]] = ..., model_ids: _Optional[_Iterable[_Union[_uuid_pb2.UUID, _Mapping]]] = ...) -> None: ...
 
 class ModelInfo(_message.Message):
-    __slots__ = ["bbox_info", "class_labels", "file_assets", "format", "image_preprocessing_steps", "input_tensor_semantics", "kind", "name", "output_tensor_semantics"]
+    __slots__ = ["bbox_info", "class_labels", "file_assets", "format", "generation_config", "image_preprocessing_steps", "input_tensor_semantics", "kind", "name", "output_tensor_semantics"]
     class ModelKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = []
     class ModelStorageFormat(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
@@ -220,6 +226,7 @@ class ModelInfo(_message.Message):
     CLASS_LABELS_FIELD_NUMBER: _ClassVar[int]
     FILE_ASSETS_FIELD_NUMBER: _ClassVar[int]
     FORMAT_FIELD_NUMBER: _ClassVar[int]
+    GENERATION_CONFIG_FIELD_NUMBER: _ClassVar[int]
     IMAGE_PREPROCESSING_STEPS_FIELD_NUMBER: _ClassVar[int]
     INPUT_TENSOR_SEMANTICS_FIELD_NUMBER: _ClassVar[int]
     KIND_FIELD_NUMBER: _ClassVar[int]
@@ -244,12 +251,13 @@ class ModelInfo(_message.Message):
     class_labels: _containers.RepeatedScalarFieldContainer[str]
     file_assets: _containers.MessageMap[str, _uuid_pb2.UUID]
     format: ModelInfo.ModelStorageFormat
+    generation_config: GenerationConfig
     image_preprocessing_steps: _containers.RepeatedCompositeFieldContainer[ImagePreprocessingStep]
     input_tensor_semantics: _containers.RepeatedCompositeFieldContainer[TensorSemantics]
     kind: ModelInfo.ModelKind
     name: str
     output_tensor_semantics: _containers.RepeatedCompositeFieldContainer[TensorSemantics]
-    def __init__(self, name: _Optional[str] = ..., kind: _Optional[_Union[ModelInfo.ModelKind, str]] = ..., format: _Optional[_Union[ModelInfo.ModelStorageFormat, str]] = ..., file_assets: _Optional[_Mapping[str, _uuid_pb2.UUID]] = ..., input_tensor_semantics: _Optional[_Iterable[_Union[TensorSemantics, _Mapping]]] = ..., output_tensor_semantics: _Optional[_Iterable[_Union[TensorSemantics, _Mapping]]] = ..., class_labels: _Optional[_Iterable[str]] = ..., bbox_info: _Optional[_Union[BoundingBoxInfo, _Mapping]] = ..., image_preprocessing_steps: _Optional[_Iterable[_Union[ImagePreprocessingStep, _Mapping]]] = ...) -> None: ...
+    def __init__(self, name: _Optional[str] = ..., kind: _Optional[_Union[ModelInfo.ModelKind, str]] = ..., format: _Optional[_Union[ModelInfo.ModelStorageFormat, str]] = ..., file_assets: _Optional[_Mapping[str, _uuid_pb2.UUID]] = ..., input_tensor_semantics: _Optional[_Iterable[_Union[TensorSemantics, _Mapping]]] = ..., output_tensor_semantics: _Optional[_Iterable[_Union[TensorSemantics, _Mapping]]] = ..., class_labels: _Optional[_Iterable[str]] = ..., bbox_info: _Optional[_Union[BoundingBoxInfo, _Mapping]] = ..., image_preprocessing_steps: _Optional[_Iterable[_Union[ImagePreprocessingStep, _Mapping]]] = ..., generation_config: _Optional[_Union[GenerationConfig, _Mapping]] = ...) -> None: ...
 
 class ModelSpec(_message.Message):
     __slots__ = ["name", "named_asset", "onnx_blob_key", "onnx_file", "openvino_spec", "runtime", "tensorrt_spec"]
