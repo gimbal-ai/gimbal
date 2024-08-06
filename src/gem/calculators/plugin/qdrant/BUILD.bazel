@@ -26,13 +26,17 @@ gem_plugin_cc_library(
     srcs = [
         "client.cc",
         "client.h",
+        "qdrant_search_calculator.cc",
+        "qdrant_search_calculator.h",
     ],
     plugin_name = "qdrant",
     deps = [
         "//src/api/corepb/v1:corepb_cc_library",
         "//src/common/grpcutils:cc_library",
         "//src/gem/calculators/core:cc_library",
+        "//src/gem/calculators/plugin/qdrant/optionspb:optionspb_cc_library",
         "//src/gem/exec/core:cc_library",
+        "//src/gem/exec/plugin/cpu_tensor:cc_library",
         "//third_party/github.com/qdrant/go-client/qdrant:qdrant_grpc_cc_library",
     ],
 )
