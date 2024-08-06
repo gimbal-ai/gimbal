@@ -48,15 +48,18 @@ TEST_P(BufferTokensForAutoregressionTest, ConvertsCorrectly) {
   std::string config(kBufferTokensForAutoregressionNode);
   testing::CalculatorTester tester(config);
 
+  int64_t ts = 0;
   for (size_t i = 0; i < test_case.token_inputs.size(); ++i) {
-    auto ts = mediapipe::Timestamp(i);
-    tester.ForInput("TOKENS", test_case.token_inputs[i], ts);
-    tester.ForInput<bool>("LOOP_START", test_case.loop_starts[i], ts);
+    ++ts;
+    tester.ForInput("TOKENS", test_case.token_inputs[i], mediapipe::Timestamp(ts));
+    tester.ForInput<bool>("LOOP_START", test_case.loop_starts[i], mediapipe::Timestamp(ts));
   }
   tester.Run();
-  for (size_t i = 0; i < test_case.expected_all_tokens.size(); ++i) {
-    auto ts = mediapipe::Timestamp(i);
-    tester.ExpectOutput<std::vector<int>>("ALL_TOKENS", 0, ts, test_case.expected_all_tokens[i]);
+
+  ts = 0;
+  for (const auto& expected : test_case.expected_all_tokens) {
+    ++ts;
+    tester.ExpectOutput<std::vector<int>>("ALL_TOKENS", 0, mediapipe::Timestamp(ts), expected);
   }
 }
 
