@@ -207,7 +207,8 @@ try-import /etc/bazelrc
 try-import %workspace%/docker.bes.bazelrc
 
 # Put your own configurations into user.bazelrc, which is ignored by git.
-try-import %workspace%/user.bazelrc
+# TODO(zasgar/vihang): figure out how to trigger this as needed.
+# try-import %workspace%/user.bazelrc
 
 # Tensorflow requires this option
 common --experimental_repo_remote_exec
