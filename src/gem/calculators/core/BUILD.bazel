@@ -55,6 +55,8 @@ gml_cc_library(
         "modify_detection_with_regression_calculator.h",
         "packet_latency_metrics_sink_calculator.cc",
         "packet_latency_metrics_sink_calculator.h",
+        "stop_on_token_set_calculator.cc",
+        "stop_on_token_set_calculator.h",
         "text_stream_sink_calculator.cc",
         "text_stream_sink_calculator.h",
         "text_stream_source_calculator.cc",
@@ -235,5 +237,16 @@ gml_cc_test(
         "//src/gem/testing/core:cc_library",
         "@com_github_google_mediapipe//mediapipe/framework/stream_handler:sync_set_input_stream_handler_cc_proto",
         "@com_github_google_mediapipe//mediapipe/util:packet_test_util",
+    ],
+)
+
+gml_cc_test(
+    name = "stop_on_token_set_calculator_test",
+    srcs = [
+        "stop_on_token_set_calculator_test.cc",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
     ],
 )
