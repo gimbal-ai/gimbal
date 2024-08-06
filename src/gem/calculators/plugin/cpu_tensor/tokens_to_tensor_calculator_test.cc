@@ -36,8 +36,6 @@ using ::gml::gem::exec::cpu_tensor::CPUTensorPtr;
 using ::gml::gem::exec::cpu_tensor::ExecutionContext;
 using ::gml::gem::testing::CalculatorTester;
 
-using ::gml::internal::api::core::v1::Classification;
-
 constexpr char kTokensToTensorCalculatorNode[] = R"pbtxt(
 calculator: "TokensToTensorCalculator"
 input_stream: "TOKENS:tokens"
