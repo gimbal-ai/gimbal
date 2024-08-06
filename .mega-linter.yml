@@ -69,6 +69,7 @@ GO_GOLANGCI_LINT_CONFIG_FILE: .golangci.yaml
 JSON_V8R_CLI_LINT_MODE: project
 JSON_V8R_ARGUMENTS: "--schema src/ui/visspec/visspec.schema.json **/*.visspec.json"
 MARKDOWN_MARKDOWNLINT_FILTER_REGEX_EXCLUDE: (\.github\/PULL_REQUEST_TEMPLATE)
+RUST_CLIPPY_ARGUMENTS: '--manifest-path=./Cargo.toml --locked'
 REPOSITORY_LICENSE_CHECKER_FILTER_REGEX_EXCLUDE: "bazel\\/cc_toolchains\\/sysroots\\/packages\\/all_debs.bzl"
 # See https://github.com/oxsecurity/megalinter/issues/2699
 TERRAFORM_TFLINT_UNSECURED_ENV_VARIABLES:
