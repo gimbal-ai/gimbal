@@ -19,7 +19,7 @@ import abc
 import contextlib
 import io
 from pathlib import Path
-from typing import BinaryIO, Dict, List, Literal, Optional, TextIO, Tuple
+from typing import BinaryIO, Dict, List, Literal, Optional, Sequence, TextIO, Tuple
 
 import gml.proto.src.api.corepb.v1.model_exec_pb2 as modelexecpb
 import torch
@@ -90,6 +90,7 @@ class TorchModel(Model):
         example_inputs: Optional[List[torch.Tensor]] = None,
         input_shapes: Optional[List[List[int]]] = None,
         input_dtypes: Optional[List[torch.dtype]] = None,
+        dynamic_shapes: Optional[Sequence[Dict[int, str | "torch.export.Dim"]]] = None,
         **kwargs,
     ):
         super().__init__(
@@ -102,6 +103,7 @@ class TorchModel(Model):
         self.example_inputs = example_inputs
         self.input_shapes = input_shapes
         self.input_dtypes = input_dtypes
+        self.dynamic_shapes = dynamic_shapes
         if self.example_inputs is None:
             if self.input_shapes is None or self.input_dtypes is None:
                 raise ValueError(
@@ -116,6 +118,7 @@ class TorchModel(Model):
         return to_torch_mlir(
             self.torch_module,
             self.example_inputs,
+            self.dynamic_shapes,
         )
 
     def _collect_assets(self) -> Dict[str, TextIO | BinaryIO | Path]:

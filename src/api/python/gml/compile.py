@@ -16,7 +16,7 @@
 
 import contextlib
 import functools
-from typing import List, Optional, Sequence
+from typing import Dict, List, Optional, Sequence, Union
 
 import gml.proto.src.api.corepb.v1.model_exec_pb2 as modelexecpb
 import torch
@@ -63,12 +63,22 @@ def _patch_aot_export_module():
 def to_torch_mlir_w_torch_export(
     model: torch.nn.Module,
     example_inputs: Sequence[torch.Tensor],
+    dynamic_shapes: Optional[
+        Sequence[Dict[int, Union[str, "torch.export.dynamic_shapes._Dim"]]]
+    ] = None,
     decomposition_denylist: Optional[List[torch._ops.OperatorBase]] = None,
 ):
     from torch._decomp import remove_decompositions
     from torch.export._trace import _export
     from torch_mlir.extras.fx_decomp_util import get_decomposition_table
     from torch_mlir.fx import export_and_import
+
+    if dynamic_shapes is not None:
+        for shape in dynamic_shapes:
+            for idx in shape:
+                if isinstance(shape[idx], torch.export.dynamic_shapes._Dim):
+                    continue
+                shape[idx] = torch.export.Dim(shape[idx])
 
     if decomposition_denylist is None:
         decomposition_denylist = _default_decomposition_denylist()
@@ -83,7 +93,9 @@ def to_torch_mlir_w_torch_export(
         # Ignore errors running the model. This can happen when the model has data dependent branches.
         pass
 
-    prog = _export(model, tuple(example_inputs), pre_dispatch=True)
+    prog = _export(
+        model, tuple(example_inputs), pre_dispatch=True, dynamic_shapes=dynamic_shapes
+    )
     decomp_table = get_decomposition_table()
     remove_decompositions(decomp_table, decomposition_denylist)
     with _patch_aot_export_module():
@@ -141,7 +153,13 @@ def to_torch_mlir_fallback(model, example_inputs):
     return compiled
 
 
-def to_torch_mlir(model, example_inputs):
+def to_torch_mlir(
+    model,
+    example_inputs,
+    dynamic_shapes: Optional[
+        Sequence[Dict[int, Union[str, "torch.export.dynamic_shapes._Dim"]]]
+    ] = None,
+):
     if has_fx_importer_torch_export:
         return to_torch_mlir_w_torch_export(model, example_inputs)
     else:
