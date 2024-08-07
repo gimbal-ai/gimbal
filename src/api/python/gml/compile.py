@@ -95,7 +95,11 @@ def to_torch_mlir_w_torch_export(
         pass
 
     prog = _export(
-        model, tuple(example_inputs), pre_dispatch=True, dynamic_shapes=dynamic_shapes
+        model,
+        tuple(example_inputs),
+        pre_dispatch=False,
+        strict=False,
+        dynamic_shapes=dynamic_shapes,
     )
     decomp_table = get_decomposition_table()
     remove_decompositions(decomp_table, decomposition_denylist)
