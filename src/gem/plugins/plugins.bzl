@@ -44,6 +44,7 @@ PLUGINS = dict(
         enabled_by_default = True,
         libs = [
             "//src/gem/exec/plugin/huggingface:cc_library",
+            "//src/gem/build/plugin/huggingface:cc_library",
             "//src/gem/calculators/plugin/huggingface:cc_library",
         ],
     ),
