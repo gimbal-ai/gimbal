@@ -29,10 +29,15 @@ namespace gml::gem::calculators::core {
  *  GenerateTokensMetricsSinkCalculator Graph API:
  *
  *  Note that this is expected to be used with a SyncSetInputStreamHandler on each of the input
- *  streams.
+ *  streams. SyncSet1 should be {INPUT_TIMESTAMP, INPUT_TOKENS} and SyncSet2 should be
+ *  {OUTPUT_TIMESTAMP, OUTPUT_TOKENS, OUTPUT_EOS}.
  *
  *  Inputs:
- *    INPUT_TOKENS std::vector<int> - Token IDs encoded from the input stream.
+ *    INPUT_TIMESTAMP absl::Time - The timestamp of the input tokens.
+ *    INPUT_TOKENS std::vector<int> - Token IDs encoded from the input stream. Unlike the
+ *      output equivalent, this is a single batch that implicitly contains all the input tokens
+ *      and therefore does not need an eos.
+ *    OUTPUT_TIMESTAMP absl::Time - The timestamp of the output tokens.
  *    OUTPUT_TOKENS std::vector<int> - Token IDs to be written to the output stream.
  *    OUTPUT_EOS bool - A flag indicating whether it is the end of the stream.
  *
@@ -59,8 +64,14 @@ class GenerateTokensMetricsSinkCalculator : public mediapipe::CalculatorBase {
   // the output stream_count.
   opentelemetry::metrics::Histogram<uint64_t>* output_tokens_histogram_;
   opentelemetry::metrics::Counter<uint64_t>* output_tokens_counter_;
+  opentelemetry::metrics::Histogram<double>* time_to_first_output_token_histogram_;
   uint64_t running_output_tokens_ = 0;
   absl::flat_hash_map<std::string, std::string> metric_attributes_;
+  struct InputTimestampData {
+    absl::Time timestamp;
+    bool received_first_output_token = false;
+  };
+  std::deque<InputTimestampData> input_timestamps_;
 };
 
 }  // namespace gml::gem::calculators::core
