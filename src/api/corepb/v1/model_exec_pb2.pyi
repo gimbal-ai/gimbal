@@ -16,6 +16,7 @@ LOGICAL_PIPELINE_NODE_KIND_CLASSIFY: LogicalPipelineNodeKind
 LOGICAL_PIPELINE_NODE_KIND_DETECT: LogicalPipelineNodeKind
 LOGICAL_PIPELINE_NODE_KIND_DETECTIONS_METRICS_SINK: LogicalPipelineNodeKind
 LOGICAL_PIPELINE_NODE_KIND_DETOKENIZE: LogicalPipelineNodeKind
+LOGICAL_PIPELINE_NODE_KIND_EMBED: LogicalPipelineNodeKind
 LOGICAL_PIPELINE_NODE_KIND_FOR_EACH_ROI: LogicalPipelineNodeKind
 LOGICAL_PIPELINE_NODE_KIND_FRAME_METRICS_SINK: LogicalPipelineNodeKind
 LOGICAL_PIPELINE_NODE_KIND_GENERATE_TOKENS: LogicalPipelineNodeKind
@@ -117,6 +118,7 @@ class DimensionSemantics(_message.Message):
     DIMENSION_SEMANTICS_KIND_CLASS_SCORES: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_DETECTION_CANDIDATES: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_DETECTION_OUTPUT: DimensionSemantics.DimensionSemanticsKind
+    DIMENSION_SEMANTICS_KIND_EMBEDDING: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_IGNORE: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_IMAGE_CHANNEL: DimensionSemantics.DimensionSemanticsKind
     DIMENSION_SEMANTICS_KIND_IMAGE_HEIGHT: DimensionSemantics.DimensionSemanticsKind
