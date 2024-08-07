@@ -66,8 +66,8 @@ REPOSITORY_LOCATIONS = dict(
         urls = ["https://github.com/Neargye/magic_enum/archive/refs/tags/v0.7.0.tar.gz"],
     ),
     com_github_nlohmann_json = dict(
-        sha256 = "87b5884741427220d3a33df1363ae0e8b898099fbc59f1c451113f6732891014",
-        urls = ["https://github.com/nlohmann/json/releases/download/v3.7.3/include.zip"],
+        sha256 = "a22461d13119ac5c78f205d3df1db13403e58ce1bb1794edc9313677313f4a9d",
+        urls = ["https://github.com/nlohmann/json/releases/download/v3.11.3/include.zip"],
     ),
     com_github_okdshin_picosha = dict(
         sha256 = "18d82bb79c021ccf4ce58125b64691accef54237ba5194462740bacf8b39d8a9",
