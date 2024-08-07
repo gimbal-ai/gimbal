@@ -34,6 +34,7 @@ except ImportError:
 def _default_decomposition_denylist():
     """These ops will not be decomposed by default."""
     return [
+        torch.ops.aten.full.default,
         torch.ops.aten.upsample_bilinear2d.vec,
     ]
 
