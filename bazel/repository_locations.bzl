@@ -69,6 +69,11 @@ REPOSITORY_LOCATIONS = dict(
         sha256 = "a22461d13119ac5c78f205d3df1db13403e58ce1bb1794edc9313677313f4a9d",
         urls = ["https://github.com/nlohmann/json/releases/download/v3.11.3/include.zip"],
     ),
+    com_github_pantor_inja = dict(
+        sha256 = "7155f944553ca6064b26e88e6cae8b71f8be764832c9c7c6d5998e0d5fd60c55",
+        strip_prefix = "inja-3.4.0",
+        urls = ["https://github.com/pantor/inja/archive/refs/tags/v3.4.0.tar.gz"],
+    ),
     com_github_okdshin_picosha = dict(
         sha256 = "18d82bb79c021ccf4ce58125b64691accef54237ba5194462740bacf8b39d8a9",
         strip_prefix = "PicoSHA2-27fcf6979298949e8a462e16d09a0351c18fcaf2",

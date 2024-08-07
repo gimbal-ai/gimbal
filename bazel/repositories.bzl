@@ -180,6 +180,7 @@ def _cc_deps():
     # Dependencies where we provide an external BUILD file.
     _bazel_repo("com_github_arun11299_cpp_jwt", build_file = "//bazel/external:cpp_jwt.BUILD")
     _bazel_repo("com_github_nlohmann_json", build_file = "//bazel/external:nlohmann_json.BUILD")
+    _bazel_repo("com_github_pantor_inja", build_file = "//bazel/external:pantor_inja.BUILD")
     _bazel_repo("com_github_rlyeh_sole", patches = ["//bazel/external:sole.patch"], patch_args = ["-p1"], build_file = "//bazel/external:sole.BUILD")
     _bazel_repo("com_github_okdshin_picosha", build_file = "//bazel/external:picosha.BUILD")
     _bazel_repo("com_github_vertical_beach_bytetrack_cpp", patches = ["//bazel/external:bytetrack_cpp.patch"], patch_args = ["-p1"], build_file = "//bazel/external:bytetrack_cpp.BUILD")
