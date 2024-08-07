@@ -39,6 +39,22 @@ ov::Shape OVShapeFromCPUTensor(const exec::core::TensorShape& shape) {
   ov::Shape ov_shape(shape.begin(), shape.end());
   return ov_shape;
 }
+
+exec::core::DataType DataTypeFromOVType(const ov::element::Type& type) {
+  switch (type) {
+    case ov::element::Type_t::i32:
+      return exec::core::DataType::INT32;
+    case ov::element::Type_t::i64:
+      return exec::core::DataType::INT64;
+    case ov::element::Type_t::i8:
+      return exec::core::DataType::INT8;
+    case ov::element::Type_t::f32:
+      return exec::core::DataType::FLOAT32;
+    default:
+      LOG(ERROR) << "Unsupported OpenVINO data type: " << type.get_type_name();
+      return exec::core::DataType::UNKNOWN;
+  }
+}
 }  // namespace
 
 absl::Status OpenVinoExecuteCalculator::GetContract(mediapipe::CalculatorContract* cc) {
@@ -88,6 +104,7 @@ absl::Status OpenVinoExecuteCalculator::Process(mediapipe::CalculatorContext* cc
                               cpu_exec_ctx->TensorPool()->GetTensor(output_tensor.get_byte_size()));
     // TODO(james): we might be able to refactor CPUTensor such that we can avoid this copy.
     std::memcpy(cpu_tensor->data(), output_tensor.data(), output_tensor.get_byte_size());
+    cpu_tensor->SetDataType(DataTypeFromOVType(output_tensor.get_element_type()));
 
     exec::core::TensorShape shape;
     for (const auto& dim : output_tensor.get_shape()) {
