@@ -49,7 +49,7 @@ Status TokensToTensorCalculator::ProcessImpl(mediapipe::CalculatorContext* cc,
   const auto& tokens = cc->Inputs().Tag(kTokensTag).Get<std::vector<int>>();
 
   GML_ASSIGN_OR_RETURN(auto tensor, exec_ctx->TensorPool()->GetTensor(
-                                        {1, static_cast<int>(tokens.size())}, DataType::INT64));
+                                        {1, static_cast<int>(tokens.size())}, DataType::INT32));
 
   std::memcpy(tensor->data(), tokens.data(), sizeof(int) * tokens.size());
 

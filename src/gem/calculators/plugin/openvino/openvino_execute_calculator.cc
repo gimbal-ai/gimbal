@@ -34,6 +34,13 @@ using exec::openvino::ExecutionContext;
 constexpr std::string_view kOpenVinoContextTag = "OV_EXEC_CTX";
 constexpr std::string_view kCPUContextTag = "CPU_EXEC_CTX";
 
+namespace {
+ov::Shape OVShapeFromCPUTensor(const exec::core::TensorShape& shape) {
+  ov::Shape ov_shape(shape.begin(), shape.end());
+  return ov_shape;
+}
+}  // namespace
+
 absl::Status OpenVinoExecuteCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   cc->InputSidePackets().Tag(kOpenVinoContextTag).Set<exec::core::ExecutionContext*>();
   cc->InputSidePackets().Tag(kCPUContextTag).Set<exec::core::ExecutionContext*>();
@@ -64,8 +71,8 @@ absl::Status OpenVinoExecuteCalculator::Process(mediapipe::CalculatorContext* cc
     const auto& packet = cc->Inputs().Index(i).Value();
     auto cpu_tensor = packet.Get<CPUTensorPtr>();
     auto input_port = model.input(i);
-    input_tensors.emplace_back(input_port.get_element_type(), input_port.get_shape(),
-                               cpu_tensor->data());
+    input_tensors.emplace_back(input_port.get_element_type(),
+                               OVShapeFromCPUTensor(cpu_tensor->Shape()), cpu_tensor->data());
   }
   auto req = model.create_infer_request();
   for (const auto& [i, tensor] : Enumerate(input_tensors)) {
