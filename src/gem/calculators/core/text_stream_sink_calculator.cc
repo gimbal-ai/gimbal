@@ -30,8 +30,8 @@ namespace gml::gem::calculators::core {
 
 using ::gml::internal::api::core::v1::TextBatch;
 
-constexpr std::string_view kTextTag = "TEXT";
-constexpr std::string_view kEOSTag = "FINISHED";
+constexpr std::string_view kTextTag = "TEXT_BATCH";
+constexpr std::string_view kEOSTag = "EOS";
 
 absl::Status TextStreamSinkCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   GML_ABSL_RETURN_IF_ERROR(core::ControlExecutionContextCalculator::UpdateContract(cc));

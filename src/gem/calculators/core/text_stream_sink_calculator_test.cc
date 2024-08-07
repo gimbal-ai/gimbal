@@ -46,8 +46,8 @@ TEST_P(TextStreamSinkCalculatorTest, SendsCallback) {
   constexpr char kTextStreamSinkNode[] = R"pbtxt(
     calculator: "TextStreamSinkCalculator"
     input_side_packet: "EXEC_CTX:ctrl_exec_ctx"
-    input_stream: "TEXT:text"
-    input_stream: "FINISHED:eos"
+    input_stream: "TEXT_BATCH:text"
+    input_stream: "EOS:eos"
   )pbtxt";
 
   mediapipe::CalculatorRunner runner(kTextStreamSinkNode);
@@ -74,11 +74,11 @@ TEST_P(TextStreamSinkCalculatorTest, SendsCallback) {
 
   mediapipe::Packet p = mediapipe::MakePacket<std::string>(packet_and_expectation.text);
   p = p.At(mediapipe::Timestamp(static_cast<int64_t>(0)));
-  runner.MutableInputs()->Tag("TEXT").packets.push_back(p);
+  runner.MutableInputs()->Tag("TEXT_BATCH").packets.push_back(p);
 
   mediapipe::Packet p2 = mediapipe::MakePacket<bool>(packet_and_expectation.eos);
   p2 = p2.At(mediapipe::Timestamp(static_cast<int64_t>(0)));
-  runner.MutableInputs()->Tag("FINISHED").packets.push_back(p2);
+  runner.MutableInputs()->Tag("EOS").packets.push_back(p2);
 
   ASSERT_OK(runner.Run());
 
