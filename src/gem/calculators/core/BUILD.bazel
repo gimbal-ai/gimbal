@@ -43,6 +43,8 @@ gml_cc_library(
         "detections_to_mediapipe_calculator.cc",
         "detections_to_mediapipe_calculator.h",
         "execution_context_calculator.h",
+        "generate_chat_message_calculator.cc",
+        "generate_chat_message_calculator.h",
         "generate_tokens_metrics_sink_calculator.cc",
         "generate_tokens_metrics_sink_calculator.h",
         "image_frame_to_yuv_planar_image.cc",
@@ -85,6 +87,7 @@ gml_cc_library(
         "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
         "@com_github_google_mediapipe//mediapipe/framework/formats:detection_cc_proto",
         "@com_github_google_mediapipe//mediapipe/framework/stream_handler:sync_set_input_stream_handler",
+        "@com_github_pantor_inja//:inja",
         "@com_github_vertical_beach_bytetrack_cpp//:bytetrack",
         "@io_opentelemetry_cpp//sdk/src/metrics",
     ],
@@ -271,6 +274,18 @@ gml_cc_test(
     name = "buffer_tokens_for_autoregression_calculator_test",
     srcs = [
         "buffer_tokens_for_autoregression_calculator_test.cc",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "generate_chat_message_calculator_test",
+    srcs = [
+        "generate_chat_message_calculator_test.cc",
+        "test_utils.h",
     ],
     deps = [
         ":cc_library",
