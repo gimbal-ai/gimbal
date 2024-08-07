@@ -52,18 +52,22 @@ class ControlExecutionContext : public ExecutionContext {
   }
 
   void QueueControlMessage(std::unique_ptr<MediaStreamControl> control) {
-    absl::base_internal::SpinLockHolder lock(&control_queue_lock_);
+    absl::MutexLock lock(&control_queue_lock_);
+    LOG(INFO) << "Queueing control message with prompt: "
+              << control->text_stream_control().prompt();
     control_queue_.push(std::move(control));
   }
 
-  std::unique_ptr<MediaStreamControl> GetControlMessage() {
-    absl::base_internal::SpinLockHolder lock(&control_queue_lock_);
-    if (!control_queue_.empty()) {
-      auto control = std::move(control_queue_.front());
-      control_queue_.pop();
-      return control;
+  std::unique_ptr<MediaStreamControl> WaitForControlMessage(absl::Duration timeout) {
+    auto has_msg = [this]() { return !control_queue_.empty(); };
+    if (!control_queue_lock_.LockWhenWithTimeout(absl::Condition(&has_msg), timeout)) {
+      control_queue_lock_.Unlock();
+      return nullptr;
     }
-    return nullptr;
+    auto control = std::move(control_queue_.front());
+    control_queue_.pop();
+    control_queue_lock_.Unlock();
+    return control;
   }
 
   MediaStreamCallback GetMediaStreamCallback() {
@@ -88,7 +92,7 @@ class ControlExecutionContext : public ExecutionContext {
   absl::base_internal::SpinLock logical_pipeline_id_lock_;
   sole::uuid logical_pipeline_id_ ABSL_GUARDED_BY(logical_pipeline_id_lock_);
 
-  absl::base_internal::SpinLock control_queue_lock_;
+  absl::Mutex control_queue_lock_;
   std::queue<std::unique_ptr<MediaStreamControl>> control_queue_;
 };
 

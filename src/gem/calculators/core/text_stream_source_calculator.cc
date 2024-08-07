@@ -40,7 +40,7 @@ absl::Status TextStreamSourceCalculator::GetContract(mediapipe::CalculatorContra
 
 Status TextStreamSourceCalculator::ProcessImpl(mediapipe::CalculatorContext* cc,
                                                exec::core::ControlExecutionContext* control_ctx) {
-  auto ctrl_message = control_ctx->GetControlMessage();
+  auto ctrl_message = control_ctx->WaitForControlMessage(absl::Seconds(5));
   if (!ctrl_message) {
     return Status::OK();
   }
