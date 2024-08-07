@@ -43,8 +43,6 @@ gml_cc_library(
         "detections_to_mediapipe_calculator.cc",
         "detections_to_mediapipe_calculator.h",
         "execution_context_calculator.h",
-        "generate_chat_message_calculator.cc",
-        "generate_chat_message_calculator.h",
         "generate_tokens_metrics_sink_calculator.cc",
         "generate_tokens_metrics_sink_calculator.h",
         "image_frame_to_yuv_planar_image.cc",
@@ -63,6 +61,8 @@ gml_cc_library(
         "packet_latency_metrics_sink_calculator.h",
         "stop_on_token_set_calculator.cc",
         "stop_on_token_set_calculator.h",
+        "template_chat_message_calculator.cc",
+        "template_chat_message_calculator.h",
         "text_stream_sink_calculator.cc",
         "text_stream_sink_calculator.h",
         "text_stream_source_calculator.cc",
@@ -282,9 +282,9 @@ gml_cc_test(
 )
 
 gml_cc_test(
-    name = "generate_chat_message_calculator_test",
+    name = "template_chat_message_calculator_test",
     srcs = [
-        "generate_chat_message_calculator_test.cc",
+        "template_chat_message_calculator_test.cc",
         "test_utils.h",
     ],
     deps = [

@@ -21,12 +21,12 @@
 #include <inja/inja.hpp>
 #include <mediapipe/framework/calculator_framework.h>
 
-#include "src/gem/calculators/core/optionspb/generate_chat_message_calculator_options.pb.h"
+#include "src/gem/calculators/core/optionspb/template_chat_message_calculator_options.pb.h"
 
 namespace gml::gem::calculators::core {
 
 /**
- * GenerateChatMessageCalculator Graph API:
+ * TemplateChatMessageCalculator Graph API:
  *
  *  Options:
  *    message_template The template to use for the chat message.
@@ -39,7 +39,7 @@ namespace gml::gem::calculators::core {
  * the system. Outputs: TEXT string The templated chat message.
  *
  */
-class GenerateChatMessageCalculator : public mediapipe::CalculatorBase {
+class TemplateChatMessageCalculator : public mediapipe::CalculatorBase {
  public:
   static absl::Status GetContract(mediapipe::CalculatorContract* cc);
   absl::Status Open(mediapipe::CalculatorContext* cc) override;

@@ -22,7 +22,7 @@ package gml.gem.calculators.core.optionspb;
 
 option go_package = "gimletlabs.ai/gimlet/src/gem/calculators/core/optionspb;optionspb";
 
-message GenerateChatMessageCalculatorOptions {
+message TemplateChatMessageCalculatorOptions {
   string message_template = 1;
   string preset_system_prompt = 2;
   bool add_generation_prompt = 3;

@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "src/gem/calculators/core/generate_chat_message_calculator.h"
+#include "src/gem/calculators/core/template_chat_message_calculator.h"
 
 #include "gmock/gmock.h"
 #include <absl/container/flat_hash_map.h>
@@ -31,11 +31,11 @@
 
 namespace gml::gem::calculators::core {
 
-TEST(GenerateChatMessageCalculatorTest, SendsCallback) {
+TEST(TemplateChatMessageCalculatorTest, SendsCallback) {
   constexpr char kGraph[] = R"pbtxt(
-    calculator: "GenerateChatMessageCalculator"
+    calculator: "TemplateChatMessageCalculator"
     node_options {
-      [type.googleapis.com/gml.gem.calculators.core.optionspb.GenerateChatMessageCalculatorOptions] {
+      [type.googleapis.com/gml.gem.calculators.core.optionspb.TemplateChatMessageCalculatorOptions] {
         message_template: "{% for message in messages %}{{'<|im_start|>' + message['role'] + '\n' + message['content'] + '<|im_end|>' + '\n'}}{% endfor %}{% if add_generation_prompt %}{{ '<|im_start|>assistant\n' }}{% endif %}"
         preset_system_prompt: "You are a helpful assistant. Use the following documents to help the user."
       }

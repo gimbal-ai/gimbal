@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "src/gem/calculators/core/generate_chat_message_calculator.h"
+#include "src/gem/calculators/core/template_chat_message_calculator.h"
 
 #include <thread>
 #include <variant>
@@ -30,13 +30,13 @@
 
 namespace gml::gem::calculators::core {
 
-using ::gml::gem::calculators::core::optionspb::GenerateChatMessageCalculatorOptions;
+using ::gml::gem::calculators::core::optionspb::TemplateChatMessageCalculatorOptions;
 
 constexpr std::string_view kQueryTag = "QUERY";
 constexpr std::string_view kDocumentsTag = "DOCUMENTS";
 constexpr std::string_view kTextTag = "TEXT";
 
-absl::Status GenerateChatMessageCalculator::GetContract(mediapipe::CalculatorContract* cc) {
+absl::Status TemplateChatMessageCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   cc->Inputs().Tag(kQueryTag).Set<std::string>();
   cc->Inputs().Tag(kDocumentsTag).Set<std::vector<std::string>>();
 
@@ -45,8 +45,8 @@ absl::Status GenerateChatMessageCalculator::GetContract(mediapipe::CalculatorCon
   return absl::OkStatus();
 }
 
-absl::Status GenerateChatMessageCalculator::Open(mediapipe::CalculatorContext* cc) {
-  auto& options = cc->Options<GenerateChatMessageCalculatorOptions>();
+absl::Status TemplateChatMessageCalculator::Open(mediapipe::CalculatorContext* cc) {
+  auto& options = cc->Options<TemplateChatMessageCalculatorOptions>();
 
   // Format the jinja template for inja's expected template.
   // Any ' should be replaced with an escaped \", and any dictionary accesses should be replaced
@@ -60,7 +60,7 @@ absl::Status GenerateChatMessageCalculator::Open(mediapipe::CalculatorContext* c
   return absl::OkStatus();
 }
 
-absl::Status GenerateChatMessageCalculator::Process(mediapipe::CalculatorContext* cc) {
+absl::Status TemplateChatMessageCalculator::Process(mediapipe::CalculatorContext* cc) {
   auto query = cc->Inputs().Tag(kQueryTag).Get<std::string>();
   auto content = cc->Inputs().Tag(kDocumentsTag).Get<std::vector<std::string>>();
   inja::Environment env;
@@ -87,6 +87,6 @@ absl::Status GenerateChatMessageCalculator::Process(mediapipe::CalculatorContext
   return absl::OkStatus();
 }
 
-REGISTER_CALCULATOR(GenerateChatMessageCalculator);
+REGISTER_CALCULATOR(TemplateChatMessageCalculator);
 
 }  // namespace gml::gem::calculators::core
