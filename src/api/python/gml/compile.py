@@ -166,7 +166,7 @@ def to_torch_mlir(
     ] = None,
 ):
     if has_fx_importer_torch_export:
-        return to_torch_mlir_w_torch_export(model, example_inputs)
+        return to_torch_mlir_w_torch_export(model, example_inputs, dynamic_shapes)
     else:
         return to_torch_mlir_fallback(model, example_inputs)
 
