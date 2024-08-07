@@ -49,6 +49,7 @@ absl::Status StopOnTokenSetCalculator::Process(mediapipe::CalculatorContext* cc)
   const auto& tokens = cc->Inputs().Tag(kTokensTag).Get<std::vector<int>>();
 
   auto eos = std::make_unique<bool>();
+  *eos = false;
   for (const auto& tok : tokens) {
     if (eos_tokens_.contains(tok)) {
       *eos = true;

@@ -30,7 +30,7 @@ namespace gml::gem::calculators::core {
  *  Calculator stops generation when any of a set of tokens are output.
  *
  *  Inputs:
- *    TOKEN std::vector<int> generated tokens to look for EOS in.
+ *    TOKENS std::vector<int> generated tokens to look for EOS in.
  *
  *  Outputs:
  *    EOS bool
