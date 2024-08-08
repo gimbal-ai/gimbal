@@ -61,15 +61,24 @@ absl::Status QdrantSearchCalculator::Open(mediapipe::CalculatorContext* cc) {
 absl::Status QdrantSearchCalculator::Process(mediapipe::CalculatorContext* cc) {
   const auto& tensor = cc->Inputs().Tag(kEmbeddingTag).Get<CPUTensorPtr>();
 
-  if (tensor->Shape().size() != 1) {
+  auto shape = tensor->Shape();
+  size_t num_elements = 0;
+
+  // Support single embeddings or embeddings with a batch of size 1.
+  if (shape.size() == 1) {
+    num_elements = shape[0];
+  }
+  if (shape.size() == 2 && shape[0] == 1) {
+    num_elements = shape[1];
+  }
+
+  if (num_elements == 0) {
     return AbslStatusAdapter(
         error::InvalidArgument("incorrect shape passed to QdrantSearchCalculator, expeted a single "
-                               "embedding, received [$0]",
+                               "embedding or a batch of size 1, received [$0]",
                                absl::StrJoin(tensor->Shape(), ",")));
   }
 
-  // Convert tensor to embedding vector.
-  size_t num_elements = tensor->Shape()[0];
   if (tensor->DataType() != exec::core::DataType::FLOAT32) {
     return absl::InvalidArgumentError("Input tensor must be of type FLOAT32");
   }
