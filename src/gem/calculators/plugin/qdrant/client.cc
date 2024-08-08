@@ -38,8 +38,11 @@ StatusOr<std::vector<QdrantClient::Document>> QdrantClient::SearchPoints(
     request.add_vector(v);
   }
   request.set_limit(limit);
+  auto p = request.mutable_with_payload();
+  p->set_enable(true);
 
   ::qdrant::SearchResponse response;
+
   grpc::ClientContext context;
 
   GML_RETURN_IF_ERROR(stub_->Search(&context, request, &response));
