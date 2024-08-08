@@ -54,7 +54,7 @@ Status ImageShapeCPUTensorCalculator::ProcessImpl(mediapipe::CalculatorContext* 
   const auto& image_frame = cc->Inputs().Tag(kImageFrameTag).Get<mediapipe::ImageFrame>();
 
   GML_ASSIGN_OR_RETURN(auto cpu_tensor, exec_ctx->TensorPool()->GetTensor(sizeof(float) * 2));
-  GML_RETURN_IF_ERROR(cpu_tensor->Reshape(TensorShape{1, 2}));
+  GML_RETURN_IF_ERROR(cpu_tensor->Reshape(TensorShape{2}));
   cpu_tensor->SetDataType(DataType::INT32);
 
   int32_t* shape = cpu_tensor->TypedData<DataType::INT32>();
