@@ -22,13 +22,13 @@ from typing import BinaryIO, Dict, List, Optional, TextIO
 
 import gml.proto.src.api.corepb.v1.model_exec_pb2 as modelexecpb
 import torch
+import transformers
 from gml.model import GenerationConfig, Model, TorchModel
 from gml.tensor import (
-    AttentionMaskDimension,
+    AttentionKeyValueCacheTensorSemantics,
     BatchDimension,
     TensorSemantics,
     TokensDimension,
-    UnusedTensorSemantics,
     VocabLogitsDimension,
 )
 from transformers import Pipeline, PreTrainedModel, PreTrainedTokenizer
@@ -76,28 +76,72 @@ def flatten(items):
     return flattened
 
 
+class WrapWithFunctionalCache(torch.nn.Module):
+
+    def __init__(self, model: transformers.PreTrainedModel):
+        super().__init__()
+        self.model = model
+
+    def forward(self, input_ids, cache):
+        outputs = self.model(
+            input_ids=input_ids,
+            past_key_values=cache,
+            return_dict=True,
+            use_cache=True,
+        )
+
+        return outputs.logits, outputs.past_key_values
+
+
 class HuggingFaceTextGenerationPipeline:
     def __init__(
         self,
         pipeline: Pipeline,
         name: Optional[str] = None,
         tokenizer_name: Optional[str] = None,
-        dynamic_seqlen: bool = True,
-        max_seqlen: int = 65536,
+        dynamic_seqlen: bool = False,
     ):
+        self.pipeline = pipeline
         self.tokenizer_model = HuggingFaceTokenizer(pipeline.tokenizer, tokenizer_name)
+        self._cache_length_for_tracing = 32
         if name is None:
             name = pipeline.model.name_or_path
+
+        self.model = pipeline.model
+        self.model = self.model.to(torch.float16)
+        self.model = WrapWithFunctionalCache(pipeline.model)
+
         self.language_model = TorchModel(
             name,
-            torch_module=pipeline.model,
-            **self._guess_model_spec(pipeline, dynamic_seqlen, max_seqlen)
+            torch_module=self.model,
+            **self._guess_model_spec(dynamic_seqlen),
         )
 
-    def _guess_model_spec(
-        self, pipeline: Pipeline, dynamic_seqlen: bool, max_seqlen: int
-    ) -> Dict:
-        input_dict = pipeline.preprocess("this is a prompt! Test test test?")
+    def _initialize_key_value_cache(self):
+        cache = []
+        config = self.pipeline.model.config
+        head_dim = (
+            config.head_dim
+            if hasattr(config, "head_dim")
+            else config.hidden_size // config.num_attention_heads
+        )
+        num_key_value_heads = (
+            config.num_attention_heads
+            if config.num_key_value_heads is None
+            else config.num_key_value_heads
+        )
+        cache_shape = (1, num_key_value_heads, self._cache_length_for_tracing, head_dim)
+        for _ in range(config.num_hidden_layers):
+            cache.append(
+                [
+                    torch.zeros(cache_shape).to(torch.float16),
+                    torch.zeros(cache_shape).to(torch.float16),
+                ]
+            )
+        return cache
+
+    def _guess_model_spec(self, dynamic_seqlen: bool) -> Dict:
+        input_dict = self.pipeline.preprocess("this is a prompt! Test test test?")
         if "input_ids" not in input_dict:
             raise ValueError(
                 'HuggingFaceTextGenerationPipeline expects preprocessed inputs to have an "input_ids" tensor'
@@ -117,28 +161,16 @@ class HuggingFaceTextGenerationPipeline:
             )
         )
 
-        try:
-            outputs = pipeline.model(*inputs, return_dict=False, use_cache=False)
-            needs_attention_mask = False
-        except Exception:
-            needs_attention_mask = True
+        # Assume that the model supports a KeyValue cache.
+        cache_values = self._initialize_key_value_cache()
+        inputs.append(cache_values)
+        for _ in cache_values:
+            input_tensor_semantics.append(AttentionKeyValueCacheTensorSemantics())
+            input_tensor_semantics.append(AttentionKeyValueCacheTensorSemantics())
 
-        if needs_attention_mask and "attention_mask" in input_dict:
-            inputs.append(input_dict["attention_mask"])
-            input_tensor_semantics.append(
-                TensorSemantics(
-                    dimensions=[
-                        BatchDimension(),
-                        AttentionMaskDimension(),
-                    ],
-                )
-            )
-
-        if needs_attention_mask:
-            outputs = pipeline.model(*inputs, return_dict=False, use_cache=False)
+        outputs = self.model(*inputs)
 
         # Determine output semantics.
-        # TODO(james): support caching
         output_tensor_semantics = []
         seqlen = inputs[0].shape[1]
         found_logits = False
@@ -164,23 +196,22 @@ class HuggingFaceTextGenerationPipeline:
                 )
                 found_logits = True
             else:
-                output_tensor_semantics.append(UnusedTensorSemantics())
+                output_tensor_semantics.append(AttentionKeyValueCacheTensorSemantics())
 
         dynamic_shapes = None
-        if dynamic_seqlen:
-            dynamic_shapes = [dict() for _ in inputs]
-            seqlen = torch.export.Dim("seqlen", max=max_seqlen)
-            for tensor_idx, semantics in enumerate(input_tensor_semantics):
-                for dim_idx, dim in enumerate(semantics.dimensions):
-                    if isinstance(dim, TokensDimension):
-                        dynamic_shapes[tensor_idx][dim_idx] = seqlen
+        seqlen = torch.export.Dim("seqlen", min=2, max=9223372036854775096)
+        cache_length = torch.export.Dim("cache_length", min=2, max=9223372036854775096)
+        dynamic_shapes = [
+            {1: seqlen},
+            [[{2: cache_length}, {2: cache_length}] for _ in cache_values],
+        ]
 
         return {
             "example_inputs": inputs,
             "dynamic_shapes": dynamic_shapes,
             "input_tensor_semantics": input_tensor_semantics,
             "output_tensor_semantics": output_tensor_semantics,
-            "generation_config": HuggingFaceGenerationConfig(pipeline.model),
+            "generation_config": HuggingFaceGenerationConfig(self.pipeline.model),
         }
 
     def models(self) -> List[Model]:
