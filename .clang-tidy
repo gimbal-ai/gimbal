@@ -2,10 +2,6 @@
 # TODO(james): figure out why bugprone-macro-parentheses triggers on every file without a file or line number listed.
 WarningsAsErrors: >
   *,
-  -bugprone-macro-parentheses,
-  -bugprone-exception-escape,
-  -bugprone-easily-swappable-parameters,
-  -modernize-avoid-c-arrays,
 Checks: >
   clang-diagnostic-*,
   google-*,
@@ -20,4 +16,8 @@ Checks: >
   -modernize-use-nodiscard,
   -modernize-use-trailing-return-type,
   -bugprone-easily-swappable-parameters,
+  -bugprone-macro-parentheses,
+  -bugprone-exception-escape,
+  -bugprone-easily-swappable-parameters,
+  -modernize-avoid-c-arrays,
 FormatStyle: google
