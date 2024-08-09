@@ -22,4 +22,13 @@ package gml.gem.calculators.openvino.optionspb;
 
 option go_package = "gimletlabs.ai/gimlet/src/gem/calculators/plugin/openvino/optionspb;optionspb";
 
-message OpenVinoExecuteCalculatorOptions {}
+message OpenVinoExecuteCalculatorOptions {
+  // Loopback outputs to the next iteration's inputs.
+  // The calculator will set the inputs at timestamp `t + 1` to the corresponding outputs from
+  // timestamp `t`:
+  //    inputs_(t+1)[loopback_input_indices[i]] = outputs_(t)[loopback_output_indices[i]]
+  //
+  // `loopback_input_indices` and `loopback_output_indices` must be the same length.
+  repeated int64 loopback_input_indices = 1;
+  repeated int64 loopback_output_indices = 2;
+}

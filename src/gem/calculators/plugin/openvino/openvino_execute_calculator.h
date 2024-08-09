@@ -30,6 +30,7 @@ namespace gml::gem::calculators::openvino {
  *   ExecutionContext tagged with EXEC_CTX
  *  Inputs:
  *   Each input must be a CPUTensorPtr
+ *   RESET_STATE: reset the infer request state for stateful models.
  *  Outputs:
  *   Each output will be a CPUTensorPtr
  **/
@@ -42,6 +43,13 @@ class OpenVinoExecuteCalculator : public mediapipe::CalculatorBase {
 
  private:
   optionspb::OpenVinoExecuteCalculatorOptions options_;
+  ov::InferRequest infer_request_;
+
+  std::vector<int64_t> calc_input_idx_to_model_idx_;
+  std::vector<int64_t> calc_output_idx_to_model_idx_;
+  absl::flat_hash_map<int64_t, int64_t> loopback_mapping_;
+
+  Status SetupIndices(mediapipe::CalculatorContext*);
 };
 
 }  // namespace gml::gem::calculators::openvino
