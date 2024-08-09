@@ -254,18 +254,35 @@ class EmbeddingDimension(DimensionSemantics):
 
 
 class TensorSemantics:
-    def __init__(self, dimensions: List[DimensionSemantics]):
+    def __init__(
+        self,
+        dimensions: List[DimensionSemantics],
+        kind: modelexecpb.TensorSemantics.TensorSemanticsKind = modelexecpb.TensorSemantics.TENSOR_SEMANTICS_KIND_DIMENSION,
+    ):
         self.dimensions = dimensions
+        self.kind = kind
 
     def to_proto(self) -> modelexecpb.TensorSemantics:
         return modelexecpb.TensorSemantics(
             dimensions=[dim.to_proto() for dim in self.dimensions],
+            kind=self.kind,
         )
 
 
 class UnusedTensorSemantics(TensorSemantics):
     def __init__(self):
-        super().__init__(dimensions=[])
+        super().__init__(
+            dimensions=[],
+            kind=modelexecpb.TensorSemantics.TENSOR_SEMANTICS_KIND_UNUSED,
+        )
+
+
+class AttentionKeyValueCacheTensorSemantics(TensorSemantics):
+    def __init__(self):
+        super().__init__(
+            dimensions=[],
+            kind=modelexecpb.TensorSemantics.TENSOR_SEMANTICS_KIND_ATTENTION_KEY_VALUE_CACHE,
+        )
 
 
 class RGBImage(TensorSemantics):

@@ -477,10 +477,18 @@ class TensorRTTensorShapeRange(_message.Message):
     def __init__(self, tensor_name: _Optional[str] = ..., dim: _Optional[_Iterable[int]] = ...) -> None: ...
 
 class TensorSemantics(_message.Message):
-    __slots__ = ["dimensions"]
+    __slots__ = ["dimensions", "kind"]
+    class TensorSemanticsKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+        __slots__ = []
     DIMENSIONS_FIELD_NUMBER: _ClassVar[int]
+    KIND_FIELD_NUMBER: _ClassVar[int]
+    TENSOR_SEMANTICS_KIND_ATTENTION_KEY_VALUE_CACHE: TensorSemantics.TensorSemanticsKind
+    TENSOR_SEMANTICS_KIND_DIMENSION: TensorSemantics.TensorSemanticsKind
+    TENSOR_SEMANTICS_KIND_UNKNOWN: TensorSemantics.TensorSemanticsKind
+    TENSOR_SEMANTICS_KIND_UNUSED: TensorSemantics.TensorSemanticsKind
     dimensions: _containers.RepeatedCompositeFieldContainer[DimensionSemantics]
-    def __init__(self, dimensions: _Optional[_Iterable[_Union[DimensionSemantics, _Mapping]]] = ...) -> None: ...
+    kind: TensorSemantics.TensorSemanticsKind
+    def __init__(self, dimensions: _Optional[_Iterable[_Union[DimensionSemantics, _Mapping]]] = ..., kind: _Optional[_Union[TensorSemantics.TensorSemanticsKind, str]] = ...) -> None: ...
 
 class Value(_message.Message):
     __slots__ = ["bool_data", "double_data", "int64_data", "lambda_data", "model_data", "param_data", "string_data"]

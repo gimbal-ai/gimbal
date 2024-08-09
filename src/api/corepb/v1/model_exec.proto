@@ -173,6 +173,17 @@ message DimensionSemantics {
 message TensorSemantics {
   // Semantics for each dimension in the tensor.
   repeated DimensionSemantics dimensions = 1;
+  // Semantics kinds where dimensions of the tensor are ignored.
+  enum TensorSemanticsKind {
+    TENSOR_SEMANTICS_KIND_UNKNOWN = 0;
+    // Ignore this tensor entirely.
+    TENSOR_SEMANTICS_KIND_UNUSED = 1;
+    // DIMENSION kind means semantics are specified per dimension.
+    TENSOR_SEMANTICS_KIND_DIMENSION = 2;
+    // All other kinds specify semantics for the tensor as a whole without specifying per dimension.
+    TENSOR_SEMANTICS_KIND_ATTENTION_KEY_VALUE_CACHE = 3;
+  }
+  TensorSemanticsKind kind = 2;
 }
 
 // Configuration for generation models.
