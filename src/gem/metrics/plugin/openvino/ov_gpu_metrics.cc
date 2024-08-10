@@ -48,7 +48,10 @@ void OpenVinoGPUMetrics::Scrape() {
       continue;
     }
 
-    auto device_id = core.get_property(dev, "GPU_DEVICE_ID").as<std::string>();
+    auto device_uuid = core.get_property(dev, ov::device::uuid);
+    std::stringstream device_id_ss;
+    device_id_ss << device_uuid;
+    auto device_id = device_id_ss.str();
 
     auto memory_stats = core.get_property(dev, ov::intel_gpu::memory_statistics.name())
                             .as<decltype(ov::intel_gpu::memory_statistics)::value_type>();
