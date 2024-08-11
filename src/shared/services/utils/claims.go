@@ -97,7 +97,7 @@ func GenerateJWTForService(serviceID string, audience string) *typespb.JWTClaims
 		Audience:  audience,
 		Subject:   serviceID,
 		Issuer:    "GML",
-		ExpiresAt: time.Now().Add(time.Minute * 10).Unix(),
+		ExpiresAt: time.Now().Add(time.Minute * 60).Unix(),
 		Scopes:    []string{"service"},
 		CustomClaims: &typespb.JWTClaims_ServiceClaims{
 			ServiceClaims: &typespb.ServiceJWTClaims{
