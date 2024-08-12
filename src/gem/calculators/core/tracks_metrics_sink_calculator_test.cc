@@ -157,218 +157,197 @@ TEST_P(TracksMetricsSinkTest, RecordsMetricsCorrectly) {
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    TracksMetricsSinkTestSuite, TracksMetricsSinkTest,
-    ::testing::Values(
-        TracksMetricsSinkTestCase{
+  TracksMetricsSinkTestSuite, TracksMetricsSinkTest,
+  ::testing::Values(
+    TracksMetricsSinkTestCase{
+      R"pbtxt(
+        calculator: "TracksMetricsSinkCalculator"
+        input_stream: "DETECTIONS:detections"
+        input_stream: "TRACKS_METADATA:tracks_metadata"
+        output_stream: "FINISHED:finished"
+      )pbtxt",
+      std::vector<TracksMetricsSinkTestStep>{
+        TracksMetricsSinkTestStep{
+          .detection_pbtxts = {
             R"pbtxt(
-                calculator: "TracksMetricsSinkCalculator"
-                input_stream: "DETECTIONS:detections"
-                input_stream: "TRACKS_METADATA:tracks_metadata"
-                output_stream: "FINISHED:finished"
+              track_id { value: 1 }
+              label { label: "person" score: 0.9 }
+              bounding_box { xc: 0.5 yc: 0.5 width: 0.1 height: 0.2 }
             )pbtxt",
-            {TracksMetricsSinkTestStep{
-              .detection_pbtxts = {
-                R"pbtxt(
-track_id { value: 1 }
-label { label: "person" score: 0.9 }
-bounding_box { xc: 0.5 yc: 0.5 width: 0.1 height: 0.2 }
-)pbtxt",
-                                               R"pbtxt(
-track_id { value: 2 }
-label { label: "car" score: 0.8 }
-bounding_box { xc: 0.3 yc: 0.4 width: 0.2 height: 0.1 }
-)pbtxt",
-                                               R"pbtxt(
-track_id { value: 3 }
-label { label: "bicycle" score: 0.85 }
-bounding_box { xc: 0.7 yc: 0.6 width: 0.15 height: 0.25 }
-)pbtxt",
-                                           },
-                                       .removed_track_ids = {},
-                                       .expected_metrics =
-                                           {
-                                               .active_tracks = {3, {}},
-                                               .unique_track_ids_count = {3, {}},
-                                               .lost_tracks = {0, {}},
-                                               .expected_track_frames_histogram = std::nullopt,
-                                               .expected_track_lifetime_histogram = std::nullopt,
-                                           }},
-             TracksMetricsSinkTestStep{.detection_pbtxts =
-                                           {
-                                               R"pbtxt(
-        track_id { value: 1 }
-        label { label: "person" score: 0.9 }
-        bounding_box { xc: 0.5 yc: 0.5 width: 0.1 height: 0.2 }
-        )pbtxt",
-                                               R"pbtxt(
-        track_id { value: 3 }
-        label { label: "bicycle" score: 0.85 }
-        bounding_box { xc: 0.7 yc: 0.6 width: 0.15 height: 0.25 }
-        )pbtxt",
-                                           },
-                                       .removed_track_ids = {},
-                                       .expected_metrics =
-                                           {
-                                               .active_tracks = {2, {}},
-                                               .unique_track_ids_count = {3, {}},
-                                               .lost_tracks = {1, {}},
-                                               .expected_track_frames_histogram = std::nullopt,
-                                               .expected_track_lifetime_histogram = std::nullopt,
-                                           },
-                                       .apply_times = 5},
-             TracksMetricsSinkTestStep{
-                 .detection_pbtxts =
-                     {
-                         R"pbtxt(
-        track_id { value: 1 }
-        label { label: "person" score: 0.9 }
-        bounding_box { xc: 0.5 yc: 0.5 width: 0.1 height: 0.2 }
-        )pbtxt",
-                     },
-                 .removed_track_ids = {2, 3},
-                 .expected_metrics =
-                     {
-                         .active_tracks = {1, {}},
-                         .unique_track_ids_count = {3, {}},
-                         .lost_tracks = {0, {}},
-                         .expected_track_frames_histogram = {{metrics::kDefaultHistogramBounds,
-                                                              {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                                               0, 0, 0, 0},
-                                                              {}}},
-                         .expected_track_lifetime_histogram = {{kTrackLifetimeHistogramBounds,
-                                                              {1, 0,0,  1, 0, 0,0, 0, 0, 0, 0, 0, 0, 0,
-                                                               0, 0, 0, 0},
-                                                              {}}},
-                     },
-             }
-
-            }},
-        TracksMetricsSinkTestCase{
             R"pbtxt(
-calculator: "TracksMetricsSinkCalculator"
-node_options {
-  [type.googleapis.com/gml.gem.calculators.core.optionspb.TracksMetricsSinkCalculatorOptions] {
-    metric_attributes {
-      key: "pipeline_id"
-      value: "test_pipeline"
-    }
-    metric_attributes {
-      key: "device_id"
-      value: "test_device"
-    }
-  }
-}
-input_stream: "DETECTIONS:detections"
-input_stream: "TRACKS_METADATA:tracks_metadata"
-output_stream: "FINISHED:finished"
-)pbtxt",
-            {
-                TracksMetricsSinkTestStep{
-                    .detection_pbtxts = {
-                                              R"pbtxt(
-track_id { value: 1 }
-label { label: "person" score: 0.9 }
-bounding_box { xc: 0.5 yc: 0.5 width: 0.1 height: 0.2 }
-)pbtxt",
-                                          },
-                                          .removed_track_ids = {},
-                                          .expected_metrics = {
-                                              .active_tracks={1,
-                                               {
-                                                   {
-                                                       "pipeline_id",
-                                                       "test_pipeline",
-                                                   },
-                                                   {
-                                                       "device_id",
-                                                       "test_device",
-                                                   },
-                                               }},
-                                              .unique_track_ids_count={1,
-                                               {{
-                                                   {
-                                                       "pipeline_id",
-                                                       "test_pipeline",
-                                                   },
-                                                   {
-                                                       "device_id",
-                                                       "test_device",
-                                                   },
-                                               }}},
-                                              .lost_tracks={0,
-                                               {
-                                                   {
-                                                       "pipeline_id",
-                                                       "test_pipeline",
-                                                   },
-                                                   {
-                                                       "device_id",
-                                                       "test_device",
-                                                   },
-                                               }},
-                                              .expected_track_frames_histogram = std::nullopt,
-                                          }},
-                TracksMetricsSinkTestStep{
-                    .detection_pbtxts={},
-                    .removed_track_ids={1},
-                    .expected_metrics={
-                        .active_tracks={0,
-                                          {
-                          {
-                              "pipeline_id",
-                              "test_pipeline",
-                          },
-                          {
-                              "device_id",
-                              "test_device",
-                          },
-                      }},
-                     .unique_track_ids_count={1,
-                      {
-                          {
-                              "pipeline_id",
-                              "test_pipeline",
-                          },
-                          {
-                              "device_id",
-                              "test_device",
-                          },
-                      }},
-                     .lost_tracks={0,
-                      {
-                          {
-                              "pipeline_id",
-                              "test_pipeline",
-                          },
-                          {
-                              "device_id",
-                              "test_device",
-                          },
-                      }},
-                     .expected_track_frames_histogram{{metrics::kDefaultHistogramBounds,
-                       {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                       {{
-                            "pipeline_id",
-                            "test_pipeline",
-                        },
-                        {
-                            "device_id",
-                            "test_device",
-                        }}}},
-                      .expected_track_lifetime_histogram = {{kTrackLifetimeHistogramBounds,
-                       {1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0},
-                       {{
-                            "pipeline_id",
-                            "test_pipeline",
-                        },
-                        {
-                            "device_id",
-                            "test_device",
-                        }}}}
-                        },
-                },
-
+              track_id { value: 2 }
+              label { label: "car" score: 0.8 }
+              bounding_box { xc: 0.3 yc: 0.4 width: 0.2 height: 0.1 }
+            )pbtxt",
+            R"pbtxt(
+              track_id { value: 3 }
+              label { label: "bicycle" score: 0.85 }
+              bounding_box { xc: 0.7 yc: 0.6 width: 0.15 height: 0.25 }
+            )pbtxt",
+          },
+          .removed_track_ids = {},
+          .expected_metrics = {
+            .active_tracks = {3, {}},
+            .unique_track_ids_count = {3, {}},
+            .lost_tracks = {0, {}},
+            .expected_track_frames_histogram = std::nullopt,
+            .expected_track_lifetime_histogram = std::nullopt,
+          }
+        },
+        TracksMetricsSinkTestStep{
+          .detection_pbtxts = {
+            R"pbtxt(
+              track_id { value: 1 }
+              label { label: "person" score: 0.9 }
+              bounding_box { xc: 0.5 yc: 0.5 width: 0.1 height: 0.2 }
+            )pbtxt",
+            R"pbtxt(
+              track_id { value: 3 }
+              label { label: "bicycle" score: 0.85 }
+              bounding_box { xc: 0.7 yc: 0.6 width: 0.15 height: 0.25 }
+            )pbtxt",
+          },
+          .removed_track_ids = {},
+          .expected_metrics = {
+            .active_tracks = {2, {}},
+            .unique_track_ids_count = {3, {}},
+            .lost_tracks = {1, {}},
+            .expected_track_frames_histogram = std::nullopt,
+            .expected_track_lifetime_histogram = std::nullopt,
+          },
+          .apply_times = 5
+        },
+        TracksMetricsSinkTestStep{
+          .detection_pbtxts = {
+            R"pbtxt(
+              track_id { value: 1 }
+              label { label: "person" score: 0.9 }
+              bounding_box { xc: 0.5 yc: 0.5 width: 0.1 height: 0.2 }
+            )pbtxt",
+          },
+          .removed_track_ids = {2, 3},
+          .expected_metrics = {
+            .active_tracks = {1, {}},
+            .unique_track_ids_count = {3, {}},
+            .lost_tracks = {0, {}},
+            .expected_track_frames_histogram = {
+              {
+                metrics::kDefaultHistogramBounds,
+                {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {}
+              }
             },
-        }));
+            .expected_track_lifetime_histogram = {
+              {
+                kTrackLifetimeHistogramBounds,
+                {1, 0,0,  1, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {}
+              }
+            },
+          },
+        }
+      },
+    },
+    TracksMetricsSinkTestCase{
+      R"pbtxt(
+        calculator: "TracksMetricsSinkCalculator"
+        node_options {
+          [type.googleapis.com/gml.gem.calculators.core.optionspb.TracksMetricsSinkCalculatorOptions] {
+            metric_attributes {
+              key: "pipeline_id"
+              value: "test_pipeline"
+            }
+            metric_attributes {
+              key: "device_id"
+              value: "test_device"
+            }
+          }
+        }
+        input_stream: "DETECTIONS:detections"
+        input_stream: "TRACKS_METADATA:tracks_metadata"
+        output_stream: "FINISHED:finished"
+      )pbtxt",
+      std::vector<TracksMetricsSinkTestStep>{
+        TracksMetricsSinkTestStep{
+          .detection_pbtxts = {
+            R"pbtxt(
+              track_id { value: 1 }
+              label { label: "person" score: 0.9 }
+              bounding_box { xc: 0.5 yc: 0.5 width: 0.1 height: 0.2 }
+            )pbtxt",
+          },
+          .removed_track_ids = {},
+          .expected_metrics = {
+            .active_tracks={1,
+              {
+                  {"pipeline_id", "test_pipeline"},
+                  {"device_id", "test_device"}
+              }
+            },
+            .unique_track_ids_count={1,
+              {
+                {
+                  {"pipeline_id", "test_pipeline"},
+                  {"device_id", "test_device"}
+                }
+              }
+            },
+            .lost_tracks={0,
+               {
+                   {"pipeline_id", "test_pipeline"},
+                   {"device_id", "test_device"}
+               }
+             },
+            .expected_track_frames_histogram = std::nullopt,
+          }
+        },
+        TracksMetricsSinkTestStep{
+          .detection_pbtxts={},
+          .removed_track_ids={1},
+          .expected_metrics={
+            .active_tracks={0,
+              {
+                {"pipeline_id", "test_pipeline"},
+                {"device_id", "test_device"}
+              }
+            },
+            .unique_track_ids_count={1,
+              {
+                {"pipeline_id", "test_pipeline"},
+                {"device_id", "test_device"}
+              }
+            },
+            .lost_tracks={0,
+              {
+                {"pipeline_id", "test_pipeline"},
+                {"device_id", "test_device"},
+              }
+            },
+            .expected_track_frames_histogram{
+              {
+                metrics::kDefaultHistogramBounds,
+                {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {
+                  {"pipeline_id", "test_pipeline"},
+                  {"device_id", "test_device"},
+                }
+              }
+            },
+            .expected_track_lifetime_histogram = {
+              {
+                kTrackLifetimeHistogramBounds,
+                {1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0},
+                {
+                  {"pipeline_id", "test_pipeline"},
+                  {"device_id", "test_device"},
+                }
+              }
+            }
+          }
+        },
+      },
+    }
+  )
+);
 
 }  // namespace gml::gem::calculators::core
