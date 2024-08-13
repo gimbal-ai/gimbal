@@ -18,20 +18,36 @@ import glob
 import tempfile
 from collections.abc import Iterable
 from pathlib import Path
-from typing import BinaryIO, Dict, List, Optional, TextIO
+from typing import Any, BinaryIO, Dict, List, Optional, TextIO, Tuple
 
 import gml.proto.src.api.corepb.v1.model_exec_pb2 as modelexecpb
 import torch
 import transformers
 from gml.model import GenerationConfig, Model, TorchModel
+from gml.preprocessing import (
+    ImagePreprocessingStep,
+    ImageToFloatTensor,
+    LetterboxImage,
+    ResizeImage,
+    StandardizeTensor,
+)
 from gml.tensor import (
     AttentionKeyValueCacheTensorSemantics,
     BatchDimension,
+    ImageChannelDimension,
+    ImageHeightDimension,
+    ImageWidthDimension,
+    SegmentationMaskChannel,
     TensorSemantics,
     TokensDimension,
     VocabLogitsDimension,
 )
-from transformers import Pipeline, PreTrainedModel, PreTrainedTokenizer
+from transformers import (
+    BaseImageProcessor,
+    Pipeline,
+    PreTrainedModel,
+    PreTrainedTokenizer,
+)
 
 
 class HuggingFaceTokenizer(Model):
@@ -200,6 +216,7 @@ class HuggingFaceTextGenerationPipeline:
 
         dynamic_shapes = None
         seqlen = torch.export.Dim("seqlen", min=2, max=9223372036854775096)
+
         cache_length = torch.export.Dim("cache_length", min=2, max=9223372036854775096)
         dynamic_shapes = [
             {1: seqlen},
@@ -218,6 +235,176 @@ class HuggingFaceTextGenerationPipeline:
         return [self.tokenizer_model, self.language_model]
 
 
+class HuggingFaceImageProcessor:
+
+    def __init__(
+        self,
+        model: PreTrainedModel,
+        processor: BaseImageProcessor,
+    ):
+        self.model = model
+        self.processor = processor
+
+    def input_spec(self) -> Dict[str, Any]:
+        target_size = None
+        image_preprocessing_steps = []
+        if (
+            hasattr(self.processor, "do_resize")
+            and self.processor.do_resize
+            and hasattr(self.processor, "size")
+        ):
+            target_size, preprocessing_step = self._convert_resize()
+            image_preprocessing_steps.append(preprocessing_step)
+
+        if (
+            hasattr(self.processor, "do_rescale")
+            and self.processor.do_rescale
+            and hasattr(self.processor, "rescale_factor")
+        ):
+            image_preprocessing_steps.append(
+                ImageToFloatTensor(
+                    scale=True, scale_factor=self.processor.rescale_factor
+                )
+            )
+        else:
+            image_preprocessing_steps.append(ImageToFloatTensor(scale=False))
+
+        if hasattr(self.processor, "do_normalize") and self.processor.do_normalize:
+            image_preprocessing_steps.append(
+                StandardizeTensor(self.processor.image_mean, self.processor.image_std)
+            )
+
+        channels_first = True
+        if (
+            hasattr(self.processor, "input_data_format")
+            and self.processor.input_data_format == "channels_last"
+        ):
+            channels_first = False
+
+        # Assume RGB for now.
+        # TODO(james): figure out if this is specified anywhere in the huggingface pipeline.
+        channel_format = "rgb"
+
+        dimensions = [
+            BatchDimension(),
+        ]
+        input_shape = [1]
+        if channels_first:
+            dimensions.append(ImageChannelDimension(channel_format))
+            input_shape.append(3)
+        dimensions.append(ImageHeightDimension())
+        input_shape.append(target_size[0])
+        dimensions.append(ImageWidthDimension())
+        input_shape.append(target_size[1])
+        if not channels_first:
+            dimensions.append(ImageChannelDimension(channel_format))
+            input_shape.append(3)
+
+        example_input = torch.rand(input_shape)
+        input_tensor_semantics = [TensorSemantics(dimensions)]
+        return {
+            "example_inputs": [example_input],
+            "input_tensor_semantics": input_tensor_semantics,
+            "image_preprocessing_steps": image_preprocessing_steps,
+        }
+
+    def output_spec_segmentation(self) -> Dict[str, Any]:
+        if not hasattr(self.processor, "post_process_semantic_segmentation"):
+            raise NotImplementedError(
+                "only semantic segmentation is currently supported"
+            )
+        dimensions = [
+            BatchDimension(),
+            # TODO(james): verify all semantic segmentation in hugging face output a logits mask.
+            SegmentationMaskChannel("logits_mask"),
+            ImageHeightDimension(),
+            ImageWidthDimension(),
+        ]
+        output_tensor_semantics = [
+            TensorSemantics(dimensions),
+        ]
+        id_to_label = self.model.config.id2label
+        max_id = max(id_to_label)
+        labels = []
+        for i in range(max_id):
+            if i not in id_to_label:
+                labels.append("")
+                continue
+            labels.append(id_to_label[i])
+        return {
+            "output_tensor_semantics": output_tensor_semantics,
+            "class_labels": labels,
+        }
+
+    def _convert_resize(self) -> Tuple[Tuple[int, int], ImagePreprocessingStep]:
+        size = self.processor.size
+        target_size = None
+        preprocess_step = None
+        if "height" in size and "width" in size:
+            target_size = [size["height"], size["width"]]
+            preprocess_step = ResizeImage()
+        elif (
+            "shortest_edge" in size
+            or "longest_edge" in size
+            or "max_height" in size
+            or "max_width" in size
+        ):
+            shortest_edge = size.get("shortest_edge")
+            longest_edge = size.get("longest_edge")
+            max_height = size.get("max_height")
+            max_width = size.get("max_width")
+
+            min_size = None
+            for edge_size in [shortest_edge, longest_edge, max_height, max_width]:
+                if not min_size or edge_size < min_size:
+                    min_size = edge_size
+
+            target_size = [min_size, min_size]
+            preprocess_step = LetterboxImage()
+        else:
+            raise ValueError(
+                "could not determine target size for resize from model config"
+            )
+        return target_size, preprocess_step
+
+
+class HuggingFaceImageSegmentationPipeline:
+    def __init__(
+        self,
+        pipeline: Pipeline,
+        name: Optional[str] = None,
+    ):
+        self.pipeline = pipeline
+        if name is None:
+            name = pipeline.model.name_or_path
+
+        self.model = TorchModel(
+            name,
+            torch_module=self.pipeline.model,
+            **self._guess_model_spec(),
+        )
+
+    def _guess_model_spec(self) -> Dict:
+        if self.pipeline.image_processor is None:
+            raise ValueError(
+                "Could not determine image preprocessing for pipeline with image_processor=None"
+            )
+        if self.pipeline.tokenizer is not None:
+            raise NotImplementedError(
+                "HuggingFaceImageSegmentationPipeline does not yet support token inputs"
+            )
+
+        image_processor = HuggingFaceImageProcessor(
+            self.pipeline.model, self.pipeline.image_processor
+        )
+        spec = image_processor.input_spec()
+        spec.update(image_processor.output_spec_segmentation())
+        return spec
+
+    def models(self) -> List[Model]:
+        return [self.model]
+
+
 def import_huggingface_pipeline(pipeline: Pipeline, **kwargs) -> List[Model]:
     if pipeline.framework != "pt":
         raise ValueError(
@@ -228,6 +415,8 @@ def import_huggingface_pipeline(pipeline: Pipeline, **kwargs) -> List[Model]:
 
     if pipeline.task == "text-generation":
         return HuggingFaceTextGenerationPipeline(pipeline, **kwargs).models()
+    elif pipeline.task == "image-segmentation":
+        return HuggingFaceImageSegmentationPipeline(pipeline, **kwargs).models()
     raise ValueError(
         "unimplemnted: hugging face pipeline task: {}".format(pipeline.task)
     )

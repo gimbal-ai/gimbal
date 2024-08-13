@@ -18,6 +18,7 @@ import abc
 from typing import List
 
 import gml.proto.src.api.corepb.v1.model_exec_pb2 as modelexecpb
+import google.protobuf.wrappers_pb2 as wrapperspb
 
 
 class ImagePreprocessingStep(abc.ABC):
@@ -66,13 +67,15 @@ class StandardizeTensor(ImagePreprocessingStep):
 
 
 class ImageToFloatTensor(ImagePreprocessingStep):
-    def __init__(self, scale: bool = True):
+    def __init__(self, scale: bool = True, scale_factor: float = 1.0 / 255.0):
         self.scale = scale
+        self.scale_factor = scale_factor
 
     def to_proto(self) -> modelexecpb.ImagePreprocessingStep:
         return modelexecpb.ImagePreprocessingStep(
             kind=modelexecpb.ImagePreprocessingStep.IMAGE_PREPROCESSING_KIND_CONVERT_TO_TENSOR,
             conversion_params=modelexecpb.ImagePreprocessingStep.ImageConversionParams(
-                scale=self.scale
+                scale=self.scale,
+                scale_factor=wrapperspb.DoubleValue(value=self.scale_factor),
             ),
         )
