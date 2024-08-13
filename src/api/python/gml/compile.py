@@ -76,6 +76,8 @@ def to_torch_mlir_w_torch_export(
 
     if dynamic_shapes is not None:
         for shape in dynamic_shapes:
+            if not isinstance(shape, dict):
+                continue
             for idx in shape:
                 if isinstance(shape[idx], torch.export.dynamic_shapes._Dim):
                     continue
