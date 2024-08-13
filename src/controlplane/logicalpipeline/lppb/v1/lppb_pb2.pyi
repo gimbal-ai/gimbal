@@ -65,3 +65,15 @@ class LogicalPipelineInfo(_message.Message):
     id: _uuid_pb2.UUID
     name: str
     def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., name: _Optional[str] = ...) -> None: ...
+
+class ParseLogicalPipelineYAMLRequest(_message.Message):
+    __slots__ = ["yaml"]
+    YAML_FIELD_NUMBER: _ClassVar[int]
+    yaml: str
+    def __init__(self, yaml: _Optional[str] = ...) -> None: ...
+
+class ParseLogicalPipelineYAMLResponse(_message.Message):
+    __slots__ = ["logical_pipeline"]
+    LOGICAL_PIPELINE_FIELD_NUMBER: _ClassVar[int]
+    logical_pipeline: _model_exec_pb2.LogicalPipeline
+    def __init__(self, logical_pipeline: _Optional[_Union[_model_exec_pb2.LogicalPipeline, _Mapping]] = ...) -> None: ...

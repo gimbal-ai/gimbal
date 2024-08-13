@@ -70,9 +70,19 @@ message CreateLogicalPipelineResponse {
   gml.types.UUID id = 1 [ (gogoproto.customname) = "ID" ];
 }
 
+message ParseLogicalPipelineYAMLRequest {
+  string yaml = 1;
+}
+
+message ParseLogicalPipelineYAMLResponse {
+  gml.internal.api.core.v1.LogicalPipeline logical_pipeline = 1;
+}
+
 // LogicalPipelineService manages the registry of pipelines available to deploy.
 service LogicalPipelineService {
   rpc ListLogicalPipelines(ListLogicalPipelinesRequest) returns (ListLogicalPipelinesResponse);
   rpc GetLogicalPipeline(GetLogicalPipelineRequest) returns (GetLogicalPipelineResponse);
   rpc CreateLogicalPipeline(CreateLogicalPipelineRequest) returns (CreateLogicalPipelineResponse);
+  rpc ParseLogicalPipelineYAML(ParseLogicalPipelineYAMLRequest)
+      returns (ParseLogicalPipelineYAMLResponse);
 }

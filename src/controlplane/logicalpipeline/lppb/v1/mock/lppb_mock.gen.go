@@ -100,6 +100,26 @@ func (mr *MockLogicalPipelineServiceClientMockRecorder) ListLogicalPipelines(ctx
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListLogicalPipelines", reflect.TypeOf((*MockLogicalPipelineServiceClient)(nil).ListLogicalPipelines), varargs...)
 }
 
+// ParseLogicalPipelineYAML mocks base method.
+func (m *MockLogicalPipelineServiceClient) ParseLogicalPipelineYAML(ctx context.Context, in *lppb.ParseLogicalPipelineYAMLRequest, opts ...grpc.CallOption) (*lppb.ParseLogicalPipelineYAMLResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ParseLogicalPipelineYAML", varargs...)
+	ret0, _ := ret[0].(*lppb.ParseLogicalPipelineYAMLResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ParseLogicalPipelineYAML indicates an expected call of ParseLogicalPipelineYAML.
+func (mr *MockLogicalPipelineServiceClientMockRecorder) ParseLogicalPipelineYAML(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseLogicalPipelineYAML", reflect.TypeOf((*MockLogicalPipelineServiceClient)(nil).ParseLogicalPipelineYAML), varargs...)
+}
+
 // MockLogicalPipelineServiceServer is a mock of LogicalPipelineServiceServer interface.
 type MockLogicalPipelineServiceServer struct {
 	ctrl     *gomock.Controller
@@ -166,4 +186,19 @@ func (m *MockLogicalPipelineServiceServer) ListLogicalPipelines(arg0 context.Con
 func (mr *MockLogicalPipelineServiceServerMockRecorder) ListLogicalPipelines(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListLogicalPipelines", reflect.TypeOf((*MockLogicalPipelineServiceServer)(nil).ListLogicalPipelines), arg0, arg1)
+}
+
+// ParseLogicalPipelineYAML mocks base method.
+func (m *MockLogicalPipelineServiceServer) ParseLogicalPipelineYAML(arg0 context.Context, arg1 *lppb.ParseLogicalPipelineYAMLRequest) (*lppb.ParseLogicalPipelineYAMLResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ParseLogicalPipelineYAML", arg0, arg1)
+	ret0, _ := ret[0].(*lppb.ParseLogicalPipelineYAMLResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ParseLogicalPipelineYAML indicates an expected call of ParseLogicalPipelineYAML.
+func (mr *MockLogicalPipelineServiceServerMockRecorder) ParseLogicalPipelineYAML(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseLogicalPipelineYAML", reflect.TypeOf((*MockLogicalPipelineServiceServer)(nil).ParseLogicalPipelineYAML), arg0, arg1)
 }
