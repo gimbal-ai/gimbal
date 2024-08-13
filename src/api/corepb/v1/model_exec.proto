@@ -57,8 +57,10 @@ message ImagePreprocessingStep {
   ImagePreprocessingKind kind = 1;
 
   message ImageConversionParams {
-    // Whether to scale the image to [0, 1] from [0, 255].
+    // Whether to scale the image by scale_factor.
     bool scale = 1;
+    // Value to scale image by. If no value and scale=True, defaults to (1/255).
+    google.protobuf.DoubleValue scale_factor = 2;
   }
   ImageConversionParams conversion_params = 2;
 
@@ -154,6 +156,8 @@ message DimensionSemantics {
       // Segmentation masks represented by a float tensor where each channel is a different class'
       // confidence score at each pixel.
       SEGMENTATION_MASK_KIND_SCORE = 3;
+      // Segmentation masks represented by a float tensor of mask logits.
+      SEGMENTATION_MASK_KIND_LOGITS = 4;
     }
     SegmentationMaskKind kind = 1;
   }

@@ -107,6 +107,7 @@ class DimensionSemantics(_message.Message):
         KIND_FIELD_NUMBER: _ClassVar[int]
         SEGMENTATION_MASK_KIND_BOOL: DimensionSemantics.SegmentationMaskParams.SegmentationMaskKind
         SEGMENTATION_MASK_KIND_CLASS_LABEL: DimensionSemantics.SegmentationMaskParams.SegmentationMaskKind
+        SEGMENTATION_MASK_KIND_LOGITS: DimensionSemantics.SegmentationMaskParams.SegmentationMaskKind
         SEGMENTATION_MASK_KIND_SCORE: DimensionSemantics.SegmentationMaskParams.SegmentationMaskKind
         SEGMENTATION_MASK_KIND_UNKNOWN: DimensionSemantics.SegmentationMaskParams.SegmentationMaskKind
         kind: DimensionSemantics.SegmentationMaskParams.SegmentationMaskKind
@@ -170,10 +171,12 @@ class ImagePreprocessingStep(_message.Message):
     class ImagePreprocessingKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = []
     class ImageConversionParams(_message.Message):
-        __slots__ = ["scale"]
+        __slots__ = ["scale", "scale_factor"]
+        SCALE_FACTOR_FIELD_NUMBER: _ClassVar[int]
         SCALE_FIELD_NUMBER: _ClassVar[int]
         scale: bool
-        def __init__(self, scale: bool = ...) -> None: ...
+        scale_factor: _wrappers_pb2.DoubleValue
+        def __init__(self, scale: bool = ..., scale_factor: _Optional[_Union[_wrappers_pb2.DoubleValue, _Mapping]] = ...) -> None: ...
     class ImageResizeParams(_message.Message):
         __slots__ = ["kind"]
         class ImageResizeKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
