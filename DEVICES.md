@@ -16,8 +16,8 @@
 export GML_CONTROLPLANE_ADDR=app.$USER.gimletlabs.dev:443
 export GML_DEPLOY_KEY=<deploy-key> # replace with your deploy key
 
-helm install my-gem-release oci://us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/charts/gem -n gml \
---version 0.0.0-alpha1 \
+helm install my-gem-release oci://us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/charts/gem -n gml \
+--version 0.0.1 \
 --set "deployKey=${GML_DEPLOY_KEY}" \
 --set "controlplaneAddr=${GML_CONTROLPLANE_ADDR}" \
 --set-json "gem.hostNetwork=true" \
@@ -34,8 +34,8 @@ For example, to run on `nuc-004` and get past the `recorded_video` taint, you ca
 export GML_CONTROLPLANE_ADDR=app.$USER.gimletlabs.dev:443
 export GML_DEPLOY_KEY=<deploy-key> # replace with your deploy key
 
-helm install my-gem-release oci://us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/charts/gem -n gml \
---version 0.0.0-alpha1 \
+helm install my-gem-release oci://us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/charts/gem -n gml \
+--version 0.0.1 \
 --set "deployKey=${GML_DEPLOY_KEY}" \
 --set "controlplaneAddr=${GML_CONTROLPLANE_ADDR}" \
 --set-json "gem.hostNetwork=true" \
@@ -52,8 +52,8 @@ To use the GPUs:
 export GML_CONTROLPLANE_ADDR=app.$USER.gimletlabs.dev:443
 export GML_DEPLOY_KEY=<deploy-key> # replace with your deploy key
 
-helm install my-gem-release oci://us-docker.pkg.dev/gimlet-dev-0/gimlet-dev-docker-artifacts/charts/gem -n gml \
---version 0.0.0-alpha1 \
+helm install my-gem-release oci://us-docker.pkg.dev/gimlet-dev-infra-0/gimlet-dev-infra-public-docker-artifacts/charts/gem -n gml \
+--version 0.0.1 \
 --set "deployKey=${GML_DEPLOY_KEY}" \
 --set "controlplaneAddr=${GML_CONTROLPLANE_ADDR}" \
 --set-json "gem.hostNetwork=true" \
