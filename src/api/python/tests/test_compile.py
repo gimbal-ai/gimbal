@@ -20,7 +20,6 @@ import gml
 import gml.compile
 import pytest
 import torch
-from torch_mlir import TensorPlaceholder
 
 
 class AddModule(torch.nn.Module):
@@ -30,7 +29,7 @@ class AddModule(torch.nn.Module):
 
 def test_add_module_to_torch_mlir():
     model = AddModule()
-    example_inputs = [TensorPlaceholder([1, 2, 3], dtype=torch.float32)]
+    example_inputs = [torch.rand([1, 2, 3])]
 
     compiled = gml.compile.to_torch_mlir(model, example_inputs)
 

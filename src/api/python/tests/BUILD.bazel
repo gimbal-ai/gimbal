@@ -42,7 +42,6 @@ gml_py_test(
     deps = [
         "//src/api/python/gml",
         "@gml_api_pip//torch",
-        "@gml_api_pip//torch_mlir_gml",
         "@pip//pytest",
     ],
 )

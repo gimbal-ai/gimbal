@@ -4,7 +4,7 @@
 #
 #    bazel run //src/api/python:requirements.update
 #
---extra-index-url https://download.pytorch.org/whl/cu121
+--extra-index-url https://download.pytorch.org/whl/cpu
 
 certifi==2024.7.4 \
     --hash=sha256:5a1e7645bc0ec61a09e26c36f6106dd4cf40c6db3a1fb6352b0244e7fb057c7b \
@@ -109,7 +109,6 @@ filelock==3.14.0 \
     #   huggingface-hub
     #   torch
     #   transformers
-    #   triton
 fsspec==2024.6.0 \
     --hash=sha256:58d7122eb8a1a46f7f13453187bfea4972d66bf01618d37366521b1998034cee \
     --hash=sha256:f579960a56e6d8038a9efc8f9c77279ec12e6299aa86b0769a7e9c46b94527c2
@@ -669,21 +668,23 @@ tokenizers==0.19.1 \
     --hash=sha256:f97660f6c43efd3e0bfd3f2e3e5615bf215680bad6ee3d469df6454b8c6e8256 \
     --hash=sha256:f9939ca7e58c2758c01b40324a59c034ce0cebad18e0d4563a9b1beab3018243
     # via transformers
-torch==2.1.2+cu121 \
-    --hash=sha256:2d287804328dfb950ae6d418c9d8561d8f379237cf0710566d80efb96b6cd744 \
-    --hash=sha256:44c31fc1e470428682e212473507116ec3afa583d6b79d92858bf3dc24b334ea \
-    --hash=sha256:9925143dece0e63c5404a72d59eb668ef78795418e96b576f94d75dcea6030b9 \
-    --hash=sha256:b2184b7729ef3b9b10065c074a37c1e603fd99f91e38376e25cb7ed6e1d54696 \
-    --hash=sha256:c92e9c559a82466fc5989f648807d2c0215bcce09b97ad7a20d038b686783229 \
-    --hash=sha256:ca05cae9334504d1903e16c50ddf045329a859d5b1a27ed2dc1d58ed066df6fa \
-    --hash=sha256:daa179bb558f78f2165db974a6744ec8de2ea71eb6aaf362bdae7616012c0302 \
-    --hash=sha256:eaaf6907e3723c0ca6a91df5e01a7eef8cabec93120e9a50739f5a5f14a2aa46
+torch==2.3.0+cpu \
+    --hash=sha256:1e86e225e472392440ace378ba3165b5e87648e8b5fbf16adc41c0df881c38b8 \
+    --hash=sha256:28a11bcc0d709b397d675cff689707019b8cc122e6bf328b57b900f47c36f156 \
+    --hash=sha256:483131a7997995d867313ee902743084e844e830ab2a0c5e079c61ec2da3cd17 \
+    --hash=sha256:5c2afdff80203eaabf4c223a294c2f465020b3360e8e87f76b52ace9c5801ebe \
+    --hash=sha256:8c52484880d5fbe511cffc255dd34847ddeced3f94334c6bf7eb2b0445f10cb4 \
+    --hash=sha256:97a38b25ee0e3d020691e7846efbca62a3d8a57645c027dcb5ba0adfec36fe55 \
+    --hash=sha256:a8982e52185771591dad577a124a7770f72f288f8ae5833317b1e329c0d2f07e \
+    --hash=sha256:a8ac195974be6f067245bae8156b8c06fb0a723b0eed8f2e244b5dd58c7e2a49 \
+    --hash=sha256:ab0c05525195b8fecdf2ea75968ed32ccd87dff16381b6e13249babb4a9596ff \
+    --hash=sha256:e3c220702d82c7596924150e0499fbbffcf62a88a59adc860fa357cd8dc1c302
     # via
     #   -r src/api/python/requirements.in
     #   torch-mlir-gml
-torch-mlir-gml==2.1.2 \
-    --hash=sha256:0865cea83dcba1604722bc0c1a78a31e2fd501992eb36e865c0d9d060ce883c9 \
-    --hash=sha256:caa89845ed5efa6830cabfb3aa3678abe382b0cd39cb0cc9acb828b760fc4d50
+torch-mlir-gml==0.0.1 \
+    --hash=sha256:0c8bfadd9d2b44b0d849da109c75eec23f9c54225d63d7032afc9476134c1728 \
+    --hash=sha256:79b4f7e0f4c01e0b475f8b29a4459e0ddfe9a08cce201f42ba21cf8758a5f8b3
     # via -r src/api/python/requirements.in
 tqdm==4.66.5 \
     --hash=sha256:90279a3770753eafc9194a0364852159802111925aa30eb3f9d85b0e805ac7cd \
@@ -695,16 +696,6 @@ transformers==4.43.4 \
     --hash=sha256:b62288990a65ed9bfb79191e04dbb76c9376834ae6e0dd911320a2ced63324fe \
     --hash=sha256:d2202ed201e0c44f80de8d753a19f6164187754630bc1f915661b9511d61c773
     # via -r src/api/python/requirements.in
-triton==2.1.0 \
-    --hash=sha256:143582ca31dd89cd982bd3bf53666bab1c7527d41e185f9e3d8a3051ce1b663b \
-    --hash=sha256:21544e522c02005a626c8ad63d39bdff2f31d41069592919ef281e964ed26446 \
-    --hash=sha256:39f6fb6bdccb3e98f3152e3fbea724f1aeae7d749412bbb1fa9c441d474eba26 \
-    --hash=sha256:66439923a30d5d48399b08a9eae10370f6c261a5ec864a64983bae63152d39d7 \
-    --hash=sha256:81a96d110a738ff63339fc892ded095b31bd0d205e3aace262af8400d40b6fa8 \
-    --hash=sha256:82fc5aeeedf6e36be4e4530cbdcba81a09d65c18e02f52dc298696d45721f3bd \
-    --hash=sha256:919b06453f0033ea52c13eaf7833de0e57db3178d23d4e04f9fc71c4f2c32bf8 \
-    --hash=sha256:ae4bb8a91de790e1866405211c4d618379781188f40d5c4c399766914e84cd94
-    # via torch
 typing-extensions==4.12.2 \
     --hash=sha256:04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d \
     --hash=sha256:1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8

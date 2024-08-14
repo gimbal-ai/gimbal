@@ -31,7 +31,8 @@ compile_pip_requirements(
     timeout = "long",
     src = "requirements.in",
     extra_args = [
-        "--extra-index-url https://download.pytorch.org/whl/cu121",
+        # Use CPU for the pyapi's version of torch.
+        "--extra-index-url https://download.pytorch.org/whl/cpu",
     ],
     requirements_txt = "requirements_lock.txt",
     target_compatible_with = no_sysroot(),
