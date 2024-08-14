@@ -142,6 +142,8 @@ message DimensionSemantics {
     // Range of indices containing the scores per-class. The highest score is taken as the detected
     // class.
     IndexRange scores_range = 5;
+    // Whether the scores_range are logits or scores. If they are logits, we should add a softmax.
+    bool scores_are_logits = 6;
   }
   DetectionOutputParams detection_output_params = 4;
 

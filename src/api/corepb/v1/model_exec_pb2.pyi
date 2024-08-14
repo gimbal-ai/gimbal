@@ -64,7 +64,7 @@ class DimensionSemantics(_message.Message):
         is_nms_boxes: bool
         def __init__(self, is_nms_boxes: bool = ...) -> None: ...
     class DetectionOutputParams(_message.Message):
-        __slots__ = ["box_confidence_index", "box_coordinate_range", "box_format", "class_index", "scores_range"]
+        __slots__ = ["box_confidence_index", "box_coordinate_range", "box_format", "class_index", "scores_are_logits", "scores_range"]
         class IndexRange(_message.Message):
             __slots__ = ["size", "start"]
             SIZE_FIELD_NUMBER: _ClassVar[int]
@@ -76,13 +76,15 @@ class DimensionSemantics(_message.Message):
         BOX_COORDINATE_RANGE_FIELD_NUMBER: _ClassVar[int]
         BOX_FORMAT_FIELD_NUMBER: _ClassVar[int]
         CLASS_INDEX_FIELD_NUMBER: _ClassVar[int]
+        SCORES_ARE_LOGITS_FIELD_NUMBER: _ClassVar[int]
         SCORES_RANGE_FIELD_NUMBER: _ClassVar[int]
         box_confidence_index: int
         box_coordinate_range: DimensionSemantics.DetectionOutputParams.IndexRange
         box_format: BoundingBoxInfo
         class_index: int
+        scores_are_logits: bool
         scores_range: DimensionSemantics.DetectionOutputParams.IndexRange
-        def __init__(self, box_coordinate_range: _Optional[_Union[DimensionSemantics.DetectionOutputParams.IndexRange, _Mapping]] = ..., box_format: _Optional[_Union[BoundingBoxInfo, _Mapping]] = ..., box_confidence_index: _Optional[int] = ..., class_index: _Optional[int] = ..., scores_range: _Optional[_Union[DimensionSemantics.DetectionOutputParams.IndexRange, _Mapping]] = ...) -> None: ...
+        def __init__(self, box_coordinate_range: _Optional[_Union[DimensionSemantics.DetectionOutputParams.IndexRange, _Mapping]] = ..., box_format: _Optional[_Union[BoundingBoxInfo, _Mapping]] = ..., box_confidence_index: _Optional[int] = ..., class_index: _Optional[int] = ..., scores_range: _Optional[_Union[DimensionSemantics.DetectionOutputParams.IndexRange, _Mapping]] = ..., scores_are_logits: bool = ...) -> None: ...
     class ImageChannelParams(_message.Message):
         __slots__ = ["format"]
         class ImageChannelFormat(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):

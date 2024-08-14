@@ -123,17 +123,21 @@ class DetectionNumCandidatesDimension(DimensionSemantics):
 class DetectionOutputDimension(DimensionSemantics):
     def __init__(
         self,
-        coordinates_start_index: int,
-        box_format: BoundingBoxFormat,
+        coordinates_start_index: Optional[int] = None,
+        box_format: Optional[BoundingBoxFormat] = None,
         box_confidence_index: Optional[int] = None,
         class_index: Optional[int] = None,
         scores_range: Optional[Tuple[int, int]] = None,
+        scores_are_logits: bool = True,
     ):
-        self.coordinates_range = (coordinates_start_index, 4)
+        self.coordinates_range = None
+        if coordinates_start_index is not None:
+            self.coordinates_range = (coordinates_start_index, 4)
         self.box_format = box_format
         self.box_confidence_index = box_confidence_index
         self.class_index = class_index
         self.scores_range = scores_range
+        self.scores_are_logits = scores_are_logits
 
     def to_proto(self) -> modelexecpb.DimensionSemantics:
         scores_range = None
@@ -147,17 +151,26 @@ class DetectionOutputDimension(DimensionSemantics):
         box_confidence_index = np.iinfo(np.int32).min
         if self.box_confidence_index is not None:
             box_confidence_index = self.box_confidence_index
+        box_format_proto = None
+        if self.box_format is not None:
+            box_format_proto = self.box_format.to_proto()
+        box_coordinate_range_proto = None
+        if self.coordinates_range is not None:
+            box_coordinate_range_proto = (
+                modelexecpb.DimensionSemantics.DetectionOutputParams.IndexRange(
+                    start=self.coordinates_range[0],
+                    size=self.coordinates_range[1],
+                )
+            )
         return modelexecpb.DimensionSemantics(
             kind=modelexecpb.DimensionSemantics.DIMENSION_SEMANTICS_KIND_DETECTION_OUTPUT,
             detection_output_params=modelexecpb.DimensionSemantics.DetectionOutputParams(
-                box_coordinate_range=modelexecpb.DimensionSemantics.DetectionOutputParams.IndexRange(
-                    start=self.coordinates_range[0],
-                    size=self.coordinates_range[1],
-                ),
-                box_format=self.box_format.to_proto(),
+                box_coordinate_range=box_coordinate_range_proto,
+                box_format=box_format_proto,
                 box_confidence_index=box_confidence_index,
                 class_index=self.class_index,
                 scores_range=scores_range,
+                scores_are_logits=self.scores_are_logits,
             ),
         )
 

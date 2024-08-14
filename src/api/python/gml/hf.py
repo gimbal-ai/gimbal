@@ -34,6 +34,9 @@ from gml.preprocessing import (
 from gml.tensor import (
     AttentionKeyValueCacheTensorSemantics,
     BatchDimension,
+    BoundingBoxFormat,
+    DetectionNumCandidatesDimension,
+    DetectionOutputDimension,
     ImageChannelDimension,
     ImageHeightDimension,
     ImageWidthDimension,
@@ -336,6 +339,49 @@ class HuggingFaceImageProcessor:
             "class_labels": labels,
         }
 
+    def output_spec_object_detection(self) -> Dict[str, Any]:
+        if not hasattr(self.processor, "post_process_object_detection"):
+            raise NotImplementedError(
+                "only semantic segmentation is currently supported"
+            )
+
+        id_to_label = self.model.config.id2label
+        max_id = max(id_to_label)
+        labels = []
+        for i in range(max_id):
+            if i not in id_to_label:
+                labels.append("")
+                continue
+            labels.append(id_to_label[i])
+        num_classes = max_id + 1
+
+        # TODO(james): verify assumptions made here apply broadly.
+        output_tensor_semantics = []
+        # We assume that ObjectDetectionWrapper is used to ensure that logits are the first tensor and boxes are the second.
+        logits_dimensions = [
+            BatchDimension(),
+            DetectionNumCandidatesDimension(is_nms=False),
+            DetectionOutputDimension(
+                scores_range=(0, num_classes),
+                scores_are_logits=True,
+            ),
+        ]
+        output_tensor_semantics.append(TensorSemantics(logits_dimensions))
+
+        box_dimensions = [
+            BatchDimension(),
+            DetectionNumCandidatesDimension(is_nms=False),
+            DetectionOutputDimension(
+                coordinates_start_index=0,
+                box_format=BoundingBoxFormat("cxcywh", is_normalized=True),
+            ),
+        ]
+        output_tensor_semantics.append(TensorSemantics(box_dimensions))
+        return {
+            "output_tensor_semantics": output_tensor_semantics,
+            "class_labels": labels,
+        }
+
     def _convert_resize(self) -> Tuple[Tuple[int, int], ImagePreprocessingStep]:
         size = self.processor.size
         target_size = None
@@ -356,6 +402,8 @@ class HuggingFaceImageProcessor:
 
             min_size = None
             for edge_size in [shortest_edge, longest_edge, max_height, max_width]:
+                if not edge_size:
+                    continue
                 if not min_size or edge_size < min_size:
                     min_size = edge_size
 
@@ -405,6 +453,53 @@ class HuggingFaceImageSegmentationPipeline:
         return [self.model]
 
 
+class ObjectDetectionWrapper(torch.nn.Module):
+    def __init__(self, model: PreTrainedModel):
+        super().__init__()
+        self.model = model
+
+    def forward(self, *args, **kwargs):
+        outputs = self.model(*args, **kwargs)
+        return outputs.logits, outputs.pred_boxes
+
+
+class HuggingFaceObjectDetectionPipeline:
+    def __init__(
+        self,
+        pipeline: Pipeline,
+        name: Optional[str] = None,
+    ):
+        self.pipeline = pipeline
+        if name is None:
+            name = pipeline.model.name_or_path
+
+        self.model = TorchModel(
+            name,
+            torch_module=ObjectDetectionWrapper(self.pipeline.model),
+            **self._guess_model_spec(),
+        )
+
+    def _guess_model_spec(self) -> Dict:
+        if self.pipeline.image_processor is None:
+            raise ValueError(
+                "Could not determine image preprocessing for pipeline with image_processor=None"
+            )
+        if self.pipeline.tokenizer is not None:
+            raise NotImplementedError(
+                "HuggingFaceObjectDetectionPipeline does not yet support token inputs"
+            )
+
+        image_processor = HuggingFaceImageProcessor(
+            self.pipeline.model, self.pipeline.image_processor
+        )
+        spec = image_processor.input_spec()
+        spec.update(image_processor.output_spec_object_detection())
+        return spec
+
+    def models(self) -> List[Model]:
+        return [self.model]
+
+
 def import_huggingface_pipeline(pipeline: Pipeline, **kwargs) -> List[Model]:
     if pipeline.framework != "pt":
         raise ValueError(
@@ -417,6 +512,10 @@ def import_huggingface_pipeline(pipeline: Pipeline, **kwargs) -> List[Model]:
         return HuggingFaceTextGenerationPipeline(pipeline, **kwargs).models()
     elif pipeline.task == "image-segmentation":
         return HuggingFaceImageSegmentationPipeline(pipeline, **kwargs).models()
+    elif pipeline.task == "object-detection":
+        return HuggingFaceObjectDetectionPipeline(pipeline, **kwargs).models()
     raise ValueError(
-        "unimplemnted: hugging face pipeline task: {}".format(pipeline.task)
+        "unimplemented: hugging face pipeline task: {} (supported tasks: [{}])".format(
+            pipeline.task, ["text-generation", "image-segmentation", "object-detection"]
+        )
     )
