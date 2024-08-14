@@ -32,6 +32,8 @@ import gml.proto.src.controlplane.filetransfer.ftpb.v1.ftpb_pb2_grpc as ftpb_grp
 import grpc
 import pytest
 
+import src.controlplane.compiler.cpb.v1.cpb_pb2 as cpb
+import src.controlplane.compiler.cpb.v1.cpb_pb2_grpc as cpb_grpc
 import src.controlplane.logicalpipeline.lppb.v1.lppb_pb2 as lppb
 import src.controlplane.logicalpipeline.lppb.v1.lppb_pb2_grpc as lppb_grpc
 import src.controlplane.model.mpb.v1.mpb_pb2 as mpb
@@ -182,6 +184,15 @@ class FakeLogicalPipelineServicer(lppb_grpc.LogicalPipelineServiceServicer):
         return lppb.CreateLogicalPipelineResponse(id=uuid_to_proto(id))
 
 
+class FakeCompilerServicer(cpb_grpc.CompilerServiceServicer):
+    def __init__(self):
+        self.pipeline_ids_by_org = dict()
+        self.pipelines = dict()
+
+    def Compile(self, req: cpb.CompileRequest, context: grpc.ServicerContext):
+        return cpb.CompileResponse()
+
+
 @pytest.fixture
 def gml_client():
     server = grpc.server(concurrent.futures.ThreadPoolExecutor(max_workers=1))
@@ -195,6 +206,7 @@ def gml_client():
     lppb_grpc.add_LogicalPipelineServiceServicer_to_server(
         FakeLogicalPipelineServicer(), server
     )
+    cpb_grpc.add_CompilerServiceServicer_to_server(FakeCompilerServicer(), server)
     tmpdir = tempfile.mkdtemp()
     addr = "unix:" + "/".join([tmpdir, "socket"])
     server.add_insecure_port(addr)

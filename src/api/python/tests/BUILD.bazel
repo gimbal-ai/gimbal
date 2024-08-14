@@ -22,6 +22,8 @@ gml_py_test(
     imports = [".."],
     deps = [
         "//src/api/python/gml",
+        "//src/controlplane/compiler/cpb/v1:cpb_grpc_py_library",
+        "//src/controlplane/compiler/cpb/v1:cpb_py_library",
         "//src/controlplane/logicalpipeline/lppb/v1:lppb_grpc_py_library",
         "//src/controlplane/logicalpipeline/lppb/v1:lppb_py_library",
         "//src/controlplane/model/mpb/v1:mpb_grpc_py_library",

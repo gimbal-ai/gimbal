@@ -21,6 +21,8 @@ from typing import BinaryIO, List, Optional, TextIO, Union
 
 import gml.proto.src.api.corepb.v1.model_exec_pb2 as modelexecpb
 import gml.proto.src.common.typespb.uuid_pb2 as uuidpb
+import gml.proto.src.controlplane.compiler.cpb.v1.cpb_pb2 as cpb
+import gml.proto.src.controlplane.compiler.cpb.v1.cpb_pb2_grpc as cpb_grpc
 import gml.proto.src.controlplane.directory.directorypb.v1.directory_pb2 as directorypb
 import gml.proto.src.controlplane.directory.directorypb.v1.directory_pb2_grpc as directorypb_grpc
 import gml.proto.src.controlplane.filetransfer.ftpb.v1.ftpb_pb2 as ftpb
@@ -31,6 +33,7 @@ import gml.proto.src.controlplane.model.mpb.v1.mpb_pb2 as mpb
 import gml.proto.src.controlplane.model.mpb.v1.mpb_pb2_grpc as mpb_grpc
 import grpc
 from gml._utils import chunk_file, sha256sum
+from gml.device import DeviceCapabilities
 from gml.model import Model
 from gml.pipelines import Pipeline
 
@@ -110,6 +113,7 @@ class Client:
 
         self._org_id_cache: Optional[uuidpb.UUID] = None
         self._fts_stub_cache: Optional[ftpb_grpc.FileTransferServiceStub] = None
+        self._cs_stub_cache: Optional[cpb_grpc.CompilerServiceStub] = None
         self._lps_stub_cache: Optional[lppb_grpc.LogicalPipelineServiceStub] = None
         self._ods_stub_cache: Optional[directorypb_grpc.OrgDirectoryServiceStub] = None
         self._ms_stub_cache: Optional[mpb_grpc.ModelServiceStub] = None
@@ -140,6 +144,13 @@ class Client:
                 self._channel_factory.get_grpc_channel()
             )
         return self._ods_stub_cache
+
+    def _cs_stub(self):
+        if self._cs_stub_cache is None:
+            self._cs_stub_cache = cpb_grpc.CompilerServiceStub(
+                self._channel_factory.get_grpc_channel()
+            )
+        return self._cs_stub_cache
 
     def _ms_stub(self):
         if self._ms_stub_cache is None:
@@ -241,21 +252,21 @@ class Client:
                 raise Exception("file status is deleted or unknown, cannot re-upload")
         return file_info
 
-    def _model_exists(self, name: str):
+    def _get_model_if_exists(self, name: str) -> Optional[cpb.Model]:
         req = mpb.GetModelRequest(
             name=name,
             org_id=self._get_org_id(),
         )
         stub = self._ms_stub()
         try:
-            stub.GetModel(req, metadata=self._get_request_metadata())
-            return True
+            resp = stub.GetModel(req, metadata=self._get_request_metadata())
+            return cpb.Model(id=resp.id, info=resp.model_info)
         except grpc.RpcError as e:
             if e.code() != grpc.StatusCode.NOT_FOUND:
                 raise e
-            return False
+            return None
 
-    def _create_model(self, model_info: modelexecpb.ModelInfo):
+    def _create_model(self, model_info: modelexecpb.ModelInfo) -> cpb.Model:
         req = mpb.CreateModelRequest(
             org_id=self._get_org_id(),
             name=model_info.name,
@@ -265,13 +276,17 @@ class Client:
         resp = stub.CreateModel(
             req, metadata=self._get_request_metadata(idempotent=True)
         )
-        return resp.id
+        return cpb.Model(id=resp.id, info=model_info)
 
-    def create_model(self, model: Model):
-        if self._model_exists(model.name):
-            raise ModelAlreadyExists(
-                'model already exists with name: "{}"'.format(model.name)
+    def create_model(self, model: Model) -> cpb.Model:
+        existing_model = self._get_model_if_exists(model.name)
+        if existing_model is not None:
+            print(
+                'warning: model "{}" already exists and will not be uploaded.'.format(
+                    model.name
+                )
             )
+            return existing_model
 
         model_info = model.to_proto()
         with model.collect_assets() as model_assets:
@@ -316,14 +331,7 @@ class Client:
             raise ValueError("must specify one of 'pipeline_file' or 'pipeline'")
 
         for model in models:
-            try:
-                self.create_model(model)
-            except ModelAlreadyExists:
-                print(
-                    'warning: model "{}" already exists and will not be uploaded.'.format(
-                        model.name
-                    )
-                )
+            self.create_model(model)
 
         stub = self._lps_stub()
         req = lppb.CreateLogicalPipelineRequest(
@@ -335,3 +343,47 @@ class Client:
             req, metadata=self._get_request_metadata(idempotent=True)
         )
         return resp.id
+
+    def check_compile(
+        self,
+        *,
+        models: List[Model],
+        pipeline_file: Optional[Path] = None,
+        pipeline: Optional[Union[str, Pipeline]] = None,
+        runtimes=List[str],
+        cameras=List[str],
+    ):
+        model_with_assets = []
+        for model in models:
+            created_model = self.create_model(model)
+            model_with_assets.append(created_model)
+
+        if pipeline_file is not None:
+            with open(pipeline_file, "r") as f:
+                yaml = f.read()
+                stub = self._lps_stub()
+                req = lppb.ParseLogicalPipelineYAMLRequest(
+                    yaml=yaml,
+                )
+                resp: lppb.ParseLogicalPipelineYAMLResponse = (
+                    stub.ParseLogicalPipelineYAML(
+                        req, metadata=self._get_request_metadata()
+                    )
+                )
+                pipeline = resp.logical_pipeline
+        elif pipeline is None:
+            raise ValueError("must specify one of 'pipeline_file' or 'pipeline'")
+
+        capabilities = DeviceCapabilities(runtimes=runtimes, cameras=cameras)
+
+        stub = self._cs_stub()
+        req = cpb.CompileRequest(
+            logical_pipeline=pipeline,
+            device_capabilities=capabilities.to_proto(),
+            models=model_with_assets,
+        )
+        try:
+            stub.Compile(req, metadata=self._get_request_metadata())
+            print("Compilation successful")
+        except grpc.RpcError as e:
+            print("Compilation failed, code {0}: {1}".format(e.code(), e.details()))

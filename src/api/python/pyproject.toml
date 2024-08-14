@@ -18,6 +18,8 @@ dependencies = {file = "requirements.in"}
 "gml.proto.src.api.corepb" = "../../../src/api/corepb"
 "src.common.typespb" = "../../../src/common/typespb"
 "gml.proto.src.common.typespb" = "../../../src/common/typespb"
+"src.controlplane.compiler.cpb" = "../../../src/controlplane/compiler/cpb"
+"gml.proto.src.controlplane.compiler.cpb" = "../../../src/controlplane/compiler/cpb"
 "src.controlplane.directory.directorypb" = "../../../src/controlplane/directory/directorypb"
 "gml.proto.src.controlplane.directory.directorypb" = "../../../src/controlplane/directory/directorypb"
 "src.controlplane.filetransfer.ftpb" = "../../../src/controlplane/filetransfer/ftpb"
