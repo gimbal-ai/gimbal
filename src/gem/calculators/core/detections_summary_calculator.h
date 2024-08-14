@@ -21,10 +21,6 @@
 #include <mediapipe/framework/calculator_framework.h>
 #include <opentelemetry/sdk/metrics/sync_instruments.h>
 
-#include "src/api/corepb/v1/mediastream.pb.h"
-#include "src/common/base/status.h"
-#include "src/gem/calculators/core/metrics_sink_calculator.h"
-
 namespace gml::gem::calculators::core {
 
 /**
@@ -37,11 +33,13 @@ namespace gml::gem::calculators::core {
  *    is finished.
  */
 
-class DetectionsSummaryCalculator
-    : public MetricsSinkCalculator<std::vector<::gml::internal::api::core::v1::Detection>> {
- protected:
-  Status BuildMetrics(mediapipe::CalculatorContext* cc) override;
-  Status RecordMetrics(mediapipe::CalculatorContext* cc) override;
+class DetectionsSummaryCalculator : public mediapipe::CalculatorBase {
+ public:
+  static absl::Status GetContract(mediapipe::CalculatorContract* cc);
+
+  absl::Status Open(mediapipe::CalculatorContext* cc) override;
+  absl::Status Process(mediapipe::CalculatorContext* cc) override;
+  absl::Status Close(mediapipe::CalculatorContext* cc) override;
 
  private:
   opentelemetry::metrics::Histogram<uint64_t>* detection_hist_;

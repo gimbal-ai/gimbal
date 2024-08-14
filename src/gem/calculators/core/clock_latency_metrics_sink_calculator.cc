@@ -28,20 +28,33 @@
 
 namespace gml::gem::calculators::core {
 
+constexpr std::string_view kFinishedTag = "FINISHED";
+
 const std::vector<double> kLatencyBucketBounds = {0.000, 0.005, 0.010, 0.015, 0.020, 0.025, 0.030,
                                                   0.035, 0.040, 0.045, 0.050, 0.075, 0.100, 0.150};
 
-Status ClockLatencyMetricsSinkCalculator::BuildMetrics(mediapipe::CalculatorContext* cc) {
+absl::Status ClockLatencyMetricsSinkCalculator::GetContract(mediapipe::CalculatorContract* cc) {
+  for (mediapipe::CollectionItemId id = cc->Inputs().BeginId(); id < cc->Inputs().EndId(); ++id) {
+    cc->Inputs().Get(id).Set<absl::Duration>();
+  }
+  if (cc->Outputs().HasTag(kFinishedTag)) {
+    cc->Outputs().Tag(kFinishedTag).Set<bool>();
+  }
+  cc->SetTimestampOffset(0);
+  return absl::OkStatus();
+}
+
+absl::Status ClockLatencyMetricsSinkCalculator::Open(mediapipe::CalculatorContext* cc) {
   const auto& options = cc->Options<optionspb::ClockLatencyMetricsSinkCalculatorOptions>();
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
 
   latency_hist_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
       absl::Substitute("gml_gem_$0_latency_seconds", options.name()), "Packet latency in seconds.",
       kLatencyBucketBounds);
-  return Status::OK();
+  return absl::OkStatus();
 }
 
-Status ClockLatencyMetricsSinkCalculator::RecordMetrics(mediapipe::CalculatorContext* cc) {
+absl::Status ClockLatencyMetricsSinkCalculator::Process(mediapipe::CalculatorContext* cc) {
   const auto& options = cc->Options<optionspb::ClockLatencyMetricsSinkCalculatorOptions>();
 
   uint64_t max_latency_usecs = 0;
@@ -57,12 +70,23 @@ Status ClockLatencyMetricsSinkCalculator::RecordMetrics(mediapipe::CalculatorCon
   }
 
   if (max_latency_usecs == 0) {
-    return Status::OK();
+    return absl::OkStatus();
   }
 
   auto latency_seconds = static_cast<double>(max_latency_usecs) / 1000.0 / 1000.0;
   latency_hist_->Record(latency_seconds, options.metric_attributes());
-  return Status::OK();
+
+  if (cc->Outputs().HasTag(kFinishedTag)) {
+    cc->Outputs()
+        .Tag(kFinishedTag)
+        .AddPacket(mediapipe::MakePacket<bool>(true).At(cc->InputTimestamp()));
+  }
+
+  return absl::OkStatus();
+}
+
+absl::Status ClockLatencyMetricsSinkCalculator::Close(mediapipe::CalculatorContext*) {
+  return absl::OkStatus();
 }
 
 REGISTER_CALCULATOR(ClockLatencyMetricsSinkCalculator);

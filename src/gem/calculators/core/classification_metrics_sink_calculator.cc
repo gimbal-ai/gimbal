@@ -31,6 +31,8 @@ namespace gml::gem::calculators::core {
 
 using ::gml::internal::api::core::v1::Classification;
 
+constexpr std::string_view kFinishedTag = "FINISHED";
+
 // Maximum number of top classes to report statistics for.
 constexpr size_t kMaxK = 3;
 
@@ -45,7 +47,16 @@ const std::vector<double> kConfidenceClassesBounds = []() {
   return temp;
 }();
 
-Status ClassificationMetricsSinkCalculator::BuildMetrics(mediapipe::CalculatorContext*) {
+absl::Status ClassificationMetricsSinkCalculator::GetContract(mediapipe::CalculatorContract* cc) {
+  cc->Inputs().Index(0).Set<Classification>();
+  if (cc->Outputs().HasTag(kFinishedTag)) {
+    cc->Outputs().Tag(kFinishedTag).Set<bool>();
+  }
+  cc->SetTimestampOffset(0);
+  return absl::OkStatus();
+}
+
+absl::Status ClassificationMetricsSinkCalculator::Open(mediapipe::CalculatorContext*) {
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
 
   confidence_hist_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
@@ -54,10 +65,10 @@ Status ClassificationMetricsSinkCalculator::BuildMetrics(mediapipe::CalculatorCo
   scores_hist_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
       "gml_gem_pipe_classifications_scores", "Scores of model predictions.",
       kConfidenceClassesBounds);
-  return Status::OK();
+  return absl::OkStatus();
 }
 
-Status ClassificationMetricsSinkCalculator::RecordMetrics(mediapipe::CalculatorContext* cc) {
+absl::Status ClassificationMetricsSinkCalculator::Process(mediapipe::CalculatorContext* cc) {
   const auto& options = cc->Options<optionspb::ClassificationMetricsSinkCalculatorOptions>();
   auto& classification = cc->Inputs().Index(0).Get<Classification>();
 
@@ -92,7 +103,17 @@ Status ClassificationMetricsSinkCalculator::RecordMetrics(mediapipe::CalculatorC
     top_k_classes.pop();
   }
 
-  return Status::OK();
+  if (cc->Outputs().HasTag(kFinishedTag)) {
+    cc->Outputs()
+        .Tag(kFinishedTag)
+        .AddPacket(mediapipe::MakePacket<bool>(true).At(cc->InputTimestamp()));
+  }
+
+  return absl::OkStatus();
+}
+
+absl::Status ClassificationMetricsSinkCalculator::Close(mediapipe::CalculatorContext*) {
+  return absl::OkStatus();
 }
 
 REGISTER_CALCULATOR(ClassificationMetricsSinkCalculator);

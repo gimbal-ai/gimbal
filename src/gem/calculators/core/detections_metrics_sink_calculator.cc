@@ -30,6 +30,8 @@ using ::gml::internal::api::core::v1::Detection;
 
 // TODO(oazizi): Consolidate some of these constants with the ones in the ClassificationMetricsSink.
 
+constexpr std::string_view kFinishedTag = "FINISHED";
+
 // Maximum number of top classes to report statistics for.
 constexpr size_t kMaxK = 3;
 
@@ -53,7 +55,16 @@ const std::vector<double> kBoxAreaBounds = {0,    0.01, 0.04, 0.09, 0.16, 0.25,
 // Box aspect ratio is the width / height. Bounds are roughly symmetric around 1.
 const std::vector<double> kBoxAspectRatioBounds = {0, 0.02, 0.2, 0.5, 1, 2.0, 5, 50};
 
-Status DetectionsMetricsSinkCalculator::BuildMetrics(mediapipe::CalculatorContext*) {
+absl::Status DetectionsMetricsSinkCalculator::GetContract(mediapipe::CalculatorContract* cc) {
+  cc->Inputs().Index(0).Set<std::vector<Detection>>();
+  if (cc->Outputs().HasTag(kFinishedTag)) {
+    cc->Outputs().Tag(kFinishedTag).Set<bool>();
+  }
+  cc->SetTimestampOffset(0);
+  return absl::OkStatus();
+}
+
+absl::Status DetectionsMetricsSinkCalculator::Open(mediapipe::CalculatorContext*) {
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
   confidence_hist_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
       "gml_gem_pipe_detections_confidence", "Confidence scores of model predictions.",
@@ -66,10 +77,10 @@ Status DetectionsMetricsSinkCalculator::BuildMetrics(mediapipe::CalculatorContex
   box_aspect_ratio_hist_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
       "gml_gem_pipe_detections_aspect_ratio",
       "Aspect ratio (width / height) of the detection bounding box.", kBoxAspectRatioBounds);
-  return Status::OK();
+  return absl::OkStatus();
 }
 
-Status DetectionsMetricsSinkCalculator::RecordMetrics(mediapipe::CalculatorContext* cc) {
+absl::Status DetectionsMetricsSinkCalculator::Process(mediapipe::CalculatorContext* cc) {
   const auto& options = cc->Options<optionspb::DetectionsMetricsSinkCalculatorOptions>();
   auto& detections = cc->Inputs().Index(0).Get<std::vector<Detection>>();
 
@@ -119,7 +130,17 @@ Status DetectionsMetricsSinkCalculator::RecordMetrics(mediapipe::CalculatorConte
     box_aspect_ratio_hist_->Record(aspect_ratio, attrs, {});
   }
 
-  return Status::OK();
+  if (cc->Outputs().HasTag(kFinishedTag)) {
+    cc->Outputs()
+        .Tag(kFinishedTag)
+        .AddPacket(mediapipe::MakePacket<bool>(true).At(cc->InputTimestamp()));
+  }
+
+  return absl::OkStatus();
+}
+
+absl::Status DetectionsMetricsSinkCalculator::Close(mediapipe::CalculatorContext*) {
+  return absl::OkStatus();
 }
 
 REGISTER_CALCULATOR(DetectionsMetricsSinkCalculator);

@@ -18,10 +18,8 @@
 
 #pragma once
 
+#include <mediapipe/framework/calculator_framework.h>
 #include <opentelemetry/sdk/metrics/sync_instruments.h>
-
-#include "src/common/base/status.h"
-#include "src/gem/calculators/core/metrics_sink_calculator.h"
 
 namespace gml::gem::calculators::core {
 
@@ -34,10 +32,13 @@ namespace gml::gem::calculators::core {
  *  No outputs, outputs stats to opentelemetry.
  */
 
-class ClockLatencyMetricsSinkCalculator : public MetricsSinkCalculator<absl::Duration> {
- protected:
-  Status BuildMetrics(mediapipe::CalculatorContext* cc) override;
-  Status RecordMetrics(mediapipe::CalculatorContext* cc) override;
+class ClockLatencyMetricsSinkCalculator : public mediapipe::CalculatorBase {
+ public:
+  static absl::Status GetContract(mediapipe::CalculatorContract* cc);
+
+  absl::Status Open(mediapipe::CalculatorContext* cc) override;
+  absl::Status Process(mediapipe::CalculatorContext* cc) override;
+  absl::Status Close(mediapipe::CalculatorContext* cc) override;
 
  private:
   opentelemetry::metrics::Histogram<double>* latency_hist_;

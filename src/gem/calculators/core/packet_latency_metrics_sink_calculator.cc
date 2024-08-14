@@ -21,7 +21,9 @@
 #include <vector>
 
 #include <mediapipe/calculators/util/latency.pb.h>
+#include <mediapipe/framework/calculator_framework.h>
 #include <mediapipe/framework/calculator_registry.h>
+#include <opentelemetry/sdk/metrics/sync_instruments.h>
 
 #include "src/common/base/base.h"
 #include "src/common/metrics/metrics_system.h"
@@ -29,26 +31,48 @@
 
 namespace gml::gem::calculators::core {
 
+constexpr std::string_view kFinishedTag = "FINISHED";
+
 const std::vector<double> kLatencyBucketBounds = {0.000, 0.005, 0.010, 0.015, 0.020, 0.025, 0.030,
                                                   0.035, 0.040, 0.045, 0.050, 0.075, 0.100, 0.150};
 
-Status PacketLatencyMetricsSinkCalculator::BuildMetrics(mediapipe::CalculatorContext* cc) {
+absl::Status PacketLatencyMetricsSinkCalculator::GetContract(mediapipe::CalculatorContract* cc) {
+  cc->Inputs().Index(0).Set<mediapipe::PacketLatency>();
+  if (cc->Outputs().HasTag(kFinishedTag)) {
+    cc->Outputs().Tag(kFinishedTag).Set<bool>();
+  }
+  cc->SetTimestampOffset(0);
+  return absl::OkStatus();
+}
+
+absl::Status PacketLatencyMetricsSinkCalculator::Open(mediapipe::CalculatorContext* cc) {
   const auto& options = cc->Options<optionspb::PacketLatencyMetricsSinkCalculatorOptions>();
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
 
   latency_hist_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
       absl::Substitute("gml_gem_$0_latency_seconds", options.name()), "Packet latency in seconds.",
       kLatencyBucketBounds);
-  return Status::OK();
+  return absl::OkStatus();
 }
 
-Status PacketLatencyMetricsSinkCalculator::RecordMetrics(mediapipe::CalculatorContext* cc) {
+absl::Status PacketLatencyMetricsSinkCalculator::Process(mediapipe::CalculatorContext* cc) {
   const auto& options = cc->Options<optionspb::PacketLatencyMetricsSinkCalculatorOptions>();
   auto& packet_latency = cc->Inputs().Index(0).Get<mediapipe::PacketLatency>();
   latency_hist_->Record(
       static_cast<double>(packet_latency.current_latency_usec()) / 1000.0 / 1000.0,
       options.metric_attributes());
-  return Status::OK();
+
+  if (cc->Outputs().HasTag(kFinishedTag)) {
+    cc->Outputs()
+        .Tag(kFinishedTag)
+        .AddPacket(mediapipe::MakePacket<bool>(true).At(cc->InputTimestamp()));
+  }
+
+  return absl::OkStatus();
+}
+
+absl::Status PacketLatencyMetricsSinkCalculator::Close(mediapipe::CalculatorContext*) {
+  return absl::OkStatus();
 }
 
 REGISTER_CALCULATOR(PacketLatencyMetricsSinkCalculator);

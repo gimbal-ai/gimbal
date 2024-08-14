@@ -28,6 +28,8 @@
 namespace gml::gem::calculators::core {
 using ::gml::internal::api::core::v1::Detection;
 
+constexpr std::string_view kFinishedTag = "FINISHED";
+
 constexpr size_t kMaxMetricClasses = 80;
 
 const std::vector<double> kDetectionClassesBounds = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -42,7 +44,16 @@ const std::vector<double> kBoxAreaBounds = {0,    0.01, 0.04, 0.09, 0.16, 0.25,
 // Box aspect ratio is the width / height. Bounds are roughly symmetric around 1.
 const std::vector<double> kBoxAspectRatioBounds = {0, 0.02, 0.2, 0.5, 1, 2.0, 5, 50};
 
-Status DetectionsSummaryCalculator::BuildMetrics(mediapipe::CalculatorContext*) {
+absl::Status DetectionsSummaryCalculator::GetContract(mediapipe::CalculatorContract* cc) {
+  cc->Inputs().Index(0).Set<std::vector<Detection>>();
+  if (cc->Outputs().HasTag(kFinishedTag)) {
+    cc->Outputs().Tag(kFinishedTag).Set<bool>();
+  }
+  cc->SetTimestampOffset(0);
+  return absl::OkStatus();
+}
+
+absl::Status DetectionsSummaryCalculator::Open(mediapipe::CalculatorContext*) {
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
   detection_hist_ = metrics_system.GetOrCreateHistogramWithBounds<uint64_t>(
       "gml_gem_model_detection_classes", "Frequency of detection classes predicted by the model.",
@@ -56,10 +67,10 @@ Status DetectionsSummaryCalculator::BuildMetrics(mediapipe::CalculatorContext*) 
   box_aspect_ratio_hist_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
       "gml_gem_model_box_aspect_ratio",
       "Aspect ratio (width / height) of the detection bounding box.", kBoxAspectRatioBounds);
-  return Status::OK();
+  return absl::OkStatus();
 }
 
-Status DetectionsSummaryCalculator::RecordMetrics(mediapipe::CalculatorContext* cc) {
+absl::Status DetectionsSummaryCalculator::Process(mediapipe::CalculatorContext* cc) {
   const auto& options = cc->Options<optionspb::DetectionsSummaryCalculatorOptions>();
   auto& detections = cc->Inputs().Index(0).Get<std::vector<Detection>>();
   // If there are many labels in a detection, we don't want to send metrics for all of them, as the
@@ -110,7 +121,17 @@ Status DetectionsSummaryCalculator::RecordMetrics(mediapipe::CalculatorContext* 
     }
   }
 
-  return Status::OK();
+  if (cc->Outputs().HasTag(kFinishedTag)) {
+    cc->Outputs()
+        .Tag(kFinishedTag)
+        .AddPacket(mediapipe::MakePacket<bool>(true).At(cc->InputTimestamp()));
+  }
+
+  return absl::OkStatus();
+}
+
+absl::Status DetectionsSummaryCalculator::Close(mediapipe::CalculatorContext*) {
+  return absl::OkStatus();
 }
 
 REGISTER_CALCULATOR(DetectionsSummaryCalculator);

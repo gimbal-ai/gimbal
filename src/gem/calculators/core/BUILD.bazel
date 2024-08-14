@@ -52,7 +52,6 @@ gml_cc_library(
         "mediapipe_typed_calculators.cc",
         "merge_tokens_calculator.cc",
         "merge_tokens_calculator.h",
-        "metrics_sink_calculator.h",
         "modify_detection_with_classification_calculator.cc",
         "modify_detection_with_classification_calculator.h",
         "modify_detection_with_regression_calculator.cc",
