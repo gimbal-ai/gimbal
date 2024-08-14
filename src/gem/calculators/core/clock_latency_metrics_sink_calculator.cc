@@ -57,19 +57,26 @@ absl::Status ClockLatencyMetricsSinkCalculator::Open(mediapipe::CalculatorContex
 absl::Status ClockLatencyMetricsSinkCalculator::Process(mediapipe::CalculatorContext* cc) {
   const auto& options = cc->Options<optionspb::ClockLatencyMetricsSinkCalculatorOptions>();
 
-  uint64_t max_latency_usecs = 0;
+  // We set the max latency to 0 because we can get negative latencies. This happens when
+  // the node we measure is too fast so that the ClockTimestampCalculators are scheduled in
+  // the incorrect order.
+  // This bug is filed in GML-1320.
+  int64_t max_latency_usecs = 0;
+  // We ensure that we only record metrics if there is at least one input.
+  bool has_input = false;
   for (int i = 0; i < cc->Inputs().NumEntries(); ++i) {
     if (cc->Inputs().Index(i).IsEmpty()) {
       continue;
     }
+    has_input = true;
 
     cc->Inputs().Index(i).Get<absl::Duration>();
     auto& latency = cc->Inputs().Index(i).Get<absl::Duration>();
-    uint64_t latency_usecs = ToChronoMicroseconds(latency).count();
+    int64_t latency_usecs = absl::ToInt64Microseconds(latency);
     max_latency_usecs = std::max(max_latency_usecs, latency_usecs);
   }
 
-  if (max_latency_usecs == 0) {
+  if (!has_input) {
     return absl::OkStatus();
   }
 

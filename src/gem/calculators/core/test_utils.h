@@ -119,6 +119,10 @@ void CheckMetrics(gml::metrics::MetricsSystem& metrics_system,
   auto check_results =
       [&expected_metrics](opentelemetry::sdk::metrics::ResourceMetrics& resource_metrics) {
         const auto& scope_metrics = resource_metrics.scope_metric_data_;
+        if (expected_metrics.empty()) {
+          ASSERT_EQ(0, scope_metrics.size());
+          return;
+        }
         ASSERT_EQ(1, scope_metrics.size());
 
         const auto& metric_data = scope_metrics[0].metric_data_;

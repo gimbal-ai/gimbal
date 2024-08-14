@@ -32,104 +32,100 @@
 
 namespace gml::gem::calculators::core {
 
-TEST(ClockLatencyMetricsSinkCalculatorTest, Basic) {
-  constexpr char kGraph[] = R"pbtxt(
-    calculator: "ClockLatencyMetricsSinkCalculator"
-    input_stream: "duration"
-    output_stream: "FINISHED:finished"
-    node_options {
-      [type.googleapis.com/gml.gem.calculators.core.optionspb.ClockLatencyMetricsSinkCalculatorOptions] {
-        name: "detect";
-      }
-    }
-  )pbtxt";
+const std::vector<double> kLatencyBucketBounds = {0,     0.005, 0.01,  0.015, 0.02,  0.025, 0.03,
+                                                  0.035, 0.04,  0.045, 0.05,  0.075, 0.1,   0.15};
 
-  testing::CalculatorTester tester(kGraph);
+constexpr std::string_view kClockLatencyMetricsSinkNode = R"pbtxt(
+calculator: "ClockLatencyMetricsSinkCalculator"
+input_stream: "duration"
+output_stream: "FINISHED:finished"
+node_options {
+  [type.googleapis.com/gml.gem.calculators.core.optionspb.ClockLatencyMetricsSinkCalculatorOptions] {
+    name: "detect"
+  }
+}
+)pbtxt";
 
+struct ClockLatencyMetricsSinkTestCase {
+  std::string_view config;
+  std::vector<absl::Duration> input_durations;
+  absl::flat_hash_map<std::string, ExpectedMetric> expected_metrics;
+};
+
+class ClockLatencyMetricsSinkTest
+    : public ::testing::TestWithParam<ClockLatencyMetricsSinkTestCase> {};
+
+TEST_P(ClockLatencyMetricsSinkTest, ConvertsCorrectly) {
+  auto test_case = GetParam();
+
+  std::string config(test_case.config);
+  testing::CalculatorTester tester(config);
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
+  auto ts = mediapipe::Timestamp::Min();
+
+  for (int i = 0; i < static_cast<int>(test_case.input_durations.size()); ++i) {
+    tester.ForInput(i, test_case.input_durations[i], ts);
+  }
+  tester.Run();
+
+  CheckMetrics(metrics_system, test_case.expected_metrics);
   metrics_system.Reset();
-
-  tester.ForInput(0, absl::Milliseconds(10), mediapipe::Timestamp(0))
-      .Run()
-      .ExpectOutput<bool>("FINISHED", 0, mediapipe::Timestamp(0), true);
-
-  auto check_results = [](opentelemetry::sdk::metrics::ResourceMetrics& resource_metrics) {
-    const auto& scope_metrics = resource_metrics.scope_metric_data_;
-    ASSERT_EQ(1, scope_metrics.size());
-
-    const auto& metric_data = scope_metrics[0].metric_data_;
-    ASSERT_EQ(1, metric_data.size());
-
-    const auto& name = metric_data[0].instrument_descriptor.name_;
-    const auto& point_data = metric_data[0].point_data_attr_;
-
-    ASSERT_EQ(point_data.size(), 1);
-    ASSERT_EQ("gml_gem_detect_latency_seconds", name);
-    EXPECT_THAT(
-        point_data[0],
-        MatchHistogram(ExpectedHist{
-            {0, 0.005, 0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045, 0.05, 0.075, 0.1, 0.15},
-            {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {},
-        }));
-  };
-  auto results_cb =
-      [&check_results](opentelemetry::sdk::metrics::ResourceMetrics& resource_metrics) {
-        check_results(resource_metrics);
-        return true;
-      };
-  metrics_system.Reader()->Collect(results_cb);
 }
 
-TEST(ClockLatencyMetricsSinkCalculatorTest, MultipleInputs) {
-  constexpr char kGraph[] = R"pbtxt(
-      calculator: "ClockLatencyMetricsSinkCalculator"
-      input_stream: "duration0"
-      input_stream: "duration1"
-      output_stream: "FINISHED:finished"
-      node_options {
-        [type.googleapis.com/gml.gem.calculators.core.optionspb.ClockLatencyMetricsSinkCalculatorOptions] {
-          name: "detect";
-        }
-      }
-    )pbtxt";
-
-  auto& metrics_system = metrics::MetricsSystem::GetInstance();
-  metrics_system.Reset();
-
-  testing::CalculatorTester tester(kGraph);
-
-  tester.ForInput(0, absl::Milliseconds(5), mediapipe::Timestamp(0))
-      .ForInput(1, absl::Milliseconds(10), mediapipe::Timestamp(0))
-      .Run()
-      .ExpectOutput<bool>("FINISHED", 0, mediapipe::Timestamp(0), true);
-
-  auto check_results = [](opentelemetry::sdk::metrics::ResourceMetrics& resource_metrics) {
-    const auto& scope_metrics = resource_metrics.scope_metric_data_;
-    ASSERT_EQ(1, scope_metrics.size());
-
-    const auto& metric_data = scope_metrics[0].metric_data_;
-    ASSERT_EQ(1, metric_data.size());
-
-    const auto& name = metric_data[0].instrument_descriptor.name_;
-    const auto& point_data = metric_data[0].point_data_attr_;
-
-    ASSERT_EQ(point_data.size(), 1);
-    ASSERT_EQ("gml_gem_detect_latency_seconds", name);
-    EXPECT_THAT(
-        point_data[0],
-        MatchHistogram(ExpectedHist{
-            {0, 0.005, 0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045, 0.05, 0.075, 0.1, 0.15},
-            {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {},
-        }));
-  };
-  auto results_cb =
-      [&check_results](opentelemetry::sdk::metrics::ResourceMetrics& resource_metrics) {
-        check_results(resource_metrics);
-        return true;
-      };
-  metrics_system.Reader()->Collect(results_cb);
+INSTANTIATE_TEST_SUITE_P(
+    ClockLatencyMetricsSinkTestSuite, ClockLatencyMetricsSinkTest,
+    ::testing::Values(
+        ClockLatencyMetricsSinkTestCase{
+            .config = kClockLatencyMetricsSinkNode,
+            .input_durations = {absl::Milliseconds(10)},
+            .expected_metrics =
+                {
+                    {"gml_gem_detect_latency_seconds",
+                     ExpectedHist{
+                         .bucket_bounds = kLatencyBucketBounds,
+                         .bucket_counts = {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                     }},
+                },
+        },
+        ClockLatencyMetricsSinkTestCase{
+            .config = R"pbtxt(
+calculator: "ClockLatencyMetricsSinkCalculator"
+input_stream: "duration0"
+input_stream: "duration1"
+output_stream: "FINISHED:finished"
+node_options {
+  [type.googleapis.com/gml.gem.calculators.core.optionspb.ClockLatencyMetricsSinkCalculatorOptions] {
+    name: "detect"
+  }
 }
+)pbtxt",
+            .input_durations = {absl::Milliseconds(5), absl::Milliseconds(10)},
+            .expected_metrics =
+                {
+                    {"gml_gem_detect_latency_seconds",
+                     ExpectedHist{
+                         .bucket_bounds = kLatencyBucketBounds,
+                         .bucket_counts = {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                     }},
+                },
+        },
+        ClockLatencyMetricsSinkTestCase{
+            .config = kClockLatencyMetricsSinkNode,
+            .input_durations = {absl::Milliseconds(-5)},
+            .expected_metrics =
+                {
+                    {"gml_gem_detect_latency_seconds",
+                     ExpectedHist{
+                         .bucket_bounds = kLatencyBucketBounds,
+                         .bucket_counts = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                     }},
+                },
+        },
+        // No input
+        ClockLatencyMetricsSinkTestCase{
+            .config = kClockLatencyMetricsSinkNode,
+            .input_durations = {},
+            .expected_metrics = {},
+        }));
 
 }  // namespace gml::gem::calculators::core
