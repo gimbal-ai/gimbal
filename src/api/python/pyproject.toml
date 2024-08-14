@@ -32,3 +32,5 @@ dependencies = {file = "requirements.in"}
 "gml.proto.gogoproto" = "../../../third_party/github.com/gogo/protobuf/gogoproto"
 "mediapipe" = "../../../third_party/github.com/google/mediapipe/mediapipe"
 "gml.proto.mediapipe" = "../../../third_party/github.com/google/mediapipe/mediapipe"
+"opentelemetry" = "../../../third_party/github.com/open-telemetry/opentelemetry-proto/opentelemetry"
+"gml.proto.opentelemetry" = "../../../third_party/github.com/open-telemetry/opentelemetry-proto/opentelemetry"

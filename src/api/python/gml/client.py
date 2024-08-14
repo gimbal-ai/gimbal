@@ -361,18 +361,23 @@ class Client:
         if pipeline_file is not None:
             with open(pipeline_file, "r") as f:
                 yaml = f.read()
-                stub = self._lps_stub()
-                req = lppb.ParseLogicalPipelineYAMLRequest(
-                    yaml=yaml,
-                )
-                resp: lppb.ParseLogicalPipelineYAMLResponse = (
-                    stub.ParseLogicalPipelineYAML(
-                        req, metadata=self._get_request_metadata()
-                    )
-                )
-                pipeline = resp.logical_pipeline
+        elif isinstance(pipeline, Pipeline):
+            if self._org_name is None:
+                raise ValueError("must set `org` to compile a Pipeline object")
+            yaml = pipeline.to_yaml(models, self._org_name)
         elif pipeline is None:
             raise ValueError("must specify one of 'pipeline_file' or 'pipeline'")
+        else:
+            yaml = pipeline
+
+        stub = self._lps_stub()
+        req = lppb.ParseLogicalPipelineYAMLRequest(
+            yaml=yaml,
+        )
+        resp: lppb.ParseLogicalPipelineYAMLResponse = stub.ParseLogicalPipelineYAML(
+            req, metadata=self._get_request_metadata()
+        )
+        pipeline = resp.logical_pipeline
 
         capabilities = DeviceCapabilities(runtimes=runtimes, cameras=cameras)
 
