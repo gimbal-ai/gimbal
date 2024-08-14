@@ -44,14 +44,21 @@ absl::Status QdrantSearchCalculator::GetContract(mediapipe::CalculatorContract* 
   return absl::OkStatus();
 }
 
+absl::Status QdrantSearchCalculator::ConnectToQdrant() {
+  // Assume SSL for now, until we update the options with more SSL configs.
+  auto channel_creds = grpc::SslCredentials(grpc::SslCredentialsOptions());
+  channel_ = grpc::CreateChannel(address_, channel_creds);
+  client_ = std::make_unique<QdrantClient>(channel_);
+  return absl::OkStatus();
+}
+
 absl::Status QdrantSearchCalculator::Open(mediapipe::CalculatorContext* cc) {
   auto& options = cc->Options<QdrantSearchCalculatorOptions>();
 
-  // Assume SSL for now, until we update the options with more SSL configs.
-  auto channel_creds = grpc::SslCredentials(grpc::SslCredentialsOptions());
-  auto channel = grpc::CreateChannel(options.address(), channel_creds);
+  address_ = options.address();
 
-  client_ = std::make_unique<QdrantClient>(channel);
+  GML_ABSL_RETURN_IF_ERROR(this->ConnectToQdrant());
+
   collection_name_ = options.collection();
   limit_ = options.limit();
   payload_key_ = options.payload_key();
@@ -59,6 +66,11 @@ absl::Status QdrantSearchCalculator::Open(mediapipe::CalculatorContext* cc) {
 }
 
 absl::Status QdrantSearchCalculator::Process(mediapipe::CalculatorContext* cc) {
+  if (channel_->GetState(true) != GRPC_CHANNEL_READY) {
+    VLOG(1) << "Reconnecting to qdrant gRPC server...";
+    GML_ABSL_RETURN_IF_ERROR(this->ConnectToQdrant());
+  }
+
   const auto& tensor = cc->Inputs().Tag(kEmbeddingTag).Get<CPUTensorPtr>();
 
   auto shape = tensor->Shape();

@@ -47,7 +47,12 @@ class QdrantSearchCalculator : public mediapipe::CalculatorBase {
   absl::Status Process(mediapipe::CalculatorContext* cc) override;
 
  private:
+  absl::Status ConnectToQdrant();
+
   std::unique_ptr<QdrantClient> client_;
+  std::shared_ptr<grpc::Channel> channel_;
+  std::string address_;
+
   std::string collection_name_;
   std::string payload_key_;
   int64_t limit_;
