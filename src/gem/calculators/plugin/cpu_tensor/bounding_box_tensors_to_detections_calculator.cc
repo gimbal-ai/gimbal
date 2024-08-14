@@ -91,7 +91,7 @@ absl::Status BoundingBoxTensorsToDetections::Process(mediapipe::CalculatorContex
     const auto score = score_data[i];
     const auto class_idx = get_class_idx(i);
 
-    if (class_idx < 0) {
+    if (class_idx < 0 || class_idx >= options_.index_to_label_size()) {
       continue;
     }
 
