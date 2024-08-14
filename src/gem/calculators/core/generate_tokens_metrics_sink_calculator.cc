@@ -67,6 +67,10 @@ absl::Status GenerateTokensMetricsSinkCalculator::Open(mediapipe::CalculatorCont
       "gml_gem_pipe_gentokens_time_to_first_hist", "Time from input to first output token.",
       kLatencyBucketBounds);
 
+  time_to_last_output_token_histogram_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
+      "gml_gem_pipe_gentokens_time_to_last_hist", "Time from input to last output token.",
+      kLatencyBucketBounds);
+
   return absl::OkStatus();
 }
 
@@ -93,6 +97,10 @@ void GenerateTokensMetricsSinkCalculator::HandleOutput(mediapipe::CalculatorCont
                                                   metric_attributes_);
   }
   if (output_eos_value) {
+    auto output_timestamp = cc->Inputs().Tag(kOutputTimestampTag).Get<absl::Time>();
+    auto duration = output_timestamp - input_timestamps_.front().timestamp;
+    time_to_last_output_token_histogram_->Record(absl::ToDoubleSeconds(duration),
+                                                 metric_attributes_);
     output_tokens_histogram_->Record(running_output_tokens_, metric_attributes_);
     running_output_tokens_ = 0;
     input_timestamps_.pop_front();

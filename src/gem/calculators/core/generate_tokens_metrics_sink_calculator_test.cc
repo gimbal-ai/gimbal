@@ -212,6 +212,13 @@ INSTANTIATE_TEST_SUITE_P(
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }},
+                            {"gml_gem_pipe_gentokens_time_to_last_hist",
+                             ExpectedHist{
+                                 .bucket_bounds = kLatencyBucketBounds,
+                                 .bucket_counts = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                 .attributes = {{"pipeline_id", "test_pipeline"},
+                                                {"device_id", "test_device"}},
+                             }},
                         },
                 },
                 StreamBatch{
@@ -249,6 +256,13 @@ INSTANTIATE_TEST_SUITE_P(
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }},
+                            {"gml_gem_pipe_gentokens_time_to_last_hist",
+                             ExpectedHist{
+                                 .bucket_bounds = kLatencyBucketBounds,
+                                 .bucket_counts = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                 .attributes = {{"pipeline_id", "test_pipeline"},
+                                                {"device_id", "test_device"}},
+                             }},
                         },
                 },
                 // Receieve an input batch before receiving an eos output batch for previous
@@ -279,6 +293,13 @@ INSTANTIATE_TEST_SUITE_P(
                              ExpectedHist{
                                  .bucket_bounds = kLatencyBucketBounds,
                                  .bucket_counts = {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                 .attributes = {{"pipeline_id", "test_pipeline"},
+                                                {"device_id", "test_device"}},
+                             }},
+                            {"gml_gem_pipe_gentokens_time_to_last_hist",
+                             ExpectedHist{
+                                 .bucket_bounds = kLatencyBucketBounds,
+                                 .bucket_counts = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }},
@@ -320,6 +341,13 @@ INSTANTIATE_TEST_SUITE_P(
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }},
+                            {"gml_gem_pipe_gentokens_time_to_last_hist",
+                             ExpectedHist{
+                                 .bucket_bounds = kLatencyBucketBounds,
+                                 .bucket_counts = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+                                 .attributes = {{"pipeline_id", "test_pipeline"},
+                                                {"device_id", "test_device"}},
+                             }},
                         },
                 },
                 // Recieves the first output batch for the input batch and record the metric.
@@ -355,6 +383,13 @@ INSTANTIATE_TEST_SUITE_P(
                              ExpectedHist{
                                  .bucket_bounds = kLatencyBucketBounds,
                                  .bucket_counts = {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+                                 .attributes = {{"pipeline_id", "test_pipeline"},
+                                                {"device_id", "test_device"}},
+                             }},
+                            {"gml_gem_pipe_gentokens_time_to_last_hist",
+                             ExpectedHist{
+                                 .bucket_bounds = kLatencyBucketBounds,
+                                 .bucket_counts = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }},
