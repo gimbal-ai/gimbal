@@ -128,7 +128,7 @@ class DetectionOutputDimension(DimensionSemantics):
         box_confidence_index: Optional[int] = None,
         class_index: Optional[int] = None,
         scores_range: Optional[Tuple[int, int]] = None,
-        scores_are_logits: bool = True,
+        scores_are_logits: bool = False,
     ):
         self.coordinates_range = None
         if coordinates_start_index is not None:
