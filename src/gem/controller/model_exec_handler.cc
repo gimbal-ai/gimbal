@@ -85,11 +85,12 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
  public:
   RunModelTask(ModelExecHandler* parent, ExecutionSpec exec_spec,
                exec::core::ControlExecutionContext* ctrl_exec_ctx, sole::uuid physical_pipeline_id,
-               int64_t version)
+               std::string device_hash, int64_t version)
       : parent_(parent),
         exec_spec_(std::move(exec_spec)),
         ctrl_exec_ctx_(ctrl_exec_ctx),
         physical_pipeline_id_(physical_pipeline_id),
+        device_resource_hash_(std::move(device_hash)),
         version_(version) {}
 
   Status PreparePluginExecutionContexts() {
@@ -192,6 +193,7 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
     status.set_version(version_);
     status.set_reason(reason);
     status.set_runtime(runtime_);
+    status.set_device_resource_hash(device_resource_hash_);
 
     parent_->HandleModelStatusUpdate(physical_pipeline_id_, &status);
   }
@@ -206,6 +208,7 @@ class ModelExecHandler::RunModelTask : public event::AsyncTask {
   absl::flat_hash_map<std::string, std::unique_ptr<ExecutionContext>> model_exec_ctxs_;
   sole::uuid physical_pipeline_id_;
   bool failed_ = false;
+  std::string device_resource_hash_;
   int64_t version_;
   std::string runtime_;
 };
@@ -255,8 +258,9 @@ Status ModelExecHandler::HandlePhysicalPipelineSpecUpdate(
 
   stop_signal_.store(false);
 
-  auto task = std::make_unique<RunModelTask>(this, graph.spec().graph(), ctrl_exec_ctx_, id,
-                                             graph.spec().version());
+  auto task =
+      std::make_unique<RunModelTask>(this, graph.spec().graph(), ctrl_exec_ctx_, id,
+                                     graph.spec().device_resource_hash(), graph.spec().version());
 
   running_task_ = dispatcher()->CreateAsyncTask(std::move(task));
   running_task_->Run();
