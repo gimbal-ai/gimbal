@@ -122,6 +122,7 @@ deploy a GEM that uses a fake camera. The `GML_FAKE_VIDEO_GCS` lets you pick whi
 video (from Google Cloud Storage) to use.
 
 ```sh
+export GML_GEM_NAME=fake-camera-gem # Optional, defaults to "dev-gem" if not set
 export GML_FAKE_VIDEO_GCS=gs://gml-dev-videos/gimlets/automated-self-checkout/coca-cola.mp4 # replace with your video file (must be on GCS)
 skaffold run -f ./skaffold/skaffold_gem.yaml -n $USER -p fake_camera
 ```
