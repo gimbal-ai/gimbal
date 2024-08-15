@@ -465,6 +465,9 @@ message PhysicalPipelineSpec {
   gml.internal.api.core.v1.ExecutionSpec graph = 3;
   // The preferred runtime for the execution.
   string runtime = 4;
+  // The hash of the device state that this spec is for.
+  // This tracks any changes to the device, such as new capabilities.
+  string device_resource_hash = 5;
 }
 
 // The state represents the actual state of the deployment.
@@ -477,6 +480,9 @@ message PhysicalPipelineStatus {
   string runtime = 3;
   // The reason the pipeline is in this state.
   string reason = 4;
+  // The hash of the device state that this spec is for.
+  // This tracks any changes to the device, such as new capabilities.
+  string device_resource_hash = 5;
 }
 
 message FileResource {

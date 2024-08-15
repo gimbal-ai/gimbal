@@ -392,28 +392,32 @@ class PhysicalPipeline(_message.Message):
     def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., pipeline_deployment_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., device_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., spec: _Optional[_Union[PhysicalPipelineSpec, _Mapping]] = ..., status: _Optional[_Union[PhysicalPipelineStatus, _Mapping]] = ...) -> None: ...
 
 class PhysicalPipelineSpec(_message.Message):
-    __slots__ = ["graph", "runtime", "state", "version"]
+    __slots__ = ["device_resource_hash", "graph", "runtime", "state", "version"]
+    DEVICE_RESOURCE_HASH_FIELD_NUMBER: _ClassVar[int]
     GRAPH_FIELD_NUMBER: _ClassVar[int]
     RUNTIME_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
     VERSION_FIELD_NUMBER: _ClassVar[int]
+    device_resource_hash: str
     graph: ExecutionSpec
     runtime: str
     state: PipelineState
     version: int
-    def __init__(self, state: _Optional[_Union[PipelineState, str]] = ..., version: _Optional[int] = ..., graph: _Optional[_Union[ExecutionSpec, _Mapping]] = ..., runtime: _Optional[str] = ...) -> None: ...
+    def __init__(self, state: _Optional[_Union[PipelineState, str]] = ..., version: _Optional[int] = ..., graph: _Optional[_Union[ExecutionSpec, _Mapping]] = ..., runtime: _Optional[str] = ..., device_resource_hash: _Optional[str] = ...) -> None: ...
 
 class PhysicalPipelineStatus(_message.Message):
-    __slots__ = ["reason", "runtime", "state", "version"]
+    __slots__ = ["device_resource_hash", "reason", "runtime", "state", "version"]
+    DEVICE_RESOURCE_HASH_FIELD_NUMBER: _ClassVar[int]
     REASON_FIELD_NUMBER: _ClassVar[int]
     RUNTIME_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
     VERSION_FIELD_NUMBER: _ClassVar[int]
+    device_resource_hash: str
     reason: str
     runtime: str
     state: PipelineState
     version: int
-    def __init__(self, state: _Optional[_Union[PipelineState, str]] = ..., version: _Optional[int] = ..., runtime: _Optional[str] = ..., reason: _Optional[str] = ...) -> None: ...
+    def __init__(self, state: _Optional[_Union[PipelineState, str]] = ..., version: _Optional[int] = ..., runtime: _Optional[str] = ..., reason: _Optional[str] = ..., device_resource_hash: _Optional[str] = ...) -> None: ...
 
 class PipelineDeployment(_message.Message):
     __slots__ = ["created_at", "deleted_at", "fleet_id", "id", "logical_pipeline_id", "spec", "status", "updated_at", "version"]
