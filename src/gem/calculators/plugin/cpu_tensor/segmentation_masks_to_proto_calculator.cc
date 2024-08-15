@@ -48,7 +48,7 @@ void MaskTensorToProto(const T* data, int32_t height, int32_t width,
 
   for (int i = 0; i < height * width; ++i) {
     auto class_idx = data[i];
-    if (class_idx < 0) {
+    if (class_idx < 0 || (class_idx >= static_cast<int64_t>(state_per_class.size()))) {
       continue;
     }
     auto& state = state_per_class[class_idx];
