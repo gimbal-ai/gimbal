@@ -9364,17 +9364,27 @@ manifest:
     starlette.websockets: starlette
     streamlit: streamlit
     streamlit.case_converters: streamlit
+    streamlit.cli_util: streamlit
     streamlit.code_util: streamlit
     streamlit.color_util: streamlit
     streamlit.column_config: streamlit
     streamlit.commands: streamlit
     streamlit.commands.execution_control: streamlit
     streamlit.commands.experimental_query_params: streamlit
+    streamlit.commands.logo: streamlit
+    streamlit.commands.navigation: streamlit
     streamlit.commands.page_config: streamlit
     streamlit.components: streamlit
+    streamlit.components.lib: streamlit
+    streamlit.components.lib.local_component_registry: streamlit
+    streamlit.components.types: streamlit
+    streamlit.components.types.base_component_registry: streamlit
+    streamlit.components.types.base_custom_component: streamlit
     streamlit.components.v1: streamlit
     streamlit.components.v1.component_arrow: streamlit
+    streamlit.components.v1.component_registry: streamlit
     streamlit.components.v1.components: streamlit
+    streamlit.components.v1.custom_component: streamlit
     streamlit.config: streamlit
     streamlit.config_option: streamlit
     streamlit.config_util: streamlit
@@ -9386,37 +9396,44 @@ manifest:
     streamlit.connections.util: streamlit
     streamlit.constants: streamlit
     streamlit.cursor: streamlit
+    streamlit.dataframe_util: streamlit
     streamlit.delta_generator: streamlit
     streamlit.deprecation_util: streamlit
     streamlit.development: streamlit
     streamlit.echo: streamlit
     streamlit.elements: streamlit
     streamlit.elements.alert: streamlit
-    streamlit.elements.altair_utils: streamlit
     streamlit.elements.arrow: streamlit
-    streamlit.elements.arrow_altair: streamlit
-    streamlit.elements.arrow_vega_lite: streamlit
     streamlit.elements.balloons: streamlit
     streamlit.elements.bokeh_chart: streamlit
     streamlit.elements.code: streamlit
     streamlit.elements.deck_gl_json_chart: streamlit
+    streamlit.elements.dialog_decorator: streamlit
     streamlit.elements.doc_string: streamlit
     streamlit.elements.empty: streamlit
     streamlit.elements.exception: streamlit
     streamlit.elements.form: streamlit
     streamlit.elements.graphviz_chart: streamlit
     streamlit.elements.heading: streamlit
+    streamlit.elements.html: streamlit
     streamlit.elements.iframe: streamlit
     streamlit.elements.image: streamlit
     streamlit.elements.json: streamlit
     streamlit.elements.layouts: streamlit
     streamlit.elements.lib: streamlit
+    streamlit.elements.lib.built_in_chart_utils: streamlit
     streamlit.elements.lib.column_config_utils: streamlit
     streamlit.elements.lib.column_types: streamlit
+    streamlit.elements.lib.dialog: streamlit
     streamlit.elements.lib.dicttools: streamlit
+    streamlit.elements.lib.event_utils: streamlit
     streamlit.elements.lib.mutable_status_container: streamlit
+    streamlit.elements.lib.options_selector_utils: streamlit
     streamlit.elements.lib.pandas_styler_utils: streamlit
+    streamlit.elements.lib.policies: streamlit
     streamlit.elements.lib.streamlit_plotly_theme: streamlit
+    streamlit.elements.lib.subtitle_utils: streamlit
+    streamlit.elements.lib.utils: streamlit
     streamlit.elements.map: streamlit
     streamlit.elements.markdown: streamlit
     streamlit.elements.media: streamlit
@@ -9428,9 +9445,10 @@ manifest:
     streamlit.elements.spinner: streamlit
     streamlit.elements.text: streamlit
     streamlit.elements.toast: streamlit
-    streamlit.elements.utils: streamlit
+    streamlit.elements.vega_charts: streamlit
     streamlit.elements.widgets: streamlit
     streamlit.elements.widgets.button: streamlit
+    streamlit.elements.widgets.button_group: streamlit
     streamlit.elements.widgets.camera_input: streamlit
     streamlit.elements.widgets.chat: streamlit
     streamlit.elements.widgets.checkbox: streamlit
@@ -9457,14 +9475,18 @@ manifest:
     streamlit.folder_black_list: streamlit
     streamlit.git_util: streamlit
     streamlit.hello: streamlit
+    streamlit.hello.Animation_Demo: streamlit
+    streamlit.hello.Dataframe_Demo: streamlit
     streamlit.hello.Hello: streamlit
-    streamlit.hello.pages.0_Animation_Demo: streamlit
-    streamlit.hello.pages.1_Plotting_Demo: streamlit
-    streamlit.hello.pages.2_Mapping_Demo: streamlit
-    streamlit.hello.pages.3_DataFrame_Demo: streamlit
+    streamlit.hello.Mapping_Demo: streamlit
+    streamlit.hello.Plotting_Demo: streamlit
+    streamlit.hello.streamlit_app: streamlit
     streamlit.hello.utils: streamlit
     streamlit.js_number: streamlit
     streamlit.logger: streamlit
+    streamlit.material_icon_names: streamlit
+    streamlit.navigation: streamlit
+    streamlit.navigation.page: streamlit
     streamlit.net_util: streamlit
     streamlit.platform: streamlit
     streamlit.proto: streamlit
@@ -9474,10 +9496,12 @@ manifest:
     streamlit.proto.ArrowVegaLiteChart_pb2: streamlit
     streamlit.proto.Arrow_pb2: streamlit
     streamlit.proto.Audio_pb2: streamlit
+    streamlit.proto.AutoRerun_pb2: streamlit
     streamlit.proto.BackMsg_pb2: streamlit
     streamlit.proto.Balloons_pb2: streamlit
     streamlit.proto.Block_pb2: streamlit
     streamlit.proto.BokehChart_pb2: streamlit
+    streamlit.proto.ButtonGroup_pb2: streamlit
     streamlit.proto.Button_pb2: streamlit
     streamlit.proto.CameraInput_pb2: streamlit
     streamlit.proto.ChatInput_pb2: streamlit
@@ -9502,15 +9526,18 @@ manifest:
     streamlit.proto.GitInfo_pb2: streamlit
     streamlit.proto.GraphVizChart_pb2: streamlit
     streamlit.proto.Heading_pb2: streamlit
+    streamlit.proto.Html_pb2: streamlit
     streamlit.proto.IFrame_pb2: streamlit
     streamlit.proto.Image_pb2: streamlit
     streamlit.proto.Json_pb2: streamlit
     streamlit.proto.LabelVisibilityMessage_pb2: streamlit
     streamlit.proto.LinkButton_pb2: streamlit
+    streamlit.proto.Logo_pb2: streamlit
     streamlit.proto.Markdown_pb2: streamlit
     streamlit.proto.Metric_pb2: streamlit
     streamlit.proto.MultiSelect_pb2: streamlit
     streamlit.proto.NamedDataSet_pb2: streamlit
+    streamlit.proto.Navigation_pb2: streamlit
     streamlit.proto.NewSession_pb2: streamlit
     streamlit.proto.NumberInput_pb2: streamlit
     streamlit.proto.PageConfig_pb2: streamlit
@@ -9550,28 +9577,31 @@ manifest:
     streamlit.runtime.caching.cache_utils: streamlit
     streamlit.runtime.caching.cached_message_replay: streamlit
     streamlit.runtime.caching.hashing: streamlit
+    streamlit.runtime.caching.legacy_cache_api: streamlit
     streamlit.runtime.caching.storage: streamlit
     streamlit.runtime.caching.storage.cache_storage_protocol: streamlit
     streamlit.runtime.caching.storage.dummy_cache_storage: streamlit
     streamlit.runtime.caching.storage.in_memory_cache_storage_wrapper: streamlit
     streamlit.runtime.caching.storage.local_disk_cache_storage: streamlit
     streamlit.runtime.connection_factory: streamlit
+    streamlit.runtime.context: streamlit
     streamlit.runtime.credentials: streamlit
     streamlit.runtime.forward_msg_cache: streamlit
     streamlit.runtime.forward_msg_queue: streamlit
-    streamlit.runtime.legacy_caching: streamlit
-    streamlit.runtime.legacy_caching.caching: streamlit
-    streamlit.runtime.legacy_caching.hashing: streamlit
+    streamlit.runtime.fragment: streamlit
     streamlit.runtime.media_file_manager: streamlit
     streamlit.runtime.media_file_storage: streamlit
     streamlit.runtime.memory_media_file_storage: streamlit
     streamlit.runtime.memory_session_storage: streamlit
     streamlit.runtime.memory_uploaded_file_manager: streamlit
     streamlit.runtime.metrics_util: streamlit
+    streamlit.runtime.pages_manager: streamlit
     streamlit.runtime.runtime: streamlit
     streamlit.runtime.runtime_util: streamlit
     streamlit.runtime.script_data: streamlit
     streamlit.runtime.scriptrunner: streamlit
+    streamlit.runtime.scriptrunner.exceptions: streamlit
+    streamlit.runtime.scriptrunner.exec_code: streamlit
     streamlit.runtime.scriptrunner.magic: streamlit
     streamlit.runtime.scriptrunner.magic_funcs: streamlit
     streamlit.runtime.scriptrunner.script_cache: streamlit
@@ -9600,6 +9630,7 @@ manifest:
     streamlit.testing.v1.element_tree: streamlit
     streamlit.testing.v1.local_script_runner: streamlit
     streamlit.testing.v1.util: streamlit
+    streamlit.time_util: streamlit
     streamlit.type_util: streamlit
     streamlit.url_util: streamlit
     streamlit.user_info: streamlit
@@ -14341,11 +14372,6 @@ manifest:
     tzdata.zoneinfo.Mexico: tzdata
     tzdata.zoneinfo.Pacific: tzdata
     tzdata.zoneinfo.US: tzdata
-    tzlocal: tzlocal
-    tzlocal.unix: tzlocal
-    tzlocal.utils: tzlocal
-    tzlocal.win32: tzlocal
-    tzlocal.windows_tz: tzlocal
     urllib3: urllib3
     urllib3.connection: urllib3
     urllib3.connectionpool: urllib3
@@ -14412,26 +14438,6 @@ manifest:
     uvicorn.supervisors.watchfilesreload: uvicorn
     uvicorn.supervisors.watchgodreload: uvicorn
     uvicorn.workers: uvicorn
-    validators: validators
-    validators.between: validators
-    validators.btc_address: validators
-    validators.card: validators
-    validators.country_code: validators
-    validators.domain: validators
-    validators.email: validators
-    validators.hashes: validators
-    validators.hostname: validators
-    validators.i18n: validators
-    validators.i18n.es: validators
-    validators.i18n.fi: validators
-    validators.iban: validators
-    validators.ip_address: validators
-    validators.length: validators
-    validators.mac_address: validators
-    validators.slug: validators
-    validators.url: validators
-    validators.utils: validators
-    validators.uuid: validators
     virtualenv: virtualenv
     virtualenv.activation: virtualenv
     virtualenv.activation.activator: virtualenv
@@ -14718,4 +14724,4 @@ manifest:
     zipp.glob: zipp
   pip_repository:
     name: pip
-integrity: 2863abdb3f9b8b83a8b4cb3a263d3ca1ddaaf8b0e5c9f4d44b4537cc7fdecb12
+integrity: f531bee5c8b51f3c511b042db30aa93e222d3ea6834e8aaa2339ce733d87e94c

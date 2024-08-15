@@ -523,9 +523,7 @@ imageio==2.34.1 \
 importlib-metadata==7.0.1 \
     --hash=sha256:4805911c3a4ec7c3966410053e9ec6a1fecd629117df5adee56dfc9432a1081e \
     --hash=sha256:f238736bb06590ae52ac1fab06a3a9ef1d8dce2b7a35b5ab329371d6c8f5d2cc
-    # via
-    #   streamlit
-    #   yapf
+    # via yapf
 importlib-resources==6.4.0 \
     --hash=sha256:50d10f043df931902d4194ea07ec57960f66a80449ff867bfe782b4c486ba78c \
     --hash=sha256:cdb2b453b8046ca4e3798eb1d84f3cce1446a0e8e7b5ef4efb600f19fc398145
@@ -1654,7 +1652,6 @@ python-dateutil==2.8.2 \
     #   kaggle
     #   matplotlib
     #   pandas
-    #   streamlit
 python-magic==0.4.27 \
     --hash=sha256:c1ba14b08e4a5f5c31a302b7721239695b2f0f058d125bd5ce1ee36b9d9d3c3b \
     --hash=sha256:c212960ad306f700aa0d01e5d7a325d20548ff97eb9920dcd29513174f0294d3
@@ -2223,9 +2220,9 @@ starlette==0.36.3 \
     --hash=sha256:13d429aa93a61dc40bf503e8c801db1f1bca3dc706b10ef2434a36123568f044 \
     --hash=sha256:90a671733cfb35771d8cc605e0b679d23b992f8dcfad48cc60b38cb29aeb7080
     # via fastapi
-streamlit==1.31.1 \
-    --hash=sha256:a1a84249f7a9b854fe356db06c85dc03c3f9da4df06a33aa5a922647b955e8c8 \
-    --hash=sha256:dfc43ca85b4b4c31d097c27b983b8ccc960222ad907862b2b2fb4ddf04c50fdc
+streamlit==1.37.1 \
+    --hash=sha256:0651240fccc569900cc9450390b0a67473fda55be65f317e46285f99e2bddf04 \
+    --hash=sha256:bc7e3813d94a39dda56f15678437eb37830973c601e8e574f2225a7bf188ea5a
     # via lavis-gml
 supervision==0.17.1 \
     --hash=sha256:813689af02e4e9231e331493a806a7f83702ededb238d0be5e4c05d9ab2a95a5 \
@@ -2502,10 +2499,6 @@ tzdata==2024.1 \
     --hash=sha256:2674120f8d891909751c38abcdfd386ac0a5a1127954fbc332af6b5ceae07efd \
     --hash=sha256:9068bc196136463f5245e51efda838afa15aaeca9903f49050dfa2679db4d252
     # via pandas
-tzlocal==5.2 \
-    --hash=sha256:49816ef2fe65ea8ac19d19aa7a1ae0551c834303d5014c6d5a62e4cbda8047b8 \
-    --hash=sha256:8d399205578f1a9342816409cc1e46a93ebd5755e39ea2d85334bea911bf0e6e
-    # via streamlit
 urllib3==2.2.2 \
     --hash=sha256:a448b2f64d686155468037e1ace9f2d2199776e17f0a46610480d311f73e3472 \
     --hash=sha256:dd505485549a7a552833da5e6063639d0d177c04f23bc3864e41e5dc5f612168
@@ -2518,10 +2511,6 @@ uvicorn==0.29.0 \
     --hash=sha256:2c2aac7ff4f4365c206fd773a39bf4ebd1047c238f8b8268ad996829323473de \
     --hash=sha256:6a69214c0b6a087462412670b3ef21224fa48cae0e452b5883e8e8bdfdd11dd0
     # via gradio
-validators==0.22.0 \
-    --hash=sha256:61cf7d4a62bbae559f2e54aed3b000cea9ff3e2fdbe463f51179b92c58c9585a \
-    --hash=sha256:77b2689b172eeeb600d9605ab86194641670cdb73b60afd577142a9397873370
-    # via streamlit
 virtualenv==20.25.1 \
     --hash=sha256:961c026ac520bac5f69acb8ea063e8a4f071bcc9457b9c1f28f6b085c511583a \
     --hash=sha256:e08e13ecdca7a0bd53798f356d5831434afa5b07b93f0abdf0797b7a06ffe197
