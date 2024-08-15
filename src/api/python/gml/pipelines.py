@@ -66,27 +66,6 @@ nodes:
     frame: .camera_source.frame
   outputs:
   - detections
-- name: frame_metrics_sink
-  kind: FrameMetricsSink
-  attributes:
-    frame_rate_limit: 30
-  inputs:
-    frame: .camera_source.frame
-  outputs:
-  - frame_metrics
-- name: detection_metrics_sink
-  kind: DetectionsMetricsSink
-  attributes:
-  inputs:
-    detections: .detect.detections
-- name: pipeline_latency_metrics_sink
-  kind: LatencyMetricsSink
-  attributes:
-    name: model
-  inputs:
-    reference: .camera_source.frame
-    detections: .detect.detections
-    frame_metrics: .frame_metrics_sink.frame_metrics
 - name: video_stream_sink
   kind: VideoStreamSink
   attributes:
@@ -94,7 +73,6 @@ nodes:
   inputs:
     frame: .camera_source.frame
     detections: .detect.detections
-    frame_metrics: .frame_metrics_sink.frame_metrics
 """
 
 
@@ -122,29 +100,12 @@ nodes:
     frame: .camera_source.frame
   outputs:
   - segmentation
-- name: frame_metrics_sink
-  kind: FrameMetricsSink
-  attributes:
-    frame_rate_limit: 30
-  inputs:
-    frame: .camera_source.frame
-  outputs:
-  - frame_metrics
-- name: pipeline_latency_metrics_sink
-  kind: LatencyMetricsSink
-  attributes:
-    name: model
-  inputs:
-    reference: .camera_source.frame
-    segmentation: .segment.segmentation
-    frame_metrics: .frame_metrics_sink.frame_metrics
 - name: video_stream_sink
   kind: VideoStreamSink
   attributes:
     frame_rate_limit: 30
   inputs:
     frame: .camera_source.frame
-    frame_metrics: .frame_metrics_sink.frame_metrics
     segmentation: .segment.segmentation
 """
 
