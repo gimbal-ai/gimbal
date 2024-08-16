@@ -76,8 +76,7 @@ TEST_P(ClassificationMetricsSinkTest, CollectsStatsCorrectly) {
 
           const auto& metric_data = scope_metrics[0].metric_data_;
 
-          // Set to back 1 after gml_gem_pipe_classifications_confidence is removed.
-          ASSERT_EQ(2, metric_data.size());
+          ASSERT_EQ(1, metric_data.size());
 
           for (const auto& metric_datum : metric_data) {
             const auto& point_data = metric_datum.point_data_attr_;

@@ -59,9 +59,6 @@ absl::Status ClassificationMetricsSinkCalculator::GetContract(mediapipe::Calcula
 absl::Status ClassificationMetricsSinkCalculator::Open(mediapipe::CalculatorContext*) {
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
 
-  confidence_hist_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
-      "gml_gem_pipe_classifications_confidence", "DEPRECATED.", kConfidenceClassesBounds);
-
   scores_hist_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
       "gml_gem_pipe_classifications_scores", "Scores of model predictions.",
       kConfidenceClassesBounds);
@@ -97,7 +94,6 @@ absl::Status ClassificationMetricsSinkCalculator::Process(mediapipe::CalculatorC
     attrs["class"] = class_name;
     attrs["k"] = std::to_string(k);
 
-    confidence_hist_->Record(conf, attrs, {});
     scores_hist_->Record(conf, attrs, {});
 
     top_k_classes.pop();
