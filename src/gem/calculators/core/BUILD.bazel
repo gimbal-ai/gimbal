@@ -41,6 +41,7 @@ gml_cc_library(
         "detections_to_mediapipe_calculator.cc",
         "detections_to_mediapipe_calculator.h",
         "execution_context_calculator.h",
+        "flow_limiter_metrics_sink_calculator.cc",
         "generate_tokens_metrics_sink_calculator.cc",
         "generate_tokens_metrics_sink_calculator.h",
         "image_frame_to_yuv_planar_image.cc",
@@ -270,6 +271,18 @@ gml_cc_test(
     name = "template_chat_message_calculator_test",
     srcs = [
         "template_chat_message_calculator_test.cc",
+        "test_utils.h",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "flow_limiter_metrics_sink_calculator_test",
+    srcs = [
+        "flow_limiter_metrics_sink_calculator_test.cc",
         "test_utils.h",
     ],
     deps = [

@@ -161,3 +161,14 @@ void CheckMetrics(gml::metrics::MetricsSystem& metrics_system,
       };
   metrics_system.Reader()->Collect(results_cb);
 }
+
+auto MatchCounterVector(const std::vector<ExpectedCounter<int64_t>>& expected) {
+  using MatchCounterType = decltype(MatchCounter(expected[0]));
+
+  std::vector<MatchCounterType> matchers;
+  matchers.reserve(expected.size());
+  for (const auto& x : expected) {
+    matchers.push_back(MatchCounter(x));
+  }
+  return UnorderedElementsAreArray(matchers);
+}
