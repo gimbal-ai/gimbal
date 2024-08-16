@@ -25,7 +25,6 @@
 #include "src/common/metrics/metrics_system.h"
 #include "src/common/testing/protobuf.h"
 #include "src/common/testing/testing.h"
-#include "src/gem/calculators/core/detections_summary_calculator.h"
 #include "src/gem/calculators/core/test_utils.h"
 #include "src/gem/testing/core/calculator_tester.h"
 #include "src/gem/testing/core/otel_utils.h"
