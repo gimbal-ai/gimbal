@@ -42,6 +42,8 @@ absl::Status TemplateChatMessageCalculator::GetContract(mediapipe::CalculatorCon
 
   cc->Outputs().Tag(kTextTag).Set<std::string>();
 
+  cc->SetTimestampOffset(0);
+
   return absl::OkStatus();
 }
 

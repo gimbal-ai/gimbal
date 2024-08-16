@@ -41,6 +41,8 @@ absl::Status QdrantSearchCalculator::GetContract(mediapipe::CalculatorContract* 
   cc->Inputs().Tag(kEmbeddingTag).Set<CPUTensorPtr>();
   cc->Outputs().Tag(kDocumentsTag).Set<std::vector<std::string>>();
 
+  cc->SetTimestampOffset(0);
+
   return absl::OkStatus();
 }
 

@@ -35,6 +35,8 @@ absl::Status TokenizerEncoderCalculator::GetContract(mediapipe::CalculatorContra
   cc->Inputs().Tag(kTextTag).Set<std::string>();
   cc->Outputs().Tag(kTokenIDsTag).Set<std::vector<int>>();
 
+  cc->SetTimestampOffset(0);
+
   return absl::OkStatus();
 }
 
