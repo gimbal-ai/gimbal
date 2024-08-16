@@ -1,0 +1,12 @@
+[package]
+name = "safetensors_wrapper"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+safetensors = "0.4.4"
+cxx = "1.0"
+memmap2 = "0.9.4"
+
+[build-dependencies]
+cxx-build = "1.0"

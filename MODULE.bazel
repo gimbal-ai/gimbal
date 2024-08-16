@@ -301,6 +301,7 @@ crate.from_cargo(
         "//:Cargo.toml",
         "//src/gem/exec/plugin/huggingface/tokenizer_wrapper:Cargo.toml",
         "//bazel/external/cxxbridge_cmd:Cargo.toml",
+        "//src/common/safetensors_wrapper:Cargo.toml",
     ],
 )
 use_repo(crate, "crates")
