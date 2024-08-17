@@ -28,6 +28,8 @@
 
 #include "src/common/metrics/metrics_system.h"
 
+namespace gml::gem::calculators::core {
+
 struct ExpectedHist {
   std::vector<double> bucket_bounds;
   std::vector<uint64_t> bucket_counts;
@@ -35,7 +37,25 @@ struct ExpectedHist {
       {};
 };
 
-auto OTelAttributes(
+template <typename T>
+struct ExpectedGaugeOrCounter {
+  T value;
+  absl::flat_hash_map<std::string, ::opentelemetry::sdk::common::OwnedAttributeValue> attributes =
+      {};
+};
+
+template <typename T>
+struct ExpectedGauge : public ExpectedGaugeOrCounter<T> {};
+
+template <typename T>
+struct ExpectedCounter : public ExpectedGaugeOrCounter<T> {};
+
+using ExpectedMetric = std::variant<ExpectedGauge<int64_t>, ExpectedCounter<int64_t>,
+                                    ExpectedGauge<double>, ExpectedCounter<double>, ExpectedHist>;
+
+using ExpectedMetricsMap = absl::flat_hash_map<std::string, ExpectedMetric>;
+
+auto MatchOTelAttributes(
     const absl::flat_hash_map<std::string, ::opentelemetry::sdk::common::OwnedAttributeValue>&
         expected_attributes) {
   using ::testing::Field;
@@ -62,15 +82,8 @@ auto MatchHistogram(const ExpectedHist& expected) {
                                      ElementsAreArray(expected.bucket_bounds)),
                                Field(&otel_metrics::HistogramPointData::counts_,
                                      ElementsAreArray(expected.bucket_counts))))),
-               OTelAttributes(expected.attributes));
+               MatchOTelAttributes(expected.attributes));
 }
-
-template <typename T>
-struct ExpectedGaugeOrCounter {
-  T value;
-  absl::flat_hash_map<std::string, ::opentelemetry::sdk::common::OwnedAttributeValue> attributes =
-      {};
-};
 
 template <typename T, typename PointData>
 auto MatchGaugeOrCounter(const ExpectedGaugeOrCounter<T>& expected) {
@@ -83,8 +96,9 @@ auto MatchGaugeOrCounter(const ExpectedGaugeOrCounter<T>& expected) {
 
   return AllOf(Field(&otel_metrics::PointDataAttributes::point_data,
                      VariantWith<PointData>(Field(&PointData::value_, expected.value))),
-               OTelAttributes(expected.attributes));
+               MatchOTelAttributes(expected.attributes));
 }
+
 template <typename T>
 auto MatchGauge(const ExpectedGaugeOrCounter<T>& expected) {
   return MatchGaugeOrCounter<T, opentelemetry::sdk::metrics::LastValuePointData>(expected);
@@ -93,6 +107,27 @@ auto MatchGauge(const ExpectedGaugeOrCounter<T>& expected) {
 template <typename T>
 auto MatchCounter(const ExpectedGaugeOrCounter<T>& expected) {
   return MatchGaugeOrCounter<T, opentelemetry::sdk::metrics::SumPointData>(expected);
+}
+
+auto MatchMetric(const ExpectedMetric& expected) {
+  return std::visit(
+      [](const auto& e) {
+        using T = std::decay_t<decltype(e)>;
+        if constexpr (std::is_same_v<T, ExpectedGauge<int64_t>>) {
+          return MatchGauge<int64_t>(e);
+        } else if constexpr (std::is_same_v<T, ExpectedCounter<int64_t>>) {
+          return MatchCounter<int64_t>(e);
+        } else if constexpr (std::is_same_v<T, ExpectedGauge<double>>) {
+          return MatchGauge<double>(e);
+        } else if constexpr (std::is_same_v<T, ExpectedCounter<double>>) {
+          return MatchCounter<double>(e);
+        } else if constexpr (std::is_same_v<T, ExpectedHist>) {
+          return MatchHistogram(e);
+        } else {
+          static_assert(std::is_same_v<T, std::nullopt_t>, "Unexpected type");
+        }
+      },
+      expected);
 }
 
 auto MatchHistogramVector(const std::vector<ExpectedHist>& expected) {
@@ -106,50 +141,30 @@ auto MatchHistogramVector(const std::vector<ExpectedHist>& expected) {
   return UnorderedElementsAreArray(matchers);
 }
 
-template <typename T>
-struct ExpectedGauge : public ExpectedGaugeOrCounter<T> {};
-
-template <typename T>
-struct ExpectedCounter : public ExpectedGaugeOrCounter<T> {};
-
-using ExpectedMetric = std::variant<ExpectedGauge<int64_t>, ExpectedCounter<int64_t>,
-                                    ExpectedGauge<double>, ExpectedCounter<double>, ExpectedHist>;
 void CheckMetrics(gml::metrics::MetricsSystem& metrics_system,
-                  const absl::flat_hash_map<std::string, ExpectedMetric>& expected_metrics) {
+                  const ExpectedMetricsMap& expected_metrics_map) {
   auto check_results =
-      [&expected_metrics](opentelemetry::sdk::metrics::ResourceMetrics& resource_metrics) {
+      [&expected_metrics_map](opentelemetry::sdk::metrics::ResourceMetrics& resource_metrics) {
         const auto& scope_metrics = resource_metrics.scope_metric_data_;
-        if (expected_metrics.empty()) {
+        if (expected_metrics_map.empty()) {
           ASSERT_EQ(0, scope_metrics.size());
           return;
         }
         ASSERT_EQ(1, scope_metrics.size());
 
         const auto& metric_data = scope_metrics[0].metric_data_;
-        ASSERT_EQ(expected_metrics.size(), metric_data.size());
+        ASSERT_EQ(expected_metrics_map.size(), metric_data.size());
 
         for (const auto& metric_datum : metric_data) {
           SCOPED_TRACE("For returned metric " + metric_datum.instrument_descriptor.name_);
           const auto& name = metric_datum.instrument_descriptor.name_;
-          const auto& point_data = metric_datum.point_data_attr_;
-          ASSERT_EQ(1, point_data.size());
-          ASSERT_TRUE(expected_metrics.contains(name));
-          const auto& expected_metric = expected_metrics.at(name);
-          if (std::holds_alternative<ExpectedGauge<int64_t>>(expected_metric)) {
-            EXPECT_THAT(point_data[0],
-                        MatchGauge<int64_t>(std::get<ExpectedGauge<int64_t>>(expected_metric)));
-          } else if (std::holds_alternative<ExpectedCounter<int64_t>>(expected_metric)) {
-            EXPECT_THAT(point_data[0],
-                        MatchCounter<int64_t>(std::get<ExpectedCounter<int64_t>>(expected_metric)));
-          } else if (std::holds_alternative<ExpectedGauge<double>>(expected_metric)) {
-            EXPECT_THAT(point_data[0],
-                        MatchGauge<double>(std::get<ExpectedGauge<double>>(expected_metric)));
-          } else if (std::holds_alternative<ExpectedCounter<double>>(expected_metric)) {
-            EXPECT_THAT(point_data[0],
-                        MatchCounter<double>(std::get<ExpectedCounter<double>>(expected_metric)));
-          } else if (std::holds_alternative<ExpectedHist>(expected_metric)) {
-            EXPECT_THAT(point_data[0], MatchHistogram(std::get<ExpectedHist>(expected_metric)));
-          }
+          const auto& point_data_attr = metric_datum.point_data_attr_;
+
+          ASSERT_TRUE(expected_metrics_map.contains(name));
+          const auto& expected_metric = expected_metrics_map.at(name);
+
+          ASSERT_EQ(point_data_attr.size(), 1);
+          EXPECT_THAT(point_data_attr[0], MatchMetric(expected_metric));
         }
       };
 
@@ -162,13 +177,4 @@ void CheckMetrics(gml::metrics::MetricsSystem& metrics_system,
   metrics_system.Reader()->Collect(results_cb);
 }
 
-auto MatchCounterVector(const std::vector<ExpectedCounter<int64_t>>& expected) {
-  using MatchCounterType = decltype(MatchCounter(expected[0]));
-
-  std::vector<MatchCounterType> matchers;
-  matchers.reserve(expected.size());
-  for (const auto& x : expected) {
-    matchers.push_back(MatchCounter(x));
-  }
-  return UnorderedElementsAreArray(matchers);
-}
+}  // namespace gml::gem::calculators::core

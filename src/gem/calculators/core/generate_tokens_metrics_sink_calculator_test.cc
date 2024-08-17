@@ -89,7 +89,7 @@ struct StreamBatch {
   std::optional<InputBatch> input_batch = std::nullopt;
   std::optional<OutputBatch> output_batch = std::nullopt;
   // Metric Values
-  absl::flat_hash_map<std::string, ExpectedMetric> expected_metrics;
+  ExpectedMetricsMap expected_metrics;
 };
 
 struct GenerateTokenMetricsSinkTestCase {

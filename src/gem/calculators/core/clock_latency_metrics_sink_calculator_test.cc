@@ -49,7 +49,7 @@ node_options {
 struct ClockLatencyMetricsSinkTestCase {
   std::string_view config;
   std::vector<absl::Duration> input_durations;
-  absl::flat_hash_map<std::string, ExpectedMetric> expected_metrics;
+  ExpectedMetricsMap expected_metrics;
 };
 
 class ClockLatencyMetricsSinkTest
