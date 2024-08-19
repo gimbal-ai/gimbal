@@ -35,7 +35,7 @@ using ::gml::internal::api::core::v1::Classification;
 
 struct PacketAndExpectation {
   std::string classification_pbtxt;
-  std::vector<ExpectedHist> expected_hists;
+  ExpectedMetricsMap expected_hists;
 };
 
 class ClassificationMetricsSinkTest
@@ -68,28 +68,7 @@ TEST_P(ClassificationMetricsSinkTest, CollectsStatsCorrectly) {
 
     metrics_system.Reset();
     ASSERT_OK(runner.Run());
-
-    auto check_results =
-        [&expected_hists](opentelemetry::sdk::metrics::ResourceMetrics& resource_metrics) {
-          const auto& scope_metrics = resource_metrics.scope_metric_data_;
-          ASSERT_EQ(1, scope_metrics.size());
-
-          const auto& metric_data = scope_metrics[0].metric_data_;
-
-          ASSERT_EQ(1, metric_data.size());
-
-          for (const auto& metric_datum : metric_data) {
-            const auto& point_data = metric_datum.point_data_attr_;
-
-            EXPECT_THAT(point_data, MatchHistogramVector(expected_hists));
-          }
-        };
-    auto results_cb =
-        [&check_results](opentelemetry::sdk::metrics::ResourceMetrics& resource_metrics) {
-          check_results(resource_metrics);
-          return true;
-        };
-    metrics_system.Reader()->Collect(results_cb);
+    CheckMetrics(metrics_system, expected_hists);
   }
 }
 
@@ -113,27 +92,29 @@ INSTANTIATE_TEST_SUITE_P(
                 }
                 )pbtxt",
             },
-            std::vector<ExpectedHist>{
-                ExpectedHist{
-                    {0.0,  0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50,
-                     0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0},
-                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-                    {{"class", "bottle"}, {"k", "1"}},
+            ExpectedMetricsMap{{
+                "gml_gem_pipe_classifications_scores",
+                std::vector<ExpectedMetric>{
+                    ExpectedHist{
+                        {0.0,  0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50,
+                         0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0},
+                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+                        {{"class", "bottle"}, {"k", "1"}},
+                    },
+                    ExpectedHist{
+                        {0.0,  0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50,
+                         0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0},
+                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {{"class", "can"}, {"k", "2"}},
+                    },
+                    ExpectedHist{
+                        {0.0,  0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50,
+                         0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0},
+                        {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {{"class", "person"}, {"k", "3"}},
+                    },
                 },
-                ExpectedHist{
-                    {0.0,  0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50,
-                     0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0},
-                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                    {{"class", "can"}, {"k", "2"}},
-                },
-                ExpectedHist{
-                    {0.0,  0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50,
-                     0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0},
-                    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                    {{"class", "person"}, {"k", "3"}},
-                },
-            },
-        },
+            }}},
         PacketAndExpectation{
             std::string{
                 R"pbtxt(
@@ -155,33 +136,35 @@ INSTANTIATE_TEST_SUITE_P(
                 }
                 )pbtxt",
             },
-            std::vector<ExpectedHist>{
-                ExpectedHist{
-                    {0.0,  0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50,
-                     0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0},
-                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0},
-                    {{"class", "bottle"}, {"k", "1"}},
+            ExpectedMetricsMap{{
+                "gml_gem_pipe_classifications_scores",
+                std::vector<ExpectedMetric>{
+                    ExpectedHist{
+                        {0.0,  0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50,
+                         0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0},
+                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0},
+                        {{"class", "bottle"}, {"k", "1"}},
+                    },
+                    ExpectedHist{
+                        {0.0,  0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50,
+                         0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0},
+                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {{"class", "can"}, {"k", "2"}},
+                    },
+                    ExpectedHist{
+                        {0.0,  0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50,
+                         0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0},
+                        {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {{"class", "person"}, {"k", "3"}},
+                    },
+                    ExpectedHist{
+                        {0.0,  0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50,
+                         0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0},
+                        {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {{"class", "wrench"}, {"k", "3"}},
+                    },
                 },
-                ExpectedHist{
-                    {0.0,  0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50,
-                     0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0},
-                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                    {{"class", "can"}, {"k", "2"}},
-                },
-                ExpectedHist{
-                    {0.0,  0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50,
-                     0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0},
-                    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                    {{"class", "person"}, {"k", "3"}},
-                },
-                ExpectedHist{
-                    {0.0,  0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50,
-                     0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0},
-                    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                    {{"class", "wrench"}, {"k", "3"}},
-                },
-            },
-        },
+            }}},
     }));
 
 }  // namespace gml::gem::calculators::core

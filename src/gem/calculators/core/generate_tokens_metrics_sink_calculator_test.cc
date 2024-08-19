@@ -141,12 +141,12 @@ INSTANTIATE_TEST_SUITE_P(
                     .expected_metrics =
                         {
                             {"gml_gem_pipe_gentokens_input_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = metrics::kDefaultHistogramBounds,
                                  .bucket_counts = {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                         },
                 },
                 StreamBatch{
@@ -159,23 +159,23 @@ INSTANTIATE_TEST_SUITE_P(
                     .expected_metrics =
                         {
                             {"gml_gem_pipe_gentokens_output",
-                             ExpectedCounter<int64_t>{
-                                 3,
-                                 {{"pipeline_id", "test_pipeline"}, {"device_id", "test_device"}}}},
+                             {ExpectedCounter<int64_t>{3,
+                                                       {{"pipeline_id", "test_pipeline"},
+                                                        {"device_id", "test_device"}}}}},
                             {"gml_gem_pipe_gentokens_input_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = metrics::kDefaultHistogramBounds,
                                  .bucket_counts = {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                             {"gml_gem_pipe_gentokens_time_to_first_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = kLatencyBucketBounds,
                                  .bucket_counts = {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                         },
                 },
                 StreamBatch{
@@ -188,37 +188,37 @@ INSTANTIATE_TEST_SUITE_P(
                     .expected_metrics =
                         {
                             {"gml_gem_pipe_gentokens_output",
-                             ExpectedCounter<int64_t>{11,
-                                                      {{"pipeline_id", "test_pipeline"},
-                                                       {"device_id", "test_device"}}}},
+                             {ExpectedCounter<int64_t>{11,
+                                                       {{"pipeline_id", "test_pipeline"},
+                                                        {"device_id", "test_device"}}}}},
                             {"gml_gem_pipe_gentokens_input_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = metrics::kDefaultHistogramBounds,
                                  .bucket_counts = {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                             {"gml_gem_pipe_gentokens_output_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = metrics::kDefaultHistogramBounds,
                                  .bucket_counts = {0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                             {"gml_gem_pipe_gentokens_time_to_first_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = kLatencyBucketBounds,
                                  .bucket_counts = {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                             {"gml_gem_pipe_gentokens_time_to_last_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = kLatencyBucketBounds,
                                  .bucket_counts = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                         },
                 },
                 StreamBatch{
@@ -232,37 +232,37 @@ INSTANTIATE_TEST_SUITE_P(
                     .expected_metrics =
                         {
                             {"gml_gem_pipe_gentokens_output",
-                             ExpectedCounter<int64_t>{12,
-                                                      {{"pipeline_id", "test_pipeline"},
-                                                       {"device_id", "test_device"}}}},
+                             {ExpectedCounter<int64_t>{12,
+                                                       {{"pipeline_id", "test_pipeline"},
+                                                        {"device_id", "test_device"}}}}},
                             {"gml_gem_pipe_gentokens_input_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = metrics::kDefaultHistogramBounds,
                                  .bucket_counts = {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                             {"gml_gem_pipe_gentokens_output_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = metrics::kDefaultHistogramBounds,
                                  .bucket_counts = {0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                             {"gml_gem_pipe_gentokens_time_to_first_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = kLatencyBucketBounds,
                                  .bucket_counts = {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                             {"gml_gem_pipe_gentokens_time_to_last_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = kLatencyBucketBounds,
                                  .bucket_counts = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                         },
                 },
                 // Receieve an input batch before receiving an eos output batch for previous
@@ -272,37 +272,37 @@ INSTANTIATE_TEST_SUITE_P(
                     .expected_metrics =
                         {
                             {"gml_gem_pipe_gentokens_output",
-                             ExpectedCounter<int64_t>{12,
-                                                      {{"pipeline_id", "test_pipeline"},
-                                                       {"device_id", "test_device"}}}},
+                             {ExpectedCounter<int64_t>{12,
+                                                       {{"pipeline_id", "test_pipeline"},
+                                                        {"device_id", "test_device"}}}}},
                             {"gml_gem_pipe_gentokens_input_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = metrics::kDefaultHistogramBounds,
                                  .bucket_counts = {0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                             {"gml_gem_pipe_gentokens_output_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = metrics::kDefaultHistogramBounds,
                                  .bucket_counts = {0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                             {"gml_gem_pipe_gentokens_time_to_first_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = kLatencyBucketBounds,
                                  .bucket_counts = {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                             {"gml_gem_pipe_gentokens_time_to_last_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = kLatencyBucketBounds,
                                  .bucket_counts = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                         },
                 },
                 StreamBatch{
@@ -315,39 +315,39 @@ INSTANTIATE_TEST_SUITE_P(
                     .expected_metrics =
                         {
                             {"gml_gem_pipe_gentokens_output",
-                             ExpectedCounter<int64_t>{13,
-                                                      {{"pipeline_id", "test_pipeline"},
-                                                       {"device_id", "test_device"}}}},
+                             {ExpectedCounter<int64_t>{13,
+                                                       {{"pipeline_id", "test_pipeline"},
+                                                        {"device_id", "test_device"}}}}},
                             {"gml_gem_pipe_gentokens_input_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = metrics::kDefaultHistogramBounds,
                                  .bucket_counts = {0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                             {"gml_gem_pipe_gentokens_output_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = metrics::kDefaultHistogramBounds,
                                  .bucket_counts = {0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                             // This metric does not get updated because the input batch
                             // is received before the eos output batch for previous batch
                             {"gml_gem_pipe_gentokens_time_to_first_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = kLatencyBucketBounds,
                                  .bucket_counts = {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                             {"gml_gem_pipe_gentokens_time_to_last_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = kLatencyBucketBounds,
                                  .bucket_counts = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                         },
                 },
                 // Recieves the first output batch for the input batch and record the metric.
@@ -361,38 +361,38 @@ INSTANTIATE_TEST_SUITE_P(
                     .expected_metrics =
                         {
                             {"gml_gem_pipe_gentokens_output",
-                             ExpectedCounter<int64_t>{14,
-                                                      {{"pipeline_id", "test_pipeline"},
-                                                       {"device_id", "test_device"}}}},
+                             {ExpectedCounter<int64_t>{14,
+                                                       {{"pipeline_id", "test_pipeline"},
+                                                        {"device_id", "test_device"}}}}},
                             {"gml_gem_pipe_gentokens_input_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = metrics::kDefaultHistogramBounds,
                                  .bucket_counts = {0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                             {"gml_gem_pipe_gentokens_output_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = metrics::kDefaultHistogramBounds,
                                  .bucket_counts = {0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                             // Metric gets updated, for 50ms latency
                             {"gml_gem_pipe_gentokens_time_to_first_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = kLatencyBucketBounds,
                                  .bucket_counts = {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                             {"gml_gem_pipe_gentokens_time_to_last_hist",
-                             ExpectedHist{
+                             {ExpectedHist{
                                  .bucket_bounds = kLatencyBucketBounds,
                                  .bucket_counts = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
-                             }},
+                             }}},
                         },
                 },
             }}));

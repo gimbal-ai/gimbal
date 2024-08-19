@@ -35,7 +35,7 @@ using ::gml::internal::api::core::v1::Detection;
 
 struct PacketAndExpectation {
   std::vector<std::string> detection_pbtxts;
-  absl::flat_hash_map<std::string, std::vector<ExpectedHist>> expected_hists;
+  absl::flat_hash_map<std::string, std::vector<ExpectedMetric>> expected_hists;
 };
 
 std::ostream& operator<<(std::ostream& os, const PacketAndExpectation& packet_and_expectation) {
@@ -75,32 +75,7 @@ TEST_P(DetectionsMetricsSinkTest, CollectsStatsCorrectly) {
       .ExpectOutput<bool>("FINISHED", 0, mediapipe::Timestamp(0), true);
 
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
-
-  auto check_results =
-      [&expected_hists](opentelemetry::sdk::metrics::ResourceMetrics& resource_metrics) {
-        const auto& scope_metrics = resource_metrics.scope_metric_data_;
-        ASSERT_EQ(1, scope_metrics.size());
-
-        const auto& metric_data = scope_metrics[0].metric_data_;
-        // We expect 3 histograms: one for aspect ratio, one for area, and one for confidence.
-        ASSERT_EQ(3, metric_data.size());
-
-        for (const auto& metric_datum : metric_data) {
-          const auto& name = metric_datum.instrument_descriptor.name_;
-          ASSERT_TRUE(expected_hists.contains(name))
-              << absl::Substitute("Could not find expected histogram named $0", name);
-          const auto& metric_expected_hists = expected_hists[name];
-
-          const auto& point_data = metric_datum.point_data_attr_;
-          EXPECT_THAT(point_data, MatchHistogramVector(metric_expected_hists));
-        }
-      };
-  auto results_cb =
-      [&check_results](opentelemetry::sdk::metrics::ResourceMetrics& resource_metrics) {
-        check_results(resource_metrics);
-        return true;
-      };
-  metrics_system.Reader()->Collect(results_cb);
+  CheckMetrics(metrics_system, expected_hists);
 }
 
 INSTANTIATE_TEST_SUITE_P(
@@ -156,10 +131,10 @@ INSTANTIATE_TEST_SUITE_P(
                 }
             )pbtxt",
         },
-        absl::flat_hash_map<std::string, std::vector<ExpectedHist>>{
+        ExpectedMetricsMap{
             {
                 "gml_gem_pipe_detections_aspect_ratio",
-                std::vector<ExpectedHist>{
+                std::vector<ExpectedMetric>{
                     ExpectedHist{
                         {0, 0.02, 0.2, 0.5, 1, 2, 5, 50},
                         {0, 0, 0, 1, 1, 0, 0, 0, 0},
@@ -174,7 +149,7 @@ INSTANTIATE_TEST_SUITE_P(
             },
             {
                 "gml_gem_pipe_detections_area",
-                std::vector<ExpectedHist>{
+                std::vector<ExpectedMetric>{
                     ExpectedHist{
                         {0, 0.01, 0.04, 0.09, 0.16, 0.25, 0.36, 0.49, 0.64, 0.81, 1},
                         {0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0},
@@ -189,7 +164,7 @@ INSTANTIATE_TEST_SUITE_P(
             },
             {
                 "gml_gem_pipe_detections_confidence",
-                std::vector<ExpectedHist>{
+                std::vector<ExpectedMetric>{
                     ExpectedHist{
                         {0,    0.05, 0.1,  0.15, 0.2,  0.25, 0.3,  0.35, 0.4,  0.45, 0.5,
                          0.55, 0.6,  0.65, 0.7,  0.75, 0.8,  0.85, 0.9,  0.95, 1},

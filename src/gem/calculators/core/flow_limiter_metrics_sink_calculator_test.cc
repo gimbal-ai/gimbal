@@ -43,9 +43,9 @@ TEST(FlowLimiterMetricsSinkCalculatorTest, Basic) {
       .ForInput(0, true, mediapipe::Timestamp(4))
       .Run();
 
-  absl::flat_hash_map<std::string, ExpectedMetric> expectations{
-      {"gml_gem_pipe_flow_limiter_allows", ExpectedCounter<int64_t>{3}},
-      {"gml_gem_pipe_flow_limiter_drops", ExpectedCounter<int64_t>{2}},
+  ExpectedMetricsMap expectations{
+      {"gml_gem_pipe_flow_limiter_allows", {ExpectedCounter<int64_t>{3}}},
+      {"gml_gem_pipe_flow_limiter_drops", {ExpectedCounter<int64_t>{2}}},
   };
   auto& metrics_system = metrics::MetricsSystem::GetInstance();
   CheckMetrics(metrics_system, expectations);

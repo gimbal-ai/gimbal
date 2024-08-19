@@ -78,35 +78,33 @@ INSTANTIATE_TEST_SUITE_P(
         ClockLatencyMetricsSinkTestCase{
             .config = kClockLatencyMetricsSinkNode,
             .input_durations = {absl::Milliseconds(10)},
-            .expected_metrics =
-                {
-                    {"gml_gem_detect_latency_seconds",
-                     ExpectedHist{
-                         .bucket_bounds = kLatencyBucketBounds,
-                         .bucket_counts = {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                     }},
-                },
+            .expected_metrics = {{"gml_gem_detect_latency_seconds",
+                                  {ExpectedHist{
+                                      .bucket_bounds = kLatencyBucketBounds,
+                                      .bucket_counts = {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                        0},
+                                  }}}},
         },
         ClockLatencyMetricsSinkTestCase{
             .config = R"pbtxt(
-calculator: "ClockLatencyMetricsSinkCalculator"
-input_stream: "duration0"
-input_stream: "duration1"
-output_stream: "FINISHED:finished"
-node_options {
-  [type.googleapis.com/gml.gem.calculators.core.optionspb.ClockLatencyMetricsSinkCalculatorOptions] {
-    name: "detect"
-  }
-}
-)pbtxt",
+              calculator: "ClockLatencyMetricsSinkCalculator"
+              input_stream: "duration0"
+              input_stream: "duration1"
+              output_stream: "FINISHED:finished"
+              node_options {
+                [type.googleapis.com/gml.gem.calculators.core.optionspb.ClockLatencyMetricsSinkCalculatorOptions] {
+                  name: "detect"
+                }
+              }
+            )pbtxt",
             .input_durations = {absl::Milliseconds(5), absl::Milliseconds(10)},
             .expected_metrics =
                 {
                     {"gml_gem_detect_latency_seconds",
-                     ExpectedHist{
+                     {ExpectedHist{
                          .bucket_bounds = kLatencyBucketBounds,
                          .bucket_counts = {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                     }},
+                     }}},
                 },
         },
         ClockLatencyMetricsSinkTestCase{
@@ -115,10 +113,10 @@ node_options {
             .expected_metrics =
                 {
                     {"gml_gem_detect_latency_seconds",
-                     ExpectedHist{
+                     {ExpectedHist{
                          .bucket_bounds = kLatencyBucketBounds,
                          .bucket_counts = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                     }},
+                     }}},
                 },
         },
         // No input

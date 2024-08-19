@@ -33,15 +33,13 @@ namespace gml::gem::calculators::core {
 struct ExpectedHist {
   std::vector<double> bucket_bounds;
   std::vector<uint64_t> bucket_counts;
-  absl::flat_hash_map<std::string, ::opentelemetry::sdk::common::OwnedAttributeValue> attributes =
-      {};
+  absl::flat_hash_map<std::string, ::opentelemetry::sdk::common::OwnedAttributeValue> attributes{};
 };
 
 template <typename T>
 struct ExpectedGaugeOrCounter {
   T value;
-  absl::flat_hash_map<std::string, ::opentelemetry::sdk::common::OwnedAttributeValue> attributes =
-      {};
+  absl::flat_hash_map<std::string, ::opentelemetry::sdk::common::OwnedAttributeValue> attributes{};
 };
 
 template <typename T>
@@ -53,7 +51,7 @@ struct ExpectedCounter : public ExpectedGaugeOrCounter<T> {};
 using ExpectedMetric = std::variant<ExpectedGauge<int64_t>, ExpectedCounter<int64_t>,
                                     ExpectedGauge<double>, ExpectedCounter<double>, ExpectedHist>;
 
-using ExpectedMetricsMap = absl::flat_hash_map<std::string, ExpectedMetric>;
+using ExpectedMetricsMap = absl::flat_hash_map<std::string, std::vector<ExpectedMetric>>;
 
 auto MatchOTelAttributes(
     const absl::flat_hash_map<std::string, ::opentelemetry::sdk::common::OwnedAttributeValue>&
@@ -130,19 +128,10 @@ auto MatchMetric(const ExpectedMetric& expected) {
       expected);
 }
 
-auto MatchHistogramVector(const std::vector<ExpectedHist>& expected) {
-  using MatchHistogramType = decltype(MatchHistogram(expected[0]));
-
-  std::vector<MatchHistogramType> matchers;
-  matchers.reserve(expected.size());
-  for (const auto& x : expected) {
-    matchers.push_back(MatchHistogram(x));
-  }
-  return UnorderedElementsAreArray(matchers);
-}
-
 void CheckMetrics(gml::metrics::MetricsSystem& metrics_system,
                   const ExpectedMetricsMap& expected_metrics_map) {
+  namespace otel_metrics = opentelemetry::sdk::metrics;
+
   auto check_results =
       [&expected_metrics_map](opentelemetry::sdk::metrics::ResourceMetrics& resource_metrics) {
         const auto& scope_metrics = resource_metrics.scope_metric_data_;
@@ -161,10 +150,14 @@ void CheckMetrics(gml::metrics::MetricsSystem& metrics_system,
           const auto& point_data_attr = metric_datum.point_data_attr_;
 
           ASSERT_TRUE(expected_metrics_map.contains(name));
-          const auto& expected_metric = expected_metrics_map.at(name);
+          const auto& expected_metrics = expected_metrics_map.at(name);
 
-          ASSERT_EQ(point_data_attr.size(), 1);
-          EXPECT_THAT(point_data_attr[0], MatchMetric(expected_metric));
+          std::vector<::testing::Matcher<const otel_metrics::PointDataAttributes&>> matchers;
+          matchers.reserve(expected_metrics.size());
+          for (const auto& expected_metric : expected_metrics) {
+            matchers.emplace_back(MatchMetric(expected_metric));
+          }
+          EXPECT_THAT(point_data_attr, ::testing::UnorderedElementsAreArray(matchers));
         }
       };
 
