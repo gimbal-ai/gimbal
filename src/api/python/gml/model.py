@@ -23,7 +23,7 @@ from typing import BinaryIO, Dict, List, Literal, Optional, Sequence, TextIO, Tu
 
 import gml.proto.src.api.corepb.v1.model_exec_pb2 as modelexecpb
 import torch
-from gml.compile import to_torch_mlir, torch_mlir_output_kind
+from gml.compile import to_torch_mlir
 from gml.preprocessing import ImagePreprocessingStep
 from gml.tensor import TensorSemantics
 
@@ -111,7 +111,7 @@ class TorchModel(Model):
     ):
         super().__init__(
             name,
-            torch_mlir_output_kind(),
+            modelexecpb.ModelInfo.MODEL_KIND_TORCH,
             modelexecpb.ModelInfo.MODEL_STORAGE_FORMAT_MLIR_TEXT,
             **kwargs,
         )

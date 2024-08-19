@@ -20,6 +20,6 @@ protobuf==4.23.4
 psycopg2-binary==2.9.9
 segment-anything-py==1.0
 supervision==0.17.1
-torch==2.1.2
-torch_mlir_gml
-torchvision==0.16.2
+torch==2.3.1
+torch-mlir-gml==0.0.2
+torchvision==0.18.1

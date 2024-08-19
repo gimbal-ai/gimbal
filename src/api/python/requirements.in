@@ -1,6 +1,6 @@
 protobuf
 grpcio
 torch>=2.3.0
-torch_mlir_gml==0.0.2
+torch-mlir-gml==0.0.2
 numpy<2.0.0
 transformers>=4.43.3

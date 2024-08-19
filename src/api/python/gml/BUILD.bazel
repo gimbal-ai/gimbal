@@ -44,7 +44,6 @@ py_library(
         "@gml_api_pip//torch",
         "@gml_api_pip//torch_mlir_gml",
         "@gml_api_pip//transformers",
-        "@pip//torch_mlir_gml",
     ],
 )
 

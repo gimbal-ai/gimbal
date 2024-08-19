@@ -3959,7 +3959,47 @@ manifest:
     numpy.typing.tests.test_runtime: numpy
     numpy.typing.tests.test_typing: numpy
     numpy.version: numpy
-    nvfuser: torch
+    nvidia: nvidia_nvtx_cu12
+    nvidia.cublas: nvidia_cublas_cu12
+    nvidia.cublas.include: nvidia_cublas_cu12
+    nvidia.cublas.lib: nvidia_cublas_cu12
+    nvidia.cuda_cupti: nvidia_cuda_cupti_cu12
+    nvidia.cuda_cupti.include: nvidia_cuda_cupti_cu12
+    nvidia.cuda_cupti.lib: nvidia_cuda_cupti_cu12
+    nvidia.cuda_cupti.lib.libcheckpoint: nvidia_cuda_cupti_cu12
+    nvidia.cuda_cupti.lib.libnvperf_host: nvidia_cuda_cupti_cu12
+    nvidia.cuda_cupti.lib.libnvperf_target: nvidia_cuda_cupti_cu12
+    nvidia.cuda_cupti.lib.libpcsamplingutil: nvidia_cuda_cupti_cu12
+    nvidia.cuda_nvrtc: nvidia_cuda_nvrtc_cu12
+    nvidia.cuda_nvrtc.include: nvidia_cuda_nvrtc_cu12
+    nvidia.cuda_nvrtc.lib: nvidia_cuda_nvrtc_cu12
+    nvidia.cuda_runtime: nvidia_cuda_runtime_cu12
+    nvidia.cuda_runtime.include: nvidia_cuda_runtime_cu12
+    nvidia.cuda_runtime.lib: nvidia_cuda_runtime_cu12
+    nvidia.cudnn: nvidia_cudnn_cu12
+    nvidia.cudnn.include: nvidia_cudnn_cu12
+    nvidia.cudnn.lib: nvidia_cudnn_cu12
+    nvidia.cufft: nvidia_cufft_cu12
+    nvidia.cufft.include: nvidia_cufft_cu12
+    nvidia.cufft.lib: nvidia_cufft_cu12
+    nvidia.curand: nvidia_curand_cu12
+    nvidia.curand.include: nvidia_curand_cu12
+    nvidia.curand.lib: nvidia_curand_cu12
+    nvidia.cusolver: nvidia_cusolver_cu12
+    nvidia.cusolver.include: nvidia_cusolver_cu12
+    nvidia.cusolver.lib: nvidia_cusolver_cu12
+    nvidia.cusparse: nvidia_cusparse_cu12
+    nvidia.cusparse.include: nvidia_cusparse_cu12
+    nvidia.cusparse.lib: nvidia_cusparse_cu12
+    nvidia.nccl: nvidia_nccl_cu12
+    nvidia.nccl.include: nvidia_nccl_cu12
+    nvidia.nccl.lib: nvidia_nccl_cu12
+    nvidia.nvjitlink: nvidia_nvjitlink_cu12
+    nvidia.nvjitlink.include: nvidia_nvjitlink_cu12
+    nvidia.nvjitlink.lib: nvidia_nvjitlink_cu12
+    nvidia.nvtx: nvidia_nvtx_cu12
+    nvidia.nvtx.include: nvidia_nvtx_cu12
+    nvidia.nvtx.lib: nvidia_nvtx_cu12
     omegaconf: omegaconf
     omegaconf.base: omegaconf
     omegaconf.basecontainer: omegaconf
@@ -11377,6 +11417,7 @@ manifest:
     torch: torch
     torch.amp: torch
     torch.amp.autocast_mode: torch
+    torch.amp.grad_scaler: torch
     torch.ao: torch
     torch.ao.nn: torch
     torch.ao.nn.intrinsic: torch
@@ -11493,7 +11534,11 @@ manifest:
     torch.ao.quantization.fx.utils: torch
     torch.ao.quantization.observer: torch
     torch.ao.quantization.pt2e: torch
+    torch.ao.quantization.pt2e.duplicate_dq_pass: torch
+    torch.ao.quantization.pt2e.export_utils: torch
+    torch.ao.quantization.pt2e.generate_numeric_debug_handle: torch
     torch.ao.quantization.pt2e.graph_utils: torch
+    torch.ao.quantization.pt2e.port_metadata_pass: torch
     torch.ao.quantization.pt2e.prepare: torch
     torch.ao.quantization.pt2e.qat_utils: torch
     torch.ao.quantization.pt2e.representation: torch
@@ -11534,9 +11579,11 @@ manifest:
     torch.backends.cuda: torch
     torch.backends.cudnn: torch
     torch.backends.cudnn.rnn: torch
+    torch.backends.mha: torch
     torch.backends.mkl: torch
     torch.backends.mkldnn: torch
     torch.backends.mps: torch
+    torch.backends.nnpack: torch
     torch.backends.openmp: torch
     torch.backends.opt_einsum: torch
     torch.backends.quantized: torch
@@ -11548,6 +11595,7 @@ manifest:
     torch.cpu: torch
     torch.cpu.amp: torch
     torch.cpu.amp.autocast_mode: torch
+    torch.cpu.amp.grad_scaler: torch
     torch.cuda: torch
     torch.cuda.amp: torch
     torch.cuda.amp.autocast_mode: torch
@@ -11587,17 +11635,22 @@ manifest:
     torch.distributed.checkpoint.api: torch
     torch.distributed.checkpoint.default_planner: torch
     torch.distributed.checkpoint.filesystem: torch
+    torch.distributed.checkpoint.format_utils: torch
+    torch.distributed.checkpoint.fsspec: torch
     torch.distributed.checkpoint.metadata: torch
     torch.distributed.checkpoint.optimizer: torch
     torch.distributed.checkpoint.planner: torch
     torch.distributed.checkpoint.planner_helpers: torch
     torch.distributed.checkpoint.resharding: torch
+    torch.distributed.checkpoint.state_dict: torch
     torch.distributed.checkpoint.state_dict_loader: torch
     torch.distributed.checkpoint.state_dict_saver: torch
+    torch.distributed.checkpoint.stateful: torch
     torch.distributed.checkpoint.storage: torch
     torch.distributed.checkpoint.utils: torch
     torch.distributed.collective_utils: torch
     torch.distributed.constants: torch
+    torch.distributed.device_mesh: torch
     torch.distributed.distributed_c10d: torch
     torch.distributed.elastic: torch
     torch.distributed.elastic.agent: torch
@@ -11615,6 +11668,9 @@ manifest:
     torch.distributed.elastic.multiprocessing.errors.error_handler: torch
     torch.distributed.elastic.multiprocessing.errors.handlers: torch
     torch.distributed.elastic.multiprocessing.redirects: torch
+    torch.distributed.elastic.multiprocessing.subprocess_handler: torch
+    torch.distributed.elastic.multiprocessing.subprocess_handler.handlers: torch
+    torch.distributed.elastic.multiprocessing.subprocess_handler.subprocess_handler: torch
     torch.distributed.elastic.multiprocessing.tail_log: torch
     torch.distributed.elastic.rendezvous: torch
     torch.distributed.elastic.rendezvous.api: torch
@@ -11642,7 +11698,6 @@ manifest:
     torch.distributed.elastic.utils.store: torch
     torch.distributed.fsdp: torch
     torch.distributed.fsdp.api: torch
-    torch.distributed.fsdp.flat_param: torch
     torch.distributed.fsdp.fully_sharded_data_parallel: torch
     torch.distributed.fsdp.sharded_grad_scaler: torch
     torch.distributed.fsdp.wrap: torch
@@ -11710,6 +11765,7 @@ manifest:
     torch.distributed.tensor.parallel.ddp: torch
     torch.distributed.tensor.parallel.fsdp: torch
     torch.distributed.tensor.parallel.input_reshard: torch
+    torch.distributed.tensor.parallel.loss: torch
     torch.distributed.tensor.parallel.style: torch
     torch.distributed.utils: torch
     torch.distributions: torch
@@ -11733,6 +11789,7 @@ manifest:
     torch.distributions.half_cauchy: torch
     torch.distributions.half_normal: torch
     torch.distributions.independent: torch
+    torch.distributions.inverse_gamma: torch
     torch.distributions.kl: torch
     torch.distributions.kumaraswamy: torch
     torch.distributions.laplace: torch
@@ -11759,6 +11816,11 @@ manifest:
     torch.distributions.weibull: torch
     torch.distributions.wishart: torch
     torch.export: torch
+    torch.export.custom_obj: torch
+    torch.export.dynamic_shapes: torch
+    torch.export.exported_program: torch
+    torch.export.graph_signature: torch
+    torch.export.unflatten: torch
     torch.fft: torch
     torch.func: torch
     torch.functional: torch
@@ -11785,9 +11847,11 @@ manifest:
     torch.fx.experimental.optimization: torch
     torch.fx.experimental.partitioner_utils: torch
     torch.fx.experimental.proxy_tensor: torch
+    torch.fx.experimental.recording: torch
     torch.fx.experimental.refinement_types: torch
     torch.fx.experimental.rewriter: torch
     torch.fx.experimental.schema_type_annotation: torch
+    torch.fx.experimental.sym_node: torch
     torch.fx.experimental.symbolic_shapes: torch
     torch.fx.experimental.unification: torch
     torch.fx.experimental.unification.core: torch
@@ -11841,6 +11905,7 @@ manifest:
     torch.fx.passes.utils.common: torch
     torch.fx.passes.utils.fuser_utils: torch
     torch.fx.passes.utils.matcher_utils: torch
+    torch.fx.passes.utils.matcher_with_name_node_map_utils: torch
     torch.fx.passes.utils.source_matcher_utils: torch
     torch.fx.proxy: torch
     torch.fx.subgraph_rewriter: torch
@@ -11858,7 +11923,6 @@ manifest:
     torch.lib.libc10: torch
     torch.lib.libc10_cuda: torch
     torch.lib.libcaffe2_nvrtc: torch
-    torch.lib.libnvfuser_codegen: torch
     torch.lib.libshm: torch
     torch.lib.libtorch: torch
     torch.lib.libtorch_cpu: torch
@@ -11887,6 +11951,8 @@ manifest:
     torch.multiprocessing.spawn: torch
     torch.nested: torch
     torch.nn: torch
+    torch.nn.attention: torch
+    torch.nn.attention.bias: torch
     torch.nn.backends: torch
     torch.nn.backends.thnn: torch
     torch.nn.common_types: torch
@@ -12081,10 +12147,8 @@ manifest:
     torch.utils.backend_registration: torch
     torch.utils.benchmark: torch
     torch.utils.benchmark.examples: torch
-    torch.utils.benchmark.examples.blas_compare: torch
     torch.utils.benchmark.examples.blas_compare_setup: torch
     torch.utils.benchmark.examples.compare: torch
-    torch.utils.benchmark.examples.end_to_end: torch
     torch.utils.benchmark.examples.fuzzer: torch
     torch.utils.benchmark.examples.op_benchmark: torch
     torch.utils.benchmark.examples.simple_timeit: torch
@@ -12149,6 +12213,7 @@ manifest:
     torch.utils.data.graph: torch
     torch.utils.data.graph_settings: torch
     torch.utils.data.sampler: torch
+    torch.utils.deterministic: torch
     torch.utils.dlpack: torch
     torch.utils.file_baton: torch
     torch.utils.flop_counter: torch
@@ -12172,8 +12237,11 @@ manifest:
     torch.utils.viz: torch
     torch.utils.weak: torch
     torch.version: torch
-    torch_mlir: torch_mlir_gml
+    torch.xpu: torch
+    torch.xpu.random: torch
+    torch.xpu.streams: torch
     torch_mlir.compiler_utils: torch_mlir_gml
+    torch_mlir.dialects.affine: torch_mlir_gml
     torch_mlir.dialects.amdgpu: torch_mlir_gml
     torch_mlir.dialects.arith: torch_mlir_gml
     torch_mlir.dialects.async_dialect: torch_mlir_gml
@@ -12185,6 +12253,7 @@ manifest:
     torch_mlir.dialects.func: torch_mlir_gml
     torch_mlir.dialects.gpu: torch_mlir_gml
     torch_mlir.dialects.gpu.passes: torch_mlir_gml
+    torch_mlir.dialects.index: torch_mlir_gml
     torch_mlir.dialects.linalg: torch_mlir_gml
     torch_mlir.dialects.linalg.opdsl: torch_mlir_gml
     torch_mlir.dialects.linalg.opdsl.dump_oplib: torch_mlir_gml
@@ -12200,104 +12269,49 @@ manifest:
     torch_mlir.dialects.linalg.opdsl.ops: torch_mlir_gml
     torch_mlir.dialects.linalg.opdsl.ops.core_named_ops: torch_mlir_gml
     torch_mlir.dialects.linalg.passes: torch_mlir_gml
+    torch_mlir.dialects.llvm: torch_mlir_gml
     torch_mlir.dialects.math: torch_mlir_gml
     torch_mlir.dialects.memref: torch_mlir_gml
     torch_mlir.dialects.ml_program: torch_mlir_gml
     torch_mlir.dialects.nvgpu: torch_mlir_gml
     torch_mlir.dialects.nvvm: torch_mlir_gml
+    torch_mlir.dialects.openmp: torch_mlir_gml
     torch_mlir.dialects.pdl: torch_mlir_gml
     torch_mlir.dialects.quant: torch_mlir_gml
     torch_mlir.dialects.rocdl: torch_mlir_gml
     torch_mlir.dialects.scf: torch_mlir_gml
     torch_mlir.dialects.shape: torch_mlir_gml
     torch_mlir.dialects.sparse_tensor: torch_mlir_gml
+    torch_mlir.dialects.spirv: torch_mlir_gml
     torch_mlir.dialects.tensor: torch_mlir_gml
     torch_mlir.dialects.torch: torch_mlir_gml
-    torch_mlir.dialects.torch.importer.jit_ir: torch_mlir_gml
-    torch_mlir.dialects.torch.importer.jit_ir.build_tools: torch_mlir_gml
-    torch_mlir.dialects.torch.importer.jit_ir.build_tools.abstract_interp_lib_gen: torch_mlir_gml
-    torch_mlir.dialects.torch.importer.jit_ir.build_tools.library_generator: torch_mlir_gml
-    torch_mlir.dialects.torch.importer.jit_ir.build_tools.registry: torch_mlir_gml
-    torch_mlir.dialects.torch.importer.jit_ir.build_tools.testing_framework: torch_mlir_gml
-    torch_mlir.dialects.torch.importer.jit_ir.build_tools.torch_ods_gen: torch_mlir_gml
-    torch_mlir.dialects.torch.importer.jit_ir.build_tools.utils: torch_mlir_gml
-    torch_mlir.dialects.torch.importer.jit_ir.torchscript_annotations: torch_mlir_gml
     torch_mlir.dialects.tosa: torch_mlir_gml
     torch_mlir.dialects.transform: torch_mlir_gml
     torch_mlir.dialects.transform.bufferization: torch_mlir_gml
+    torch_mlir.dialects.transform.extras: torch_mlir_gml
     torch_mlir.dialects.transform.gpu: torch_mlir_gml
+    torch_mlir.dialects.transform.interpreter: torch_mlir_gml
     torch_mlir.dialects.transform.loop: torch_mlir_gml
     torch_mlir.dialects.transform.memref: torch_mlir_gml
+    torch_mlir.dialects.transform.nvgpu: torch_mlir_gml
     torch_mlir.dialects.transform.pdl: torch_mlir_gml
+    torch_mlir.dialects.transform.sparse_tensor: torch_mlir_gml
     torch_mlir.dialects.transform.structured: torch_mlir_gml
     torch_mlir.dialects.transform.tensor: torch_mlir_gml
     torch_mlir.dialects.transform.vector: torch_mlir_gml
     torch_mlir.dialects.vector: torch_mlir_gml
-    torch_mlir.dynamo: torch_mlir_gml
     torch_mlir.execution_engine: torch_mlir_gml
+    torch_mlir.extras.fx_decomp_util: torch_mlir_gml
+    torch_mlir.extras.fx_importer: torch_mlir_gml
+    torch_mlir.extras.meta: torch_mlir_gml
+    torch_mlir.extras.onnx_importer: torch_mlir_gml
+    torch_mlir.extras.types: torch_mlir_gml
+    torch_mlir.fx: torch_mlir_gml
     torch_mlir.ir: torch_mlir_gml
     torch_mlir.passmanager: torch_mlir_gml
+    torch_mlir.rewrite: torch_mlir_gml
     torch_mlir.runtime: torch_mlir_gml
     torch_mlir.runtime.np_to_memref: torch_mlir_gml
-    torch_mlir_e2e_test: torch_mlir_gml
-    torch_mlir_e2e_test.annotations: torch_mlir_gml
-    torch_mlir_e2e_test.configs: torch_mlir_gml
-    torch_mlir_e2e_test.configs.lazy_tensor_core: torch_mlir_gml
-    torch_mlir_e2e_test.configs.linalg_on_tensors_backend: torch_mlir_gml
-    torch_mlir_e2e_test.configs.native_torch: torch_mlir_gml
-    torch_mlir_e2e_test.configs.stablehlo_backend: torch_mlir_gml
-    torch_mlir_e2e_test.configs.torchdynamo: torch_mlir_gml
-    torch_mlir_e2e_test.configs.torchscript: torch_mlir_gml
-    torch_mlir_e2e_test.configs.tosa_backend: torch_mlir_gml
-    torch_mlir_e2e_test.configs.utils: torch_mlir_gml
-    torch_mlir_e2e_test.debug.lockstep: torch_mlir_gml
-    torch_mlir_e2e_test.framework: torch_mlir_gml
-    torch_mlir_e2e_test.linalg_on_tensors_backends: torch_mlir_gml
-    torch_mlir_e2e_test.linalg_on_tensors_backends.abc: torch_mlir_gml
-    torch_mlir_e2e_test.linalg_on_tensors_backends.refbackend: torch_mlir_gml
-    torch_mlir_e2e_test.registry: torch_mlir_gml
-    torch_mlir_e2e_test.reporting: torch_mlir_gml
-    torch_mlir_e2e_test.stablehlo_backends: torch_mlir_gml
-    torch_mlir_e2e_test.stablehlo_backends.abc: torch_mlir_gml
-    torch_mlir_e2e_test.stablehlo_backends.linalg_on_tensors: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.arange: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.argmax: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.backprop: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.basic: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.cast: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.constant_alloc: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.control_flow: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.conv: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.custom_op_example: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.elementwise: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.elementwise_comparison: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.histogram_binning_calibration: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.index_select: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.matmul: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.mlp: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.nll_loss: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.norm_like: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.pooling: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.quantized_models: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.reduction: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.reshape_like: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.return_types: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.rng: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.scalar: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.scalar_comparison: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.scatter: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.slice_like: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.squeeze: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.stats: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.threshold: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.type_conversion: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.type_promotion: torch_mlir_gml
-    torch_mlir_e2e_test.test_suite.vision_models: torch_mlir_gml
-    torch_mlir_e2e_test.tosa_backends: torch_mlir_gml
-    torch_mlir_e2e_test.tosa_backends.abc: torch_mlir_gml
-    torch_mlir_e2e_test.tosa_backends.linalg_on_tensors: torch_mlir_gml
-    torch_mlir_e2e_test.utils: torch_mlir_gml
     torchgen: torch
     torchgen.api: torch
     torchgen.api.autograd: torch
@@ -12335,6 +12349,7 @@ manifest:
     torchgen.executorch.model: torch
     torchgen.executorch.parse: torch
     torchgen.gen: torch
+    torchgen.gen_aoti_c_shim: torch
     torchgen.gen_backend_stubs: torch
     torchgen.gen_executorch: torch
     torchgen.gen_functionalization_type: torch
@@ -12356,6 +12371,7 @@ manifest:
     torchgen.packaged.autograd.gen_trace_type: torch
     torchgen.packaged.autograd.gen_variable_factories: torch
     torchgen.packaged.autograd.gen_variable_type: torch
+    torchgen.packaged.autograd.gen_view_funcs: torch
     torchgen.packaged.autograd.load_derivatives: torch
     torchgen.selective_build: torch
     torchgen.selective_build.operator: torch
@@ -12428,6 +12444,7 @@ manifest:
     torchvision.datasets.gtsrb: torchvision
     torchvision.datasets.hmdb51: torchvision
     torchvision.datasets.imagenet: torchvision
+    torchvision.datasets.imagenette: torchvision
     torchvision.datasets.inaturalist: torchvision
     torchvision.datasets.kinetics: torchvision
     torchvision.datasets.kitti: torchvision
@@ -12537,8 +12554,6 @@ manifest:
     torchvision.transforms: torchvision
     torchvision.transforms.autoaugment: torchvision
     torchvision.transforms.functional: torchvision
-    torchvision.transforms.functional_pil: torchvision
-    torchvision.transforms.functional_tensor: torchvision
     torchvision.transforms.transforms: torchvision
     torchvision.transforms.v2: torchvision
     torchvision.transforms.v2.functional: torchvision
@@ -14300,16 +14315,13 @@ manifest:
     triton.common.backend: triton
     triton.common.build: triton
     triton.compiler: triton
+    triton.compiler.backends: triton
+    triton.compiler.backends.cuda: triton
     triton.compiler.code_generator: triton
     triton.compiler.compiler: triton
     triton.compiler.errors: triton
     triton.compiler.make_launcher: triton
-    triton.interpreter: triton
-    triton.interpreter.core: triton
-    triton.interpreter.interpreter: triton
-    triton.interpreter.memory_map: triton
-    triton.interpreter.tl_lang: triton
-    triton.interpreter.torch_wrapper: triton
+    triton.compiler.utils: triton
     triton.language: triton
     triton.language.core: triton
     triton.language.extra: triton
@@ -14331,6 +14343,7 @@ manifest:
     triton.runtime.cache: triton
     triton.runtime.driver: triton
     triton.runtime.errors: triton
+    triton.runtime.interpreter: triton
     triton.runtime.jit: triton
     triton.testing: triton
     triton.tools: triton
@@ -14724,4 +14737,4 @@ manifest:
     zipp.glob: zipp
   pip_repository:
     name: pip
-integrity: f531bee5c8b51f3c511b042db30aa93e222d3ea6834e8aaa2339ce733d87e94c
+integrity: 0945488b3b3147f814dde84561d0fddedb724f59a04c2437a6a19dc96f3b8042
