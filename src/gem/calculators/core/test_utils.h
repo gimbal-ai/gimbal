@@ -26,6 +26,7 @@
 #include <opentelemetry/sdk/metrics/meter.h>
 #include <opentelemetry/sdk/metrics/sync_instruments.h>
 
+#include "src/common/base/utils.h"
 #include "src/common/metrics/metrics_system.h"
 
 namespace gml::gem::calculators::core {
@@ -152,11 +153,9 @@ void CheckMetrics(gml::metrics::MetricsSystem& metrics_system,
           ASSERT_TRUE(expected_metrics_map.contains(name));
           const auto& expected_metrics = expected_metrics_map.at(name);
 
-          std::vector<::testing::Matcher<const otel_metrics::PointDataAttributes&>> matchers;
-          matchers.reserve(expected_metrics.size());
-          for (const auto& expected_metric : expected_metrics) {
-            matchers.emplace_back(MatchMetric(expected_metric));
-          }
+          using MatcherType = ::testing::Matcher<const otel_metrics::PointDataAttributes&>;
+          auto matchers = TransformContainer<std::vector<MatcherType>>(
+              expected_metrics, [](const auto& x) { return MatchMetric(x); });
           EXPECT_THAT(point_data_attr, ::testing::UnorderedElementsAreArray(matchers));
         }
       };

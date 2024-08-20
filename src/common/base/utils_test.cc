@@ -23,6 +23,7 @@
 #include <vector>
 
 #include <absl/container/flat_hash_map.h>
+#include <absl/container/flat_hash_set.h>
 
 #include "src/common/testing/testing.h"
 
@@ -443,6 +444,54 @@ TEST(LinearInterpolate, LargeIntPrecision) {
   int64_t y_b = y_a + 10000;
   uint64_t value = 5;
   EXPECT_EQ(y_a + 5000, LinearInterpolate(x_a, x_b, y_a, y_b, value));
+}
+
+TEST(TransformContainer, VectorIntToDouble) {
+  std::vector<int> vec = {1, 2, 3, 4, 5};
+
+  auto results =
+      TransformContainer<std::vector<double>>(vec, [](const int& x) -> double { return x * 2.0; });
+  EXPECT_THAT(results, ::testing::ElementsAre(2.0, 4.0, 6.0, 8.0, 10.0));
+}
+
+TEST(TransformContainer, VectorIntToString) {
+  std::vector<int> vec = {1, 2, 3, 4, 5};
+
+  auto results = TransformContainer<std::vector<std::string>>(
+      vec, [](const int& x) -> std::string { return std::to_string(x); });
+  EXPECT_THAT(results, ::testing::ElementsAre("1", "2", "3", "4", "5"));
+}
+
+TEST(TransformContainer, ListIntToDouble) {
+  std::list<int> l = {1, 2, 3, 4, 5};
+
+  auto results =
+      TransformContainer<std::list<double>>(l, [](const int& x) -> double { return x * 2.0; });
+  EXPECT_THAT(results, ::testing::ElementsAre(2.0, 4.0, 6.0, 8.0, 10.0));
+}
+
+TEST(TransformContainer, SetIntToDouble) {
+  absl::flat_hash_set<int> s = {1, 2, 3, 4, 5};
+
+  auto results = TransformContainer<absl::flat_hash_set<double>>(
+      s, [](const int& x) -> double { return x * 2.0; });
+  EXPECT_THAT(results, ::testing::UnorderedElementsAre(2.0, 4.0, 6.0, 8.0, 10.0));
+}
+
+TEST(TransformContainer, VectorToSet) {
+  std::vector<int> vec = {1, 2, 3, 4, 5};
+
+  auto results = TransformContainer<absl::flat_hash_set<int>>(
+      vec, [](const int& x) -> double { return x * 2.0; });
+  EXPECT_THAT(results, ::testing::UnorderedElementsAre(2.0, 4.0, 6.0, 8.0, 10.0));
+}
+
+TEST(TransformContainer, VectorToSetWithDups) {
+  std::vector<int> vec = {1, 1, 2, 2, 2};
+
+  auto results = TransformContainer<absl::flat_hash_set<int>>(
+      vec, [](const int& x) -> double { return x * 2.0; });
+  EXPECT_THAT(results, ::testing::UnorderedElementsAre(2.0, 4.0));
 }
 
 }  // namespace gml

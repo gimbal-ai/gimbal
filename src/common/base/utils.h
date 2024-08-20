@@ -430,4 +430,33 @@ struct overloaded : Ts... {
 template <class... Ts>
 overloaded(Ts...) -> overloaded<Ts...>;
 
+// Helper to check if a type has a reserve() method
+template <typename T, typename = void>
+struct has_reserve : std::false_type {};
+
+template <typename T>
+struct has_reserve<
+    T, std::void_t<decltype(std::declval<T>().reserve(std::declval<typename T::size_type>()))>>
+    : std::true_type {};
+
+/**
+ * Transform a container to a new container by providing a mapping function.
+ * The type of the resulting container must be provided explicitly, and can
+ * be different from the input container.
+ * Example:
+ *   std::vector<std::string> input{"1", "2", "3"};
+ *   TransformContainer<std::vector<int>>(input, [](const std::string& s) { return std::stoi(s); });
+ */
+template <typename TResultContainer, typename TContainer, typename TFunc>
+TResultContainer TransformContainer(const TContainer& container, TFunc func) {
+  TResultContainer result;
+
+  // Call reserve() if TResultContainer supports it.
+  if constexpr (has_reserve<TResultContainer>::value) {
+    result.reserve(container.size());
+  }
+  std::transform(container.begin(), container.end(), std::inserter(result, std::end(result)), func);
+  return result;
+}
+
 }  // namespace gml

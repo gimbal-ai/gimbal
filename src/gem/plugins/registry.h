@@ -22,6 +22,7 @@
 
 #include "src/api/corepb/v1/model_exec.pb.h"
 #include "src/common/base/base.h"
+#include "src/common/base/utils.h"
 #include "src/common/event/dispatcher.h"
 #include "src/common/metrics/metrics_system.h"
 #include "src/gem/build/core/execution_context_builder.h"
@@ -59,12 +60,8 @@ class BuilderRegistry {
   }
 
   std::vector<std::string> ListRegistered() {
-    std::vector<std::string> keys;
-
-    keys.reserve(builders_.size());
-    for (const auto& entry : builders_) {
-      keys.push_back(entry.first);
-    }
+    auto keys = TransformContainer<std::vector<std::string>>(
+        builders_, [](const auto& entry) { return entry.first; });
 
     return keys;
   }
