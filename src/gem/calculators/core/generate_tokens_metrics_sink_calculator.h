@@ -66,11 +66,12 @@ class GenerateTokensMetricsSinkCalculator : public mediapipe::CalculatorBase {
   opentelemetry::metrics::Counter<uint64_t>* output_tokens_counter_;
   opentelemetry::metrics::Histogram<double>* time_to_first_output_token_histogram_;
   opentelemetry::metrics::Histogram<double>* time_to_last_output_token_histogram_;
+  opentelemetry::metrics::Histogram<double>* output_tokens_per_second_histogram_;
   uint64_t running_output_tokens_ = 0;
   absl::flat_hash_map<std::string, std::string> metric_attributes_;
   struct InputTimestampData {
-    absl::Time timestamp;
-    bool received_first_output_token = false;
+    absl::Time first_input_token_ts;
+    std::optional<absl::Time> first_output_token_ts = std::nullopt;
   };
   std::deque<InputTimestampData> input_timestamps_;
 };

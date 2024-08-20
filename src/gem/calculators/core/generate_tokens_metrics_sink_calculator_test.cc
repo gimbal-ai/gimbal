@@ -30,6 +30,9 @@
 #include "src/gem/testing/core/calculator_tester.h"
 #include "src/gem/testing/core/otel_utils.h"
 namespace gml::gem::calculators::core {
+const std::vector<double> kThroughputBucketBounds = {0,   0.001, 0.0025, 0.005, 0.01, 0.025, 0.05,
+                                                     0.1, 0.25,  0.5,    1,     2.5,  5,     10,
+                                                     25,  50,    100,    250,   500,  1000,  2500};
 
 constexpr std::string_view kTokenMetricsSinkNode = R"pbtxt(
 calculator: "GenerateTokensMetricsSinkCalculator"
@@ -225,6 +228,14 @@ INSTANTIATE_TEST_SUITE_P(
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }}},
+                            {"gml_gem_pipe_gentokens_output_tokens_per_second_hist",
+                             {ExpectedHist{
+                                 .bucket_bounds = kThroughputBucketBounds,
+                                 .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+                                 .attributes = {{"pipeline_id", "test_pipeline"},
+                                                {"device_id", "test_device"}},
+                             }}},
                         },
                 },
                 StreamBatch{
@@ -273,6 +284,15 @@ INSTANTIATE_TEST_SUITE_P(
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }}},
+                            {"gml_gem_pipe_gentokens_output_tokens_per_second_hist",
+                             {ExpectedHist{
+                                 .bucket_bounds = kThroughputBucketBounds,
+                                 .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+                                 .attributes = {{"pipeline_id", "test_pipeline"},
+                                                {"device_id", "test_device"}},
+                             }}},
+
                         },
                 },
                 // Receieve an input batch before receiving an eos output batch for previous
@@ -316,6 +336,14 @@ INSTANTIATE_TEST_SUITE_P(
                                                    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
                                                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 
+                                 .attributes = {{"pipeline_id", "test_pipeline"},
+                                                {"device_id", "test_device"}},
+                             }}},
+                            {"gml_gem_pipe_gentokens_output_tokens_per_second_hist",
+                             {ExpectedHist{
+                                 .bucket_bounds = kThroughputBucketBounds,
+                                 .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }}},
@@ -369,15 +397,26 @@ INSTANTIATE_TEST_SUITE_P(
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }}},
+                            {"gml_gem_pipe_gentokens_output_tokens_per_second_hist",
+                             {ExpectedHist{
+                                 .bucket_bounds = kThroughputBucketBounds,
+                                 .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0},
+                                 .attributes = {{"pipeline_id", "test_pipeline"},
+                                                {"device_id", "test_device"}},
+                             }}},
                         },
                 },
-                // Recieves the first output batch for the input batch and record the metric.
+                // Recieves the first output batch right after input batch and record the metric.
+                // Also sends the eos and output tokens in the same batch, so tok/s metric does not
+                // get updated.
                 StreamBatch{
+                    .input_batch = InputBatch{{4}, absl::Milliseconds(150)},
                     .output_batch =
                         OutputBatch{
                             .output_token_ids = {4},
                             .eos = true,
-                            .output_timestamp = absl::Milliseconds(150),
+                            .output_timestamp = absl::Milliseconds(151),
                         },
                     .expected_metrics =
                         {
@@ -388,7 +427,7 @@ INSTANTIATE_TEST_SUITE_P(
                             {"gml_gem_pipe_gentokens_input_hist",
                              {ExpectedHist{
                                  .bucket_bounds = metrics::kDefaultHistogramBounds,
-                                 .bucket_counts = {0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                 .bucket_counts = {0, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }}},
@@ -405,7 +444,7 @@ INSTANTIATE_TEST_SUITE_P(
                                  .bucket_bounds = metrics_utils::kLatencySecondsBucketBounds,
                                  .bucket_counts =
                                      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
-                                      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                      0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }}},
@@ -413,8 +452,19 @@ INSTANTIATE_TEST_SUITE_P(
                              {ExpectedHist{
                                  .bucket_bounds = metrics_utils::kLatencySecondsBucketBounds,
                                  .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                                   0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0,
+                                                   0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0,
                                                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                 .attributes = {{"pipeline_id", "test_pipeline"},
+                                                {"device_id", "test_device"}},
+                             }}},
+                            {"gml_gem_pipe_gentokens_output_tokens_per_second_hist",
+                             {ExpectedHist{
+                                 .bucket_bounds = kThroughputBucketBounds,
+                                 // Does not get updated because the first output token arrives at
+                                 // the same time as eos.
+                                 .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0},
+
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }}},
