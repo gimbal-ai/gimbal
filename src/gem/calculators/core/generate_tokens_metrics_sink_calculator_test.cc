@@ -53,22 +53,7 @@ input_stream: "INPUT_TOKENS:input_token_ids"
 input_stream: "OUTPUT_TOKENS:output_token_ids"
 input_stream: "OUTPUT_TIMESTAMP:output_timestamp"
 input_stream: "OUTPUT_EOS:eos"
-input_stream_handler {
-  input_stream_handler: "SyncSetInputStreamHandler"
-  options {
-    [mediapipe.SyncSetInputStreamHandlerOptions.ext] {
-      sync_set {
-        tag_index: "INPUT_TIMESTAMP"
-        tag_index: "INPUT_TOKENS"
-      }
-      sync_set {
-        tag_index: "OUTPUT_TIMESTAMP"
-        tag_index: "OUTPUT_TOKENS"
-        tag_index: "OUTPUT_EOS"
-      }
-    }
-  }
-})pbtxt";
+)pbtxt";
 
 struct OutputBatch {
   // Output Streams

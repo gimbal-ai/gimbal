@@ -20,7 +20,6 @@
 
 #include <mediapipe/framework/calculator_framework.h>
 #include <mediapipe/framework/calculator_runner.h>
-#include <mediapipe/framework/stream_handler/sync_set_input_stream_handler.pb.h>
 
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/base/logging.h"
@@ -38,21 +37,6 @@ TEST(MergeTokensCalculatorTest, MergesTokens) {
 
     output_stream: "LOOP_START:loop_start"
     output_stream: "MERGED_TOKENS:merged_stream"
-
-    input_stream_handler {
-      input_stream_handler: "SyncSetInputStreamHandler"
-      options {
-        [mediapipe.SyncSetInputStreamHandlerOptions.ext] {
-          sync_set {
-            tag_index: "INPUT_TOKENS"
-          }
-          sync_set {
-            tag_index: "OUTPUT_TOKENS"
-            tag_index: "OUTPUT_EOS"
-          }
-        }
-      }
-    }
   )pbtxt";
 
   mediapipe::CalculatorRunner runner(kGraph);

@@ -19,6 +19,9 @@
 #include "src/gem/calculators/core/generate_tokens_metrics_sink_calculator.h"
 
 #include <absl/strings/str_cat.h>
+#include <mediapipe/framework/mediapipe_options.pb.h>
+#include <mediapipe/framework/stream_handler/sync_set_input_stream_handler.h>
+#include <mediapipe/framework/stream_handler/sync_set_input_stream_handler.pb.h>
 #include <opentelemetry/metrics/provider.h>
 
 #include "src/common/metrics/metrics_system.h"
@@ -43,6 +46,22 @@ absl::Status GenerateTokensMetricsSinkCalculator::GetContract(mediapipe::Calcula
   cc->Inputs().Tag(kOutputTokenIDsTag).Set<std::vector<int>>();
   cc->Inputs().Tag(kOutputTimestampTag).Set<absl::Time>();
   cc->Inputs().Tag(kInputTimestampTag).Set<absl::Time>();
+
+  cc->SetInputStreamHandler("SyncSetInputStreamHandler");
+  mediapipe::MediaPipeOptions options;
+
+  auto* sync_set =
+      options.MutableExtension(mediapipe::SyncSetInputStreamHandlerOptions::ext)->add_sync_set();
+  sync_set->add_tag_index(kInputTimestampTag.data());
+  sync_set->add_tag_index(kInputTokenIDsTag.data());
+
+  sync_set =
+      options.MutableExtension(mediapipe::SyncSetInputStreamHandlerOptions::ext)->add_sync_set();
+  sync_set->add_tag_index(kOutputTimestampTag.data());
+  sync_set->add_tag_index(kOutputTokenIDsTag.data());
+  sync_set->add_tag_index(kOutputEOSTag.data());
+
+  cc->SetInputStreamHandlerOptions(options);
 
   return absl::OkStatus();
 }

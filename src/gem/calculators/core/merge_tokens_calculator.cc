@@ -19,7 +19,9 @@
 #include "src/gem/calculators/core/merge_tokens_calculator.h"
 
 #include <mediapipe/framework/calculator_registry.h>
+#include <mediapipe/framework/mediapipe_options.pb.h>
 #include <mediapipe/framework/stream_handler/sync_set_input_stream_handler.h>
+#include <mediapipe/framework/stream_handler/sync_set_input_stream_handler.pb.h>
 
 namespace gml::gem::calculators::core {
 
@@ -37,6 +39,20 @@ absl::Status MergeTokensCalculator::GetContract(mediapipe::CalculatorContract* c
 
   cc->Outputs().Tag(kMergedStreamTag).Set<std::vector<int>>();
   cc->Outputs().Tag(kLoopStartTag).Set<bool>();
+
+  cc->SetInputStreamHandler("SyncSetInputStreamHandler");
+  mediapipe::MediaPipeOptions options;
+
+  auto* sync_set =
+      options.MutableExtension(mediapipe::SyncSetInputStreamHandlerOptions::ext)->add_sync_set();
+  sync_set->add_tag_index(kInputStreamTag.data());
+
+  sync_set =
+      options.MutableExtension(mediapipe::SyncSetInputStreamHandlerOptions::ext)->add_sync_set();
+  sync_set->add_tag_index(kOutputStreamTag.data());
+  sync_set->add_tag_index(kOutputEOSTag.data());
+
+  cc->SetInputStreamHandlerOptions(options);
 
   return absl::OkStatus();
 }
