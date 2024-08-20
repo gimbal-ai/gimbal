@@ -24,14 +24,12 @@
 
 #include "src/common/base/base.h"
 #include "src/common/metrics/metrics_system.h"
+#include "src/gem/calculators/core/metrics_utils.h"
 #include "src/gem/calculators/core/optionspb/clock_latency_metrics_sink_calculator_options.pb.h"
 
 namespace gml::gem::calculators::core {
 
 constexpr std::string_view kFinishedTag = "FINISHED";
-
-const std::vector<double> kLatencyBucketBounds = {0.000, 0.005, 0.010, 0.015, 0.020, 0.025, 0.030,
-                                                  0.035, 0.040, 0.045, 0.050, 0.075, 0.100, 0.150};
 
 absl::Status ClockLatencyMetricsSinkCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   for (mediapipe::CollectionItemId id = cc->Inputs().BeginId(); id < cc->Inputs().EndId(); ++id) {
@@ -50,7 +48,7 @@ absl::Status ClockLatencyMetricsSinkCalculator::Open(mediapipe::CalculatorContex
 
   latency_hist_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
       absl::Substitute("gml_gem_$0_latency_seconds", options.name()), "Packet latency in seconds.",
-      kLatencyBucketBounds);
+      metrics_utils::kLatencySecondsBucketBounds);
   return absl::OkStatus();
 }
 

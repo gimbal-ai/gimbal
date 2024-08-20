@@ -26,14 +26,12 @@
 #include "src/common/metrics/metrics_system.h"
 #include "src/common/testing/protobuf.h"
 #include "src/common/testing/testing.h"
+#include "src/gem/calculators/core/metrics_utils.h"
 #include "src/gem/calculators/core/test_utils.h"
 #include "src/gem/testing/core/calculator_tester.h"
 #include "src/gem/testing/core/otel_utils.h"
 
 namespace gml::gem::calculators::core {
-
-const std::vector<double> kLatencyBucketBounds = {0,     0.005, 0.01,  0.015, 0.02,  0.025, 0.03,
-                                                  0.035, 0.04,  0.045, 0.05,  0.075, 0.1,   0.15};
 
 constexpr std::string_view kClockLatencyMetricsSinkNode = R"pbtxt(
 calculator: "ClockLatencyMetricsSinkCalculator"
@@ -78,12 +76,17 @@ INSTANTIATE_TEST_SUITE_P(
         ClockLatencyMetricsSinkTestCase{
             .config = kClockLatencyMetricsSinkNode,
             .input_durations = {absl::Milliseconds(10)},
-            .expected_metrics = {{"gml_gem_detect_latency_seconds",
-                                  {ExpectedHist{
-                                      .bucket_bounds = kLatencyBucketBounds,
-                                      .bucket_counts = {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                                        0},
-                                  }}}},
+            .expected_metrics =
+                {
+                    {
+                        "gml_gem_detect_latency_seconds",
+                        {ExpectedHist{
+                            .bucket_bounds = metrics_utils::kLatencySecondsBucketBounds,
+                            .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                                              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        }},
+                    },
+                },
         },
         ClockLatencyMetricsSinkTestCase{
             .config = R"pbtxt(
@@ -100,11 +103,14 @@ INSTANTIATE_TEST_SUITE_P(
             .input_durations = {absl::Milliseconds(5), absl::Milliseconds(10)},
             .expected_metrics =
                 {
-                    {"gml_gem_detect_latency_seconds",
-                     {ExpectedHist{
-                         .bucket_bounds = kLatencyBucketBounds,
-                         .bucket_counts = {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                     }}},
+                    {
+                        "gml_gem_detect_latency_seconds",
+                        {ExpectedHist{
+                            .bucket_bounds = metrics_utils::kLatencySecondsBucketBounds,
+                            .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                                              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        }},
+                    },
                 },
         },
         ClockLatencyMetricsSinkTestCase{
@@ -112,11 +118,14 @@ INSTANTIATE_TEST_SUITE_P(
             .input_durations = {absl::Milliseconds(-5)},
             .expected_metrics =
                 {
-                    {"gml_gem_detect_latency_seconds",
-                     {ExpectedHist{
-                         .bucket_bounds = kLatencyBucketBounds,
-                         .bucket_counts = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                     }}},
+                    {
+                        "gml_gem_detect_latency_seconds",
+                        {ExpectedHist{
+                            .bucket_bounds = metrics_utils::kLatencySecondsBucketBounds,
+                            .bucket_counts = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        }},
+                    },
                 },
         },
         // No input

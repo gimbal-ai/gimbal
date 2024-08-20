@@ -22,6 +22,7 @@
 #include <opentelemetry/metrics/provider.h>
 
 #include "src/common/metrics/metrics_system.h"
+#include "src/gem/calculators/core/metrics_utils.h"
 #include "src/gem/calculators/core/optionspb/generate_tokens_metrics_sink_calculator_options.pb.h"
 
 namespace gml::gem::calculators::core {
@@ -31,8 +32,6 @@ constexpr std::string_view kInputTokenIDsTag = "INPUT_TOKENS";
 constexpr std::string_view kOutputTimestampTag = "OUTPUT_TIMESTAMP";
 constexpr std::string_view kOutputTokenIDsTag = "OUTPUT_TOKENS";
 constexpr std::string_view kOutputEOSTag = "OUTPUT_EOS";
-const std::vector<double> kLatencyBucketBounds = {0.000, 0.005, 0.010, 0.015, 0.020, 0.025, 0.030,
-                                                  0.035, 0.040, 0.045, 0.050, 0.075, 0.100, 0.150};
 
 absl::Status GenerateTokensMetricsSinkCalculator::GetContract(mediapipe::CalculatorContract* cc) {
   cc->Inputs().Tag(kInputTokenIDsTag).Set<std::vector<int>>();
@@ -65,11 +64,11 @@ absl::Status GenerateTokensMetricsSinkCalculator::Open(mediapipe::CalculatorCont
 
   time_to_first_output_token_histogram_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
       "gml_gem_pipe_gentokens_time_to_first_hist", "Time from input to first output token.",
-      kLatencyBucketBounds);
+      metrics_utils::kLatencySecondsBucketBounds);
 
   time_to_last_output_token_histogram_ = metrics_system.GetOrCreateHistogramWithBounds<double>(
       "gml_gem_pipe_gentokens_time_to_last_hist", "Time from input to last output token.",
-      kLatencyBucketBounds);
+      metrics_utils::kLatencySecondsBucketBounds);
 
   return absl::OkStatus();
 }

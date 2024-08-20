@@ -25,14 +25,12 @@
 #include "src/common/metrics/metrics_system.h"
 #include "src/common/testing/protobuf.h"
 #include "src/common/testing/testing.h"
+#include "src/gem/calculators/core/metrics_utils.h"
 #include "src/gem/calculators/core/test_utils.h"
 #include "src/gem/testing/core/calculator_tester.h"
 #include "src/gem/testing/core/otel_utils.h"
-
 namespace gml::gem::calculators::core {
 
-const std::vector<double> kLatencyBucketBounds = {0.000, 0.005, 0.010, 0.015, 0.020, 0.025, 0.030,
-                                                  0.035, 0.040, 0.045, 0.050, 0.075, 0.100, 0.150};
 constexpr std::string_view kTokenMetricsSinkNode = R"pbtxt(
 calculator: "GenerateTokensMetricsSinkCalculator"
 node_options {
@@ -171,8 +169,10 @@ INSTANTIATE_TEST_SUITE_P(
                              }}},
                             {"gml_gem_pipe_gentokens_time_to_first_hist",
                              {ExpectedHist{
-                                 .bucket_bounds = kLatencyBucketBounds,
-                                 .bucket_counts = {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                 .bucket_bounds = metrics_utils::kLatencySecondsBucketBounds,
+                                 .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }}},
@@ -207,15 +207,21 @@ INSTANTIATE_TEST_SUITE_P(
                              }}},
                             {"gml_gem_pipe_gentokens_time_to_first_hist",
                              {ExpectedHist{
-                                 .bucket_bounds = kLatencyBucketBounds,
-                                 .bucket_counts = {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                 .bucket_bounds = metrics_utils::kLatencySecondsBucketBounds,
+                                 .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }}},
                             {"gml_gem_pipe_gentokens_time_to_last_hist",
                              {ExpectedHist{
-                                 .bucket_bounds = kLatencyBucketBounds,
-                                 .bucket_counts = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                 .bucket_bounds = metrics_utils::kLatencySecondsBucketBounds,
+                                 .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }}},
@@ -251,15 +257,19 @@ INSTANTIATE_TEST_SUITE_P(
                              }}},
                             {"gml_gem_pipe_gentokens_time_to_first_hist",
                              {ExpectedHist{
-                                 .bucket_bounds = kLatencyBucketBounds,
-                                 .bucket_counts = {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                 .bucket_bounds = metrics_utils::kLatencySecondsBucketBounds,
+                                 .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                   0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }}},
                             {"gml_gem_pipe_gentokens_time_to_last_hist",
                              {ExpectedHist{
-                                 .bucket_bounds = kLatencyBucketBounds,
-                                 .bucket_counts = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                 .bucket_bounds = metrics_utils::kLatencySecondsBucketBounds,
+                                 .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }}},
@@ -291,15 +301,21 @@ INSTANTIATE_TEST_SUITE_P(
                              }}},
                             {"gml_gem_pipe_gentokens_time_to_first_hist",
                              {ExpectedHist{
-                                 .bucket_bounds = kLatencyBucketBounds,
-                                 .bucket_counts = {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                 .bucket_bounds = metrics_utils::kLatencySecondsBucketBounds,
+                                 .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                   0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }}},
                             {"gml_gem_pipe_gentokens_time_to_last_hist",
                              {ExpectedHist{
-                                 .bucket_bounds = kLatencyBucketBounds,
-                                 .bucket_counts = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                 .bucket_bounds = metrics_utils::kLatencySecondsBucketBounds,
+                                 .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }}},
@@ -336,15 +352,20 @@ INSTANTIATE_TEST_SUITE_P(
                             // is received before the eos output batch for previous batch
                             {"gml_gem_pipe_gentokens_time_to_first_hist",
                              {ExpectedHist{
-                                 .bucket_bounds = kLatencyBucketBounds,
-                                 .bucket_counts = {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                 .bucket_bounds = metrics_utils::kLatencySecondsBucketBounds,
+                                 .bucket_counts =
+                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+                                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }}},
                             {"gml_gem_pipe_gentokens_time_to_last_hist",
                              {ExpectedHist{
-                                 .bucket_bounds = kLatencyBucketBounds,
-                                 .bucket_counts = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+                                 .bucket_bounds = metrics_utils::kLatencySecondsBucketBounds,
+                                 .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0,
+                                                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }}},
@@ -381,15 +402,19 @@ INSTANTIATE_TEST_SUITE_P(
                             // Metric gets updated, for 50ms latency
                             {"gml_gem_pipe_gentokens_time_to_first_hist",
                              {ExpectedHist{
-                                 .bucket_bounds = kLatencyBucketBounds,
-                                 .bucket_counts = {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+                                 .bucket_bounds = metrics_utils::kLatencySecondsBucketBounds,
+                                 .bucket_counts =
+                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+                                      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }}},
                             {"gml_gem_pipe_gentokens_time_to_last_hist",
                              {ExpectedHist{
-                                 .bucket_bounds = kLatencyBucketBounds,
-                                 .bucket_counts = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0},
+                                 .bucket_bounds = metrics_utils::kLatencySecondsBucketBounds,
+                                 .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                   0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0,
+                                                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                  .attributes = {{"pipeline_id", "test_pipeline"},
                                                 {"device_id", "test_device"}},
                              }}},
