@@ -53,9 +53,10 @@ class MergeTokensCalculator : public mediapipe::CalculatorBase {
   absl::Status Close(mediapipe::CalculatorContext* cc) override;
 
  private:
-  void EmitInput(mediapipe::CalculatorContext* cc);
-  void HandleInput(mediapipe::CalculatorContext* cc);
+  void StartNewSequence(mediapipe::CalculatorContext* cc);
+  void Emit(mediapipe::CalculatorContext* cc, const std::vector<int>& stream, bool first_token);
 
+  void HandleInput(mediapipe::CalculatorContext* cc);
   void HandleOutput(mediapipe::CalculatorContext* cc);
 
   mediapipe::Timestamp internal_timestamp_ = mediapipe::Timestamp(0);

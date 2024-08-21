@@ -59,28 +59,33 @@ absl::Status MergeTokensCalculator::GetContract(mediapipe::CalculatorContract* c
 
 absl::Status MergeTokensCalculator::Open(mediapipe::CalculatorContext*) { return absl::OkStatus(); }
 
-void MergeTokensCalculator::EmitInput(mediapipe::CalculatorContext* cc) {
+void MergeTokensCalculator::Emit(mediapipe::CalculatorContext* cc, const std::vector<int>& stream,
+                                 bool first_token) {
   ++internal_timestamp_;
   cc->Outputs()
       .Tag(kMergedStreamTag)
-      .AddPacket(
-          mediapipe::MakePacket<std::vector<int>>(input_buffer_.front()).At(internal_timestamp_));
+      .AddPacket(mediapipe::MakePacket<std::vector<int>>(stream).At(internal_timestamp_));
   cc->Outputs()
       .Tag(kLoopStartTag)
-      .AddPacket(mediapipe::MakePacket<bool>(true).At(internal_timestamp_));
+      .AddPacket(mediapipe::MakePacket<bool>(first_token).At(internal_timestamp_));
+}
+
+void MergeTokensCalculator::StartNewSequence(mediapipe::CalculatorContext* cc) {
+  Emit(cc, input_buffer_.front(), true);
   input_buffer_.pop_front();
   is_processing_output_ = true;
 }
 
 void MergeTokensCalculator::HandleInput(mediapipe::CalculatorContext* cc) {
-  const auto& input_stream_value = cc->Inputs().Tag(kInputStreamTag).Get<std::vector<int>>();
-  input_buffer_.push_back(input_stream_value);
+  const auto& input_stream_value = cc->Inputs().Tag(kInputStreamTag).Value();
+  input_buffer_.push_back(input_stream_value.Get<std::vector<int>>());
 
   if (is_processing_output_) {
     return;
   }
 
-  EmitInput(cc);
+  // Kick-off a new sequence if we're not busy.
+  StartNewSequence(cc);
 }
 
 void MergeTokensCalculator::HandleOutput(mediapipe::CalculatorContext* cc) {
@@ -88,22 +93,16 @@ void MergeTokensCalculator::HandleOutput(mediapipe::CalculatorContext* cc) {
 
   if (output_eos_value) {
     is_processing_output_ = false;
+
+    // Start the next sequence if one is available.
     if (!input_buffer_.empty()) {
-      EmitInput(cc);
+      StartNewSequence(cc);
     }
     return;
   }
 
   const auto& output_stream_value = cc->Inputs().Tag(kOutputStreamTag).Get<std::vector<int>>();
-
-  ++internal_timestamp_;
-  cc->Outputs()
-      .Tag(kMergedStreamTag)
-      .AddPacket(
-          mediapipe::MakePacket<std::vector<int>>(output_stream_value).At(internal_timestamp_));
-  cc->Outputs()
-      .Tag(kLoopStartTag)
-      .AddPacket(mediapipe::MakePacket<bool>(false).At(internal_timestamp_));
+  Emit(cc, output_stream_value, false);
 }
 
 absl::Status MergeTokensCalculator::Process(mediapipe::CalculatorContext* cc) {

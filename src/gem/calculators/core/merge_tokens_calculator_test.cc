@@ -28,8 +28,33 @@
 
 namespace gml::gem::calculators::core {
 
-TEST(MergeTokensCalculatorTest, MergesTokens) {
-  constexpr char kGraph[] = R"pbtxt(
+struct ExpectedOutput {
+  std::vector<int> tokens;
+  bool is_loop_start;
+};
+
+class MergeTokensCalculatorTest : public ::testing::Test {
+ protected:
+  void SetUp() override { runner_ = std::make_unique<mediapipe::CalculatorRunner>(kGraph); }
+
+  void AddInputs(int ts, const std::vector<int>& input_stream) {
+    runner_->MutableInputs()
+        ->Tag("INPUT_TOKENS")
+        .packets.push_back(
+            mediapipe::MakePacket<std::vector<int>>(input_stream).At(mediapipe::Timestamp(ts)));
+  }
+
+  void AddOutputs(int ts, const std::vector<int>& output_stream, bool eos) {
+    runner_->MutableInputs()
+        ->Tag("OUTPUT_TOKENS")
+        .packets.push_back(
+            mediapipe::MakePacket<std::vector<int>>(output_stream).At(mediapipe::Timestamp(ts)));
+    runner_->MutableInputs()
+        ->Tag("OUTPUT_EOS")
+        .packets.push_back(mediapipe::MakePacket<bool>(eos).At(mediapipe::Timestamp(ts)));
+  }
+
+  static constexpr char kGraph[] = R"pbtxt(
     calculator: "MergeTokensCalculator"
     input_stream: "INPUT_TOKENS:input_stream"
     input_stream: "OUTPUT_TOKENS:output_stream"
@@ -39,108 +64,31 @@ TEST(MergeTokensCalculatorTest, MergesTokens) {
     output_stream: "MERGED_TOKENS:merged_stream"
   )pbtxt";
 
-  mediapipe::CalculatorRunner runner(kGraph);
+  std::unique_ptr<mediapipe::CalculatorRunner> runner_;
+};
 
+TEST_F(MergeTokensCalculatorTest, MergesTokens) {
   int ts = 0;
 
-  {
-    std::vector<int> input_stream = {0, 1};
-    runner.MutableInputs()
-        ->Tag("INPUT_TOKENS")
-        .packets.push_back(
-            mediapipe::MakePacket<std::vector<int>>(input_stream).At(mediapipe::Timestamp(++ts)));
-  }
+  AddInputs(++ts, {0, 1});
+  AddOutputs(++ts, {1, 1, 1}, false);
+  AddOutputs(++ts, {1, 1, 2}, false);
+  AddInputs(++ts, {0, 2});
+  AddInputs(++ts, {0, 3});
+  AddOutputs(++ts, {1, 1, 3}, true);
+  AddOutputs(++ts, {1, 2, 1}, false);
+  AddOutputs(++ts, {1, 2, 2}, true);
+  AddOutputs(++ts, {1, 3, 1}, true);
 
-  {
-    std::vector<int> output_stream = {1, 1, 1};
-    runner.MutableInputs()
-        ->Tag("OUTPUT_TOKENS")
-        .packets.push_back(
-            mediapipe::MakePacket<std::vector<int>>(output_stream).At(mediapipe::Timestamp(++ts)));
-    runner.MutableInputs()
-        ->Tag("OUTPUT_EOS")
-        .packets.push_back(mediapipe::MakePacket<bool>(false).At(mediapipe::Timestamp(ts)));
-  }
+  ASSERT_OK(runner_->Run());
 
-  {
-    std::vector<int> output_stream = {1, 1, 2};
-    runner.MutableInputs()
-        ->Tag("OUTPUT_TOKENS")
-        .packets.push_back(
-            mediapipe::MakePacket<std::vector<int>>(output_stream).At(mediapipe::Timestamp(++ts)));
-    runner.MutableInputs()
-        ->Tag("OUTPUT_EOS")
-        .packets.push_back(mediapipe::MakePacket<bool>(false).At(mediapipe::Timestamp(ts)));
-  }
-
-  {
-    std::vector<int> input_stream = {0, 2};
-    runner.MutableInputs()
-        ->Tag("INPUT_TOKENS")
-        .packets.push_back(
-            mediapipe::MakePacket<std::vector<int>>(input_stream).At(mediapipe::Timestamp(++ts)));
-  }
-
-  {
-    std::vector<int> input_stream = {0, 3};
-    runner.MutableInputs()
-        ->Tag("INPUT_TOKENS")
-        .packets.push_back(
-            mediapipe::MakePacket<std::vector<int>>(input_stream).At(mediapipe::Timestamp(++ts)));
-  }
-
-  {
-    std::vector<int> output_stream = {1, 1, 3};
-    runner.MutableInputs()
-        ->Tag("OUTPUT_TOKENS")
-        .packets.push_back(
-            mediapipe::MakePacket<std::vector<int>>(output_stream).At(mediapipe::Timestamp(++ts)));
-    runner.MutableInputs()
-        ->Tag("OUTPUT_EOS")
-        .packets.push_back(mediapipe::MakePacket<bool>(true).At(mediapipe::Timestamp(ts)));
-  }
-
-  {
-    std::vector<int> output_stream = {1, 2, 1};
-    runner.MutableInputs()
-        ->Tag("OUTPUT_TOKENS")
-        .packets.push_back(
-            mediapipe::MakePacket<std::vector<int>>(output_stream).At(mediapipe::Timestamp(++ts)));
-    runner.MutableInputs()
-        ->Tag("OUTPUT_EOS")
-        .packets.push_back(mediapipe::MakePacket<bool>(false).At(mediapipe::Timestamp(ts)));
-  }
-
-  {
-    std::vector<int> output_stream = {1, 2, 2};
-    runner.MutableInputs()
-        ->Tag("OUTPUT_TOKENS")
-        .packets.push_back(
-            mediapipe::MakePacket<std::vector<int>>(output_stream).At(mediapipe::Timestamp(++ts)));
-    runner.MutableInputs()
-        ->Tag("OUTPUT_EOS")
-        .packets.push_back(mediapipe::MakePacket<bool>(true).At(mediapipe::Timestamp(ts)));
-  }
-
-  {
-    std::vector<int> output_stream = {1, 3, 1};
-    runner.MutableInputs()
-        ->Tag("OUTPUT_TOKENS")
-        .packets.push_back(
-            mediapipe::MakePacket<std::vector<int>>(output_stream).At(mediapipe::Timestamp(++ts)));
-    runner.MutableInputs()
-        ->Tag("OUTPUT_EOS")
-        .packets.push_back(mediapipe::MakePacket<bool>(true).At(mediapipe::Timestamp(ts)));
-  }
-
-  ASSERT_OK(runner.Run());
-
-  const auto& outputs = runner.Outputs();
+  const auto& outputs = runner_->Outputs();
   ASSERT_EQ(outputs.NumEntries(), 2);
 
-  std::vector<std::pair<std::vector<int>, bool>> expected_output = {
-      {{0, 1}, true}, {{1, 1, 1}, false}, {{1, 1, 2}, false},
-      {{0, 2}, true}, {{1, 2, 1}, false}, {{0, 3}, true},
+  std::vector<ExpectedOutput> expected_output = {
+      {.tokens = {0, 1}, .is_loop_start = true},     {.tokens = {1, 1, 1}, .is_loop_start = false},
+      {.tokens = {1, 1, 2}, .is_loop_start = false}, {.tokens = {0, 2}, .is_loop_start = true},
+      {.tokens = {1, 2, 1}, .is_loop_start = false}, {.tokens = {0, 3}, .is_loop_start = true},
   };
 
   const std::vector<mediapipe::Packet>& output_tokens = outputs.Tag("MERGED_TOKENS").packets;
@@ -148,10 +96,10 @@ TEST(MergeTokensCalculatorTest, MergesTokens) {
 
   EXPECT_EQ(output_tokens.size(), expected_output.size());
   for (size_t i = 0; i < output_tokens.size(); ++i) {
-    EXPECT_EQ(output_tokens[i].Get<std::vector<int>>(), expected_output[i].first);
+    EXPECT_EQ(output_tokens[i].Get<std::vector<int>>(), expected_output[i].tokens);
     EXPECT_EQ(output_tokens[i].Timestamp().Microseconds(), i + 1);
 
-    EXPECT_EQ(output_start[i].Get<bool>(), expected_output[i].second);
+    EXPECT_EQ(output_start[i].Get<bool>(), expected_output[i].is_loop_start);
     EXPECT_EQ(output_start[i].Timestamp().Microseconds(), i + 1);
   }
 }
