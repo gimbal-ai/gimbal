@@ -41,7 +41,6 @@ namespace otel_metrics = opentelemetry::sdk::metrics;
 struct MetricValues {
   ExpectedGaugeOrCounter<int64_t> active_tracks;
   ExpectedGaugeOrCounter<int64_t> unique_track_ids_count;
-  ExpectedGaugeOrCounter<int64_t> lost_tracks;
   // Optional because histogram is not emitted before tracks are removed.
   std::optional<ExpectedHist> expected_track_frames_histogram;
   std::optional<ExpectedHist> expected_track_lifetime_histogram;
@@ -104,10 +103,10 @@ TEST_P(TracksMetricsSinkTest, RecordsMetricsCorrectly) {
       ASSERT_EQ(1, scope_metrics.size());
 
       const auto& metric_data = scope_metrics[0].metric_data_;
-      // Ensure that the number of metrics matches the test cases. There are 3 metrics that will
+      // Ensure that the number of metrics matches the test cases. There are 2 metrics that will
       // always be output and 2 more for histograms which are only generated when track_ids are
       // removed.
-      ASSERT_EQ(3 + test_case.expected_metrics.expected_track_frames_histogram.has_value() +
+      ASSERT_EQ(2 + test_case.expected_metrics.expected_track_frames_histogram.has_value() +
                     test_case.expected_metrics.expected_track_lifetime_histogram.has_value(),
                 metric_data.size());
 
@@ -119,8 +118,6 @@ TEST_P(TracksMetricsSinkTest, RecordsMetricsCorrectly) {
         // Check the metric value based on its type
         if (name == "gml_gem_pipe_tracks_active") {
           EXPECT_THAT(point_data[0], MatchGauge<int64_t>(test_case.expected_metrics.active_tracks));
-        } else if (name == "gml_gem_pipe_tracks_lost") {
-          EXPECT_THAT(point_data[0], MatchGauge<int64_t>(test_case.expected_metrics.lost_tracks));
         } else if (name == "gml_gem_pipe_tracks_unique_ids") {
           EXPECT_THAT(point_data[0],
                       MatchCounter<int64_t>(test_case.expected_metrics.unique_track_ids_count));
@@ -189,7 +186,6 @@ INSTANTIATE_TEST_SUITE_P(
           .expected_metrics = {
             .active_tracks = {3, {}},
             .unique_track_ids_count = {3, {}},
-            .lost_tracks = {0, {}},
             .expected_track_frames_histogram = std::nullopt,
             .expected_track_lifetime_histogram = std::nullopt,
           }
@@ -211,7 +207,6 @@ INSTANTIATE_TEST_SUITE_P(
           .expected_metrics = {
             .active_tracks = {2, {}},
             .unique_track_ids_count = {3, {}},
-            .lost_tracks = {1, {}},
             .expected_track_frames_histogram = std::nullopt,
             .expected_track_lifetime_histogram = std::nullopt,
           },
@@ -229,7 +224,6 @@ INSTANTIATE_TEST_SUITE_P(
           .expected_metrics = {
             .active_tracks = {1, {}},
             .unique_track_ids_count = {3, {}},
-            .lost_tracks = {0, {}},
             .expected_track_frames_histogram = {
               {
                 metrics::kDefaultHistogramBounds,
@@ -292,12 +286,6 @@ INSTANTIATE_TEST_SUITE_P(
                 }
               }
             },
-            .lost_tracks={0,
-               {
-                   {"pipeline_id", "test_pipeline"},
-                   {"device_id", "test_device"}
-               }
-             },
             .expected_track_frames_histogram = std::nullopt,
           }
         },
@@ -315,12 +303,6 @@ INSTANTIATE_TEST_SUITE_P(
               {
                 {"pipeline_id", "test_pipeline"},
                 {"device_id", "test_device"}
-              }
-            },
-            .lost_tracks={0,
-              {
-                {"pipeline_id", "test_pipeline"},
-                {"device_id", "test_device"},
               }
             },
             .expected_track_frames_histogram{

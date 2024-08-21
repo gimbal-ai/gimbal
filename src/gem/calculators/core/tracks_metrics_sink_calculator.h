@@ -61,7 +61,6 @@ class TracksMetricsSinkCalculator : public mediapipe::CalculatorBase {
     mediapipe::Timestamp latest_timestamp;
   };
   opentelemetry::metrics::Gauge<uint64_t>* active_tracks_gauge_;
-  opentelemetry::metrics::Gauge<uint64_t>* lost_tracks_gauge_;
   opentelemetry::metrics::Counter<uint64_t>* unique_track_ids_counter_;
   opentelemetry::metrics::Histogram<uint64_t>* track_frame_histogram_;
   opentelemetry::metrics::Histogram<double>* track_lifetime_histogram_;

@@ -47,10 +47,6 @@ absl::Status TracksMetricsSinkCalculator::Open(mediapipe::CalculatorContext*) {
   // needs a tracking prefix
   active_tracks_gauge_ = metrics_system.GetOrCreateGauge<uint64_t>(
       "gml_gem_pipe_tracks_active", "Count of tracks that are detected in the current frame");
-  lost_tracks_gauge_ = metrics_system.GetOrCreateGauge<uint64_t>(
-      "gml_gem_pipe_tracks_lost",
-      "Count of tracks that have not been removed from the tracker and are not currently detected "
-      "in the current frame");
   unique_track_ids_counter_ = metrics_system.GetOrCreateCounter("gml_gem_pipe_tracks_unique_ids",
                                                                 "Count of unique track IDs");
 
@@ -108,7 +104,6 @@ absl::Status TracksMetricsSinkCalculator::Process(mediapipe::CalculatorContext* 
     track_id_to_info_.erase(track_id);
   }
 
-  lost_tracks_gauge_->Record(track_id_to_info_.size() - detections.size(), attrs);
   active_tracks_gauge_->Record(detections.size(), attrs);
 
   unique_track_ids_counter_->Add(new_track_id_count, attrs);
