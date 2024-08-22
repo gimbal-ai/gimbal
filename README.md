@@ -1,19 +1,20 @@
-# Gimbal
+<!-- markdownlint-disable-next-line -->
+<img src="./.readme_assets/gimbal_logo.svg" width="250" alt="Gimbal">
 
 ## Overview
 
 Gimbal is a developer tool which provides MLOps for edge AI. By providing an abstraction layer for compatibility with diverse sensors, hardware, and underlying AI frameworks, Gimbal helps developers deploy and manage AI pipelines of model variants across a fleet of heterogeneous edge devices.
 
-Under :construction:!
-
-## Contact
-
-- Zain Asgar: <zasgar@gimletlabs.ai>
-- Michelle Nguyen: <michelle@gimletlabs.ai>
-
 ## Description
 
 Gimbal simplifies the deployment and management of AI models and pipelines on a wide range of edge devices. The edge refers to a computing paradigm that brings data processing closer to the source of data generation, enabling faster, more efficient computing, especially in scenarios with limited connectivity or stringent real-time processing requirements.
+
+Existing AI model development and deployment solutions are not designed to handle problems unique to the edge:
+
+- Developers may be deploying to a fleet of heterogeneous devices, but models must be optimized for specific hardware and frameworks.
+- Per device sensor and environmental differences may require heterogeneous models to achieve the best performance, however, deploying multiple variants of the model to your fleet of devices can be challenging.
+- Models must be able to run in resource constrained environments, requiring low memory and CPU footprint
+
 
 ### Goals
 
@@ -30,9 +31,15 @@ Gimbal simplifies the deployment and management of AI models and pipelines on a 
 
 ## Architecture & Implementation
 
-The control plane and CLI are primarily written in Go and utilize cloud-native best practices for a microservices-based deployment. The edge module is developed in modern C++ and connects with lower-level ML libraries and system primitives.
+Gimbal offers a comprehensive suite of tools designed to streamline the deployment and manage the life-cycle of AI models across a diverse fleet of edge devices. Gimbal consists of the following major components.
 
-## Directory Structure
+**Gimbal Edge Module**: This module serves as a dynamic agent installed on each system node to streamline AI pipeline management. The edge module provides versioned model deployment, model observability, and last-mile optimization for ML models by utilizing HW optimized ML libraries such as TensorRT™ or OpenVino.
+
+**Gimbal Control Plane**: A set of K8s services that are meant to be deployed on the cloud or other centralized infrastructure. These services provide infrastructure for model conversion, version control, and access to the observability data.
+
+**Gimbal CLI**: Provides the primary means of interaction with Gimbal. The CLI allows for upload of new model pipelines, version management and basic status information.
+
+The edge module is developed in modern C++ and connects with lower-level ML libraries and system primitives. The control plane and CLI are primarily written in Go and utilize cloud-native best practices for a microservices-based deployment.
 
 ## Development Process
 
@@ -72,7 +79,7 @@ The control plane and CLI are primarily written in Go and utilize cloud-native b
 
 1. **Create a Fleet:**
 
-  Go to the [app.gimletlabs.ai](hosted control plane) and create a fleet for your device.
+  Go to the [hosted control plane](app.gimletlabs.ai) and create a fleet for your device.
 
 1. **Create a Deploy Key:**
 
@@ -85,17 +92,13 @@ The control plane and CLI are primarily written in Go and utilize cloud-native b
     bazel run -c opt //src/gem:gem
     ```
 
-1. **Contributing:**
+## Contributing
 
-    - Please discuss any contributions with out team. The repo is currently not open for contributions until our final repo release (planned for mid-August).
+See [CONTRIBUTING.md](CONTRIBUTING).
 
 ## Roadmap
 
-- Clean up the open source repo, accept external contribution, etc.
-- Deploy Gem's as K8s native constructs.
-- Expand support for additional sensor/model modalities beyond vision.
-- Extend OS support to include Windows.
-- Add support for other hardware accelerators with community contributions.
+See [ROADMAP.md](ROADMAP).
 
 ## Governance
 
