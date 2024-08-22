@@ -50,7 +50,6 @@ gml_cc_library(
         "image_quality_calculator.h",
         "mediapipe_typed_calculators.cc",
         "merge_tokens_calculator.cc",
-        "merge_tokens_calculator.h",
         "metrics_utils.h",
         "modify_detection_with_classification_calculator.cc",
         "modify_detection_with_classification_calculator.h",

@@ -16,15 +16,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "src/gem/calculators/core/merge_tokens_calculator.h"
-
 #include <mediapipe/framework/calculator_framework.h>
 #include <mediapipe/framework/calculator_runner.h>
 
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/base/logging.h"
 #include "src/common/testing/testing.h"
-#include "src/gem/testing/core/calculator_tester.h"
 
 namespace gml::gem::calculators::core {
 
