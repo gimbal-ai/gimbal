@@ -85,6 +85,7 @@ gml_cc_library(
         "@com_github_google_mediapipe//mediapipe/framework:calculator_framework",
         "@com_github_google_mediapipe//mediapipe/framework:mediapipe_options_cc_proto",
         "@com_github_google_mediapipe//mediapipe/framework/formats:detection_cc_proto",
+        "@com_github_google_mediapipe//mediapipe/framework/port:parse_text_proto",
         "@com_github_google_mediapipe//mediapipe/framework/stream_handler:sync_set_input_stream_handler",
         "@com_github_google_mediapipe//mediapipe/framework/stream_handler:sync_set_input_stream_handler_cc_proto",
         "@com_github_pantor_inja//:inja",

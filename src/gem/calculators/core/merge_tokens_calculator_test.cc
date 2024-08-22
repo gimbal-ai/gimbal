@@ -18,6 +18,7 @@
 
 #include <mediapipe/framework/calculator_framework.h>
 #include <mediapipe/framework/calculator_runner.h>
+#include <mediapipe/framework/port/parse_text_proto.h>
 
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/base/logging.h"
@@ -33,90 +34,111 @@ struct ExpectedOutput {
 
 class MergeTokensCalculatorTest : public ::testing::Test {
  protected:
-  void SetUp() override { runner_ = std::make_unique<mediapipe::CalculatorRunner>(kGraph); }
+  void SetUp() override {
+    graph_ = std::make_unique<mediapipe::CalculatorGraph>();
 
-  void AddInputs(int ts, const std::vector<int>& input_stream) {
-    runner_->MutableInputs()
-        ->Tag("INPUT_TOKENS")
-        .packets.push_back(
-            mediapipe::MakePacket<std::vector<int>>(input_stream).At(mediapipe::Timestamp(ts)));
+    auto graph_config = mediapipe::ParseTextProtoOrDie<mediapipe::CalculatorGraphConfig>(kGraph);
+
+    mediapipe::tool::AddVectorSink("loop_start", &graph_config, &loop_start_packets_);
+    mediapipe::tool::AddVectorSink("merged_stream", &graph_config, &merged_stream_packets_);
+    mediapipe::tool::AddVectorSink("prompt_timestamp", &graph_config, &prompt_timestamp_packets_);
+
+    ASSERT_OK(graph_->Initialize(graph_config));
+    ASSERT_OK(graph_->StartRun({}));
   }
 
-  void AddOutputs(int ts, const std::vector<int>& output_stream, bool eos) {
-    runner_->MutableInputs()
-        ->Tag("OUTPUT_TOKENS")
-        .packets.push_back(
-            mediapipe::MakePacket<std::vector<int>>(output_stream).At(mediapipe::Timestamp(ts)));
-    runner_->MutableInputs()
-        ->Tag("OUTPUT_EOS")
-        .packets.push_back(mediapipe::MakePacket<bool>(eos).At(mediapipe::Timestamp(ts)));
+  void InitTimestampDomains(int input_ts, int token_ts) {
+    input_ts_ = input_ts;
+    token_ts_ = token_ts;
+  }
+
+  void AddInputs(const std::vector<int>& input_stream) {
+    ASSERT_OK(graph_->AddPacketToInputStream(
+        "input_stream",
+        mediapipe::MakePacket<std::vector<int>>(input_stream).At(mediapipe::Timestamp(input_ts_))));
+
+    ASSERT_OK(graph_->WaitUntilIdle());
+    ++input_ts_;
+  }
+
+  void AddOutputs(const std::vector<int>& output_stream, bool eos) {
+    ASSERT_OK(graph_->AddPacketToInputStream("output_stream",
+                                             mediapipe::MakePacket<std::vector<int>>(output_stream)
+                                                 .At(mediapipe::Timestamp(token_ts_))));
+    ASSERT_OK(graph_->AddPacketToInputStream(
+        "output_eos", mediapipe::MakePacket<bool>(eos).At(mediapipe::Timestamp(token_ts_))));
+
+    ASSERT_OK(graph_->WaitUntilIdle());
+    ++token_ts_;
   }
 
   static constexpr char kGraph[] = R"pbtxt(
-    calculator: "MergeTokensCalculator"
-    input_stream: "INPUT_TOKENS:input_stream"
-    input_stream: "OUTPUT_TOKENS:output_stream"
-    input_stream: "OUTPUT_EOS:output_eos"
+    input_stream: "input_stream"
+    input_stream: "output_stream"
+    input_stream: "output_eos"
+    output_stream: "loop_start"
+    output_stream: "merged_stream"
+    output_stream: "prompt_timestamp"
+    node {
+      calculator: "MergeTokensCalculator"
+      input_stream: "INPUT_TOKENS:input_stream"
+      input_stream: "OUTPUT_TOKENS:output_stream"
+      input_stream: "OUTPUT_EOS:output_eos"
 
-    output_stream: "LOOP_START:loop_start"
-    output_stream: "MERGED_TOKENS:merged_stream"
-    output_stream: "PROMPT_TIMESTAMP:prompt_timestamp"
+      output_stream: "LOOP_START:loop_start"
+      output_stream: "MERGED_TOKENS:merged_stream"
+      output_stream: "PROMPT_TIMESTAMP:prompt_timestamp"
+    }
   )pbtxt";
 
-  std::unique_ptr<mediapipe::CalculatorRunner> runner_;
+  std::unique_ptr<mediapipe::CalculatorGraph> graph_;
+  std::vector<mediapipe::Packet> loop_start_packets_;
+  std::vector<mediapipe::Packet> merged_stream_packets_;
+  std::vector<mediapipe::Packet> prompt_timestamp_packets_;
+
+  int input_ts_ = 0;
+  int token_ts_ = 0;
 };
 
 TEST_F(MergeTokensCalculatorTest, MergesTokens) {
-  int ts = 0;
+  InitTimestampDomains(100, 1000);
 
-  AddInputs(++ts, {0, 1});
-  AddOutputs(++ts, {1, 1, 1}, false);
-  AddOutputs(++ts, {1, 1, 2}, false);
-  AddInputs(++ts, {0, 2});
-  AddInputs(++ts, {0, 3});
-  AddOutputs(++ts, {1, 1, 3}, true);
-  AddOutputs(++ts, {1, 2, 1}, false);
-  AddOutputs(++ts, {1, 2, 2}, true);
-  AddOutputs(++ts, {1, 3, 1}, true);
+  AddInputs({0, 1});
+  AddOutputs({1, 1, 1}, false);
+  AddOutputs({1, 1, 2}, false);
+  AddInputs({0, 2});
+  AddInputs({0, 3});
+  AddOutputs({1, 1, 3}, true);
+  AddOutputs({1, 2, 1}, false);
+  AddOutputs({1, 2, 2}, true);
+  AddOutputs({1, 3, 1}, true);
 
-  ASSERT_OK(runner_->Run());
+  ASSERT_OK(graph_->CloseAllPacketSources());
+  ASSERT_OK(graph_->WaitUntilDone());
 
-  const auto& outputs = runner_->Outputs();
-  ASSERT_EQ(outputs.NumEntries(), 3);
-
-  // This test is not quite right. There should really be two different timestamp domains.
-  // Unfortunately, it's not a simple matter of using different timestamp domains for the different
-  // inputs, because the way that our mediapipe test is structured is that we send all the inputs up
-  // front and then call Run(). If we use different timestamp domains, we can't account for the
-  // cause and effect relationship between the outputs and the next set of inputs. In the end, this
-  // means that the expected prompt_timestamps below are not sequential as expected.
-  // TODO(oazizi): Change the test structure to support different timestamp domains.
-  // A good reference may be begin_end_item_loop_calculator_graph_test.cc, specifically the part
-  // with SendPacketsOfInts() and WaitUntilIdle().
   std::vector<ExpectedOutput> expected_output = {
-      {.prompt_timestamp = 1, .is_loop_start = true, .tokens = {0, 1}},
-      {.prompt_timestamp = 1, .is_loop_start = false, .tokens = {1, 1, 1}},
-      {.prompt_timestamp = 1, .is_loop_start = false, .tokens = {1, 1, 2}},
-      {.prompt_timestamp = 4, .is_loop_start = true, .tokens = {0, 2}},
-      {.prompt_timestamp = 4, .is_loop_start = false, .tokens = {1, 2, 1}},
-      {.prompt_timestamp = 5, .is_loop_start = true, .tokens = {0, 3}},
+      {.prompt_timestamp = 100, .is_loop_start = true, .tokens = {0, 1}},
+      {.prompt_timestamp = 100, .is_loop_start = false, .tokens = {1, 1, 1}},
+      {.prompt_timestamp = 100, .is_loop_start = false, .tokens = {1, 1, 2}},
+      {.prompt_timestamp = 101, .is_loop_start = true, .tokens = {0, 2}},
+      {.prompt_timestamp = 101, .is_loop_start = false, .tokens = {1, 2, 1}},
+      {.prompt_timestamp = 102, .is_loop_start = true, .tokens = {0, 3}},
   };
 
-  const std::vector<mediapipe::Packet>& output_tokens = outputs.Tag("MERGED_TOKENS").packets;
-  const std::vector<mediapipe::Packet>& output_start = outputs.Tag("LOOP_START").packets;
-  const std::vector<mediapipe::Packet>& prompt_timestamp = outputs.Tag("PROMPT_TIMESTAMP").packets;
+  EXPECT_EQ(merged_stream_packets_.size(), expected_output.size());
+  for (size_t i = 0; i < merged_stream_packets_.size(); ++i) {
+    EXPECT_EQ(merged_stream_packets_[i].Get<std::vector<int>>(), expected_output[i].tokens);
+  }
 
-  EXPECT_EQ(output_tokens.size(), expected_output.size());
-  for (size_t i = 0; i < output_tokens.size(); ++i) {
-    EXPECT_EQ(output_tokens[i].Get<std::vector<int>>(), expected_output[i].tokens);
-    EXPECT_EQ(output_tokens[i].Timestamp().Microseconds(), i + 1);
+  EXPECT_EQ(loop_start_packets_.size(), expected_output.size());
+  for (size_t i = 0; i < loop_start_packets_.size(); ++i) {
+    EXPECT_EQ(loop_start_packets_[i].Get<bool>(), expected_output[i].is_loop_start);
+  }
 
-    EXPECT_EQ(output_start[i].Get<bool>(), expected_output[i].is_loop_start);
-    EXPECT_EQ(output_start[i].Timestamp().Microseconds(), i + 1);
-
-    EXPECT_EQ(prompt_timestamp[i].Get<mediapipe::Timestamp>().Microseconds(),
+  EXPECT_EQ(prompt_timestamp_packets_.size(), expected_output.size());
+  for (size_t i = 0; i < prompt_timestamp_packets_.size(); ++i) {
+    EXPECT_EQ(prompt_timestamp_packets_[i].Get<mediapipe::Timestamp>().Microseconds(),
               expected_output[i].prompt_timestamp);
-    EXPECT_EQ(prompt_timestamp[i].Timestamp().Microseconds(), i + 1);
   }
 }
 
