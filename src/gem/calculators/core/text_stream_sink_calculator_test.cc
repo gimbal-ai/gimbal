@@ -16,16 +16,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "src/gem/calculators/core/text_stream_sink_calculator.h"
-
-#include "gmock/gmock.h"
 #include <absl/container/flat_hash_map.h>
+#include <gmock/gmock.h>
 #include <mediapipe/framework/calculator_runner.h>
 #include <mediapipe/framework/packet.h>
 
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/testing/protobuf.h"
 #include "src/common/testing/testing.h"
+#include "src/gem/calculators/core/execution_context_calculator.h"
 #include "src/gem/calculators/core/test_utils.h"
 #include "src/gem/testing/core/calculator_tester.h"
 

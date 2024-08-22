@@ -62,7 +62,6 @@ gml_cc_library(
         "template_chat_message_calculator.cc",
         "template_chat_message_calculator.h",
         "text_stream_sink_calculator.cc",
-        "text_stream_sink_calculator.h",
         "text_stream_source_calculator.cc",
         "text_stream_source_calculator.h",
         "tracks_metrics_sink_calculator.cc",

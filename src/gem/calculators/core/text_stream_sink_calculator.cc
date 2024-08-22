@@ -16,51 +16,66 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "src/gem/calculators/core/text_stream_sink_calculator.h"
-
 #include <memory>
 
 #include <mediapipe/framework/calculator_framework.h>
 #include <mediapipe/framework/calculator_registry.h>
 
 #include "src/api/corepb/v1/mediastream.pb.h"
-#include "src/common/base/base.h"
+#include "src/gem/calculators/core/execution_context_calculator.h"
+#include "src/gem/exec/core/control_context.h"
 
 namespace gml::gem::calculators::core {
 
 using ::gml::internal::api::core::v1::TextBatch;
 
-constexpr std::string_view kTextTag = "TEXT_BATCH";
-constexpr std::string_view kEOSTag = "EOS";
+/**
+ *  TextStreamSinkCalculator Graph API:
+ *
+ *  Inputs:
+ *    TEXT_BATCH std::string - Text to be written to the output stream.
+ *    EOS bool - A flag indicating whether it is the end of the stream.
+ *
+ *  Outputs:
+ *    This is a sink node so there are no data mediapipe outputs. Instead the node outputs proto
+ *      data to the GEM controller through the ControlExecutionContext
+ *
+ */
+class TextStreamSinkCalculator : public ControlExecutionContextCalculator {
+ public:
+  static absl::Status GetContract(mediapipe::CalculatorContract* cc) {
+    GML_ABSL_RETURN_IF_ERROR(ControlExecutionContextCalculator::UpdateContract(cc));
 
-absl::Status TextStreamSinkCalculator::GetContract(mediapipe::CalculatorContract* cc) {
-  GML_ABSL_RETURN_IF_ERROR(core::ControlExecutionContextCalculator::UpdateContract(cc));
+    cc->Inputs().Tag(kTextTag).Set<std::string>();
+    cc->Inputs().Tag(kEOSTag).Set<bool>();
 
-  cc->Inputs().Tag(kTextTag).Set<std::string>();
-  cc->Inputs().Tag(kEOSTag).Set<bool>();
-
-  return absl::OkStatus();
-}
-
-Status TextStreamSinkCalculator::ProcessImpl(mediapipe::CalculatorContext* cc,
-                                             exec::core::ControlExecutionContext* control_ctx) {
-  std::vector<std::unique_ptr<google::protobuf::Message>> messages;
-
-  auto batch = std::make_unique<TextBatch>();
-  if (cc->Inputs().HasTag(kTextTag)) {
-    batch->set_text(cc->Inputs().Tag(kTextTag).Get<std::string>());
+    return absl::OkStatus();
   }
-  if (cc->Inputs().HasTag(kEOSTag)) {
-    batch->set_eos(cc->Inputs().Tag(kEOSTag).Get<bool>());
-  }
-  messages.push_back(std::move(batch));
 
-  auto cb = control_ctx->GetMediaStreamCallback();
-  if (!!cb) {
-    GML_RETURN_IF_ERROR(cb(messages));
+  Status ProcessImpl(mediapipe::CalculatorContext* cc,
+                     exec::core::ControlExecutionContext* control_ctx) override {
+    std::vector<std::unique_ptr<google::protobuf::Message>> messages;
+
+    auto batch = std::make_unique<TextBatch>();
+    if (cc->Inputs().HasTag(kTextTag)) {
+      batch->set_text(cc->Inputs().Tag(kTextTag).Get<std::string>());
+    }
+    if (cc->Inputs().HasTag(kEOSTag)) {
+      batch->set_eos(cc->Inputs().Tag(kEOSTag).Get<bool>());
+    }
+    messages.push_back(std::move(batch));
+
+    auto cb = control_ctx->GetMediaStreamCallback();
+    if (!!cb) {
+      GML_RETURN_IF_ERROR(cb(messages));
+    }
+    return Status::OK();
   }
-  return Status::OK();
-}
+
+ private:
+  static constexpr std::string_view kTextTag = "TEXT_BATCH";
+  static constexpr std::string_view kEOSTag = "EOS";
+};
 
 REGISTER_CALCULATOR(TextStreamSinkCalculator);
 
