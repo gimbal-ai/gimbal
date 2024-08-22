@@ -57,6 +57,7 @@ gml_cc_library(
         "modify_detection_with_regression_calculator.h",
         "packet_latency_metrics_sink_calculator.cc",
         "packet_latency_metrics_sink_calculator.h",
+        "semantic_segmentation_metrics_sink_calculator.cc",
         "stop_on_token_set_calculator.cc",
         "stop_on_token_set_calculator.h",
         "template_chat_message_calculator.cc",
@@ -282,6 +283,18 @@ gml_cc_test(
     name = "flow_limiter_metrics_sink_calculator_test",
     srcs = [
         "flow_limiter_metrics_sink_calculator_test.cc",
+        "test_utils.h",
+    ],
+    deps = [
+        ":cc_library",
+        "//src/gem/testing/core:cc_library",
+    ],
+)
+
+gml_cc_test(
+    name = "semantic_segmentation_metrics_sink_calculator_test",
+    srcs = [
+        "semantic_segmentation_metrics_sink_calculator_test.cc",
         "test_utils.h",
     ],
     deps = [

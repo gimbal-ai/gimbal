@@ -35,7 +35,7 @@ using ::gml::internal::api::core::v1::Detection;
 
 struct PacketAndExpectation {
   std::vector<std::string> detection_pbtxts;
-  absl::flat_hash_map<std::string, std::vector<ExpectedMetric>> expected_hists;
+  absl::flat_hash_map<std::string, std::vector<ExpectedMetric>> expected_metrics;
 };
 
 std::ostream& operator<<(std::ostream& os, const PacketAndExpectation& packet_and_expectation) {
@@ -63,7 +63,7 @@ TEST_P(DetectionsMetricsSinkTest, CollectsStatsCorrectly) {
   testing::CalculatorTester tester(kDetectionsMetricsSinkNode);
 
   const auto& detection_pbtxts = packet_and_expectation.detection_pbtxts;
-  auto& expected_hists = packet_and_expectation.expected_hists;
+  auto& expected_hists = packet_and_expectation.expected_metrics;
 
   std::vector<Detection> detections(detection_pbtxts.size());
   for (size_t i = 0; i < detection_pbtxts.size(); i++) {

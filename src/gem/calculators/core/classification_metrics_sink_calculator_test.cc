@@ -35,7 +35,7 @@ using ::gml::internal::api::core::v1::Classification;
 
 struct PacketAndExpectation {
   std::string classification_pbtxt;
-  ExpectedMetricsMap expected_hists;
+  ExpectedMetricsMap expected_metrics;
 };
 
 class ClassificationMetricsSinkTest
@@ -56,7 +56,7 @@ TEST_P(ClassificationMetricsSinkTest, CollectsStatsCorrectly) {
   // The test param comes as a packet per time step and an expectation for that timestep.
   for (size_t t = 0; t < packet_and_expectation.size(); ++t) {
     const auto& classification_pbtxt = packet_and_expectation[t].classification_pbtxt;
-    const auto& expected_hists = packet_and_expectation[t].expected_hists;
+    const auto& expected_hists = packet_and_expectation[t].expected_metrics;
 
     // Convert the pbtxts into Label objects.
     Classification classification;
