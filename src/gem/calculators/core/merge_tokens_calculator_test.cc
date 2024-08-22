@@ -26,8 +26,9 @@
 namespace gml::gem::calculators::core {
 
 struct ExpectedOutput {
-  std::vector<int> tokens;
+  int prompt_timestamp;
   bool is_loop_start;
+  std::vector<int> tokens;
 };
 
 class MergeTokensCalculatorTest : public ::testing::Test {
@@ -59,6 +60,7 @@ class MergeTokensCalculatorTest : public ::testing::Test {
 
     output_stream: "LOOP_START:loop_start"
     output_stream: "MERGED_TOKENS:merged_stream"
+    output_stream: "PROMPT_TIMESTAMP:prompt_timestamp"
   )pbtxt";
 
   std::unique_ptr<mediapipe::CalculatorRunner> runner_;
@@ -80,16 +82,29 @@ TEST_F(MergeTokensCalculatorTest, MergesTokens) {
   ASSERT_OK(runner_->Run());
 
   const auto& outputs = runner_->Outputs();
-  ASSERT_EQ(outputs.NumEntries(), 2);
+  ASSERT_EQ(outputs.NumEntries(), 3);
 
+  // This test is not quite right. There should really be two different timestamp domains.
+  // Unfortunately, it's not a simple matter of using different timestamp domains for the different
+  // inputs, because the way that our mediapipe test is structured is that we send all the inputs up
+  // front and then call Run(). If we use different timestamp domains, we can't account for the
+  // cause and effect relationship between the outputs and the next set of inputs. In the end, this
+  // means that the expected prompt_timestamps below are not sequential as expected.
+  // TODO(oazizi): Change the test structure to support different timestamp domains.
+  // A good reference may be begin_end_item_loop_calculator_graph_test.cc, specifically the part
+  // with SendPacketsOfInts() and WaitUntilIdle().
   std::vector<ExpectedOutput> expected_output = {
-      {.tokens = {0, 1}, .is_loop_start = true},     {.tokens = {1, 1, 1}, .is_loop_start = false},
-      {.tokens = {1, 1, 2}, .is_loop_start = false}, {.tokens = {0, 2}, .is_loop_start = true},
-      {.tokens = {1, 2, 1}, .is_loop_start = false}, {.tokens = {0, 3}, .is_loop_start = true},
+      {.prompt_timestamp = 1, .is_loop_start = true, .tokens = {0, 1}},
+      {.prompt_timestamp = 1, .is_loop_start = false, .tokens = {1, 1, 1}},
+      {.prompt_timestamp = 1, .is_loop_start = false, .tokens = {1, 1, 2}},
+      {.prompt_timestamp = 4, .is_loop_start = true, .tokens = {0, 2}},
+      {.prompt_timestamp = 4, .is_loop_start = false, .tokens = {1, 2, 1}},
+      {.prompt_timestamp = 5, .is_loop_start = true, .tokens = {0, 3}},
   };
 
   const std::vector<mediapipe::Packet>& output_tokens = outputs.Tag("MERGED_TOKENS").packets;
   const std::vector<mediapipe::Packet>& output_start = outputs.Tag("LOOP_START").packets;
+  const std::vector<mediapipe::Packet>& prompt_timestamp = outputs.Tag("PROMPT_TIMESTAMP").packets;
 
   EXPECT_EQ(output_tokens.size(), expected_output.size());
   for (size_t i = 0; i < output_tokens.size(); ++i) {
@@ -98,6 +113,10 @@ TEST_F(MergeTokensCalculatorTest, MergesTokens) {
 
     EXPECT_EQ(output_start[i].Get<bool>(), expected_output[i].is_loop_start);
     EXPECT_EQ(output_start[i].Timestamp().Microseconds(), i + 1);
+
+    EXPECT_EQ(prompt_timestamp[i].Get<mediapipe::Timestamp>().Microseconds(),
+              expected_output[i].prompt_timestamp);
+    EXPECT_EQ(prompt_timestamp[i].Timestamp().Microseconds(), i + 1);
   }
 }
 

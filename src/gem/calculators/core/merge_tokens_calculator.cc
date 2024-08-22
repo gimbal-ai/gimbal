@@ -53,6 +53,9 @@ class MergeTokensCalculator : public mediapipe::CalculatorBase {
 
     cc->Outputs().Tag(kMergedStreamTag).Set<std::vector<int>>();
     cc->Outputs().Tag(kLoopStartTag).Set<bool>();
+    if (cc->Outputs().HasTag(kPromptTimestampTag)) {
+      cc->Outputs().Tag(kPromptTimestampTag).Set<mediapipe::Timestamp>();
+    }
 
     cc->SetInputStreamHandler("SyncSetInputStreamHandler");
     mediapipe::MediaPipeOptions options;
@@ -92,6 +95,7 @@ class MergeTokensCalculator : public mediapipe::CalculatorBase {
 
   static constexpr std::string_view kLoopStartTag = "LOOP_START";
   static constexpr std::string_view kMergedStreamTag = "MERGED_TOKENS";
+  static constexpr std::string_view kPromptTimestampTag = "PROMPT_TIMESTAMP";
 
   void StartNewSequence(mediapipe::CalculatorContext* cc) {
     Emit(cc, input_buffer_.front(), true);
@@ -107,11 +111,18 @@ class MergeTokensCalculator : public mediapipe::CalculatorBase {
     cc->Outputs()
         .Tag(kLoopStartTag)
         .AddPacket(mediapipe::MakePacket<bool>(first_token).At(internal_timestamp_));
+    if (cc->Outputs().HasTag(kPromptTimestampTag)) {
+      cc->Outputs()
+          .Tag(kPromptTimestampTag)
+          .AddPacket(mediapipe::MakePacket<mediapipe::Timestamp>(input_timestamps_.front())
+                         .At(internal_timestamp_));
+    }
   }
 
   void HandleInput(mediapipe::CalculatorContext* cc) {
     const auto& input_stream_value = cc->Inputs().Tag(kInputStreamTag).Value();
     input_buffer_.push_back(input_stream_value.Get<std::vector<int>>());
+    input_timestamps_.push_back(input_stream_value.Timestamp());
 
     if (is_processing_output_) {
       return;
@@ -126,6 +137,7 @@ class MergeTokensCalculator : public mediapipe::CalculatorBase {
 
     if (output_eos_value) {
       is_processing_output_ = false;
+      input_timestamps_.pop_front();
 
       // Start the next sequence if one is available.
       if (!input_buffer_.empty()) {
@@ -140,6 +152,7 @@ class MergeTokensCalculator : public mediapipe::CalculatorBase {
 
   mediapipe::Timestamp internal_timestamp_ = mediapipe::Timestamp(0);
   std::deque<std::vector<int>> input_buffer_;
+  std::deque<mediapipe::Timestamp> input_timestamps_;
   bool is_processing_output_ = false;
 };
 
