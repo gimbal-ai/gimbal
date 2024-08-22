@@ -1,0 +1,36 @@
+--- a/torch-2.3.1+cu121.dist-info/RECORD
++++ b/torch-2.3.1+cu121.dist-info/RECORD
+@@ -26,7 +26,7 @@
+ torch/_VF.pyi,sha256=_A2Bbfysh3I6t2m-zn7f0YSXMug_H_McAy6lc7mYjIs,1137683
+ torch/__config__.py,sha256=kv8yDflHiu3B2rxjOe48upLeB2VXnTxdXKeAYcxnJ5c,553
+ torch/__future__.py,sha256=yk9l_KWsfVIzUBx9cGr-OdtWmb-pI8ZhcROAm3a_FQw,3185
+-torch/__init__.py,sha256=8C20Ae_lPfuDIjSZGyS45u-Mksk90KimwTrasMHZwAs,80120
++torch/__init__.py,sha256=34xJYNlNiyn9IZvtiG-lEeHEGoDiACFqQaYljC6hrMI,80171
+ torch/_appdirs.py,sha256=GjuBh72l3BhGE4vJSdqGj-8QHjGbkhuMYaOLchLcqOQ,26167
+ torch/_classes.py,sha256=zez2IGbpzN3f1P7Tg8s-fg3pz_ATN6hAVTxKsSqtV9o,1686
+ torch/_compile.py,sha256=a2g6zXCXwnirEFu-VSiSzRfk23_-E0MgVbodLOHfjr0,1001
+@@ -10392,13 +10392,6 @@
+ torch/xpu/_utils.py,sha256=JTETOkI3J7tp4SFKV3ukRlvQDO-6Qg850KkJ8wO6gh0,1591
+ torch/xpu/random.py,sha256=gIwDBj51xPEfwa4a_xH-1oyTJO9AQdBHPXBC-PgpmEs,5217
+ torch/xpu/streams.py,sha256=RWI7Y1ARIOAQfIiYL9y2qC4avqd9oPsuK7uVIefUI3E,5470
+-torch-2.3.1+cu121.dist-info/LICENSE,sha256=nCkW1Dsriv9qPGZi7VhLay19bc-E3XJxgd7q3FRyIU4,351851
+-torch-2.3.1+cu121.dist-info/METADATA,sha256=uXVGCi2XHXEFSeq3Xp7PJBa_wBj0gG1S8rKSWf-Nmt0,26126
+-torch-2.3.1+cu121.dist-info/NOTICE,sha256=wsx78MrsdlLCtGCopHC-oWd_JB5KuOQx3zTPF_Wp_sA,23632
+-torch-2.3.1+cu121.dist-info/WHEEL,sha256=heXqORHgAzVHsSEcHHvvTohM_YB7MmN0HUQQME76CM0,105
+-torch-2.3.1+cu121.dist-info/entry_points.txt,sha256=SRhyGhohzXtwg-GPZHrgubQLqk1v5i-kOQiV-mj5fms,296
+-torch-2.3.1+cu121.dist-info/top_level.txt,sha256=MsBcfJyMU15lW1efu5w7Tzd4MenrYHiuaixbHMfAoco,25
+-torch-2.3.1+cu121.dist-info/RECORD,,
+ torchgen/__init__.py,sha256=iirTpG38WcCsNMhEbi1dg7_jad6ptk_uzZ-BzaGBFyU,348
+ torchgen/code_template.py,sha256=z3N3FvXHfvO2aLIu2LoFqe7XGpzbFfzXEyzhGez2KME,2903
+ torchgen/context.py,sha256=798e45g0zoR69Xn_4HjTuBRXbuNnyyK-j5_vWOnrs_s,3974
+@@ -10538,3 +10531,10 @@
+ torchgen/static_runtime/config.py,sha256=fEMB4EdO8aX47aW13s-nVSy-yM5qIzfXrOYaQkmv3-A,14493
+ torchgen/static_runtime/gen_static_runtime_ops.py,sha256=Esr32XW78YkLpGAGhIw6ZsxmkwgI_Pd3j0rh585ijow,7347
+ torchgen/static_runtime/generator.py,sha256=Sfe8TR6inZv-FHhJAG6gXBFXutPVMO8I4Uzw3xnGdd4,26374
++torch-2.3.1+cu121.dist-info/LICENSE,sha256=nCkW1Dsriv9qPGZi7VhLay19bc-E3XJxgd7q3FRyIU4,351851
++torch-2.3.1+cu121.dist-info/METADATA,sha256=uXVGCi2XHXEFSeq3Xp7PJBa_wBj0gG1S8rKSWf-Nmt0,26126
++torch-2.3.1+cu121.dist-info/NOTICE,sha256=wsx78MrsdlLCtGCopHC-oWd_JB5KuOQx3zTPF_Wp_sA,23632
++torch-2.3.1+cu121.dist-info/WHEEL,sha256=heXqORHgAzVHsSEcHHvvTohM_YB7MmN0HUQQME76CM0,105
++torch-2.3.1+cu121.dist-info/entry_points.txt,sha256=SRhyGhohzXtwg-GPZHrgubQLqk1v5i-kOQiV-mj5fms,296
++torch-2.3.1+cu121.dist-info/top_level.txt,sha256=MsBcfJyMU15lW1efu5w7Tzd4MenrYHiuaixbHMfAoco,25
++torch-2.3.1+cu121.dist-info/RECORD,,

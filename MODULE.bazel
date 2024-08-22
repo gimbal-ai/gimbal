@@ -206,6 +206,14 @@ python.toolchain(
 use_repo(python, python = "python_3_11")
 
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
+pip.override(
+    file = "torch-2.3.1+cu121-cp311-cp311-linux_x86_64.whl",
+    patch_strip = 1,
+    patches = [
+        "//bazel/external:pytorch.patch",
+        "//bazel/external:pytorch_record.patch",
+    ],
+)
 pip.parse(
     hub_name = "pip",
     python_version = "3.11",
