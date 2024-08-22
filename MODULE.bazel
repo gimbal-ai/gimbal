@@ -39,6 +39,7 @@ bazel_dep(name = "googletest", version = "1.14.0.bcr.1", repo_name = "com_google
 bazel_dep(name = "google_benchmark", version = "1.8.5", repo_name = "com_google_benchmark")
 bazel_dep(name = "re2", version = "2023-11-01", repo_name = "com_googlesource_code_re2")
 bazel_dep(name = "rules_apple", version = "3.7.0", repo_name = "build_bazel_rules_apple")
+bazel_dep(name = "gflags", version = "2.2.2", repo_name = "com_github_gflags_gflags")
 
 # mediapipe uses rules_nodejs so we pull it in at the top level despite it being pulled in by aspect_rules_js already.
 bazel_dep(name = "rules_nodejs", version = "5.8.3")

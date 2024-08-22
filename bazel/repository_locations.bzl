@@ -35,11 +35,6 @@ REPOSITORY_LOCATIONS = dict(
             "https://github.com/benchsci/rules_nodejs_gazelle/archive/refs/tags/v0.5.0.tar.gz",
         ],
     ),
-    com_github_gflags_gflags = dict(
-        sha256 = "9e1a38e2dcbb20bb10891b5a171de2e5da70e0a50fff34dd4b0c2c6d75043909",
-        strip_prefix = "gflags-524b83d0264cb9f1b2d134c564ef1aa23f207a41",
-        urls = ["https://github.com/gflags/gflags/archive/524b83d0264cb9f1b2d134c564ef1aa23f207a41.tar.gz"],
-    ),
     com_github_gperftools_gperftools = dict(
         sha256 = "ea566e528605befb830671e359118c2da718f721c27225cbbc93858c7520fee3",
         strip_prefix = "gperftools-2.9.1",

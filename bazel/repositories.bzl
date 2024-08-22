@@ -149,7 +149,6 @@ def _cc_deps():
     )
     _bazel_repo("boringssl")
 
-    _bazel_repo("com_github_gflags_gflags")
     _bazel_repo("com_google_flatbuffers")
     _bazel_repo("org_tensorflow")
     _bazel_repo("com_github_neargye_magic_enum")
