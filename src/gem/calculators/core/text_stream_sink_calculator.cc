@@ -35,11 +35,13 @@ using ::gml::internal::api::core::v1::TextBatch;
  *  Inputs:
  *    TEXT_BATCH std::string - Text to be written to the output stream.
  *    EOS bool - A flag indicating whether it is the end of the stream.
+ *    PROMPT_TIMESTAMP mediapipe::Timestamp - The timestamp of the prompt the current token belongs
+ * to.
  *
  *  Outputs:
- *    This is a sink node so there are no data mediapipe outputs. Instead the node outputs proto
- *      data to the GEM controller through the ControlExecutionContext
- *
+ *    The node outputs proto data to the GEM controller through the ControlExecutionContext.
+ *    A FINISHED bool packet is output when the EOS flag is set to true to indicate the response
+ *    to a prompt is finished.
  */
 class TextStreamSinkCalculator : public ControlExecutionContextCalculator {
  public:
@@ -49,6 +51,16 @@ class TextStreamSinkCalculator : public ControlExecutionContextCalculator {
     cc->Inputs().Tag(kTextTag).Set<std::string>();
     cc->Inputs().Tag(kEOSTag).Set<bool>();
 
+    if (cc->Inputs().HasTag(kPromptTimestampTag)) {
+      cc->Inputs().Tag(kPromptTimestampTag).Set<mediapipe::Timestamp>();
+    }
+
+    if (cc->Outputs().HasTag(kFinishedTag)) {
+      RET_CHECK(cc->Inputs().HasTag(kPromptTimestampTag))
+          << absl::Substitute("$0 required when using $1.", kPromptTimestampTag, kFinishedTag);
+      cc->Outputs().Tag(kFinishedTag).Set<bool>();
+    }
+
     return absl::OkStatus();
   }
 
@@ -57,24 +69,33 @@ class TextStreamSinkCalculator : public ControlExecutionContextCalculator {
     std::vector<std::unique_ptr<google::protobuf::Message>> messages;
 
     auto batch = std::make_unique<TextBatch>();
-    if (cc->Inputs().HasTag(kTextTag)) {
-      batch->set_text(cc->Inputs().Tag(kTextTag).Get<std::string>());
-    }
-    if (cc->Inputs().HasTag(kEOSTag)) {
-      batch->set_eos(cc->Inputs().Tag(kEOSTag).Get<bool>());
-    }
+    batch->set_text(cc->Inputs().Tag(kTextTag).Get<std::string>());
+    batch->set_eos(cc->Inputs().Tag(kEOSTag).Get<bool>());
     messages.push_back(std::move(batch));
 
     auto cb = control_ctx->GetMediaStreamCallback();
     if (!!cb) {
       GML_RETURN_IF_ERROR(cb(messages));
     }
+
+    if (cc->Inputs().HasTag(kPromptTimestampTag)) {
+      auto prompt_timestamp = cc->Inputs().Tag(kPromptTimestampTag).Get<mediapipe::Timestamp>();
+      auto eos = cc->Inputs().Tag(kEOSTag).Get<bool>();
+      if (eos) {
+        cc->Outputs()
+            .Tag(kFinishedTag)
+            .AddPacket(mediapipe::MakePacket<bool>(true).At(prompt_timestamp));
+      }
+    }
+
     return Status::OK();
   }
 
  private:
   static constexpr std::string_view kTextTag = "TEXT_BATCH";
   static constexpr std::string_view kEOSTag = "EOS";
+  static constexpr std::string_view kPromptTimestampTag = "PROMPT_TIMESTAMP";
+  static constexpr std::string_view kFinishedTag = "FINISHED";
 };
 
 REGISTER_CALCULATOR(TextStreamSinkCalculator);
