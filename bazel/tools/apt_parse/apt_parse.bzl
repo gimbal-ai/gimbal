@@ -30,7 +30,9 @@ def _apt_parse_impl(ctx):
     args.add("--out_bzl", out)
     args.add_joined("--spec", ctx.attr.specs, join_with = ",", map_each = _target_to_files)
     args.add_joined("--arch", ctx.attr.archs, join_with = ",")
-    args.add("--fake_mirroring", ctx.attr.fake_mirroring)
+
+    if ctx.attr.fake_mirroring:
+        args.add("--fake_mirroring")
 
     depsets = []
     for spec in ctx.attr.specs:
