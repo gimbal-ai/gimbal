@@ -12,16 +12,16 @@ common --nolegacy_important_outputs
 common --incompatible_merge_fixed_and_default_shell_env
 
 # https://github.com/bazelbuild/rules_rust/issues/2084
-build --@rules_rust//cargo/settings:experimental_symlink_execroot
+common --@rules_rust//cargo/settings:experimental_symlink_execroot
 
 build --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
 fetch --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
 query --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig
 
-build --@io_opentelemetry_cpp//api:with_abseil=true
+common --@io_opentelemetry_cpp//api:with_abseil=true
 
 # Use strict action env to prevent leaks of env vars.
-build --incompatible_strict_action_env
+common --incompatible_strict_action_env
 
 build --remote_download_minimal
 test --remote_download_minimal
@@ -29,29 +29,28 @@ run --remote_download_outputs=all
 coverage --build_runfile_links
 
 # Get version information into the build.
-build --workspace_status_command=bazel/get_workspace_status.sh
+common --workspace_status_command=bazel/get_workspace_status.sh
 
 # We only have support for python3 on the Ubuntu 22.04 image.
-build --host_force_python=PY3
+common --host_force_python=PY3
 
 # Limit memory for JVM to reduce runaway usage.
 startup --host_jvm_args=-Xmx1900m
 
 # To run a test that was filtered out:
-# bazel test //path/to:test --test_tag_filter=
-# Which reset the filter to empty.
-build --test_tag_filters=-disabled
+# bazel test //path/to:test --test_tag_filter=""
+test --test_tag_filters=-disabled
 
 # Sets the default Apple platform to macOS.
-build --apple_platform_type=macos
+common --apple_platform_type=macos
 
 # Required for Coral/Edge TPU.
-build --define darwinn_portable=1
+common --define darwinn_portable=1
 
-build --incompatible_sandbox_hermetic_tmp
+common --incompatible_sandbox_hermetic_tmp
 # Give each sandbox its own tmp directory.
 # For more context, see: https://github.com/bazelbuild/bazel/issues/3236
-test:tmp-sandbox --sandbox_tmpfs_path=/tmp
+common:tmp-sandbox --sandbox_tmpfs_path=/tmp
 
 # This flag is equivalent to --config=linux on a linux machine, and --config=macos on a macos machine.
 common --enable_platform_specific_config
@@ -60,32 +59,32 @@ common --enable_platform_specific_config
 # `bazel query` will try to auto-detect the toolchain without this.
 common:linux --repo_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
 # --platforms is only set on linux, because we don't have a linux cross-compiling setup on macos.
-build:linux --platforms=//bazel/cc_toolchains:linux-x86_64
+common:linux --platforms=//bazel/cc_toolchains:linux-x86_64
 # Likewise, we only have cc_toolchain definitions for our linux compilers, so we only enable toolchain resolution on linux.
-build:linux --incompatible_enable_cc_toolchain_resolution
-build:linux --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
+common:linux --incompatible_enable_cc_toolchain_resolution
+common:linux --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
 
 # Non sysroot config.
-build:no_sysroot --//bazel/cc_toolchains:libc_version=glibc_host
-build:no_sysroot --config=clang-libstdc++
+common:no_sysroot --//bazel/cc_toolchains:libc_version=glibc_host
+common:no_sysroot --config=clang-libstdc++
 
 # We build our own chroot for the sysroot tests, which doesn't work well under bazel's sandbox.
-build:sysroot-base --//bazel/test_runners:test_runner=sysroot_chroot
+common:sysroot-base --//bazel/test_runners:test_runner=sysroot_chroot
 test:sysroot-base --strategy TestRunner=standalone
 test:sysroot-base --run_under="bazel/test_runners/sysroot_chroot/test_runner.sh"
 
-build:x86_64_sysroot --config=clang-libstdc++
-build:x86_64_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
-build:x86_64_sysroot --config=sysroot-base
+common:x86_64_sysroot --config=clang-libstdc++
+common:x86_64_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
+common:x86_64_sysroot --config=sysroot-base
 
-build:aarch64_sysroot --config=clang-libstdc++
-build:aarch64_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
-build:aarch64_sysroot --platforms=//bazel/cc_toolchains:linux-aarch64
-build:aarch64_sysroot --config=sysroot-base
+common:aarch64_sysroot --config=clang-libstdc++
+common:aarch64_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
+common:aarch64_sysroot --platforms=//bazel/cc_toolchains:linux-aarch64
+common:aarch64_sysroot --config=sysroot-base
 # Increase test timeouts for qemu (don't increase the slowest ones because those are already very long).
-test:aarch64_sysroot --test_timeout=180,600,1800,3600
-test:aarch64_sysroot --test_env=QEMU_STRACE
-test:aarch64_sysroot --test_tag_filters=-no_libcpp,-disabled
+common:aarch64_sysroot --test_timeout=180,600,1800,3600
+common:aarch64_sysroot --test_env=QEMU_STRACE
+common:aarch64_sysroot --test_tag_filters=-no_libcpp,-disabled
 
 common:jetson_sysroot --config=clang-libstdc++
 common:jetson_sysroot --//bazel/cc_toolchains:libc_version=glibc2_31
@@ -96,7 +95,7 @@ common:jetson_sysroot --//src/gem/plugins:enable_openvino=false
 common:jetson_sysroot --//src/gem/plugins:enable_jetson
 common:jetson_sysroot --config=sysroot-base
 common:jetson_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=jetson
-test:jetson_sysroot --test_env=LD_LIBRARY_PATH=/usr/lib/aarch64-linux-gnu/tegra
+common:jetson_sysroot --test_env=LD_LIBRARY_PATH=/usr/lib/aarch64-linux-gnu/tegra
 
 common:intelgpu_sysroot --config=clang-libstdc++
 common:intelgpu_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
@@ -115,72 +114,70 @@ common:experimental_sysroot --config=sysroot-base
 common:experimental_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=experimental
 
 # Build for Clang using Libc++.
-build:clang-libc++ --//bazel/cc_toolchains:compiler=clang
-build:clang-libc++ --//bazel:enable_libcpp
-build:clang-libc++ --features=libc++ --features=-libstdc++
-build:clang-libc++ --build_tag_filters=-no_libcpp
-build:clang-libc++ --test_tag_filters=-no_libcpp,-disabled
+common:clang-libc++ --//bazel/cc_toolchains:compiler=clang
+common:clang-libc++ --//bazel:enable_libcpp
+common:clang-libc++ --features=libc++ --features=-libstdc++
+common:clang-libc++ --build_tag_filters=-no_libcpp
+common:clang-libc++ --test_tag_filters=-no_libcpp,-disabled
 test:clang-libc++ --config=tmp-sandbox
 
 # Build for Clang with libstdc++:
-build:clang-libstdc++ --//bazel/cc_toolchains:compiler=clang
+common:clang-libstdc++ --//bazel/cc_toolchains:compiler=clang
 test:clang-libstdc++ --config=tmp-sandbox
 
 # Build for GCC.
 # These are copts because they apply to both c++ and c files.
 # In particular, upb is has issues with this that will hopefully be
 # fixed upstream soon.
-build:gcc --copt -Wno-error=sign-compare
-build:gcc --copt -Wno-error=stringop-truncation
-build:gcc --copt -Wno-error=maybe-uninitialized
-build:gcc --build_tag_filters=-no_gcc
-build:gcc --test_tag_filters=-no_gcc,-disabled
-build:gcc --//bazel/cc_toolchains:compiler=gcc
-# TODO(#1462): Investigate why tcmalloc breaks linking of go binaries.
-build:gcc --define tcmalloc=disabled
+common:gcc --build_tag_filters=-no_gcc
+common:gcc --test_tag_filters=-no_gcc,-disabled
+common:gcc --//bazel/cc_toolchains:compiler=gcc
+# TODO: Investigate why tcmalloc breaks linking of go binaries.
+common:gcc --define tcmalloc=disabled
+common:gcc --copt -Wno-error=sign-compare
+common:gcc --copt -Wno-error=stringop-truncation
+common:gcc --copt -Wno-error=maybe-uninitialized
 test:gcc --config=tmp-sandbox
 
 # bazel build --config asan ...
-build:asan --config=clang-libc++
-build:asan --//bazel:sanitizer=asan
-build:asan --features=asan
-build:asan --test_timeout="120,600,1800,3600"
-build:asan --define GML_CONFIG_ASAN=1
-build:asan --define tcmalloc=disabled
-build:asan --build_tag_filters=-no_asan
-build:asan --test_tag_filters=-no_asan,-disabled
-build:asan --define signal_trace=disabled
-build:asan --test_env=ASAN_SYMBOLIZER_PATH
-build:asan --test_env=ASAN_OPTIONS=handle_abort=1:allow_addr2line=true
-build:asan --test_env=UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1
-build:asan --define tcmalloc=disabled
+common:asan --config=clang-libc++
+common:asan --//bazel:sanitizer=asan
+common:asan --features=asan
+common:asan --define GML_CONFIG_ASAN=1
+common:asan --define tcmalloc=disabled
+common:asan --define signal_trace=disabled
+common:asan --build_tag_filters=-no_asan
+common:asan --test_timeout=120,600,1800,3600
+common:asan --test_tag_filters=-no_asan,-disabled
+common:asan --test_env=ASAN_SYMBOLIZER_PATH
+common:asan --test_env=ASAN_OPTIONS=handle_abort=1:allow_addr2line=true
+common:asan --test_env=UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1
 #test:asan --test_env=ASAN_OPTIONS=detect_container_overflow=0
 
 # bazel build --config msan
-build:msan --config=clang-libc++
-build:msan --define GML_CONFIG_MSAN=1
-build:msan --//bazel:sanitizer=msan
-build:msan --define tcmalloc=disabled
-build:msan --build_tag_filters=-no_msan
-build:msan --test_tag_filters=-no_msan,-disabled
-build:msan --features=msan
+common:msan --config=clang-libc++
+common:msan --//bazel:sanitizer=msan
+common:msan --features=msan
+common:msan --define GML_CONFIG_MSAN=1
+common:msan --define tcmalloc=disabled
+common:msan --build_tag_filters=-no_msan
+common:msan --test_tag_filters=-no_msan,-disabled
 
 # bazel build --config tsan
-build:tsan --config=clang-libc++
-build:tsan --//bazel:sanitizer=tsan
-build:tsan --define GML_CONFIG_TSAN=1
-build:tsan --define tcmalloc=disabled
-build:tsan --build_tag_filters=-no_tsan
-build:tsan --test_tag_filters=-no_tsan,-disabled
-build:tsan --define tcmalloc=disabled
+common:tsan --config=clang-libc++
+common:tsan --//bazel:sanitizer=tsan
+common:tsan --features=tsan
+common:tsan --define GML_CONFIG_TSAN=1
+common:tsan --define tcmalloc=disabled
+common:tsan --build_tag_filters=-no_tsan
+common:tsan --test_timeout=180,600,1800,3600
+common:tsan --test_tag_filters=-no_tsan,-disabled
 # This is needed to address false positive problem with abseil.
 # https://github.com/google/sanitizers/issues/953
-build:tsan --test_env=TSAN_OPTIONS=report_atomic_races=0
-build:tsan --features=tsan
-test:tsan --test_timeout=180,600,1800,3600
+common:tsan --test_env=TSAN_OPTIONS=report_atomic_races=0
 
 # bazel build --config go_race
-build:go_race --config=no_sysroot
+common:go_race --config=no_sysroot
 common:go_race --define tcmalloc=disabled
 common:go_race --//bazel:disable_pie
 common:go_race --@io_bazel_rules_go//go/config:race
