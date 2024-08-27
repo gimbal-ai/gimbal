@@ -67,18 +67,18 @@ build:linux --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
 
 # Non sysroot config.
 build:no_sysroot --//bazel/cc_toolchains:libc_version=glibc_host
-build:no_sysroot --config=clang-libc++
+build:no_sysroot --config=clang-libstdc++
 
 # We build our own chroot for the sysroot tests, which doesn't work well under bazel's sandbox.
 build:sysroot-base --//bazel/test_runners:test_runner=sysroot_chroot
 test:sysroot-base --strategy TestRunner=standalone
 test:sysroot-base --run_under="bazel/test_runners/sysroot_chroot/test_runner.sh"
 
-build:x86_64_sysroot --config=clang-libc++
+build:x86_64_sysroot --config=clang-libstdc++
 build:x86_64_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
 build:x86_64_sysroot --config=sysroot-base
 
-build:aarch64_sysroot --config=clang-libc++
+build:aarch64_sysroot --config=clang-libstdc++
 build:aarch64_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
 build:aarch64_sysroot --platforms=//bazel/cc_toolchains:linux-aarch64
 build:aarch64_sysroot --config=sysroot-base
@@ -87,7 +87,7 @@ test:aarch64_sysroot --test_timeout=180,600,1800,3600
 test:aarch64_sysroot --test_env=QEMU_STRACE
 test:aarch64_sysroot --test_tag_filters=-no_libcpp,-disabled
 
-common:jetson_sysroot --config=clang-libc++
+common:jetson_sysroot --config=clang-libstdc++
 common:jetson_sysroot --//bazel/cc_toolchains:libc_version=glibc2_31
 common:jetson_sysroot --platforms=//bazel/cc_toolchains:linux-aarch64
 common:jetson_sysroot --//src/gem/plugins:enable_argus
@@ -98,18 +98,18 @@ common:jetson_sysroot --config=sysroot-base
 common:jetson_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=jetson
 test:jetson_sysroot --test_env=LD_LIBRARY_PATH=/usr/lib/aarch64-linux-gnu/tegra
 
-common:intelgpu_sysroot --config=clang-libc++
+common:intelgpu_sysroot --config=clang-libstdc++
 common:intelgpu_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
 common:intelgpu_sysroot --config=sysroot-base
 common:intelgpu_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=intelgpu
 common:intelgpu_sysroot --//src/gem/plugins:enable_intelgpu
 
-common:cuda_sysroot --config=clang-libc++
+common:cuda_sysroot --config=clang-libstdc++
 common:cuda_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
 common:cuda_sysroot --config=sysroot-base
 common:cuda_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=cuda
 
-common:experimental_sysroot --config=clang-libc++
+common:experimental_sysroot --config=clang-libstdc++
 common:experimental_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
 common:experimental_sysroot --config=sysroot-base
 common:experimental_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=experimental
@@ -124,7 +124,6 @@ test:clang-libc++ --config=tmp-sandbox
 
 # Build for Clang with libstdc++:
 build:clang-libstdc++ --//bazel/cc_toolchains:compiler=clang
-build:clang-libstdc++ --//bazel/cc_toolchains:libc_version=gnu
 test:clang-libstdc++ --config=tmp-sandbox
 
 # Build for GCC.

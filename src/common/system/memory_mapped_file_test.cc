@@ -34,7 +34,7 @@ const std::array expected_data = {0x00, 0xc2, 0x80, 0xe0, 0xa0, 0x80, 0x0a};
 TEST(MemoryMappedFile, DataIsAccessibleFromMMap) {
   auto path = bazel::RunfilePath("src/common/system/testdata/non_utf8_file.txt");
 
-  ASSERT_OK_AND_ASSIGN(auto contents, ReadFileToString(path, O_RDONLY));
+  ASSERT_OK_AND_ASSIGN(auto contents, ReadFileToString(path, std::ios_base::in));
   ASSERT_OK_AND_ASSIGN(auto mmap_file, MemoryMappedFile::MapReadOnly(path));
 
   ASSERT_EQ(expected_data.size(), mmap_file->size());

@@ -104,19 +104,19 @@ INSTANTIATE_TEST_SUITE_P(SegmentationMetricsSinkTestSuite, SegmentationMetricsSi
                                        .bucket_bounds = kAreaPercentageBucketBounds,
                                        .bucket_counts = {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
                                                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                       .attributes = {{"class", "person"}},
+                                       .attributes = {{"class", std::string("person")}},
                                    },
                                    ExpectedHist{
                                        .bucket_bounds = kAreaPercentageBucketBounds,
                                        .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
                                                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                       .attributes = {{"class", "cat"}},
+                                       .attributes = {{"class", std::string("cat")}},
                                    },
                                    ExpectedHist{
                                        .bucket_bounds = kAreaPercentageBucketBounds,
                                        .bucket_counts = {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
                                                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                       .attributes = {{"class", "dog"}},
+                                       .attributes = {{"class", std::string("dog")}},
                                    },
                                }}},
                          }));

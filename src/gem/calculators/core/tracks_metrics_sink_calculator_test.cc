@@ -274,15 +274,15 @@ INSTANTIATE_TEST_SUITE_P(
           .expected_metrics = {
             .active_tracks={1,
               {
-                  {"pipeline_id", "test_pipeline"},
-                  {"device_id", "test_device"}
+                  {"pipeline_id", std::string("test_pipeline")},
+                  {"device_id", std::string("test_device")}
               }
             },
             .unique_track_ids_count={1,
               {
                 {
-                  {"pipeline_id", "test_pipeline"},
-                  {"device_id", "test_device"}
+                  {"pipeline_id", std::string("test_pipeline")},
+                  {"device_id", std::string("test_device")}
                 }
               }
             },
@@ -295,14 +295,14 @@ INSTANTIATE_TEST_SUITE_P(
           .expected_metrics={
             .active_tracks={0,
               {
-                {"pipeline_id", "test_pipeline"},
-                {"device_id", "test_device"}
+                {"pipeline_id", std::string("test_pipeline")},
+                {"device_id", std::string("test_device")}
               }
             },
             .unique_track_ids_count={1,
               {
-                {"pipeline_id", "test_pipeline"},
-                {"device_id", "test_device"}
+                {"pipeline_id", std::string("test_pipeline")},
+                {"device_id", std::string("test_device")}
               }
             },
             .expected_track_frames_histogram{
@@ -310,8 +310,8 @@ INSTANTIATE_TEST_SUITE_P(
                 metrics::kDefaultHistogramBounds,
                 {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {
-                  {"pipeline_id", "test_pipeline"},
-                  {"device_id", "test_device"},
+                  {"pipeline_id", std::string("test_pipeline")},
+                  {"device_id", std::string("test_device")},
                 }
               }
             },
@@ -320,8 +320,8 @@ INSTANTIATE_TEST_SUITE_P(
                 kTrackLifetimeHistogramBounds,
                 {1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0},
                 {
-                  {"pipeline_id", "test_pipeline"},
-                  {"device_id", "test_device"},
+                  {"pipeline_id", std::string("test_pipeline")},
+                  {"device_id", std::string("test_device")},
                 }
               }
             }

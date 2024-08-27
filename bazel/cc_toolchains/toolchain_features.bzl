@@ -146,7 +146,7 @@ def _libstdcpp(_):
                     flag_groups = [
                         flag_group(
                             flags = [
-                                "-l:libstdc++.a",
+                                "-lstdc++",
                             ],
                         ),
                     ],

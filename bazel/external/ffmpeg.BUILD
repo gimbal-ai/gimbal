@@ -78,7 +78,7 @@ configure_make(
             "PKG_CONFIG_PATH": "$${EXT_BUILD_DEPS}/openh264/lib/pkgconfig",
         },
     }) | {
-        "LDFLAGS": "-L$${EXT_BUILD_DEPS}/boringssl/ -l:libssl.a -l:libcrypto.a",
+        "LDFLAGS": "-lpthread -L$${EXT_BUILD_DEPS}/boringssl/ -l:libssl.a -l:libcrypto.a",
     },
     lib_source = ":all",
     out_binaries = [
