@@ -36,7 +36,7 @@ Status DeviceInfoHandler::SendDeviceInfo() {
   LOG(INFO) << "Collecting device info";
   auto& plugin_registry = plugins::Registry::GetInstance();
   for (auto& name : plugin_registry.RegisteredCapabilityListers()) {
-    LOG(INFO) << "Listing plugin name: " << name;
+    VLOG(1) << "Listing plugin name: " << name;
 
     GML_ASSIGN_OR_RETURN(auto builder, plugin_registry.BuildCapabilityLister(name));
     auto s = builder->Populate(&caps);
@@ -46,14 +46,14 @@ Status DeviceInfoHandler::SendDeviceInfo() {
       continue;
     }
   }
-  LOG(INFO) << "Sending device info";
+  VLOG(2) << "Device info: " << caps.DebugString();
+  VLOG(1) << "Sending device info";
 
   return bridge()->SendMessageToBridge(EDGE_CP_TOPIC_INFO, caps);
 }
 
 Status DeviceInfoHandler::Init() {
   info_timer_ = dispatcher()->CreateTimer([this]() {
-    VLOG(1) << "Sending device info";
     auto s = SendDeviceInfo();
     if (!s.ok()) {
       LOG(ERROR) << "Failed to send info: " << s.msg();

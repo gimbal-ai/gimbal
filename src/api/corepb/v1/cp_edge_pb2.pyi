@@ -88,19 +88,21 @@ class DeleteExecutionGraph(_message.Message):
     def __init__(self, physical_pipeline_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
 
 class DeviceCapabilities(_message.Message):
-    __slots__ = ["cameras", "model_runtimes"]
+    __slots__ = ["camera_drivers", "cameras", "model_runtimes"]
+    class CameraDriver(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+        __slots__ = []
+    class CameraDriverInfo(_message.Message):
+        __slots__ = ["driver"]
+        DRIVER_FIELD_NUMBER: _ClassVar[int]
+        driver: DeviceCapabilities.CameraDriver
+        def __init__(self, driver: _Optional[_Union[DeviceCapabilities.CameraDriver, str]] = ...) -> None: ...
     class CameraInfo(_message.Message):
         __slots__ = ["camera_id", "driver"]
-        class CameraDriver(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-            __slots__ = []
-        CAMERA_DRIVER_ARGUS: DeviceCapabilities.CameraInfo.CameraDriver
-        CAMERA_DRIVER_UNKNOWN: DeviceCapabilities.CameraInfo.CameraDriver
-        CAMERA_DRIVER_V4L2: DeviceCapabilities.CameraInfo.CameraDriver
         CAMERA_ID_FIELD_NUMBER: _ClassVar[int]
         DRIVER_FIELD_NUMBER: _ClassVar[int]
         camera_id: str
-        driver: DeviceCapabilities.CameraInfo.CameraDriver
-        def __init__(self, driver: _Optional[_Union[DeviceCapabilities.CameraInfo.CameraDriver, str]] = ..., camera_id: _Optional[str] = ...) -> None: ...
+        driver: DeviceCapabilities.CameraDriver
+        def __init__(self, driver: _Optional[_Union[DeviceCapabilities.CameraDriver, str]] = ..., camera_id: _Optional[str] = ...) -> None: ...
     class ModelRuntimeInfo(_message.Message):
         __slots__ = ["type"]
         class ModelRuntimeType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
@@ -112,10 +114,15 @@ class DeviceCapabilities(_message.Message):
         type: DeviceCapabilities.ModelRuntimeInfo.ModelRuntimeType
         def __init__(self, type: _Optional[_Union[DeviceCapabilities.ModelRuntimeInfo.ModelRuntimeType, str]] = ...) -> None: ...
     CAMERAS_FIELD_NUMBER: _ClassVar[int]
+    CAMERA_DRIVERS_FIELD_NUMBER: _ClassVar[int]
+    CAMERA_DRIVER_ARGUS: DeviceCapabilities.CameraDriver
+    CAMERA_DRIVER_UNKNOWN: DeviceCapabilities.CameraDriver
+    CAMERA_DRIVER_V4L2: DeviceCapabilities.CameraDriver
     MODEL_RUNTIMES_FIELD_NUMBER: _ClassVar[int]
+    camera_drivers: _containers.RepeatedCompositeFieldContainer[DeviceCapabilities.CameraDriverInfo]
     cameras: _containers.RepeatedCompositeFieldContainer[DeviceCapabilities.CameraInfo]
     model_runtimes: _containers.RepeatedCompositeFieldContainer[DeviceCapabilities.ModelRuntimeInfo]
-    def __init__(self, model_runtimes: _Optional[_Iterable[_Union[DeviceCapabilities.ModelRuntimeInfo, _Mapping]]] = ..., cameras: _Optional[_Iterable[_Union[DeviceCapabilities.CameraInfo, _Mapping]]] = ...) -> None: ...
+    def __init__(self, model_runtimes: _Optional[_Iterable[_Union[DeviceCapabilities.ModelRuntimeInfo, _Mapping]]] = ..., cameras: _Optional[_Iterable[_Union[DeviceCapabilities.CameraInfo, _Mapping]]] = ..., camera_drivers: _Optional[_Iterable[_Union[DeviceCapabilities.CameraDriverInfo, _Mapping]]] = ...) -> None: ...
 
 class EdgeCPMediaStreamMessage(_message.Message):
     __slots__ = ["msg", "stream_id"]

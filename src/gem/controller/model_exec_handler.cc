@@ -283,8 +283,7 @@ Status ModelExecHandler::GetDefaultVideoExecutionGraph(PhysicalPipelineSpecUpdat
   gml::internal::api::core::v1::DeviceCapabilities_CameraInfo camera;
   for (auto& c : caps.cameras()) {
     camera = c;
-    if (c.driver() ==
-        gml::internal::api::core::v1::DeviceCapabilities_CameraInfo::CAMERA_DRIVER_ARGUS) {
+    if (c.driver() == gml::internal::api::core::v1::DeviceCapabilities::CAMERA_DRIVER_ARGUS) {
       break;
     }
   }
@@ -292,8 +291,7 @@ Status ModelExecHandler::GetDefaultVideoExecutionGraph(PhysicalPipelineSpecUpdat
   // Pass the camera options to the exec graph.
   auto spec = update->mutable_spec()->mutable_graph();
   google::protobuf::Any any;
-  if (camera.driver() ==
-      gml::internal::api::core::v1::DeviceCapabilities_CameraInfo::CAMERA_DRIVER_ARGUS) {
+  if (camera.driver() == gml::internal::api::core::v1::DeviceCapabilities::CAMERA_DRIVER_ARGUS) {
     GML_RETURN_IF_ERROR(LoadPbtxt(FLAGS_default_argus_pbtxt, spec));
     gml::gem::calculators::argus::optionspb::ArgusCamSourceCalculatorOptions opts;
     opts.set_device_uuid(camera.camera_id());

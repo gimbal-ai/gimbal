@@ -268,20 +268,26 @@ message DeviceCapabilities {
     ModelRuntimeType type = 1;
   }
 
+  enum CameraDriver {
+    CAMERA_DRIVER_UNKNOWN = 0;
+    CAMERA_DRIVER_ARGUS = 1;
+    CAMERA_DRIVER_V4L2 = 2;
+  }
   message CameraInfo {
-    enum CameraDriver {
-      CAMERA_DRIVER_UNKNOWN = 0;
-      CAMERA_DRIVER_ARGUS = 1;
-      CAMERA_DRIVER_V4L2 = 2;
-    }
     CameraDriver driver = 1;
     string camera_id = 2 [ (gogoproto.customname) = "CameraID" ];
+  }
+  message CameraDriverInfo {
+    CameraDriver driver = 1;
   }
 
   // ModelRuntimes is the info about all the model runtimes available on the device.
   repeated ModelRuntimeInfo model_runtimes = 1;
   // Cameras is the info about all the cameras available on the device.
   repeated CameraInfo cameras = 2;
+  // CameraDrivers is the info about all the camera drivers available on the device even if there's
+  // no camera using the given driver at the moment.
+  repeated CameraDriverInfo camera_drivers = 3;
 }
 
 /****************************************************************************

@@ -33,10 +33,12 @@ DEFINE_string(video_source, gflags::StringFromEnv("GML_VIDEO_SOURCE", ""),
               "example a video file or a RSTP stream.");
 
 Status CapabilityLister::Populate(DeviceCapabilities* cap) {
+  cap->add_camera_drivers()->set_driver(
+      internal::api::core::v1::DeviceCapabilities::CAMERA_DRIVER_V4L2);
+
   if (FLAGS_video_source != "") {
     auto mutable_cam = cap->add_cameras();
-    mutable_cam->set_driver(
-        internal::api::core::v1::DeviceCapabilities::CameraInfo::CAMERA_DRIVER_V4L2);
+    mutable_cam->set_driver(internal::api::core::v1::DeviceCapabilities::CAMERA_DRIVER_V4L2);
 
     mutable_cam->set_camera_id(FLAGS_video_source);
     return Status::OK();
@@ -89,8 +91,7 @@ Status CapabilityLister::Populate(DeviceCapabilities* cap) {
     }
 
     auto mutable_cam = cap->add_cameras();
-    mutable_cam->set_driver(
-        internal::api::core::v1::DeviceCapabilities::CameraInfo::CAMERA_DRIVER_V4L2);
+    mutable_cam->set_driver(internal::api::core::v1::DeviceCapabilities::CAMERA_DRIVER_V4L2);
 
     mutable_cam->set_camera_id(dir_entry.path());
   }

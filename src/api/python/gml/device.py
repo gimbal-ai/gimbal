@@ -60,15 +60,11 @@ def _runtime_str_to_runtime_protos(
 
 def _camera_driver_str_to_camera_driver_protos(
     driver: str,
-) -> cpedgepb.DeviceCapabilities.CameraInfo.CameraDriver:
+) -> cpedgepb.DeviceCapabilities.CameraDriver:
     match driver.lower():
         case "argus":
-            return (
-                cpedgepb.DeviceCapabilities.CameraInfo.CameraDriver.CAMERA_DRIVER_ARGUS
-            )
+            return cpedgepb.DeviceCapabilities.CameraDriver.CAMERA_DRIVER_ARGUS
         case "v4l2":
-            return (
-                cpedgepb.DeviceCapabilities.CameraInfo.CameraDriver.CAMERA_DRIVER_V4L2
-            )
+            return cpedgepb.DeviceCapabilities.CameraDriver.CAMERA_DRIVER_V4L2
         case _:
             raise ValueError("invalid driver: {}".format(driver))

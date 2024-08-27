@@ -27,11 +27,12 @@ namespace gml::gem::capabilities::argus {
 
 Status CapabilityLister::Populate(DeviceCapabilities* cap) {
   auto& argus_manager = devices::argus::ArgusManager::GetInstance();
+  cap->add_camera_drivers()->set_driver(
+      internal::api::core::v1::DeviceCapabilities::CAMERA_DRIVER_ARGUS);
 
   for (const auto& props : argus_manager.ListCameraProperties()) {
     auto mutable_cam = cap->add_cameras();
-    mutable_cam->set_driver(
-        internal::api::core::v1::DeviceCapabilities::CameraInfo::CAMERA_DRIVER_ARGUS);
+    mutable_cam->set_driver(internal::api::core::v1::DeviceCapabilities::CAMERA_DRIVER_ARGUS);
 
     mutable_cam->set_camera_id(devices::argus::ParseUUID(props->getUUID()).str());
   }
