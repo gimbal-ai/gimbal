@@ -1,5 +1,5 @@
 <!-- markdownlint-disable-next-line -->
-<img src="./.readme_assets/gimbal_logo.svg" width="250" alt="Gimbal">
+![Gimbal](./.readme_assets/gimbal_logo_dark.png#gh-dark-mode-only)![Gimbal](./.readme_assets/gimbal_logo_light.png#gh-light-mode-only)
 
 ## Overview
 
