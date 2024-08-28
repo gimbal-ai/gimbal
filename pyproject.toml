@@ -4,7 +4,7 @@ version = "0.0.1"
 dynamic = ["dependencies"]
 
 [tool.setuptools.dynamic]
-dependencies = {file = "bazel/python/requirements.in"}
+dependencies = {file = "requirements.in"}
 
 [tool.setuptools.packages.find]
 include = ["src*", "third_party.python*"]
