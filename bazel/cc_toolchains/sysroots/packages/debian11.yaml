@@ -1,0 +1,62 @@
+---
+repositories:
+- name: debian11
+  arch: x86_64
+  index_url: https://snapshot.debian.org/archive/debian/20231209T111918Z/dists/bullseye/main/binary-amd64/Packages.gz
+  download_prefix: https://snapshot.debian.org/archive/debian/20231209T111918Z/
+- name: debian11
+  arch: aarch64
+  index_url: https://snapshot.debian.org/archive/debian/20231209T111918Z/dists/bullseye/main/binary-arm64/Packages.gz
+  download_prefix: https://snapshot.debian.org/archive/debian/20231209T111918Z/
+packages:
+- name: ca-certificates
+- name: libtinfo6
+- name: libc6
+- name: libelf1
+- name: libstdc++6
+- name: zlib1g
+- name: libunwind8
+- name: libgles2-mesa
+- name: libegl1-mesa
+- name: libmagic1
+- name: liblzma-dev
+- name: libunwind-dev
+- name: libncurses-dev
+- name: libc6-dev
+- name: libegl1-mesa-dev
+- name: libelf-dev
+- name: libgcc-10-dev
+- name: libgles2-mesa-dev
+- name: libicu-dev
+- name: libstdc++-10-dev
+- name: linux-libc-dev
+- name: mesa-common-dev
+- name: zlib1g-dev
+- name: dash
+- name: bash
+- name: grep
+- name: gawk
+- name: sed
+- name: libc-bin
+- name: iptables
+- name: coreutils
+- name: tar
+  extra_symlinks:
+  - source: usr/sbin/rmt
+    target: /usr/sbin/rmt-tar
+- name: libva-dev
+- name: python3.9
+  extra_symlinks:
+  - source: usr/bin/python3
+    target: /usr/bin/python3.9
+  - source: usr/bin/python
+    target: /usr/bin/python3
+exclude_paths:
+- usr/share/man
+- usr/share/doc
+- usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_Főtanúsítvány.crt
+exclude_packages:
+- dpkg
+# provides NIS(YP) headers which we don't need.
+- libnsl-dev
+- rpcsvc-proto

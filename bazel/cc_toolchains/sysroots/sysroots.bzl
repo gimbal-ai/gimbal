@@ -278,12 +278,90 @@ def _experimental_sysroot():
         extra_runtime_packages = PYTHON_RUNTIME_PKGS + ["debian12_libmagic1", "debian12_dash"],
     )
 
+def _debian11_sysroots():
+    libc_version = "glibc2_31"
+    supported_archs = ["x86_64", "aarch64"]
+    target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_debian11"]
+
+    runtime_pkgs = [
+        "debian11_ca-certificates",
+        "debian11_libtinfo6",
+        "debian11_libc6",
+        "debian11_libelf1",
+        "debian11_libstdc++6",
+        "debian11_zlib1g",
+        "debian11_libunwind8",
+        "debian11_libgles2-mesa",
+        "debian11_libegl1-mesa",
+    ]
+
+    build_pkgs = [
+        "debian11_liblzma-dev",
+        "debian11_libunwind-dev",
+        "debian11_libncurses-dev",
+        "debian11_libc6-dev",
+        "debian11_libegl1-mesa-dev",
+        "debian11_libelf-dev",
+        "debian11_libgcc-10-dev",
+        "debian11_libgles2-mesa-dev",
+        "debian11_libicu-dev",
+        "debian11_libstdc++-10-dev",
+        "debian11_linux-libc-dev",
+        "debian11_mesa-common-dev",
+        "debian11_zlib1g-dev",
+        "debian11_libva-dev",
+    ]
+
+    test_pkgs = [
+        "debian11_dash",
+        "debian11_bash",
+        "debian11_grep",
+        "debian11_gawk",
+        "debian11_sed",
+        "debian11_libc-bin",
+        "debian11_libmagic1",
+        # Useful for "debug" containers that want to do basic file manipulation
+        "debian11_coreutils",
+        "debian11_tar",
+        # Include python in the test sysroot.
+        "debian11_python3.9",
+    ]
+
+    sysroot_repo(
+        name = "sysroot_debian11_runtime",
+        libc_version = libc_version,
+        supported_archs = supported_archs,
+        variant = "runtime",
+        packages = runtime_pkgs,
+        target_settings = target_settings,
+    )
+
+    sysroot_repo(
+        name = "sysroot_debian11_build",
+        libc_version = libc_version,
+        supported_archs = supported_archs,
+        variant = "build",
+        packages = runtime_pkgs + build_pkgs,
+        target_settings = target_settings,
+        path_prefix_filters = _DEFAULT_BUILD_PATH_PREFIXES,
+    )
+
+    sysroot_repo(
+        name = "sysroot_debian11_test",
+        libc_version = libc_version,
+        supported_archs = supported_archs,
+        variant = "test",
+        packages = runtime_pkgs + build_pkgs + test_pkgs,
+        target_settings = target_settings,
+    )
+
 def _gml_sysroots():
     _debian12_sysroots()
     _jetson_sysroots()
     _intel_gpu_sysroots()
     _cuda_sysroot()
     _experimental_sysroot()
+    _debian11_sysroots()
 
 SYSROOT_LIBC_VERSIONS = [
     "glibc2_36",

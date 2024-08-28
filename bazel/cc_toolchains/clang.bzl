@@ -32,15 +32,20 @@ def _clang_impl_repo_impl(rctx):
     # Unfortunately, we have to download any files that the toolchain uses within this rule.
     toolchain_path = "toolchain"
     _download_repo(rctx, rctx.attr.toolchain_repo, toolchain_path)
-    libcxx_path = "libcxx"
 
-    libcxx_repo = "com_llvm_libcxx_{arch}_{libc_version}".format(
-        arch = rctx.attr.target_arch,
-        libc_version = rctx.attr.libc_version,
-    )
-    _download_repo(rctx, libcxx_repo, libcxx_path)
+    if not rctx.attr.disable_libcxx:
+        libcxx_path = "libcxx"
+        libcxx_repo = "com_llvm_libcxx_{arch}_{libc_version}".format(
+            arch = rctx.attr.target_arch,
+            libc_version = rctx.attr.libc_version,
+        )
+        _download_repo(rctx, libcxx_repo, libcxx_path)
 
-    libcxx_build = rctx.read(Label("@gml//bazel/cc_toolchains/clang:libcxx.BUILD"))
+        libcxx_build = rctx.read(Label("@gml//bazel/cc_toolchains/clang:libcxx.BUILD"))
+    else:
+        libcxx_path = ""
+        libcxx_build = ""
+
     toolchain_files_build = rctx.read(Label("@gml//bazel/cc_toolchains/clang:toolchain_files.BUILD"))
 
     sysroot_include_prefix = ""
@@ -64,6 +69,7 @@ def _clang_impl_repo_impl(rctx):
         substitutions = {
             "{clang_major_version}": rctx.attr.clang_version.split(".")[0],
             "{clang_version}": rctx.attr.clang_version,
+            "{gcc_version}": rctx.attr.gcc_version,
             "{host_abi}": abi(rctx.attr.host_arch, rctx.attr.host_libc_version),
             "{host_arch}": rctx.attr.host_arch,
             "{libc_version}": rctx.attr.libc_version,
@@ -89,6 +95,8 @@ _clang_impl_repo = repository_rule(
         clang_version = attr.string(mandatory = True),
         use_for_host_tools = attr.bool(default = False),
         use_sysroot = attr.bool(default = False),
+        disable_libcxx = attr.bool(default = False),
+        gcc_version = attr.string(default = "12"),
     ),
 )
 
@@ -133,6 +141,8 @@ def clang_toolchain(
         host_libc_version = HOST_GLIBC_VERSION,
         use_for_host_tools = False,
         use_sysroot = False,
+        disable_libcxx = False,
+        gcc_version = "12",
         target_settings = []):
     # Split the toolchain into two repos. One contains the implementation of the toolchain, the other contains the bazel definition for the toolchain.
     # This makes it so that bazel will not load the implementation repo unless the toolchain repo's toolchain definition resolves during toolchain resolution.
@@ -146,6 +156,8 @@ def clang_toolchain(
         clang_version = clang_version,
         use_for_host_tools = use_for_host_tools,
         use_sysroot = use_sysroot,
+        disable_libcxx = disable_libcxx,
+        gcc_version = gcc_version,
     )
     _clang_toolchain_repo(
         name = name,

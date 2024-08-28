@@ -46,11 +46,10 @@ includes = [
     "{sysroot_include_prefix}/usr/local/include",
     "{sysroot_include_prefix}/usr/include/x86_64-linux-gnu",
     "{sysroot_include_prefix}/usr/include",
-    "{sysroot_include_prefix}/usr/include/c++/12",
-    "{sysroot_include_prefix}/usr/include/x86_64-linux-gnu/c++/12",
-    "{sysroot_include_prefix}/usr/include/c++/12/backward",
-    "{libcxx_path}/include/c++/v1",
-]
+    "{sysroot_include_prefix}/usr/include/c++/{gcc_version}",
+    "{sysroot_include_prefix}/usr/include/x86_64-linux-gnu/c++/{gcc_version}",
+    "{sysroot_include_prefix}/usr/include/c++/{gcc_version}/backward",
+] + (["{libcxx_path}/include/c++/v1"] if "{libcxx_path}" else [])
 
 cc_toolchain_config(
     name = "toolchain_config",
@@ -80,7 +79,7 @@ cc_toolchain_config(
     enable_sanitizers = not {use_for_host_tools},
     host_system_name = "{host_arch}-unknown-linux-{host_abi}",
     libclang_rt_path = "external/{this_repo}/{toolchain_path}/lib/clang/{clang_version}/lib/linux",
-    libcxx_path = "external/{this_repo}/{libcxx_path}",
+    libcxx_path = "external/{this_repo}/{libcxx_path}" if "{libcxx_path}" else "",
     link_flags = [
         "-target",
         "{target_arch}-linux-gnu",
@@ -119,10 +118,9 @@ sysroot_build_files(name = "sysroot_files")
 filegroup(
     name = "all_files",
     srcs = [
-        ":libcxx_all_files",
         ":sysroot_files",
         ":toolchain_all_files",
-    ],
+    ] + ([":libcxx_all_files"] if "{libcxx_path}" else []),
 )
 
 filegroup(
@@ -142,10 +140,9 @@ filegroup(
 filegroup(
     name = "compiler_files",
     srcs = [
-        ":libcxx_compiler_files",
         ":sysroot_files",
         ":toolchain_compiler_files",
-    ],
+    ] + ([":libcxx_compiler_files"] if "{libcxx_path}" else []),
 )
 
 filegroup(
@@ -158,10 +155,9 @@ filegroup(
 filegroup(
     name = "linker_files",
     srcs = [
-        ":libcxx_linker_files",
         ":sysroot_files",
         ":toolchain_linker_files",
-    ],
+    ] + ([":libcxx_linker_files"] if "{libcxx_path}" else []),
 )
 
 filegroup(

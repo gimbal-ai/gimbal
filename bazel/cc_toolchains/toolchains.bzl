@@ -69,5 +69,27 @@ def _gml_cc_toolchains():
         libc_version = "glibc_host",
         use_for_host_tools = True,
     )
+    clang_toolchain(
+        name = "clang-15.0-x86_64-glibc2.31-sysroot",
+        toolchain_repo = "com_llvm_clang_15",
+        target_arch = "x86_64",
+        clang_version = "15.0.6",
+        libc_version = "glibc2_31",
+        use_sysroot = True,
+        target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_debian11"],
+        disable_libcxx = True,
+        gcc_version = "10",
+    )
+    clang_toolchain(
+        name = "clang-15.0-aarch64-glibc2.31-sysroot",
+        toolchain_repo = "com_llvm_clang_15",
+        target_arch = "aarch64",
+        clang_version = "15.0.6",
+        libc_version = "glibc2_31",
+        use_sysroot = True,
+        target_settings = ["@gml//bazel/cc_toolchains/sysroots:sysroot_type_debian11"],
+        disable_libcxx = True,
+        gcc_version = "10",
+    )
 
 gml_cc_toolchains = _gml_cc_toolchains

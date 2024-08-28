@@ -23,6 +23,7 @@ apt_parse(
         "x86_64",
     ],
     specs = [
+        "debian11.yaml",
         "debian12.yaml",
         "debian12_extras.yaml",
         "nvidia.yaml",

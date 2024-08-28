@@ -35,12 +35,20 @@ string_flag(
     name = "sysroot_type",
     build_setting_default = "debian12",
     values = [
+        "debian11",
         "debian12",
         "jetson",
         "intelgpu",
         "cuda",
         "experimental",
     ],
+)
+
+config_setting(
+    name = "sysroot_type_debian11",
+    flag_values = {
+        ":sysroot_type": "debian11",
+    },
 )
 
 config_setting(

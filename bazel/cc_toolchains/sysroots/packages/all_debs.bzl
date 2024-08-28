@@ -2,6 +2,2540 @@ load("//bazel/rules_pkg:pkg_provider_archives.bzl", "deb_archive_w_pkg_providers
 
 def deb_repos():
     deb_archive_w_pkg_providers(
+        name = "debian11_base-files_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "76d8df23af40b13cb765a9ae4546fd85a67941912135c426d34fba3df9969fdb",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/76d8df23af40b13cb765a9ae4546fd85a67941912135c426d34fba3df9969fdb.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/b/base-files/base-files_11.1+deb11u8_arm64.deb"],
+        deps = ["@debian11_gawk_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_base-files_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "14e79505a89b5248fafced36f0388ff9154b14ecc665c9c21b1947b8809c907f",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/14e79505a89b5248fafced36f0388ff9154b14ecc665c9c21b1947b8809c907f.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/b/base-files/base-files_11.1+deb11u8_amd64.deb"],
+        deps = ["@debian11_gawk_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_bash_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d7c7af5d86f43a885069408a89788f67f248e8124c682bb73936f33874e0611b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d7c7af5d86f43a885069408a89788f67f248e8124c682bb73936f33874e0611b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/b/bash/bash_5.1-2+deb11u1_arm64.deb"],
+        deps = ["@debian11_base-files_aarch64//:all_files", "@debian11_debianutils_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_bash_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f702ef058e762d7208a9c83f6f6bbf02645533bfd615c54e8cdcce842cd57377",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f702ef058e762d7208a9c83f6f6bbf02645533bfd615c54e8cdcce842cd57377.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/b/bash/bash_5.1-2+deb11u1_amd64.deb"],
+        deps = ["@debian11_base-files_x86_64//:all_files", "@debian11_debianutils_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_ca-certificates_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "b2d488ad4d8d8adb3ba319fc9cb2cf9909fc42cb82ad239a26c570a2e749c389",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b2d488ad4d8d8adb3ba319fc9cb2cf9909fc42cb82ad239a26c570a2e749c389.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/c/ca-certificates/ca-certificates_20210119_all.deb"],
+        deps = ["@debian11_debconf_aarch64//:all_files", "@debian11_openssl_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_ca-certificates_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "b2d488ad4d8d8adb3ba319fc9cb2cf9909fc42cb82ad239a26c570a2e749c389",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b2d488ad4d8d8adb3ba319fc9cb2cf9909fc42cb82ad239a26c570a2e749c389.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/c/ca-certificates/ca-certificates_20210119_all.deb"],
+        deps = ["@debian11_debconf_x86_64//:all_files", "@debian11_openssl_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_coreutils_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "6210c84d6ff84b867dc430f661f22f536e1704c27bdb79de38e26f75b853d9c0",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6210c84d6ff84b867dc430f661f22f536e1704c27bdb79de38e26f75b853d9c0.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/c/coreutils/coreutils_8.32-4_arm64.deb"],
+        deps = ["@debian11_libacl1_aarch64//:all_files", "@debian11_libattr1_aarch64//:all_files", "@debian11_libgmp10_aarch64//:all_files", "@debian11_libselinux1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_coreutils_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "3558a412ab51eee4b60641327cb145bb91415f127769823b68f9335585b308d4",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3558a412ab51eee4b60641327cb145bb91415f127769823b68f9335585b308d4.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/c/coreutils/coreutils_8.32-4+b1_amd64.deb"],
+        deps = ["@debian11_libacl1_x86_64//:all_files", "@debian11_libattr1_x86_64//:all_files", "@debian11_libgmp10_x86_64//:all_files", "@debian11_libselinux1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_dash_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "542980a48d96c1124a9664cae06dbb8b813417daa1de1b6ed4cb49e0766da932",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/542980a48d96c1124a9664cae06dbb8b813417daa1de1b6ed4cb49e0766da932.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/d/dash/dash_0.5.11+git20200708+dd9ef66-5_arm64.deb"],
+        deps = ["@debian11_debconf_aarch64//:all_files", "@debian11_debianutils_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_dash_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "0a4cc532fbf2c78cb4090a659fb73560981e626849532e6186f3a3ac6a45b3bc",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/0a4cc532fbf2c78cb4090a659fb73560981e626849532e6186f3a3ac6a45b3bc.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/d/dash/dash_0.5.11+git20200708+dd9ef66-5_amd64.deb"],
+        deps = ["@debian11_debconf_x86_64//:all_files", "@debian11_debianutils_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_debconf_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d9ee4dff77aaad12674eed3ccefdcccd332424c9e2ac2ac00a37a1e06c84ab70",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d9ee4dff77aaad12674eed3ccefdcccd332424c9e2ac2ac00a37a1e06c84ab70.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/d/debconf/debconf_1.5.77_all.deb"],
+        deps = ["@debian11_perl-base_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_debconf_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d9ee4dff77aaad12674eed3ccefdcccd332424c9e2ac2ac00a37a1e06c84ab70",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d9ee4dff77aaad12674eed3ccefdcccd332424c9e2ac2ac00a37a1e06c84ab70.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/d/debconf/debconf_1.5.77_all.deb"],
+        deps = ["@debian11_perl-base_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_debianutils_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "6543b2b1a61b4b7b4b55b4bd25162309d7d23d14d3303649aee84ad314c30e02",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6543b2b1a61b4b7b4b55b4bd25162309d7d23d14d3303649aee84ad314c30e02.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/d/debianutils/debianutils_4.11.2_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_debianutils_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "83d21669c5957e3eaee20096a7d8c596bd07f57f1e95dc74f192b3fb7bb2e6a9",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/83d21669c5957e3eaee20096a7d8c596bd07f57f1e95dc74f192b3fb7bb2e6a9.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/d/debianutils/debianutils_4.11.2_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_gawk_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "852c8c4aa86a37648688e601c2d7a7dfb622dd8c9653552448867bffc6275d9c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/852c8c4aa86a37648688e601c2d7a7dfb622dd8c9653552448867bffc6275d9c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gawk/gawk_5.1.0-1_arm64.deb"],
+        deps = ["@debian11_libgmp10_aarch64//:all_files", "@debian11_libmpfr6_aarch64//:all_files", "@debian11_libreadline8_aarch64//:all_files", "@debian11_libsigsegv2_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_gawk_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ed9242b36b72261b53111bf7d640759e2b5258187ac73f3e6431cbf34b6d7ad2",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ed9242b36b72261b53111bf7d640759e2b5258187ac73f3e6431cbf34b6d7ad2.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gawk/gawk_5.1.0-1_amd64.deb"],
+        deps = ["@debian11_libgmp10_x86_64//:all_files", "@debian11_libmpfr6_x86_64//:all_files", "@debian11_libreadline8_x86_64//:all_files", "@debian11_libsigsegv2_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_gcc-10-base_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "7d782bece7b4a36bed045a7e17d17244cb8f7e4732466091b01412ebf215defb",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/7d782bece7b4a36bed045a7e17d17244cb8f7e4732466091b01412ebf215defb.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/gcc-10-base_10.2.1-6_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_gcc-10-base_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "be65535e94f95fbf04b104e8ab36790476f063374430f7dfc6c516cbe2d2cd1e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/be65535e94f95fbf04b104e8ab36790476f063374430f7dfc6c516cbe2d2cd1e.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/gcc-10-base_10.2.1-6_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_grep_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ccebee26e336d07deebcf8aba1bba18a202e88da8262eecd3c76e4612db3d8ea",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ccebee26e336d07deebcf8aba1bba18a202e88da8262eecd3c76e4612db3d8ea.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/grep/grep_3.6-1+deb11u1_arm64.deb"],
+        deps = ["@debian11_libpcre3_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_grep_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "47d46c9cde2354724fb2d1e8fa1fa5204fdd751e87eadada7ff351b6355ace52",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/47d46c9cde2354724fb2d1e8fa1fa5204fdd751e87eadada7ff351b6355ace52.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/grep/grep_3.6-1+deb11u1_amd64.deb"],
+        deps = ["@debian11_libpcre3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_icu-devtools_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "17c0c7d5e1fc10b954aafd7b76474c1d648b3b4034f969bada31195da9a49d59",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/17c0c7d5e1fc10b954aafd7b76474c1d648b3b4034f969bada31195da9a49d59.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/i/icu/icu-devtools_67.1-7_arm64.deb"],
+        deps = ["@debian11_libgcc-s1_aarch64//:all_files", "@debian11_libicu67_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_icu-devtools_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "0a89d6f360d9c686c08d0156a0c8244715c9aaeffca079cf1716f12cffece82e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/0a89d6f360d9c686c08d0156a0c8244715c9aaeffca079cf1716f12cffece82e.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/i/icu/icu-devtools_67.1-7_amd64.deb"],
+        deps = ["@debian11_libgcc-s1_x86_64//:all_files", "@debian11_libicu67_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_iptables_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "21699bd1f42a470d272ebaadd9208fa8088c69d6ff1a5124f6af24ef7ac63f2a",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/21699bd1f42a470d272ebaadd9208fa8088c69d6ff1a5124f6af24ef7ac63f2a.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/i/iptables/iptables_1.8.7-1_arm64.deb"],
+        deps = ["@debian11_libip4tc2_aarch64//:all_files", "@debian11_libip6tc2_aarch64//:all_files", "@debian11_libmnl0_aarch64//:all_files", "@debian11_libnetfilter-conntrack3_aarch64//:all_files", "@debian11_libnfnetlink0_aarch64//:all_files", "@debian11_libnftnl11_aarch64//:all_files", "@debian11_libxtables12_aarch64//:all_files", "@debian11_netbase_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_iptables_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d3d90ea8ba3b371d02cc9483aa3e33851c4923854b786df60befc4ec67e5392d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d3d90ea8ba3b371d02cc9483aa3e33851c4923854b786df60befc4ec67e5392d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/i/iptables/iptables_1.8.7-1_amd64.deb"],
+        deps = ["@debian11_libip4tc2_x86_64//:all_files", "@debian11_libip6tc2_x86_64//:all_files", "@debian11_libmnl0_x86_64//:all_files", "@debian11_libnetfilter-conntrack3_x86_64//:all_files", "@debian11_libnfnetlink0_x86_64//:all_files", "@debian11_libnftnl11_x86_64//:all_files", "@debian11_libxtables12_x86_64//:all_files", "@debian11_netbase_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libacl1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f164c48192cb47746101de6c59afa3f97777c8fc821e5a30bb890df1f4cb4cfd",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f164c48192cb47746101de6c59afa3f97777c8fc821e5a30bb890df1f4cb4cfd.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/a/acl/libacl1_2.2.53-10_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libacl1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "aa18d721be8aea50fbdb32cd9a319cb18a3f111ea6ad17399aa4ba9324c8e26a",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/aa18d721be8aea50fbdb32cd9a319cb18a3f111ea6ad17399aa4ba9324c8e26a.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/a/acl/libacl1_2.2.53-10_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libasan6_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "a31acf1c1087caf54e3296c5aead6ec0a19141cb14319fa358b35fd305db1d5e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/a31acf1c1087caf54e3296c5aead6ec0a19141cb14319fa358b35fd305db1d5e.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libasan6_10.2.1-6_arm64.deb"],
+        deps = ["@debian11_gcc-10-base_aarch64//:all_files", "@debian11_libgcc-s1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libasan6_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "572bf4571970c35bbebb6d3fdb7f2a5fbb02f3f07e86d791c7a211d84df999e5",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/572bf4571970c35bbebb6d3fdb7f2a5fbb02f3f07e86d791c7a211d84df999e5.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libasan6_10.2.1-6_amd64.deb"],
+        deps = ["@debian11_gcc-10-base_x86_64//:all_files", "@debian11_libgcc-s1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libatomic1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d0b8a02896479a6eac49019d71142da9561482759f40eb7aeb15cfdc7d3e39ec",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d0b8a02896479a6eac49019d71142da9561482759f40eb7aeb15cfdc7d3e39ec.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libatomic1_10.2.1-6_arm64.deb"],
+        deps = ["@debian11_gcc-10-base_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libatomic1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e8f1d04653698ab185c1144f35f905a1de87571c12ea630b65be669a2823d8c7",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e8f1d04653698ab185c1144f35f905a1de87571c12ea630b65be669a2823d8c7.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libatomic1_10.2.1-6_amd64.deb"],
+        deps = ["@debian11_gcc-10-base_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libattr1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "cb9b59be719a6fdbaabaa60e22aa6158b2de7a68c88ccd7c3fb7f41a25fb43d0",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/cb9b59be719a6fdbaabaa60e22aa6158b2de7a68c88ccd7c3fb7f41a25fb43d0.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/a/attr/libattr1_2.4.48-6_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libattr1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "af3c3562eb2802481a2b9558df1b389f3c6d9b1bf3b4219e000e05131372ebaf",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/af3c3562eb2802481a2b9558df1b389f3c6d9b1bf3b4219e000e05131372ebaf.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/a/attr/libattr1_2.4.48-6_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libbsd0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "614d36d41b670955a75526865bd321703f2accb6e0c07ee4c283fbba12e494df",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/614d36d41b670955a75526865bd321703f2accb6e0c07ee4c283fbba12e494df.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libb/libbsd/libbsd0_0.11.3-1+deb11u1_arm64.deb"],
+        deps = ["@debian11_libmd0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libbsd0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "6ec5a08a4bb32c0dc316617f4bbefa8654c472d1cd4412ab8995f3955491f4a8",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6ec5a08a4bb32c0dc316617f4bbefa8654c472d1cd4412ab8995f3955491f4a8.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libb/libbsd/libbsd0_0.11.3-1+deb11u1_amd64.deb"],
+        deps = ["@debian11_libmd0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libbz2-1.0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "da340e8470e96445c56966f74e48a9a91dee0fa5c89876e88a4575cc17d17a97",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/da340e8470e96445c56966f74e48a9a91dee0fa5c89876e88a4575cc17d17a97.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/b/bzip2/libbz2-1.0_1.0.8-4_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libbz2-1.0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "16e27c3ebd97981e70db3733f899963362748f178a62644df69d1f247e741379",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/16e27c3ebd97981e70db3733f899963362748f178a62644df69d1f247e741379.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/b/bzip2/libbz2-1.0_1.0.8-4_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libc-bin_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "2fde95a5f8089a1adbffdbabc40e35df2813c6579a450049b4d996ef8b6c3c85",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/2fde95a5f8089a1adbffdbabc40e35df2813c6579a450049b4d996ef8b6c3c85.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/glibc/libc-bin_2.31-13+deb11u6_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libc-bin_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d6cedf530cbb7c1758c203374a2bc16eeb7abb7eaa27aca8e3fe168447f1d0cb",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d6cedf530cbb7c1758c203374a2bc16eeb7abb7eaa27aca8e3fe168447f1d0cb.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/glibc/libc-bin_2.31-13+deb11u6_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libc-dev-bin_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e88b22047f590f4c36fe1eb9dd1ae0bcf80d2a645cc8eca21d94a9806c979154",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e88b22047f590f4c36fe1eb9dd1ae0bcf80d2a645cc8eca21d94a9806c979154.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/glibc/libc-dev-bin_2.31-13+deb11u6_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libc-dev-bin_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "1824442ecc4f729f8bbffc0758880557a2316b4296947d2f4e1cf74de72be50f",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/1824442ecc4f729f8bbffc0758880557a2316b4296947d2f4e1cf74de72be50f.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/glibc/libc-dev-bin_2.31-13+deb11u6_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libc6-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f3cac9211ca1c6fbdcc4882abb3700b2f0abd3a0b030a3765b17f711f5936c86",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f3cac9211ca1c6fbdcc4882abb3700b2f0abd3a0b030a3765b17f711f5936c86.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/glibc/libc6-dev_2.31-13+deb11u6_arm64.deb"],
+        deps = ["@debian11_libc-dev-bin_aarch64//:all_files", "@debian11_libcrypt-dev_aarch64//:all_files", "@debian11_linux-libc-dev_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libc6-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "182581b23e7fb4e9f0dd2a88d97fb9f582e39a30f1827225f44404e087d2b945",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/182581b23e7fb4e9f0dd2a88d97fb9f582e39a30f1827225f44404e087d2b945.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/glibc/libc6-dev_2.31-13+deb11u6_amd64.deb"],
+        deps = ["@debian11_libc-dev-bin_x86_64//:all_files", "@debian11_libcrypt-dev_x86_64//:all_files", "@debian11_linux-libc-dev_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libc6_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e8c9c4134018d8e4e097bdb10dc6886ac833b9459a140b9f0d5273a550058aa0",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e8c9c4134018d8e4e097bdb10dc6886ac833b9459a140b9f0d5273a550058aa0.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/glibc/libc6_2.31-13+deb11u6_arm64.deb"],
+        deps = ["@debian11_libcrypt1_aarch64//:all_files", "@debian11_libgcc-s1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libc6_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "cb8771d39b068834197b2b75c6b06433685b6e6a23a315064fb7cb5ab80cc235",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/cb8771d39b068834197b2b75c6b06433685b6e6a23a315064fb7cb5ab80cc235.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/glibc/libc6_2.31-13+deb11u6_amd64.deb"],
+        deps = ["@debian11_libcrypt1_x86_64//:all_files", "@debian11_libgcc-s1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libcom-err2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "fc95d415c35f5b687871f660a5bf66963fd117daa490110499119411e2d6145e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/fc95d415c35f5b687871f660a5bf66963fd117daa490110499119411e2d6145e.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/e/e2fsprogs/libcom-err2_1.46.2-2_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libcom-err2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d478f132871f4ab8352d39becf936d0ad74db905398bf98465d8fe3da6fb1126",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d478f132871f4ab8352d39becf936d0ad74db905398bf98465d8fe3da6fb1126.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/e/e2fsprogs/libcom-err2_1.46.2-2_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libcrypt-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "5309fdf445acc72794b9d134e9625746ffad2b865c6432abcd08ef097587bde1",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/5309fdf445acc72794b9d134e9625746ffad2b865c6432abcd08ef097587bde1.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcrypt/libcrypt-dev_4.4.18-4_arm64.deb"],
+        deps = ["@debian11_libcrypt1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libcrypt-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "8b04bf00b8c43360d9ba3adec209db290168ba3526d4aef3175fb84372b1bebf",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/8b04bf00b8c43360d9ba3adec209db290168ba3526d4aef3175fb84372b1bebf.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcrypt/libcrypt-dev_4.4.18-4_amd64.deb"],
+        deps = ["@debian11_libcrypt1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libcrypt1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "22b586b29e840dabebf0bf227d233376628b87954915d064bc142ae85d1b7979",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/22b586b29e840dabebf0bf227d233376628b87954915d064bc142ae85d1b7979.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcrypt/libcrypt1_4.4.18-4_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libcrypt1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f617952df0c57b4ee039448e3941bccd3f97bfff71e9b0f87ca6dae15cb3f5ef",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f617952df0c57b4ee039448e3941bccd3f97bfff71e9b0f87ca6dae15cb3f5ef.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcrypt/libcrypt1_4.4.18-4_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libdb5.3_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "cf9aa3eae9cfc4c84f93e32f3d11e2707146e4d9707712909e3c61530b50353e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/cf9aa3eae9cfc4c84f93e32f3d11e2707146e4d9707712909e3c61530b50353e.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/d/db5.3/libdb5.3_5.3.28+dfsg1-0.8_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libdb5.3_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "00b9e63e287f45300d4a4f59b6b88e25918443c932ae3e5845d5761ae193c530",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/00b9e63e287f45300d4a4f59b6b88e25918443c932ae3e5845d5761ae193c530.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/d/db5.3/libdb5.3_5.3.28+dfsg1-0.8_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libdrm-amdgpu1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "660f8dced02cb67826e61a91e09101d70c904ff0231d6696d6b45dbd789e86cb",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/660f8dced02cb67826e61a91e09101d70c904ff0231d6696d6b45dbd789e86cb.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-amdgpu1_2.4.104-1_arm64.deb"],
+        deps = ["@debian11_libdrm2_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libdrm-amdgpu1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "0005f21e342925bd26a25185289ae035aa931ced8f6fd9e3d4deade36d272ecd",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/0005f21e342925bd26a25185289ae035aa931ced8f6fd9e3d4deade36d272ecd.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-amdgpu1_2.4.104-1_amd64.deb"],
+        deps = ["@debian11_libdrm2_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libdrm-common_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "60c69026fb8e4cfdf8d80a4a86ee30516c611dcc4de4aa1c8ccbf06dff563e2b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/60c69026fb8e4cfdf8d80a4a86ee30516c611dcc4de4aa1c8ccbf06dff563e2b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-common_2.4.104-1_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libdrm-common_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "60c69026fb8e4cfdf8d80a4a86ee30516c611dcc4de4aa1c8ccbf06dff563e2b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/60c69026fb8e4cfdf8d80a4a86ee30516c611dcc4de4aa1c8ccbf06dff563e2b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-common_2.4.104-1_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libdrm-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "dbbbc3d05b470d6d35b5f2daed4be893e41b74f9c7e58bf5be3d18849b14f78a",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/dbbbc3d05b470d6d35b5f2daed4be893e41b74f9c7e58bf5be3d18849b14f78a.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-dev_2.4.104-1_arm64.deb"],
+        deps = ["@debian11_libdrm-amdgpu1_aarch64//:all_files", "@debian11_libdrm-etnaviv1_aarch64//:all_files", "@debian11_libdrm-freedreno1_aarch64//:all_files", "@debian11_libdrm-nouveau2_aarch64//:all_files", "@debian11_libdrm-radeon1_aarch64//:all_files", "@debian11_libdrm-tegra0_aarch64//:all_files", "@debian11_libdrm2_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libdrm-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "426033d284eb582ed7c87b7bf9083ccbb6b239a8983e1f930f33b097b96f7745",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/426033d284eb582ed7c87b7bf9083ccbb6b239a8983e1f930f33b097b96f7745.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-dev_2.4.104-1_amd64.deb"],
+        deps = ["@debian11_libdrm-amdgpu1_x86_64//:all_files", "@debian11_libdrm-intel1_x86_64//:all_files", "@debian11_libdrm-nouveau2_x86_64//:all_files", "@debian11_libdrm-radeon1_x86_64//:all_files", "@debian11_libdrm2_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libdrm-etnaviv1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "94871c2b1fa6ad6dadff5606a293bb3d86faa2215440da9340645d3e303b82c9",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/94871c2b1fa6ad6dadff5606a293bb3d86faa2215440da9340645d3e303b82c9.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-etnaviv1_2.4.104-1_arm64.deb"],
+        deps = ["@debian11_libdrm2_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libdrm-freedreno1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "753c888e556952a47bbbfb85823f80eaefa0b23cd8131c69667cbb7c0af13b87",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/753c888e556952a47bbbfb85823f80eaefa0b23cd8131c69667cbb7c0af13b87.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-freedreno1_2.4.104-1_arm64.deb"],
+        deps = ["@debian11_libdrm2_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libdrm-intel1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "7d376adc7b5d4d83ec8414ff67dbc18765c6d420de9a6e1045fead7f1f82331d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/7d376adc7b5d4d83ec8414ff67dbc18765c6d420de9a6e1045fead7f1f82331d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-intel1_2.4.104-1_amd64.deb"],
+        deps = ["@debian11_libdrm2_x86_64//:all_files", "@debian11_libpciaccess0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libdrm-nouveau2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d54e628289717d6751367767e9b1867ed8b863890a64724cda4e76f3be773cde",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d54e628289717d6751367767e9b1867ed8b863890a64724cda4e76f3be773cde.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-nouveau2_2.4.104-1_arm64.deb"],
+        deps = ["@debian11_libdrm2_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libdrm-nouveau2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "dbf4a3be55c609b1a2ea89d6782ae5c9a5b991844917dcd42c01666b73a96ceb",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/dbf4a3be55c609b1a2ea89d6782ae5c9a5b991844917dcd42c01666b73a96ceb.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-nouveau2_2.4.104-1_amd64.deb"],
+        deps = ["@debian11_libdrm2_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libdrm-radeon1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e8ecdbc425f3ce293d85eb43bd759f657db9eccef24637c4edb36a147fed93cb",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e8ecdbc425f3ce293d85eb43bd759f657db9eccef24637c4edb36a147fed93cb.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-radeon1_2.4.104-1_arm64.deb"],
+        deps = ["@debian11_libdrm2_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libdrm-radeon1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "c33cd14e8ed7e2dfc02696ed51d4795c5797b0821666667e0a889bba705862b0",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/c33cd14e8ed7e2dfc02696ed51d4795c5797b0821666667e0a889bba705862b0.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-radeon1_2.4.104-1_amd64.deb"],
+        deps = ["@debian11_libdrm2_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libdrm-tegra0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "58795c9786d0c925f89724885fc19f1d3bd55126abe7878f0f4766b6b58a7476",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/58795c9786d0c925f89724885fc19f1d3bd55126abe7878f0f4766b6b58a7476.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm-tegra0_2.4.104-1_arm64.deb"],
+        deps = ["@debian11_libdrm2_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libdrm2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "1dc606aa361307a8c5277c2a5ddedea40a4125874e887c98e82b33dacaa853b0",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/1dc606aa361307a8c5277c2a5ddedea40a4125874e887c98e82b33dacaa853b0.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm2_2.4.104-1_arm64.deb"],
+        deps = ["@debian11_libdrm-common_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libdrm2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "113396b3a33000f7f3347cd711ad9bcfe9945927331cc6cee63c751a889a967b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/113396b3a33000f7f3347cd711ad9bcfe9945927331cc6cee63c751a889a967b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libd/libdrm/libdrm2_2.4.104-1_amd64.deb"],
+        deps = ["@debian11_libdrm-common_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libedit2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "43cbfd69ef591a66cfd06aedf930e3fc3c370b3a7ad514a33399d0e1a4d7343e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/43cbfd69ef591a66cfd06aedf930e3fc3c370b3a7ad514a33399d0e1a4d7343e.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libe/libedit/libedit2_3.1-20191231-2+b1_arm64.deb"],
+        deps = ["@debian11_libbsd0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libedit2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ac545f6ad10ba791aca24b09255ad1d6d943e6bc7c5511d5998e104aee51c943",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ac545f6ad10ba791aca24b09255ad1d6d943e6bc7c5511d5998e104aee51c943.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libe/libedit/libedit2_3.1-20191231-2+b1_amd64.deb"],
+        deps = ["@debian11_libbsd0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libegl-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e2ad8f861b423620dd202ee6dbd1f79ff09e427656d84b395cb19ff43cc77f2d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e2ad8f861b423620dd202ee6dbd1f79ff09e427656d84b395cb19ff43cc77f2d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libegl-dev_1.3.2-1_arm64.deb"],
+        deps = ["@debian11_libegl1_aarch64//:all_files", "@debian11_libgl-dev_aarch64//:all_files", "@debian11_libx11-dev_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libegl-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "2847662b23487d5b1e467bca8cc8753baa880f794744a9b492c978bd5514b286",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/2847662b23487d5b1e467bca8cc8753baa880f794744a9b492c978bd5514b286.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libegl-dev_1.3.2-1_amd64.deb"],
+        deps = ["@debian11_libegl1_x86_64//:all_files", "@debian11_libgl-dev_x86_64//:all_files", "@debian11_libx11-dev_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libegl-mesa0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "cf0ea87393d134d49145798357725a044c80ee2d48fc8920490e15282aa4dca5",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/cf0ea87393d134d49145798357725a044c80ee2d48fc8920490e15282aa4dca5.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libegl-mesa0_20.3.5-1_arm64.deb"],
+        deps = ["@debian11_libdrm2_aarch64//:all_files", "@debian11_libexpat1_aarch64//:all_files", "@debian11_libgbm1_aarch64//:all_files", "@debian11_libglapi-mesa_aarch64//:all_files", "@debian11_libwayland-client0_aarch64//:all_files", "@debian11_libwayland-server0_aarch64//:all_files", "@debian11_libx11-xcb1_aarch64//:all_files", "@debian11_libxcb-dri2-0_aarch64//:all_files", "@debian11_libxcb-dri3-0_aarch64//:all_files", "@debian11_libxcb-present0_aarch64//:all_files", "@debian11_libxcb-sync1_aarch64//:all_files", "@debian11_libxcb-xfixes0_aarch64//:all_files", "@debian11_libxcb1_aarch64//:all_files", "@debian11_libxshmfence1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libegl-mesa0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "a0c36a3665af89cbc96f865bd1b64c6c07b93096e91ba5b470d375d02dfa6d82",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/a0c36a3665af89cbc96f865bd1b64c6c07b93096e91ba5b470d375d02dfa6d82.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libegl-mesa0_20.3.5-1_amd64.deb"],
+        deps = ["@debian11_libdrm2_x86_64//:all_files", "@debian11_libexpat1_x86_64//:all_files", "@debian11_libgbm1_x86_64//:all_files", "@debian11_libglapi-mesa_x86_64//:all_files", "@debian11_libwayland-client0_x86_64//:all_files", "@debian11_libwayland-server0_x86_64//:all_files", "@debian11_libx11-xcb1_x86_64//:all_files", "@debian11_libxcb-dri2-0_x86_64//:all_files", "@debian11_libxcb-dri3-0_x86_64//:all_files", "@debian11_libxcb-present0_x86_64//:all_files", "@debian11_libxcb-sync1_x86_64//:all_files", "@debian11_libxcb-xfixes0_x86_64//:all_files", "@debian11_libxcb1_x86_64//:all_files", "@debian11_libxshmfence1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libegl1-mesa-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ccb87ce990fb1df50b6b6eb6500a004fc88699bfabdfa081f465cc05c235621d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ccb87ce990fb1df50b6b6eb6500a004fc88699bfabdfa081f465cc05c235621d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libegl1-mesa-dev_20.3.5-1_arm64.deb"],
+        deps = ["@debian11_libegl-dev_aarch64//:all_files", "@debian11_libglvnd-dev_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libegl1-mesa-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "7b8139acb2e43a50fd952d54b41449baf13b404f65dccf187ae7852f028104f9",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/7b8139acb2e43a50fd952d54b41449baf13b404f65dccf187ae7852f028104f9.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libegl1-mesa-dev_20.3.5-1_amd64.deb"],
+        deps = ["@debian11_libegl-dev_x86_64//:all_files", "@debian11_libglvnd-dev_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libegl1-mesa_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ae573368d9f88552f93fc895dcb4cf32a80750953c5ca1efd327f1b9def5efc2",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ae573368d9f88552f93fc895dcb4cf32a80750953c5ca1efd327f1b9def5efc2.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libegl1-mesa_20.3.5-1_arm64.deb"],
+        deps = ["@debian11_libegl1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libegl1-mesa_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "3765d131280a2c60742c00fd80d4ef36b8f39aa5ebcf32b537ff1f5bc9da87a9",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3765d131280a2c60742c00fd80d4ef36b8f39aa5ebcf32b537ff1f5bc9da87a9.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libegl1-mesa_20.3.5-1_amd64.deb"],
+        deps = ["@debian11_libegl1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libegl1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "4b531a79399010d3377ce9b6094c8f5f3508bd18ea5b32008a6a1ec16e019a81",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/4b531a79399010d3377ce9b6094c8f5f3508bd18ea5b32008a6a1ec16e019a81.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libegl1_1.3.2-1_arm64.deb"],
+        deps = ["@debian11_libegl-mesa0_aarch64//:all_files", "@debian11_libglvnd0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libegl1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "3a5583ebd7a9d8ad102484db9637c409561428d21345037b310c4ef2ca8e8837",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3a5583ebd7a9d8ad102484db9637c409561428d21345037b310c4ef2ca8e8837.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libegl1_1.3.2-1_amd64.deb"],
+        deps = ["@debian11_libegl-mesa0_x86_64//:all_files", "@debian11_libglvnd0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libelf-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "cf209e957183f4c00d4144069450b9dd937a61e9523bd4952c1b8ea63e983d2b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/cf209e957183f4c00d4144069450b9dd937a61e9523bd4952c1b8ea63e983d2b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/e/elfutils/libelf-dev_0.183-1_arm64.deb"],
+        deps = ["@debian11_zlib1g-dev_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libelf-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "9b711a3a40b65a3ab435509bc0608d3ac3526744ad9ccbc28cad38e8bce794db",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/9b711a3a40b65a3ab435509bc0608d3ac3526744ad9ccbc28cad38e8bce794db.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/e/elfutils/libelf-dev_0.183-1_amd64.deb"],
+        deps = ["@debian11_zlib1g-dev_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libelf1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "12e14110cd66b3bf0564e3b184985b3e91c9cd76e909531a7f7bd2cb9b35a1f3",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/12e14110cd66b3bf0564e3b184985b3e91c9cd76e909531a7f7bd2cb9b35a1f3.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/e/elfutils/libelf1_0.183-1_arm64.deb"],
+        deps = ["@debian11_zlib1g_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libelf1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e1ad132d502b255023c222d0cae1d02ca941f6b68fd0e9b908c6004cc326592c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e1ad132d502b255023c222d0cae1d02ca941f6b68fd0e9b908c6004cc326592c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/e/elfutils/libelf1_0.183-1_amd64.deb"],
+        deps = ["@debian11_zlib1g_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libexpat1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "8d20bfd061845bda0321d01accd6f8386ead5b1d7250a585d12b8d5fb1408ffa",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/8d20bfd061845bda0321d01accd6f8386ead5b1d7250a585d12b8d5fb1408ffa.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/e/expat/libexpat1_2.2.10-2+deb11u5_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libexpat1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "5744040c4735bcdd51238aebfa3e402b857244897f1007f61154982ebe5abbd7",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/5744040c4735bcdd51238aebfa3e402b857244897f1007f61154982ebe5abbd7.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/e/expat/libexpat1_2.2.10-2+deb11u5_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libffi-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "31166c3c814374c520e4c47cc779291888a2a7eca09fc93b5d2918bd7e2ed085",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/31166c3c814374c520e4c47cc779291888a2a7eca09fc93b5d2918bd7e2ed085.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libf/libffi/libffi-dev_3.3-6_arm64.deb"],
+        deps = ["@debian11_libffi7_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libffi-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ca2c71d9c68b1944b689606f12acf8023bad1b5083e8413894fd41ad0b977d20",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ca2c71d9c68b1944b689606f12acf8023bad1b5083e8413894fd41ad0b977d20.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libf/libffi/libffi-dev_3.3-6_amd64.deb"],
+        deps = ["@debian11_libffi7_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libffi7_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "eb748e33ae4ed46f5a4c14b7a2a09792569f2029ede319d0979c373829ba1532",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/eb748e33ae4ed46f5a4c14b7a2a09792569f2029ede319d0979c373829ba1532.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libf/libffi/libffi7_3.3-6_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libffi7_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "30ca89bfddae5fa6e0a2a044f22b6e50cd17c4bc6bc850c579819aeab7101f0f",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/30ca89bfddae5fa6e0a2a044f22b6e50cd17c4bc6bc850c579819aeab7101f0f.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libf/libffi/libffi7_3.3-6_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgbm1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "991e5db7978e44ef745a1f7f18100927d304ddf1eaaab840167b5f07e3bdc7e8",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/991e5db7978e44ef745a1f7f18100927d304ddf1eaaab840167b5f07e3bdc7e8.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libgbm1_20.3.5-1_arm64.deb"],
+        deps = ["@debian11_libdrm2_aarch64//:all_files", "@debian11_libexpat1_aarch64//:all_files", "@debian11_libwayland-server0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgbm1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "2d9b07282e46e3c9398613b6d4fe86c3259e4326b158be7e1f4f58cab541156c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/2d9b07282e46e3c9398613b6d4fe86c3259e4326b158be7e1f4f58cab541156c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libgbm1_20.3.5-1_amd64.deb"],
+        deps = ["@debian11_libdrm2_x86_64//:all_files", "@debian11_libexpat1_x86_64//:all_files", "@debian11_libwayland-server0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgcc-10-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "80fc73d339ada2e194175afe83cd89014565242153b6e3c2128849d8817da367",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/80fc73d339ada2e194175afe83cd89014565242153b6e3c2128849d8817da367.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libgcc-10-dev_10.2.1-6_arm64.deb"],
+        deps = ["@debian11_gcc-10-base_aarch64//:all_files", "@debian11_libasan6_aarch64//:all_files", "@debian11_libatomic1_aarch64//:all_files", "@debian11_libgcc-s1_aarch64//:all_files", "@debian11_libgomp1_aarch64//:all_files", "@debian11_libitm1_aarch64//:all_files", "@debian11_liblsan0_aarch64//:all_files", "@debian11_libtsan0_aarch64//:all_files", "@debian11_libubsan1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgcc-10-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "3b711374092b84e732c4e73cf33e02cff02e34a5f105eb6467de8d9038e4cd9d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3b711374092b84e732c4e73cf33e02cff02e34a5f105eb6467de8d9038e4cd9d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libgcc-10-dev_10.2.1-6_amd64.deb"],
+        deps = ["@debian11_gcc-10-base_x86_64//:all_files", "@debian11_libasan6_x86_64//:all_files", "@debian11_libatomic1_x86_64//:all_files", "@debian11_libgcc-s1_x86_64//:all_files", "@debian11_libgomp1_x86_64//:all_files", "@debian11_libitm1_x86_64//:all_files", "@debian11_liblsan0_x86_64//:all_files", "@debian11_libquadmath0_x86_64//:all_files", "@debian11_libtsan0_x86_64//:all_files", "@debian11_libubsan1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgcc-s1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e2fcdb378d3c1ad1bcb64d4fb6b37aab44011152beca12a4944f435a2582df1f",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e2fcdb378d3c1ad1bcb64d4fb6b37aab44011152beca12a4944f435a2582df1f.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libgcc-s1_10.2.1-6_arm64.deb"],
+        deps = ["@debian11_gcc-10-base_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgcc-s1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e478f2709d8474165bb664de42e16950c391f30eaa55bc9b3573281d83a29daf",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e478f2709d8474165bb664de42e16950c391f30eaa55bc9b3573281d83a29daf.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libgcc-s1_10.2.1-6_amd64.deb"],
+        deps = ["@debian11_gcc-10-base_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgdbm-compat4_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "0853cc0b0f92784b7fbd193d737c63b1d95f932e2b95dc1bb10c273e01a0f754",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/0853cc0b0f92784b7fbd193d737c63b1d95f932e2b95dc1bb10c273e01a0f754.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gdbm/libgdbm-compat4_1.19-2_arm64.deb"],
+        deps = ["@debian11_libgdbm6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgdbm-compat4_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e62caed68b0ffaa03b5fa539d6fdc08c4151f66236d5878949bead0b71b7bb09",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e62caed68b0ffaa03b5fa539d6fdc08c4151f66236d5878949bead0b71b7bb09.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gdbm/libgdbm-compat4_1.19-2_amd64.deb"],
+        deps = ["@debian11_libgdbm6_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgdbm6_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "97a88c2698bd836d04e51ad70c76826850857869b51e90b5343621ba30bbf525",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/97a88c2698bd836d04e51ad70c76826850857869b51e90b5343621ba30bbf525.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gdbm/libgdbm6_1.19-2_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgdbm6_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e54cfe4d8b8f209bb7df31a404ce040f7c2f9b1045114a927a7e1061cdf90727",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e54cfe4d8b8f209bb7df31a404ce040f7c2f9b1045114a927a7e1061cdf90727.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gdbm/libgdbm6_1.19-2_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgl-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "cb40f975a9bf6916bb435378a1bdab4f2aec93ef4df91c7f2708900c84211e7d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/cb40f975a9bf6916bb435378a1bdab4f2aec93ef4df91c7f2708900c84211e7d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libgl-dev_1.3.2-1_arm64.deb"],
+        deps = ["@debian11_libgl1_aarch64//:all_files", "@debian11_libglx-dev_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgl-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "a6487873f2706bbabf9346cdb190f47f23a1464f31cecf92c363bac37c342f2f",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/a6487873f2706bbabf9346cdb190f47f23a1464f31cecf92c363bac37c342f2f.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libgl-dev_1.3.2-1_amd64.deb"],
+        deps = ["@debian11_libgl1_x86_64//:all_files", "@debian11_libglx-dev_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgl1-mesa-dri_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "13bc343bc0bb7ec8bf52ecceb2c41ac8b70bc80d4d76784252caceadf0c83b73",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/13bc343bc0bb7ec8bf52ecceb2c41ac8b70bc80d4d76784252caceadf0c83b73.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libgl1-mesa-dri_20.3.5-1_arm64.deb"],
+        deps = ["@debian11_libdrm-amdgpu1_aarch64//:all_files", "@debian11_libdrm-nouveau2_aarch64//:all_files", "@debian11_libdrm-radeon1_aarch64//:all_files", "@debian11_libdrm2_aarch64//:all_files", "@debian11_libexpat1_aarch64//:all_files", "@debian11_libgcc-s1_aarch64//:all_files", "@debian11_libllvm11_aarch64//:all_files", "@debian11_libsensors5_aarch64//:all_files", "@debian11_libvulkan1_aarch64//:all_files", "@debian11_libzstd1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgl1-mesa-dri_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "08e8bc20077e188da7061f77d23a336782d8463c0cc112fabbfa9c8b45923fd2",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/08e8bc20077e188da7061f77d23a336782d8463c0cc112fabbfa9c8b45923fd2.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libgl1-mesa-dri_20.3.5-1_amd64.deb"],
+        deps = ["@debian11_libdrm-amdgpu1_x86_64//:all_files", "@debian11_libdrm-intel1_x86_64//:all_files", "@debian11_libdrm-nouveau2_x86_64//:all_files", "@debian11_libdrm-radeon1_x86_64//:all_files", "@debian11_libdrm2_x86_64//:all_files", "@debian11_libexpat1_x86_64//:all_files", "@debian11_libgcc-s1_x86_64//:all_files", "@debian11_libllvm11_x86_64//:all_files", "@debian11_libsensors5_x86_64//:all_files", "@debian11_libvulkan1_x86_64//:all_files", "@debian11_libzstd1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgl1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "18075b79c22b06bb25b9b4f3fa44a42127c40e573b34703af3f4c0b780cae29a",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/18075b79c22b06bb25b9b4f3fa44a42127c40e573b34703af3f4c0b780cae29a.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libgl1_1.3.2-1_arm64.deb"],
+        deps = ["@debian11_libglvnd0_aarch64//:all_files", "@debian11_libglx0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgl1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f300f9610b5f05f1ce566c4095f1bf2170e512ac5d201c40d895b8fce29dec98",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f300f9610b5f05f1ce566c4095f1bf2170e512ac5d201c40d895b8fce29dec98.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libgl1_1.3.2-1_amd64.deb"],
+        deps = ["@debian11_libglvnd0_x86_64//:all_files", "@debian11_libglx0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libglapi-mesa_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "2678cf4bcfe4dfeba85deabaf869cb78a2f3263388baaff53e826f52cf17088b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/2678cf4bcfe4dfeba85deabaf869cb78a2f3263388baaff53e826f52cf17088b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libglapi-mesa_20.3.5-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libglapi-mesa_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "aa8f8eaf13224cbb8729416be79350460f7f2230193b2da5d5e24f3dc7e9985f",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/aa8f8eaf13224cbb8729416be79350460f7f2230193b2da5d5e24f3dc7e9985f.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libglapi-mesa_20.3.5-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgles-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "8fd9943bd37d02e0ef9e8983d880fe71aa171f2973c2c19d9fc5d9492bc13fe8",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/8fd9943bd37d02e0ef9e8983d880fe71aa171f2973c2c19d9fc5d9492bc13fe8.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libgles-dev_1.3.2-1_arm64.deb"],
+        deps = ["@debian11_libegl-dev_aarch64//:all_files", "@debian11_libgl-dev_aarch64//:all_files", "@debian11_libgles1_aarch64//:all_files", "@debian11_libgles2_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgles-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "969e9197d8b8a36780f9b5d86f7c3066cdfef9dd7cdc3aee59a1870415c53578",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/969e9197d8b8a36780f9b5d86f7c3066cdfef9dd7cdc3aee59a1870415c53578.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libgles-dev_1.3.2-1_amd64.deb"],
+        deps = ["@debian11_libegl-dev_x86_64//:all_files", "@debian11_libgl-dev_x86_64//:all_files", "@debian11_libgles1_x86_64//:all_files", "@debian11_libgles2_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgles1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "a607c89ff8d61145f215b4be95814aef7accbfc0bac8c2a840ee9f0aca530068",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/a607c89ff8d61145f215b4be95814aef7accbfc0bac8c2a840ee9f0aca530068.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libgles1_1.3.2-1_arm64.deb"],
+        deps = ["@debian11_libglvnd0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgles1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "18425a2558be1de779c7c71ce780b133381f0db594a901839c6ae3d8e3f3c966",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/18425a2558be1de779c7c71ce780b133381f0db594a901839c6ae3d8e3f3c966.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libgles1_1.3.2-1_amd64.deb"],
+        deps = ["@debian11_libglvnd0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgles2-mesa-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "9610c5afd44a2c59d39479be97a97b572600cbead7da99aad5e988af84ea9ee3",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/9610c5afd44a2c59d39479be97a97b572600cbead7da99aad5e988af84ea9ee3.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libgles2-mesa-dev_20.3.5-1_arm64.deb"],
+        deps = ["@debian11_libgles-dev_aarch64//:all_files", "@debian11_libglvnd-dev_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgles2-mesa-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "792fbe3bb784d62da1c33ef86fd789d37e82925cdd012d3809f05fc6fd5ad28b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/792fbe3bb784d62da1c33ef86fd789d37e82925cdd012d3809f05fc6fd5ad28b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libgles2-mesa-dev_20.3.5-1_amd64.deb"],
+        deps = ["@debian11_libgles-dev_x86_64//:all_files", "@debian11_libglvnd-dev_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgles2-mesa_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "a43e78f373c569e8a83dad100513f393617c784060ee5a3750784a71b65baf9d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/a43e78f373c569e8a83dad100513f393617c784060ee5a3750784a71b65baf9d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libgles2-mesa_20.3.5-1_arm64.deb"],
+        deps = ["@debian11_libgles2_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgles2-mesa_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "af6c1cfcda1be90b580ed428ca5836f4ba14e8c4a0906100e036ef4af9798652",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/af6c1cfcda1be90b580ed428ca5836f4ba14e8c4a0906100e036ef4af9798652.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libgles2-mesa_20.3.5-1_amd64.deb"],
+        deps = ["@debian11_libgles2_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgles2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ae3fda1556b677519ff13d43295d7df678d3a9c39a21042e87d9255de1bc78b6",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ae3fda1556b677519ff13d43295d7df678d3a9c39a21042e87d9255de1bc78b6.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libgles2_1.3.2-1_arm64.deb"],
+        deps = ["@debian11_libglvnd0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgles2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "367116f5e3b3a003a80203848b5ce1401451a67c2b2b9d6a383efc91badb0724",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/367116f5e3b3a003a80203848b5ce1401451a67c2b2b9d6a383efc91badb0724.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libgles2_1.3.2-1_amd64.deb"],
+        deps = ["@debian11_libglvnd0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libglvnd-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "6e1550b9d1aa413bdc9b3c6ff969af967094e1278bfc612b86b56fd09b106ae1",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6e1550b9d1aa413bdc9b3c6ff969af967094e1278bfc612b86b56fd09b106ae1.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libglvnd-dev_1.3.2-1_arm64.deb"],
+        deps = ["@debian11_libegl-dev_aarch64//:all_files", "@debian11_libgl-dev_aarch64//:all_files", "@debian11_libglvnd0_aarch64//:all_files", "@debian11_libglx-dev_aarch64//:all_files", "@debian11_libopengl-dev_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libglvnd-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e330ccbe6338789fd63212b55009dcce733265799395ad55b300cd1427234e7f",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e330ccbe6338789fd63212b55009dcce733265799395ad55b300cd1427234e7f.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libglvnd-dev_1.3.2-1_amd64.deb"],
+        deps = ["@debian11_libegl-dev_x86_64//:all_files", "@debian11_libgl-dev_x86_64//:all_files", "@debian11_libglvnd0_x86_64//:all_files", "@debian11_libglx-dev_x86_64//:all_files", "@debian11_libopengl-dev_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libglvnd0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "5d7a05a966d1df43ca440245dfc7e18a51fc974f665441fc87180a605a0481d9",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/5d7a05a966d1df43ca440245dfc7e18a51fc974f665441fc87180a605a0481d9.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libglvnd0_1.3.2-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libglvnd0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "52a4464d181949f5ed8f7e55cca67ba2739f019e93fcfa9d14e8d65efe98fffc",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/52a4464d181949f5ed8f7e55cca67ba2739f019e93fcfa9d14e8d65efe98fffc.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libglvnd0_1.3.2-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libglx-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "0a69e1f459f8bc3e190162e78f8f6aa749dfcc0ad6c77f7ec27c9b55aef8e75c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/0a69e1f459f8bc3e190162e78f8f6aa749dfcc0ad6c77f7ec27c9b55aef8e75c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libglx-dev_1.3.2-1_arm64.deb"],
+        deps = ["@debian11_libglx0_aarch64//:all_files", "@debian11_libx11-dev_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libglx-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "5a50549948bc4363eab32b1083dad2165402c3628f2ee85e9a32563228cc61c1",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/5a50549948bc4363eab32b1083dad2165402c3628f2ee85e9a32563228cc61c1.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libglx-dev_1.3.2-1_amd64.deb"],
+        deps = ["@debian11_libglx0_x86_64//:all_files", "@debian11_libx11-dev_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libglx-mesa0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "b1f653df820ecda31ed3d6a39429befbced67093dc9b964cbfa5f7991a23eda8",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b1f653df820ecda31ed3d6a39429befbced67093dc9b964cbfa5f7991a23eda8.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libglx-mesa0_20.3.5-1_arm64.deb"],
+        deps = ["@debian11_libdrm2_aarch64//:all_files", "@debian11_libexpat1_aarch64//:all_files", "@debian11_libgl1-mesa-dri_aarch64//:all_files", "@debian11_libglapi-mesa_aarch64//:all_files", "@debian11_libx11-6_aarch64//:all_files", "@debian11_libx11-xcb1_aarch64//:all_files", "@debian11_libxcb-dri2-0_aarch64//:all_files", "@debian11_libxcb-dri3-0_aarch64//:all_files", "@debian11_libxcb-glx0_aarch64//:all_files", "@debian11_libxcb-present0_aarch64//:all_files", "@debian11_libxcb-shm0_aarch64//:all_files", "@debian11_libxcb-sync1_aarch64//:all_files", "@debian11_libxcb-xfixes0_aarch64//:all_files", "@debian11_libxcb1_aarch64//:all_files", "@debian11_libxdamage1_aarch64//:all_files", "@debian11_libxext6_aarch64//:all_files", "@debian11_libxfixes3_aarch64//:all_files", "@debian11_libxshmfence1_aarch64//:all_files", "@debian11_libxxf86vm1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libglx-mesa0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "2d19e2addfbea965220e62f512318351f12bdfe7e180f265f00d0f2834a77833",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/2d19e2addfbea965220e62f512318351f12bdfe7e180f265f00d0f2834a77833.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/libglx-mesa0_20.3.5-1_amd64.deb"],
+        deps = ["@debian11_libdrm2_x86_64//:all_files", "@debian11_libexpat1_x86_64//:all_files", "@debian11_libgl1-mesa-dri_x86_64//:all_files", "@debian11_libglapi-mesa_x86_64//:all_files", "@debian11_libx11-6_x86_64//:all_files", "@debian11_libx11-xcb1_x86_64//:all_files", "@debian11_libxcb-dri2-0_x86_64//:all_files", "@debian11_libxcb-dri3-0_x86_64//:all_files", "@debian11_libxcb-glx0_x86_64//:all_files", "@debian11_libxcb-present0_x86_64//:all_files", "@debian11_libxcb-shm0_x86_64//:all_files", "@debian11_libxcb-sync1_x86_64//:all_files", "@debian11_libxcb-xfixes0_x86_64//:all_files", "@debian11_libxcb1_x86_64//:all_files", "@debian11_libxdamage1_x86_64//:all_files", "@debian11_libxext6_x86_64//:all_files", "@debian11_libxfixes3_x86_64//:all_files", "@debian11_libxshmfence1_x86_64//:all_files", "@debian11_libxxf86vm1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libglx0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "a53aec87ff8d3ae181c320c01bc190f752a276d5e5ca87e624f9058a4b520bf2",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/a53aec87ff8d3ae181c320c01bc190f752a276d5e5ca87e624f9058a4b520bf2.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libglx0_1.3.2-1_arm64.deb"],
+        deps = ["@debian11_libglx-mesa0_aarch64//:all_files", "@debian11_libx11-6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libglx0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "cb642200f7e28e6dbb4075110a0b441880eeec35c8a00a2198c59c53309e5e17",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/cb642200f7e28e6dbb4075110a0b441880eeec35c8a00a2198c59c53309e5e17.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libglx0_1.3.2-1_amd64.deb"],
+        deps = ["@debian11_libglx-mesa0_x86_64//:all_files", "@debian11_libx11-6_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgmp10_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d52619b6ff8829aa5424dfe3189dd05f22118211e69273e9576030584ffcce80",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d52619b6ff8829aa5424dfe3189dd05f22118211e69273e9576030584ffcce80.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gmp/libgmp10_6.2.1+dfsg-1+deb11u1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgmp10_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "fc117ccb084a98d25021f7e01e4dfedd414fa2118fdd1e27d2d801d7248aebbc",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/fc117ccb084a98d25021f7e01e4dfedd414fa2118fdd1e27d2d801d7248aebbc.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gmp/libgmp10_6.2.1+dfsg-1+deb11u1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgomp1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "813af2e0b8ba0a7cea18c988cd843412ef6d0415700fc860d62816750e741670",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/813af2e0b8ba0a7cea18c988cd843412ef6d0415700fc860d62816750e741670.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libgomp1_10.2.1-6_arm64.deb"],
+        deps = ["@debian11_gcc-10-base_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgomp1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "4530c95aefa48e33fd8cf4acbe5c4b559dbe7bdf4c56469986c83a203982cef1",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/4530c95aefa48e33fd8cf4acbe5c4b559dbe7bdf4c56469986c83a203982cef1.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libgomp1_10.2.1-6_amd64.deb"],
+        deps = ["@debian11_gcc-10-base_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgssapi-krb5-2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "5572a462c7f78f9610bd4f1dd9f8e4f8243fa9dc2d1deb5b1cf7cec1f1df83dc",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/5572a462c7f78f9610bd4f1dd9f8e4f8243fa9dc2d1deb5b1cf7cec1f1df83dc.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/k/krb5/libgssapi-krb5-2_1.18.3-6+deb11u4_arm64.deb"],
+        deps = ["@debian11_libcom-err2_aarch64//:all_files", "@debian11_libk5crypto3_aarch64//:all_files", "@debian11_libkrb5-3_aarch64//:all_files", "@debian11_libkrb5support0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libgssapi-krb5-2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "037cc4bb34a6cd0d7a6e83bdcae6d68e0d0f9218eb7dedafc8099c8c0be491a2",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/037cc4bb34a6cd0d7a6e83bdcae6d68e0d0f9218eb7dedafc8099c8c0be491a2.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/k/krb5/libgssapi-krb5-2_1.18.3-6+deb11u4_amd64.deb"],
+        deps = ["@debian11_libcom-err2_x86_64//:all_files", "@debian11_libk5crypto3_x86_64//:all_files", "@debian11_libkrb5-3_x86_64//:all_files", "@debian11_libkrb5support0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libicu-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "4372e38b47534a24c7d92771b805b4dcfcda8ce98489606859077ae754037257",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/4372e38b47534a24c7d92771b805b4dcfcda8ce98489606859077ae754037257.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/i/icu/libicu-dev_67.1-7_arm64.deb"],
+        deps = ["@debian11_icu-devtools_aarch64//:all_files", "@debian11_libicu67_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libicu-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "7932a6acfbfd76e1dbedcf171dafda9e549b8dc179a666043dbb3d5b733c4a29",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/7932a6acfbfd76e1dbedcf171dafda9e549b8dc179a666043dbb3d5b733c4a29.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/i/icu/libicu-dev_67.1-7_amd64.deb"],
+        deps = ["@debian11_icu-devtools_x86_64//:all_files", "@debian11_libicu67_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libicu67_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "776303db230b275d8a17dfe8f0012bf61093dfc910f0d51f175be36707686efe",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/776303db230b275d8a17dfe8f0012bf61093dfc910f0d51f175be36707686efe.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/i/icu/libicu67_67.1-7_arm64.deb"],
+        deps = ["@debian11_libgcc-s1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libicu67_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "2bf5c46254f527865bfd6368e1120908755fa57d83634bd7d316c9b3cfd57303",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/2bf5c46254f527865bfd6368e1120908755fa57d83634bd7d316c9b3cfd57303.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/i/icu/libicu67_67.1-7_amd64.deb"],
+        deps = ["@debian11_libgcc-s1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libip4tc2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d1fe2f3f384c2c9205b33822d6510c5f1f68d93f3ce487638d162b9667ff1f27",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d1fe2f3f384c2c9205b33822d6510c5f1f68d93f3ce487638d162b9667ff1f27.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/i/iptables/libip4tc2_1.8.7-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libip4tc2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "7adeb63d9a350794b8234082082608d1b81097f5b177a9d16c28b72584c4f527",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/7adeb63d9a350794b8234082082608d1b81097f5b177a9d16c28b72584c4f527.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/i/iptables/libip4tc2_1.8.7-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libip6tc2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "40a45ce5fa8b3926efc281cab4d0ba9846dee18295c9374ad8917c7dbb113b2e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/40a45ce5fa8b3926efc281cab4d0ba9846dee18295c9374ad8917c7dbb113b2e.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/i/iptables/libip6tc2_1.8.7-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libip6tc2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f6756882ae06fc61d7af02b3665893f53721590b87be338477ec8d8c99e17732",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f6756882ae06fc61d7af02b3665893f53721590b87be338477ec8d8c99e17732.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/i/iptables/libip6tc2_1.8.7-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libitm1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e77553b598b09a06b74c7603107cbac2d8dae6ae750cf6728035ead945003c60",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e77553b598b09a06b74c7603107cbac2d8dae6ae750cf6728035ead945003c60.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libitm1_10.2.1-6_arm64.deb"],
+        deps = ["@debian11_gcc-10-base_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libitm1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "fa1596ec64610463b0f805fe5aa7e2537682c1c77f1e08335456bfc36766c259",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/fa1596ec64610463b0f805fe5aa7e2537682c1c77f1e08335456bfc36766c259.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libitm1_10.2.1-6_amd64.deb"],
+        deps = ["@debian11_gcc-10-base_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libk5crypto3_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d8f31a8bd83fe2593e83a930fc2713e1213f25311a629836dfcde5bd23a85e83",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d8f31a8bd83fe2593e83a930fc2713e1213f25311a629836dfcde5bd23a85e83.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/k/krb5/libk5crypto3_1.18.3-6+deb11u4_arm64.deb"],
+        deps = ["@debian11_libkrb5support0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libk5crypto3_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f635062bcbfe2eef5a83fcba7d1a8ae343fc7c779cae88b11cae90fd6845a744",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f635062bcbfe2eef5a83fcba7d1a8ae343fc7c779cae88b11cae90fd6845a744.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/k/krb5/libk5crypto3_1.18.3-6+deb11u4_amd64.deb"],
+        deps = ["@debian11_libkrb5support0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libkeyutils1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "7101c2380ab47a3627a6fa076a149ab71078263064f936fccbd43efbaed4a2da",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/7101c2380ab47a3627a6fa076a149ab71078263064f936fccbd43efbaed4a2da.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/k/keyutils/libkeyutils1_1.6.1-2_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libkeyutils1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f01060b434d8cad3c58d5811d2082389f11b3db8152657d6c22c1d298953f2a5",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f01060b434d8cad3c58d5811d2082389f11b3db8152657d6c22c1d298953f2a5.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/k/keyutils/libkeyutils1_1.6.1-2_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libkrb5-3_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "3dcdadb1db461d14b6051a19c6a94ae9f61c3d2b1d35fd9d63326cd8f4ae49e5",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3dcdadb1db461d14b6051a19c6a94ae9f61c3d2b1d35fd9d63326cd8f4ae49e5.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/k/krb5/libkrb5-3_1.18.3-6+deb11u4_arm64.deb"],
+        deps = ["@debian11_libkeyutils1_aarch64//:all_files", "@debian11_libkrb5support0_aarch64//:all_files", "@debian11_libssl1.1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libkrb5-3_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "b785fa324cf27e6bf7f97fc0279470e6ce8a8cc54f8ccc6c9b24c8111ba5c952",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b785fa324cf27e6bf7f97fc0279470e6ce8a8cc54f8ccc6c9b24c8111ba5c952.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/k/krb5/libkrb5-3_1.18.3-6+deb11u4_amd64.deb"],
+        deps = ["@debian11_libkeyutils1_x86_64//:all_files", "@debian11_libkrb5support0_x86_64//:all_files", "@debian11_libssl1.1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libkrb5support0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d44585771e26c9b8d115aad33736fcc3e03cf98238ea7c7985554f166441aa07",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d44585771e26c9b8d115aad33736fcc3e03cf98238ea7c7985554f166441aa07.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/k/krb5/libkrb5support0_1.18.3-6+deb11u4_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libkrb5support0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "da8d022e3dd7f4a72ea32e328b3ac382dbe6bdb91606c5738fe17a29f8ea8080",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/da8d022e3dd7f4a72ea32e328b3ac382dbe6bdb91606c5738fe17a29f8ea8080.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/k/krb5/libkrb5support0_1.18.3-6+deb11u4_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libllvm11_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "0f4d1c3e259e203cc25ca5e07a4f88a018a775bdbf4376f33b06c8ffb7bb688b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/0f4d1c3e259e203cc25ca5e07a4f88a018a775bdbf4376f33b06c8ffb7bb688b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/l/llvm-toolchain-11/libllvm11_11.0.1-2_arm64.deb"],
+        deps = ["@debian11_libedit2_aarch64//:all_files", "@debian11_libffi7_aarch64//:all_files", "@debian11_libgcc-s1_aarch64//:all_files", "@debian11_libz3-4_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libllvm11_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "eaff3c8dd6039af90b8b6bdbf33433e35d8c808a7aa195d0e3800ef5e61affff",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/eaff3c8dd6039af90b8b6bdbf33433e35d8c808a7aa195d0e3800ef5e61affff.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/l/llvm-toolchain-11/libllvm11_11.0.1-2_amd64.deb"],
+        deps = ["@debian11_libedit2_x86_64//:all_files", "@debian11_libffi7_x86_64//:all_files", "@debian11_libgcc-s1_x86_64//:all_files", "@debian11_libz3-4_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_liblsan0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ef39e7a56aa2b6cbe47c926bba195f01755fda0bb0733717d7c803609b8c18e1",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ef39e7a56aa2b6cbe47c926bba195f01755fda0bb0733717d7c803609b8c18e1.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/liblsan0_10.2.1-6_arm64.deb"],
+        deps = ["@debian11_gcc-10-base_aarch64//:all_files", "@debian11_libgcc-s1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_liblsan0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "6b5853688bb6d6bb9050d79ab732c751aa3ac7a5ed2404f7a6b53e7d4499bddc",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6b5853688bb6d6bb9050d79ab732c751aa3ac7a5ed2404f7a6b53e7d4499bddc.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/liblsan0_10.2.1-6_amd64.deb"],
+        deps = ["@debian11_gcc-10-base_x86_64//:all_files", "@debian11_libgcc-s1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_liblzma-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ce9178d9a005f902297cc9a8d30dc50ffb931e6ec5fc20e7c53b335bbd41c61a",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ce9178d9a005f902297cc9a8d30dc50ffb931e6ec5fc20e7c53b335bbd41c61a.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/xz-utils/liblzma-dev_5.2.5-2.1~deb11u1_arm64.deb"],
+        deps = ["@debian11_liblzma5_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_liblzma-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f08f035253ce830662c9a0a21e6a481bba996f7fca80cc43355f7e1879904769",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f08f035253ce830662c9a0a21e6a481bba996f7fca80cc43355f7e1879904769.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/xz-utils/liblzma-dev_5.2.5-2.1~deb11u1_amd64.deb"],
+        deps = ["@debian11_liblzma5_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_liblzma5_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d865bba41952c707b3fa3ae8cab4d4bd337ee92991d2aead66c925bf7cc48846",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d865bba41952c707b3fa3ae8cab4d4bd337ee92991d2aead66c925bf7cc48846.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/xz-utils/liblzma5_5.2.5-2.1~deb11u1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_liblzma5_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "1c79a02415ca5ee7234ac60502fb33ee94fa70b02d1c329a6a14178f8329c435",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/1c79a02415ca5ee7234ac60502fb33ee94fa70b02d1c329a6a14178f8329c435.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/xz-utils/liblzma5_5.2.5-2.1~deb11u1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libmagic-mgc_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "a1395dada64ab96991a37fed27b5f0bb2a23937d2e95a763b4bf86589556b4f1",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/a1395dada64ab96991a37fed27b5f0bb2a23937d2e95a763b4bf86589556b4f1.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/f/file/libmagic-mgc_5.39-3+deb11u1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libmagic-mgc_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "589324594d70e1941053901c184b329488c988b9f353d8b8b07dfe4453b57966",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/589324594d70e1941053901c184b329488c988b9f353d8b8b07dfe4453b57966.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/f/file/libmagic-mgc_5.39-3+deb11u1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libmagic1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "0f3ceb60821aa8387d73ca8630901b37d2c580627c65281cdbe26606f3d28543",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/0f3ceb60821aa8387d73ca8630901b37d2c580627c65281cdbe26606f3d28543.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/f/file/libmagic1_5.39-3+deb11u1_arm64.deb"],
+        deps = ["@debian11_libbz2-1.0_aarch64//:all_files", "@debian11_libmagic-mgc_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libmagic1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "6e82526e89e4a7da2e62ec7c08e50038dbdb55bd43b972f38a3bae61848bb8fc",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6e82526e89e4a7da2e62ec7c08e50038dbdb55bd43b972f38a3bae61848bb8fc.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/f/file/libmagic1_5.39-3+deb11u1_amd64.deb"],
+        deps = ["@debian11_libbz2-1.0_x86_64//:all_files", "@debian11_libmagic-mgc_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libmd0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "3c490cdcce9d25e702e6587b6166cd8e7303fce8343642d9d5d99695282a9e5c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3c490cdcce9d25e702e6587b6166cd8e7303fce8343642d9d5d99695282a9e5c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libm/libmd/libmd0_1.0.3-3_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libmd0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "9e425b3c128b69126d95e61998e1b5ef74e862dd1fc953d91eebcc315aea62ea",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/9e425b3c128b69126d95e61998e1b5ef74e862dd1fc953d91eebcc315aea62ea.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libm/libmd/libmd0_1.0.3-3_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libmnl0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d63aafb6f2c07db8fcb135b00ff915baf72ef8a3397e773c9c24d67950c6a46c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d63aafb6f2c07db8fcb135b00ff915baf72ef8a3397e773c9c24d67950c6a46c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libm/libmnl/libmnl0_1.0.4-3_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libmnl0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "4581f42e3373cb72f9ea4e88163b17873afca614a6c6f54637e95aa75983ea7c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/4581f42e3373cb72f9ea4e88163b17873afca614a6c6f54637e95aa75983ea7c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libm/libmnl/libmnl0_1.0.4-3_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libmpdec3_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "171e2581970f36a39f65d1ca3c761e76b103844daae7903fcc07f7c3822a05bb",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/171e2581970f36a39f65d1ca3c761e76b103844daae7903fcc07f7c3822a05bb.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mpdecimal/libmpdec3_2.5.1-1_arm64.deb"],
+        deps = ["@debian11_libgcc-s1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libmpdec3_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "816404866f754d5662d69db50072018dccb78cf372fc38e0be961fab0f57d741",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/816404866f754d5662d69db50072018dccb78cf372fc38e0be961fab0f57d741.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mpdecimal/libmpdec3_2.5.1-1_amd64.deb"],
+        deps = ["@debian11_libgcc-s1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libmpfr6_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "bfcc2e0c8863730cb8a98bfebce01c123370e4efa3b0d52cb8cf817ef6a06d88",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/bfcc2e0c8863730cb8a98bfebce01c123370e4efa3b0d52cb8cf817ef6a06d88.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mpfr4/libmpfr6_4.1.0-3_arm64.deb"],
+        deps = ["@debian11_libgmp10_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libmpfr6_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "5d26306d12a45a8a03dca473490d56a765b58d61b53146c1c7784903cf59c45d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/5d26306d12a45a8a03dca473490d56a765b58d61b53146c1c7784903cf59c45d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mpfr4/libmpfr6_4.1.0-3_amd64.deb"],
+        deps = ["@debian11_libgmp10_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libncurses-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "3893ab19f98544661b91a844f1b230f6c71afc6067d5354a12660492012bac47",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3893ab19f98544661b91a844f1b230f6c71afc6067d5354a12660492012bac47.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/n/ncurses/libncurses-dev_6.2+20201114-2+deb11u2_arm64.deb"],
+        deps = ["@debian11_libc6-dev_aarch64//:all_files", "@debian11_libncurses6_aarch64//:all_files", "@debian11_libncursesw6_aarch64//:all_files", "@debian11_ncurses-bin_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libncurses-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "b3311f7a07bde218d0cc381e67f23e4a856c99a8a3008b351b2f12e743d8e883",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b3311f7a07bde218d0cc381e67f23e4a856c99a8a3008b351b2f12e743d8e883.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/n/ncurses/libncurses-dev_6.2+20201114-2+deb11u2_amd64.deb"],
+        deps = ["@debian11_libc6-dev_x86_64//:all_files", "@debian11_libncurses6_x86_64//:all_files", "@debian11_libncursesw6_x86_64//:all_files", "@debian11_ncurses-bin_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libncurses6_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "039b71b8839538a92988003e13c29e7cf1149cdc6a77d3de882f1d386a5f3a5c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/039b71b8839538a92988003e13c29e7cf1149cdc6a77d3de882f1d386a5f3a5c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/n/ncurses/libncurses6_6.2+20201114-2+deb11u2_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libncurses6_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "5b75c540d26d0525f231d39e5cf27ea7919d57305ba7101ea430c975369095eb",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/5b75c540d26d0525f231d39e5cf27ea7919d57305ba7101ea430c975369095eb.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/n/ncurses/libncurses6_6.2+20201114-2+deb11u2_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libncursesw6_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "26bd6f488b885d02dfe933038d1e15414f5fe98704b3f49d2cecf665ebcb0f5b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/26bd6f488b885d02dfe933038d1e15414f5fe98704b3f49d2cecf665ebcb0f5b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/n/ncurses/libncursesw6_6.2+20201114-2+deb11u2_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libncursesw6_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "70ed9c6f35a9de73a01b042d740d92c46bbc0392ca4e63ee984417bd8a4eca3a",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/70ed9c6f35a9de73a01b042d740d92c46bbc0392ca4e63ee984417bd8a4eca3a.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/n/ncurses/libncursesw6_6.2+20201114-2+deb11u2_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libnetfilter-conntrack3_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "754a300b2c4bb477e425cfbb4de8af734e6f0523c26e09d1115004d425cf60b6",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/754a300b2c4bb477e425cfbb4de8af734e6f0523c26e09d1115004d425cf60b6.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libn/libnetfilter-conntrack/libnetfilter-conntrack3_1.0.8-3_arm64.deb"],
+        deps = ["@debian11_libnfnetlink0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libnetfilter-conntrack3_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d230aafed9e69a6ee09846b4b9afcecd49e2775651c6d2f22313d21613bc742a",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d230aafed9e69a6ee09846b4b9afcecd49e2775651c6d2f22313d21613bc742a.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libn/libnetfilter-conntrack/libnetfilter-conntrack3_1.0.8-3_amd64.deb"],
+        deps = ["@debian11_libnfnetlink0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libnfnetlink0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "3a43bb97c16a4a4b2321973fe83b9a5d98e523415f9909cf978aef542e77f538",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3a43bb97c16a4a4b2321973fe83b9a5d98e523415f9909cf978aef542e77f538.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libn/libnfnetlink/libnfnetlink0_1.0.1-3+b1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libnfnetlink0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "6d650aae2fbfcb261557ed9032ba00c6d69ff30eded71050459af0fc0cf50926",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6d650aae2fbfcb261557ed9032ba00c6d69ff30eded71050459af0fc0cf50926.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libn/libnfnetlink/libnfnetlink0_1.0.1-3+b1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libnftnl11_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "57fec0830e0f4f858e3b1498f86b0c27aed6e8f1e4143c852bc5c5922be2a0aa",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/57fec0830e0f4f858e3b1498f86b0c27aed6e8f1e4143c852bc5c5922be2a0aa.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libn/libnftnl/libnftnl11_1.1.9-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libnftnl11_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "04da1ce7c71a3b1f3b52a2315e844dda6f7130db0857262d79d983182e86ccd7",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/04da1ce7c71a3b1f3b52a2315e844dda6f7130db0857262d79d983182e86ccd7.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libn/libnftnl/libnftnl11_1.1.9-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libnsl2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "8f9ba58b219779b43c4ccc78c79b0a23f721fc96323c202abb31e02f942104b3",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/8f9ba58b219779b43c4ccc78c79b0a23f721fc96323c202abb31e02f942104b3.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libn/libnsl/libnsl2_1.3.0-2_arm64.deb"],
+        deps = ["@debian11_libtirpc3_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libnsl2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "c0d83437fdb016cb289436f49f28a36be44b3e8f1f2498c7e3a095f709c0d6f8",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/c0d83437fdb016cb289436f49f28a36be44b3e8f1f2498c7e3a095f709c0d6f8.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libn/libnsl/libnsl2_1.3.0-2_amd64.deb"],
+        deps = ["@debian11_libtirpc3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libopengl-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "61446d458c800366e6155edc5025f102fc6cd0255a2649c673b5212cead7d538",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/61446d458c800366e6155edc5025f102fc6cd0255a2649c673b5212cead7d538.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libopengl-dev_1.3.2-1_arm64.deb"],
+        deps = ["@debian11_libopengl0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libopengl-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "7e598e73830ffb5d6fae58ebd1c769b6f7806dc92bd5649893b74f1302b47e82",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/7e598e73830ffb5d6fae58ebd1c769b6f7806dc92bd5649893b74f1302b47e82.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libopengl-dev_1.3.2-1_amd64.deb"],
+        deps = ["@debian11_libopengl0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libopengl0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "0dcd4846079fd8106f92f943331e4d035b3c79d9eae5a337135ced490a0deb15",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/0dcd4846079fd8106f92f943331e4d035b3c79d9eae5a337135ced490a0deb15.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libopengl0_1.3.2-1_arm64.deb"],
+        deps = ["@debian11_libglvnd0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libopengl0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "4327a9f20b88e7bcb07af3b196121096877331b61eeed64467854eb0b525fc43",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/4327a9f20b88e7bcb07af3b196121096877331b61eeed64467854eb0b525fc43.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libg/libglvnd/libopengl0_1.3.2-1_amd64.deb"],
+        deps = ["@debian11_libglvnd0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libpciaccess0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f581ced157bd475477337860e7e7fcabeeb091444bc5a189c5c97adc8fcabda5",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f581ced157bd475477337860e7e7fcabeeb091444bc5a189c5c97adc8fcabda5.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libp/libpciaccess/libpciaccess0_0.16-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libpcre2-8-0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "27a4362a4793cb67a8ae571bd8c3f7e8654dc2e56d99088391b87af1793cca9c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/27a4362a4793cb67a8ae571bd8c3f7e8654dc2e56d99088391b87af1793cca9c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/pcre2/libpcre2-8-0_10.36-2+deb11u1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libpcre2-8-0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ee192c8d22624eb9d0a2ae95056bad7fb371e5abc17e23e16b1de3ddb17a1064",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ee192c8d22624eb9d0a2ae95056bad7fb371e5abc17e23e16b1de3ddb17a1064.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/pcre2/libpcre2-8-0_10.36-2+deb11u1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libpcre3_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "21cac4064a41dbc354295c437f37bf623f9004513a97a6fa030248566aa986e9",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/21cac4064a41dbc354295c437f37bf623f9004513a97a6fa030248566aa986e9.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/pcre3/libpcre3_8.39-13_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libpcre3_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "48efcf2348967c211cd9408539edf7ec3fa9d800b33041f6511ccaecc1ffa9d0",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/48efcf2348967c211cd9408539edf7ec3fa9d800b33041f6511ccaecc1ffa9d0.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/pcre3/libpcre3_8.39-13_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libperl5.32_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "6be6a1856f5efb6d1c6e9273fa7beba7ab4c9eef1162658836d215684b302ed6",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6be6a1856f5efb6d1c6e9273fa7beba7ab4c9eef1162658836d215684b302ed6.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/perl/libperl5.32_5.32.1-4+deb11u2_arm64.deb"],
+        deps = ["@debian11_libbz2-1.0_aarch64//:all_files", "@debian11_libcrypt1_aarch64//:all_files", "@debian11_libdb5.3_aarch64//:all_files", "@debian11_libgdbm-compat4_aarch64//:all_files", "@debian11_libgdbm6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libperl5.32_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "224cafe65968deb83168113b74dff2d2f13b115a41d99eb209ed3b8f981df0b3",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/224cafe65968deb83168113b74dff2d2f13b115a41d99eb209ed3b8f981df0b3.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/perl/libperl5.32_5.32.1-4+deb11u2_amd64.deb"],
+        deps = ["@debian11_libbz2-1.0_x86_64//:all_files", "@debian11_libcrypt1_x86_64//:all_files", "@debian11_libdb5.3_x86_64//:all_files", "@debian11_libgdbm-compat4_x86_64//:all_files", "@debian11_libgdbm6_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libpthread-stubs0-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "acd58ed5d26d3f4d4b0856ebec6bc43f9c4357601a532eee0d2de839a8b8952e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/acd58ed5d26d3f4d4b0856ebec6bc43f9c4357601a532eee0d2de839a8b8952e.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libp/libpthread-stubs/libpthread-stubs0-dev_0.4-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libpthread-stubs0-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "54632f160e1e8a43656a87195a547391038c4ca0f53291b849cd4457ba5dfde9",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/54632f160e1e8a43656a87195a547391038c4ca0f53291b849cd4457ba5dfde9.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libp/libpthread-stubs/libpthread-stubs0-dev_0.4-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libpython3.9-minimal_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "b49736ab0e8b8577f97a474ca67e20c1c025f9d7394ec8d7820de6314c903cf9",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b49736ab0e8b8577f97a474ca67e20c1c025f9d7394ec8d7820de6314c903cf9.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/python3.9/libpython3.9-minimal_3.9.2-1_arm64.deb"],
+        deps = ["@debian11_libssl1.1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libpython3.9-minimal_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "594283526d67e03e3c4e96534f6bfe5da1bf41da5d49360553c9b79fbf08c4ab",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/594283526d67e03e3c4e96534f6bfe5da1bf41da5d49360553c9b79fbf08c4ab.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/python3.9/libpython3.9-minimal_3.9.2-1_amd64.deb"],
+        deps = ["@debian11_libssl1.1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libpython3.9-stdlib_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "3b3612dcd7550f01ec3517fbe955838223f4cf115b6983e4ed6d7320cd4b05c4",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3b3612dcd7550f01ec3517fbe955838223f4cf115b6983e4ed6d7320cd4b05c4.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/python3.9/libpython3.9-stdlib_3.9.2-1_arm64.deb"],
+        deps = ["@debian11_libbz2-1.0_aarch64//:all_files", "@debian11_libcrypt1_aarch64//:all_files", "@debian11_libdb5.3_aarch64//:all_files", "@debian11_libffi7_aarch64//:all_files", "@debian11_liblzma5_aarch64//:all_files", "@debian11_libmpdec3_aarch64//:all_files", "@debian11_libncursesw6_aarch64//:all_files", "@debian11_libnsl2_aarch64//:all_files", "@debian11_libpython3.9-minimal_aarch64//:all_files", "@debian11_libreadline8_aarch64//:all_files", "@debian11_libsqlite3-0_aarch64//:all_files", "@debian11_libtirpc3_aarch64//:all_files", "@debian11_libuuid1_aarch64//:all_files", "@debian11_media-types_aarch64//:all_files", "@debian11_tzdata_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libpython3.9-stdlib_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "32ac64d959ac2dbc5bb289532fc9834dab8f671b5455695a3a9315aad973c65b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/32ac64d959ac2dbc5bb289532fc9834dab8f671b5455695a3a9315aad973c65b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/python3.9/libpython3.9-stdlib_3.9.2-1_amd64.deb"],
+        deps = ["@debian11_libbz2-1.0_x86_64//:all_files", "@debian11_libcrypt1_x86_64//:all_files", "@debian11_libdb5.3_x86_64//:all_files", "@debian11_libffi7_x86_64//:all_files", "@debian11_liblzma5_x86_64//:all_files", "@debian11_libmpdec3_x86_64//:all_files", "@debian11_libncursesw6_x86_64//:all_files", "@debian11_libnsl2_x86_64//:all_files", "@debian11_libpython3.9-minimal_x86_64//:all_files", "@debian11_libreadline8_x86_64//:all_files", "@debian11_libsqlite3-0_x86_64//:all_files", "@debian11_libtirpc3_x86_64//:all_files", "@debian11_libuuid1_x86_64//:all_files", "@debian11_media-types_x86_64//:all_files", "@debian11_tzdata_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libquadmath0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "a9a5e1f53b7e27a3f2b8388929bb622d3c6c35a4e42ac166697444e5ed662fd5",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/a9a5e1f53b7e27a3f2b8388929bb622d3c6c35a4e42ac166697444e5ed662fd5.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libquadmath0_10.2.1-6_amd64.deb"],
+        deps = ["@debian11_gcc-10-base_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libreadline8_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "500c3cdc00dcaea2c4ed736e00bfcb6cb43c3415e808566c5dfa266dbfc0c5e5",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/500c3cdc00dcaea2c4ed736e00bfcb6cb43c3415e808566c5dfa266dbfc0c5e5.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/r/readline/libreadline8_8.1-1_arm64.deb"],
+        deps = ["@debian11_readline-common_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libreadline8_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "162ba9fdcde81b5502953ed4d84b24e8ad4e380bbd02990ab1a0e3edffca3c22",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/162ba9fdcde81b5502953ed4d84b24e8ad4e380bbd02990ab1a0e3edffca3c22.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/r/readline/libreadline8_8.1-1_amd64.deb"],
+        deps = ["@debian11_readline-common_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libselinux1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "da98279a47dabaa46a83514142f5c691c6a71fa7e582661a3a3db6887ad3e9d1",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/da98279a47dabaa46a83514142f5c691c6a71fa7e582661a3a3db6887ad3e9d1.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libs/libselinux/libselinux1_3.1-3_arm64.deb"],
+        deps = ["@debian11_libpcre2-8-0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libselinux1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "339f5ede10500c16dd7192d73169c31c4b27ab12130347275f23044ec8c7d897",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/339f5ede10500c16dd7192d73169c31c4b27ab12130347275f23044ec8c7d897.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libs/libselinux/libselinux1_3.1-3_amd64.deb"],
+        deps = ["@debian11_libpcre2-8-0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libsensors-config_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "4265811140a591d27c99d026b63707d8235d98c73d7543c66ab9ec73c28523fc",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/4265811140a591d27c99d026b63707d8235d98c73d7543c66ab9ec73c28523fc.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/l/lm-sensors/libsensors-config_3.6.0-7_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libsensors-config_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "4265811140a591d27c99d026b63707d8235d98c73d7543c66ab9ec73c28523fc",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/4265811140a591d27c99d026b63707d8235d98c73d7543c66ab9ec73c28523fc.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/l/lm-sensors/libsensors-config_3.6.0-7_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libsensors5_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "fd5533c6293d881d67e488ad0549c0b0351e1b770037a08018e5e88996cb95dc",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/fd5533c6293d881d67e488ad0549c0b0351e1b770037a08018e5e88996cb95dc.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/l/lm-sensors/libsensors5_3.6.0-7_arm64.deb"],
+        deps = ["@debian11_libsensors-config_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libsensors5_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "b9cb9a081ea3c9b68ef047d7e51f3b84bccde1a2467d5657df4c5d54775b187e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b9cb9a081ea3c9b68ef047d7e51f3b84bccde1a2467d5657df4c5d54775b187e.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/l/lm-sensors/libsensors5_3.6.0-7_amd64.deb"],
+        deps = ["@debian11_libsensors-config_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libset-scalar-perl_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f03921597bd20cbbf47ee60cff3fac48fe2d4790b110f2d426a65fbc8ef45578",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f03921597bd20cbbf47ee60cff3fac48fe2d4790b110f2d426a65fbc8ef45578.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libs/libset-scalar-perl/libset-scalar-perl_1.29-2_all.deb"],
+        deps = ["@debian11_perl_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libset-scalar-perl_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f03921597bd20cbbf47ee60cff3fac48fe2d4790b110f2d426a65fbc8ef45578",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f03921597bd20cbbf47ee60cff3fac48fe2d4790b110f2d426a65fbc8ef45578.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libs/libset-scalar-perl/libset-scalar-perl_1.29-2_all.deb"],
+        deps = ["@debian11_perl_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libsigsegv2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "a356da97f838efd0532d4b88a5028e8a24ba2e83abe8b4b136048b5a313747d4",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/a356da97f838efd0532d4b88a5028e8a24ba2e83abe8b4b136048b5a313747d4.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libs/libsigsegv/libsigsegv2_2.13-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libsigsegv2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "c56a7108e1c6dca27b4db9cce5c7c2b0c9d961b3572a1d1fe89058388401bd2b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/c56a7108e1c6dca27b4db9cce5c7c2b0c9d961b3572a1d1fe89058388401bd2b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libs/libsigsegv/libsigsegv2_2.13-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libsqlite3-0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "1e33cd39dc4fff2a7edd7bb7e90a71e20fb528f6a581fe0287652e4dae77e0d0",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/1e33cd39dc4fff2a7edd7bb7e90a71e20fb528f6a581fe0287652e4dae77e0d0.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/s/sqlite3/libsqlite3-0_3.34.1-3_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libsqlite3-0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "a0b8d3acf4a0483048637637d269be93af48d5c16f6f139f53edd13384ad4686",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/a0b8d3acf4a0483048637637d269be93af48d5c16f6f139f53edd13384ad4686.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/s/sqlite3/libsqlite3-0_3.34.1-3_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libssl1.1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "fe7a7d313c87e46e62e614a07137e4a476a79fc9e5aab7b23e8235211280fee3",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/fe7a7d313c87e46e62e614a07137e4a476a79fc9e5aab7b23e8235211280fee3.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/o/openssl/libssl1.1_1.1.1w-0+deb11u1_arm64.deb"],
+        deps = ["@debian11_debconf_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libssl1.1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "aadf8b4b197335645b230c2839b4517aa444fd2e8f434e5438c48a18857988f7",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/aadf8b4b197335645b230c2839b4517aa444fd2e8f434e5438c48a18857988f7.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/o/openssl/libssl1.1_1.1.1w-0+deb11u1_amd64.deb"],
+        deps = ["@debian11_debconf_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libstdc__-10-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "cee7ca63613b50a8a51cc670db385c7e6d1181b72c94148fc8b7992e4570782d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/cee7ca63613b50a8a51cc670db385c7e6d1181b72c94148fc8b7992e4570782d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libstdc++-10-dev_10.2.1-6_arm64.deb"],
+        deps = ["@debian11_gcc-10-base_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libstdc__-10-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "20b1f56863dcc5f187d6cb53b2aa6149bd013be4ec67e10c2c31a22fda619a01",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/20b1f56863dcc5f187d6cb53b2aa6149bd013be4ec67e10c2c31a22fda619a01.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libstdc++-10-dev_10.2.1-6_amd64.deb"],
+        deps = ["@debian11_gcc-10-base_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libstdc__6_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "7869aa540cc46e9f3d4267d5bde2af0e5b429a820c1d6f1a4cfccfe788c31890",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/7869aa540cc46e9f3d4267d5bde2af0e5b429a820c1d6f1a4cfccfe788c31890.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libstdc++6_10.2.1-6_arm64.deb"],
+        deps = ["@debian11_gcc-10-base_aarch64//:all_files", "@debian11_libgcc-s1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libstdc__6_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "5c155c58935870bf3b4bfe769116841c0d286a74f59eccfd5645693ac23f06b1",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/5c155c58935870bf3b4bfe769116841c0d286a74f59eccfd5645693ac23f06b1.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libstdc++6_10.2.1-6_amd64.deb"],
+        deps = ["@debian11_gcc-10-base_x86_64//:all_files", "@debian11_libgcc-s1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libtinfo6_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "58027c991756930a2abb2f87a829393d3fdbfb76f4eca9795ef38ea2b0510e27",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/58027c991756930a2abb2f87a829393d3fdbfb76f4eca9795ef38ea2b0510e27.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/n/ncurses/libtinfo6_6.2+20201114-2+deb11u2_arm64.deb"],
+        deps = ["@debian11_libc6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libtinfo6_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "96ed58b8fd656521e08549c763cd18da6cff1b7801a3a22f29678701a95d7e7b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/96ed58b8fd656521e08549c763cd18da6cff1b7801a3a22f29678701a95d7e7b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/n/ncurses/libtinfo6_6.2+20201114-2+deb11u2_amd64.deb"],
+        deps = ["@debian11_libc6_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libtirpc-common_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "b2f10cb79e7d7a2f9b30bcdf036127df55cd4a34688547bc2886fa38f4969f77",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b2f10cb79e7d7a2f9b30bcdf036127df55cd4a34688547bc2886fa38f4969f77.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libt/libtirpc/libtirpc-common_1.3.1-1+deb11u1_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libtirpc-common_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "b2f10cb79e7d7a2f9b30bcdf036127df55cd4a34688547bc2886fa38f4969f77",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b2f10cb79e7d7a2f9b30bcdf036127df55cd4a34688547bc2886fa38f4969f77.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libt/libtirpc/libtirpc-common_1.3.1-1+deb11u1_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libtirpc3_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ccff0927f55b97fe9ea13057fab8bff9920bf4628eb2d5d48b9656f2fb74d2e1",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ccff0927f55b97fe9ea13057fab8bff9920bf4628eb2d5d48b9656f2fb74d2e1.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libt/libtirpc/libtirpc3_1.3.1-1+deb11u1_arm64.deb"],
+        deps = ["@debian11_libgssapi-krb5-2_aarch64//:all_files", "@debian11_libtirpc-common_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libtirpc3_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "86b216d59b6efcd07d56d14b8f4281d5c47f24e9c962f46bbaf02fce762c5e6a",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/86b216d59b6efcd07d56d14b8f4281d5c47f24e9c962f46bbaf02fce762c5e6a.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libt/libtirpc/libtirpc3_1.3.1-1+deb11u1_amd64.deb"],
+        deps = ["@debian11_libgssapi-krb5-2_x86_64//:all_files", "@debian11_libtirpc-common_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libtsan0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "bb5ec0dfdcac7b2e93d161f7092a9a098d1001591cd016093e7f41fda6864b3c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/bb5ec0dfdcac7b2e93d161f7092a9a098d1001591cd016093e7f41fda6864b3c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libtsan0_10.2.1-6_arm64.deb"],
+        deps = ["@debian11_gcc-10-base_aarch64//:all_files", "@debian11_libgcc-s1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libtsan0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "4ea9ce5df578309538e684fcbca0c4403c6d7ca01b3f44868829e98a55548e2a",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/4ea9ce5df578309538e684fcbca0c4403c6d7ca01b3f44868829e98a55548e2a.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libtsan0_10.2.1-6_amd64.deb"],
+        deps = ["@debian11_gcc-10-base_x86_64//:all_files", "@debian11_libgcc-s1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libubsan1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "14b4d134e2efc2d7afefce5affe89476117dd7a1894bdff158c7b5e0631052bc",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/14b4d134e2efc2d7afefce5affe89476117dd7a1894bdff158c7b5e0631052bc.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libubsan1_10.2.1-6_arm64.deb"],
+        deps = ["@debian11_gcc-10-base_aarch64//:all_files", "@debian11_libgcc-s1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libubsan1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "9435da9b51aba0f9b128ccf3e80cc1e8233aa6b816d7bddd5688ca6c4afb6e4d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/9435da9b51aba0f9b128ccf3e80cc1e8233aa6b816d7bddd5688ca6c4afb6e4d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/g/gcc-10/libubsan1_10.2.1-6_amd64.deb"],
+        deps = ["@debian11_gcc-10-base_x86_64//:all_files", "@debian11_libgcc-s1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libunwind-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "1256cc79e6614668240886eba0dfbc65ffe159a08b420dc2c515237891ab60a9",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/1256cc79e6614668240886eba0dfbc65ffe159a08b420dc2c515237891ab60a9.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libu/libunwind/libunwind-dev_1.3.2-2_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libunwind-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "44cdc2b873368b465905cdb06aecf00d5f6d4c4d363718535171f2232110d364",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/44cdc2b873368b465905cdb06aecf00d5f6d4c4d363718535171f2232110d364.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libu/libunwind/libunwind-dev_1.3.2-2_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libunwind8_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "2a93283482cd89b6e6d3e1ee16497c911d6aacdc7414b9d24ca6851e221cf66c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/2a93283482cd89b6e6d3e1ee16497c911d6aacdc7414b9d24ca6851e221cf66c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libu/libunwind/libunwind8_1.3.2-2_arm64.deb"],
+        deps = ["@debian11_liblzma5_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libunwind8_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "a8cc1181a479375aeb603cfe748cc19dc3a700a47ffdcb09fa025fe02b0c73bf",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/a8cc1181a479375aeb603cfe748cc19dc3a700a47ffdcb09fa025fe02b0c73bf.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libu/libunwind/libunwind8_1.3.2-2_amd64.deb"],
+        deps = ["@debian11_liblzma5_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libuuid1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "3d677da6a22e9cac519fed5a2ed5b20a4217f51ca420fce57434b5e813c26e03",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3d677da6a22e9cac519fed5a2ed5b20a4217f51ca420fce57434b5e813c26e03.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/u/util-linux/libuuid1_2.36.1-8+deb11u1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libuuid1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "31250af4dd3b7d1519326a9a6764d1466a93d8f498cf6545058761ebc38b2823",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/31250af4dd3b7d1519326a9a6764d1466a93d8f498cf6545058761ebc38b2823.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/u/util-linux/libuuid1_2.36.1-8+deb11u1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libva-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "c8dfbf18941f1fa29f53ec46786ba85e5687545b68e5b39621b8842c058d4ab0",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/c8dfbf18941f1fa29f53ec46786ba85e5687545b68e5b39621b8842c058d4ab0.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-dev_2.10.0-1_arm64.deb"],
+        deps = ["@debian11_libset-scalar-perl_aarch64//:all_files", "@debian11_libva-drm2_aarch64//:all_files", "@debian11_libva-glx2_aarch64//:all_files", "@debian11_libva-wayland2_aarch64//:all_files", "@debian11_libva-x11-2_aarch64//:all_files", "@debian11_libva2_aarch64//:all_files", "@debian11_libwayland-dev_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libva-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "559bb9597376c3dec14670c0cd67c066614d37456e58ffa9497c0f6f79e6fa0d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/559bb9597376c3dec14670c0cd67c066614d37456e58ffa9497c0f6f79e6fa0d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-dev_2.10.0-1_amd64.deb"],
+        deps = ["@debian11_libset-scalar-perl_x86_64//:all_files", "@debian11_libva-drm2_x86_64//:all_files", "@debian11_libva-glx2_x86_64//:all_files", "@debian11_libva-wayland2_x86_64//:all_files", "@debian11_libva-x11-2_x86_64//:all_files", "@debian11_libva2_x86_64//:all_files", "@debian11_libwayland-dev_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libva-drm2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "45bf4248d72ce42940ee658bbba3025db0a233587bc49d773b1e3e9606d613a3",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/45bf4248d72ce42940ee658bbba3025db0a233587bc49d773b1e3e9606d613a3.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-drm2_2.10.0-1_arm64.deb"],
+        deps = ["@debian11_libdrm2_aarch64//:all_files", "@debian11_libva2_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libva-drm2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "b705c4186947d6c90682d5fcf777ba267d93058b1b50b541c29f8421f14782f5",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b705c4186947d6c90682d5fcf777ba267d93058b1b50b541c29f8421f14782f5.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-drm2_2.10.0-1_amd64.deb"],
+        deps = ["@debian11_libdrm2_x86_64//:all_files", "@debian11_libva2_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libva-glx2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "2a2910f4bdbc5bea319c1bcf504c2359106ec6916b841b698aafd3b2d0cb230d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/2a2910f4bdbc5bea319c1bcf504c2359106ec6916b841b698aafd3b2d0cb230d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-glx2_2.10.0-1_arm64.deb"],
+        deps = ["@debian11_libgl1_aarch64//:all_files", "@debian11_libva-x11-2_aarch64//:all_files", "@debian11_libva2_aarch64//:all_files", "@debian11_libx11-6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libva-glx2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e098a114d32c3100f224db40a8e956a81a9c983afafc96d71d360aa0fe2f40fd",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e098a114d32c3100f224db40a8e956a81a9c983afafc96d71d360aa0fe2f40fd.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-glx2_2.10.0-1_amd64.deb"],
+        deps = ["@debian11_libgl1_x86_64//:all_files", "@debian11_libva-x11-2_x86_64//:all_files", "@debian11_libva2_x86_64//:all_files", "@debian11_libx11-6_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libva-wayland2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "a89d59b4e2037b49858f059d6b6732558305f93082a1f5531ac7c348ad0fd70b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/a89d59b4e2037b49858f059d6b6732558305f93082a1f5531ac7c348ad0fd70b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-wayland2_2.10.0-1_arm64.deb"],
+        deps = ["@debian11_libdrm2_aarch64//:all_files", "@debian11_libva2_aarch64//:all_files", "@debian11_libwayland-client0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libva-wayland2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f99f4444a833244b26f5dc13238663e78a836f0e8b0c83fffcd580343b30c551",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f99f4444a833244b26f5dc13238663e78a836f0e8b0c83fffcd580343b30c551.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-wayland2_2.10.0-1_amd64.deb"],
+        deps = ["@debian11_libdrm2_x86_64//:all_files", "@debian11_libva2_x86_64//:all_files", "@debian11_libwayland-client0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libva-x11-2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d6a845c9456a8b22366a25cbcd68a4ced425243a924e4b0048dc82f8b1f8853c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d6a845c9456a8b22366a25cbcd68a4ced425243a924e4b0048dc82f8b1f8853c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-x11-2_2.10.0-1_arm64.deb"],
+        deps = ["@debian11_libdrm2_aarch64//:all_files", "@debian11_libva2_aarch64//:all_files", "@debian11_libx11-6_aarch64//:all_files", "@debian11_libxext6_aarch64//:all_files", "@debian11_libxfixes3_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libva-x11-2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "a51c8da767b49d78cd037b9da72eb26aff1f5a9cc2bc91b5eca4931d8d5649b0",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/a51c8da767b49d78cd037b9da72eb26aff1f5a9cc2bc91b5eca4931d8d5649b0.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva-x11-2_2.10.0-1_amd64.deb"],
+        deps = ["@debian11_libdrm2_x86_64//:all_files", "@debian11_libva2_x86_64//:all_files", "@debian11_libx11-6_x86_64//:all_files", "@debian11_libxext6_x86_64//:all_files", "@debian11_libxfixes3_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libva2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "6dbb204d43bcaed495719fc6a793dcbce77f4ab12bc0ea4617ae4e816139d5a1",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6dbb204d43bcaed495719fc6a793dcbce77f4ab12bc0ea4617ae4e816139d5a1.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva2_2.10.0-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libva2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d0ffc213203186c84facb57463fe120a12d75c5a2fc360a469bd42c8c349f53a",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d0ffc213203186c84facb57463fe120a12d75c5a2fc360a469bd42c8c349f53a.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libv/libva/libva2_2.10.0-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libvulkan1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "303d48229ccab57342ad9cc36174429ee7b8b0cdb6e6e292b87ce3415fe5d65a",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/303d48229ccab57342ad9cc36174429ee7b8b0cdb6e6e292b87ce3415fe5d65a.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/v/vulkan-loader/libvulkan1_1.2.162.0-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libvulkan1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "8b3a6e5db7d8bdc369a0d276bfae1551ffc0fa31dbd193d56655c8f553868361",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/8b3a6e5db7d8bdc369a0d276bfae1551ffc0fa31dbd193d56655c8f553868361.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/v/vulkan-loader/libvulkan1_1.2.162.0-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libwayland-bin_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "79a850a284b308d14d5031c6e78ec566f1ab4437bde889140f96333d96cb0674",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/79a850a284b308d14d5031c6e78ec566f1ab4437bde889140f96333d96cb0674.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-bin_1.18.0-2~exp1.1_arm64.deb"],
+        deps = ["@debian11_libexpat1_aarch64//:all_files", "@debian11_libxml2_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libwayland-bin_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "774e97053d524549044b332469d13eec70c989b4bc00a592019512c17a92978e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/774e97053d524549044b332469d13eec70c989b4bc00a592019512c17a92978e.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-bin_1.18.0-2~exp1.1_amd64.deb"],
+        deps = ["@debian11_libexpat1_x86_64//:all_files", "@debian11_libxml2_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libwayland-client0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "7bde74828c3508b5b81400c4b9ef51d65b566d7645747b777ec171eb8ecfce47",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/7bde74828c3508b5b81400c4b9ef51d65b566d7645747b777ec171eb8ecfce47.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-client0_1.18.0-2~exp1.1_arm64.deb"],
+        deps = ["@debian11_libffi7_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libwayland-client0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "4baf16bb3a35823251453368ee078b6be6a14f97b05c19783b5acd4232a608ea",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/4baf16bb3a35823251453368ee078b6be6a14f97b05c19783b5acd4232a608ea.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-client0_1.18.0-2~exp1.1_amd64.deb"],
+        deps = ["@debian11_libffi7_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libwayland-cursor0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "1c201b449abf41e864dd48c960c9ef7f180b5164a3e7562ae5fd467d60fd074e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/1c201b449abf41e864dd48c960c9ef7f180b5164a3e7562ae5fd467d60fd074e.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-cursor0_1.18.0-2~exp1.1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libwayland-cursor0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "1b48d1d8e17a95b28a2876c7f2a95667ee1618a5f586d4dff05aeb09488172cb",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/1b48d1d8e17a95b28a2876c7f2a95667ee1618a5f586d4dff05aeb09488172cb.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-cursor0_1.18.0-2~exp1.1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libwayland-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "2357033bfe3cee735220abb527ca0707a31dc2813defe7e67d738882607ecdb9",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/2357033bfe3cee735220abb527ca0707a31dc2813defe7e67d738882607ecdb9.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-dev_1.18.0-2~exp1.1_arm64.deb"],
+        deps = ["@debian11_libffi-dev_aarch64//:all_files", "@debian11_libwayland-bin_aarch64//:all_files", "@debian11_libwayland-client0_aarch64//:all_files", "@debian11_libwayland-cursor0_aarch64//:all_files", "@debian11_libwayland-egl1_aarch64//:all_files", "@debian11_libwayland-server0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libwayland-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "3265bf05c0cea760d0e8f5fb5fc68b0f154911de23503e02232dfa59f6b6490c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3265bf05c0cea760d0e8f5fb5fc68b0f154911de23503e02232dfa59f6b6490c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-dev_1.18.0-2~exp1.1_amd64.deb"],
+        deps = ["@debian11_libffi-dev_x86_64//:all_files", "@debian11_libwayland-bin_x86_64//:all_files", "@debian11_libwayland-client0_x86_64//:all_files", "@debian11_libwayland-cursor0_x86_64//:all_files", "@debian11_libwayland-egl1_x86_64//:all_files", "@debian11_libwayland-server0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libwayland-egl1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "8b5e2d8975330f308c226e3b51624a76ea8ebe5115dd8e929e05ea23c4169008",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/8b5e2d8975330f308c226e3b51624a76ea8ebe5115dd8e929e05ea23c4169008.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-egl1_1.18.0-2~exp1.1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libwayland-egl1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "b98e636f08eca9e818e326fc8cd75810dbb50b1ed4e3586c2394e11248e29275",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b98e636f08eca9e818e326fc8cd75810dbb50b1ed4e3586c2394e11248e29275.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-egl1_1.18.0-2~exp1.1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libwayland-server0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "3bbcb9e41159b6268b40ce16b1512e5bcf38e63b8bcf2426eaa54b19c6988257",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3bbcb9e41159b6268b40ce16b1512e5bcf38e63b8bcf2426eaa54b19c6988257.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-server0_1.18.0-2~exp1.1_arm64.deb"],
+        deps = ["@debian11_libffi7_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libwayland-server0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "1df9a6e304bdaebdd53e1044c6eadcda95c914119e9426c2866eaa619a49c85b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/1df9a6e304bdaebdd53e1044c6eadcda95c914119e9426c2866eaa619a49c85b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/w/wayland/libwayland-server0_1.18.0-2~exp1.1_amd64.deb"],
+        deps = ["@debian11_libffi7_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libx11-6_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "cb81bb619cc3e822df4c47acd01ed2988b5d1da9ae75bca203f3c6fc53db16e9",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/cb81bb619cc3e822df4c47acd01ed2988b5d1da9ae75bca203f3c6fc53db16e9.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libx11/libx11-6_1.7.2-1+deb11u1_arm64.deb"],
+        deps = ["@debian11_libx11-data_aarch64//:all_files", "@debian11_libxcb1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libx11-6_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "23385ffd6d2e3e507a7532fb24dc48176dada9c861e5d43853e18179a08bf861",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/23385ffd6d2e3e507a7532fb24dc48176dada9c861e5d43853e18179a08bf861.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libx11/libx11-6_1.7.2-1+deb11u1_amd64.deb"],
+        deps = ["@debian11_libx11-data_x86_64//:all_files", "@debian11_libxcb1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libx11-data_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "457db358e1d77cfe4f8af5e6efa7a1b262848b65192589932c38a589a4b6976b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/457db358e1d77cfe4f8af5e6efa7a1b262848b65192589932c38a589a4b6976b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libx11/libx11-data_1.7.2-1+deb11u1_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libx11-data_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "457db358e1d77cfe4f8af5e6efa7a1b262848b65192589932c38a589a4b6976b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/457db358e1d77cfe4f8af5e6efa7a1b262848b65192589932c38a589a4b6976b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libx11/libx11-data_1.7.2-1+deb11u1_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libx11-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "9433513217fdc7440b4e4963173d79a7131d6ff15c878c0a8bdd1d9711a8a425",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/9433513217fdc7440b4e4963173d79a7131d6ff15c878c0a8bdd1d9711a8a425.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libx11/libx11-dev_1.7.2-1+deb11u1_arm64.deb"],
+        deps = ["@debian11_libx11-6_aarch64//:all_files", "@debian11_libxau-dev_aarch64//:all_files", "@debian11_libxcb1-dev_aarch64//:all_files", "@debian11_libxdmcp-dev_aarch64//:all_files", "@debian11_x11proto-dev_aarch64//:all_files", "@debian11_xtrans-dev_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libx11-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "29f106b917887b836404384b1a6dfdd0af8036b644c09f0d82955191a5965ef3",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/29f106b917887b836404384b1a6dfdd0af8036b644c09f0d82955191a5965ef3.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libx11/libx11-dev_1.7.2-1+deb11u1_amd64.deb"],
+        deps = ["@debian11_libx11-6_x86_64//:all_files", "@debian11_libxau-dev_x86_64//:all_files", "@debian11_libxcb1-dev_x86_64//:all_files", "@debian11_libxdmcp-dev_x86_64//:all_files", "@debian11_x11proto-dev_x86_64//:all_files", "@debian11_xtrans-dev_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libx11-xcb1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "7ff70db5618029d423c9379f28e0549825895648b13981237a63f450b187a769",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/7ff70db5618029d423c9379f28e0549825895648b13981237a63f450b187a769.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libx11/libx11-xcb1_1.7.2-1+deb11u1_arm64.deb"],
+        deps = ["@debian11_libx11-6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libx11-xcb1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "6583c1cdbf82e48f3c58be35d4eaa4960c1e5ff2bf7726b7d25db19707685398",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6583c1cdbf82e48f3c58be35d4eaa4960c1e5ff2bf7726b7d25db19707685398.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libx11/libx11-xcb1_1.7.2-1+deb11u1_amd64.deb"],
+        deps = ["@debian11_libx11-6_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxau-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "21db3761a8f388fc83707c00fac645d4332737a859dd727571e1e6ede003b048",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/21db3761a8f388fc83707c00fac645d4332737a859dd727571e1e6ede003b048.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxau/libxau-dev_1.0.9-1_arm64.deb"],
+        deps = ["@debian11_libxau6_aarch64//:all_files", "@debian11_x11proto-dev_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxau-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d1a7f5d484e0879b3b2e8d512894744505e53d078712ce65903fef2ecfd824bb",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d1a7f5d484e0879b3b2e8d512894744505e53d078712ce65903fef2ecfd824bb.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxau/libxau-dev_1.0.9-1_amd64.deb"],
+        deps = ["@debian11_libxau6_x86_64//:all_files", "@debian11_x11proto-dev_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxau6_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "36c2bf400641a80521093771dc2562c903df4065f9eb03add50d90564337ea6c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/36c2bf400641a80521093771dc2562c903df4065f9eb03add50d90564337ea6c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxau/libxau6_1.0.9-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxau6_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "679db1c4579ec7c61079adeaae8528adeb2e4bf5465baa6c56233b995d714750",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/679db1c4579ec7c61079adeaae8528adeb2e4bf5465baa6c56233b995d714750.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxau/libxau6_1.0.9-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxcb-dri2-0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "b99d1f4909d0a3fe85dfba6524fb0a8c4d08703366ed99f034417684e91ded5b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b99d1f4909d0a3fe85dfba6524fb0a8c4d08703366ed99f034417684e91ded5b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcb/libxcb-dri2-0_1.14-3_arm64.deb"],
+        deps = ["@debian11_libxcb1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxcb-dri2-0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "fbfc7d55fa00ab7068d015c185363370215c857ac9484d7020c2d9c38c8401b2",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/fbfc7d55fa00ab7068d015c185363370215c857ac9484d7020c2d9c38c8401b2.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcb/libxcb-dri2-0_1.14-3_amd64.deb"],
+        deps = ["@debian11_libxcb1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxcb-dri3-0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "9a6dc75fd8e9fe720f62f99cfebef0cbe51cf2909aa5e777254cb6a3ddf47f6f",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/9a6dc75fd8e9fe720f62f99cfebef0cbe51cf2909aa5e777254cb6a3ddf47f6f.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcb/libxcb-dri3-0_1.14-3_arm64.deb"],
+        deps = ["@debian11_libxcb1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxcb-dri3-0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "4dd503b321253f210fe546aae8fe5061fc7d30015cf5580d7843432a71ebc772",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/4dd503b321253f210fe546aae8fe5061fc7d30015cf5580d7843432a71ebc772.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcb/libxcb-dri3-0_1.14-3_amd64.deb"],
+        deps = ["@debian11_libxcb1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxcb-glx0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "754902f3399fd5c9c851dbf150306f537acab7152b9f32206a7910b7c3f353e1",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/754902f3399fd5c9c851dbf150306f537acab7152b9f32206a7910b7c3f353e1.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcb/libxcb-glx0_1.14-3_arm64.deb"],
+        deps = ["@debian11_libxcb1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxcb-glx0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "61ae35a71148038aad04b021b3adfa0dee4fc06d98e045ec9edfd9e850324876",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/61ae35a71148038aad04b021b3adfa0dee4fc06d98e045ec9edfd9e850324876.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcb/libxcb-glx0_1.14-3_amd64.deb"],
+        deps = ["@debian11_libxcb1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxcb-present0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "9e84b49e46833fd3fb366b04d19c652a0e8d2ebe3d40f19f9b530763ba2f7b88",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/9e84b49e46833fd3fb366b04d19c652a0e8d2ebe3d40f19f9b530763ba2f7b88.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcb/libxcb-present0_1.14-3_arm64.deb"],
+        deps = ["@debian11_libxcb1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxcb-present0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "7937af87426de2ed382ba0d6204fee58f4028b332625e2727ebb7ca9a1b32028",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/7937af87426de2ed382ba0d6204fee58f4028b332625e2727ebb7ca9a1b32028.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcb/libxcb-present0_1.14-3_amd64.deb"],
+        deps = ["@debian11_libxcb1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxcb-shm0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e7f59fc41744fe6b8b9ba97b262a051621173689e2a3e5ebb26dc253c9bdc48b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e7f59fc41744fe6b8b9ba97b262a051621173689e2a3e5ebb26dc253c9bdc48b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcb/libxcb-shm0_1.14-3_arm64.deb"],
+        deps = ["@debian11_libxcb1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxcb-shm0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "0751b48b1c637b5b0cb080159c29b8dd83af8ec771a21c8cc26d180aaab0d351",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/0751b48b1c637b5b0cb080159c29b8dd83af8ec771a21c8cc26d180aaab0d351.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcb/libxcb-shm0_1.14-3_amd64.deb"],
+        deps = ["@debian11_libxcb1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxcb-sync1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ba70a2194fa7875f1a3ef6fb31bdd4cca5ca970926e3201994a166c5026ce442",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ba70a2194fa7875f1a3ef6fb31bdd4cca5ca970926e3201994a166c5026ce442.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcb/libxcb-sync1_1.14-3_arm64.deb"],
+        deps = ["@debian11_libxcb1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxcb-sync1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "53e7f18c8a95b2be2024537a753b6bd914af5f4c7aeed175f61155a5a3c8fe88",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/53e7f18c8a95b2be2024537a753b6bd914af5f4c7aeed175f61155a5a3c8fe88.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcb/libxcb-sync1_1.14-3_amd64.deb"],
+        deps = ["@debian11_libxcb1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxcb-xfixes0_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "8185fca98fda89fc5a020b9a8cd92b093929830a29cf92e6a1eba04bd88bcf5f",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/8185fca98fda89fc5a020b9a8cd92b093929830a29cf92e6a1eba04bd88bcf5f.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcb/libxcb-xfixes0_1.14-3_arm64.deb"],
+        deps = ["@debian11_libxcb1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxcb-xfixes0_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "939b29a4eaad5972ba379c2b5f29cf51d7d947b10e68cc2fe96238efcd3d63c2",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/939b29a4eaad5972ba379c2b5f29cf51d7d947b10e68cc2fe96238efcd3d63c2.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcb/libxcb-xfixes0_1.14-3_amd64.deb"],
+        deps = ["@debian11_libxcb1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxcb1-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "43ebe78dd7f66933286fe68fd7ccc650ef14464d479fff13e635e95d1f742efa",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/43ebe78dd7f66933286fe68fd7ccc650ef14464d479fff13e635e95d1f742efa.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcb/libxcb1-dev_1.14-3_arm64.deb"],
+        deps = ["@debian11_libpthread-stubs0-dev_aarch64//:all_files", "@debian11_libxcb1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxcb1-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "b75544f334c8963b8b7b0e8a88f8a7cde95a714dddbcda076d4beb669a961b58",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b75544f334c8963b8b7b0e8a88f8a7cde95a714dddbcda076d4beb669a961b58.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcb/libxcb1-dev_1.14-3_amd64.deb"],
+        deps = ["@debian11_libpthread-stubs0-dev_x86_64//:all_files", "@debian11_libxcb1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxcb1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "48f82b65c93adb7af7757961fdd2730928316459f008d767b7104a56bc20a8f1",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/48f82b65c93adb7af7757961fdd2730928316459f008d767b7104a56bc20a8f1.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcb/libxcb1_1.14-3_arm64.deb"],
+        deps = ["@debian11_libxau6_aarch64//:all_files", "@debian11_libxdmcp6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxcb1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d5e0f047ed766f45eb7473947b70f9e8fddbe45ef22ecfd92ab712c0671a93ac",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d5e0f047ed766f45eb7473947b70f9e8fddbe45ef22ecfd92ab712c0671a93ac.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxcb/libxcb1_1.14-3_amd64.deb"],
+        deps = ["@debian11_libxau6_x86_64//:all_files", "@debian11_libxdmcp6_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxdamage1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "696cb56f414e7c0ea9a3bcbcb63b07f6ed8e980023c1b35006d5c1dc0d0213ed",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/696cb56f414e7c0ea9a3bcbcb63b07f6ed8e980023c1b35006d5c1dc0d0213ed.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxdamage/libxdamage1_1.1.5-2_arm64.deb"],
+        deps = ["@debian11_libx11-6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxdamage1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "1acf6d6117929a7df346d355caeb579798d75feb7e3b3aae58a2d1af735b444f",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/1acf6d6117929a7df346d355caeb579798d75feb7e3b3aae58a2d1af735b444f.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxdamage/libxdamage1_1.1.5-2_amd64.deb"],
+        deps = ["@debian11_libx11-6_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxdmcp-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "6fd0bc51f3a4e6b7f944f24f15524a4c4ba68a4b0aa136c18bdb96a2d36988f2",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6fd0bc51f3a4e6b7f944f24f15524a4c4ba68a4b0aa136c18bdb96a2d36988f2.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxdmcp/libxdmcp-dev_1.1.2-3_arm64.deb"],
+        deps = ["@debian11_libxdmcp6_aarch64//:all_files", "@debian11_x11proto-core-dev_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxdmcp-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "c6733e5f6463afd261998e408be6eb37f24ce0a64b63bed50a87ddb18ebc1699",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/c6733e5f6463afd261998e408be6eb37f24ce0a64b63bed50a87ddb18ebc1699.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxdmcp/libxdmcp-dev_1.1.2-3_amd64.deb"],
+        deps = ["@debian11_libxdmcp6_x86_64//:all_files", "@debian11_x11proto-core-dev_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxdmcp6_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e92569ac33247261aa09adfadc34ced3994ac301cf8b58de415a2d5dbf15ccfc",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e92569ac33247261aa09adfadc34ced3994ac301cf8b58de415a2d5dbf15ccfc.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxdmcp/libxdmcp6_1.1.2-3_arm64.deb"],
+        deps = ["@debian11_libbsd0_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxdmcp6_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ecb8536f5fb34543b55bb9dc5f5b14c9dbb4150a7bddb3f2287b7cab6e9d25ef",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ecb8536f5fb34543b55bb9dc5f5b14c9dbb4150a7bddb3f2287b7cab6e9d25ef.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxdmcp/libxdmcp6_1.1.2-3_amd64.deb"],
+        deps = ["@debian11_libbsd0_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxext6_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "57237ecf54662372e206b154c0ab6096e05955e048552575b45d3ad14a6ff6e5",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/57237ecf54662372e206b154c0ab6096e05955e048552575b45d3ad14a6ff6e5.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxext/libxext6_1.3.3-1.1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxext6_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "dc1ff8a2b60c7dd3c8917ffb9aa65ee6cda52648d9150608683c47319d1c0c8c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/dc1ff8a2b60c7dd3c8917ffb9aa65ee6cda52648d9150608683c47319d1c0c8c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxext/libxext6_1.3.3-1.1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxfixes3_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "eb70f12af1d13e1632ee29ddf103617af00a078faf6c3a2531ab3d01b395606b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/eb70f12af1d13e1632ee29ddf103617af00a078faf6c3a2531ab3d01b395606b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxfixes/libxfixes3_5.0.3-2_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxfixes3_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "58622d0d65c3535bd724c4da62ae7acb71e0e8f527bcbd65daf8c97e6f0ef843",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/58622d0d65c3535bd724c4da62ae7acb71e0e8f527bcbd65daf8c97e6f0ef843.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxfixes/libxfixes3_5.0.3-2_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxml2_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ccd9f449fa88827258bd51eeb8d5f6f33719df290f157c2b0be3c527a6ee45aa",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ccd9f449fa88827258bd51eeb8d5f6f33719df290f157c2b0be3c527a6ee45aa.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxml2/libxml2_2.9.10+dfsg-6.7+deb11u4_arm64.deb"],
+        deps = ["@debian11_libicu67_aarch64//:all_files", "@debian11_liblzma5_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxml2_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "b29ea9026561ef0019a57b8b192bf08f725976cd1dddd3fc6bcf876840350989",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/b29ea9026561ef0019a57b8b192bf08f725976cd1dddd3fc6bcf876840350989.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxml2/libxml2_2.9.10+dfsg-6.7+deb11u4_amd64.deb"],
+        deps = ["@debian11_libicu67_x86_64//:all_files", "@debian11_liblzma5_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxshmfence1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "fa2edaae6902681ecd02534dcdf8389ac48714d3385d572cc17747160957acc8",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/fa2edaae6902681ecd02534dcdf8389ac48714d3385d572cc17747160957acc8.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxshmfence/libxshmfence1_1.3-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxshmfence1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "1a38142e40e3d32dc4f9a326bf5617363b7d9b4bb762fdcdd262f2192092024d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/1a38142e40e3d32dc4f9a326bf5617363b7d9b4bb762fdcdd262f2192092024d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxshmfence/libxshmfence1_1.3-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxtables12_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "fa07088a313d8dae7a8cba0780117e80ead683ac549fd9986a52a3280232272a",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/fa07088a313d8dae7a8cba0780117e80ead683ac549fd9986a52a3280232272a.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/i/iptables/libxtables12_1.8.7-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxtables12_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "9702a4be6f267b58c8fc1cfa0747bbefccb8b9a9af2a3547535533fbf2a7c14d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/9702a4be6f267b58c8fc1cfa0747bbefccb8b9a9af2a3547535533fbf2a7c14d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/i/iptables/libxtables12_1.8.7-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxxf86vm1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "8a4826772ac480804d6b8d776a4130d95260c036b9b218de4c8a0f07eb9c5bba",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/8a4826772ac480804d6b8d776a4130d95260c036b9b218de4c8a0f07eb9c5bba.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxxf86vm/libxxf86vm1_1.1.4-1+b2_arm64.deb"],
+        deps = ["@debian11_libx11-6_aarch64//:all_files", "@debian11_libxext6_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libxxf86vm1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "6f4ca916aaec26d7000fa7f58de3f71119309ab7590ce1f517abfe1825a676c7",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6f4ca916aaec26d7000fa7f58de3f71119309ab7590ce1f517abfe1825a676c7.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libx/libxxf86vm/libxxf86vm1_1.1.4-1+b2_amd64.deb"],
+        deps = ["@debian11_libx11-6_x86_64//:all_files", "@debian11_libxext6_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libz3-4_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ae1ea58ecfdd4b5ec53d734e60ac2df37fddb11888b7730a19335f1a9b09f489",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ae1ea58ecfdd4b5ec53d734e60ac2df37fddb11888b7730a19335f1a9b09f489.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/z/z3/libz3-4_4.8.10-1_arm64.deb"],
+        deps = ["@debian11_libgcc-s1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libz3-4_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "7a38c2dd985eb9315857588ee06ff297e2b16de159dec85bd2777a43ebe9f458",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/7a38c2dd985eb9315857588ee06ff297e2b16de159dec85bd2777a43ebe9f458.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/z/z3/libz3-4_4.8.10-1_amd64.deb"],
+        deps = ["@debian11_libgcc-s1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libzstd1_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "dd01659c6c122f983a3369a04ede63539f666585d52a03f8aa2c27b307e547e0",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/dd01659c6c122f983a3369a04ede63539f666585d52a03f8aa2c27b307e547e0.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libz/libzstd/libzstd1_1.4.8+dfsg-2.1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_libzstd1_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "5dcadfbb743bfa1c1c773bff91c018f835e8e8c821d423d3836f3ab84773507b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/5dcadfbb743bfa1c1c773bff91c018f835e8e8c821d423d3836f3ab84773507b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/libz/libzstd/libzstd1_1.4.8+dfsg-2.1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_linux-libc-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "ce2162424c7159921ea0203293925d0b4f77b580e22ac554f4c149c1e2e4fe82",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/ce2162424c7159921ea0203293925d0b4f77b580e22ac554f4c149c1e2e4fe82.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/l/linux/linux-libc-dev_5.10.197-1_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_linux-libc-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "221a760c0ba9d3c3ba3d3c01579f014a54513fbd1446e335b3dfef0dde78f704",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/221a760c0ba9d3c3ba3d3c01579f014a54513fbd1446e335b3dfef0dde78f704.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/l/linux/linux-libc-dev_5.10.197-1_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_media-types_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f9835dcf3cdbaf163104d4e511c9c4e0f41a56822e147e57f28f749fcbf7d44c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f9835dcf3cdbaf163104d4e511c9c4e0f41a56822e147e57f28f749fcbf7d44c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/media-types/media-types_4.0.0_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_media-types_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f9835dcf3cdbaf163104d4e511c9c4e0f41a56822e147e57f28f749fcbf7d44c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f9835dcf3cdbaf163104d4e511c9c4e0f41a56822e147e57f28f749fcbf7d44c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/media-types/media-types_4.0.0_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_mesa-common-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "86e568ebed13066f6cbbb1c9ae2ad894efc5b7b9a4ab1a91fda640a649f98bbb",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/86e568ebed13066f6cbbb1c9ae2ad894efc5b7b9a4ab1a91fda640a649f98bbb.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/mesa-common-dev_20.3.5-1_arm64.deb"],
+        deps = ["@debian11_libdrm-dev_aarch64//:all_files", "@debian11_libgl-dev_aarch64//:all_files", "@debian11_libglx-dev_aarch64//:all_files", "@debian11_libx11-dev_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_mesa-common-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "6ac7ac9d2cf15f86bf85884c7aa096370c87693702fce75d4dc2eb9580a11cbe",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6ac7ac9d2cf15f86bf85884c7aa096370c87693702fce75d4dc2eb9580a11cbe.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/m/mesa/mesa-common-dev_20.3.5-1_amd64.deb"],
+        deps = ["@debian11_libdrm-dev_x86_64//:all_files", "@debian11_libgl-dev_x86_64//:all_files", "@debian11_libglx-dev_x86_64//:all_files", "@debian11_libx11-dev_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_ncurses-bin_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "302f087f93320b474797ccfea0ce1f07ab09ddfb1bdb2260a210747a8bce7660",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/302f087f93320b474797ccfea0ce1f07ab09ddfb1bdb2260a210747a8bce7660.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/n/ncurses/ncurses-bin_6.2+20201114-2+deb11u2_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_ncurses-bin_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "051a9ad8f5e9c89b189112114e39a46d3c68855529c826a7879dfd471377fd14",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/051a9ad8f5e9c89b189112114e39a46d3c68855529c826a7879dfd471377fd14.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/n/ncurses/ncurses-bin_6.2+20201114-2+deb11u2_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_netbase_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f444889ad3441758e3a5092418e062da2b0c6a811fdb0c262a6b70cb2518dbde",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f444889ad3441758e3a5092418e062da2b0c6a811fdb0c262a6b70cb2518dbde.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/n/netbase/netbase_6.3_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_netbase_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f444889ad3441758e3a5092418e062da2b0c6a811fdb0c262a6b70cb2518dbde",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f444889ad3441758e3a5092418e062da2b0c6a811fdb0c262a6b70cb2518dbde.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/n/netbase/netbase_6.3_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_openssl_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d9159af073e95641e7eda440fa1d7623873b8c0034c9826a353f890bed107f3c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d9159af073e95641e7eda440fa1d7623873b8c0034c9826a353f890bed107f3c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/o/openssl/openssl_1.1.1w-0+deb11u1_arm64.deb"],
+        deps = ["@debian11_libc6_aarch64//:all_files", "@debian11_libssl1.1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_openssl_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "04873d74cbe86bad3a9901f6e57f1150040eba9891b443c5c975a72a97238e35",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/04873d74cbe86bad3a9901f6e57f1150040eba9891b443c5c975a72a97238e35.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/o/openssl/openssl_1.1.1w-0+deb11u1_amd64.deb"],
+        deps = ["@debian11_libc6_x86_64//:all_files", "@debian11_libssl1.1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_perl-base_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "3d0ebf5b73200031e52bd1a44edcc662be412ec8a88b62601a9a9b21f640d425",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3d0ebf5b73200031e52bd1a44edcc662be412ec8a88b62601a9a9b21f640d425.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/perl/perl-base_5.32.1-4+deb11u2_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_perl-base_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "018a3e48e58cbc478d3a4365090fb1daa151769f90f9b45984ec9d056ef96adc",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/018a3e48e58cbc478d3a4365090fb1daa151769f90f9b45984ec9d056ef96adc.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/perl/perl-base_5.32.1-4+deb11u2_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_perl-modules-5.32_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "6fa15be322c3c89ec4a07d704ad58d4a2d1aabf866135a859f6d8d58c59e9df4",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6fa15be322c3c89ec4a07d704ad58d4a2d1aabf866135a859f6d8d58c59e9df4.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/perl/perl-modules-5.32_5.32.1-4+deb11u2_all.deb"],
+        deps = ["@debian11_perl-base_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_perl-modules-5.32_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "6fa15be322c3c89ec4a07d704ad58d4a2d1aabf866135a859f6d8d58c59e9df4",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6fa15be322c3c89ec4a07d704ad58d4a2d1aabf866135a859f6d8d58c59e9df4.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/perl/perl-modules-5.32_5.32.1-4+deb11u2_all.deb"],
+        deps = ["@debian11_perl-base_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_perl_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "625a2d0cafb5089953012d60d3a5ba726b692d9d49955a251b78b8cce884d05b",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/625a2d0cafb5089953012d60d3a5ba726b692d9d49955a251b78b8cce884d05b.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/perl/perl_5.32.1-4+deb11u2_arm64.deb"],
+        deps = ["@debian11_libperl5.32_aarch64//:all_files", "@debian11_perl-base_aarch64//:all_files", "@debian11_perl-modules-5.32_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_perl_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "1cebc4516ed7c240b812c7bdd7e6ea0810f513152717ca17ce139ee0dfbc7b0d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/1cebc4516ed7c240b812c7bdd7e6ea0810f513152717ca17ce139ee0dfbc7b0d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/perl/perl_5.32.1-4+deb11u2_amd64.deb"],
+        deps = ["@debian11_libperl5.32_x86_64//:all_files", "@debian11_perl-base_x86_64//:all_files", "@debian11_perl-modules-5.32_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_python3.9-minimal_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "bc0d0ed39ebc066020c3a16afdab4fd3e0260b41ae799273531d5b2403ae7b27",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/bc0d0ed39ebc066020c3a16afdab4fd3e0260b41ae799273531d5b2403ae7b27.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/python3.9/python3.9-minimal_3.9.2-1_arm64.deb"],
+        deps = ["@debian11_libexpat1_aarch64//:all_files", "@debian11_libpython3.9-minimal_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_python3.9-minimal_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "5d6003c5c20223a2547ac4976e09a9ec778dbe351507a6292bef3b60df5f4aa7",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/5d6003c5c20223a2547ac4976e09a9ec778dbe351507a6292bef3b60df5f4aa7.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/python3.9/python3.9-minimal_3.9.2-1_amd64.deb"],
+        deps = ["@debian11_libexpat1_x86_64//:all_files", "@debian11_libpython3.9-minimal_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_python3.9_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        extra_symlinks = {
+            "usr/bin/python": "/usr/bin/python3",
+            "usr/bin/python3": "/usr/bin/python3.9",
+        },
+        sha256 = "88cbc8eee37ef1f240fdd458f984bd3770cdd8cb1703e8e1666e026f6ca61327",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/88cbc8eee37ef1f240fdd458f984bd3770cdd8cb1703e8e1666e026f6ca61327.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/python3.9/python3.9_3.9.2-1_arm64.deb"],
+        deps = ["@debian11_libpython3.9-stdlib_aarch64//:all_files", "@debian11_media-types_aarch64//:all_files", "@debian11_python3.9-minimal_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_python3.9_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        extra_symlinks = {
+            "usr/bin/python": "/usr/bin/python3",
+            "usr/bin/python3": "/usr/bin/python3.9",
+        },
+        sha256 = "12f8b47632cc26b986bfc4c882fc98e7036d406143ae8bb1dbfff6b61d7c8993",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/12f8b47632cc26b986bfc4c882fc98e7036d406143ae8bb1dbfff6b61d7c8993.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/p/python3.9/python3.9_3.9.2-1_amd64.deb"],
+        deps = ["@debian11_libpython3.9-stdlib_x86_64//:all_files", "@debian11_media-types_x86_64//:all_files", "@debian11_python3.9-minimal_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_readline-common_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "3f947176ef949f93e4ad5d76c067d33fa97cf90b62ee0748acb4f5f64790edc8",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3f947176ef949f93e4ad5d76c067d33fa97cf90b62ee0748acb4f5f64790edc8.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/r/readline/readline-common_8.1-1_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_readline-common_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "3f947176ef949f93e4ad5d76c067d33fa97cf90b62ee0748acb4f5f64790edc8",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/3f947176ef949f93e4ad5d76c067d33fa97cf90b62ee0748acb4f5f64790edc8.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/r/readline/readline-common_8.1-1_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_sed_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e9d19ae74ed3f6198f70a4de266550ffc4d831e00c127c7297b17136a50f64e0",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e9d19ae74ed3f6198f70a4de266550ffc4d831e00c127c7297b17136a50f64e0.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/s/sed/sed_4.7-1_arm64.deb"],
+        deps = ["@debian11_libacl1_aarch64//:all_files", "@debian11_libselinux1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_sed_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "37917c63d062cd924ba5084820353b256377d88371fbb89537ff06f7a0b5a6c7",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/37917c63d062cd924ba5084820353b256377d88371fbb89537ff06f7a0b5a6c7.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/s/sed/sed_4.7-1_amd64.deb"],
+        deps = ["@debian11_libacl1_x86_64//:all_files", "@debian11_libselinux1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_tar_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        extra_symlinks = {
+            "usr/sbin/rmt": "/usr/sbin/rmt-tar",
+        },
+        sha256 = "0827b3302a54f371ed9c875a01b02be25eb8dfe6375fac78eaffe1c6382fbbfe",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/0827b3302a54f371ed9c875a01b02be25eb8dfe6375fac78eaffe1c6382fbbfe.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/t/tar/tar_1.34+dfsg-1_arm64.deb"],
+        deps = ["@debian11_libacl1_aarch64//:all_files", "@debian11_libselinux1_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_tar_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        extra_symlinks = {
+            "usr/sbin/rmt": "/usr/sbin/rmt-tar",
+        },
+        sha256 = "bd8e963c6edcf1c806df97cd73560794c347aa94b9aaaf3b88eea585bb2d2f3c",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/bd8e963c6edcf1c806df97cd73560794c347aa94b9aaaf3b88eea585bb2d2f3c.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/t/tar/tar_1.34+dfsg-1_amd64.deb"],
+        deps = ["@debian11_libacl1_x86_64//:all_files", "@debian11_libselinux1_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_tzdata_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e15eebc40b4aeba0ab22fd72b2d6170b6983316b55d9599053d95af735a8478d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e15eebc40b4aeba0ab22fd72b2d6170b6983316b55d9599053d95af735a8478d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/t/tzdata/tzdata_2021a-1+deb11u10_all.deb"],
+        deps = ["@debian11_debconf_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_tzdata_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e15eebc40b4aeba0ab22fd72b2d6170b6983316b55d9599053d95af735a8478d",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e15eebc40b4aeba0ab22fd72b2d6170b6983316b55d9599053d95af735a8478d.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/t/tzdata/tzdata_2021a-1+deb11u10_all.deb"],
+        deps = ["@debian11_debconf_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_x11proto-core-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "92941b1b2a7889a67e952a9301339202b6b390b77af939a26ee15c94ef4fad7e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/92941b1b2a7889a67e952a9301339202b6b390b77af939a26ee15c94ef4fad7e.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/xorgproto/x11proto-core-dev_2020.1-1_all.deb"],
+        deps = ["@debian11_x11proto-dev_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_x11proto-core-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "92941b1b2a7889a67e952a9301339202b6b390b77af939a26ee15c94ef4fad7e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/92941b1b2a7889a67e952a9301339202b6b390b77af939a26ee15c94ef4fad7e.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/xorgproto/x11proto-core-dev_2020.1-1_all.deb"],
+        deps = ["@debian11_x11proto-dev_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_x11proto-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d5568d587d9ad2664c34c14b0ac538ccb3c567e126ee5291085a8de704a565f5",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d5568d587d9ad2664c34c14b0ac538ccb3c567e126ee5291085a8de704a565f5.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/xorgproto/x11proto-dev_2020.1-1_all.deb"],
+        deps = ["@debian11_xorg-sgml-doctools_aarch64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_x11proto-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "d5568d587d9ad2664c34c14b0ac538ccb3c567e126ee5291085a8de704a565f5",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/d5568d587d9ad2664c34c14b0ac538ccb3c567e126ee5291085a8de704a565f5.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/xorgproto/x11proto-dev_2020.1-1_all.deb"],
+        deps = ["@debian11_xorg-sgml-doctools_x86_64//:all_files"],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_xorg-sgml-doctools_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "168345058319094e475a87ace66f5fb6ae802109650ea8434d672117982b5d0a",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/168345058319094e475a87ace66f5fb6ae802109650ea8434d672117982b5d0a.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/xorg-sgml-doctools/xorg-sgml-doctools_1.11-1.1_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_xorg-sgml-doctools_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "168345058319094e475a87ace66f5fb6ae802109650ea8434d672117982b5d0a",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/168345058319094e475a87ace66f5fb6ae802109650ea8434d672117982b5d0a.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/xorg-sgml-doctools/xorg-sgml-doctools_1.11-1.1_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_xtrans-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "9ce1af9464faee0c679348dd11cdf63934c12e734a64e0903692b0cb5af38e06",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/9ce1af9464faee0c679348dd11cdf63934c12e734a64e0903692b0cb5af38e06.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/xtrans/xtrans-dev_1.4.0-1_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_xtrans-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "9ce1af9464faee0c679348dd11cdf63934c12e734a64e0903692b0cb5af38e06",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/9ce1af9464faee0c679348dd11cdf63934c12e734a64e0903692b0cb5af38e06.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/x/xtrans/xtrans-dev_1.4.0-1_all.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_zlib1g-dev_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "6aa99970b3af7dbc6e34d7b55b493ba65b1a2d7c18cea042e96e271f1bb8ecfe",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/6aa99970b3af7dbc6e34d7b55b493ba65b1a2d7c18cea042e96e271f1bb8ecfe.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/z/zlib/zlib1g-dev_1.2.11.dfsg-2+deb11u2_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_zlib1g-dev_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "f49fc849870c4e64fed2794722841ee950c1788f7fe90b3a091e6a098a46cd33",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/f49fc849870c4e64fed2794722841ee950c1788f7fe90b3a091e6a098a46cd33.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/z/zlib/zlib1g-dev_1.2.11.dfsg-2+deb11u2_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_zlib1g_aarch64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "e3963985d1a020d67ffd4180e6f9c4b5c600b515f0c9d8fda513d7a0e48e63a1",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/e3963985d1a020d67ffd4180e6f9c4b5c600b515f0c9d8fda513d7a0e48e63a1.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2+deb11u2_arm64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
+        name = "debian11_zlib1g_x86_64",
+        exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
+        sha256 = "03d2ab2174af76df6f517b854b77460fbdafc3dac0dca979317da67538159a3e",
+        urls = ["https://storage.googleapis.com/gimlet-dev-infra-public/deb-mirrors/03d2ab2174af76df6f517b854b77460fbdafc3dac0dca979317da67538159a3e.deb", "https://snapshot.debian.org/archive/debian/20231209T111918Z/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2+deb11u2_amd64.deb"],
+        deps = [],
+    )
+    deb_archive_w_pkg_providers(
         name = "debian12_aardvark-dns_aarch64",
         exclude_paths = ["usr/share/man", "usr/share/doc", "usr/share/ca-certificates/mozilla/NetLock_Arany_=Class_Gold=_F\305\221tan\303\272s\303\255tv\303\241ny.crt"],
         sha256 = "790c8cfcd867b0bc31b3e0feb6a05b3c938a2f67219a02ada0bcaf7afc768b1c",
