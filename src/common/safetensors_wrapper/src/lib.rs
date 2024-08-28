@@ -15,9 +15,6 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-use std::fs::File;
-use std::io;
-use memmap2::{Mmap, MmapOptions};
 use safetensors::{SafeTensors as RustSafeTensors, SafeTensorError, Dtype as RustDtype};
 
 #[cxx::bridge(namespace = "gml::safetensors::rust")]
