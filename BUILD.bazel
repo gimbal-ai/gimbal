@@ -36,6 +36,7 @@ compile_pip_requirements(
     constraints = "constraints.txt",
     extra_args = [
         "--extra-index-url https://download.pytorch.org/whl/cu121",
+        "--extra-index-url https://pypi.nvidia.com",
     ],
     requirements_txt = "requirements_lock.txt",
     target_compatible_with = no_sysroot(),

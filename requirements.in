@@ -14,12 +14,15 @@ grpcio==1.62.0
 lavis-gml==1.0.2.post4
 nats-py==2.7.2
 numpy==1.26.2
+openvino==2024.0.0
 pandas==2.2.1
 Pillow==10.3.0
 protobuf==4.23.4
 psycopg2-binary==2.9.9
+pycuda-gml==2024.1.2
 segment-anything-py==1.0
 supervision==0.17.1
-torch==2.3.1
+tensorrt==10.3.0
 torch-mlir-gml==0.0.2
+torch==2.3.1
 torchvision==0.18.1

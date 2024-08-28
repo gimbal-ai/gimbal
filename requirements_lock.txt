@@ -5,6 +5,7 @@
 #    bazel run //:requirements.update
 #
 --extra-index-url https://download.pytorch.org/whl/cu121
+--extra-index-url https://pypi.nvidia.com
 
 absl-py==2.0.0 \
     --hash=sha256:9a28abb62774ae4e8edbe2dd4c49ffcd45a6a848952a5eccc6a49f3f0fc1e2f3 \
@@ -772,6 +773,10 @@ lxml==4.9.4 \
     --hash=sha256:fd814847901df6e8de13ce69b84c31fc9b3fb591224d6762d0b256d510cbf382 \
     --hash=sha256:fdb325b7fba1e2c40b9b1db407f85642e32404131c08480dd652110fc908561b
     # via blobfile
+mako==1.3.5 \
+    --hash=sha256:260f1dbc3a519453a9c856dedfe4beb4e50bd5a26d96386cb6c80856556bb91a \
+    --hash=sha256:48dbc20568c1d276a2698b36d968fa76161bf127194907ea6fc594fa81f943bc
+    # via pycuda-gml
 markdown-it-py==3.0.0 \
     --hash=sha256:355216845c60bd96232cd8d8c40e8f9765cc86f46880e43a8fd22dc1a1a8cab1 \
     --hash=sha256:e3f60a94fa066dc52ec76661e37c851cb232d92f9886b15cb560aaada2df8feb
@@ -840,6 +845,7 @@ markupsafe==2.1.5 \
     # via
     #   gradio
     #   jinja2
+    #   mako
 matplotlib==3.8.3 \
     --hash=sha256:04b36ad07eac9740fc76c2aa16edf94e50b297d6eb4c081e3add863de4bb19a7 \
     --hash=sha256:09074f8057917d17ab52c242fdf4916f30e99959c1908958b1fc6032e2d0f6d4 \
@@ -984,6 +990,7 @@ numpy==1.26.2 \
     #   onnx
     #   onnxruntime
     #   opencv-python-headless
+    #   openvino
     #   pandas
     #   pyarrow
     #   pycocotools
@@ -1016,7 +1023,9 @@ nvidia-cuda-nvrtc-cu12==12.1.105 \
 nvidia-cuda-runtime-cu12==12.1.105 \
     --hash=sha256:6e258468ddf5796e25f1dc591a31029fa317d97a0a94ed93468fc86301d61e40 \
     --hash=sha256:dfb46ef84d73fababab44cf03e3b83f80700d27ca300e537f85f636fac474344
-    # via torch
+    # via
+    #   tensorrt-cu12-libs
+    #   torch
 nvidia-cudnn-cu12==8.9.2.26 \
     --hash=sha256:5ccb288774fdfb07a7e7025ffec286971c06d8d7b4fb162525334616d7629ff9
     # via torch
@@ -1155,6 +1164,32 @@ opendatasets==0.1.22 \
     --hash=sha256:52b2e0c1cc80d9f44842e3373532d92683f7c0f5c3e72b3f1f3e2750d30da4db \
     --hash=sha256:8d85a6d32fd7831672eddcae366a2488b5b5b5837433c4db02152e38b50e70c9
     # via lavis-gml
+openvino==2024.0.0 \
+    --hash=sha256:154f6dbc297058ea14da17a012e508fdbffbfa88c1fdc17171daa76e4ccc6778 \
+    --hash=sha256:266e449c22f48a472cdef08bafc78a43b3fce1496ee7835e5b94b0a38fd948b7 \
+    --hash=sha256:2f3ad363873c8c714b5b11e6e74a8ff3ab1bf4fcc3f85914cbdbb6f9bd3c8a7d \
+    --hash=sha256:39f6b2c099fedc9fa99fdddf7305f85aefe9addbf9fe406f1a6d4bf01d37a13f \
+    --hash=sha256:48c889e004dbab400178ed7ca5140fb858f1ad48cd27a370a99715103c76beaf \
+    --hash=sha256:54b6bdeb08977a549851923c0a19ca81992ff8ca6d8a65c13c3a7482ec70720b \
+    --hash=sha256:5ef5d6b66488a728042c40317f0acd678f7a41bf51d5ec44727597e7e4a1ef99 \
+    --hash=sha256:6f10148cf0613cb3ea9c45ef4f13a25ffaf19cda82e02581354ba03fd5003008 \
+    --hash=sha256:787496063a743da4cfd12ac01b2ade441e1693ce6c9b0c6dacf55dacff418413 \
+    --hash=sha256:8fbdbfcb03984c173c9ff1f404384b6f10c5d1bc6d1b5191d5d652f7e0c01acf \
+    --hash=sha256:95b46e6cfcd655bd2dc72ce14f406d75717ccb1821db6611608ec4e538c21ccc \
+    --hash=sha256:984f27cb2973a62559d6e20c3c5577e1db9215cea84cbe31a18b6747681a190f \
+    --hash=sha256:a3df88deef01350f1600f53eb4e26f62d329df15674306dc910acb5c71d95bc1 \
+    --hash=sha256:ac4f3dd0269feb4b704b4c702cfda36e429f0376aa1c7199205304ae13be9655 \
+    --hash=sha256:c839e41a7e853581fa0aa8a7613db87004a8b6b0fda4c184b69b921b6f2db20b \
+    --hash=sha256:d4f8e4b5979bc13d21f330977ef3c3c762a78521fe641fa34e8cd47c1befc9f4 \
+    --hash=sha256:dae8bf67528f792e73f554653c37ade4fde0ef7e0e8ced74ecb06687b2bc0798 \
+    --hash=sha256:df12b97d25da5e1f7c339f3db390404dff1eda4eb115eaf78a011797a3267904 \
+    --hash=sha256:f66a4c9dab2521ee27b7792f185d5e35c7c48dc44b971f9778793dbe320e6bc0 \
+    --hash=sha256:feab016abb8fd4516d17f6b6a4ced59b0969338ade8ce0c9c4dfc8bc0eec16f3
+    # via -r requirements.in
+openvino-telemetry==2024.1.0 \
+    --hash=sha256:6df9a8f499e75d893d0bece3c272e798109f0bd40d1eb2488adca6a0da1d9b9f \
+    --hash=sha256:73ec3402a1bfb9050ee8885c7618dcb91456d6489dfa84cda7eed6cfa16a6c88
+    # via openvino
 orjson==3.10.3 \
     --hash=sha256:0943a96b3fa09bee1afdfccc2cb236c9c64715afa375b2af296c73d91c23eab2 \
     --hash=sha256:0a62f9968bab8a676a164263e485f30a0b748255ee2f4ae49a0224be95f4532b \
@@ -1215,6 +1250,7 @@ packaging==23.2 \
     #   lavis-gml
     #   matplotlib
     #   onnxruntime
+    #   openvino
     #   plotly
     #   pytest
     #   scikit-image
@@ -1354,6 +1390,8 @@ platformdirs==4.2.0 \
     --hash=sha256:ef0cc731df711022c174543cb70a9b5bd22e5a9337c8624ef2c2ceb8ddad8768
     # via
     #   black
+    #   pycuda-gml
+    #   pytools
     #   virtualenv
     #   yapf
 plotly==5.19.0 \
@@ -1584,6 +1622,9 @@ pycryptodomex==3.20.0 \
     --hash=sha256:f2e497413560e03421484189a6b65e33fe800d3bd75590e6d78d4dfdb7accf3b \
     --hash=sha256:ff5c9a67f8a4fba4aed887216e32cbc48f2a6fb2673bb10a99e43be463e15913
     # via blobfile
+pycuda-gml==2024.1.2 \
+    --hash=sha256:4bd2a0dc773d76f152ab849837d1c54401569aabd3558cbefd9e5a593a2d10e8
+    # via -r requirements.in
 pydantic==2.6.2 \
     --hash=sha256:37a5432e54b12fecaa1049c5195f3d860a10e01bdfd24f1840ef14bd0d3aeab3 \
     --hash=sha256:a09be1c3d28f3abe37f8a78af58284b236a92ce520105ddc91a6d29ea1176ba7
@@ -1719,6 +1760,10 @@ python-slugify==8.0.4 \
     --hash=sha256:276540b79961052b66b7d116620b36518847f52d5fd9e3a70164fc8c50faa6b8 \
     --hash=sha256:59202371d1d05b54a9e7720c5e038f928f45daaffe41dd10822f3907b937c856
     # via kaggle
+pytools==2024.1.13 \
+    --hash=sha256:577a5a52757fc5a90426f3a38e80eaa9aa6b4ee9ce241d15ddd9788bde1e0239 \
+    --hash=sha256:c78f5e29fa8492cd69860d4c89b5533e0bfbe694f2fa397b04eaf0cf92409d65
+    # via pycuda-gml
 pytz==2024.1 \
     --hash=sha256:2a29735ea9c18baf14b448846bde5a48030ed267578472d8955cd0e7443a9812 \
     --hash=sha256:328171f4e3623139da4983451950b28e95ac706e13f3f2630a879749e7a8b319
@@ -2296,6 +2341,29 @@ tenacity==8.3.0 \
     # via
     #   plotly
     #   streamlit
+tensorrt==10.3.0 \
+    --hash=sha256:23b0dbeeada4ba1c72021d3ee0a2f172fb7cb60c72ad5e268b62822fab698d1e
+    # via -r requirements.in
+tensorrt-cu12==10.3.0 \
+    --hash=sha256:14f0e60f40713a658f9634fffb1a5a665c35feb019be48b2f49e25ac12d2d084
+    # via tensorrt
+tensorrt-cu12-bindings==10.3.0 \
+    --hash=sha256:1d6e4cf08ef1f54f6fd44a33cf6b253050af2fc6e9a1d92e40e1436a1d858eb0 \
+    --hash=sha256:39aa0c2ee3dd20757f9d53e759092868a18155552a32f785844c5f66a2a6d3ba \
+    --hash=sha256:5582ece5578572a4a7aa3db69ba4cb2e2dcf1127570de1c334bba0182baec604 \
+    --hash=sha256:59ace22d7f2ca1e9dcde2cb0cb5916912cb3cd5a9d72dd7852be0160d9b3a0ee \
+    --hash=sha256:ad629fd7a4c483af500d4ec4863f1a048f0fd0893b5449b48c832a11be7c72f6 \
+    --hash=sha256:c4e8f2f5c7dd23b671fc6a456dbd3a0cdd13bca54d280f1b340dfcb8f73190f7 \
+    --hash=sha256:db337018c55043502eff993f165160044b4bebb935f01c8f8f93e4ee71481dc4 \
+    --hash=sha256:e157eb8b71fe172420d85519f7e7cf929c4975ca385df3a5506464cad73dac72 \
+    --hash=sha256:e2209f4692f535bb367a193f5a0a028b8702504385280d58cb63f4a386b12a05 \
+    --hash=sha256:f5c2582aeaa7f5628d2c4d4148a701ebe97be78f7ff3b46a617f0ee0cb5460f2
+    # via tensorrt-cu12
+tensorrt-cu12-libs==10.3.0 \
+    --hash=sha256:59dbff45b4fb7e884d1e3378310e6a3f0154fbc0a22b037089b02148d946c87e \
+    --hash=sha256:736cb205d2d4ece7584f3b35e2495754864161895e9cbe3ff7d46b58c9680311 \
+    --hash=sha256:d2f36838e2762b5ceb62f614157ba4764de2fa1f4fe5661c6cfc07e07e6e71da
+    # via tensorrt-cu12
 text-unidecode==1.3 \
     --hash=sha256:1311f10e8b895935241623731c2ba64f4c455287888b18189350b67134a822e8 \
     --hash=sha256:bad6603bb14d279193107714b288be206cac565dfa49aa5b105294dd5c4aab93
@@ -2548,6 +2616,7 @@ typing-extensions==4.9.0 \
     #   mypy
     #   pydantic
     #   pydantic-core
+    #   pytools
     #   streamlit
     #   torch
     #   typer

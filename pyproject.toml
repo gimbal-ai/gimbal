@@ -7,7 +7,7 @@ dynamic = ["dependencies"]
 dependencies = {file = "bazel/python/requirements.in"}
 
 [tool.setuptools.packages.find]
-include = ["src*"]
+include = ["src*", "third_party.python*"]
 
 [tool.isort]
 profile = "black"

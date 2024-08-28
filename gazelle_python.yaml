@@ -2283,6 +2283,37 @@ manifest:
     magic: python_magic
     magic.compat: python_magic
     magic.loader: python_magic
+    mako: Mako
+    mako.ast: Mako
+    mako.cache: Mako
+    mako.cmd: Mako
+    mako.codegen: Mako
+    mako.compat: Mako
+    mako.exceptions: Mako
+    mako.ext: Mako
+    mako.ext.autohandler: Mako
+    mako.ext.babelplugin: Mako
+    mako.ext.beaker_cache: Mako
+    mako.ext.extract: Mako
+    mako.ext.linguaplugin: Mako
+    mako.ext.preprocessors: Mako
+    mako.ext.pygmentplugin: Mako
+    mako.ext.turbogears: Mako
+    mako.filters: Mako
+    mako.lexer: Mako
+    mako.lookup: Mako
+    mako.parsetree: Mako
+    mako.pygen: Mako
+    mako.pyparser: Mako
+    mako.runtime: Mako
+    mako.template: Mako
+    mako.testing: Mako
+    mako.testing.assertions: Mako
+    mako.testing.config: Mako
+    mako.testing.exclusions: Mako
+    mako.testing.fixtures: Mako
+    mako.testing.helpers: Mako
+    mako.util: Mako
     markdown_it: markdown_it_py
     markdown_it.cli: markdown_it_py
     markdown_it.cli.parse: markdown_it_py
@@ -4810,6 +4841,159 @@ manifest:
     opendatasets.utils.kaggle_direct: opendatasets
     opendatasets.utils.md5: opendatasets
     opendatasets.utils.network: opendatasets
+    openvino: openvino
+    openvino.frontend: openvino
+    openvino.frontend.frontend: openvino
+    openvino.frontend.onnx: openvino
+    openvino.frontend.onnx.py_onnx_frontend: openvino
+    openvino.frontend.paddle: openvino
+    openvino.frontend.paddle.py_paddle_frontend: openvino
+    openvino.frontend.pytorch: openvino
+    openvino.frontend.pytorch.fx_decoder: openvino
+    openvino.frontend.pytorch.gptq: openvino
+    openvino.frontend.pytorch.py_pytorch_frontend: openvino
+    openvino.frontend.pytorch.torchdynamo.backend: openvino
+    openvino.frontend.pytorch.torchdynamo.backend_utils: openvino
+    openvino.frontend.pytorch.torchdynamo.compile: openvino
+    openvino.frontend.pytorch.torchdynamo.decompositions: openvino
+    openvino.frontend.pytorch.torchdynamo.execute: openvino
+    openvino.frontend.pytorch.torchdynamo.op_support: openvino
+    openvino.frontend.pytorch.torchdynamo.partition: openvino
+    openvino.frontend.pytorch.ts_decoder: openvino
+    openvino.frontend.pytorch.utils: openvino
+    openvino.frontend.tensorflow: openvino
+    openvino.frontend.tensorflow.graph_iterator: openvino
+    openvino.frontend.tensorflow.node_decoder: openvino
+    openvino.frontend.tensorflow.py_tensorflow_frontend: openvino
+    openvino.frontend.tensorflow.utils: openvino
+    openvino.helpers: openvino
+    openvino.helpers.packing: openvino
+    openvino.libs.libopenvino_auto_batch_plugin: openvino
+    openvino.libs.libopenvino_auto_plugin: openvino
+    openvino.libs.libopenvino_hetero_plugin: openvino
+    openvino.libs.libopenvino_intel_cpu_plugin: openvino
+    openvino.libs.libopenvino_intel_gpu_plugin: openvino
+    openvino.libs.libopenvino_intel_npu_plugin: openvino
+    openvino.preprocess: openvino
+    openvino.preprocess.torchvision: openvino
+    openvino.preprocess.torchvision.preprocess_converter: openvino
+    openvino.preprocess.torchvision.torchvision_preprocessing: openvino
+    openvino.properties: openvino
+    openvino.properties.device: openvino
+    openvino.properties.hint: openvino
+    openvino.properties.intel_auto: openvino
+    openvino.properties.intel_cpu: openvino
+    openvino.properties.intel_gpu: openvino
+    openvino.properties.intel_gpu.hint: openvino
+    openvino.properties.log: openvino
+    openvino.properties.streams: openvino
+    openvino.runtime: openvino
+    openvino.runtime.exceptions: openvino
+    openvino.runtime.ie_api: openvino
+    openvino.runtime.op: openvino
+    openvino.runtime.op.util: openvino
+    openvino.runtime.opset1: openvino
+    openvino.runtime.opset1.ops: openvino
+    openvino.runtime.opset10: openvino
+    openvino.runtime.opset10.ops: openvino
+    openvino.runtime.opset11: openvino
+    openvino.runtime.opset11.ops: openvino
+    openvino.runtime.opset12: openvino
+    openvino.runtime.opset12.ops: openvino
+    openvino.runtime.opset13: openvino
+    openvino.runtime.opset13.ops: openvino
+    openvino.runtime.opset14: openvino
+    openvino.runtime.opset14.ops: openvino
+    openvino.runtime.opset2: openvino
+    openvino.runtime.opset2.ops: openvino
+    openvino.runtime.opset3: openvino
+    openvino.runtime.opset3.ops: openvino
+    openvino.runtime.opset4: openvino
+    openvino.runtime.opset4.ops: openvino
+    openvino.runtime.opset5: openvino
+    openvino.runtime.opset5.ops: openvino
+    openvino.runtime.opset6: openvino
+    openvino.runtime.opset6.ops: openvino
+    openvino.runtime.opset7: openvino
+    openvino.runtime.opset7.ops: openvino
+    openvino.runtime.opset8: openvino
+    openvino.runtime.opset8.ops: openvino
+    openvino.runtime.opset9: openvino
+    openvino.runtime.opset9.ops: openvino
+    openvino.runtime.opset_utils: openvino
+    openvino.runtime.passes: openvino
+    openvino.runtime.passes.graph_rewrite: openvino
+    openvino.runtime.passes.manager: openvino
+    openvino.runtime.properties: openvino
+    openvino.runtime.properties.hint: openvino
+    openvino.runtime.utils: openvino
+    openvino.runtime.utils.broadcasting: openvino
+    openvino.runtime.utils.data_helpers: openvino
+    openvino.runtime.utils.data_helpers.data_dispatcher: openvino
+    openvino.runtime.utils.data_helpers.wrappers: openvino
+    openvino.runtime.utils.decorators: openvino
+    openvino.runtime.utils.input_validation: openvino
+    openvino.runtime.utils.node_factory: openvino
+    openvino.runtime.utils.reduction: openvino
+    openvino.runtime.utils.types: openvino
+    openvino.tools: openvino
+    openvino.tools.benchmark: openvino
+    openvino.tools.benchmark.benchmark: openvino
+    openvino.tools.benchmark.main: openvino
+    openvino.tools.benchmark.parameters: openvino
+    openvino.tools.benchmark.utils: openvino
+    openvino.tools.benchmark.utils.constants: openvino
+    openvino.tools.benchmark.utils.inputs_filling: openvino
+    openvino.tools.benchmark.utils.logging: openvino
+    openvino.tools.benchmark.utils.statistics_report: openvino
+    openvino.tools.benchmark.utils.utils: openvino
+    openvino.tools.ovc: openvino
+    openvino.tools.ovc.cli_parser: openvino
+    openvino.tools.ovc.convert: openvino
+    openvino.tools.ovc.convert_data_type: openvino
+    openvino.tools.ovc.convert_impl: openvino
+    openvino.tools.ovc.environment_setup_utils: openvino
+    openvino.tools.ovc.error: openvino
+    openvino.tools.ovc.get_ov_update_message: openvino
+    openvino.tools.ovc.help: openvino
+    openvino.tools.ovc.logger: openvino
+    openvino.tools.ovc.main: openvino
+    openvino.tools.ovc.moc_frontend: openvino
+    openvino.tools.ovc.moc_frontend.analysis: openvino
+    openvino.tools.ovc.moc_frontend.check_config: openvino
+    openvino.tools.ovc.moc_frontend.extractor: openvino
+    openvino.tools.ovc.moc_frontend.layout_utils: openvino
+    openvino.tools.ovc.moc_frontend.moc_emit_ir: openvino
+    openvino.tools.ovc.moc_frontend.offline_transformations: openvino
+    openvino.tools.ovc.moc_frontend.paddle_frontend_utils: openvino
+    openvino.tools.ovc.moc_frontend.pipeline: openvino
+    openvino.tools.ovc.moc_frontend.preprocessing: openvino
+    openvino.tools.ovc.moc_frontend.pytorch_frontend_utils: openvino
+    openvino.tools.ovc.moc_frontend.shape_utils: openvino
+    openvino.tools.ovc.moc_frontend.type_utils: openvino
+    openvino.tools.ovc.ovc: openvino
+    openvino.tools.ovc.telemetry_params: openvino
+    openvino.tools.ovc.telemetry_stub: openvino
+    openvino.tools.ovc.telemetry_utils: openvino
+    openvino.tools.ovc.utils: openvino
+    openvino.tools.ovc.version: openvino
+    openvino.torch: openvino
+    openvino.utils: openvino
+    openvino_telemetry: openvino_telemetry
+    openvino_telemetry.backend: openvino_telemetry
+    openvino_telemetry.backend.backend: openvino_telemetry
+    openvino_telemetry.backend.backend_ga: openvino_telemetry
+    openvino_telemetry.backend.backend_ga4: openvino_telemetry
+    openvino_telemetry.main: openvino_telemetry
+    openvino_telemetry.opt_in_out: openvino_telemetry
+    openvino_telemetry.utils: openvino_telemetry
+    openvino_telemetry.utils.cid: openvino_telemetry
+    openvino_telemetry.utils.colored_print: openvino_telemetry
+    openvino_telemetry.utils.input_with_timeout: openvino_telemetry
+    openvino_telemetry.utils.message: openvino_telemetry
+    openvino_telemetry.utils.opt_in_checker: openvino_telemetry
+    openvino_telemetry.utils.params: openvino_telemetry
+    openvino_telemetry.utils.sender: openvino_telemetry
     orjson: orjson
     orjson.orjson: orjson
     packaging: packaging
@@ -8028,6 +8212,32 @@ manifest:
     pycocotools.coco: pycocotools
     pycocotools.cocoeval: pycocotools
     pycocotools.mask: pycocotools
+    pycuda: pycuda_gml
+    pycuda.autoinit: pycuda_gml
+    pycuda.autoprimaryctx: pycuda_gml
+    pycuda.characterize: pycuda_gml
+    pycuda.compiler: pycuda_gml
+    pycuda.compyte: pycuda_gml
+    pycuda.compyte.array: pycuda_gml
+    pycuda.compyte.dtypes: pycuda_gml
+    pycuda.cumath: pycuda_gml
+    pycuda.curandom: pycuda_gml
+    pycuda.debug: pycuda_gml
+    pycuda.driver: pycuda_gml
+    pycuda.elementwise: pycuda_gml
+    pycuda.gl: pycuda_gml
+    pycuda.gl.autoinit: pycuda_gml
+    pycuda.gpuarray: pycuda_gml
+    pycuda.reduction: pycuda_gml
+    pycuda.scan: pycuda_gml
+    pycuda.sparse: pycuda_gml
+    pycuda.sparse.cg: pycuda_gml
+    pycuda.sparse.coordinate: pycuda_gml
+    pycuda.sparse.inner: pycuda_gml
+    pycuda.sparse.operator: pycuda_gml
+    pycuda.sparse.packeted: pycuda_gml
+    pycuda.sparse.pkt_build: pycuda_gml
+    pycuda.tools: pycuda_gml
     pydantic: pydantic
     pydantic.alias_generators: pydantic
     pydantic.aliases: pydantic
@@ -8449,6 +8659,33 @@ manifest:
     pytest: pytest
     pytest_mock: pytest_mock
     pytest_mock.plugin: pytest_mock
+    pytools: pytools
+    pytools.batchjob: pytools
+    pytools.codegen: pytools
+    pytools.convergence: pytools
+    pytools.datatable: pytools
+    pytools.debug: pytools
+    pytools.graph: pytools
+    pytools.graphviz: pytools
+    pytools.lex: pytools
+    pytools.mpi: pytools
+    pytools.mpiwrap: pytools
+    pytools.obj_array: pytools
+    pytools.persistent_dict: pytools
+    pytools.prefork: pytools
+    pytools.py_codegen: pytools
+    pytools.spatial_btree: pytools
+    pytools.stopwatch: pytools
+    pytools.tag: pytools
+    pytools.test: pytools
+    pytools.test.test_data_table: pytools
+    pytools.test.test_graph_tools: pytools
+    pytools.test.test_math_stuff: pytools
+    pytools.test.test_mpi: pytools
+    pytools.test.test_persistent_dict: pytools
+    pytools.test.test_py_codegen: pytools
+    pytools.test.test_pytools: pytools
+    pytools.version: pytools
     pytz: pytz
     pytz.exceptions: pytz
     pytz.lazy: pytz
@@ -11179,6 +11416,10 @@ manifest:
     tenacity.stop: tenacity
     tenacity.tornadoweb: tenacity
     tenacity.wait: tenacity
+    tensorrt: tensorrt_cu12
+    tensorrt_bindings: tensorrt_cu12_bindings
+    tensorrt_bindings.tensorrt: tensorrt_cu12_bindings
+    tensorrt_libs: tensorrt_cu12_libs
     tests.models.test_albef: lavis_gml
     tests.models.test_blip: lavis_gml
     tests.models.test_blip2: lavis_gml
@@ -14737,4 +14978,4 @@ manifest:
     zipp.glob: zipp
   pip_repository:
     name: pip
-integrity: 0945488b3b3147f814dde84561d0fddedb724f59a04c2437a6a19dc96f3b8042
+integrity: 55e25330a4aab615f186bf3497b7215372c446152471aa604baa09d53e7cd5fb
