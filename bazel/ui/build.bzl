@@ -45,6 +45,7 @@ def _jest_test(name = "", srcs = [], deps = [], data = [], **kwargs):
         # The nextjs jest setup complains if neither the app nor the pages dir exist.
         # Copying over the layout file from app ensures that the app dir exists.
         "//src/ui/app:cp_layout": True,
+        "//src/ui:cp_jsdom_extended_env": True,
         "//src/ui:cp_setup_jest": True,
         "//src/ui:cp_tsconfig": True,
     }
