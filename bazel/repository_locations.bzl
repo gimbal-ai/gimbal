@@ -391,9 +391,9 @@ REPOSITORY_LOCATIONS = dict(
         urls = ["https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.0.7.zip"],
     ),
     com_github_llvm_torch_mlir = dict(
-        sha256 = "f66ea17d4462bf394519c25abf3fe67729919b0df311ee4d8dacf9eb06e35e05",
-        strip_prefix = "torch-mlir-4549ca1e2379f5a5c1cde22e0307c4263cbee262",
-        urls = ["https://github.com/gimletlabs/torch-mlir/archive/4549ca1e2379f5a5c1cde22e0307c4263cbee262.tar.gz"],
+        sha256 = "010473d06677efa0928b7e632ff7f51b0f2246e61ef2c32dcc57a2198bc1af33",
+        strip_prefix = "torch-mlir-5cc6411772cbaf088e6e716015d07c7e324358e0",
+        urls = ["https://github.com/gimletlabs/torch-mlir/archive/5cc6411772cbaf088e6e716015d07c7e324358e0.tar.gz"],
     ),
     com_github_openxla_stablehlo = dict(
         sha256 = "0d567e9a5f0f6c8487272dc27539403f1c9cae5039e64c52a648ba08ae11f86d",
