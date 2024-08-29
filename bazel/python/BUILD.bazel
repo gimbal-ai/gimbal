@@ -14,6 +14,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+load("@bazel_skylib//lib:selects.bzl", "selects")
 load("@experimental_pip//:requirements.bzl", experimental_data_requirements = "all_data_requirements", experimental_requirements = "all_requirements")
 load("@pip//:requirements.bzl", "all_data_requirements", "all_requirements")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
@@ -66,4 +67,40 @@ gml_oci_image(
         "@com_github_ffmpeg_ffmpeg//:ffmpeg_libs",
     ],
     visibility = ["//src/experimental:__subpackages__"],
+)
+
+selects.config_setting_group(
+    name = "manylinux_2_31_x86_64",
+    match_all = [
+        "//bazel/cc_toolchains/sysroots:sysroot_type_debian11",
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
+selects.config_setting_group(
+    name = "manylinux_2_31_aarch64",
+    match_all = [
+        "//bazel/cc_toolchains/sysroots:sysroot_type_debian11",
+        "@platforms//os:linux",
+        "@platforms//cpu:aarch64",
+    ],
+)
+
+selects.config_setting_group(
+    name = "manylinux_2_36_x86_64",
+    match_all = [
+        "//bazel/cc_toolchains/sysroots:sysroot_type_debian12",
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
+selects.config_setting_group(
+    name = "manylinux_2_36_aarch64",
+    match_all = [
+        "//bazel/cc_toolchains/sysroots:sysroot_type_debian12",
+        "@platforms//os:linux",
+        "@platforms//cpu:aarch64",
+    ],
 )
