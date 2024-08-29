@@ -215,6 +215,13 @@ pip.override(
         "//bazel/external:pytorch_record.patch",
     ],
 )
+pip.override(
+    file = "torch-2.3.1+cpu-cp311-cp311-linux_x86_64.whl",
+    patch_strip = 1,
+    patches = [
+        "//bazel/external:pytorch_cpu_record.patch",
+    ],
+)
 pip.parse(
     hub_name = "pip",
     python_version = "3.11",
