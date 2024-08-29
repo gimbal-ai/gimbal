@@ -23,6 +23,7 @@ SysrootInfo = provider(
         "files",
         "path",
         "tar",
+        "libc_version",
     ],
 )
 
@@ -50,6 +51,7 @@ def _sysroot_toolchain_impl(ctx):
                 files = ctx.attr.files.files,
                 path = sysroot_path,
                 tar = ctx.attr.tar.files,
+                libc_version = ctx.attr.libc_version,
             ),
         ),
     ]
@@ -61,6 +63,7 @@ sysroot_toolchain = rule(
         "extra_compile_flags": attr.string_list(doc = "Extra compile_flags to use when building with the sysroot. %sysroot% will be expanded to the path of the sysroot."),
         "extra_link_flags": attr.string_list(doc = "Extra link_flags to use when building with the sysroot. %sysroot% will be expanded to the path of the sysroot."),
         "files": attr.label(mandatory = True, doc = "All sysroot files"),
+        "libc_version": attr.string(mandatory = True, doc = "Version of glibc used by the toolchain"),
         "path_info": attr.label(mandatory = True, doc = "Target providing SysrootPathInfo"),
         "tar": attr.label(mandatory = True, doc = "Sysroot tar, used to avoid repacking the sysroot as a tar for docker images."),
     },

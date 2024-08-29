@@ -31,6 +31,7 @@ sysroot_toolchain(
     extra_compile_flags = {extra_compile_flags},
     extra_link_flags = {extra_link_flags},
     files = ":sysroot_all_files",
+    libc_version = "{libc_version}",
     path_info = ":sysroot_all_files",
     tar = ":sysroot",
 )

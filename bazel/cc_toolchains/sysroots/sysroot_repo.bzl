@@ -62,6 +62,7 @@ def _sysroot_implementation_repo_impl(rctx):
         substitutions = {
             "{extra_compile_flags}": str(rctx.attr.extra_compile_flags),
             "{extra_link_flags}": str(rctx.attr.extra_link_flags),
+            "{libc_version}": rctx.attr.libc_version,
             "{path_prefix_filters}": str(rctx.attr.path_prefix_filters),
             "{sysroot_srcs}": str(sysroot_srcs),
             "{target_arch}": rctx.attr.target_arch,
@@ -90,6 +91,10 @@ _sysroot_implementation_repo = repository_rule(
         ),
         srcs = attr.string_list(
             doc = "Optional list of explicitly declared targets the sysroot should include. These targets must provide one of the `rules_pkg` packaging providers.",
+        ),
+        libc_version = attr.string(
+            mandatory = True,
+            doc = "Version of libc used by this sysroot",
         ),
     ),
 )
@@ -132,6 +137,7 @@ def sysroot_repo(
             extra_compile_flags = extra_compile_flags,
             extra_link_flags = extra_link_flags,
             path_prefix_filters = path_prefix_filters,
+            libc_version = libc_version,
         )
 
         native.register_toolchains("@{name}_toolchain//:toolchain".format(name = name_w_arch))
