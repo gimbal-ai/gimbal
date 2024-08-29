@@ -113,6 +113,17 @@ common:experimental_sysroot --//bazel/cc_toolchains:libc_version=glibc2_36
 common:experimental_sysroot --config=sysroot-base
 common:experimental_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=experimental
 
+common:manylinux_2_31_x86_64_sysroot --config=clang-libstdc++
+common:manylinux_2_31_x86_64_sysroot --//bazel/cc_toolchains:libc_version=glibc2_31
+common:manylinux_2_31_x86_64_sysroot --config=sysroot-base
+common:manylinux_2_31_x86_64_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=debian11
+
+common:manylinux_2_31_aarch64_sysroot --config=clang-libstdc++
+common:manylinux_2_31_aarch64_sysroot --//bazel/cc_toolchains:libc_version=glibc2_31
+common:manylinux_2_31_aarch64_sysroot --platforms=//bazel/cc_toolchains:linux-aarch64
+common:manylinux_2_31_aarch64_sysroot --config=sysroot-base
+common:manylinux_2_31_aarch64_sysroot --//bazel/cc_toolchains/sysroots:sysroot_type=debian11
+
 # Build for Clang using Libc++.
 common:clang-libc++ --//bazel/cc_toolchains:compiler=clang
 common:clang-libc++ --//bazel:enable_libcpp
