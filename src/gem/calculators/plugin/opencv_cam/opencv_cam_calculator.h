@@ -26,6 +26,7 @@
 
 #include "src/common/metrics/metrics_system.h"
 #include "src/gem/calculators/plugin/opencv_cam/optionspb/opencv_cam_calculator_options.pb.h"
+#include "src/gem/devices/camera/opencv/opencv_source.h"
 
 namespace gml::gem::calculators::opencv_cam {
 
@@ -52,15 +53,9 @@ class OpenCVCamSourceCalculator : public mediapipe::CalculatorBase {
   absl::Status Close(mediapipe::CalculatorContext* cc) override;
 
  private:
-  cv::Mat LoopCapture();
-  cv::Mat Read();
-
   optionspb::OpenCVCamSourceCalculatorOptions options_;
-  std::unique_ptr<cv::VideoCapture> cap_;
+  std::unique_ptr<devices::opencv::OpenCVSource> source_ = nullptr;
   uint64_t frame_counter_;
-
-  // Only used for when the source is a video file and not a device.
-  int64_t video_start_offset_us_;
 
   mediapipe::ImageFormat::Format format_;
   cv::ColorConversionCodes color_conversion_;
