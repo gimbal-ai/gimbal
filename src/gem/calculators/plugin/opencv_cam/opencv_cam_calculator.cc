@@ -164,10 +164,6 @@ absl::Status OpenCVCamSourceCalculator::Process(mediapipe::CalculatorContext* cc
   return absl::OkStatus();
 }
 
-absl::Status OpenCVCamSourceCalculator::Close(mediapipe::CalculatorContext* /* cc */) {
-  return absl::OkStatus();
-}
-
 REGISTER_CALCULATOR(OpenCVCamSourceCalculator);
 
 }  // namespace gml::gem::calculators::opencv_cam

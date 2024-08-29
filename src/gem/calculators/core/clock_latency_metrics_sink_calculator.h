@@ -38,7 +38,6 @@ class ClockLatencyMetricsSinkCalculator : public mediapipe::CalculatorBase {
 
   absl::Status Open(mediapipe::CalculatorContext* cc) override;
   absl::Status Process(mediapipe::CalculatorContext* cc) override;
-  absl::Status Close(mediapipe::CalculatorContext* cc) override;
 
  private:
   opentelemetry::metrics::Histogram<double>* latency_hist_;

@@ -118,10 +118,6 @@ absl::Status BarcodeDetectorCalculator::Process(mediapipe::CalculatorContext* cc
   return absl::OkStatus();
 }
 
-absl::Status BarcodeDetectorCalculator::Close(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 REGISTER_CALCULATOR(BarcodeDetectorCalculator);
 
 }  // namespace gml::gem::calculators::core

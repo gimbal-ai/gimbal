@@ -95,10 +95,6 @@ absl::Status StandardizeTensorCalculator::Process(mediapipe::CalculatorContext* 
   return absl::OkStatus();
 }
 
-absl::Status StandardizeTensorCalculator::Close(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 REGISTER_CALCULATOR(StandardizeTensorCalculator);
 
 }  // namespace gml::gem::calculators::cpu_tensor

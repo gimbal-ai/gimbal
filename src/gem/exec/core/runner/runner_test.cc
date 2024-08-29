@@ -44,8 +44,6 @@ class OutputTextSidePacketCalculator : public mediapipe::CalculatorBase {
     cc->Outputs().Tag("STR").Set<std::string>();
     return absl::OkStatus();
   }
-  absl::Status Open(mediapipe::CalculatorContext*) override { return absl::OkStatus(); }
-  absl::Status Close(mediapipe::CalculatorContext*) override { return absl::OkStatus(); }
   absl::Status Process(mediapipe::CalculatorContext* cc) override {
     std::string in = cc->InputSidePackets().Tag("STR").Get<std::string>();
     auto packet = mediapipe::MakePacket<std::string>(in).At(cc->InputTimestamp());

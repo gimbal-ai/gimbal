@@ -36,9 +36,7 @@ class TensorToTokensCalculator : public mediapipe::CalculatorBase {
   using ExecutionContext = ::gml::gem::exec::cpu_tensor::ExecutionContext;
 
   static absl::Status GetContract(mediapipe::CalculatorContract* cc);
-  absl::Status Open(mediapipe::CalculatorContext* cc) override;
   absl::Status Process(mediapipe::CalculatorContext* cc) override;
-  absl::Status Close(mediapipe::CalculatorContext* cc) override;
 };
 
 }  // namespace gml::gem::calculators::cpu_tensor

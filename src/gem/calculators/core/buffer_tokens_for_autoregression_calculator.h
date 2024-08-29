@@ -36,9 +36,7 @@ namespace gml::gem::calculators::core {
 class BufferTokensForAutoregressionCalculator : public mediapipe::CalculatorBase {
  public:
   static absl::Status GetContract(mediapipe::CalculatorContract* cc);
-  absl::Status Open(mediapipe::CalculatorContext* cc) override;
   absl::Status Process(mediapipe::CalculatorContext* cc) override;
-  absl::Status Close(mediapipe::CalculatorContext* cc) override;
 
  private:
   std::vector<int> all_tokens_;

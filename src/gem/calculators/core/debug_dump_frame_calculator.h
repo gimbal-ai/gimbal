@@ -37,7 +37,6 @@ class DebugDumpFrameCalculator : public mediapipe::CalculatorBase {
   static absl::Status GetContract(mediapipe::CalculatorContract* cc);
   absl::Status Open(mediapipe::CalculatorContext* cc) override;
   absl::Status Process(mediapipe::CalculatorContext* cc) override;
-  absl::Status Close(mediapipe::CalculatorContext* cc) override;
 
  private:
   std::chrono::steady_clock::time_point last_dump_;

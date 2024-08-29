@@ -36,10 +36,6 @@ absl::Status NvBufSurfToImageFrameCalculator::GetContract(mediapipe::CalculatorC
   return absl::OkStatus();
 }
 
-absl::Status NvBufSurfToImageFrameCalculator::Open(mediapipe::CalculatorContext* /* cc */) {
-  return absl::OkStatus();
-}
-
 absl::Status NvBufSurfToImageFrameCalculator::Process(mediapipe::CalculatorContext* cc) {
   const auto& nvbuf_surf = cc->Inputs().Index(0).Get<std::shared_ptr<NvBufSurfaceWrapper>>();
 
@@ -73,10 +69,6 @@ absl::Status NvBufSurfToImageFrameCalculator::Process(mediapipe::CalculatorConte
 
   cc->Outputs().Index(0).Add(image_frame.release(), cc->InputTimestamp());
 
-  return absl::OkStatus();
-}
-
-absl::Status NvBufSurfToImageFrameCalculator::Close(mediapipe::CalculatorContext* /* cc */) {
   return absl::OkStatus();
 }
 

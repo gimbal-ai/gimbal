@@ -123,10 +123,6 @@ absl::Status BoundingBoxTensorsToDetections::Process(mediapipe::CalculatorContex
   return absl::OkStatus();
 }
 
-absl::Status BoundingBoxTensorsToDetections::Close(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 Status BoundingBoxTensorsToDetections::CheckShapes(const TensorShape& boxes,
                                                    const TensorShape& scores,
                                                    const TensorShape& classes) {

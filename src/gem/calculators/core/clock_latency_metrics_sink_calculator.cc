@@ -90,10 +90,6 @@ absl::Status ClockLatencyMetricsSinkCalculator::Process(mediapipe::CalculatorCon
   return absl::OkStatus();
 }
 
-absl::Status ClockLatencyMetricsSinkCalculator::Close(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 REGISTER_CALCULATOR(ClockLatencyMetricsSinkCalculator);
 
 }  // namespace gml::gem::calculators::core

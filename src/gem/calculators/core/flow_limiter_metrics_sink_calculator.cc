@@ -67,8 +67,6 @@ class FlowLimiterMetricsSinkCalculator : public mediapipe::CalculatorBase {
     return absl::OkStatus();
   }
 
-  absl::Status Close(mediapipe::CalculatorContext*) override { return absl::OkStatus(); }
-
  private:
   opentelemetry::metrics::Counter<uint64_t>* allow_counter_;
   opentelemetry::metrics::Counter<uint64_t>* drop_counter_;

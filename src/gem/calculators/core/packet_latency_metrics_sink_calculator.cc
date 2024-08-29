@@ -69,10 +69,6 @@ absl::Status PacketLatencyMetricsSinkCalculator::Process(mediapipe::CalculatorCo
   return absl::OkStatus();
 }
 
-absl::Status PacketLatencyMetricsSinkCalculator::Close(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 REGISTER_CALCULATOR(PacketLatencyMetricsSinkCalculator);
 
 }  // namespace gml::gem::calculators::core

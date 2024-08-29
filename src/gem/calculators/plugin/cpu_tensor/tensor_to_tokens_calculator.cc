@@ -40,10 +40,6 @@ absl::Status TensorToTokensCalculator::GetContract(mediapipe::CalculatorContract
   return absl::OkStatus();
 }
 
-absl::Status TensorToTokensCalculator::Open(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 absl::Status TensorToTokensCalculator::Process(mediapipe::CalculatorContext* cc) {
   const auto& tensor = cc->Inputs().Tag(kTensorTag).Get<CPUTensorPtr>();
 
@@ -57,10 +53,6 @@ absl::Status TensorToTokensCalculator::Process(mediapipe::CalculatorContext* cc)
   std::memcpy(tokens->data(), tensor->data(), tensor->size());
 
   cc->Outputs().Tag(kTokensTag).Add(tokens.release(), cc->InputTimestamp());
-  return absl::OkStatus();
-}
-
-absl::Status TensorToTokensCalculator::Close(mediapipe::CalculatorContext*) {
   return absl::OkStatus();
 }
 

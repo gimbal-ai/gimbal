@@ -74,7 +74,6 @@ class MergeTokensCalculator : public mediapipe::CalculatorBase {
     return absl::OkStatus();
   }
 
-  absl::Status Open(mediapipe::CalculatorContext*) override { return absl::OkStatus(); }
   absl::Status Process(mediapipe::CalculatorContext* cc) override {
     if (!cc->Inputs().Tag(kInputStreamTag).IsEmpty()) {
       HandleInput(cc);
@@ -86,7 +85,6 @@ class MergeTokensCalculator : public mediapipe::CalculatorBase {
 
     return absl::OkStatus();
   }
-  absl::Status Close(mediapipe::CalculatorContext*) override { return absl::OkStatus(); }
 
  private:
   static constexpr std::string_view kInputStreamTag = "INPUT_TOKENS";

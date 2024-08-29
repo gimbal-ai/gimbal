@@ -38,9 +38,7 @@ namespace gml::gem::calculators::core {
 class ModifyDetectionWithClassificationCalculator : public mediapipe::CalculatorBase {
  public:
   static absl::Status GetContract(mediapipe::CalculatorContract* cc);
-  absl::Status Open(mediapipe::CalculatorContext* cc) override;
   absl::Status Process(mediapipe::CalculatorContext* cc) override;
-  absl::Status Close(mediapipe::CalculatorContext* cc) override;
 };
 
 }  // namespace gml::gem::calculators::core

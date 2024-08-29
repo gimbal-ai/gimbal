@@ -42,10 +42,6 @@ absl::Status ModifyDetectionWithRegressionCalculator::GetContract(
   return absl::OkStatus();
 }
 
-absl::Status ModifyDetectionWithRegressionCalculator::Open(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 absl::Status ModifyDetectionWithRegressionCalculator::Process(mediapipe::CalculatorContext* cc) {
   const auto& detection = cc->Inputs().Tag(kDetectionTag).Get<Detection>();
   const auto& regression = cc->Inputs().Tag(kRegressionTag).Get<Regression>();
@@ -53,10 +49,6 @@ absl::Status ModifyDetectionWithRegressionCalculator::Process(mediapipe::Calcula
   auto* regression_label = modified_detection->add_label();
   regression_label->set_label(absl::StrFormat("%s: %.2f", regression.label(), regression.value()));
   cc->Outputs().Tag(kDetectionTag).Add(modified_detection.release(), cc->InputTimestamp());
-  return absl::OkStatus();
-}
-
-absl::Status ModifyDetectionWithRegressionCalculator::Close(mediapipe::CalculatorContext*) {
   return absl::OkStatus();
 }
 

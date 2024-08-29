@@ -37,10 +37,6 @@ absl::Status ImageFrameToYUVPlanarImage::GetContract(mediapipe::CalculatorContra
   return absl::OkStatus();
 }
 
-absl::Status ImageFrameToYUVPlanarImage::Open(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 absl::Status ImageFrameToYUVPlanarImage::Process(mediapipe::CalculatorContext* cc) {
   const auto& image_frame = cc->Inputs().Tag(kImageFrameTag).Get<mediapipe::ImageFrame>();
 
@@ -54,10 +50,6 @@ absl::Status ImageFrameToYUVPlanarImage::Process(mediapipe::CalculatorContext* c
   auto packet = mediapipe::MakePacket<std::unique_ptr<exec::core::PlanarImage>>(std::move(planar));
   packet = packet.At(cc->InputTimestamp());
   cc->Outputs().Tag(kYUVImageTag).AddPacket(std::move(packet));
-  return absl::OkStatus();
-}
-
-absl::Status ImageFrameToYUVPlanarImage::Close(mediapipe::CalculatorContext*) {
   return absl::OkStatus();
 }
 

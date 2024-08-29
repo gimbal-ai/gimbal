@@ -130,10 +130,6 @@ absl::Status SegmentationMasksToProtoCalculator::Process(mediapipe::CalculatorCo
   return absl::OkStatus();
 }
 
-absl::Status SegmentationMasksToProtoCalculator::Close(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 REGISTER_CALCULATOR(SegmentationMasksToProtoCalculator);
 
 }  // namespace gml::gem::calculators::cpu_tensor

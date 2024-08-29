@@ -139,10 +139,6 @@ absl::Status DetectionsMetricsSinkCalculator::Process(mediapipe::CalculatorConte
   return absl::OkStatus();
 }
 
-absl::Status DetectionsMetricsSinkCalculator::Close(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 REGISTER_CALCULATOR(DetectionsMetricsSinkCalculator);
 
 }  // namespace gml::gem::calculators::core

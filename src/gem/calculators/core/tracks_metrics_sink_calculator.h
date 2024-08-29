@@ -51,7 +51,6 @@ class TracksMetricsSinkCalculator : public mediapipe::CalculatorBase {
 
   absl::Status Open(mediapipe::CalculatorContext* cc) override;
   absl::Status Process(mediapipe::CalculatorContext* cc) override;
-  absl::Status Close(mediapipe::CalculatorContext*) override { return absl::OkStatus(); }
 
  private:
   struct TrackInfo {

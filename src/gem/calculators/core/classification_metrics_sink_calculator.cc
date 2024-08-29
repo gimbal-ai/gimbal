@@ -108,10 +108,6 @@ absl::Status ClassificationMetricsSinkCalculator::Process(mediapipe::CalculatorC
   return absl::OkStatus();
 }
 
-absl::Status ClassificationMetricsSinkCalculator::Close(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 REGISTER_CALCULATOR(ClassificationMetricsSinkCalculator);
 
 }  // namespace gml::gem::calculators::core

@@ -41,7 +41,6 @@ class SemanticSegmentationMetricsSinkCalculator : public mediapipe::CalculatorBa
 
   absl::Status Open(mediapipe::CalculatorContext* cc) override;
   absl::Status Process(mediapipe::CalculatorContext* cc) override;
-  absl::Status Close(mediapipe::CalculatorContext* cc) override;
 
  private:
   opentelemetry::metrics::Histogram<double>* area_percentage_hist_;
@@ -110,10 +109,6 @@ absl::Status SemanticSegmentationMetricsSinkCalculator::Process(mediapipe::Calcu
         .AddPacket(mediapipe::MakePacket<bool>(true).At(cc->InputTimestamp()));
   }
 
-  return absl::OkStatus();
-}
-
-absl::Status SemanticSegmentationMetricsSinkCalculator::Close(mediapipe::CalculatorContext*) {
   return absl::OkStatus();
 }
 

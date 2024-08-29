@@ -39,10 +39,6 @@ absl::Status BufferTokensForAutoregressionCalculator::GetContract(
   return absl::OkStatus();
 }
 
-absl::Status BufferTokensForAutoregressionCalculator::Open(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 absl::Status BufferTokensForAutoregressionCalculator::Process(mediapipe::CalculatorContext* cc) {
   const auto& tokens = cc->Inputs().Tag(kTokensTag).Get<std::vector<int>>();
   auto loop_start = cc->Inputs().Tag(kLoopStartTag).Get<bool>();
@@ -57,10 +53,6 @@ absl::Status BufferTokensForAutoregressionCalculator::Process(mediapipe::Calcula
   cc->Outputs()
       .Tag(kAllTokensTag)
       .AddPacket(mediapipe::MakePacket<std::vector<int>>(all_tokens_).At(cc->InputTimestamp()));
-  return absl::OkStatus();
-}
-
-absl::Status BufferTokensForAutoregressionCalculator::Close(mediapipe::CalculatorContext*) {
   return absl::OkStatus();
 }
 

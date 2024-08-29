@@ -43,7 +43,6 @@ class StandardizeTensorCalculator : public mediapipe::CalculatorBase {
   static absl::Status GetContract(mediapipe::CalculatorContract* cc);
   absl::Status Open(mediapipe::CalculatorContext* cc) override;
   absl::Status Process(mediapipe::CalculatorContext* cc) override;
-  absl::Status Close(mediapipe::CalculatorContext* cc) override;
 
  private:
   optionspb::StandardizeTensorCalculatorOptions options_;

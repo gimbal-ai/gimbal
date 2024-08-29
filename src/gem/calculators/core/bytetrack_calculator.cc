@@ -163,8 +163,6 @@ absl::Status ByteTrackCalculator::Process(mediapipe::CalculatorContext* cc) {
   return absl::OkStatus();
 }
 
-absl::Status ByteTrackCalculator::Close(mediapipe::CalculatorContext*) { return absl::OkStatus(); }
-
 REGISTER_CALCULATOR(ByteTrackCalculator);
 
 }  // namespace gml::gem::calculators::core

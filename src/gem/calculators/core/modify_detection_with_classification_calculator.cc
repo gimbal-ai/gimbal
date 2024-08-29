@@ -41,10 +41,6 @@ absl::Status ModifyDetectionWithClassificationCalculator::GetContract(
   return absl::OkStatus();
 }
 
-absl::Status ModifyDetectionWithClassificationCalculator::Open(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 absl::Status ModifyDetectionWithClassificationCalculator::Process(
     mediapipe::CalculatorContext* cc) {
   const auto& detection = cc->Inputs().Tag(kDetectionTag).Get<Detection>();
@@ -57,10 +53,6 @@ absl::Status ModifyDetectionWithClassificationCalculator::Process(
   label->set_score(score);
 
   cc->Outputs().Tag(kDetectionTag).Add(modified_detection.release(), cc->InputTimestamp());
-  return absl::OkStatus();
-}
-
-absl::Status ModifyDetectionWithClassificationCalculator::Close(mediapipe::CalculatorContext*) {
   return absl::OkStatus();
 }
 

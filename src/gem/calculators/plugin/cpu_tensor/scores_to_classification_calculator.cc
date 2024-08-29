@@ -90,10 +90,6 @@ absl::Status ScoresToClassificationCalculator::Process(mediapipe::CalculatorCont
   return absl::OkStatus();
 }
 
-absl::Status ScoresToClassificationCalculator::Close(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 REGISTER_CALCULATOR(ScoresToClassificationCalculator);
 
 }  // namespace gml::gem::calculators::cpu_tensor

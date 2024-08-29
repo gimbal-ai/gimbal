@@ -206,10 +206,6 @@ absl::Status OpenVinoExecuteCalculator::Process(mediapipe::CalculatorContext* cc
   return absl::OkStatus();
 }
 
-absl::Status OpenVinoExecuteCalculator::Close(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 REGISTER_CALCULATOR(OpenVinoExecuteCalculator);
 
 }  // namespace gml::gem::calculators::openvino

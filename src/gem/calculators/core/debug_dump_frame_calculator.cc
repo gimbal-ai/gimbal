@@ -64,10 +64,6 @@ absl::Status DebugDumpFrameCalculator::Process(mediapipe::CalculatorContext* cc)
   return absl::OkStatus();
 }
 
-absl::Status DebugDumpFrameCalculator::Close(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 REGISTER_CALCULATOR(DebugDumpFrameCalculator);
 
 }  // namespace gml::gem::calculators::core

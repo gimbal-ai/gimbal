@@ -66,10 +66,6 @@ absl::Status RegressionToProtoCalculator::Process(mediapipe::CalculatorContext* 
   return absl::OkStatus();
 }
 
-absl::Status RegressionToProtoCalculator::Close(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 REGISTER_CALCULATOR(RegressionToProtoCalculator);
 
 }  // namespace gml::gem::calculators::cpu_tensor

@@ -65,10 +65,6 @@ absl::Status DetectionsToMediapipeCalculator::GetContract(mediapipe::CalculatorC
   return absl::OkStatus();
 }
 
-absl::Status DetectionsToMediapipeCalculator::Open(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 absl::Status DetectionsToMediapipeCalculator::Process(mediapipe::CalculatorContext* cc) {
   if (cc->Inputs().HasTag(kDetectionVectorTag)) {
     const auto& detections = cc->Inputs().Tag(kDetectionVectorTag).Get<std::vector<Detection>>();
@@ -86,10 +82,6 @@ absl::Status DetectionsToMediapipeCalculator::Process(mediapipe::CalculatorConte
     GMLToMediapipe(detection, mp_detection.get());
     cc->Outputs().Tag(kSingleDetectionTag).Add(mp_detection.release(), cc->InputTimestamp());
   }
-  return absl::OkStatus();
-}
-
-absl::Status DetectionsToMediapipeCalculator::Close(mediapipe::CalculatorContext*) {
   return absl::OkStatus();
 }
 

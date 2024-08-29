@@ -39,10 +39,6 @@ absl::Status NvBufSurfToPlanarImageCalculator::GetContract(mediapipe::Calculator
   return absl::OkStatus();
 }
 
-absl::Status NvBufSurfToPlanarImageCalculator::Open(mediapipe::CalculatorContext* /* cc */) {
-  return absl::OkStatus();
-}
-
 absl::Status NvBufSurfToPlanarImageCalculator::Process(mediapipe::CalculatorContext* cc) {
   mediapipe::Packet& in_packet = cc->Inputs().Index(0).Value();
 
@@ -64,10 +60,6 @@ absl::Status NvBufSurfToPlanarImageCalculator::Process(mediapipe::CalculatorCont
 
   cc->Outputs().Index(0).Add(planar_image.release(), cc->InputTimestamp());
 
-  return absl::OkStatus();
-}
-
-absl::Status NvBufSurfToPlanarImageCalculator::Close(mediapipe::CalculatorContext* /* cc */) {
   return absl::OkStatus();
 }
 

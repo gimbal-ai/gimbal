@@ -70,10 +70,6 @@ absl::Status StopOnTokenSetCalculator::Process(mediapipe::CalculatorContext* cc)
   return absl::OkStatus();
 }
 
-absl::Status StopOnTokenSetCalculator::Close(mediapipe::CalculatorContext*) {
-  return absl::OkStatus();
-}
-
 REGISTER_CALCULATOR(StopOnTokenSetCalculator);
 
 }  // namespace gml::gem::calculators::core
