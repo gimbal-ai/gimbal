@@ -13,5 +13,6 @@ rust_binary(
         "@crates//:quote",
         "@crates//:syn",
     ],
+    rustc_flags = ["-Awarnings"],
     visibility = ["//visibility:public"],
 )
