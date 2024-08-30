@@ -55,6 +55,7 @@ FILTER_REGEX_EXCLUDE: "(app\\/graphql_schema\\.ts|\
                        .*\\.onnx|\
                        ^LICENSE_oss|\
                        .*\\/LICENSE|\
+                       .*\\.safetensors|\
                        ^third_party\\/.*\\.proto$)"
 
 
