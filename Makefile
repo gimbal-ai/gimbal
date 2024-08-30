@@ -101,6 +101,7 @@ genfiles:
 lint: src/ui/node_modules
 	$(MEGALINTER) \
 		--fix \
+		--nodockerpull \
 		--env VALIDATE_ALL_CODEBASE=false \
 		--env NODE_PATH=./src/ui/node_modules \
 		--env REPORT_OUTPUT_FOLDER=none \
@@ -110,6 +111,7 @@ lint: src/ui/node_modules
 .PHONY: lint-all
 lint-all: src/ui/node_modules
 	$(MEGALINTER) \
+		--nodockerpull \
 		--env APPLY_FIXES=none \
 		--env VALIDATE_ALL_CODEBASE=true \
 		--env NODE_PATH=./src/ui/node_modules \
