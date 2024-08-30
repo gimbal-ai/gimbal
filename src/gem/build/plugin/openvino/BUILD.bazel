@@ -46,6 +46,9 @@ gml_cc_test(
     name = "model_builder_test",
     srcs = ["model_builder_test.cc"],
     data = [
+        "testdata/sharded.bin",
+        "testdata/sharded.weights.shard0",
+        "testdata/sharded.xml",
         "testdata/simple.bin",
         "testdata/simple.xml",
     ],

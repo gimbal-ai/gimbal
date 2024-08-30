@@ -33,39 +33,52 @@ namespace gml::gem::build::openvino {
 
 using ::gml::internal::api::core::v1::ModelSpec;
 
-constexpr std::string_view kModelPath = "src/gem/build/plugin/openvino/testdata/simple.xml";
-constexpr std::string_view kWeightPath = "src/gem/build/plugin/openvino/testdata/simple.bin";
+struct TestCase {
+  std::map<std::string, std::string> assets;
+};
 
-TEST(ModelBuilder, BuildsWithoutError) {
-  auto model_path = bazel::RunfilePath(std::filesystem::path(kModelPath));
-  auto weight_path = bazel::RunfilePath(std::filesystem::path(kWeightPath));
+class ModelBuilderTest : public ::testing::TestWithParam<TestCase> {};
+
+TEST_P(ModelBuilderTest, BuildsWithoutError) {
+  auto test_case = GetParam();
+
   ASSERT_OK_AND_ASSIGN(auto tmp_dir, fs::TempDir::Create());
   ASSERT_OK_AND_ASSIGN(auto blob_store, storage::FilesystemBlobStore::Create(tmp_dir->path()));
 
-  auto model_asset_id = sole::uuid4();
-  {
-    std::ifstream f(model_path);
-    std::string str_data((std::istreambuf_iterator<char>(f)), std::istreambuf_iterator<char>());
-    ASSERT_OK(blob_store->Upsert(model_asset_id.str(), str_data.c_str(), str_data.size()));
-  }
-  auto weight_asset_id = sole::uuid4();
-  {
-    std::ifstream f(weight_path);
-    std::string str_data((std::istreambuf_iterator<char>(f)), std::istreambuf_iterator<char>());
-    ASSERT_OK(blob_store->Upsert(weight_asset_id.str(), str_data.c_str(), str_data.size()));
-  }
+  std::filesystem::path testdata_path = "src/gem/build/plugin/openvino/testdata";
 
   ModelSpec spec;
-  auto* model_asset = spec.add_named_asset();
-  model_asset->set_name("model");
-  ToProto(model_asset_id, model_asset->mutable_file()->mutable_file_id());
-  auto* weight_asset = spec.add_named_asset();
-  weight_asset->set_name("weight");
-  ToProto(weight_asset_id, weight_asset->mutable_file()->mutable_file_id());
+  for (const auto& [name, path] : test_case.assets) {
+    auto id = sole::uuid4();
+    auto abs_path = bazel::RunfilePath(testdata_path / path);
+    std::ifstream f(abs_path);
+    std::string str_data((std::istreambuf_iterator<char>(f)), std::istreambuf_iterator<char>());
+    ASSERT_OK(blob_store->Upsert(id.str(), str_data.c_str(), str_data.size()));
+
+    auto* model_asset = spec.add_named_asset();
+    model_asset->set_name(name);
+    ToProto(id, model_asset->mutable_file()->mutable_file_id());
+  }
 
   ModelBuilder builder;
 
   ASSERT_OK(builder.Build(blob_store.get(), spec));
 }
+
+INSTANTIATE_TEST_SUITE_P(ModelBuilderTestSuite, ModelBuilderTest,
+                         ::testing::Values(
+                             TestCase{
+                                 {
+                                     {"model", "simple.xml"},
+                                     {"weight", "simple.bin"},
+                                 },
+                             },
+                             TestCase{
+                                 {
+                                     {"model", "sharded.xml"},
+                                     {"weight", "sharded.bin"},
+                                     {"weights.shard0", "sharded.weights.shard0"},
+                                 },
+                             }));
 
 }  // namespace gml::gem::build::openvino

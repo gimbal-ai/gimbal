@@ -19,10 +19,15 @@
 #include "src/gem/build/plugin/openvino/model_builder.h"
 
 #include <exception>
+#include <filesystem>
+#include <fstream>
 
 #include <openvino/openvino.hpp>
 
 #include "src/common/base/error.h"
+#include "src/common/fs/fs_wrapper.h"
+#include "src/common/fs/temp_dir.h"
+#include "src/common/fs/temp_file.h"
 #include "src/common/uuid/uuid.h"
 #include "src/gem/exec/plugin/openvino/core_singleton.h"
 #include "src/gem/exec/plugin/openvino/model.h"
@@ -33,6 +38,33 @@ using ::gml::internal::api::core::v1::ModelSpec;
 
 namespace gml::gem::build::openvino {
 
+namespace {
+Status AppendFile(std::ostream* os, const std::filesystem::path& path) {
+  GML_ASSIGN_OR_RETURN(auto stat, fs::Stat(path));
+  if (stat.st_size == 0) {
+    return Status::OK();
+  }
+  std::ifstream in(path);
+  (*os) << in.rdbuf();
+  return Status::OK();
+}
+
+StatusOr<std::string> ConcatenateWeights(const std::string& weights_path,
+                                         const std::vector<std::string>& extra_weight_paths,
+                                         const std::filesystem::path& output_dir) {
+  // TODO(james): we need to rethink things to avoid having to concatenate the weight files
+  // here.
+  auto output_path = output_dir / "weights.bin";
+  std::ofstream out(output_path);
+
+  GML_RETURN_IF_ERROR(AppendFile(&out, weights_path));
+  for (const auto& path : extra_weight_paths) {
+    GML_RETURN_IF_ERROR(AppendFile(&out, path));
+  }
+  return output_path.string();
+}
+}  // namespace
+
 StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobStore* store,
                                                                  const ModelSpec& spec) {
   bool model_found = false;
@@ -41,6 +73,8 @@ StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobSt
   bool weights_found = false;
   types::UUID weights_file_id;
 
+  std::map<std::string, sole::uuid> extra_weight_shards;
+
   for (const auto& asset : spec.named_asset()) {
     if (asset.name() == "weight") {
       weights_file_id = asset.file().file_id();
@@ -48,6 +82,8 @@ StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobSt
     } else if (asset.name() == "model") {
       model_file_id = asset.file().file_id();
       model_found = true;
+    } else {
+      extra_weight_shards[asset.name()] = ParseUUID(asset.file().file_id());
     }
   }
   if (!model_found) {
@@ -59,6 +95,17 @@ StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(storage::BlobSt
 
   GML_ASSIGN_OR_RETURN(auto model_path, store->FilePath(ParseUUID(model_file_id).str()));
   GML_ASSIGN_OR_RETURN(auto weights_path, store->FilePath(ParseUUID(weights_file_id).str()));
+  GML_ASSIGN_OR_RETURN(auto weights_tmpdir, fs::TempDir::Create());
+
+  if (!extra_weight_shards.empty()) {
+    std::vector<std::string> extra_weight_paths;
+    for (const auto& [_, shard_id] : extra_weight_shards) {
+      GML_ASSIGN_OR_RETURN(auto path, store->FilePath(shard_id.str()));
+      extra_weight_paths.push_back(path);
+    }
+    GML_ASSIGN_OR_RETURN(
+        weights_path, ConcatenateWeights(weights_path, extra_weight_paths, weights_tmpdir->path()));
+  }
 
   auto& core = exec::openvino::OpenVinoCoreGetInstance();
 
