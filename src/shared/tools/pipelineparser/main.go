@@ -27,8 +27,7 @@ import (
 	"github.com/spf13/viper"
 
 	"gimletlabs.ai/gimlet/src/common/typespb"
-	// TODO(philkuz): move the parser out of controlplane.
-	"gimletlabs.ai/gimlet/src/controlplane/logicalpipeline/controllers"
+	"gimletlabs.ai/gimlet/src/shared/pipelineparser"
 )
 
 // mockModelResolver implements a simple mock for the modelResolver interface.
@@ -71,7 +70,7 @@ func main() {
 	// Create a mock modelResolver for parsing
 	mockResolver := &mockModelResolver{}
 
-	parser := controllers.NewPipelineParser(mockResolver)
+	parser := pipelineparser.NewPipelineParser(mockResolver)
 	parsedPipeline, err := parser.ParsePipeline(string(yamlContent))
 	if err != nil {
 		log.Fatalf("Error parsing pipeline YAML: %v", err)

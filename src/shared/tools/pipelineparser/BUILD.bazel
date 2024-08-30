@@ -29,7 +29,7 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "//src/common/typespb:typespb_go_proto",
-        "//src/controlplane/logicalpipeline/controllers",
+        "//src/shared/pipelineparser",
         "@com_github_gogo_protobuf//proto",
         "@com_github_spf13_pflag//:pflag",
         "@com_github_spf13_viper//:viper",

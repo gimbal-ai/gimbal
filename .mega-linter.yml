@@ -63,7 +63,7 @@ FILTER_REGEX_EXCLUDE: "(app\\/graphql_schema\\.ts|\
 CSS_STYLELINT_ARGUMENTS: '--config-basedir src/ui'
 CSS_STYLELINT_CONFIG_FILE: .stylelintrc.yaml
 EDITORCONFIG_EDITORCONFIG_CHECKER_FILTER_REGEX_EXCLUDE: "(.mega-linter.yml|\
-                                                        src\\/controlplane\\/logicalpipeline\\/controllers\\/pipeline_parser_test.go|\
+                                                        src\\/shared\\/pipelineparser\\/pipeline_parser_test.go|\
                                                          bazel\\/tools\\/apt_parse\\/bazelgen\\/bazelgen_test.go)"
 GO_GOLANGCI_LINT_ARGUMENTS: '--timeout 5m'
 GO_GOLANGCI_LINT_CONFIG_FILE: .golangci.yaml
