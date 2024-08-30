@@ -24,20 +24,64 @@
 #include <NvOnnxParser.h>
 
 #include "src/common/base/base.h"
+#include "src/common/base/error.h"
+#include "src/common/fs/fs_wrapper.h"
+#include "src/common/fs/temp_dir.h"
 #include "src/common/perf/elapsed_timer.h"
 #include "src/common/system/memory_mapped_file.h"
 #include "src/common/uuid/uuid.h"
 #include "src/gem/exec/core/model.h"
 #include "src/gem/exec/plugin/tensorrt/model.h"
+#include "src/gem/storage/blob_store.h"
 
 namespace gml::gem::build::tensorrt {
 
 using ::gml::gem::exec::tensorrt::Model;
 using ::gml::gem::exec::tensorrt::TensorRTLogger;
+using ::gml::internal::api::core::v1::ModelSpec;
 
-StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(
-    storage::BlobStore* store, const ::gml::internal::api::core::v1::ModelSpec& spec,
-    TensorRTLogger logger) {
+namespace {
+
+// TODO(james): we should change empty string to "model" across the whole system.
+constexpr std::string_view kModelAssetName = "";
+constexpr std::string_view kModelFileName = "model.onnx";
+
+Status ParseFromAssets(storage::BlobStore* store, const ModelSpec& spec,
+                       nvonnxparser::IParser* parser) {
+  // Because of the way onnx handles external data, we have to build a symlink dir where each file
+  // is named after the asset name.
+  GML_ASSIGN_OR_RETURN(auto tmpdir, fs::TempDir::Create());
+
+  for (const auto& asset : spec.named_asset()) {
+    auto file_id = ParseUUID(asset.file().file_id()).str();
+    GML_ASSIGN_OR_RETURN(auto path, store->FilePath(file_id));
+    std::string new_name;
+    if (asset.name() == kModelAssetName) {
+      new_name = kModelFileName;
+    } else {
+      new_name = asset.name();
+    }
+
+    GML_RETURN_IF_ERROR(fs::CreateSymlink(path, tmpdir->path() / new_name));
+  }
+
+  auto model_path = tmpdir->path() / kModelFileName;
+  parser->parseFromFile(model_path.string().c_str(), /*verbosity*/ 0);
+
+  std::vector<std::string> errors;
+  errors.reserve(parser->getNbErrors());
+  for (int32_t i = 0; i < parser->getNbErrors(); ++i) {
+    errors.emplace_back(parser->getError(i)->desc());
+  }
+  if (parser->getNbErrors() > 0) {
+    return error::InvalidArgument("Failed to parse onnx file: $0", absl::StrJoin(errors, ", "));
+  }
+  return Status::OK();
+}
+
+StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(storage::BlobStore* store,
+                                                                      const ModelSpec& spec,
+                                                                      TensorRTLogger logger) {
   auto builder = std::unique_ptr<nvinfer1::IBuilder>(nvinfer1::createInferBuilder(logger));
   uint32_t flag =
       1U << static_cast<uint32_t>(nvinfer1::NetworkDefinitionCreationFlag::kEXPLICIT_BATCH);
@@ -46,20 +90,7 @@ StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(
   auto parser =
       std::unique_ptr<nvonnxparser::IParser>(nvonnxparser::createParser(*network, logger));
 
-  {
-    auto file_id = ParseUUID(spec.named_asset(0).file().file_id()).str();
-    GML_ASSIGN_OR_RETURN(auto onnx_file_path, store->FilePath(file_id));
-    parser->parseFromFile(onnx_file_path.c_str(), /*verbosity*/ 0);
-  }
-  std::vector<std::string> errors;
-  errors.reserve(parser->getNbErrors());
-  for (int32_t i = 0; i < parser->getNbErrors(); ++i) {
-    errors.emplace_back(parser->getError(i)->desc());
-  }
-  if (parser->getNbErrors() > 0) {
-    return Status(gml::types::CODE_INVALID_ARGUMENT,
-                  absl::StrCat("Failed to parse onnx file: ", absl::StrJoin(errors, ", ")));
-  }
+  GML_RETURN_IF_ERROR(ParseFromAssets(store, spec, parser.get()));
 
   bool needs_int8 = false;
   for (int i = 0; i < network->getNbLayers(); ++i) {
@@ -97,6 +128,8 @@ StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(
       std::unique_ptr<nvinfer1::IHostMemory>(builder->buildSerializedNetwork(*network, *config));
   return serialized_model;
 }
+
+}  // namespace
 
 StatusOr<std::unique_ptr<exec::core::Model>> ModelBuilder::Build(
     storage::BlobStore* store, const ::gml::internal::api::core::v1::ModelSpec& spec) {
