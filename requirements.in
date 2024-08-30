@@ -3,6 +3,9 @@ black==24.4.2
 pytest==7.4.2
 pytest_mock==3.14.0
 
+# Requirements for building wheels with C extensions
+lief==0.15.1
+
 # Deps for the project
 absl-py==2.0.0
 bazel-runfiles==0.33.0

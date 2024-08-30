@@ -18,8 +18,11 @@ load("@bazel_skylib//lib:selects.bzl", "selects")
 load("@experimental_pip//:requirements.bzl", experimental_data_requirements = "all_data_requirements", experimental_requirements = "all_requirements")
 load("@pip//:requirements.bzl", "all_data_requirements", "all_requirements")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
+load("@rules_python//python:defs.bzl", "py_binary", "py_library")
 load("//bazel:images.bzl", "gml_oci_image")
 load("//bazel/python:py_pkg_provider.bzl", "py_pkg_provider")
+
+package(default_visibility = ["//visibility:public"])
 
 py_pkg_provider(
     name = "python_deps_files",
@@ -103,4 +106,16 @@ selects.config_setting_group(
         "@platforms//os:linux",
         "@platforms//cpu:aarch64",
     ],
+)
+
+py_binary(
+    name = "copy_shared_libs",
+    srcs = ["copy_shared_libs.py"],
+    deps = ["@pip//lief"],
+)
+
+py_library(
+    name = "python",
+    srcs = ["copy_shared_libs.py"],
+    deps = ["@pip//lief"],
 )

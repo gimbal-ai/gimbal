@@ -2254,6 +2254,7 @@ manifest:
     lazy_loader.tests.fake_pkg: lazy_loader
     lazy_loader.tests.fake_pkg.some_func: lazy_loader
     lazy_loader.tests.test_lazy_loader: lazy_loader
+    lief: lief
     lxml: lxml
     lxml.ElementInclude: lxml
     lxml.builder: lxml
@@ -14978,4 +14979,4 @@ manifest:
     zipp.glob: zipp
   pip_repository:
     name: pip
-integrity: 55e25330a4aab615f186bf3497b7215372c446152471aa604baa09d53e7cd5fb
+integrity: 8a0473bcd7b01de204ea926ccbd4d05ef2a06a431487518dee9ff1fdcdb115c6
