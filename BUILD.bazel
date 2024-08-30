@@ -123,6 +123,7 @@ gml_oci_image(
 
 # gazelle:resolve_regexp py py ^mlir\.* //third_party/python/mlir
 # gazelle:resolve_regexp py py ^torch_mlir\.* //third_party/python/torch_mlir
+# gazelle:resolve_regexp py py ^safetensors_mlir\.* //src/compiler/mlir/safetensors/python/safetensors_mlir:safetensors_mlir
 
 exports_files([
     "LICENSE",
