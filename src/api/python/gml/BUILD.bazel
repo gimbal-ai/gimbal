@@ -24,6 +24,7 @@ py_library(
     srcs = [
         "__init__.py",
         "_utils.py",
+        "asset_manager.py",
         "client.py",
         "compile.py",
         "device.py",
@@ -38,10 +39,13 @@ py_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//src/api/python/gml:copy_protos",
+        "//src/compiler/mlir/safetensors/python/safetensors_mlir",
+        "//third_party/python/mlir",
         "//third_party/python/torch_mlir",
         "@gml_api_pip//grpcio",
         "@gml_api_pip//numpy",
         "@gml_api_pip//protobuf",
+        "@gml_api_pip//safetensors",
         "@gml_api_pip//torch",
         "@gml_api_pip//transformers",
     ],

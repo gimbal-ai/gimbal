@@ -14,7 +14,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-load("@gml//bazel:gml_build_system.bzl", "gml_py_test", "no_sysroot")
+load("@gml//bazel:gml_build_system.bzl", "gml_py_test")
 
 gml_py_test(
     name = "test_client",
@@ -37,8 +37,6 @@ gml_py_test(
     name = "test_compile",
     srcs = ["test_compile.py"],
     imports = [".."],
-    # TODO(james): pytorch doesn't currently work in the sysroot.
-    target_compatible_with = no_sysroot(),  # keep
     deps = [
         "//src/api/python/gml",
         "@gml_api_pip//torch",

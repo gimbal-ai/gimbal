@@ -23,6 +23,7 @@ from typing import Any, BinaryIO, Dict, List, Optional, TextIO, Tuple
 import gml.proto.src.api.corepb.v1.model_exec_pb2 as modelexecpb
 import torch
 import transformers
+from gml.asset_manager import AssetManager
 from gml.model import GenerationConfig, Model, TorchModel
 from gml.preprocessing import (
     ImagePreprocessingStep,
@@ -66,7 +67,9 @@ class HuggingFaceTokenizer(Model):
         )
         self.tokenizer = tokenizer
 
-    def _collect_assets(self) -> Dict[str, TextIO | BinaryIO | Path]:
+    def _collect_assets(
+        self, weight_manager: Optional[AssetManager] = None
+    ) -> Dict[str, TextIO | BinaryIO | Path]:
         with tempfile.TemporaryDirectory() as tmpdir:
             self.tokenizer.save_pretrained(tmpdir)
             paths = [Path(f) for f in glob.glob(tmpdir + "/*")]

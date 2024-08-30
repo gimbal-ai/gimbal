@@ -23,6 +23,7 @@ from typing import BinaryIO, Dict, List, Literal, Optional, Sequence, TextIO, Tu
 
 import gml.proto.src.api.corepb.v1.model_exec_pb2 as modelexecpb
 import torch
+from gml.asset_manager import AssetManager, TempFileAssetManager
 from gml.compile import to_torch_mlir
 from gml.preprocessing import ImagePreprocessingStep
 from gml.tensor import TensorSemantics
@@ -90,12 +91,14 @@ class Model(abc.ABC):
         )
 
     @abc.abstractmethod
-    def _collect_assets(self) -> Dict[str, TextIO | BinaryIO | Path]:
+    def _collect_assets(
+        self, weight_manager: Optional[AssetManager] = None
+    ) -> Dict[str, TextIO | BinaryIO | Path]:
         pass
 
     @contextlib.contextmanager
-    def collect_assets(self):
-        yield from self._collect_assets()
+    def collect_assets(self, weight_manager: Optional[AssetManager] = None):
+        yield from self._collect_assets(weight_manager)
 
 
 class TorchModel(Model):
@@ -130,17 +133,27 @@ class TorchModel(Model):
                 for shape, dtype in zip(self.input_shapes, self.input_dtypes)
             ]
 
-    def _convert_to_torch_mlir(self):
+    def _convert_to_torch_mlir(self, weight_manager: Optional[AssetManager] = None):
         return to_torch_mlir(
             self.torch_module,
             self.example_inputs,
             self.dynamic_shapes,
+            weight_manager=weight_manager,
         )
 
-    def _collect_assets(self) -> Dict[str, TextIO | BinaryIO | Path]:
-        compiled = self._convert_to_torch_mlir()
-        file = io.BytesIO(str(compiled).encode("utf-8"))
-        yield {"": file}
+    def _collect_assets(
+        self, weight_manager: Optional[AssetManager] = None
+    ) -> Dict[str, TextIO | BinaryIO | Path]:
+        if weight_manager is None:
+            # If the user does not provide a weight manager, use temp files.
+            weight_manager = TempFileAssetManager()
+
+        with weight_manager as weight_mgr:
+            compiled = self._convert_to_torch_mlir(weight_mgr)
+            file = io.BytesIO(str(compiled).encode("utf-8"))
+            assets = {"": file}
+            assets.update(weight_mgr.assets())
+            yield assets
 
 
 def _kind_str_to_kind_format_protos(
@@ -178,5 +191,7 @@ class ModelFromFiles(Model):
         super().__init__(name=name, kind=kind, storage_format=storage_format, **kwargs)
         self.files = files
 
-    def _collect_assets(self) -> Dict[str, TextIO | BinaryIO | Path]:
+    def _collect_assets(
+        self, weight_manager: Optional[AssetManager] = None
+    ) -> Dict[str, TextIO | BinaryIO | Path]:
         yield self.files
