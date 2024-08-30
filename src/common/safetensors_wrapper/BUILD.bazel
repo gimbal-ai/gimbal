@@ -20,7 +20,7 @@ load("@rules_rust//rust:defs.bzl", "rust_static_library")
 load("//bazel:gml_build_system.bzl", "gml_cc_library", "gml_cc_test")
 
 package(default_visibility = [
-    "//src/gem:__subpackages__",
+    "//src:__subpackages__",
 ])
 
 rust_static_library(
