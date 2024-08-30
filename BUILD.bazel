@@ -121,6 +121,9 @@ gml_oci_image(
 # gazelle:python_generation_mode package
 # gazelle:python_default_visibility NONE
 
+# gazelle:resolve_regexp py py ^mlir\.* //third_party/python/mlir
+# gazelle:resolve_regexp py py ^torch_mlir\.* //third_party/python/torch_mlir
+
 exports_files([
     "LICENSE",
     "go.sum",
