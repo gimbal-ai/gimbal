@@ -233,6 +233,8 @@ def _cc_deps():
         "llvm-raw",
         location_name = "com_github_llvm_llvm_project",
         build_file_content = "# empty",
+        patches = ["//bazel/external:llvm_raw.local_config_python.patch"],
+        patch_args = ["-p1"],
     )
     _bazel_repo(
         "torch-mlir-raw",

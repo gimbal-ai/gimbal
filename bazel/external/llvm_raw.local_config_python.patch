@@ -1,0 +1,58 @@
+diff --git a/utils/bazel/llvm-project-overlay/mlir/BUILD.bazel b/utils/bazel/llvm-project-overlay/mlir/BUILD.bazel
+index 58538b66c5e0..93a8c0e91776 100644
+--- a/utils/bazel/llvm-project-overlay/mlir/BUILD.bazel
++++ b/utils/bazel/llvm-project-overlay/mlir/BUILD.bazel
+@@ -925,7 +925,7 @@ cc_library(
+     textual_hdrs = glob(MLIR_BINDINGS_PYTHON_HEADERS),
+     deps = [
+         ":CAPIIRHeaders",
+-        "@local_config_python//:python_headers",
++        "@rules_python//python/cc:current_py_cc_headers",
+         "@pybind11",
+     ],
+ )
+@@ -943,7 +943,7 @@ cc_library(
+     textual_hdrs = glob(MLIR_BINDINGS_PYTHON_HEADERS),
+     deps = [
+         ":CAPIIR",
+-        "@local_config_python//:python_headers",
++        "@rules_python//python/cc:current_py_cc_headers",
+         "@pybind11",
+     ],
+ )
+@@ -986,7 +986,7 @@ cc_library(
+         ":MLIRBindingsPythonHeadersAndDeps",
+         ":Support",
+         "//llvm:Support",
+-        "@local_config_python//:python_headers",
++        "@rules_python//python/cc:current_py_cc_headers",
+         "@pybind11",
+     ],
+ )
+@@ -1007,7 +1007,7 @@ cc_library(
+         ":MLIRBindingsPythonHeaders",
+         ":Support",
+         "//llvm:Support",
+-        "@local_config_python//:python_headers",
++        "@rules_python//python/cc:current_py_cc_headers",
+         "@pybind11",
+     ],
+ )
+@@ -1137,7 +1137,7 @@ cc_binary(
+     deps = [
+         ":CAPIExecutionEngine",
+         ":MLIRBindingsPythonHeadersAndDeps",
+-        "@local_config_python//:python_headers",
++        "@rules_python//python/cc:current_py_cc_headers",
+         "@pybind11",
+     ],
+ )
+@@ -1157,7 +1157,7 @@ cc_binary(
+     deps = [
+         ":CAPILinalg",
+         ":MLIRBindingsPythonHeadersAndDeps",
+-        "@local_config_python//:python_headers",
++        "@rules_python//python/cc:current_py_cc_headers",
+         "@pybind11",
+     ],
+ )
