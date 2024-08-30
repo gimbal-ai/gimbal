@@ -39,6 +39,8 @@ const std::vector<size_t>& TensorView::Shape() const { return shape_; }
 
 std::string_view TensorView::Data() const { return data_; }
 
+size_t TensorView::Offset() const { return rust_view_.offset; }
+
 SafeTensorsFile::SafeTensorsFile(::rust::Box<rust::SafeTensors> rust_safetensors,
                                  std::unique_ptr<const system::MemoryMappedFile> mmap,
                                  PrivateConstructorTag)
@@ -63,7 +65,9 @@ StatusOr<std::unique_ptr<SafeTensorsFile>> SafeTensorsFile::Open(
 
 const std::vector<std::string>& SafeTensorsFile::TensorNames() const { return names_; }
 
-size_t SafeTensorsFile::Size() const { return rust::len(*rust_safetensors_); }
+size_t SafeTensorsFile::Length() const { return rust::len(*rust_safetensors_); }
+
+size_t SafeTensorsFile::Size() const { return rust::size(*rust_safetensors_); }
 
 StatusOr<std::unique_ptr<TensorView>> SafeTensorsFile::Tensor(const std::string& name) const {
   try {

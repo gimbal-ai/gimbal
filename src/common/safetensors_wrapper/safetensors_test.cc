@@ -48,7 +48,8 @@ TEST_F(SafeTensorsFileTest, OpenTest) {
 
   ASSERT_OK_AND_ASSIGN(auto file, SafeTensorsFile::Open(path_));
 
-  ASSERT_EQ(2, file->Size());
+  ASSERT_EQ(2, file->Length());
+  ASSERT_EQ(236, file->Size());
   EXPECT_THAT(file->TensorNames(), ::testing::UnorderedElementsAre("b", "a"));
 
   ASSERT_OK_AND_ASSIGN(auto a, file->Tensor("a"));
@@ -70,6 +71,10 @@ TEST_F(SafeTensorsFileTest, OpenTest) {
     b_data.push_back(reinterpret_cast<const uint8_t*>(b->Data().data())[i]);
   }
   EXPECT_THAT(b_data, ::testing::ElementsAre(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11));
+
+  // These offsets come from a metadata size of 128. Then `a` is 96 bytes.
+  EXPECT_EQ(128, a->Offset());
+  EXPECT_EQ(224, b->Offset());
 }
 
 }  // namespace gml::safetensors

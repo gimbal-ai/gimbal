@@ -41,6 +41,7 @@ mod ffi {
         dtype: Dtype,
         shape: Vec<usize>,
         data: &'a[u8],
+        offset: usize
     }
 
     extern "Rust" {
@@ -51,16 +52,18 @@ mod ffi {
         fn names(safetensors: &SafeTensors) -> Vec<String>;
         fn len(safetensors: &SafeTensors) -> usize;
         fn is_empty(safetensors: &SafeTensors) -> bool;
+        fn size(safetensors: &SafeTensors) -> usize;
     }
 }
 
 pub struct SafeTensors<'a> {
     inner: safetensors::SafeTensors<'a>,
+    buffer: &'a[u8]
 }
 
 pub fn deserialize<'a>(buffer: &'a[u8]) -> Result<Box<SafeTensors<'a>>, safetensors::SafeTensorError> {
     // Deserialize the SafeTensors using the memory-mapped file
-    Ok(Box::new(SafeTensors { inner: RustSafeTensors::deserialize(buffer)? }))
+    Ok(Box::new(SafeTensors { inner: RustSafeTensors::deserialize(buffer)?, buffer }))
 }
 
 pub unsafe fn tensor<'a>(safetensors: &'a SafeTensors, name: &str) -> Result<ffi::TensorView<'a>, SafeTensorError> {
@@ -87,6 +90,7 @@ pub unsafe fn tensor<'a>(safetensors: &'a SafeTensors, name: &str) -> Result<ffi
         dtype,
         shape: tensor_view.shape().to_vec(),
         data: tensor_view.data(),
+        offset: tensor_view.data().as_ptr() as usize - safetensors.buffer.as_ptr() as usize,
     })
 }
 
@@ -100,4 +104,8 @@ pub fn len(safetensors: &SafeTensors) -> usize {
 
 pub fn is_empty(safetensors: &SafeTensors) -> bool {
     safetensors.inner.is_empty()
+}
+
+pub fn size(safetensors: &SafeTensors) -> usize {
+    safetensors.buffer.len()
 }

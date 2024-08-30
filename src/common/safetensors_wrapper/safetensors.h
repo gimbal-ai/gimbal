@@ -35,6 +35,7 @@ class TensorView {
   rust::Dtype DataType() const;
   const std::vector<size_t>& Shape() const;
   std::string_view Data() const;
+  size_t Offset() const;
 
  private:
   rust::TensorView rust_view_;
@@ -54,7 +55,10 @@ class SafeTensorsFile {
   static StatusOr<std::unique_ptr<SafeTensorsFile>> Open(const std::filesystem::path& path);
 
   const std::vector<std::string>& TensorNames() const;
+  // Get the size of the safetensors file in bytes.
   size_t Size() const;
+  // Get the number of tensors in the safetensors file.
+  size_t Length() const;
   StatusOr<std::unique_ptr<TensorView>> Tensor(const std::string& name) const;
 
  private:
