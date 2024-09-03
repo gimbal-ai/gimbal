@@ -6,7 +6,6 @@ package optionspb
 import (
 	fmt "fmt"
 	proto "github.com/gogo/protobuf/proto"
-	_ "github.com/google/mediapipe/mediapipe/framework"
 	io "io"
 	math "math"
 	math_bits "math/bits"
@@ -25,49 +24,6 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type OpenCVCamSourceSubgraphOptions struct {
-	DeviceFilename string `protobuf:"bytes,1,opt,name=device_filename,json=deviceFilename,proto3" json:"device_filename,omitempty"`
-}
-
-func (m *OpenCVCamSourceSubgraphOptions) Reset()      { *m = OpenCVCamSourceSubgraphOptions{} }
-func (*OpenCVCamSourceSubgraphOptions) ProtoMessage() {}
-func (*OpenCVCamSourceSubgraphOptions) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8acbde18ae09092d, []int{0}
-}
-func (m *OpenCVCamSourceSubgraphOptions) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *OpenCVCamSourceSubgraphOptions) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_OpenCVCamSourceSubgraphOptions.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *OpenCVCamSourceSubgraphOptions) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_OpenCVCamSourceSubgraphOptions.Merge(m, src)
-}
-func (m *OpenCVCamSourceSubgraphOptions) XXX_Size() int {
-	return m.Size()
-}
-func (m *OpenCVCamSourceSubgraphOptions) XXX_DiscardUnknown() {
-	xxx_messageInfo_OpenCVCamSourceSubgraphOptions.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_OpenCVCamSourceSubgraphOptions proto.InternalMessageInfo
-
-func (m *OpenCVCamSourceSubgraphOptions) GetDeviceFilename() string {
-	if m != nil {
-		return m.DeviceFilename
-	}
-	return ""
-}
-
 type OpenCVCamSourceCalculatorOptions struct {
 	DeviceFilename string `protobuf:"bytes,1,opt,name=device_filename,json=deviceFilename,proto3" json:"device_filename,omitempty"`
 	MaxNumFrames   uint64 `protobuf:"varint,1000,opt,name=max_num_frames,json=maxNumFrames,proto3" json:"max_num_frames,omitempty"`
@@ -76,7 +32,7 @@ type OpenCVCamSourceCalculatorOptions struct {
 func (m *OpenCVCamSourceCalculatorOptions) Reset()      { *m = OpenCVCamSourceCalculatorOptions{} }
 func (*OpenCVCamSourceCalculatorOptions) ProtoMessage() {}
 func (*OpenCVCamSourceCalculatorOptions) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8acbde18ae09092d, []int{1}
+	return fileDescriptor_8acbde18ae09092d, []int{0}
 }
 func (m *OpenCVCamSourceCalculatorOptions) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -120,7 +76,6 @@ func (m *OpenCVCamSourceCalculatorOptions) GetMaxNumFrames() uint64 {
 }
 
 func init() {
-	proto.RegisterType((*OpenCVCamSourceSubgraphOptions)(nil), "gml.gem.calculators.opencv_cam.optionspb.OpenCVCamSourceSubgraphOptions")
 	proto.RegisterType((*OpenCVCamSourceCalculatorOptions)(nil), "gml.gem.calculators.opencv_cam.optionspb.OpenCVCamSourceCalculatorOptions")
 }
 
@@ -129,53 +84,27 @@ func init() {
 }
 
 var fileDescriptor_8acbde18ae09092d = []byte{
-	// 316 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x91, 0x3f, 0x4b, 0x03, 0x31,
-	0x18, 0x87, 0x2f, 0x20, 0x8a, 0x87, 0x54, 0xe8, 0x54, 0x1c, 0x5e, 0x4a, 0x41, 0x2c, 0x08, 0x97,
-	0xc1, 0xd1, 0xcd, 0x42, 0xc1, 0xa5, 0x85, 0x16, 0x1c, 0x5c, 0x8e, 0x5c, 0xfa, 0xf6, 0x0c, 0xe6,
-	0xbd, 0x84, 0xdc, 0x5d, 0xed, 0xe8, 0xe0, 0x07, 0xf0, 0x63, 0xf8, 0x51, 0x1c, 0x3b, 0x76, 0xb4,
-	0xe9, 0xd2, 0xb1, 0x1f, 0x41, 0x68, 0xcb, 0xb5, 0xba, 0x75, 0x4b, 0x9e, 0xe4, 0xf7, 0xf0, 0xfe,
-	0x09, 0x87, 0xb9, 0x93, 0x3c, 0x45, 0xe2, 0x52, 0x68, 0x59, 0x6a, 0x51, 0x18, 0x97, 0x73, 0xab,
-	0xcb, 0x54, 0x65, 0xdc, 0x58, 0xcc, 0xe4, 0x24, 0x96, 0x82, 0xb8, 0xb1, 0x85, 0x32, 0x59, 0x6e,
-	0x93, 0x03, 0x18, 0xef, 0x23, 0xf1, 0xee, 0x3d, 0xb2, 0xce, 0x14, 0xa6, 0xde, 0x4e, 0x49, 0x47,
-	0x29, 0x52, 0x74, 0x20, 0x8d, 0xf6, 0xc1, 0xa8, 0xb2, 0x5d, 0xdd, 0x12, 0x8e, 0x94, 0xb0, 0xca,
-	0x22, 0x1f, 0x3b, 0x41, 0xf8, 0x66, 0xdc, 0x2b, 0xaf, 0xd8, 0x5f, 0x6d, 0xeb, 0x31, 0x84, 0xbe,
-	0xc5, 0xac, 0xf3, 0xd4, 0x11, 0x34, 0x34, 0xa5, 0x93, 0x38, 0x2c, 0x93, 0xd4, 0x09, 0xfb, 0xd2,
-	0xdf, 0xfe, 0xab, 0xdf, 0x84, 0x97, 0x23, 0x9c, 0x28, 0x89, 0xf1, 0x58, 0x69, 0xcc, 0x04, 0x61,
-	0x83, 0x35, 0x59, 0xfb, 0x7c, 0x50, 0xdb, 0xe2, 0xee, 0x8e, 0xb6, 0x5c, 0xd8, 0xfc, 0xa7, 0xea,
-	0x54, 0xa5, 0x1e, 0x2b, 0xab, 0x5f, 0x87, 0x35, 0x12, 0xd3, 0x38, 0x2b, 0x29, 0xde, 0x34, 0x91,
-	0x37, 0x56, 0x67, 0x4d, 0xd6, 0x3e, 0x19, 0x5c, 0x90, 0x98, 0xf6, 0x4a, 0xea, 0x6e, 0xe0, 0xc3,
-	0x07, 0x9b, 0x2d, 0x20, 0x98, 0x2f, 0x20, 0x58, 0x2f, 0x80, 0xbd, 0x7b, 0x60, 0x5f, 0x1e, 0xd8,
-	0xb7, 0x07, 0x36, 0xf3, 0xc0, 0x7e, 0x3c, 0xb0, 0x95, 0x87, 0x60, 0xed, 0x81, 0x7d, 0x2e, 0x21,
-	0x98, 0x2d, 0x21, 0x98, 0x2f, 0x21, 0x78, 0xee, 0xa5, 0x8a, 0x34, 0x16, 0x5a, 0x24, 0x79, 0x24,
-	0x14, 0xdf, 0xde, 0xf8, 0x91, 0x6b, 0xbb, 0xaf, 0x4e, 0xc9, 0xe9, 0x66, 0x98, 0x77, 0xbf, 0x01,
-	0x00, 0x00, 0xff, 0xff, 0x99, 0xf3, 0xe3, 0x25, 0xfa, 0x01, 0x00, 0x00,
+	// 280 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x90, 0x31, 0x6a, 0x2b, 0x31,
+	0x10, 0x86, 0x25, 0x78, 0xbc, 0x90, 0x25, 0x38, 0xe0, 0xca, 0xd5, 0x60, 0x02, 0x21, 0xae, 0xa4,
+	0x22, 0x65, 0xba, 0x18, 0x5c, 0xda, 0x60, 0x43, 0x8a, 0x34, 0x42, 0x56, 0xe4, 0x45, 0xa0, 0x91,
+	0x84, 0x76, 0xd7, 0xb8, 0x4c, 0x91, 0x03, 0xe4, 0x18, 0x39, 0x4a, 0x4a, 0x97, 0x2e, 0xb3, 0xda,
+	0xc6, 0xa5, 0x8f, 0x10, 0xf0, 0x9a, 0xb5, 0xdb, 0x74, 0x33, 0xdf, 0xcc, 0xf7, 0x17, 0x7f, 0xb6,
+	0x28, 0xa2, 0xe2, 0xb9, 0x46, 0xae, 0xa4, 0x55, 0x95, 0x95, 0xa5, 0x8f, 0x05, 0x0f, 0xb6, 0xca,
+	0x8d, 0xe3, 0x3e, 0x68, 0xa7, 0xd6, 0x42, 0x49, 0xe4, 0x3e, 0x94, 0xc6, 0xbb, 0x22, 0x2c, 0x2f,
+	0xa0, 0x38, 0x2b, 0xe2, 0x74, 0x67, 0x21, 0xfa, 0xd2, 0xf7, 0x47, 0x39, 0x5a, 0x96, 0x6b, 0x64,
+	0x17, 0xa1, 0xec, 0x2c, 0xb2, 0x2e, 0xed, 0x2e, 0x66, 0xc3, 0x59, 0xd0, 0x6e, 0xfc, 0x32, 0x96,
+	0xb8, 0xf0, 0x55, 0x54, 0x7a, 0xdc, 0x29, 0xb3, 0xf6, 0xab, 0xff, 0x90, 0xdd, 0xbe, 0xe9, 0xb5,
+	0x51, 0x5a, 0xac, 0x8c, 0xd5, 0x4e, 0xa2, 0x1e, 0xd0, 0x21, 0x1d, 0x5d, 0xcf, 0x7b, 0x2d, 0x9e,
+	0x9c, 0x68, 0xff, 0x3e, 0xeb, 0xa1, 0xdc, 0x08, 0x57, 0xa1, 0x58, 0x45, 0x89, 0xba, 0x18, 0xec,
+	0xaf, 0x86, 0x74, 0xf4, 0x6f, 0x7e, 0x83, 0x72, 0x33, 0xad, 0x70, 0x72, 0x84, 0xcf, 0x1f, 0x74,
+	0x5b, 0x03, 0xd9, 0xd5, 0x40, 0x0e, 0x35, 0xd0, 0xf7, 0x04, 0xf4, 0x2b, 0x01, 0xfd, 0x4e, 0x40,
+	0xb7, 0x09, 0xe8, 0x4f, 0x02, 0xba, 0x4f, 0x40, 0x0e, 0x09, 0xe8, 0x67, 0x03, 0x64, 0xdb, 0x00,
+	0xd9, 0x35, 0x40, 0x5e, 0xa7, 0xb9, 0x41, 0xab, 0x4b, 0x2b, 0x97, 0x05, 0x93, 0x86, 0xb7, 0x1b,
+	0xff, 0x63, 0x7d, 0x4f, 0xdd, 0xb4, 0xfc, 0x7f, 0xec, 0xea, 0xf1, 0x37, 0x00, 0x00, 0xff, 0xff,
+	0x50, 0x95, 0x2b, 0x41, 0x82, 0x01, 0x00, 0x00,
 }
 
-func (this *OpenCVCamSourceSubgraphOptions) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*OpenCVCamSourceSubgraphOptions)
-	if !ok {
-		that2, ok := that.(OpenCVCamSourceSubgraphOptions)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if this.DeviceFilename != that1.DeviceFilename {
-		return false
-	}
-	return true
-}
 func (this *OpenCVCamSourceCalculatorOptions) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
@@ -203,16 +132,6 @@ func (this *OpenCVCamSourceCalculatorOptions) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *OpenCVCamSourceSubgraphOptions) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := make([]string, 0, 5)
-	s = append(s, "&optionspb.OpenCVCamSourceSubgraphOptions{")
-	s = append(s, "DeviceFilename: "+fmt.Sprintf("%#v", this.DeviceFilename)+",\n")
-	s = append(s, "}")
-	return strings.Join(s, "")
-}
 func (this *OpenCVCamSourceCalculatorOptions) GoString() string {
 	if this == nil {
 		return "nil"
@@ -232,36 +151,6 @@ func valueToGoStringOpencvCamCalculatorOptions(v interface{}, typ string) string
 	pv := reflect.Indirect(rv).Interface()
 	return fmt.Sprintf("func(v %v) *%v { return &v } ( %#v )", typ, typ, pv)
 }
-func (m *OpenCVCamSourceSubgraphOptions) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *OpenCVCamSourceSubgraphOptions) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *OpenCVCamSourceSubgraphOptions) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.DeviceFilename) > 0 {
-		i -= len(m.DeviceFilename)
-		copy(dAtA[i:], m.DeviceFilename)
-		i = encodeVarintOpencvCamCalculatorOptions(dAtA, i, uint64(len(m.DeviceFilename)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
 func (m *OpenCVCamSourceCalculatorOptions) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -310,19 +199,6 @@ func encodeVarintOpencvCamCalculatorOptions(dAtA []byte, offset int, v uint64) i
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *OpenCVCamSourceSubgraphOptions) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.DeviceFilename)
-	if l > 0 {
-		n += 1 + l + sovOpencvCamCalculatorOptions(uint64(l))
-	}
-	return n
-}
-
 func (m *OpenCVCamSourceCalculatorOptions) Size() (n int) {
 	if m == nil {
 		return 0
@@ -345,16 +221,6 @@ func sovOpencvCamCalculatorOptions(x uint64) (n int) {
 func sozOpencvCamCalculatorOptions(x uint64) (n int) {
 	return sovOpencvCamCalculatorOptions(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (this *OpenCVCamSourceSubgraphOptions) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&OpenCVCamSourceSubgraphOptions{`,
-		`DeviceFilename:` + fmt.Sprintf("%v", this.DeviceFilename) + `,`,
-		`}`,
-	}, "")
-	return s
-}
 func (this *OpenCVCamSourceCalculatorOptions) String() string {
 	if this == nil {
 		return "nil"
@@ -373,88 +239,6 @@ func valueToStringOpencvCamCalculatorOptions(v interface{}) string {
 	}
 	pv := reflect.Indirect(rv).Interface()
 	return fmt.Sprintf("*%v", pv)
-}
-func (m *OpenCVCamSourceSubgraphOptions) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowOpencvCamCalculatorOptions
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: OpenCVCamSourceSubgraphOptions: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: OpenCVCamSourceSubgraphOptions: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field DeviceFilename", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowOpencvCamCalculatorOptions
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthOpencvCamCalculatorOptions
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthOpencvCamCalculatorOptions
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.DeviceFilename = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipOpencvCamCalculatorOptions(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthOpencvCamCalculatorOptions
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
 }
 func (m *OpenCVCamSourceCalculatorOptions) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)

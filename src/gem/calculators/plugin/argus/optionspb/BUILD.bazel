@@ -27,7 +27,6 @@ proto_library(
     visibility = ["//visibility:public"],
     deps = [
         "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_proto",
-        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_proto",
     ],
 )
 
@@ -38,7 +37,6 @@ proto_cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_cc_library",
-        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_cc_library",
         "@com_google_protobuf//:protobuf",
     ],
 )
@@ -70,7 +68,6 @@ proto_go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_go_proto",
-        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_go_proto",
         "@com_github_gogo_protobuf//proto",
         "@com_github_gogo_protobuf//protoc-gen-gogo/descriptor",
         "@com_github_gogo_protobuf//sortkeys",
@@ -108,7 +105,6 @@ proto_py_library(
     visibility = ["//visibility:public"],
     deps = [
         "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_py_library",
-        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_py_library",
         "@pip//protobuf",
     ],
 )

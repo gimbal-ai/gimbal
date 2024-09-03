@@ -25,9 +25,6 @@ proto_library(
     name = "optionspb_proto",
     srcs = ["opencv_cam_calculator_options.proto"],
     visibility = ["//visibility:public"],
-    deps = [
-        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_proto",
-    ],
 )
 
 proto_cc_library(
@@ -36,7 +33,6 @@ proto_cc_library(
     hdrs = ["opencv_cam_calculator_options.pb.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_cc_library",
         "@com_google_protobuf//:protobuf",
     ],
 )
@@ -67,7 +63,6 @@ proto_go_library(
     importpath = "gimletlabs.ai/gimlet/src/gem/calculators/plugin/opencv_cam/optionspb",
     visibility = ["//visibility:public"],
     deps = [
-        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_go_proto",
         "@com_github_gogo_protobuf//proto",
         "@com_github_gogo_protobuf//protoc-gen-gogo/descriptor",
         "@com_github_gogo_protobuf//sortkeys",
@@ -104,7 +99,6 @@ proto_py_library(
     srcs = ["opencv_cam_calculator_options_pb2.py"],
     visibility = ["//visibility:public"],
     deps = [
-        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_py_library",
         "@pip//protobuf",
     ],
 )

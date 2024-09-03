@@ -22,15 +22,6 @@ package gml.gem.calculators.opencv_cam.optionspb;
 
 option go_package = "gimletlabs.ai/gimlet/src/gem/calculators/plugin/opencv_cam/optionspb;optionspb";
 
-// This seems unused but the mediapipe subgraph options registration relies
-// on mediapipe_options.proto being linked in.
-// buf:lint:ignore IMPORT_USED
-import "mediapipe/framework/mediapipe_options.proto";
-
-message OpenCVCamSourceSubgraphOptions {
-  string device_filename = 1;
-}
-
 message OpenCVCamSourceCalculatorOptions {
   string device_filename = 1;
 
