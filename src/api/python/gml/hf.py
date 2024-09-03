@@ -345,7 +345,7 @@ class HuggingFaceImageProcessor:
     def output_spec_object_detection(self) -> Dict[str, Any]:
         if not hasattr(self.processor, "post_process_object_detection"):
             raise NotImplementedError(
-                "only semantic segmentation is currently supported"
+                "processor must have post_process_object_detection set"
             )
 
         id_to_label = self.model.config.id2label
