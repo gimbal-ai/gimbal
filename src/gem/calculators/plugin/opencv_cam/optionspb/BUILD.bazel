@@ -25,6 +25,9 @@ proto_library(
     name = "optionspb_proto",
     srcs = ["opencv_cam_calculator_options.proto"],
     visibility = ["//visibility:public"],
+    deps = [
+        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_proto",  # keep: This is needed to make these options work when specified as graph options.
+    ],
 )
 
 proto_cc_library(

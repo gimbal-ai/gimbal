@@ -27,6 +27,7 @@ proto_library(
     visibility = ["//visibility:public"],
     deps = [
         "//third_party/github.com/gogo/protobuf/gogoproto:gogoproto_proto",
+        "//third_party/github.com/google/mediapipe/mediapipe/framework:framework_proto",  # keep: This is needed to make these options work when specified as graph options.
     ],
 )
 
