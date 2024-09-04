@@ -239,6 +239,10 @@ markupsafe==2.1.5 \
     --hash=sha256:fce659a462a1be54d2ffcacea5e3ba2d74daa74f30f5f143fe0c58636e355fdd \
     --hash=sha256:ffee1f21e5ef0d712f9033568f8344d5da8cc2869dbd08d87c84656e6a2d2f68
     # via jinja2
+mlir-gml==0.0.1 \
+    --hash=sha256:84d205e47e7c638741baf5730c66a4e263ed0a475b9adb20aed7f1e8e8a8e29b \
+    --hash=sha256:e0a61bea36f2eb8289a611150ddf066db8577b57a08493f5a2c1fd42a5f1a670
+    # via safetensors-mlir
 mpmath==1.3.0 \
     --hash=sha256:7a28eb2a9774d00c7bc92411c19a89209d5da7c4c9a9e227be8330a23a25b91f \
     --hash=sha256:a0b2b9fe80bbcd81a6647ff13108738cfb482d481d826cc0e02f5b35e5c88d2c
@@ -562,6 +566,10 @@ safetensors==0.4.4 \
     --hash=sha256:f75698c5c5c542417ac4956acfc420f7d4a2396adca63a015fd66641ea751759 \
     --hash=sha256:fb7b54830cee8cf9923d969e2df87ce20e625b1af2fd194222ab902d3adcc29c
     # via transformers
+safetensors-mlir==0.0.1 \
+    --hash=sha256:79e9f16bccb1f6de25698723e0b2ac930fa17c401ab1a438f697499d5317a498 \
+    --hash=sha256:c767e4b5fd142590cfd480a3e6e23df6b862b55b055586e5c54fb2e668861f75
+    # via -r src/api/python/requirements.in
 sympy==1.12.1 \
     --hash=sha256:2877b03f998cd8c08f07cd0de5b767119cd3ef40d09f41c30d722f6686b0fb88 \
     --hash=sha256:9b2cbc7f1a640289430e13d2a56f02f867a1da0190f2f99d8968c2f74da0e515
