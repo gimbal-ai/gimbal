@@ -25,12 +25,14 @@
 #include <sole.hpp>
 
 #include "src/api/corepb/v1/cp_edge.pb.h"
+#include "src/api/corepb/v1/gem_config.pb.h"
 #include "src/api/corepb/v1/mediastream.pb.h"
 #include "src/common/base/base.h"
 #include "src/gem/exec/core/context.h"
 
 namespace gml::gem::exec::core {
 
+using ::gml::internal::api::core::v1::GEMConfig;
 using ::gml::internal::api::core::v1::MediaStreamControl;
 
 /**
@@ -49,6 +51,31 @@ class ControlExecutionContext : public ExecutionContext {
   void ClearMediaStreamCallback() {
     absl::base_internal::SpinLockHolder lock(&media_cb_lock_);
     media_cb_ = nullptr;
+  }
+
+  MediaStreamCallback GetMediaStreamCallback() {
+    absl::base_internal::SpinLockHolder lock(&media_cb_lock_);
+    return media_cb_;
+  }
+
+  void SetLogicalPipelineID(const sole::uuid& logical_pipeline_id) {
+    absl::base_internal::SpinLockHolder lock(&logical_pipeline_id_lock_);
+    logical_pipeline_id_ = logical_pipeline_id;
+  }
+
+  sole::uuid GetLogicalPipelineID() {
+    absl::base_internal::SpinLockHolder lock(&logical_pipeline_id_lock_);
+    return logical_pipeline_id_;
+  }
+
+  void SetGEMConfig(std::unique_ptr<GEMConfig> gem_config) {
+    absl::MutexLock lock(&gem_config_lock_);
+    gem_config_ = std::move(gem_config);
+  }
+
+  const GEMConfig& GetGEMConfig() {
+    absl::ReaderMutexLock lock(&gem_config_lock_);
+    return *gem_config_.get();
   }
 
   void QueueControlMessage(std::unique_ptr<MediaStreamControl> control) {
@@ -70,27 +97,15 @@ class ControlExecutionContext : public ExecutionContext {
     return control;
   }
 
-  MediaStreamCallback GetMediaStreamCallback() {
-    absl::base_internal::SpinLockHolder lock(&media_cb_lock_);
-    return media_cb_;
-  }
-
-  void SetLogicalPipelineID(const sole::uuid& logical_pipeline_id) {
-    absl::base_internal::SpinLockHolder lock(&logical_pipeline_id_lock_);
-    logical_pipeline_id_ = logical_pipeline_id;
-  }
-
-  sole::uuid GetLogicalPipelineID() {
-    absl::base_internal::SpinLockHolder lock(&logical_pipeline_id_lock_);
-    return logical_pipeline_id_;
-  }
-
  private:
   absl::base_internal::SpinLock media_cb_lock_;
   MediaStreamCallback media_cb_ ABSL_GUARDED_BY(media_cb_lock_);
 
   absl::base_internal::SpinLock logical_pipeline_id_lock_;
   sole::uuid logical_pipeline_id_ ABSL_GUARDED_BY(logical_pipeline_id_lock_);
+
+  absl::Mutex gem_config_lock_;
+  std::unique_ptr<GEMConfig> gem_config_ ABSL_GUARDED_BY(gem_config_lock_);
 
   absl::Mutex control_queue_lock_;
   std::queue<std::unique_ptr<MediaStreamControl>> control_queue_;
