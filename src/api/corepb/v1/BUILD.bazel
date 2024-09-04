@@ -25,6 +25,7 @@ proto_library(
     srcs = [
         "controlplane.proto",
         "cp_edge.proto",
+        "gem_config.proto",
         "mediastream.proto",
         "model_exec.proto",
     ],
@@ -45,12 +46,14 @@ proto_cc_library(
     srcs = [
         "controlplane.pb.cc",
         "cp_edge.pb.cc",
+        "gem_config.pb.cc",
         "mediastream.pb.cc",
         "model_exec.pb.cc",
     ],
     hdrs = [
         "controlplane.pb.h",
         "cp_edge.pb.h",
+        "gem_config.pb.h",
         "mediastream.pb.h",
         "model_exec.pb.h",
     ],
@@ -75,6 +78,8 @@ proto_compile(
         "model_exec.pb.h",
         "controlplane.pb.cc",
         "controlplane.pb.h",
+        "gem_config.pb.cc",
+        "gem_config.pb.h",
     ],
     plugins = ["@build_stack_rules_proto//plugin/builtin:cpp"],
     proto = "corepb_proto",
@@ -88,12 +93,14 @@ proto_compile(
         "mediastream.pb.go=gimletlabs.ai/gimlet/src/api/corepb/v1/mediastream.pb.go",
         "model_exec.pb.go=gimletlabs.ai/gimlet/src/api/corepb/v1/model_exec.pb.go",
         "controlplane.pb.go=gimletlabs.ai/gimlet/src/api/corepb/v1/controlplane.pb.go",
+        "gem_config.pb.go=gimletlabs.ai/gimlet/src/api/corepb/v1/gem_config.pb.go",
     ],
     outputs = [
         "cp_edge.pb.go",
         "mediastream.pb.go",
         "model_exec.pb.go",
         "controlplane.pb.go",
+        "gem_config.pb.go",
     ],
     plugins = ["@build_stack_rules_proto//plugin/gogo/protobuf:protoc-gen-gogoslick"],
     proto = "corepb_proto",
@@ -105,6 +112,7 @@ proto_go_library(
     srcs = [
         "controlplane.pb.go",
         "cp_edge.pb.go",
+        "gem_config.pb.go",
         "mediastream.pb.go",
         "model_exec.pb.go",
     ],
@@ -139,6 +147,8 @@ proto_compile(
         "cp_edge_pb2.pyi",
         "mediastream_pb2.pyi",
         "model_exec_pb2.pyi",
+        "gem_config_pb2.py",
+        "gem_config_pb2.pyi",
     ],
     plugins = [
         "@build_stack_rules_proto//plugin/builtin:python",
@@ -153,6 +163,7 @@ proto_py_library(
     srcs = [
         "controlplane_pb2.py",
         "cp_edge_pb2.py",
+        "gem_config_pb2.py",
         "mediastream_pb2.py",
         "model_exec_pb2.py",
     ],
