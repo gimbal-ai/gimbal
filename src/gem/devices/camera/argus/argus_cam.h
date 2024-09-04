@@ -40,6 +40,7 @@ class ArgusCam {
    * Essentially returns a FD to a buffer containing the image.
    */
   StatusOr<std::unique_ptr<NvBufSurfaceWrapper>> ConsumeFrame();
+
   /*
    * Returns the timestamp of the last frame capture in nanoseconds.
    * This is expected to be called after ConsumeFrame.
