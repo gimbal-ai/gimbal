@@ -152,14 +152,12 @@ class TracksMetadata(_message.Message):
     def __init__(self, removed_track_ids: _Optional[_Iterable[int]] = ...) -> None: ...
 
 class VideoHeader(_message.Message):
-    __slots__ = ["frame_rate", "height", "width"]
-    FRAME_RATE_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["height", "width"]
     HEIGHT_FIELD_NUMBER: _ClassVar[int]
     WIDTH_FIELD_NUMBER: _ClassVar[int]
-    frame_rate: float
     height: int
     width: int
-    def __init__(self, width: _Optional[int] = ..., height: _Optional[int] = ..., frame_rate: _Optional[float] = ...) -> None: ...
+    def __init__(self, width: _Optional[int] = ..., height: _Optional[int] = ...) -> None: ...
 
 class ImageColorChannel(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = []

@@ -100,7 +100,6 @@ TEST_P(OverlayedFFmpegVideoSinkTest, OutputsExpectedChunks) {
   auto video_header = mediapipe::VideoHeader();
   video_header.height = 160;
   video_header.width = 210;
-  video_header.frame_rate = 12;
 
   std::vector<std::unique_ptr<AVPacketWrapper>> packets(test_case.av_packet_sizes.size());
   for (const auto& [i, packet_size] : Enumerate(test_case.av_packet_sizes)) {
@@ -147,7 +146,6 @@ TEST_P(OverlayedFFmpegVideoSinkTest, OutputsExpectedChunks) {
             auto header = static_cast<const VideoHeader&>(*message);
             EXPECT_EQ(header.height(), 160);
             EXPECT_EQ(header.width(), 210);
-            EXPECT_EQ(header.frame_rate(), 12);
           }
         }
         return Status::OK();

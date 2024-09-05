@@ -109,7 +109,6 @@ absl::Status OpenCVCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
   width_ = static_cast<int32_t>(source_->GetProperty(cv::CAP_PROP_FRAME_WIDTH));
   height_ = static_cast<int32_t>(source_->GetProperty(cv::CAP_PROP_FRAME_HEIGHT));
   fps_ = source_->GetProperty(cv::CAP_PROP_FPS);
-  frame_count_ = source_->GetProperty(cv::CAP_PROP_FRAME_COUNT);
 
   auto frame = source_->ConsumeFrame();
   if (frame.empty()) {
@@ -123,11 +122,8 @@ absl::Status OpenCVCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
   header->format = format_;
   header->width = width_;
   header->height = height_;
-  header->frame_rate = fps_;
-  header->duration = static_cast<float>(frame_count_ / fps_);
 
-  LOG(INFO) << "Video header: " << header->width << "x" << header->height << " @ "
-            << header->frame_rate << " fps";
+  LOG(INFO) << "Video header: " << header->width << "x" << header->height;
 
   if (cc->Outputs().HasTag(kVideoPrestreamTag)) {
     cc->Outputs().Tag(kVideoPrestreamTag).Add(header.release(), mediapipe::Timestamp::PreStream());

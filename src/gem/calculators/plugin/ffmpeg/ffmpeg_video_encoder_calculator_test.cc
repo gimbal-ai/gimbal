@@ -47,7 +47,6 @@ TEST(FFmpegVideoEncoderCalculator, RunsWithoutError) {
   auto video_header = mediapipe::VideoHeader();
   video_header.height = yuv_image->height();
   video_header.width = yuv_image->width();
-  video_header.frame_rate = 30;
 
   ASSERT_OK_AND_ASSIGN(auto planar_image,
                        exec::core::PlanarImageFor<mediapipe::YUVImage>::Create(

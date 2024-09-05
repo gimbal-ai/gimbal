@@ -59,7 +59,6 @@ class OpenCVCamSourceCalculator : public mediapipe::CalculatorBase {
   int32_t width_;
   int32_t height_;
   double fps_;
-  double frame_count_;
 
   // Metrics.
   opentelemetry::metrics::Gauge<double>* fps_gauge_;

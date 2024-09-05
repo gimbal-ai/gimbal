@@ -175,9 +175,7 @@ message VideoHeader {
   // Dimensions of the video in pixels.
   int64 width = 1;
   int64 height = 2;
-
-  // The frame rate in Hz at which the video frames are output.
-  double frame_rate = 3;
+  reserved 3;
 }
 
 // TextBatch is batch of text output. For example, this can be a partial result from a LLM.

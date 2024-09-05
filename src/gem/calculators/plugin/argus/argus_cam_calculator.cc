@@ -56,7 +56,6 @@ absl::Status ArgusCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
   header->format = mediapipe::ImageFormat::FORMAT_SRGB;
   header->width = buf->surface().width;
   header->height = buf->surface().height;
-  header->frame_rate = static_cast<double>(options_.target_frame_rate());
 
   if (cc->Outputs().HasTag(kVideoPrestreamTag)) {
     cc->Outputs().Tag(kVideoPrestreamTag).Add(header.release(), mediapipe::Timestamp::PreStream());

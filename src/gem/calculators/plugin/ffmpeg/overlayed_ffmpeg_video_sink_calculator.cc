@@ -228,7 +228,6 @@ Status OverlayedFFmpegVideoSinkCalculator::ProcessImpl(
   auto header = std::make_unique<VideoHeader>();
   header->set_height(video_header_.height);
   header->set_width(video_header_.width);
-  header->set_frame_rate(video_header_.frame_rate);
   messages.push_back(std::move(header));
 
   auto cb = control_ctx->GetMediaStreamCallback();
