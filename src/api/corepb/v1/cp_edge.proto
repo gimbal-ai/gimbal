@@ -29,6 +29,7 @@ import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 import "opentelemetry/proto/metrics/v1/metrics.proto";
 import "src/api/corepb/v1/model_exec.proto";
+import "src/api/corepb/v1/gem_config.proto";
 
 /**
  * This file contains all the messages that are shared between the control plane and edge.
@@ -288,6 +289,29 @@ message DeviceCapabilities {
   // CameraDrivers is the info about all the camera drivers available on the device even if there's
   // no camera using the given driver at the moment.
   repeated CameraDriverInfo camera_drivers = 3;
+}
+
+/****************************************************************************
+ * Messages that are used to send device configuration information.
+ * These should be sent on the .CONFIG topic.
+ *****************************************************************************/
+
+// DeviceConfigStateUpdate is a message sent from the edge to controlplane to indicate the current
+// config which a device has applied.
+message DeviceConfigStateUpdate {
+  // The config that the device has applied.
+  gml.internal.api.core.v1.GEMConfig config = 1;
+  // The version of the base config the device is using.
+  int64 base_config_version = 2;
+}
+
+// DeviceBaseConfigUpdate is a message sent from the controlplane to edge to indicate requested
+// updates to a device's base config.
+message DeviceBaseConfigUpdate {
+  // The base config to apply.
+  gml.internal.api.core.v1.GEMConfig config = 1;
+  // The version of the config.
+  int64 version = 2;
 }
 
 /****************************************************************************

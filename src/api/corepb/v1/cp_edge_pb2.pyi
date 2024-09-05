@@ -5,6 +5,7 @@ from google.protobuf import any_pb2 as _any_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from opentelemetry.proto.metrics.v1 import metrics_pb2 as _metrics_pb2
 from src.api.corepb.v1 import model_exec_pb2 as _model_exec_pb2
+from src.api.corepb.v1 import gem_config_pb2 as _gem_config_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
@@ -87,6 +88,14 @@ class DeleteExecutionGraph(_message.Message):
     physical_pipeline_id: _uuid_pb2.UUID
     def __init__(self, physical_pipeline_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
 
+class DeviceBaseConfigUpdate(_message.Message):
+    __slots__ = ["config", "version"]
+    CONFIG_FIELD_NUMBER: _ClassVar[int]
+    VERSION_FIELD_NUMBER: _ClassVar[int]
+    config: _gem_config_pb2.GEMConfig
+    version: int
+    def __init__(self, config: _Optional[_Union[_gem_config_pb2.GEMConfig, _Mapping]] = ..., version: _Optional[int] = ...) -> None: ...
+
 class DeviceCapabilities(_message.Message):
     __slots__ = ["camera_drivers", "cameras", "model_runtimes"]
     class CameraDriver(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
@@ -123,6 +132,14 @@ class DeviceCapabilities(_message.Message):
     cameras: _containers.RepeatedCompositeFieldContainer[DeviceCapabilities.CameraInfo]
     model_runtimes: _containers.RepeatedCompositeFieldContainer[DeviceCapabilities.ModelRuntimeInfo]
     def __init__(self, model_runtimes: _Optional[_Iterable[_Union[DeviceCapabilities.ModelRuntimeInfo, _Mapping]]] = ..., cameras: _Optional[_Iterable[_Union[DeviceCapabilities.CameraInfo, _Mapping]]] = ..., camera_drivers: _Optional[_Iterable[_Union[DeviceCapabilities.CameraDriverInfo, _Mapping]]] = ...) -> None: ...
+
+class DeviceConfigStateUpdate(_message.Message):
+    __slots__ = ["base_config_version", "config"]
+    BASE_CONFIG_VERSION_FIELD_NUMBER: _ClassVar[int]
+    CONFIG_FIELD_NUMBER: _ClassVar[int]
+    base_config_version: int
+    config: _gem_config_pb2.GEMConfig
+    def __init__(self, config: _Optional[_Union[_gem_config_pb2.GEMConfig, _Mapping]] = ..., base_config_version: _Optional[int] = ...) -> None: ...
 
 class EdgeCPMediaStreamMessage(_message.Message):
     __slots__ = ["msg", "stream_id"]
