@@ -56,7 +56,7 @@ class FFmpegVideoEncoderCalculator : public mediapipe::CalculatorBase {
   std::unique_ptr<AVPacketWrapper> av_packet_;
 
   bool codec_setup_ = false;
-  absl::Status SetupCodec(int height, int width, int frame_rate);
+  absl::Status SetupCodec(int height, int width);
 };
 
 }  // namespace gml::gem::calculators::ffmpeg

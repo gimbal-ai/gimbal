@@ -68,13 +68,13 @@ absl::Status FFmpegVideoEncoderCalculator::Open(mediapipe::CalculatorContext*) {
   return absl::OkStatus();
 }
 
-absl::Status FFmpegVideoEncoderCalculator::SetupCodec(int height, int width, int frame_rate) {
+absl::Status FFmpegVideoEncoderCalculator::SetupCodec(int height, int width) {
   codec_ctx_->bit_rate = kTargetKiloBitrate * 1000;
   codec_ctx_->width = width;
   codec_ctx_->height = height;
 
-  codec_ctx_->time_base = AVRational{1, frame_rate};
-  codec_ctx_->framerate = AVRational{frame_rate, 1};
+  // Mediapipe timestamps are in microseconds.
+  codec_ctx_->time_base = AVRational{1, 1000000};
 
   // The openh264 encoder expects YUV420P format.
   codec_ctx_->pix_fmt = AV_PIX_FMT_YUV420P;
@@ -108,8 +108,7 @@ absl::Status FFmpegVideoEncoderCalculator::SetupCodec(int height, int width, int
 absl::Status FFmpegVideoEncoderCalculator::Process(mediapipe::CalculatorContext* cc) {
   if (cc->InputTimestamp() == mediapipe::Timestamp::PreStream()) {
     const auto& video_header = cc->Inputs().Tag(kVideoHeaderTag).Get<mediapipe::VideoHeader>();
-    return SetupCodec(video_header.height, video_header.width,
-                      static_cast<int>(video_header.frame_rate));
+    return SetupCodec(video_header.height, video_header.width);
   }
 
   if (!codec_setup_) {
