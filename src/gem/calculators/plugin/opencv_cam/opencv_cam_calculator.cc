@@ -134,7 +134,6 @@ absl::Status OpenCVCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
     cc->Outputs().Tag(kVideoPrestreamTag).Close();
   }
 
-  frame_counter_ = 0;
   return absl::OkStatus();
 }
 
@@ -154,10 +153,6 @@ absl::Status OpenCVCamSourceCalculator::Process(mediapipe::CalculatorContext* cc
 
   auto packet = mediapipe::Adopt(image_frame.release()).At(mediapipe::Timestamp(timestamp));
   cc->Outputs().Index(0).AddPacket(std::move(packet));
-
-  if (options_.max_num_frames() > 0 && ++frame_counter_ >= options_.max_num_frames()) {
-    return mediapipe::tool::StatusStop();
-  }
 
   fps_gauge_->Record(fps_, {{"camera_id", options_.device_filename()}, {"camera", "opencv"}}, {});
 

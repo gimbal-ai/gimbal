@@ -22,47 +22,89 @@
 #include <mediapipe/framework/calculator_runner.h>
 #include <mediapipe/framework/formats/image_frame.h>
 #include <mediapipe/framework/formats/image_frame_opencv.h>
+#include <mediapipe/framework/port/parse_text_proto.h>
 
+#include "src/common/bazel/runfiles.h"
 #include "src/common/testing/testing.h"
 
-namespace gml::gem::calculators::opencv_cam {
+DEFINE_bool(output_frame, false, "Whether to output the actual frame to a file");
 
-static constexpr char kGraph[] = R"pb(
-  calculator: "OpenCVCamSourceCalculator"
-  output_stream: "image_frame"
-  node_options {
-    [type.googleapis.com/gml.gem.calculators.opencv_cam.optionspb.OpenCVCamSourceCalculatorOptions] {
-      device_filename: "/dev/video0"
-      max_num_frames: 1
-    }
+constexpr std::string_view kVideoSourceFilename =
+    "src/gem/calculators/plugin/opencv_cam/testdata/single_frame.mp4";
+constexpr std::string_view kFrameOutputFilename =
+    "src/gem/calculators/plugin/opencv_cam/testdata/single_frame.tiff";
+
+namespace {
+const std::filesystem::path GetTempDir() {
+  // TEST_TMPDIR is set by Bazel when running tests.
+  // TODO(vihang): We should probably move this into a common utility function similar to
+  // bazel/runfiles.h
+  const auto test_tmpdir = getenv("TEST_TMPDIR");
+  if (test_tmpdir == nullptr) {
+    return std::filesystem::path("/tmp");
   }
-)pb";
+  return std::filesystem::path(test_tmpdir);
+}
+}  // namespace
 
-// This test runs the graph to take a single capture from the camera.
-// While there are some basic checks, the real validation is that the frame is correct.
-// Note however, that the image check is not done in this test, since the camera
-// output will be different every time.
-// TODO(oazizi): Investigate a loopback device to make the test deterministic.
-TEST(OpenCVCamSourceCalculator, CaptureImage) {
-  mediapipe::CalculatorRunner runner(kGraph);
+namespace gml::gem::calculators::opencv_cam {
+class OpenCVCamSourceCalculatorTest : public ::testing::Test {
+ protected:
+  void SetUp() override {
+    graph_ = std::make_unique<mediapipe::CalculatorGraph>();
 
-  LOG(INFO) << "Running graph.";
+    auto source = bazel::RunfilePath(kVideoSourceFilename);
+    auto graph_config = mediapipe::ParseTextProtoOrDie<mediapipe::CalculatorGraphConfig>(
+        absl::Substitute(kGraph, source.string()));
 
-  ASSERT_OK(runner.Run());
+    ASSERT_OK(graph_->Initialize(graph_config));
+  }
 
-  // Check output.
-  const auto& outputs = runner.Outputs();
-  ASSERT_EQ(outputs.NumEntries(), 1);
+  static constexpr char kGraph[] = R"pbtxt(
+    output_stream: "image_frame"
+    node {
+      calculator: "OpenCVCamSourceCalculator"
+      output_stream: "image_frame"
+      node_options {
+        [type.googleapis.com/gml.gem.calculators.opencv_cam.optionspb.OpenCVCamSourceCalculatorOptions] {
+          device_filename: "$0"
+        }
+      }
+    }
+  )pbtxt";
 
-  const std::vector<mediapipe::Packet>& output_packets = outputs.Index(0).packets;
-  EXPECT_EQ(output_packets.size(), 1);
-  const auto& output_frame = output_packets[0].Get<mediapipe::ImageFrame>();
+  std::unique_ptr<mediapipe::CalculatorGraph> graph_;
+};
 
-  const std::string kOutFile = "/tmp/output_frame.jpg";
+TEST_F(OpenCVCamSourceCalculatorTest, CaptureImage) {
+  bool seen = false;
+  cv::Mat frame;
 
-  LOG(INFO) << absl::Substitute(
-      "You can now check that the output $0 is a well-formed image from the camera.", kOutFile);
-  cv::imwrite(kOutFile, mediapipe::formats::MatView(&output_frame));
+  ASSERT_OK(graph_->ObserveOutputStream("image_frame", [&](const mediapipe::Packet& packet) {
+    // Only capture the first frame.
+    if (!seen) {
+      frame = mediapipe::formats::MatView(&packet.Get<mediapipe::ImageFrame>());
+      seen = true;
+    }
+    return graph_->CloseAllPacketSources();
+  }));
+  ASSERT_OK(graph_->StartRun({}));
+  ASSERT_OK(graph_->WaitUntilDone());
+
+  ASSERT_TRUE(seen);
+
+  cv::cvtColor(frame, frame, cv::COLOR_RGB2BGR);
+  if (FLAGS_output_frame) {
+    auto output = GetTempDir() / "output.tiff";
+    LOG(INFO) << absl::Substitute("Expected image written to $0", output.string());
+    cv::imwrite(output.string(), frame);
+  }
+
+  cv::Mat expected = cv::imread(bazel::RunfilePath(kFrameOutputFilename).string());
+  cv::Mat diff;
+  cv::subtract(frame, expected, diff);
+
+  ASSERT_EQ(cv::countNonZero(diff.reshape(1)), 0);
 }
 
 }  // namespace gml::gem::calculators::opencv_cam

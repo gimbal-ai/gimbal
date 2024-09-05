@@ -39,18 +39,26 @@ gem_plugin_cc_library(
     ],
 )
 
-# This test runs a camera capture from a camera device.
-# As such, it currently needs human validation to check that the image is well-formed.
-# TODO(oazizi): Investigate a loopback device to make the test deterministic.
 gml_cc_test(
     name = "opencv_cam_calculator_test",
     srcs = [
         "opencv_cam_calculator_test.cc",
     ],
+    data = [
+        "testdata/single_frame.mp4",
+        "testdata/single_frame.tiff",
+    ],
+    # This test still flakes a little bit for some reason. (~15/10000 runs failed)
     tags = ["manual"],
+    # The output happens to differ with the Jetson sysroot, so disable that sysroot for now.
+    target_compatible_with = select({
+        "@gml//bazel/cc_toolchains/sysroots:sysroot_type_jetson": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
     deps = [
         ":cc_library",
         "//src/gem/testing/core:cc_library",
         "@com_github_google_mediapipe//mediapipe/framework:calculator_runner",
+        "@com_github_google_mediapipe//mediapipe/framework/port:parse_text_proto",
     ],
 )

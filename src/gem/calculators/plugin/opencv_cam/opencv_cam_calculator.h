@@ -39,7 +39,6 @@ using us_time = std::chrono::time_point<high_resolution_clock, microseconds>;
  *
  *  Options:
  *    device_filename Filename to open (e.g. /dev/video0)
- *    max_num_frames Maximum number of frames to process (0 for infinite)
  *  Outputs:
  *    mediapipe::ImageFrame
  *    VIDEO_PRESTREAM Optional video header output at Timestamp::PreStream
@@ -54,7 +53,6 @@ class OpenCVCamSourceCalculator : public mediapipe::CalculatorBase {
  private:
   optionspb::OpenCVCamSourceCalculatorOptions options_;
   std::unique_ptr<devices::opencv::OpenCVSource> source_ = nullptr;
-  uint64_t frame_counter_;
 
   mediapipe::ImageFormat::Format format_;
   cv::ColorConversionCodes color_conversion_;

@@ -24,7 +24,5 @@ option go_package = "gimletlabs.ai/gimlet/src/gem/calculators/plugin/opencv_cam/
 
 message OpenCVCamSourceCalculatorOptions {
   string device_filename = 1;
-
-  // Primarily for testing. 0 means no max.
-  uint64 max_num_frames = 1000;
+  reserved 1000;
 }
