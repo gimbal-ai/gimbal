@@ -808,3 +808,130 @@ class FleetMgrDeviceTagsService(object):
             src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.ListTagsAssociatedWithDeployKeyResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+
+class FleetMgrConfigServiceStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.GetBaseConfig = channel.unary_unary(
+                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrConfigService/GetBaseConfig',
+                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetBaseConfigRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetBaseConfigResponse.FromString,
+                )
+        self.GetDeviceConfigState = channel.unary_unary(
+                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrConfigService/GetDeviceConfigState',
+                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetDeviceConfigStateRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetDeviceConfigStateResponse.FromString,
+                )
+        self.UpdateBaseConfig = channel.unary_unary(
+                '/gml.internal.controlplane.fleetmgr.v1.FleetMgrConfigService/UpdateBaseConfig',
+                request_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateBaseConfigRequest.SerializeToString,
+                response_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateBaseConfigResponse.FromString,
+                )
+
+
+class FleetMgrConfigServiceServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def GetBaseConfig(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetDeviceConfigState(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateBaseConfig(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_FleetMgrConfigServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'GetBaseConfig': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetBaseConfig,
+                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetBaseConfigRequest.FromString,
+                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetBaseConfigResponse.SerializeToString,
+            ),
+            'GetDeviceConfigState': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetDeviceConfigState,
+                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetDeviceConfigStateRequest.FromString,
+                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetDeviceConfigStateResponse.SerializeToString,
+            ),
+            'UpdateBaseConfig': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateBaseConfig,
+                    request_deserializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateBaseConfigRequest.FromString,
+                    response_serializer=src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateBaseConfigResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'gml.internal.controlplane.fleetmgr.v1.FleetMgrConfigService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class FleetMgrConfigService(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def GetBaseConfig(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrConfigService/GetBaseConfig',
+            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetBaseConfigRequest.SerializeToString,
+            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetBaseConfigResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetDeviceConfigState(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrConfigService/GetDeviceConfigState',
+            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetDeviceConfigStateRequest.SerializeToString,
+            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.GetDeviceConfigStateResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UpdateBaseConfig(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/gml.internal.controlplane.fleetmgr.v1.FleetMgrConfigService/UpdateBaseConfig',
+            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateBaseConfigRequest.SerializeToString,
+            src_dot_controlplane_dot_fleetmgr_dot_fmpb_dot_v1_dot_fmpb__pb2.UpdateBaseConfigResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

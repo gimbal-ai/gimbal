@@ -1,6 +1,7 @@
 from gogoproto import gogo_pb2 as _gogo_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from src.api.corepb.v1 import cp_edge_pb2 as _cp_edge_pb2
+from src.api.corepb.v1 import gem_config_pb2 as _gem_config_pb2
 from src.common.typespb import uuid_pb2 as _uuid_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
@@ -20,6 +21,11 @@ OS_KIND_MACOS: OSKind
 OS_KIND_OTHER: OSKind
 OS_KIND_UNKNOWN: OSKind
 OS_KIND_WINDOWS: OSKind
+SELECTOR_TYPE_EXISTS: SelectorType
+SELECTOR_TYPE_IN: SelectorType
+SELECTOR_TYPE_NOT_EXISTS: SelectorType
+SELECTOR_TYPE_NOT_IN: SelectorType
+SELECTOR_TYPE_UNKNOWN: SelectorType
 
 class AssociateTagsWithDeployKeyRequest(_message.Message):
     __slots__ = ["deploy_key_id", "fleet_id", "tags"]
@@ -52,6 +58,20 @@ class AssociateTagsWithDeployKeyResponse(_message.Message):
     deploy_key_id: _uuid_pb2.UUID
     tags: _containers.MessageMap[str, Tag]
     def __init__(self, deploy_key_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., tags: _Optional[_Mapping[str, Tag]] = ...) -> None: ...
+
+class BaseConfig(_message.Message):
+    __slots__ = ["rules"]
+    RULES_FIELD_NUMBER: _ClassVar[int]
+    rules: _containers.RepeatedCompositeFieldContainer[ConfigRule]
+    def __init__(self, rules: _Optional[_Iterable[_Union[ConfigRule, _Mapping]]] = ...) -> None: ...
+
+class ConfigRule(_message.Message):
+    __slots__ = ["config", "tag_selectors"]
+    CONFIG_FIELD_NUMBER: _ClassVar[int]
+    TAG_SELECTORS_FIELD_NUMBER: _ClassVar[int]
+    config: _gem_config_pb2.GEMConfig
+    tag_selectors: _containers.RepeatedCompositeFieldContainer[Selector]
+    def __init__(self, tag_selectors: _Optional[_Iterable[_Union[Selector, _Mapping]]] = ..., config: _Optional[_Union[_gem_config_pb2.GEMConfig, _Mapping]] = ...) -> None: ...
 
 class CreateFleetRequest(_message.Message):
     __slots__ = ["fleet"]
@@ -157,6 +177,20 @@ class FleetInfo(_message.Message):
     tags: _containers.MessageMap[str, Tag]
     def __init__(self, id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., org_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., name: _Optional[str] = ..., description: _Optional[str] = ..., created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., tags: _Optional[_Mapping[str, Tag]] = ...) -> None: ...
 
+class GetBaseConfigRequest(_message.Message):
+    __slots__ = ["fleet_id"]
+    FLEET_ID_FIELD_NUMBER: _ClassVar[int]
+    fleet_id: _uuid_pb2.UUID
+    def __init__(self, fleet_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
+
+class GetBaseConfigResponse(_message.Message):
+    __slots__ = ["base_config", "version"]
+    BASE_CONFIG_FIELD_NUMBER: _ClassVar[int]
+    VERSION_FIELD_NUMBER: _ClassVar[int]
+    base_config: BaseConfig
+    version: int
+    def __init__(self, base_config: _Optional[_Union[BaseConfig, _Mapping]] = ..., version: _Optional[int] = ...) -> None: ...
+
 class GetDefaultTagsRequest(_message.Message):
     __slots__ = ["fleet_id"]
     FLEET_ID_FIELD_NUMBER: _ClassVar[int]
@@ -175,6 +209,20 @@ class GetDefaultTagsResponse(_message.Message):
     TAGS_FIELD_NUMBER: _ClassVar[int]
     tags: _containers.MessageMap[str, Tag]
     def __init__(self, tags: _Optional[_Mapping[str, Tag]] = ...) -> None: ...
+
+class GetDeviceConfigStateRequest(_message.Message):
+    __slots__ = ["device_id"]
+    DEVICE_ID_FIELD_NUMBER: _ClassVar[int]
+    device_id: _uuid_pb2.UUID
+    def __init__(self, device_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
+
+class GetDeviceConfigStateResponse(_message.Message):
+    __slots__ = ["state", "version"]
+    STATE_FIELD_NUMBER: _ClassVar[int]
+    VERSION_FIELD_NUMBER: _ClassVar[int]
+    state: _gem_config_pb2.GEMConfig
+    version: int
+    def __init__(self, state: _Optional[_Union[_gem_config_pb2.GEMConfig, _Mapping]] = ..., version: _Optional[int] = ...) -> None: ...
 
 class GetDeviceRequest(_message.Message):
     __slots__ = ["id"]
@@ -304,6 +352,16 @@ class RegisterResponse(_message.Message):
     device_id: _uuid_pb2.UUID
     def __init__(self, device_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
 
+class Selector(_message.Message):
+    __slots__ = ["key", "operator", "values"]
+    KEY_FIELD_NUMBER: _ClassVar[int]
+    OPERATOR_FIELD_NUMBER: _ClassVar[int]
+    VALUES_FIELD_NUMBER: _ClassVar[int]
+    key: str
+    operator: SelectorType
+    values: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, key: _Optional[str] = ..., operator: _Optional[_Union[SelectorType, str]] = ..., values: _Optional[_Iterable[str]] = ...) -> None: ...
+
 class SetDeviceCapabilitiesRequest(_message.Message):
     __slots__ = ["capabilities", "device_id"]
     CAPABILITIES_FIELD_NUMBER: _ClassVar[int]
@@ -343,6 +401,18 @@ class UnassociateTagsWithDeployKeyRequest(_message.Message):
     def __init__(self, deploy_key_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ...) -> None: ...
 
 class UnassociateTagsWithDeployKeyResponse(_message.Message):
+    __slots__ = []
+    def __init__(self) -> None: ...
+
+class UpdateBaseConfigRequest(_message.Message):
+    __slots__ = ["base_config", "fleet_id"]
+    BASE_CONFIG_FIELD_NUMBER: _ClassVar[int]
+    FLEET_ID_FIELD_NUMBER: _ClassVar[int]
+    base_config: BaseConfig
+    fleet_id: _uuid_pb2.UUID
+    def __init__(self, fleet_id: _Optional[_Union[_uuid_pb2.UUID, _Mapping]] = ..., base_config: _Optional[_Union[BaseConfig, _Mapping]] = ...) -> None: ...
+
+class UpdateBaseConfigResponse(_message.Message):
     __slots__ = []
     def __init__(self) -> None: ...
 
@@ -412,4 +482,7 @@ class DeviceStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = []
 
 class OSKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = []
+
+class SelectorType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = []

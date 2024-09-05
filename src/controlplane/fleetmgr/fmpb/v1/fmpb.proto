@@ -24,6 +24,7 @@ option go_package = "gimletlabs.ai/gimlet/src/controlplane/fleetmgr/fmpb/v1;fmpb
 import "gogoproto/gogo.proto";
 import "google/protobuf/timestamp.proto";
 import "src/api/corepb/v1/cp_edge.proto";
+import "src/api/corepb/v1/gem_config.proto";
 import "src/common/typespb/uuid.proto";
 
 // ================== Fleet Manager Service ==================
@@ -199,41 +200,6 @@ message DeviceInfo {
   reserved 7;
 }
 
-message UnassociateTagsWithDeployKeyRequest {
-  // The deploy key ID.
-  gml.types.UUID deploy_key_id = 1 [ (gogoproto.customname) = "DeployKeyID" ];
-}
-
-message UnassociateTagsWithDeployKeyResponse {}
-
-message AssociateTagsWithDeployKeyRequest {
-  // The deploy key ID.
-  gml.types.UUID deploy_key_id = 1 [ (gogoproto.customname) = "DeployKeyID" ];
-  // A map of the tags associated with the deploy key ID in the <key, value> format.
-  map<string, string> tags = 2;
-  // The fleet ID associated with the deploy key.
-  gml.types.UUID fleet_id = 3 [ (gogoproto.customname) = "FleetID" ];
-}
-
-message AssociateTagsWithDeployKeyResponse {
-  // The deploy key ID.
-  gml.types.UUID deploy_key_id = 1 [ (gogoproto.customname) = "DeployKeyID" ];
-  // A map of the tags associated with the deploy key ID in the <key, Tag> format.
-  map<string, Tag> tags = 2;
-}
-
-message ListTagsAssociatedWithDeployKeyRequest {
-  // The deploy key ID.
-  gml.types.UUID deploy_key_id = 1 [ (gogoproto.customname) = "DeployKeyID" ];
-}
-
-message ListTagsAssociatedWithDeployKeyResponse {
-  // The deploy key ID.
-  gml.types.UUID deploy_key_id = 1 [ (gogoproto.customname) = "DeployKeyID" ];
-  // A map of the tags associated with the deploy key ID in the <key, Tag> format.
-  map<string, Tag> tags = 2;
-}
-
 message RegisterRequest {
   // This is an opaque device serial for the device. It's nominally the MAC-address, GUID, or some
   // other serial number that is deemed to be globally unique. It must be at-least 32 characters. On
@@ -304,6 +270,8 @@ message SetDeviceCapabilitiesRequest {
 
 message SetDeviceCapabilitiesResponse {}
 
+// ================== Fleet Manager Device Tags Service ==================
+
 message GetTagsRequest {
   // The deviceID of the device to fetch the tags from.
   gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
@@ -331,6 +299,102 @@ message DeleteTagRequest {
 }
 
 message DeleteTagResponse {}
+
+message UnassociateTagsWithDeployKeyRequest {
+  // The deploy key ID.
+  gml.types.UUID deploy_key_id = 1 [ (gogoproto.customname) = "DeployKeyID" ];
+}
+
+message UnassociateTagsWithDeployKeyResponse {}
+
+message AssociateTagsWithDeployKeyRequest {
+  // The deploy key ID.
+  gml.types.UUID deploy_key_id = 1 [ (gogoproto.customname) = "DeployKeyID" ];
+  // A map of the tags associated with the deploy key ID in the <key, value> format.
+  map<string, string> tags = 2;
+  // The fleet ID associated with the deploy key.
+  gml.types.UUID fleet_id = 3 [ (gogoproto.customname) = "FleetID" ];
+}
+
+message AssociateTagsWithDeployKeyResponse {
+  // The deploy key ID.
+  gml.types.UUID deploy_key_id = 1 [ (gogoproto.customname) = "DeployKeyID" ];
+  // A map of the tags associated with the deploy key ID in the <key, Tag> format.
+  map<string, Tag> tags = 2;
+}
+
+message ListTagsAssociatedWithDeployKeyRequest {
+  // The deploy key ID.
+  gml.types.UUID deploy_key_id = 1 [ (gogoproto.customname) = "DeployKeyID" ];
+}
+
+message ListTagsAssociatedWithDeployKeyResponse {
+  // The deploy key ID.
+  gml.types.UUID deploy_key_id = 1 [ (gogoproto.customname) = "DeployKeyID" ];
+  // A map of the tags associated with the deploy key ID in the <key, Tag> format.
+  map<string, Tag> tags = 2;
+}
+
+// ================== Fleet Manager Config Service ==================
+
+enum SelectorType {
+  SELECTOR_TYPE_UNKNOWN = 0;
+  SELECTOR_TYPE_EXISTS = 1;
+  SELECTOR_TYPE_NOT_EXISTS = 2;
+  SELECTOR_TYPE_IN = 3;
+  SELECTOR_TYPE_NOT_IN = 4;
+}
+
+message Selector {
+  string key = 1;
+  SelectorType operator = 2;
+  repeated string values = 3;
+}
+
+message ConfigRule {
+  // The tag selectors for the config rule. These are ANDed.
+  repeated Selector tag_selectors = 1;
+  // The config which should be applied for devices matching the selector.
+  // Not all values need to be filled in, only the ones which should be applied.
+  gml.internal.api.core.v1.GEMConfig config = 2;
+}
+
+// BaseConfig is the base config for a fleet which defines all the config selectors and
+// rules that should be applied to the devices in the fleet.
+message BaseConfig {
+  repeated ConfigRule rules = 1;
+}
+
+message GetBaseConfigRequest {
+  // The fleetID of the fleet to fetch the base config for.
+  gml.types.UUID fleet_id = 1 [ (gogoproto.customname) = "FleetID" ];
+}
+
+message GetBaseConfigResponse {
+  // The base config for the fleet.
+  BaseConfig base_config = 1;
+  int64 version = 2;
+}
+
+message GetDeviceConfigStateRequest {
+  // The ID of the device to fetch the config state from.
+  gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
+}
+
+message GetDeviceConfigStateResponse {
+  // The config which the device is actually running.
+  gml.internal.api.core.v1.GEMConfig state = 1;
+  int64 version = 2;
+}
+
+message UpdateBaseConfigRequest {
+  // The fleetID of the fleet to update the base config for.
+  gml.types.UUID fleet_id = 1 [ (gogoproto.customname) = "FleetID" ];
+  // The base config to update.
+  BaseConfig base_config = 2;
+}
+
+message UpdateBaseConfigResponse {}
 
 // ================== Service Definitions ==================
 
@@ -395,4 +459,15 @@ service FleetMgrDeviceTagsService {
   // ListTagsAssociatedWithDeployKey returns the tags associated with a deploy key.
   rpc ListTagsAssociatedWithDeployKey(ListTagsAssociatedWithDeployKeyRequest)
       returns (ListTagsAssociatedWithDeployKeyResponse);
+}
+
+// FleetMgrConfigService is responsible for managing configs for the devices in a fleet.
+service FleetMgrConfigService {
+  // GetBaseConfig gets the base config for a fleet. This is the specification of config
+  // rules/selectors which should be applied to the devices in the fleet.
+  rpc GetBaseConfig(GetBaseConfigRequest) returns (GetBaseConfigResponse);
+  // GetDeviceConfigState gets the config which is actually applied to a device.
+  rpc GetDeviceConfigState(GetDeviceConfigStateRequest) returns (GetDeviceConfigStateResponse);
+  // UpdateBaseConfig updates the base config for a fleet.
+  rpc UpdateBaseConfig(UpdateBaseConfigRequest) returns (UpdateBaseConfigResponse);
 }

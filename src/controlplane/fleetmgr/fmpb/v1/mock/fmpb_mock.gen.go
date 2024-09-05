@@ -935,3 +935,154 @@ func (mr *MockFleetMgrDeviceTagsServiceServerMockRecorder) UpsertTag(arg0, arg1 
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertTag", reflect.TypeOf((*MockFleetMgrDeviceTagsServiceServer)(nil).UpsertTag), arg0, arg1)
 }
+
+// MockFleetMgrConfigServiceClient is a mock of FleetMgrConfigServiceClient interface.
+type MockFleetMgrConfigServiceClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockFleetMgrConfigServiceClientMockRecorder
+}
+
+// MockFleetMgrConfigServiceClientMockRecorder is the mock recorder for MockFleetMgrConfigServiceClient.
+type MockFleetMgrConfigServiceClientMockRecorder struct {
+	mock *MockFleetMgrConfigServiceClient
+}
+
+// NewMockFleetMgrConfigServiceClient creates a new mock instance.
+func NewMockFleetMgrConfigServiceClient(ctrl *gomock.Controller) *MockFleetMgrConfigServiceClient {
+	mock := &MockFleetMgrConfigServiceClient{ctrl: ctrl}
+	mock.recorder = &MockFleetMgrConfigServiceClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockFleetMgrConfigServiceClient) EXPECT() *MockFleetMgrConfigServiceClientMockRecorder {
+	return m.recorder
+}
+
+// GetBaseConfig mocks base method.
+func (m *MockFleetMgrConfigServiceClient) GetBaseConfig(ctx context.Context, in *fmpb.GetBaseConfigRequest, opts ...grpc.CallOption) (*fmpb.GetBaseConfigResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetBaseConfig", varargs...)
+	ret0, _ := ret[0].(*fmpb.GetBaseConfigResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBaseConfig indicates an expected call of GetBaseConfig.
+func (mr *MockFleetMgrConfigServiceClientMockRecorder) GetBaseConfig(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBaseConfig", reflect.TypeOf((*MockFleetMgrConfigServiceClient)(nil).GetBaseConfig), varargs...)
+}
+
+// GetDeviceConfigState mocks base method.
+func (m *MockFleetMgrConfigServiceClient) GetDeviceConfigState(ctx context.Context, in *fmpb.GetDeviceConfigStateRequest, opts ...grpc.CallOption) (*fmpb.GetDeviceConfigStateResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetDeviceConfigState", varargs...)
+	ret0, _ := ret[0].(*fmpb.GetDeviceConfigStateResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDeviceConfigState indicates an expected call of GetDeviceConfigState.
+func (mr *MockFleetMgrConfigServiceClientMockRecorder) GetDeviceConfigState(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDeviceConfigState", reflect.TypeOf((*MockFleetMgrConfigServiceClient)(nil).GetDeviceConfigState), varargs...)
+}
+
+// UpdateBaseConfig mocks base method.
+func (m *MockFleetMgrConfigServiceClient) UpdateBaseConfig(ctx context.Context, in *fmpb.UpdateBaseConfigRequest, opts ...grpc.CallOption) (*fmpb.UpdateBaseConfigResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateBaseConfig", varargs...)
+	ret0, _ := ret[0].(*fmpb.UpdateBaseConfigResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateBaseConfig indicates an expected call of UpdateBaseConfig.
+func (mr *MockFleetMgrConfigServiceClientMockRecorder) UpdateBaseConfig(ctx, in any, opts ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateBaseConfig", reflect.TypeOf((*MockFleetMgrConfigServiceClient)(nil).UpdateBaseConfig), varargs...)
+}
+
+// MockFleetMgrConfigServiceServer is a mock of FleetMgrConfigServiceServer interface.
+type MockFleetMgrConfigServiceServer struct {
+	ctrl     *gomock.Controller
+	recorder *MockFleetMgrConfigServiceServerMockRecorder
+}
+
+// MockFleetMgrConfigServiceServerMockRecorder is the mock recorder for MockFleetMgrConfigServiceServer.
+type MockFleetMgrConfigServiceServerMockRecorder struct {
+	mock *MockFleetMgrConfigServiceServer
+}
+
+// NewMockFleetMgrConfigServiceServer creates a new mock instance.
+func NewMockFleetMgrConfigServiceServer(ctrl *gomock.Controller) *MockFleetMgrConfigServiceServer {
+	mock := &MockFleetMgrConfigServiceServer{ctrl: ctrl}
+	mock.recorder = &MockFleetMgrConfigServiceServerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockFleetMgrConfigServiceServer) EXPECT() *MockFleetMgrConfigServiceServerMockRecorder {
+	return m.recorder
+}
+
+// GetBaseConfig mocks base method.
+func (m *MockFleetMgrConfigServiceServer) GetBaseConfig(arg0 context.Context, arg1 *fmpb.GetBaseConfigRequest) (*fmpb.GetBaseConfigResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetBaseConfig", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.GetBaseConfigResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBaseConfig indicates an expected call of GetBaseConfig.
+func (mr *MockFleetMgrConfigServiceServerMockRecorder) GetBaseConfig(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBaseConfig", reflect.TypeOf((*MockFleetMgrConfigServiceServer)(nil).GetBaseConfig), arg0, arg1)
+}
+
+// GetDeviceConfigState mocks base method.
+func (m *MockFleetMgrConfigServiceServer) GetDeviceConfigState(arg0 context.Context, arg1 *fmpb.GetDeviceConfigStateRequest) (*fmpb.GetDeviceConfigStateResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDeviceConfigState", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.GetDeviceConfigStateResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDeviceConfigState indicates an expected call of GetDeviceConfigState.
+func (mr *MockFleetMgrConfigServiceServerMockRecorder) GetDeviceConfigState(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDeviceConfigState", reflect.TypeOf((*MockFleetMgrConfigServiceServer)(nil).GetDeviceConfigState), arg0, arg1)
+}
+
+// UpdateBaseConfig mocks base method.
+func (m *MockFleetMgrConfigServiceServer) UpdateBaseConfig(arg0 context.Context, arg1 *fmpb.UpdateBaseConfigRequest) (*fmpb.UpdateBaseConfigResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateBaseConfig", arg0, arg1)
+	ret0, _ := ret[0].(*fmpb.UpdateBaseConfigResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateBaseConfig indicates an expected call of UpdateBaseConfig.
+func (mr *MockFleetMgrConfigServiceServerMockRecorder) UpdateBaseConfig(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateBaseConfig", reflect.TypeOf((*MockFleetMgrConfigServiceServer)(nil).UpdateBaseConfig), arg0, arg1)
+}
