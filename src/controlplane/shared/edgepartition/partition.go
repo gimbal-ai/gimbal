@@ -171,6 +171,8 @@ func CPNATSTopic(partition string, edgeID string, topic corepb.CPTopic, isDurabl
 		return gen("deviceUpdate"), nil
 	case corepb.CP_TOPIC_DEVICE_DISCONNECTED:
 		return gen("deviceDisconnected"), nil
+	case corepb.CP_TOPIC_DEVICE_CONFIG:
+		return gen("deviceConfig"), nil
 	case corepb.CP_TOPIC_PIPELINE_DEPLOYMENT_RECONCILIATION:
 		return gen("pipelineDeploymentReconciliation"), nil
 	default:

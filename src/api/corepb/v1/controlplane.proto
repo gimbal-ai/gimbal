@@ -54,6 +54,7 @@ enum CPTopic {
   CP_TOPIC_DEVICE_DISCONNECTED = 3;
   CP_TOPIC_PIPELINE_DEPLOYMENT_RECONCILIATION = 4;
   CP_TOPIC_DEVICE_UPDATE = 5;
+  CP_TOPIC_DEVICE_CONFIG = 6;
 }
 
 // DeviceConnected is sent whenever a device connects.
@@ -90,4 +91,10 @@ message PipelineDeploymentReconciliation {
   gml.types.UUID pipeline_deployment_id = 1 [ (gogoproto.customname) = "PipelineDeploymentID" ];
   // The fleet ID that the pipeline deployment is for.
   gml.types.UUID fleet_id = 2 [ (gogoproto.customname) = "FleetID" ];
+}
+
+// DeviceBaseConfigUpdate is a message that is sent whenever the base config for a device may be
+// updated. This may be due to changes in the base config itself, or updates to a device's tags.
+message DeviceBaseConfigUpdate {
+  gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
 }
