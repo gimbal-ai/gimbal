@@ -93,8 +93,8 @@ message PipelineDeploymentReconciliation {
   gml.types.UUID fleet_id = 2 [ (gogoproto.customname) = "FleetID" ];
 }
 
-// DeviceBaseConfigUpdate is a message that is sent whenever the base config for a device may be
+// BaseConfigUpdateRequest is a message that is sent whenever the base config for a device may be
 // updated. This may be due to changes in the base config itself, or updates to a device's tags.
-message DeviceBaseConfigUpdate {
+message BaseConfigUpdateRequest {
   gml.types.UUID device_id = 1 [ (gogoproto.customname) = "DeviceID" ];
 }
