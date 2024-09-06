@@ -36,12 +36,7 @@ class OpenCVCam : public OpenCVSource {
   ~OpenCVCam() override = default;
 
   cv::Mat ConsumeFrame() override;
-
-  double GetProperty(int prop_id) override;
   int64_t GetLastCaptureUS() override;
-
- private:
-  std::unique_ptr<cv::VideoCapture> cap_;
 };
 
 }  // namespace gml::gem::devices::opencv

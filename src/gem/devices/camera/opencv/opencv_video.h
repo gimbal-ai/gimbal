@@ -37,14 +37,10 @@ class OpenCVVideo : public OpenCVSource {
   ~OpenCVVideo() override = default;
 
   cv::Mat ConsumeFrame() override;
-
-  double GetProperty(int prop_id) override;
   int64_t GetLastCaptureUS() override;
 
  private:
   cv::Mat NextFrame();
-
-  std::unique_ptr<cv::VideoCapture> cap_;
 
   double frame_count_;
   int64_t loop_count_ = 0;

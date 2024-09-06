@@ -31,8 +31,13 @@ class OpenCVSource {
  public:
   virtual ~OpenCVSource() = default;
   virtual cv::Mat ConsumeFrame() = 0;
-  virtual double GetProperty(int prop_id) = 0;
   virtual int64_t GetLastCaptureUS() = 0;
+
+  bool IsOpened() { return cap_->isOpened(); }
+  double GetProperty(int prop_id) { return cap_->get(prop_id); }
+
+ protected:
+  std::unique_ptr<cv::VideoCapture> cap_;
 };
 
 }  // namespace gml::gem::devices::opencv

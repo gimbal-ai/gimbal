@@ -34,8 +34,6 @@ cv::Mat OpenCVCam::ConsumeFrame() {
   return frame;
 }
 
-double OpenCVCam::GetProperty(int prop_id) { return cap_->get(prop_id); }
-
 int64_t OpenCVCam::GetLastCaptureUS() {
   return 1000 * std::llround(cap_->get(cv::CAP_PROP_POS_MSEC));
 }

@@ -106,6 +106,11 @@ absl::Status OpenCVCamSourceCalculator::Open(mediapipe::CalculatorContext* cc) {
     source_ = std::make_unique<devices::opencv::OpenCVVideo>(options_.device_filename(), params);
   }
 
+  if (!source_->IsOpened()) {
+    return absl::InternalError(
+        absl::Substitute("Failed to open camera source: $0", options_.device_filename()));
+  }
+
   width_ = static_cast<int32_t>(source_->GetProperty(cv::CAP_PROP_FRAME_WIDTH));
   height_ = static_cast<int32_t>(source_->GetProperty(cv::CAP_PROP_FRAME_HEIGHT));
   fps_ = source_->GetProperty(cv::CAP_PROP_FPS);

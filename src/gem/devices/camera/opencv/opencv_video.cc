@@ -75,8 +75,6 @@ cv::Mat OpenCVVideo::ConsumeFrame() {
   return frame;
 }
 
-double OpenCVVideo::GetProperty(int prop_id) { return cap_->get(prop_id); }
-
 int64_t OpenCVVideo::GetLastCaptureUS() {
   return video_start_offset_us_ +
          1000 * ((video_length_ms_ * loop_count_) + (last_frame_timestamp_ms_ - video_start_ms_));
