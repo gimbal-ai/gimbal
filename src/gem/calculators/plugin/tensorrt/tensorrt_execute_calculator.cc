@@ -22,6 +22,7 @@
 #include <mediapipe/framework/calculator_registry.h>
 
 #include "src/common/base/base.h"
+#include "src/common/base/error.h"
 #include "src/gem/exec/plugin/tensorrt/context.h"
 #include "src/gem/exec/plugin/tensorrt/cuda_tensor_pool.h"
 
@@ -134,6 +135,7 @@ Status TensorRTExecuteCalculator::OpenImpl(mediapipe::CalculatorContext* cc,
 
 Status TensorRTExecuteCalculator::ProcessImpl(mediapipe::CalculatorContext* cc,
                                               ExecutionContext* exec_ctx) {
+  std::vector<std::vector<uint8_t>> host_buffers;
   for (const auto& [i, name] : Enumerate(options_.input_onnx_name())) {
     const auto& packet = cc->Inputs().Index(i).Value();
     if (packet.IsEmpty()) {
@@ -141,8 +143,24 @@ Status TensorRTExecuteCalculator::ProcessImpl(mediapipe::CalculatorContext* cc,
       return error::InvalidArgument(
           "TensorRTExecuteCalculator expects all inputs to be valid at each timestamp");
     }
-    exec_ctx->NVExecutionContext()->setTensorAddress(name.c_str(),
-                                                     packet.Get<CUDATensorPtr>()->data());
+    if (!exec_ctx->CUDAEngine()->isShapeInferenceIO(name.c_str())) {
+      exec_ctx->NVExecutionContext()->setTensorAddress(name.c_str(),
+                                                       packet.Get<CUDATensorPtr>()->data());
+      continue;
+    }
+    // TensorRT requires that "shape tensor" inputs are allocated on the host and not the device.
+
+    // TODO(james): we shouldn't allocate the host buffer for the shape tensor each time here but
+    // the compiler doesn't know what tensors TensorRT considers to be a "shape tensor" so it can't
+    // pass in a CPUTensor correctly.
+    const auto& cuda_tensor = packet.Get<CUDATensorPtr>();
+    auto& host_mem = host_buffers.emplace_back(cuda_tensor->size());
+
+    if (cudaMemcpy(host_mem.data(), static_cast<uint8_t*>(cuda_tensor->data()), cuda_tensor->size(),
+                   cudaMemcpyDeviceToHost) != cudaSuccess) {
+      return Status(types::CODE_INTERNAL, "Failed to memcpy from cuda device to host");
+    }
+    exec_ctx->NVExecutionContext()->setTensorAddress(name.c_str(), host_mem.data());
   }
 
   if (!exec_ctx->NVExecutionContext()->enqueueV3(exec_ctx->CUDAStream())) {

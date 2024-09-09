@@ -117,6 +117,20 @@ StatusOr<std::unique_ptr<nvinfer1::IHostMemory>> BuildSerializedModel(storage::B
                                input->getDimensions());
     opt_profile->setDimensions(input->getName(), nvinfer1::OptProfileSelector::kMAX,
                                input->getDimensions());
+    if (input->isShapeTensor()) {
+      // If there is a shape input, assume its the shape of an image and set hardcoded image size
+      // bounds.
+      // TODO(james): We should set this in the model spec and pass it down from the compiler.
+      std::array<int32_t, 2> min_values = {1, 1};
+      std::array<int32_t, 2> opt_values = {640, 480};
+      std::array<int32_t, 2> max_values = {4096, 4096};
+      opt_profile->setShapeValues(input->getName(), nvinfer1::OptProfileSelector::kMIN,
+                                  min_values.data(), min_values.size());
+      opt_profile->setShapeValues(input->getName(), nvinfer1::OptProfileSelector::kOPT,
+                                  opt_values.data(), opt_values.size());
+      opt_profile->setShapeValues(input->getName(), nvinfer1::OptProfileSelector::kMAX,
+                                  max_values.data(), max_values.size());
+    }
   }
   config->addOptimizationProfile(opt_profile);
   if (spec.tensorrt_spec().mem_pool_limits().workspace() > 0) {
