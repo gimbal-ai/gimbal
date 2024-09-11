@@ -83,12 +83,12 @@ cc_toolchain_config(
     link_flags = [
         "-target",
         "{target_arch}-linux-gnu",
-        "-static-libgcc",
         "-fuse-ld=lld",
         "-Wl,-no-as-needed",
         "-Wl,-z,relro,-z,now",
         "-Bexternal/{this_repo}/{toolchain_path}/bin",
         "-lm",
+        "-lgcc_s",
     ] + (["-no-pie"] if {use_for_host_tools} else []),
     opt_compile_flags = [
         "-g0",
