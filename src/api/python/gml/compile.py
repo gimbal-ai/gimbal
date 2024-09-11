@@ -166,6 +166,92 @@ class SafetensorImporterHooks(FxImporterHooks):
         save_file(tensors, file_path)
 
 
+def _to_module_list(val):
+    if isinstance(val, torch.nn.Module):
+        return val
+
+    converted = []
+    for item in val:
+        c = _to_module_container(item)
+        if c is None:
+            return None
+        converted.append(c)
+    if not converted:
+        return None
+    return torch.nn.ModuleList(converted)
+
+
+def _to_module_dict(val):
+    if isinstance(val, torch.nn.Module):
+        return val
+
+    converted = dict()
+    for k, v in val.items():
+        c = _to_module_container(v)
+        if c is None:
+            return None
+        converted[k] = v
+    if not converted:
+        return None
+    return torch.nn.ModuleDict(converted)
+
+
+def _to_module_container(val, root=False):
+    if isinstance(val, torch.nn.Module) and not root:
+        return val
+    if isinstance(val, dict):
+        return _to_module_dict(val)
+    if isinstance(val, list) or isinstance(val, tuple):
+        return _to_module_list(val)
+
+    return None
+
+
+def _replace_containers_with_torch_containers(mod: torch.nn.Module):
+    """Replaces any lists, dict, or nested combinations of lists/dicts that are attributes of `mod` with torch.nn.ModuleList/torch.nn.ModuleDict
+
+    This fixes some `module is not installed as a submodule` errors.
+    ."""
+    _excludes = set(["_modules"])
+    replacements = dict()
+    for name, val in mod.__dict__.items():
+        if name in _excludes:
+            continue
+        c = _to_module_container(val, root=True)
+        if c is None:
+            continue
+        replacements[name] = c
+
+    for name, repl in replacements.items():
+        setattr(mod, name, repl)
+
+
+def _ensure_submodules_accessed_through_getattr(mod: torch.nn.Module):
+    """This removes any registered modules from `mod.__dict__`.
+
+    This ensures that all accesses of submodules go through torch's __getattr__ infra,
+    preventing certain cases of `module is not installed as a submodule` errors.
+    """
+    if not hasattr(mod, "_modules"):
+        return
+    for name in mod._modules:
+        if name in mod.__dict__:
+            del mod.__dict__[name]
+
+
+def _submodule_registration_workarounds(mod: torch.nn.Module):
+    """Apply submodule registration workarounds recursively to all submodules of `mod`."""
+    _ensure_submodules_accessed_through_getattr(mod)
+    _replace_containers_with_torch_containers(mod)
+    # We intentionally don't use `mod.modules()` (which returns all recursive submodules) here because we want only
+    # the direct dependencies of `mod`. So that we get a pre-order traversal, ensuring the workarounds are applied
+    # before we check for submodules.
+    for submod in mod._modules.values():
+        if submod is mod:
+            continue
+        _submodule_registration_workarounds(submod)
+
+
 def to_torch_mlir(
     model: torch.nn.Module,
     example_inputs: Sequence[torch.Tensor],
@@ -188,6 +274,8 @@ def to_torch_mlir(
         decomposition_denylist = _default_decomposition_denylist()
 
     model = model.eval().to("cpu")
+
+    _submodule_registration_workarounds(model)
 
     try:
         # Running the model a few times on the inputs, leads to more consistent compiled results.
