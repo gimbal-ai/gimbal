@@ -12,6 +12,7 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
+CP_EDGE_TOPIC_CONFIG: CPEdgeTopic
 CP_EDGE_TOPIC_EXEC: CPEdgeTopic
 CP_EDGE_TOPIC_FILE_TRANSFER: CPEdgeTopic
 CP_EDGE_TOPIC_INFO: CPEdgeTopic

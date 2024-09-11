@@ -343,6 +343,7 @@ enum CPEdgeTopic {
   CP_EDGE_TOPIC_FILE_TRANSFER = 5;
   CP_EDGE_TOPIC_INFO = 6;
   CP_EDGE_TOPIC_MEDIA = 7;
+  CP_EDGE_TOPIC_CONFIG = 8;
 }
 
 // EdgeCPMetadata has basic routing information for shared bus.

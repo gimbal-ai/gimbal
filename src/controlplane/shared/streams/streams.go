@@ -48,6 +48,7 @@ var CPTopicToStreamName = map[corepb.CPTopic]string{
 	corepb.CP_TOPIC_DEVICE_UPDATE:                      "deviceUpdate",
 	corepb.CP_TOPIC_DEVICE_DISCONNECTED:                "deviceDisconnected",
 	corepb.CP_TOPIC_PIPELINE_DEPLOYMENT_RECONCILIATION: "pipelineDeploymentReconciliation",
+	corepb.CP_TOPIC_DEVICE_CONFIG:                      "deviceConfig",
 }
 
 // MustConnectCPJetStream creates a new JetStream connection.

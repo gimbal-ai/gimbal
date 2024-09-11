@@ -122,6 +122,8 @@ func CPToEdgeNATSTopic(edgeID uuid.UUID, topic corepb.CPEdgeTopic, isDurable boo
 		return gen("info"), nil
 	case corepb.CP_EDGE_TOPIC_MEDIA:
 		return gen("media"), nil
+	case corepb.CP_EDGE_TOPIC_CONFIG:
+		return gen("config"), nil
 	default:
 		return "", fmt.Errorf("bad topic %s", topic.String())
 	}
