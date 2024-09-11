@@ -38,6 +38,9 @@ def _apt_parse_impl(ctx):
     for spec in ctx.attr.specs:
         depsets.append(spec[DefaultInfo].files)
 
+    for target in ctx.attr.cache_keys:
+        depsets.append(target[DefaultInfo].files)
+
     ctx.actions.run(
         executable = ctx.attr._apt_parse[DefaultInfo].files.to_list()[0],
         outputs = [out],
@@ -69,6 +72,10 @@ _apt_parse_rule = rule(
         fake_mirroring = attr.bool(
             doc = "If true, skips mirroring but still generates the deb repos as if mirroring was enabled.",
             default = False,
+        ),
+        cache_keys = attr.label_list(
+            doc = "Inputs used only as cache keys",
+            allow_files = True,
         ),
         _apt_parse = attr.label(
             default = Label("//bazel/tools/apt_parse"),
@@ -121,6 +128,10 @@ def apt_parse(name, specs, archs, **kwargs):
         name = name + ".test.gen",
         archs = archs,
         bzl_file = bzl_file + ".test.gen",
+        cache_keys = [
+            # Force rebuilding of test golden file when the in-tree bzl file changes.
+            bzl_file,
+        ],
         specs = specs,
         tags = tags + ["manual"],
         fake_mirroring = True,
