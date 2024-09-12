@@ -24,6 +24,7 @@
 namespace gml::gem::exec::core {
 
 Status Runner::Init(const std::map<std::string, mediapipe::Packet>& extra_side_packets) {
+  VLOG(1) << "Graph runner spec:\n" << spec_.DebugString();
   GML_RETURN_IF_ERROR(graph_.Initialize(spec_.graph()));
 
   side_packets_.insert(extra_side_packets.begin(), extra_side_packets.end());
@@ -35,7 +36,6 @@ Status Runner::Init(const std::map<std::string, mediapipe::Packet>& extra_side_p
 Status Runner::Start() {
   std::string graph_proto_text;
   google::protobuf::TextFormat::PrintToString(graph_.Config(), &graph_proto_text);
-  VLOG(1) << "Graph:\n" << graph_proto_text;
 
   GML_RETURN_IF_ERROR(graph_.StartRun(side_packets_));
   started_ = true;
